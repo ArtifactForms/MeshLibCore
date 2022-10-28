@@ -1,0 +1,56 @@
+package mesh.creator.primitives;
+
+import mesh.Mesh3D;
+import mesh.creator.IMeshCreator;
+import mesh.wip.Mesh3DUtil;
+
+public class BoxCreator implements IMeshCreator {
+
+	private float width;
+	private float height;
+	private float depth;
+	
+	public BoxCreator() {
+		this.width = 1.0f;
+		this.height = 1.0f;
+		this.depth = 1.0f;
+	}
+
+	public BoxCreator(float width, float height, float depth) {
+		this.width = width;
+		this.height = height;
+		this.depth = depth;
+	}
+
+	@Override
+	public Mesh3D create() {
+		Mesh3D mesh = new CubeCreator(0.5f).create();
+		Mesh3DUtil.scale(mesh, width, height, depth);
+		return mesh;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
+	public float getDepth() {
+		return depth;
+	}
+
+	public void setDepth(float depth) {
+		this.depth = depth;
+	}
+	
+}
