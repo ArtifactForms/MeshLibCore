@@ -18,7 +18,6 @@ public class FromObjectCreator implements IMeshCreator {
 	}
 
 	public FromObjectCreator(float scale, boolean flipDirection, String path) {
-		super();
 		this.scale = scale;
 		this.flipDirection = true;
 		this.path = path;
