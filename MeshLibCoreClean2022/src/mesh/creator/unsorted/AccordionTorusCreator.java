@@ -9,7 +9,7 @@ import mesh.creator.IMeshCreator;
 public class AccordionTorusCreator implements IMeshCreator {
 
 	private float majorRadius;
-	private float[] minorRadi;
+	private float[] minorRadii;
 	private int majorSegments;
 	private int minorSegments;
 	private Mesh3D mesh;
@@ -17,19 +17,17 @@ public class AccordionTorusCreator implements IMeshCreator {
 	public AccordionTorusCreator() {
 		this.majorRadius = 1f;
 		this.majorSegments = 48;
-		this.minorRadi = new float[majorSegments];
+		this.minorRadii = new float[majorSegments];
 		this.minorSegments = 12;
-		for (int i = 0; i < majorSegments; i++) {
-			minorRadi[i] = (i % 2 == 0) ? 0.25f : 0.125f;
-		}
+		updateRadii();
 	}
 
-	public AccordionTorusCreator(float majorRadius, float[] minorRadi,
-		int majorSegments, int minorSegments) {
+	public AccordionTorusCreator(float majorRadius, float[] minorRadi, int majorSegments, int minorSegments) {
 		this.majorRadius = majorRadius;
-		this.minorRadi = minorRadi;
+		this.minorRadii = minorRadi;
 		this.majorSegments = majorSegments;
 		this.minorSegments = minorSegments;
+		updateRadii();
 	}
 
 	private void createVertices() {
@@ -40,12 +38,10 @@ public class AccordionTorusCreator implements IMeshCreator {
 		Vector3f[] verts = new Vector3f[majorSegments * minorSegments];
 
 		for (int j = 0; j < majorSegments; j++) {
-			Vector3f v0 = new Vector3f(majorRadius * Mathf.cos(majorAngle), 0,
-					majorRadius * Mathf.sin(majorAngle));
+			Vector3f v0 = new Vector3f(majorRadius * Mathf.cos(majorAngle), 0, majorRadius * Mathf.sin(majorAngle));
 			for (int i = 0; i < minorSegments; i++) {
 				float minorRadius = getMinorRadiusAt(j);
-				Vector3f v1 = new Vector3f(minorRadius * Mathf.cos(minorAngle),
-						minorRadius * Mathf.sin(minorAngle), 0);
+				Vector3f v1 = new Vector3f(minorRadius * Mathf.cos(minorAngle), minorRadius * Mathf.sin(minorAngle), 0);
 				// Rotate
 				float a = Mathf.TWO_PI - majorAngle;
 				float x2 = Mathf.cos(a) * v1.x + Mathf.sin(a) * v1.z;
@@ -64,8 +60,7 @@ public class AccordionTorusCreator implements IMeshCreator {
 	private void createFaces() {
 		for (int j = 0; j < majorSegments; j++) {
 			for (int i = 0; i < minorSegments; i++) {
-				int[] k = new int[] { j % majorSegments,
-						(j + 1) % majorSegments, i % minorSegments,
+				int[] k = new int[] { j % majorSegments, (j + 1) % majorSegments, i % minorSegments,
 						(i + 1) % minorSegments };
 				int index0 = k[1] * minorSegments + k[2];
 				int index1 = k[0] * minorSegments + k[2];
@@ -74,6 +69,13 @@ public class AccordionTorusCreator implements IMeshCreator {
 				Face3D f = new Face3D(index0, index1, index3, index2);
 				mesh.add(f);
 			}
+		}
+	}
+
+	private void updateRadii() {
+		minorRadii = new float[majorSegments + 1];
+		for (int i = 0; i < majorSegments; i++) {
+			minorRadii[i] = (i % 2 == 0) ? (0.25f * majorRadius) : 0.125f * (majorRadius);
 		}
 	}
 
@@ -91,14 +93,15 @@ public class AccordionTorusCreator implements IMeshCreator {
 
 	public void setMajorRadius(float majorRadius) {
 		this.majorRadius = majorRadius;
+		updateRadii();
 	}
 
-	public float[] getMinorRadi() {
-		return minorRadi;
+	public float[] getMinorRadii() {
+		return minorRadii;
 	}
 
-	public void setMinorRadi(float[] minorRadi) {
-		this.minorRadi = minorRadi;
+	public void setMinorRadii(float[] minorRadi) {
+		this.minorRadii = minorRadi;
 	}
 
 	public int getMajorSegments() {
@@ -107,6 +110,7 @@ public class AccordionTorusCreator implements IMeshCreator {
 
 	public void setMajorSegments(int majorSegments) {
 		this.majorSegments = majorSegments;
+		updateRadii();
 	}
 
 	public int getMinorSegments() {
@@ -118,11 +122,11 @@ public class AccordionTorusCreator implements IMeshCreator {
 	}
 
 	public float getMinorRadiusAt(int index) {
-		return minorRadi[index];
+		return minorRadii[index];
 	}
 
 	public void setMinorRadiusAt(int index, float radius) {
-		minorRadi[index] = radius;
+		minorRadii[index] = radius;
 	}
 
 }
