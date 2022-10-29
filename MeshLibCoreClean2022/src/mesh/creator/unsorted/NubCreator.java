@@ -11,6 +11,7 @@ public class NubCreator implements IMeshCreator {
 
 	private float radius = 1;
 	private float radius2 = 0.7f;
+	private int subdivisions = 1;
 	private int heightSegments = 7;
 	private int rotationSegments = 16;
 	private Mesh3D mesh;
@@ -55,7 +56,15 @@ public class NubCreator implements IMeshCreator {
 	}
 	
 	private void subdivide() {
-		new CatmullClarkModifier(1).modify(mesh);
+		new CatmullClarkModifier(subdivisions).modify(mesh);
+	}
+
+	public int getSubdivisions() {
+		return subdivisions;
+	}
+
+	public void setSubdivisions(int subdivisions) {
+		this.subdivisions = subdivisions;
 	}
 
 	public float getRadius() {
