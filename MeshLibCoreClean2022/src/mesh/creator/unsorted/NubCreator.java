@@ -55,4 +55,28 @@ public class NubCreator implements IMeshCreator {
 		return mesh;
 	}
 
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+
+	public int getHeightSegments() {
+		return heightSegments;
+	}
+
+	public void setHeightSegments(int heightSegments) {
+		this.heightSegments = heightSegments;
+	}
+
+	public int getRotationSegments() {
+		return rotationSegments;
+	}
+
+	public void setRotationSegments(int rotationSegments) {
+		this.rotationSegments = rotationSegments;
+	}
+
 }
