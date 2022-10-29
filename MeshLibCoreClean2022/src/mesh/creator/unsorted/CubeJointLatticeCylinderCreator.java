@@ -18,7 +18,6 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 	private float scale1;
 
 	public CubeJointLatticeCylinderCreator() {
-		super();
 		this.vertices = 32;
 		this.subdivisionsY = 6;
 		this.radius = 1f;
@@ -31,7 +30,6 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 	public CubeJointLatticeCylinderCreator(int vertices, int subdivisionsY,
 			float radius, float height, float jointSize, float scale0,
 			float scale1) {
-		super();
 		this.vertices = vertices;
 		this.subdivisionsY = subdivisionsY;
 		this.radius = radius;
