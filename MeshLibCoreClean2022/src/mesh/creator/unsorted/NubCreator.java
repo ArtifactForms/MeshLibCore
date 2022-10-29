@@ -10,7 +10,7 @@ import mesh.wip.Mesh3DUtil;
 public class NubCreator implements IMeshCreator {
 
 	private float radius = 1;
-	private float radius2 = 0.7f;
+	private float minorRadius = 0.7f;
 	private int subdivisions = 1;
 	private int heightSegments = 7;
 	private int rotationSegments = 16;
@@ -39,7 +39,7 @@ public class NubCreator implements IMeshCreator {
 		int n = heightSegments;
 		for (int i = 0; i <= n; i++) {
 			Mesh3D circle0 = new CircleCreator(rotationSegments, radius).create();
-			Mesh3D circle1 = new CircleCreator(rotationSegments, radius2).create();
+			Mesh3D circle1 = new CircleCreator(rotationSegments, minorRadius).create();
 			circle0.translateY(0.5f * i);
 			circle1.translateY(0.5f * i);
 			if (i % 2 == 0) {
@@ -50,9 +50,14 @@ public class NubCreator implements IMeshCreator {
 		}
 		
 		createQuadFaces();
+		translate();
 		subdivide();
 		
 		return mesh;
+	}
+	
+	private void translate() {
+		mesh.translateY(-heightSegments * 0.25f);
 	}
 	
 	private void subdivide() {
@@ -73,6 +78,14 @@ public class NubCreator implements IMeshCreator {
 
 	public void setRadius(float radius) {
 		this.radius = radius;
+	}
+
+	public float getMinorRadius() {
+		return minorRadius;
+	}
+
+	public void setMinorRadius(float minorRadius) {
+		this.minorRadius = minorRadius;
 	}
 
 	public int getHeightSegments() {
