@@ -36,40 +36,35 @@ public class SegmentedCubeCreator implements IMeshCreator {
 	}
 
 	private void createBottom() {
-		Mesh3D bottom = new GridCreator(segments, segments, creationSize)
-				.create();
+		Mesh3D bottom = new GridCreator(segments, segments, creationSize).create();
 		bottom.rotateX(Mathf.toRadians(180));
 		bottom.translateY(creationSize);
 		mesh = Mesh3DUtil.append(mesh, bottom);
 	}
 
 	private void createFront() {
-		Mesh3D front = new GridCreator(segments, segments, creationSize)
-				.create();
+		Mesh3D front = new GridCreator(segments, segments, creationSize).create();
 		front.rotateX(Mathf.HALF_PI);
 		front.translateZ(-creationSize);
 		mesh = Mesh3DUtil.append(mesh, front);
 	}
 
 	private void createBack() {
-		Mesh3D front = new GridCreator(segments, segments, creationSize)
-				.create();
+		Mesh3D front = new GridCreator(segments, segments, creationSize).create();
 		front.rotateX(-Mathf.HALF_PI);
 		front.translateZ(creationSize);
 		mesh = Mesh3DUtil.append(mesh, front);
 	}
 
 	private void createLeft() {
-		Mesh3D front = new GridCreator(segments, segments, creationSize)
-				.create();
+		Mesh3D front = new GridCreator(segments, segments, creationSize).create();
 		front.rotateZ(-Mathf.HALF_PI);
 		front.translateX(-creationSize);
 		mesh = Mesh3DUtil.append(mesh, front);
 	}
 
 	private void createRight() {
-		Mesh3D front = new GridCreator(segments, segments, creationSize)
-				.create();
+		Mesh3D front = new GridCreator(segments, segments, creationSize).create();
 		front.rotateZ(Mathf.HALF_PI);
 		front.translateX(creationSize);
 		mesh = Mesh3DUtil.append(mesh, front);
@@ -102,6 +97,11 @@ public class SegmentedCubeCreator implements IMeshCreator {
 		this.mesh = m;
 	}
 
+	private void scale() {
+		mesh.scale(1.0f / creationSize, 1.0f / creationSize, 1.0f / creationSize);
+		mesh.scale(size);
+	}
+
 	@Override
 	public Mesh3D create() {
 		mesh = new Mesh3D();
@@ -113,9 +113,7 @@ public class SegmentedCubeCreator implements IMeshCreator {
 		createRight();
 		roundVertices();
 		removeDoubles();
-		mesh.scale(1.0f / creationSize, 1.0f / creationSize,
-				1.0f / creationSize);
-		mesh.scale(size);
+		scale();
 		return mesh;
 	}
 
