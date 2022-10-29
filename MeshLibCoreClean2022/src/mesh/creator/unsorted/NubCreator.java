@@ -49,10 +49,13 @@ public class NubCreator implements IMeshCreator {
 		}
 		
 		createQuadFaces();
-		
-		new CatmullClarkModifier(1).modify(mesh);
+		subdivide();
 		
 		return mesh;
+	}
+	
+	private void subdivide() {
+		new CatmullClarkModifier(1).modify(mesh);
 	}
 
 	public float getRadius() {
