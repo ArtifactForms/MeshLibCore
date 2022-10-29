@@ -9,11 +9,12 @@ import mesh.wip.Mesh3DUtil;
 
 public class NubCreator implements IMeshCreator {
 
-	private float radius = 1;
-	private float minorRadius = 0.7f;
 	private int subdivisions = 1;
 	private int heightSegments = 7;
 	private int rotationSegments = 16;
+	private float radius = 1;
+	private float minorRadius = 0.7f;
+	private float segmentHeight = 0.5f;
 	private Mesh3D mesh;
 	
 	private void createQuadFaces() {
@@ -40,8 +41,8 @@ public class NubCreator implements IMeshCreator {
 		for (int i = 0; i <= n; i++) {
 			Mesh3D circle0 = new CircleCreator(rotationSegments, radius).create();
 			Mesh3D circle1 = new CircleCreator(rotationSegments, minorRadius).create();
-			circle0.translateY(0.5f * i);
-			circle1.translateY(0.5f * i);
+			circle0.translateY(segmentHeight * i);
+			circle1.translateY(segmentHeight * i);
 			if (i % 2 == 0) {
 				mesh = Mesh3DUtil.append(mesh, circle1, circle0);
 			} else {
@@ -50,14 +51,32 @@ public class NubCreator implements IMeshCreator {
 		}
 		
 		createQuadFaces();
+		capTop();
+		capBottom();
 		translate();
 		subdivide();
 		
 		return mesh;
 	}
+
+	private void capTop() {
+		int[] indices = new int[rotationSegments];
+		for (int i = 0; i < rotationSegments; i++) {
+			indices[i] = i;
+		}
+		mesh.addFace(indices);
+	}
+	
+	private void capBottom() {
+		int[] indices = new int[rotationSegments];
+		for (int i = 0; i < rotationSegments; i++) {
+			indices[i] = mesh.vertices.size() - 1 - i;
+		}
+		mesh.addFace(indices);
+	}
 	
 	private void translate() {
-		mesh.translateY(-heightSegments * 0.25f);
+		mesh.translateY(-(heightSegments * segmentHeight) * 0.5f);
 	}
 	
 	private void subdivide() {
@@ -102,6 +121,14 @@ public class NubCreator implements IMeshCreator {
 
 	public void setRotationSegments(int rotationSegments) {
 		this.rotationSegments = rotationSegments;
+	}
+
+	public float getSegmentHeight() {
+		return segmentHeight;
+	}
+
+	public void setSegmentHeight(float segmentHeight) {
+		this.segmentHeight = segmentHeight;
 	}
 
 }
