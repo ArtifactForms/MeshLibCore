@@ -17,12 +17,14 @@ public class CheckerDeselect {
 	public CheckerDeselect(FaceSelection selection) {
 		this.selection = selection;
 		this.faces = new ArrayList<Face3D>();
-		this.faces.addAll(selection.getFaces());
 		this.helper = new TraverseHelper(selection.getMesh());
 		this.processed = new HashSet<Face3D>();
 	}
 	
 	public void deselect() {
+		this.faces.addAll(selection.getFaces());
+		processed.clear();
+		
 		if (faces.isEmpty())
 			return;
 		Face3D start = faces.get(0);
