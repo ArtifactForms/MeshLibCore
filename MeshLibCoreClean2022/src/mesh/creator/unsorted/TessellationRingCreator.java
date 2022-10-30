@@ -59,6 +59,7 @@ public class TessellationRingCreator implements IMeshCreator {
 	}
 	
 	private void solidify() {
+		Mesh3DUtil.flipDirection(mesh);
 		new SolidifyModifier(thickness).modify(mesh);
 	}
 	
