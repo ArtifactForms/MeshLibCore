@@ -49,9 +49,9 @@ public class SegmentedCylinderCreator implements IMeshCreator {
 	}
 
 	private void createVertices() {
-		float radiusStep = (topRadius - bottomRadius) / heightSegments;
-		float angle = Mathf.TWO_PI / rotationSegments;
-		float segmentHeight = height / heightSegments;
+		float radiusStep = (topRadius - bottomRadius) / (float) heightSegments;
+		float angle = Mathf.TWO_PI / (float) rotationSegments;
+		float segmentHeight = height / (float) heightSegments;
 		for (int i = 0; i <= heightSegments; i++) {
 			for (int j = 0; j < rotationSegments; j++) {
 				float x = (topRadius - (i * radiusStep)) * (Mathf.cos(j * angle));
