@@ -15,6 +15,7 @@ public class RingCageCreator implements IMeshCreator {
 
 	private static final float[] SEGMENT_HEIGHTS = new float[] { 0f, 0.01f, 0.51f, 0.52f };
 
+	private int subdivisions;
 	private int segments;
 	private int vertices;
 	private float outerRadius;
@@ -22,7 +23,7 @@ public class RingCageCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public RingCageCreator() {
-		super();
+		this.subdivisions = 2;
 		this.segments = 3;
 		this.vertices = 16;
 		this.outerRadius = 1f;
@@ -74,8 +75,16 @@ public class RingCageCreator implements IMeshCreator {
 		createHoles();
 		new SolidifyModifier(outerRadius - innerRadius).modify(mesh);
 		mesh.translateY(-0.26f);
-		new CatmullClarkModifier(2).modify(mesh);
+		new CatmullClarkModifier(subdivisions).modify(mesh);
 		return mesh;
+	}
+
+	public int getSubdivisions() {
+		return subdivisions;
+	}
+
+	public void setSubdivisions(int subdivisions) {
+		this.subdivisions = subdivisions;
 	}
 
 }
