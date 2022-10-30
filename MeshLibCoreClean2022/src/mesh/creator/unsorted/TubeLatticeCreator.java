@@ -2,8 +2,10 @@ package mesh.creator.unsorted;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.HolesModifier;
 import mesh.modifier.SolidifyModifier;
+import mesh.operators.ExtrudeIndividualFacesOperator;
+import mesh.wip.FaceSelection;
+import mesh.wip.Mesh3DUtil;
 
 public class TubeLatticeCreator implements IMeshCreator {
 
@@ -13,6 +15,7 @@ public class TubeLatticeCreator implements IMeshCreator {
 	private float innerRadius;
 	private float height;
 	private float scaleExtrude;
+	private float thickness;
 	private Mesh3D mesh;
 
 	public TubeLatticeCreator() {
@@ -23,10 +26,11 @@ public class TubeLatticeCreator implements IMeshCreator {
 		this.innerRadius = 0.9f;
 		this.height = 2f;
 		this.scaleExtrude = 0.5f;
+		this.thickness = 0.1f;
 	}
 
-	public TubeLatticeCreator(int segments, int vertices, float outerRadius,
-			float innerRadius, float height, float scaleExtrude, Mesh3D mesh) {
+	public TubeLatticeCreator(int segments, int vertices, float outerRadius, float innerRadius, float height,
+			float scaleExtrude, Mesh3D mesh) {
 		super();
 		this.segments = segments;
 		this.vertices = vertices;
@@ -39,11 +43,36 @@ public class TubeLatticeCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		mesh = new SegmentedTubeCreator(segments, vertices, outerRadius,
-				outerRadius, height).create();
-		new HolesModifier(scaleExtrude).modify(mesh);
-		new SolidifyModifier(outerRadius - innerRadius).modify(mesh);
+		SegmentedTubeCreator creator = new SegmentedTubeCreator();
+		creator.setHeight(height);
+		creator.setInnerRadius(innerRadius);
+		creator.setOuterRadius(outerRadius);
+		creator.setSegments(segments);
+		creator.setVertices(vertices);
+
+		mesh = creator.create();
+
+		FaceSelection selection = new FaceSelection(mesh);
+		selection.selectTopFaces();
+		selection.selectBottomFaces();
+		selection.invert();
+
+		ExtrudeIndividualFacesOperator operator = new ExtrudeIndividualFacesOperator(mesh);
+		operator.setScale(scaleExtrude);
+		operator.setRemoveFace(true);
+		operator.apply(selection.getFaces());
+
+		Mesh3DUtil.flipDirection(mesh);
+		new SolidifyModifier(thickness).modify(mesh);
 		return mesh;
+	}
+
+	public float getThickness() {
+		return thickness;
+	}
+
+	public void setThickness(float thickness) {
+		this.thickness = thickness;
 	}
 
 	public int getSegments() {
