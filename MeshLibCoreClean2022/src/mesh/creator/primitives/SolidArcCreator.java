@@ -4,7 +4,7 @@ import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
-public class SolidArc implements IMeshCreator {
+public class SolidArcCreator implements IMeshCreator {
 	
 	private int index;
 	private int vertices;
@@ -20,7 +20,7 @@ public class SolidArc implements IMeshCreator {
 	private Mesh3D outerArc;
 	private Mesh3D innerArc;
 	
-	public SolidArc() {
+	public SolidArcCreator() {
 		vertices = 17;
 		angle = Mathf.HALF_PI;
 		outerRadius = 3;
