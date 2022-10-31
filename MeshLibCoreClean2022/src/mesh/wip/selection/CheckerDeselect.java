@@ -34,6 +34,9 @@ public class CheckerDeselect {
 	}
 	
 	public void select(Face3D face, boolean select) {
+		if (face == null)
+			return;
+		
 		if (processed.contains(face))
 			return;
 		
