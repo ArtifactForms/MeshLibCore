@@ -13,14 +13,12 @@ public class DoubleConeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public DoubleConeCreator() {
-		super();
 		this.vertices = 32;
 		this.radius = 1f;
 		this.height = 2f;
 	}
 
 	public DoubleConeCreator(int vertices, float radius, float height) {
-		super();
 		this.vertices = vertices;
 		this.radius = radius;
 		this.height = height;
