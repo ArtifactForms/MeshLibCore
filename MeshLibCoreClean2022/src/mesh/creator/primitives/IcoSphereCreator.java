@@ -3,7 +3,7 @@ package mesh.creator.primitives;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.platonic.IcosahedronCreator;
-import mesh.modifier.subdivision.OneToFourTriangleSplitModifier;
+import mesh.modifier.subdivision.PlanarMidEdgeModifier;
 import mesh.wip.Mesh3DUtil;
 
 public class IcoSphereCreator implements IMeshCreator {
@@ -24,10 +24,7 @@ public class IcoSphereCreator implements IMeshCreator {
 	@Override
 	public Mesh3D create() {
 		Mesh3D mesh = new IcosahedronCreator().create();
-		OneToFourTriangleSplitModifier modifier = new OneToFourTriangleSplitModifier();
-		for (int i = 0; i < subdivisions; i++) {
-			modifier.modify(mesh);
-		}
+		new PlanarMidEdgeModifier(subdivisions).modify(mesh);
 		Mesh3DUtil.pushToSphere(mesh, radius);
 		return mesh;
 	}
