@@ -2,7 +2,6 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.wip.Mesh3DUtil;
 
 public class BoxCreator implements IMeshCreator {
 
@@ -25,7 +24,7 @@ public class BoxCreator implements IMeshCreator {
 	@Override
 	public Mesh3D create() {
 		Mesh3D mesh = new CubeCreator(0.5f).create();
-		Mesh3DUtil.scale(mesh, width, height, depth);
+		mesh.scale(width, height, depth);
 		return mesh;
 	}
 
