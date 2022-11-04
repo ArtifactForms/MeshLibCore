@@ -108,8 +108,8 @@ public class HelixCreator implements IMeshCreator {
 		mesh.add(f0);
 		mesh.add(f1);
 
-		Mesh3DUtil.tessellateByCenter(mesh, f0);
-		Mesh3DUtil.tessellateByCenter(mesh, f1);
+		Mesh3DUtil.centerSplit(mesh, f0);
+		Mesh3DUtil.centerSplit(mesh, f1);
 
 		return mesh;
 	}
