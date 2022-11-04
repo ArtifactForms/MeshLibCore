@@ -6,7 +6,7 @@ import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.HolesModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
-import mesh.modifier.subdivision.TessellationFaceCenterModifier;
+import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import mesh.wip.Mesh3DUtil;
 
 public class TriangulatedSphereLatticeCreator implements IMeshCreator {
@@ -28,7 +28,7 @@ public class TriangulatedSphereLatticeCreator implements IMeshCreator {
 	private void tessellate() {
 		for (int i = 0; i < tessellations; i++)
 			new PlanarMidEdgeCenterModifier().modify(mesh);
-		new TessellationFaceCenterModifier().modify(mesh);
+		new PlanarVertexCenterModifier().modify(mesh);
 	}
 	
 	private void pushToSphere() {

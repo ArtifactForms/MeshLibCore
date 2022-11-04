@@ -7,7 +7,7 @@ import mesh.creator.primitives.CircleCreator;
 import mesh.modifier.HolesModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
-import mesh.modifier.subdivision.TessellationFaceCenterModifier;
+import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import mesh.wip.Mesh3DUtil;
 
 public class TessellationRingCreator implements IMeshCreator {
@@ -50,7 +50,7 @@ public class TessellationRingCreator implements IMeshCreator {
 	}
 	
 	private void tessellate() {		
-		new TessellationFaceCenterModifier().modify(mesh);
+		new PlanarVertexCenterModifier().modify(mesh);
 		new PlanarMidEdgeCenterModifier().modify(mesh);
 	}
 	
