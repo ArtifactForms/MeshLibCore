@@ -1,7 +1,7 @@
 package mesh.modifier;
 
 import mesh.Mesh3D;
-import mesh.math.Bounds3;
+import mesh.util.Bounds3;
 
 public class FitToAABBModifier implements IMeshModifier {
 	
