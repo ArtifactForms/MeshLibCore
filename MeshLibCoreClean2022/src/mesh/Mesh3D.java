@@ -8,7 +8,7 @@ import java.util.List;
 import math.Mathf;
 import math.Matrix3f;
 import math.Vector3f;
-import mesh.math.Bounds3;
+import mesh.util.Bounds3;
 import mesh.wip.Mesh3DUtil;
 
 public class Mesh3D {

@@ -1,4 +1,4 @@
-package mesh.wip.selection;
+package mesh.selection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
