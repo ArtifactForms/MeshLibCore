@@ -28,7 +28,7 @@ public class FromObjectCreator implements IMeshCreator {
 		File file = new File(path);
 		SimpleObjectReader in = new SimpleObjectReader();
 		Mesh3D mesh = in.read(file);
-		Mesh3DUtil.scale(mesh, scale);
+		mesh.scale(scale);
 		if (flipDirection)
 			Mesh3DUtil.flipDirection(mesh);
 		return mesh;

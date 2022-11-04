@@ -38,7 +38,7 @@ public class QuadSphereCreator implements IMeshCreator {
 	}
 
 	private void scale() {
-		Mesh3DUtil.scale(mesh, radius);
+		mesh.scale(radius);
 	}
 
 	private void pushToSphere() {
