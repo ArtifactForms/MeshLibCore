@@ -1,9 +1,11 @@
 package mesh.modifier.subdivision;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import math.GeometryUtil;
 import math.Vector3f;
+import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
@@ -49,6 +51,7 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 	private int iterations;
 	private Mesh3D mesh;
 	private ArrayList<Face3D> newFaces = new ArrayList<>();
+	private HashMap<Edge3D, Integer> edgePointIndices;
 	
 	public PlanarMidEdgeCenterModifier() {
 		this(1);
@@ -56,6 +59,7 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 	
 	public PlanarMidEdgeCenterModifier(int iterations) {
 		this.iterations = iterations;
+		this.edgePointIndices = new HashMap<Edge3D, Integer>();
 	}
 	
 	@Override
@@ -81,15 +85,23 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 
 			// Create edge points
 			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v0 = mesh.vertices.get(f.indices[i % n]);
-				Vector3f v1 = mesh.vertices.get(f.indices[(i + 1) % n]);
+				int from = f.indices[i % n];
+				int to = f.indices[((i + 1) % n)];
+				
+				Vector3f v0 = mesh.vertices.get(from);
+				Vector3f v1 = mesh.vertices.get(to);
 				Vector3f ep = GeometryUtil.getMidpoint(v0, v1);
-				int idx = mesh.vertices.indexOf(ep);
-				if (idx > -1) {
+				
+				Edge3D edge = new Edge3D(from, to);
+				Integer idx = edgePointIndices.get(edge);
+				
+//				int idx = mesh.vertices.indexOf(ep);
+				if (idx != null) {
 					idxs[i + 1] = idx;
 				} else {
 					mesh.vertices.add(ep);
 					idxs[i + 1] = nextIndex;
+					edgePointIndices.put(edge, idx);
 					nextIndex++;
 				}
 			}
