@@ -40,10 +40,6 @@ public class Mesh3DUtil {
 		return mesh;
 	}
 
-	// CLEAN UP -> Move to modifier class
-	// TODO Add round option
-
-	
 	public static void flipDirection(Mesh3D mesh, Face3D face) {
 		int[] copy = Arrays.copyOf(face.indices, face.indices.length);
 		for (int i = 0; i < face.indices.length; i++) {
