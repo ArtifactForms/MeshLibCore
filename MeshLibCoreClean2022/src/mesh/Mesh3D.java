@@ -9,7 +9,6 @@ import math.Mathf;
 import math.Matrix3f;
 import math.Vector3f;
 import mesh.util.Bounds3;
-import mesh.util.Mesh3DUtil;
 
 public class Mesh3D {
 
@@ -176,21 +175,21 @@ public class Mesh3D {
 		Mesh3D copy = new Mesh3D();
 		List<Vector3f> vertices = copy.vertices;
 		List<Face3D> faces = copy.faces;
-		
+
 		for (Vector3f v : this.vertices)
 			vertices.add(new Vector3f(v).multLocal(scale));
-		
+
 		for (Face3D f : this.faces)
 			faces.add(new Face3D(f));
-		
+
 		return copy;
 	}
 
 	public Mesh3D append(Mesh3D... meshes) {
 		Mesh3D result = new Mesh3D();
 
-		result = Mesh3DUtil.append(meshes);
-		result = Mesh3DUtil.append(this, result);
+		result = appendUtil(meshes);
+		result = appendUtil(this, result);
 
 		vertices.clear();
 		vertices.addAll(result.vertices);
@@ -199,6 +198,28 @@ public class Mesh3D {
 		faces.addAll(result.faces);
 
 		return this;
+	}
+
+	private Mesh3D appendUtil(Mesh3D... meshes) {
+		// FIXME copy vertices and faces
+		int n = 0;
+		Mesh3D mesh = new Mesh3D();
+		List<Vector3f> vertices = mesh.vertices;
+		List<Face3D> faces = mesh.faces;
+
+		for (int i = 0; i < meshes.length; i++) {
+			Mesh3D m = meshes[i];
+			vertices.addAll(m.vertices);
+			faces.addAll(meshes[i].faces);
+			for (Face3D f : meshes[i].faces) {
+				for (int j = 0; j < f.indices.length; j++) {
+					f.indices[j] += n;
+				}
+			}
+			n += m.getVertexCount();
+		}
+
+		return mesh;
 	}
 
 	public Collection<Face3D> getSelection(String tag) {

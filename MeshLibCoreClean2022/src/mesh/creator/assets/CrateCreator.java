@@ -158,7 +158,7 @@ public class CrateCreator implements IMeshCreator {
 			Mesh3D mesh2 = mesh1.copy();
 			mesh2.rotateY(Mathf.PI);
 
-			mesh = Mesh3DUtil.append(mesh, mesh1, mesh2);
+			mesh.append(mesh1, mesh2);
 		}
 
 		return mesh;

@@ -2,7 +2,6 @@ package mesh.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -308,32 +307,6 @@ public class Mesh3DUtil {
 
 		mesh.faces.clear();
 		mesh.faces.addAll(toAdd);
-	}
-
-	public static Mesh3D append(Collection<Mesh3D> meshes) {
-		return append(meshes.toArray(new Mesh3D[meshes.size()]));
-	}
-
-	public static Mesh3D append(Mesh3D... meshes) {
-		// FIXME copy vertices and faces
-		int n = 0;
-		Mesh3D mesh = new Mesh3D();
-		List<Vector3f> vertices = mesh.vertices;
-		List<Face3D> faces = mesh.faces;
-
-		for (int i = 0; i < meshes.length; i++) {
-			Mesh3D m = meshes[i];
-			vertices.addAll(m.vertices);
-			faces.addAll(meshes[i].faces);
-			for (Face3D f : meshes[i].faces) {
-				for (int j = 0; j < f.indices.length; j++) {
-					f.indices[j] += n;
-				}
-			}
-			n += m.getVertexCount();
-		}
-		
-		return mesh;
 	}
 
 }
