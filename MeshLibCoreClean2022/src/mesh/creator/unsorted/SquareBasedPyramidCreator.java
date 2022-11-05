@@ -10,13 +10,11 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public SquareBasedPyramidCreator() {
-		super();
 		this.size = 1f;
 		this.height = 2f;
 	}
 	
 	public SquareBasedPyramidCreator(float size, float height) {
-		super();
 		this.size = size;
 		this.height = height;
 	}
