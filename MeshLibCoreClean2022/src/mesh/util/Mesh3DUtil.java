@@ -2,10 +2,8 @@ package mesh.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
-import math.GeometryUtil;
 import math.Mathf;
 import math.Matrix3f;
 import math.Vector3f;
@@ -217,63 +215,6 @@ public class Mesh3DUtil {
 		for (int i = 0; i < n; i++) {
 			f.indices[i] = idx + i;
 		}
-	}
-
-	/**
-	 * TODO Check difference between Planar Mid Edge and Linear!
-	 * 
-	 * @param mesh
-	 */
-	public static void subdivide(Mesh3D mesh) {
-		List<Face3D> toAdd = new ArrayList<>();
-		HashMap<Vector3f, Integer> map = new HashMap<>();
-		int nextIndex = mesh.vertices.size();
-
-		for (Face3D f : mesh.faces) {
-			Vector3f v0 = mesh.vertices.get(f.indices[0]);
-			Vector3f v1 = mesh.vertices.get(f.indices[1]);
-			Vector3f v2 = mesh.vertices.get(f.indices[2]);
-			Vector3f v3 = mesh.vertices.get(f.indices[3]);
-
-			Vector3f cp = v0.add(v1).add(v2).add(v3).mult(0.25f);
-
-			Vector3f v4 = GeometryUtil.getMidpoint(v0, v1);
-			Vector3f v5 = GeometryUtil.getMidpoint(v1, v2);
-			Vector3f v6 = GeometryUtil.getMidpoint(v2, v3);
-			Vector3f v7 = GeometryUtil.getMidpoint(v3, v0);
-
-			int[] idxs = new int[5];
-			Vector3f[] ePts = new Vector3f[] { v4, v5, v6, v7 };
-
-			mesh.vertices.add(cp);
-			idxs[0] = nextIndex;
-			nextIndex++;
-
-			for (int i = 0; i < ePts.length; i++) {
-				Integer idx = map.get(ePts[i]);
-				if (idx == null) {
-					map.put(ePts[i], nextIndex);
-					mesh.vertices.add(ePts[i]);
-					idxs[i + 1] = nextIndex;
-					nextIndex++;
-				} else {
-					idxs[i + 1] = idx;
-				}
-			}
-
-			Face3D f0 = new Face3D(f.indices[0], idxs[1], idxs[0], idxs[4]);
-			Face3D f1 = new Face3D(idxs[1], f.indices[1], idxs[2], idxs[0]);
-			Face3D f2 = new Face3D(idxs[0], idxs[2], f.indices[2], idxs[3]);
-			Face3D f3 = new Face3D(idxs[4], idxs[0], idxs[3], f.indices[3]);
-
-			toAdd.add(f0);
-			toAdd.add(f1);
-			toAdd.add(f2);
-			toAdd.add(f3);
-		}
-
-		mesh.faces.clear();
-		mesh.faces.addAll(toAdd);
 	}
 
 }
