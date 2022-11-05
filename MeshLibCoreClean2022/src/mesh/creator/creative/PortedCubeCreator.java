@@ -79,7 +79,7 @@ public class PortedCubeCreator implements IMeshCreator {
 	}
 
 	private void removeDoubles() {
-		Mesh3DUtil.removeDoubles(mesh);
+		mesh.removeDoubles();
 	}
 
 	private void solidify() {

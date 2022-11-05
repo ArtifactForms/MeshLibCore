@@ -46,7 +46,7 @@ public class LeonardoCubeCreator implements IMeshCreator {
 		for (Vector3f v : mesh.vertices)
 			v.roundLocalDecimalPlaces(2);
 
-		Mesh3DUtil.removeDoubles(mesh);
+		mesh.removeDoubles();
 
 		FaceSelection selection = new FaceSelection(mesh);
 		selection.selectDoubles();

@@ -43,37 +43,7 @@ public class Mesh3DUtil {
 
 	// CLEAN UP -> Move to modifier class
 	// TODO Add round option
-	public static boolean removeDoubles(Mesh3D mesh) {
-		int countBefore = mesh.getVertexCount();
-		Mesh3D m = new Mesh3D();
-		HashSet<Vector3f> vertexSet = new HashSet<Vector3f>();
 
-		for (Face3D f : mesh.faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = mesh.getVertexAt(f.indices[i]);
-				vertexSet.add(v);
-			}
-		}
-
-		m.vertices.addAll(vertexSet);
-
-		for (Face3D f : mesh.faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = mesh.getVertexAt(f.indices[i]);
-				int index = m.vertices.indexOf(v);
-				f.indices[i] = index;
-			}
-			m.add(f);
-		}
-
-		mesh.vertices.clear();
-		mesh.faces.clear();
-
-		mesh.vertices.addAll(m.vertices);
-		mesh.faces.addAll(m.faces);
-
-		return countBefore > mesh.getVertexCount();
-	}
 	
 	public static void flipDirection(Mesh3D mesh, Face3D face) {
 		int[] copy = Arrays.copyOf(face.indices, face.indices.length);
