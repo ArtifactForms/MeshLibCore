@@ -4,7 +4,6 @@ import java.util.HashSet;
 
 import mesh.Face3D;
 import mesh.util.TraverseHelper;
-import mesh.wip.FaceSelection;
 
 public class LoopSelect {
 

@@ -7,7 +7,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.conway.ConwayAmboModifier;
-import mesh.wip.FaceSelection;
+import mesh.selection.FaceSelection;
 import mesh.wip.Mesh3DUtil;
 
 public class CrocodileModifier implements IMeshModifier {

@@ -12,7 +12,7 @@ import mesh.creator.primitives.CubeCreator;
 import mesh.creator.unsorted.SegmentedCubeCreator;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
-import mesh.wip.FaceSelection;
+import mesh.selection.FaceSelection;
 import mesh.wip.Mesh3DUtil;
 
 public class PortedCubeCreator implements IMeshCreator {

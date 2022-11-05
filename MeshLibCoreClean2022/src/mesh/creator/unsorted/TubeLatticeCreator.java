@@ -4,7 +4,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.SolidifyModifier;
 import mesh.operators.ExtrudeIndividualFacesOperator;
-import mesh.wip.FaceSelection;
+import mesh.selection.FaceSelection;
 import mesh.wip.Mesh3DUtil;
 
 public class TubeLatticeCreator implements IMeshCreator {

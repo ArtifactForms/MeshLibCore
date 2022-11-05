@@ -7,7 +7,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.subdivision.CatmullClarkModifier;
-import mesh.wip.FaceSelection;
+import mesh.selection.FaceSelection;
 import mesh.wip.Mesh3DUtil;
 
 public class LeonardoCubeCreator implements IMeshCreator {
