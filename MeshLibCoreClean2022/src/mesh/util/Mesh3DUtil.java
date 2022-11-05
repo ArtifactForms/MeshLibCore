@@ -43,22 +43,6 @@ public class Mesh3DUtil {
 	}
 
 	// CLEAN UP -> Move to modifier class
-	public static Mesh3D scaleCopy(Mesh3D mesh, Vector3f scale) {
-		Mesh3D copy = new Mesh3D();
-		List<Vector3f> vertices = copy.vertices;
-		List<Face3D> faces = copy.faces;
-		// Copy and translate vertices
-		for (Vector3f v : mesh.vertices) {
-			vertices.add(new Vector3f(v).multLocal(scale));
-		}
-		// Copy faces
-		for (Face3D f : mesh.faces) {
-			faces.add(new Face3D(f));
-		}
-		return copy;
-	}
-
-	// CLEAN UP -> Move to modifier class
 	// TODO Add round option
 	public static boolean removeDoubles(Mesh3D mesh) {
 		int countBefore = mesh.getVertexCount();

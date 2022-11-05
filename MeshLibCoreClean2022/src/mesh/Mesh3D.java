@@ -172,6 +172,20 @@ public class Mesh3D {
 		return copy;
 	}
 
+	public Mesh3D scaledCopy(Vector3f scale) {
+		Mesh3D copy = new Mesh3D();
+		List<Vector3f> vertices = copy.vertices;
+		List<Face3D> faces = copy.faces;
+		
+		for (Vector3f v : this.vertices)
+			vertices.add(new Vector3f(v).multLocal(scale));
+		
+		for (Face3D f : this.faces)
+			faces.add(new Face3D(f));
+		
+		return copy;
+	}
+
 	public Mesh3D append(Mesh3D... meshes) {
 		Mesh3D result = new Mesh3D();
 
