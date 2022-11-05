@@ -92,8 +92,6 @@ public class Mesh3DUtil {
 		return countBefore > mesh.getVertexCount();
 	}
 
-	// TODO implement sort method ???
-	// http://stackoverflow.com/questions/6989100/sort-points-in-clockwise-order
 	public static void flipDirection(Mesh3D mesh, Face3D face) {
 		int[] copy = Arrays.copyOf(face.indices, face.indices.length);
 		for (int i = 0; i < face.indices.length; i++) {
@@ -108,7 +106,6 @@ public class Mesh3DUtil {
 	}
 
 	public static Vector3f calculateFaceNormal(Mesh3D mesh, Face3D face) {
-		// https://www.opengl.org/wiki/Calculating_a_Surface_Normal
 		Vector3f normal = new Vector3f();
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f current = mesh.vertices.get(face.indices[i]);
@@ -203,10 +200,6 @@ public class Mesh3DUtil {
 		int idx2 = mesh.vertices.indexOf(v2);
 		int idx3 = mesh.vertices.indexOf(v3);
 		Face3D face = new Face3D(idx0, idx1, idx3, idx2);
-		// FIXME sort points in clockwise order
-		// SortFacepoints sort = new SortFacepoints();
-		// sort.sort(mesh, face);
-		//
 		mesh.faces.add(face);
 	}
 
@@ -222,7 +215,6 @@ public class Mesh3DUtil {
 	}
 
 	public static void extrudeFace(Mesh3D mesh, Face3D face, float scale, float amount) {
-		// FIXED: Works now for faces with vertices.length > 4 too
 		int n = face.indices.length;
 		int idx = mesh.vertices.size();
 		Vector3f normal = calculateFaceNormal(mesh, face);
@@ -255,7 +247,6 @@ public class Mesh3DUtil {
 	}
 
 	public static void insetFace(Mesh3D mesh, Face3D f, float thickness) {
-		// FIXED: Works now for faces with vertices.length > 4 too
 		int n = f.indices.length;
 		int idx = mesh.vertices.size();
 
