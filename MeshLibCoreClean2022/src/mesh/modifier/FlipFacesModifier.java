@@ -1,7 +1,7 @@
 package mesh.modifier;
 
 import mesh.Mesh3D;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class FlipFacesModifier implements IMeshModifier {
 

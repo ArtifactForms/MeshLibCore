@@ -7,7 +7,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 /**
  * Divides the face (polygon) from its center to the middle of each edge. This

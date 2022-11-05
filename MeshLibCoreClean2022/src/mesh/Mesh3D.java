@@ -9,7 +9,7 @@ import math.Mathf;
 import math.Matrix3f;
 import math.Vector3f;
 import mesh.util.Bounds3;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class Mesh3D {
 

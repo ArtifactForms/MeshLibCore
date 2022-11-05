@@ -8,7 +8,7 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.TorusCreator;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class TorusCageCreator implements IMeshCreator {
 

@@ -8,7 +8,7 @@ import mesh.modifier.HolesModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class TessellationRingCreator implements IMeshCreator {
 

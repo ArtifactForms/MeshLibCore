@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import math.Mathf;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class BevelFacesModifier implements IMeshModifier {
 

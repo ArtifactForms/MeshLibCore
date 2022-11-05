@@ -3,7 +3,7 @@ package mesh.selection;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class SelectFaceRuleSimilarNormal implements IFaceSelectionRule {
 

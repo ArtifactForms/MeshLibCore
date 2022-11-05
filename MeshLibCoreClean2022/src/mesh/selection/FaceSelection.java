@@ -8,8 +8,8 @@ import math.Mathf;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.util.Mesh3DUtil;
 import mesh.util.TraverseHelper;
-import mesh.wip.Mesh3DUtil;
 
 public class FaceSelection {
 

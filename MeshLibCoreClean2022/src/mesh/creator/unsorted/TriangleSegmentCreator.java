@@ -8,7 +8,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class TriangleSegmentCreator implements IMeshCreator {
 

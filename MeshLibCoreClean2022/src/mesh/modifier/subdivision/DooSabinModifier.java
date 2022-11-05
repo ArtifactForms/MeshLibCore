@@ -12,8 +12,8 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.Pair;
 import mesh.modifier.IMeshModifier;
+import mesh.util.Mesh3DUtil;
 import mesh.util.TraverseHelper;
-import mesh.wip.Mesh3DUtil;
 
 /**
  * An implementation of the Doo-Sabin subdivision surface. This type of

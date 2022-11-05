@@ -7,7 +7,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.GridCreator;
 import mesh.modifier.SolidifyModifier;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class LatticeCreator implements IMeshCreator {
 

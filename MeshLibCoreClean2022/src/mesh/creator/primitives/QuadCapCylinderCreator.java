@@ -8,7 +8,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.SpherifyModifier;
-import mesh.wip.Mesh3DUtil;
+import mesh.util.Mesh3DUtil;
 
 public class QuadCapCylinderCreator implements IMeshCreator {
 
