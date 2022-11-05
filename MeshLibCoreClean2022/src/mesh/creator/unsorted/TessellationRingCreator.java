@@ -46,7 +46,7 @@ public class TessellationRingCreator implements IMeshCreator {
 		bottomCircle = new CircleCreator(vertices, bottomRadius).create();
 		topCircle.translateY(-0.25f);
 		bottomCircle.translateY(0.25f);
-		mesh = Mesh3DUtil.append(topCircle, bottomCircle);
+		mesh.append(topCircle, bottomCircle);
 	}
 	
 	private void tessellate() {		
@@ -65,12 +65,17 @@ public class TessellationRingCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
+		initializeMesh();
 		createVertices();
 		createFaces();
 		tessellate();
 		createHoles();
 		solidify();
 		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 
 	public int getVertices() {

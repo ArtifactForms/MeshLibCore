@@ -48,7 +48,7 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	
 	private void append(List<Mesh3D> meshes) {
 		for (Mesh3D mesh : meshes) {
-			this.mesh = Mesh3DUtil.append(this.mesh, mesh);
+			this.mesh.append(mesh);
 		}
 	}
 

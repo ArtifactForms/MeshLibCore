@@ -77,7 +77,7 @@ public class RingCageCreator implements IMeshCreator {
 
 	private void append() {
 		for (Mesh3D mesh : circles) {
-			this.mesh = Mesh3DUtil.append(this.mesh, mesh);
+			this.mesh.append(mesh);
 		}
 	}
 
