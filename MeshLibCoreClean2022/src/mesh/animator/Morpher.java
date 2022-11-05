@@ -85,6 +85,14 @@ public class Morpher extends AbstractAnimator {
 		count = 0;
 	}
 	
+	public void toggle() {
+		Mesh3D tmp = source;
+		source = target;
+		target = tmp;
+		mesh = source.copy();
+		calculateDistanceValues();
+	}
+	
 	public Mesh3D getMesh() {
 		return mesh;
 	}
@@ -101,6 +109,7 @@ public class Morpher extends AbstractAnimator {
 	public void restore() {
 		this.mesh = source.copy();
 		calculateDistanceValues();
+		setFinished(false);
 	}
 
 }
