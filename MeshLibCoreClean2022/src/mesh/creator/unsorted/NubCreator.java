@@ -16,7 +16,7 @@ public class NubCreator implements IMeshCreator {
 	private float minorRadius = 0.7f;
 	private float segmentHeight = 0.5f;
 	private Mesh3D mesh;
-	
+
 	private void createQuadFaces() {
 		for (int i = 0; i <= (heightSegments * 2); i++) {
 			for (int j = 0; j < rotationSegments; j++) {
@@ -24,7 +24,7 @@ public class NubCreator implements IMeshCreator {
 			}
 		}
 	}
-	
+
 	private void addFace(int i, int j) {
 		int idx0 = Mathf.toOneDimensionalIndex(i, j, rotationSegments);
 		int idx1 = Mathf.toOneDimensionalIndex(i + 1, j, rotationSegments);
@@ -36,7 +36,7 @@ public class NubCreator implements IMeshCreator {
 	@Override
 	public Mesh3D create() {
 		mesh = new Mesh3D();
-		
+
 		int n = heightSegments;
 		for (int i = 0; i <= n; i++) {
 			Mesh3D circle0 = new CircleCreator(rotationSegments, radius).create();
@@ -44,18 +44,18 @@ public class NubCreator implements IMeshCreator {
 			circle0.translateY(segmentHeight * i);
 			circle1.translateY(segmentHeight * i);
 			if (i % 2 == 0) {
-				mesh = Mesh3DUtil.append(mesh, circle1, circle0);
+				mesh.append(circle1, circle0);
 			} else {
-				mesh = Mesh3DUtil.append(mesh, circle0, circle1);
+				mesh.append(circle0, circle1);
 			}
 		}
-		
+
 		createQuadFaces();
 		capTop();
 		capBottom();
 		translate();
 		subdivide();
-		
+
 		return mesh;
 	}
 
@@ -66,7 +66,7 @@ public class NubCreator implements IMeshCreator {
 		}
 		mesh.addFace(indices);
 	}
-	
+
 	private void capBottom() {
 		int[] indices = new int[rotationSegments];
 		for (int i = 0; i < rotationSegments; i++) {
@@ -74,11 +74,11 @@ public class NubCreator implements IMeshCreator {
 		}
 		mesh.addFace(indices);
 	}
-	
+
 	private void translate() {
 		mesh.translateY(-(heightSegments * segmentHeight) * 0.5f);
 	}
-	
+
 	private void subdivide() {
 		new CatmullClarkModifier(subdivisions).modify(mesh);
 	}

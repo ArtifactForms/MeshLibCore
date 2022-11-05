@@ -30,7 +30,7 @@ public class SolidifyModifier implements IMeshModifier {
 		if (thickness == 0)
 			return mesh;
 		
-		Mesh3D m0 = null;
+		Mesh3D m0 = new Mesh3D();
 		Mesh3D copy = mesh.copy();
 
 		// Map vertices to face normals.
@@ -79,7 +79,7 @@ public class SolidifyModifier implements IMeshModifier {
 		}
 
 		// Combine meshes.
-		m0 = Mesh3DUtil.append(mesh, copy);
+		m0.append(mesh, copy);
 
 		// Move vertices along the vertex normals.
 		for (int i = 0; i < copy.vertices.size(); i++) {

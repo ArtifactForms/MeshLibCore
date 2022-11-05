@@ -48,7 +48,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 			for (int j = 0; j < cubes[0].length; j++) {
 				cubes[i][j] = new CubeCreator(jointSize).create();
 				cubes[i][j].translate(j * tileSizeX, i * tileSizeY, 0);
-				mesh = Mesh3DUtil.append(mesh, cubes[i][j]);
+				mesh.append(cubes[i][j]);
 			}
 		}
 

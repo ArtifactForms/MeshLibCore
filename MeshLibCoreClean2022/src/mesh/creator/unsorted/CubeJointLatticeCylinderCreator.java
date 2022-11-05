@@ -55,7 +55,7 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 				cubes[i][j] = new CubeCreator(jointSize).create();
 				cubes[i][j].rotateY(-angle);
 				cubes[i][j].translate(x, i * dy, y);
-				mesh = Mesh3DUtil.append(mesh, cubes[i][j]);
+				mesh.append(cubes[i][j]);
 				angle += step;
 			}
 			angle = 0;

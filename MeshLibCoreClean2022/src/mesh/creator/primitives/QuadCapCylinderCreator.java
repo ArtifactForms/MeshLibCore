@@ -103,7 +103,7 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 		new SpherifyModifier(radius).modify(grid);
 
 		flatten(grid, -height / 2f);
-		mesh = Mesh3DUtil.append(mesh, grid);
+		mesh.append(grid);
 		
 		int idx = ((capCols / 2) + 1) - (capCols % 2 == 1 ? 0 : 1);
 		for (int i = 0; i < gridTopBorderVertices.size(); i++) {
@@ -131,7 +131,7 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 		List<Mesh3D> meshes = new ArrayList<Mesh3D>();
 		
 		meshes.add(top);
-		mesh = Mesh3DUtil.append(mesh, top);
+		mesh.append(top);
 		
 		float segmentHeight = height / heightSegments;
 		for (int i = 0; i < heightSegments - 1; i++) {
@@ -139,11 +139,11 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 			Mesh3D circle = new CircleCreator(vertices, radius, segmentHeight + i * segmentHeight - height / 2f).create();
 			circle.rotateY(Mathf.HALF_PI + (capCols % 2 == 1 ? -a / 2f : 0));
 			meshes.add(circle);
-			mesh = Mesh3DUtil.append(mesh, circle);
+			mesh.append(circle);
 		}
 		
 		meshes.add(bottom);
-		mesh = Mesh3DUtil.append(mesh, bottom);
+		mesh.append(bottom);
 		
 		for (int j = 0; j < meshes.size() - 1; j++) {
 			Mesh3D mesh0 = meshes.get(j);
