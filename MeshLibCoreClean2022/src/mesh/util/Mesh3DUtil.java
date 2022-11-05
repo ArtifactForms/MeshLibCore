@@ -53,6 +53,7 @@ public class Mesh3DUtil {
 		}
 	}
 
+	// CLEAN UP -> Already contained in mesh class
 	public static Vector3f calculateFaceNormal(Mesh3D mesh, Face3D face) {
 		Vector3f normal = new Vector3f();
 		for (int i = 0; i < face.indices.length; i++) {
@@ -65,6 +66,7 @@ public class Mesh3DUtil {
 		return normal.normalize();
 	}
 
+	// CLEAN UP -> Already contained in mesh class
 	public static Vector3f calculateFaceCenter(Mesh3D mesh, Face3D face) {
 		Vector3f center = new Vector3f();
 		for (int i = 0; i < face.indices.length; i++) {
