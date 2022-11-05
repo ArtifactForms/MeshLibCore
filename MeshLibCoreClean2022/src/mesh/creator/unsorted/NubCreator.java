@@ -5,7 +5,6 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 import mesh.modifier.subdivision.CatmullClarkModifier;
-import mesh.util.Mesh3DUtil;
 
 public class NubCreator implements IMeshCreator {
 

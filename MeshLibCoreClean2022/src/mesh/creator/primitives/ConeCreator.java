@@ -5,7 +5,6 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
-import mesh.util.Mesh3DUtil;
 
 public class ConeCreator implements IMeshCreator {
 

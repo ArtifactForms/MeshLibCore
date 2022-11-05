@@ -5,9 +5,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
-import mesh.util.Mesh3DUtil;
 
 public class HelixCreator implements IMeshCreator {
 
