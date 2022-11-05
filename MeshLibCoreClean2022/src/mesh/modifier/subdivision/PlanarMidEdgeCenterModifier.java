@@ -87,15 +87,12 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 			for (int i = 0; i < f.indices.length; i++) {
 				int from = f.indices[i % n];
 				int to = f.indices[((i + 1) % n)];
-				
 				Vector3f v0 = mesh.vertices.get(from);
 				Vector3f v1 = mesh.vertices.get(to);
 				Vector3f ep = GeometryUtil.getMidpoint(v0, v1);
-				
 				Edge3D edge = new Edge3D(from, to);
 				Integer idx = edgePointIndices.get(edge);
 				
-//				int idx = mesh.vertices.indexOf(ep);
 				if (idx != null) {
 					idxs[i + 1] = idx;
 				} else {
