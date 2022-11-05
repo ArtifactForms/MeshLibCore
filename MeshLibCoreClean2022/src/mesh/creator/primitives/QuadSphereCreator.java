@@ -2,6 +2,7 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.util.Mesh3DUtil;
 
 public class QuadSphereCreator implements IMeshCreator {
@@ -33,8 +34,7 @@ public class QuadSphereCreator implements IMeshCreator {
 	}
 
 	private void subdivide() {
-		for (int i = 0; i < subdivisions; i++)
-			Mesh3DUtil.subdivide(mesh);
+		new PlanarMidEdgeCenterModifier(subdivisions).modify(mesh);
 	}
 
 	private void scale() {
