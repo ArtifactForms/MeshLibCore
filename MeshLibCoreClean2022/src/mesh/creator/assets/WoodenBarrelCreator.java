@@ -7,6 +7,7 @@ import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
 import mesh.creator.unsorted.SegmentedCylinderCreator;
+import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 
@@ -68,7 +69,7 @@ public class WoodenBarrelCreator implements IMeshCreator {
 			Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
 			Mesh3DUtil.extrudeFace(mesh, face, 1.0f, -inset);
 			Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
-			Mesh3DUtil.centerSplit(mesh, face);
+			new PlanarVertexCenterModifier().modify(mesh, face);
 		}
 
 		mesh.translateY(-height * 0.5f);

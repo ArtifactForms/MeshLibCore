@@ -5,6 +5,8 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
+import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import mesh.util.Mesh3DUtil;
 
 public class HelixCreator implements IMeshCreator {
@@ -108,8 +110,8 @@ public class HelixCreator implements IMeshCreator {
 		mesh.add(f0);
 		mesh.add(f1);
 
-		Mesh3DUtil.centerSplit(mesh, f0);
-		Mesh3DUtil.centerSplit(mesh, f1);
+		new PlanarVertexCenterModifier().modify(mesh, f0);
+		new PlanarVertexCenterModifier().modify(mesh, f1);
 
 		return mesh;
 	}

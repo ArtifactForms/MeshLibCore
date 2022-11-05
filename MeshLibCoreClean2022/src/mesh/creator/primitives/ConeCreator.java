@@ -4,6 +4,7 @@ import math.Mathf;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import mesh.util.Mesh3DUtil;
 
 public class ConeCreator implements IMeshCreator {
@@ -105,8 +106,7 @@ public class ConeCreator implements IMeshCreator {
 	private void splitFace(int faceIndex, float offsetY) {
 		int index = mesh.vertices.size();
 		Face3D face = mesh.getFaceAt(faceIndex);
-
-		Mesh3DUtil.centerSplit(mesh, face);
+		new PlanarVertexCenterModifier().modify(mesh, face);
 		mesh.getVertexAt(index).addLocal(0, offsetY, 0);
 	}
 

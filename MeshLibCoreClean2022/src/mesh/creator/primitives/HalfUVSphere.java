@@ -6,7 +6,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
-import mesh.util.Mesh3DUtil;
+import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 
 public class HalfUVSphere implements IMeshCreator {
 
@@ -78,7 +78,7 @@ public class HalfUVSphere implements IMeshCreator {
 
 		return mesh;
 	}
-	
+
 	private void createCap() {
 		switch (fillType) {
 		case NOTHING:
@@ -88,7 +88,7 @@ public class HalfUVSphere implements IMeshCreator {
 			break;
 		case TRIANGLE_FAN:
 			capNGon();
-			Mesh3DUtil.centerSplit(mesh, mesh.getFaceAt(mesh.faces.size() - 1));
+			new PlanarVertexCenterModifier().modify(mesh, mesh.getFaceAt(mesh.faces.size() - 1));
 			break;
 		}
 	}
@@ -100,11 +100,11 @@ public class HalfUVSphere implements IMeshCreator {
 		}
 		mesh.addFace(indices);
 	}
-	
+
 	private void translate() {
 		mesh.translateY(-radius / 2f);
 	}
-	
+
 	private void initializeMesh() {
 		mesh = new Mesh3D();
 	}

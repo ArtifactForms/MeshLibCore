@@ -91,7 +91,7 @@ public class Mesh3DUtil {
 
 		return countBefore > mesh.getVertexCount();
 	}
-
+	
 	public static void flipDirection(Mesh3D mesh, Face3D face) {
 		int[] copy = Arrays.copyOf(face.indices, face.indices.length);
 		for (int i = 0; i < face.indices.length; i++) {
@@ -177,21 +177,6 @@ public class Mesh3DUtil {
 			Vector3f v0 = v.mult(m);
 			v.set(v0.x, v0.y, v.z);
 		}
-	}
-	
-	public static List<Face3D> centerSplit(Mesh3D mesh, Face3D f) {
-		int index = mesh.getVertexCount();
-		int n = f.indices.length;
-		List<Face3D> toAdd = new ArrayList<Face3D>();
-		Vector3f center = Mesh3DUtil.calculateFaceCenter(mesh, f);
-		mesh.add(center);
-		for (int i = 0; i < f.indices.length; i++) {
-			Face3D f1 = new Face3D(f.indices[i % n], f.indices[(i + 1) % n], index);
-			toAdd.add(f1);
-		}
-		mesh.faces.addAll(toAdd);
-		mesh.faces.remove(f);
-		return toAdd;
 	}
 
 	public static void bridge(Mesh3D mesh, Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3) {
