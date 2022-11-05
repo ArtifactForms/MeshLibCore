@@ -29,7 +29,7 @@ public class PlanarVertexCenterModifier implements IMeshModifier {
 
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		return modify(mesh, mesh.faces);
+		return modify(mesh, mesh.getFaces());
 	}
 
 	public Mesh3D modify(Mesh3D mesh, Collection<Face3D> selection) {
