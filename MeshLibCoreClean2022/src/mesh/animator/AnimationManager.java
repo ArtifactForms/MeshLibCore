@@ -12,7 +12,6 @@ public class AnimationManager {
 	private List<IAnimator> animators;
 	
 	public AnimationManager() {
-		super();
 		animators = new ArrayList<IAnimator>();
 	}
 	
