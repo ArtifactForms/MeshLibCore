@@ -29,7 +29,7 @@ public class Mesh3DUtil {
 
 	// CLEAN UP -> Move to modifier class
 	public static Mesh3D pushToSphere(Mesh3D mesh, Face3D face, float radius) {
-		Vector3f origin = new Vector3f(calculateFaceCenter(mesh, face));
+		Vector3f origin = mesh.calculateFaceCenter(face);
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f v = mesh.getVertexAt(face.indices[i]);
 			Vector3f v0 = new Vector3f(v.x - origin.x, v.y - origin.y, v.z - origin.z).normalizeLocal();
@@ -50,28 +50,6 @@ public class Mesh3DUtil {
 			flipDirection(mesh, face);
 		}
 	}
-
-	// CLEAN UP -> Already contained in mesh class
-	public static Vector3f calculateFaceNormal(Mesh3D mesh, Face3D face) {
-		Vector3f normal = new Vector3f();
-		for (int i = 0; i < face.indices.length; i++) {
-			Vector3f current = mesh.vertices.get(face.indices[i]);
-			Vector3f next = mesh.vertices.get(face.indices[(i + 1) % face.indices.length]);
-			normal.x += (current.y - next.y) * (current.z + next.z);
-			normal.y += (current.z - next.z) * (current.x + next.x);
-			normal.z += (current.x - next.x) * (current.y + next.y);
-		}
-		return normal.normalize();
-	}
-
-	// CLEAN UP -> Already contained in mesh class
-	public static Vector3f calculateFaceCenter(Mesh3D mesh, Face3D face) {
-		Vector3f center = new Vector3f();
-		for (int i = 0; i < face.indices.length; i++) {
-			center.addLocal(mesh.vertices.get(face.indices[i]));
-		}
-		return center.divideLocal(face.indices.length);
-	}
 	
 	public static float perimeter(Mesh3D mesh, Face3D face) {
 		float perimeter = 0;
@@ -85,7 +63,7 @@ public class Mesh3DUtil {
 	}
 
 	public static void scaleFace(Mesh3D mesh, Face3D face, float scale) {
-		Vector3f center = calculateFaceCenter(mesh, face);
+		Vector3f center = mesh.calculateFaceCenter(face);
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f v = mesh.vertices.get(face.indices[i]);
 			v.subtractLocal(center).multLocal(scale).addLocal(center);
@@ -150,8 +128,8 @@ public class Mesh3DUtil {
 	public static void extrudeFace(Mesh3D mesh, Face3D face, float scale, float amount) {
 		int n = face.indices.length;
 		int idx = mesh.vertices.size();
-		Vector3f normal = calculateFaceNormal(mesh, face);
-		Vector3f center = calculateFaceCenter(mesh, face);
+		Vector3f normal = mesh.calculateFaceNormal(face);
+		Vector3f center = mesh.calculateFaceCenter(face);
 
 		normal.multLocal(amount);
 
