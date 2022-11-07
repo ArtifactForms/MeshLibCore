@@ -11,26 +11,9 @@ import mesh.Mesh3D;
 public class SimpleObjectReader {
 
 	private Mesh3D mesh;
-
-	protected void addVertex(String[] sArray) {
-		float x = Float.parseFloat(sArray[1]);
-		float y = Float.parseFloat(sArray[2]);
-		float z = Float.parseFloat(sArray[3]);
-		mesh.add(new Vector3f(x, -y, z));
-	}
-
-	protected void addFace(String[] sArray) {
-		Face3D f = null;
-		int[] iArray = new int[sArray.length - 1];
-		for (int i = 0; i < iArray.length; i++) {
-			iArray[i] = Integer.parseInt(sArray[i + 1]) - 1;
-		}
-		f = new Face3D(iArray);
-		mesh.add(f);
-	}
-
+	
 	public Mesh3D read(File file) {
-		mesh = new Mesh3D();
+		initializeMesh();
 
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(file));
@@ -53,5 +36,26 @@ public class SimpleObjectReader {
 		
 		return mesh;
 	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
 
+	protected void addVertex(String[] sArray) {
+		float x = Float.parseFloat(sArray[1]);
+		float y = Float.parseFloat(sArray[2]);
+		float z = Float.parseFloat(sArray[3]);
+		mesh.add(new Vector3f(x, -y, z));
+	}
+
+	protected void addFace(String[] sArray) {
+		Face3D f = null;
+		int[] iArray = new int[sArray.length - 1];
+		for (int i = 0; i < iArray.length; i++) {
+			iArray[i] = Integer.parseInt(sArray[i + 1]) - 1;
+		}
+		f = new Face3D(iArray);
+		mesh.add(f);
+	}
+	
 }
