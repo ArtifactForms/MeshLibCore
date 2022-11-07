@@ -14,7 +14,7 @@ public class SimpleObjectReader {
 	
 	public Mesh3D read(File file) {
 		initializeMesh();
-
+		
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(file));
 			String line = null;
@@ -49,7 +49,8 @@ public class SimpleObjectReader {
 		float x = Float.parseFloat(sArray[1]);
 		float y = Float.parseFloat(sArray[2]);
 		float z = Float.parseFloat(sArray[3]);
-		mesh.add(new Vector3f(x, y, z));
+		Vector3f v = new Vector3f(x, y, z);
+		mesh.add(v);
 	}
 
 	protected void addFace(String[] sArray) {

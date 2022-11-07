@@ -5,21 +5,18 @@ import java.io.File;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.io.SimpleObjectReader;
-import mesh.util.Mesh3DUtil;
 
 public class FromObjectCreator implements IMeshCreator {
 
 	private float scale;
-	private boolean flipDirection;
 	private String path;
 
 	public FromObjectCreator(String path) {
-		this(1.0f, true, path);
+		this(1.0f, path);
 	}
 
-	public FromObjectCreator(float scale, boolean flipDirection, String path) {
+	public FromObjectCreator(float scale, String path) {
 		this.scale = scale;
-		this.flipDirection = true;
 		this.path = path;
 	}
 
@@ -29,8 +26,6 @@ public class FromObjectCreator implements IMeshCreator {
 		SimpleObjectReader in = new SimpleObjectReader();
 		Mesh3D mesh = in.read(file);
 		mesh.scale(scale);
-		if (flipDirection)
-			Mesh3DUtil.flipDirection(mesh);
 		return mesh;
 	}
 
