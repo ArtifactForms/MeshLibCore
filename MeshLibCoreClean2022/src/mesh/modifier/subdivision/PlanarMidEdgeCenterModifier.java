@@ -9,7 +9,6 @@ import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
-import mesh.util.Mesh3DUtil;
 
 /**
  * Divides the face (polygon) from its center to the middle of each edge. This
@@ -78,7 +77,7 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 		for (Face3D f : mesh.faces) {
 			int n = f.indices.length;
 			int[] idxs = new int[f.indices.length + 1];
-			Vector3f center = Mesh3DUtil.calculateFaceCenter(mesh, f);
+			Vector3f center = mesh.calculateFaceCenter(f);
 			mesh.vertices.add(center);
 			idxs[0] = nextIndex;
 			nextIndex++;
