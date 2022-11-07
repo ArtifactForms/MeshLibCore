@@ -19,7 +19,6 @@ public class TessellationSphereCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public TessellationSphereCreator() {
-		super();
 		this.radius = 6f;
 		this.thickness = 0.1f;
 		this.scaleExtrude = 0.8f;

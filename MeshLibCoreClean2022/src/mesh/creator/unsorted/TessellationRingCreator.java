@@ -22,7 +22,6 @@ public class TessellationRingCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public TessellationRingCreator() {
-		super();
 		this.vertices = 12;
 		this.topRadius = 1f;
 		this.bottomRadius = 1f;

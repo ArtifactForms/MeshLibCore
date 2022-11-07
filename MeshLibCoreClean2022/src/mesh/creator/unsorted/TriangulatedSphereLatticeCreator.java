@@ -18,7 +18,6 @@ public class TriangulatedSphereLatticeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public TriangulatedSphereLatticeCreator() {
-		super();
 		this.tessellations = 3;
 		this.radius = 3f;
 		this.thickness = 0.05f;

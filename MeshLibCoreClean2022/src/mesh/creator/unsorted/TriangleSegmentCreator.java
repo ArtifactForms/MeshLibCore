@@ -18,7 +18,6 @@ public class TriangleSegmentCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public TriangleSegmentCreator() {
-		super();
 		this.size = 1f;
 		this.height = 0.125f;
 		this.scaleExtrude = 0.9f;
