@@ -3,7 +3,6 @@ package mesh.selection;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.util.Mesh3DUtil;
 
 public class SelectFaceRuleSimilarNormal implements IFaceSelectionRule {
 
@@ -17,7 +16,7 @@ public class SelectFaceRuleSimilarNormal implements IFaceSelectionRule {
 
 	@Override
 	public boolean isValid(Mesh3D mesh, Face3D face) {
-		Vector3f normal0 = Mesh3DUtil.calculateFaceNormal(mesh, face);
+		Vector3f normal0 = mesh.calculateFaceNormal(face);
 		float delta = normal0.distance(compare);
 		return delta <= threshold;
 	}
