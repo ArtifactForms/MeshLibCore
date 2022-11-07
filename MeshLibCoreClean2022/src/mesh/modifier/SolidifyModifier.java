@@ -16,12 +16,10 @@ public class SolidifyModifier implements IMeshModifier {
 	private float thickness;
 
 	public SolidifyModifier() {
-		super();
 		this.thickness = 0.01f;
 	}
 
 	public SolidifyModifier(float thickness) {
-		super();
 		this.thickness = thickness;
 	}
 
@@ -41,9 +39,7 @@ public class SolidifyModifier implements IMeshModifier {
 		
 		for (Face3D f : mesh.faces) {
 			int size = f.indices.length;
-			// Calculate the face normal.
-			Vector3f n = mesh.calculateFaceNormal(f);
-			// For each vertex of the face.
+			Vector3f normal = mesh.calculateFaceNormal(f);
 			for (int i = 0; i < f.indices.length; i++) {
 				Vector3f v = mesh.getVertexAt(f.indices[i]);
 				List<Vector3f> list = map.get(v);
@@ -51,7 +47,7 @@ public class SolidifyModifier implements IMeshModifier {
 					list = new ArrayList<Vector3f>();
 					map.put(v, list);
 				}
-				list.add(n);
+				list.add(normal);
 				// Map edge.
 				Pair pair = new Pair(f.indices[i], f.indices[(i + 1) % size]);
 				pairs.add(pair);
