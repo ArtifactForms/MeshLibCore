@@ -49,7 +49,7 @@ public class SimpleObjectReader {
 		float x = Float.parseFloat(sArray[1]);
 		float y = Float.parseFloat(sArray[2]);
 		float z = Float.parseFloat(sArray[3]);
-		mesh.add(new Vector3f(x, -y, z));
+		mesh.add(new Vector3f(x, y, z));
 	}
 
 	protected void addFace(String[] sArray) {
