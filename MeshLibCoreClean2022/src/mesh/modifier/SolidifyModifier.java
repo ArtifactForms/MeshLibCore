@@ -42,7 +42,7 @@ public class SolidifyModifier implements IMeshModifier {
 		for (Face3D f : mesh.faces) {
 			int size = f.indices.length;
 			// Calculate the face normal.
-			Vector3f n = Mesh3DUtil.calculateFaceNormal(mesh, f);
+			Vector3f n = mesh.calculateFaceNormal(f);
 			// For each vertex of the face.
 			for (int i = 0; i < f.indices.length; i++) {
 				Vector3f v = mesh.getVertexAt(f.indices[i]);
