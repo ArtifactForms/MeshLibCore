@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.util.Mesh3DUtil;
 
 public class MoveAlongNormalAnimator extends AbstractAnimator {
 	
@@ -58,7 +57,7 @@ public class MoveAlongNormalAnimator extends AbstractAnimator {
 			return;
 		}
 			
-		Vector3f normal = Mesh3DUtil.calculateFaceCenter(mesh, face);
+		Vector3f normal = mesh.calculateFaceCenter(face);
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f v = mesh.getVertexAt(face.indices[i]);
 			v.addLocal(normal.mult(speed * tpf));
