@@ -8,7 +8,6 @@ import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.util.Mesh3DUtil;
 import mesh.util.TraverseHelper;
 
 public class DualCreator implements IMeshCreator {
@@ -51,7 +50,7 @@ public class DualCreator implements IMeshCreator {
 		mesh = new Mesh3D();
 		
 		for (Face3D face : source.faces) {
-			Vector3f center = Mesh3DUtil.calculateFaceCenter(source, face);
+			Vector3f center = source.calculateFaceCenter(face);
 			mesh.add(center);
 			faceVertexMap.put(face, index);
 			index++;
