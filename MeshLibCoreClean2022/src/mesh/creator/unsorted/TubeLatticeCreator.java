@@ -2,6 +2,7 @@ package mesh.creator.unsorted;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.creator.primitives.SegmentedTubeCreator;
 import mesh.modifier.SolidifyModifier;
 import mesh.operators.ExtrudeIndividualFacesOperator;
 import mesh.selection.FaceSelection;

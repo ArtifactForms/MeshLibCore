@@ -1,11 +1,10 @@
-package mesh.creator.unsorted;
+package mesh.creator.primitives;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.creator.primitives.CircleCreator;
 import mesh.modifier.SolidifyModifier;
 import mesh.util.Mesh3DUtil;
 

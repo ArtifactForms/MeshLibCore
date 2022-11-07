@@ -1,4 +1,4 @@
-package mesh.creator.unsorted;
+package mesh.creator.primitives;
 
 import java.util.HashSet;
 
@@ -7,7 +7,6 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.creator.primitives.GridCreator;
 
 public class SegmentedCubeCreator implements IMeshCreator {
 

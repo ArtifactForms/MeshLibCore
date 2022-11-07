@@ -6,7 +6,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
-import mesh.creator.unsorted.SegmentedCylinderCreator;
+import mesh.creator.primitives.SegmentedCylinderCreator;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;

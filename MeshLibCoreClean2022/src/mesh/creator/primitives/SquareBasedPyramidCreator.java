@@ -1,4 +1,4 @@
-package mesh.creator.unsorted;
+package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;

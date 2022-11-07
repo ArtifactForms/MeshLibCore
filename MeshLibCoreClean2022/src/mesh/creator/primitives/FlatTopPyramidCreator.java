@@ -1,8 +1,7 @@
-package mesh.creator.unsorted;
+package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.creator.primitives.CubeCreator;
 import mesh.util.Mesh3DUtil;
 
 public class FlatTopPyramidCreator implements IMeshCreator {

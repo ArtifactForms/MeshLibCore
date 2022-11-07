@@ -1,9 +1,8 @@
-package mesh.creator.unsorted;
+package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
-import mesh.creator.primitives.CylinderCreator;
 
 public class TruncatedConeCreator implements IMeshCreator {
 
