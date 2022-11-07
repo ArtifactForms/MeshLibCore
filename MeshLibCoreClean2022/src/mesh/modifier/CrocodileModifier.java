@@ -8,7 +8,6 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.conway.ConwayAmboModifier;
 import mesh.selection.FaceSelection;
-import mesh.util.Mesh3DUtil;
 
 public class CrocodileModifier implements IMeshModifier {
 
@@ -31,8 +30,8 @@ public class CrocodileModifier implements IMeshModifier {
 		List<Face3D> facesToAdd = new ArrayList<Face3D>();
 
 		for (Face3D face : selection.getFaces()) {
-			Vector3f center = Mesh3DUtil.calculateFaceCenter(mesh, face);
-			Vector3f normal = Mesh3DUtil.calculateFaceNormal(mesh, face);
+			Vector3f center = mesh.calculateFaceCenter(face);
+			Vector3f normal = mesh.calculateFaceNormal(face);
 			for (int i = 0; i < face.indices.length; i++) {
 				int fromIndex = face.indices[i];
 				int toIndex = face.indices[(i + 1) % face.indices.length];
