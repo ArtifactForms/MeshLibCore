@@ -17,17 +17,9 @@ public class SimpleObjectReader {
 
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(file));
-
 			String line = null;
 			while ((line = in.readLine()) != null) {
-				if (line.startsWith("v ")) {
-					String[] sArray = line.split(" ");
-					addVertex(sArray);
-				}
-				if (line.startsWith("f ")) {
-					String[] sArray = line.split(" ");
-					addFace(sArray);
-				}
+				processLine(line);
 			}
 			in.close();
 		} catch (Exception e) {
@@ -35,6 +27,18 @@ public class SimpleObjectReader {
 		}
 		
 		return mesh;
+	}
+	
+	private void processLine(String line) {
+		if (line.startsWith("v ")) {
+			String[] sArray = line.split(" ");
+			addVertex(sArray);
+		}
+		
+		if (line.startsWith("f ")) {
+			String[] sArray = line.split(" ");
+			addFace(sArray);
+		}
 	}
 	
 	private void initializeMesh() {
