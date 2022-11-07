@@ -8,11 +8,6 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 
-/**
- * 
- * @author - Simon
- * @version 0.2, 21 June 2016
- */
 public class SimpleObjectReader {
 
 	private Mesh3D mesh;
@@ -53,16 +48,9 @@ public class SimpleObjectReader {
 			}
 			in.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-//		for (Face3D f : mesh.faces) {
-//			System.out.println("mesh.add(new Face3D("
-//					+ Arrays.toString(f.indices).replace("[", "")
-//							.replace("]", "") + "));");
-//		}
-
 		return mesh;
 	}
 
