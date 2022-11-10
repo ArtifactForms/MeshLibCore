@@ -41,8 +41,8 @@ public class ArchCreator implements IMeshCreator {
 	}
 	
 	private void createArc() {
-		float extendStep = (radius + radius + extendLeft + extendRight) / (float) segments;
-		float x1 = -radius - extendLeft;
+		float extendStep = calculateWidth() / (float) segments;;
+		float offsetLeft = -radius - extendLeft;
 		float angle = Mathf.PI;
 		float angleStep = Mathf.PI / (float) segments;
 		
@@ -50,7 +50,7 @@ public class ArchCreator implements IMeshCreator {
 			float x = radius * Mathf.cos(angle);
 			float y = radius * Mathf.sin(angle);
 			Vector3f v = new Vector3f(x, y, 0);
-			Vector3f v1 = new Vector3f(x1 + (i * extendStep), -radius - extendTop, 0);
+			Vector3f v1 = new Vector3f(offsetLeft + (i * extendStep), -radius - extendTop, 0);
 			
 			if (i > 0 && i < segments)
 				v1.setX(v.x);
@@ -62,6 +62,10 @@ public class ArchCreator implements IMeshCreator {
 			mesh.add(v1);
 			angle += angleStep;
 		}
+	}
+	
+	private float calculateWidth() {
+		return radius + radius + extendLeft + extendRight;
 	}
 	
 	private void translate() {
