@@ -16,7 +16,7 @@ public class ArchCreator implements IMeshCreator {
 	private float extendRight;
 	private float depth;
 	private Mesh3D mesh;
-	
+
 	public ArchCreator() {
 		segments = 15;
 		radius = 1;
@@ -26,7 +26,7 @@ public class ArchCreator implements IMeshCreator {
 		extendRight = 1;
 		depth = 1;
 	}
-	
+
 	@Override
 	public Mesh3D create() {
 		initializeMesh();
@@ -39,67 +39,71 @@ public class ArchCreator implements IMeshCreator {
 		translate();
 		return mesh;
 	}
-	
+
 	private void createArc() {
-		float extendStep = calculateWidth() / (float) segments;;
+		float extendStep = calculateWidth() / (float) segments;
 		float offsetLeft = -radius - extendLeft;
 		float angle = Mathf.PI;
 		float angleStep = Mathf.PI / (float) segments;
-		
+
 		for (int i = 0; i <= segments; i++) {
-			float x = radius * Mathf.cos(angle);
-			float y = radius * Mathf.sin(angle);
-			Vector3f v = new Vector3f(x, y, 0);
+			Vector3f v0 = pointOnCircle(angle);
 			Vector3f v1 = new Vector3f(offsetLeft + (i * extendStep), -radius - extendTop, 0);
 			
 			if (i > 0 && i < segments)
-				v1.setX(v.x);
-			
+				v1.setX(v0.x);
+
 			if (i < segments)
 				addFaceAt(i);
-			
-			mesh.add(v);
+
+			mesh.add(v0);
 			mesh.add(v1);
 			angle += angleStep;
 		}
 	}
-	
+
+	private Vector3f pointOnCircle(float angrad) {
+		float x = radius * Mathf.cos(angrad);
+		float y = radius * Mathf.sin(angrad);
+		return new Vector3f(x, y, 0);
+	}
+
 	private float calculateWidth() {
 		return radius + radius + extendLeft + extendRight;
 	}
-	
+
 	private void translate() {
 		mesh.translateY(-extendBottom);
 		mesh.translateZ(depth / 2f);
 	}
-	
+
 	private void initializeMesh() {
 		mesh = new Mesh3D();
 	}
-	
+
 	private void solidify() {
 		new SolidifyModifier(depth).modify(mesh);
 	}
-	
+
 	private void createLeftFace() {
 		mesh.addFace(0, 1, 5, 4);
 	}
-	
+
 	private void createRightFace() {
 		int a = 2 * ((segments + 1)) + 4;
 		mesh.addFace(3, 2, a - 2, a - 1);
 	}
-	
+
 	private void createLeftVertices() {
 		mesh.addVertex(-radius, extendBottom, 0);
-		mesh.addVertex(-radius -extendLeft, extendBottom, 0);
+		mesh.addVertex(-radius - extendLeft, extendBottom, 0);
 	}
-	
+
 	private void createRightVertices() {
 		mesh.addVertex(radius, extendBottom, 0);
 		mesh.addVertex(radius + extendRight, extendBottom, 0);
 	}
- 	
+
 	private void addFaceAt(int i) {
 		int index = (i * 2) + 4;
 		int index0 = index;
