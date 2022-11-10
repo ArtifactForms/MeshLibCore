@@ -21,3 +21,20 @@ mesh = creator.create();
 ````
 
 <img src="images/arch_creator_2.png" alt="Arch Creator" width="960"/>
+
+### ArchDoorCreator
+
+<img src="images/arch_door_creator.png" alt="Arch Creator" width="960"/>
+
+**Example**
+
+```java
+Mesh3D mesh;
+ArchDoorCreator creator = new ArchDoorCreator();
+creator.setRadius(2);
+creator.setDepth(0.2f);
+creator.setExtendBottom(4);
+creator.setSegments(10);
+mesh = creator.create();
+```
+
