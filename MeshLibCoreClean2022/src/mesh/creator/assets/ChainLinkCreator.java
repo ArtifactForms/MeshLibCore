@@ -23,7 +23,6 @@ public class ChainLinkCreator implements IMeshCreator {
 	
 	public ChainLinkCreator(float centerPieceSize, float majorRadius, float minorRadius, int majorSegments,
 			int minorSegments) {
-		super();
 		this.centerPieceSize = centerPieceSize;
 		this.majorRadius = majorRadius;
 		this.minorRadius = minorRadius;
