@@ -17,6 +17,8 @@ public class PillarCreator implements IMeshCreator {
 	private float bottomHeight;
 	private float centerHeight;
 	private float radius;
+	private FillType topCapFillType;
+	private FillType bottomCapFillType;
 	private Mesh3D mesh;
 	private FaceSelection selection;
 	
@@ -49,8 +51,8 @@ public class PillarCreator implements IMeshCreator {
 		creator.setBottomRadius(radius);
 		creator.setTopRadius(radius);
 		creator.setHeight(getBottomSegmentHeight());
-		creator.setTopCapFillType(FillType.N_GON);
-		creator.setBottomCapFillType(FillType.N_GON);
+		creator.setTopCapFillType(topCapFillType);
+		creator.setBottomCapFillType(bottomCapFillType);
 		mesh = creator.create();
 		mesh.translateY(-getBottomSegmentHeight() * 0.5f);
 	}
@@ -149,6 +151,22 @@ public class PillarCreator implements IMeshCreator {
 
 	public void setRadius(float radius) {
 		this.radius = radius;
+	}
+
+	public FillType getTopCapFillType() {
+		return topCapFillType;
+	}
+
+	public void setTopCapFillType(FillType topCapFillType) {
+		this.topCapFillType = topCapFillType;
+	}
+
+	public FillType getBottomCapFillType() {
+		return bottomCapFillType;
+	}
+
+	public void setBottomCapFillType(FillType bottomCapFillType) {
+		this.bottomCapFillType = bottomCapFillType;
 	}
 	
 }
