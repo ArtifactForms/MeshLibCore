@@ -50,6 +50,7 @@ public class PillarCreator implements IMeshCreator {
 			break;
 		case NOTHING:
 			mesh.removeFaces(selection.getFaces());
+			break;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + capFillType);
 		}
