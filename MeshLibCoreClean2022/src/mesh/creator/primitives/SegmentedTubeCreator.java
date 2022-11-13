@@ -33,6 +33,32 @@ public class SegmentedTubeCreator implements IMeshCreator {
 		this.innerRadius = innerRadius;
 		this.height = height;
 	}
+	
+	@Override
+	public Mesh3D create() {
+		List<Mesh3D> meshes = new ArrayList<Mesh3D>();
+		initializeMesh();
+		createCircles(meshes);
+		append(meshes);
+		bridge(meshes);
+		centerOnAxisY();
+		solidify();
+		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+	
+	private void centerOnAxisY() {
+		mesh.translateY(-height / 2);
+	}
+	
+	private void solidify() {
+		if (outerRadius == innerRadius)
+			return;
+		new SolidifyModifier(outerRadius - innerRadius).modify(mesh);
+	}
 
 	private void createCircles(List<Mesh3D> meshes) {
 		float segmentHeight = height / segments;
@@ -61,19 +87,6 @@ public class SegmentedTubeCreator implements IMeshCreator {
 					m1.getVertexAt((i + 1) % vertices), m0.getVertexAt(i),
 					m0.getVertexAt((i + 1) % vertices));
 		}
-	}
-
-	@Override
-	public Mesh3D create() {
-		mesh = new Mesh3D();
-		List<Mesh3D> meshes = new ArrayList<Mesh3D>();
-		createCircles(meshes);
-		append(meshes);
-		bridge(meshes);
-		mesh.translateY(-height / 2);
-		if (outerRadius != innerRadius)
-			new SolidifyModifier(outerRadius - innerRadius).modify(mesh);
-		return mesh;
 	}
 
 	public int getSegments() {
