@@ -18,7 +18,6 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public SegmentedTubeCreator() {
-		super();
 		this.segments = 3;
 		this.vertices = 32;
 		this.outerRadius = 1f;
@@ -28,7 +27,6 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	
 	public SegmentedTubeCreator(int segments, int vertices, float outerRadius,
 			float innerRadius, float height) {
-		super();
 		this.segments = segments;
 		this.vertices = vertices;
 		this.outerRadius = outerRadius;
