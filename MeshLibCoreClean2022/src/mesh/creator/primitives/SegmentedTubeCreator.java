@@ -1,12 +1,9 @@
 package mesh.creator.primitives;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.SolidifyModifier;
-import mesh.util.Mesh3DUtil;
 
 public class SegmentedTubeCreator implements IMeshCreator {
 
@@ -36,11 +33,9 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
-		List<Mesh3D> meshes = new ArrayList<Mesh3D>();
 		initializeMesh();
-		createCircles(meshes);
-		append(meshes);
-		bridge(meshes);
+		createVertices();
+		createQuadFaces();
 		centerOnAxisY();
 		solidify();
 		return mesh;
@@ -60,33 +55,29 @@ public class SegmentedTubeCreator implements IMeshCreator {
 		new SolidifyModifier(outerRadius - innerRadius).modify(mesh);
 	}
 
-	private void createCircles(List<Mesh3D> meshes) {
+	private void createVertices() {
 		float segmentHeight = height / segments;
 		for (int i = 0; i <= segments; i++) {
 			Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
 			mesh.translateY(i * segmentHeight);
-			meshes.add(mesh);
-		}
-	}
-	
-	private void append(List<Mesh3D> meshes) {
-		for (Mesh3D mesh : meshes) {
 			this.mesh.append(mesh);
 		}
 	}
-
-	private void bridge(List<Mesh3D> meshes) {
-		for (int i = 0; i < meshes.size() - 1; i++) {
-			bridge(meshes.get(i), meshes.get(i + 1));
+	
+	private void createQuadFaces() {
+		for (int i = 0; i < segments - 1; i++) {
+			for (int j = 0; j < vertices; j++) {
+				addFace(i, j);
+			}
 		}
 	}
-
-	private void bridge(Mesh3D m0, Mesh3D m1) {
-		for (int i = 0; i < vertices; i++) {
-			Mesh3DUtil.bridge(mesh, m1.getVertexAt(i),
-					m1.getVertexAt((i + 1) % vertices), m0.getVertexAt(i),
-					m0.getVertexAt((i + 1) % vertices));
-		}
+	
+	private void addFace(int i, int j)  {
+		int idx0 = Mathf.toOneDimensionalIndex(i, j, vertices);
+		int idx1 = Mathf.toOneDimensionalIndex(i + 1, j, vertices);
+		int idx2 = Mathf.toOneDimensionalIndex(i + 1, (j + 1) % vertices, vertices);
+		int idx3 = Mathf.toOneDimensionalIndex(i, (j + 1) % vertices, vertices);
+		mesh.addFace(idx0, idx1, idx2, idx3);
 	}
 
 	public int getSegments() {
