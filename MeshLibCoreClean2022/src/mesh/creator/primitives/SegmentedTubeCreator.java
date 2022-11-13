@@ -15,11 +15,7 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public SegmentedTubeCreator() {
-		this.segments = 3;
-		this.vertices = 32;
-		this.outerRadius = 1f;
-		this.innerRadius = 0.5f;
-		this.height = 2f;
+		this(2, 32, 1, 0.5f, 2);
 	}
 	
 	public SegmentedTubeCreator(int segments, int vertices, float outerRadius,
@@ -56,7 +52,7 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	}
 
 	private void createVertices() {
-		float segmentHeight = height / segments;
+		float segmentHeight = height / (float) segments;
 		for (int i = 0; i <= segments; i++) {
 			Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
 			mesh.translateY(i * segmentHeight);
