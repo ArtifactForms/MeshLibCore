@@ -72,33 +72,36 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 				if ((j + 1) < cubes[0].length)
-					leftRight(i, j);
+					connectRightLeft(i, j);
 				if ((i + 1) < cubes.length)
-					topBottom(i, j);
+					connectBottomTop(i, j);
 			}
 		}
 	}
 
-	private void topBottom(int i, int j) {
-		Face3D f2 = cubes[i][j].faces.get(1); // bottom
-		Face3D f3 = cubes[i + 1][j].faces.get(0); // top
-		Mesh3DUtil.extrudeFace(mesh, f2, scaleY, 0.0f);
-		Mesh3DUtil.extrudeFace(mesh, f3, scaleY, 0.0f);
-		Mesh3DUtil.flipDirection(mesh, f3);
-		Mesh3DUtil.bridge(mesh, f2, f3);
-		removeFace(f2);
-		removeFace(f3);
+	private void connectBottomTop(int i, int j) {
+		Face3D bottom = cubes[i][j].faces.get(1); // bottom
+		Face3D top = cubes[i + 1][j].faces.get(0); // top
+		connect(bottom, top, scaleY);
 	}
 
-	private void leftRight(int i, int j) {
-		Face3D f0 = cubes[i][j].faces.get(2); // right
-		Face3D f1 = cubes[i][j + 1].faces.get(4); // left
-		Mesh3DUtil.extrudeFace(mesh, f0, scaleX, 0.0f);
-		Mesh3DUtil.extrudeFace(mesh, f1, scaleX, 0.0f);
+	private void connectRightLeft(int i, int j) {
+		Face3D right = cubes[i][j].faces.get(2); // right
+		Face3D left = cubes[i][j + 1].faces.get(4); // left
+		connect(right, left, scaleX);
+	}
+	
+	private void connect(Face3D f0, Face3D f1, float scale) {
+		extrude(f0, scale);
+		extrude(f1, scale);
 		Mesh3DUtil.flipDirection(mesh, f1);
 		Mesh3DUtil.bridge(mesh, f0, f1);
 		removeFace(f0);
 		removeFace(f1);
+	}
+	
+	private void extrude(Face3D face, float scale) {
+		Mesh3DUtil.extrudeFace(mesh, face, scale, 0.0f);
 	}
 	
 	private void removeFace(Face3D face) {
