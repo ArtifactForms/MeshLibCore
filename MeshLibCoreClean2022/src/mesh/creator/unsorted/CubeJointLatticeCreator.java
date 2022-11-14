@@ -86,8 +86,8 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		Mesh3DUtil.extrudeFace(mesh, f3, scaleY, 0.0f);
 		Mesh3DUtil.flipDirection(mesh, f3);
 		Mesh3DUtil.bridge(mesh, f2, f3);
-		mesh.faces.remove(f2);
-		mesh.faces.remove(f3);
+		removeFace(f2);
+		removeFace(f3);
 	}
 
 	private void leftRight(int i, int j) {
@@ -97,8 +97,12 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		Mesh3DUtil.extrudeFace(mesh, f1, scaleX, 0.0f);
 		Mesh3DUtil.flipDirection(mesh, f1);
 		Mesh3DUtil.bridge(mesh, f0, f1);
-		mesh.faces.remove(f0);
-		mesh.faces.remove(f1);
+		removeFace(f0);
+		removeFace(f1);
+	}
+	
+	private void removeFace(Face3D face) {
+		mesh.removeFace(face);
 	}
 	
 	private void centerOnAxisY() {
