@@ -46,7 +46,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		initializeMesh();
 		createJoints();
 		connectJoints();
-		centerOnAxisY();
+		centerOnAxisXY();
 		return mesh;
 	}
 	
@@ -112,7 +112,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		mesh.removeFace(face);
 	}
 	
-	private void centerOnAxisY() {
+	private void centerOnAxisXY() {
 		mesh.translate(-subdivisionsX * tileSizeX / 2f, -subdivisionsY * tileSizeY / 2f, 0);
 	}
 
