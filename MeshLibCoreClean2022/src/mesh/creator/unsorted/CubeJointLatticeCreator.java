@@ -19,13 +19,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 	private Mesh3D[][] cubes;
 	
 	public CubeJointLatticeCreator() {
-		this.subdivisionsX = 10;
-		this.subdivisionsY = 10;
-		this.tileSizeX = 0.1f;
-		this.tileSizeY = 0.1f;
-		this.jointSize = 0.01f;
-		this.scaleX = 0.5f;
-		this.scaleY = 0.5f;
+		this(10, 10, 0.1f, 0.1f, 0.01f, 0.5f, 0.5f);
 	}
 	
 	public CubeJointLatticeCreator(int subdivisionsX, int subdivisionsY,
