@@ -53,7 +53,13 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 			}
 		}
 
-		// Connect joints
+		connectJoints(cubes);
+		centerOnAxisY();
+
+		return mesh;
+	}
+
+	private void connectJoints(Mesh3D[][] cubes) {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 
@@ -80,10 +86,6 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 				}
 			}
 		}
-
-		centerOnAxisY();
-
-		return mesh;
 	}
 	
 	private void centerOnAxisY() {
