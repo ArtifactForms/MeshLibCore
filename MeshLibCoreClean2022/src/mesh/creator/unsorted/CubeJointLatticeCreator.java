@@ -16,6 +16,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 	private float scaleX;
 	private float scaleY;
 	private Mesh3D mesh;
+	private Mesh3D[][] cubes;
 	
 	public CubeJointLatticeCreator() {
 		this.subdivisionsX = 10;
@@ -41,7 +42,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		Mesh3D[][] cubes = new Mesh3D[subdivisionsY + 1][subdivisionsX + 1];
+		cubes = new Mesh3D[subdivisionsY + 1][subdivisionsX + 1];
 		initializeMesh();
 		createJoints(cubes);
 		connectJoints(cubes);
