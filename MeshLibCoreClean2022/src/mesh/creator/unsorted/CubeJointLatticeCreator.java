@@ -42,19 +42,23 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		cubes = new Mesh3D[subdivisionsY + 1][subdivisionsX + 1];
+		initializeCubes();
 		initializeMesh();
-		createJoints(cubes);
-		connectJoints(cubes);
+		createJoints();
+		connectJoints();
 		centerOnAxisY();
 		return mesh;
+	}
+	
+	private void initializeCubes() {
+		cubes = new Mesh3D[subdivisionsY + 1][subdivisionsX + 1];
 	}
 	
 	private void initializeMesh() {
 		mesh = new Mesh3D();
 	}
 
-	private void createJoints(Mesh3D[][] cubes) {
+	private void createJoints() {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 				cubes[i][j] = new CubeCreator(jointSize).create();
@@ -64,33 +68,37 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		}
 	}
 
-	private void connectJoints(Mesh3D[][] cubes) {
+	private void connectJoints() {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
-
-				if ((j + 1) < cubes[0].length) {
-					Face3D f0 = cubes[i][j].faces.get(2); // right
-					Face3D f1 = cubes[i][j + 1].faces.get(4); // left
-					Mesh3DUtil.extrudeFace(mesh, f0, scaleX, 0.0f);
-					Mesh3DUtil.extrudeFace(mesh, f1, scaleX, 0.0f);
-					Mesh3DUtil.flipDirection(mesh, f1);
-					Mesh3DUtil.bridge(mesh, f0, f1);
-					mesh.faces.remove(f0);
-					mesh.faces.remove(f1);
-				}
-
-				if ((i + 1) < cubes.length) {
-					Face3D f2 = cubes[i][j].faces.get(1); // bottom
-					Face3D f3 = cubes[i + 1][j].faces.get(0); // top
-					Mesh3DUtil.extrudeFace(mesh, f2, scaleY, 0.0f);
-					Mesh3DUtil.extrudeFace(mesh, f3, scaleY, 0.0f);
-					Mesh3DUtil.flipDirection(mesh, f3);
-					Mesh3DUtil.bridge(mesh, f2, f3);
-					mesh.faces.remove(f2);
-					mesh.faces.remove(f3);
-				}
+				if ((j + 1) < cubes[0].length)
+					leftRight(i, j);
+				if ((i + 1) < cubes.length)
+					topBottom(i, j);
 			}
 		}
+	}
+
+	private void topBottom(int i, int j) {
+		Face3D f2 = cubes[i][j].faces.get(1); // bottom
+		Face3D f3 = cubes[i + 1][j].faces.get(0); // top
+		Mesh3DUtil.extrudeFace(mesh, f2, scaleY, 0.0f);
+		Mesh3DUtil.extrudeFace(mesh, f3, scaleY, 0.0f);
+		Mesh3DUtil.flipDirection(mesh, f3);
+		Mesh3DUtil.bridge(mesh, f2, f3);
+		mesh.faces.remove(f2);
+		mesh.faces.remove(f3);
+	}
+
+	private void leftRight(int i, int j) {
+		Face3D f0 = cubes[i][j].faces.get(2); // right
+		Face3D f1 = cubes[i][j + 1].faces.get(4); // left
+		Mesh3DUtil.extrudeFace(mesh, f0, scaleX, 0.0f);
+		Mesh3DUtil.extrudeFace(mesh, f1, scaleX, 0.0f);
+		Mesh3DUtil.flipDirection(mesh, f1);
+		Mesh3DUtil.bridge(mesh, f0, f1);
+		mesh.faces.remove(f0);
+		mesh.faces.remove(f1);
 	}
 	
 	private void centerOnAxisY() {
