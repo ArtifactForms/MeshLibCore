@@ -40,9 +40,9 @@ mesh = creator.create();
 
 ### FlangedPipeCreator
 
-**Example**
-
 <img src="images/flanged_pipe_creator_2.png" alt="FlangedPipeCreator" width="960"/>
+
+**Example**
 
 ```java
 Mesh3D mesh;
