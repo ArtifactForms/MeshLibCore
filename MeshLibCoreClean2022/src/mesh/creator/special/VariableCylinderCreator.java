@@ -24,6 +24,8 @@ public class VariableCylinderCreator implements IMeshCreator {
 		radii = new ArrayList<Float>();
 		rotationSegments = 16;
 		yCoordinates = new ArrayList<Float>();
+		capBottomFillType = FillType.N_GON;
+		capTopFillType = FillType.N_GON;
 	}
 	
 	@Override
