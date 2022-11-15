@@ -13,6 +13,10 @@ public class SegmentedBox implements IMeshCreator {
 	private float width;
 	private float height;
 	private float depth;
+	private float segmentSizeX;
+	private float segmentSizeY;
+	private float segmentSizeZ;
+	
 	private Mesh3D mesh;
 
 	public SegmentedBox() {
@@ -27,6 +31,7 @@ public class SegmentedBox implements IMeshCreator {
 	@Override
 	public Mesh3D create() {
 		initializeMesh();
+		refresh();
 		createFront();
 		createBack();
 		createLeft();
@@ -35,6 +40,12 @@ public class SegmentedBox implements IMeshCreator {
 		createBottom();
 		removeDoubles();
 		return mesh;
+	}
+	
+	private void refresh() {
+		segmentSizeX = width / (float) segmentsX;
+		segmentSizeY = height / (float) segmentsY;
+		segmentSizeZ = depth / (float) segmentsZ;
 	}
 
 	private void removeDoubles() {
@@ -47,31 +58,27 @@ public class SegmentedBox implements IMeshCreator {
 		mesh = new Mesh3D();
 	}
 
+	private Mesh3D createGrid(int subdivisionsX, int subdivisionsZ, float tileSizeX, float tileSizeZ) {
+		GridCreator creator = new GridCreator(subdivisionsX, subdivisionsZ, tileSizeX, tileSizeZ);
+		return creator.create();
+	}
+
 	private void createFront() {
-		float segmentSizeX = width / (float) segmentsX;
-		float segmentSizeY = height / (float) segmentsY;
-		GridCreator creator = new GridCreator(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
-		Mesh3D front = creator.create();
+		Mesh3D front = createGrid(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
 		front.rotateX(-Mathf.HALF_PI);
 		front.translateZ(depth / 2f);
 		mesh.append(front);
 	}
 
 	private void createBack() {
-		float segmentSizeX = width / (float) segmentsX;
-		float segmentSizeY = height / (float) segmentsY;
-		GridCreator creator = new GridCreator(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
-		Mesh3D back = creator.create();
+		Mesh3D back = createGrid(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
 		back.rotateX(Mathf.HALF_PI);
 		back.translateZ(-depth / 2f);
 		mesh.append(back);
 	}
 
 	private void createLeft() {
-		float segmentSizeZ = depth / (float) segmentsZ;
-		float segmentSizeY = height / (float) segmentsY;
-		GridCreator creator = new GridCreator(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
-		Mesh3D left = creator.create();
+		Mesh3D left = createGrid(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
 		left.rotateX(Mathf.HALF_PI);
 		left.rotateY(Mathf.HALF_PI);
 		left.translateX(-width / 2f);
@@ -79,10 +86,7 @@ public class SegmentedBox implements IMeshCreator {
 	}
 
 	private void createRight() {
-		float segmentSizeZ = depth / (float) segmentsZ;
-		float segmentSizeY = height / (float) segmentsY;
-		GridCreator creator = new GridCreator(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
-		Mesh3D right = creator.create();
+		Mesh3D right = createGrid(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
 		right.rotateX(Mathf.HALF_PI);
 		right.rotateY(-Mathf.HALF_PI);
 		right.translateX(width / 2f);
@@ -90,22 +94,16 @@ public class SegmentedBox implements IMeshCreator {
 	}
 
 	private void createTop() {
-		float segmentSizeX = width / (float) segmentsX;
-		float segmentSizeZ = depth / (float) segmentsZ;
-		GridCreator creator = new GridCreator(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
-		Mesh3D top = creator.create();
+		Mesh3D top = createGrid(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
 		top.translateY(-height / 2f);
 		mesh.append(top);
 	}
 
 	private void createBottom() {
-		float segmentSizeX = width / (float) segmentsX;
-		float segmentSizeZ = depth / (float) segmentsZ;
-		GridCreator creator = new GridCreator(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
-		Mesh3D right = creator.create();
-		right.rotateX(-Mathf.PI);
-		right.translateY(height / 2f);
-		mesh.append(right);
+		Mesh3D bottom = createGrid(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
+		bottom.rotateX(-Mathf.PI);
+		bottom.translateY(height / 2f);
+		mesh.append(bottom);
 	}
 
 	public int getSegmentsX() {
