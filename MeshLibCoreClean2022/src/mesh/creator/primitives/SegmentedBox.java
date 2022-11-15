@@ -16,7 +16,6 @@ public class SegmentedBox implements IMeshCreator {
 	private float segmentSizeX;
 	private float segmentSizeY;
 	private float segmentSizeZ;
-	
 	private Mesh3D mesh;
 
 	public SegmentedBox() {
@@ -41,7 +40,7 @@ public class SegmentedBox implements IMeshCreator {
 		removeDoubles();
 		return mesh;
 	}
-	
+
 	private void refresh() {
 		segmentSizeX = width / (float) segmentsX;
 		segmentSizeY = height / (float) segmentsY;
