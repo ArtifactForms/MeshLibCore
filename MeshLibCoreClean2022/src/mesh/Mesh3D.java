@@ -222,6 +222,12 @@ public class Mesh3D {
 
 		return mesh;
 	}
+	
+	public boolean removeDoubles(int decimalPlaces) {
+		for (Vector3f v : vertices)
+			v.roundLocalDecimalPlaces(decimalPlaces);
+		return removeDoubles();
+	}
 
 	public boolean removeDoubles() {
 		int countBefore = getVertexCount();
