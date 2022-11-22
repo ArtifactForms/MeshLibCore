@@ -143,8 +143,11 @@ public class Mesh3D {
 	}
 
 	public Bounds3 calculateBounds() {
-		Vector3f min = new Vector3f();
-		Vector3f max = new Vector3f();
+		if (vertices.isEmpty())
+			return new Bounds3();
+		
+		Vector3f min = new Vector3f(getVertexAt(0));
+		Vector3f max = new Vector3f(getVertexAt(0));
 		Bounds3 bounds = new Bounds3();
 		for (Vector3f v : vertices) {
 			min.x = v.x < min.x ? v.x : min.x;
