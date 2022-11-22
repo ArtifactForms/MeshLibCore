@@ -13,6 +13,7 @@ import mesh.util.VertexNormals;
 public class SolidifyModifier implements IMeshModifier {
 
 	private float thickness;
+	private List<Vector3f> vertexNormals;
 
 	public SolidifyModifier() {
 		this.thickness = 0.01f;
@@ -30,7 +31,7 @@ public class SolidifyModifier implements IMeshModifier {
 		Mesh3D m0 = new Mesh3D();
 		Mesh3D copy = mesh.copy();
 
-		List<Vector3f> vertexNormals = calculateVertexNormals(mesh);
+		vertexNormals = calculateVertexNormals(mesh);
 		HashSet<Pair> pairs = new HashSet<>();
 		
 		for (Face3D f : mesh.faces) {
@@ -49,12 +50,7 @@ public class SolidifyModifier implements IMeshModifier {
 		// Combine meshes.
 		m0.append(mesh, copy);
 
-		// Move vertices along the vertex normals.
-		for (int i = 0; i < copy.vertices.size(); i++) {
-			Vector3f v = copy.getVertexAt(i);
-			Vector3f n = vertexNormals.get(i);
-			v.set(n.mult(-thickness).add(v));
-		}
+		moveAlongVertexNormals(copy);
 
 		// Bridge holes if any.
 		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
@@ -79,6 +75,14 @@ public class SolidifyModifier implements IMeshModifier {
 		mesh.addFaces(m0.faces);
 
 		return mesh;
+	}
+	
+	private void moveAlongVertexNormals(Mesh3D mesh) {
+		for (int i = 0; i < mesh.vertices.size(); i++) {
+			Vector3f v = mesh.getVertexAt(i);
+			Vector3f n = vertexNormals.get(i);
+			v.set(n.mult(-thickness).add(v));
+		}
 	}
 	
 	private List<Vector3f> calculateVertexNormals(Mesh3D mesh) {
