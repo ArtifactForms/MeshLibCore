@@ -38,7 +38,7 @@ public class SolidifyModifier implements IMeshModifier {
 		vertexNormals = calculateVertexNormals(mesh);
 		edges = new HashSet<>();
 
-		mapEdges(mesh);
+		mapEdges();
 
 		Mesh3DUtil.flipDirection(innerMesh);
 
@@ -47,14 +47,14 @@ public class SolidifyModifier implements IMeshModifier {
 
 		moveAlongVertexNormals(innerMesh);
 
-		bridgeHoles(mesh, result, innerMesh);
+		bridgeHoles(result, innerMesh);
 
 		applyResult(result);
 		
 		return mesh;
 	}
 
-	private void bridgeHoles(Mesh3D mesh, Mesh3D result, Mesh3D innerMesh) {
+	private void bridgeHoles(Mesh3D result, Mesh3D innerMesh) {
 		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
 		for (Face3D f : faces) {
 			int size = f.indices.length;
@@ -79,7 +79,7 @@ public class SolidifyModifier implements IMeshModifier {
 		mesh.addFaces(result.faces);
 	}
 
-	private void mapEdges(Mesh3D mesh) {
+	private void mapEdges() {
 		for (Face3D face : mesh.faces) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Pair edge = new Pair(face.indices[i], face.indices[(i + 1) % face.indices.length]);
