@@ -1,15 +1,14 @@
 package mesh.creator.creative;
 
-import java.util.HashSet;
 import java.util.List;
 
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
+import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 
 public class CubicLatticeCreator implements IMeshCreator {
@@ -19,6 +18,17 @@ public class CubicLatticeCreator implements IMeshCreator {
 	private int segmentsZ = 3;
 	private int subdivisions = 2;
 	private Mesh3D mesh;
+	
+	@Override
+	public Mesh3D create() {
+		initializeMesh();
+		createSegments();
+		removeDoubles();
+		translate();
+		solidify();
+		subdivide();
+		return mesh;
+	}
 	
 	private Mesh3D createSegment() {
 		Mesh3D mesh = new CubeCreator().create();
@@ -43,37 +53,36 @@ public class CubicLatticeCreator implements IMeshCreator {
 	}
 	
 	private void removeDoubles() {
-		Mesh3D m = new Mesh3D();
-		HashSet<Vector3f> vertexSet = new HashSet<Vector3f>();
-		for (Face3D f : mesh.faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = mesh.getVertexAt(f.indices[i]);
-				vertexSet.add(v);
-			}
-		}
-		m.vertices.addAll(vertexSet);
-		for (Face3D f : mesh.faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = mesh.getVertexAt(f.indices[i]);
-				int index = m.vertices.indexOf(v);
-				f.indices[i] = index;
-			}
-			m.add(f);
-		}
-		this.mesh = m;
+		removeDoubleFaces();
+		removeDoubleVertices();
 	}
 	
-	@Override
-	public Mesh3D create() {
+	private void removeDoubleFaces() {
+		FaceSelection selection = new FaceSelection(mesh);
+		selection.selectDoubles();
+		mesh.removeFaces(selection.getFaces());
+	}
+	
+	private void removeDoubleVertices() {
+		mesh.removeDoubles();
+	}
+
+	private void initializeMesh() {
 		mesh = new Mesh3D();
-		createSegments();
-		removeDoubles();
+	}
+	
+	private void translate() {
 		mesh.translateX(-((segmentsX -1) * 3f) / 2f);
 		mesh.translateY(-((segmentsY -1) * 3f) / 2f);
 		mesh.translateZ(-((segmentsZ -1) * 3f) / 2f);
-		new SolidifyModifier(0.3f).modify(mesh);
+	}
+	
+	private void subdivide() {
 		new CatmullClarkModifier(subdivisions).modify(mesh);
-		return mesh;
+	}
+	
+	private void solidify() {
+		new SolidifyModifier(0.3f).modify(mesh);
 	}
 
 	public int getSegmentsX() {
