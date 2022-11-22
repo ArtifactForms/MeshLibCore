@@ -32,13 +32,12 @@ public class SolidifyModifier implements IMeshModifier {
 		Mesh3D copy = mesh.copy();
 
 		vertexNormals = calculateVertexNormals(mesh);
-		HashSet<Pair> pairs = new HashSet<>();
+		HashSet<Pair> edges = new HashSet<>();
 		
 		for (Face3D f : mesh.faces) {
 			for (int i = 0; i < f.indices.length; i++) {
-				// Map edge.
-				Pair pair = new Pair(f.indices[i], f.indices[(i + 1) % f.indices.length]);
-				pairs.add(pair);
+				Pair edge = new Pair(f.indices[i], f.indices[(i + 1) % f.indices.length]);
+				edges.add(edge);
 			}
 		}
 
@@ -59,7 +58,7 @@ public class SolidifyModifier implements IMeshModifier {
 			for (int i = 0; i < f.indices.length; i++) {
 				Pair pair0 = new Pair(f.indices[i], f.indices[(i + 1) % size]);
 				Pair pair1 = new Pair(f.indices[(i + 1) % size], f.indices[i]);
-				if (!pairs.contains(pair1)) {
+				if (!edges.contains(pair1)) {
 					Vector3f v0 = copy.getVertexAt(pair0.a);
 					Vector3f v1 = copy.getVertexAt(pair0.b);
 					Vector3f v2 = mesh.getVertexAt(pair0.a);
