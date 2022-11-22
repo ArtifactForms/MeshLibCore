@@ -1,7 +1,6 @@
 package mesh.creator.creative;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
@@ -43,11 +42,7 @@ public class LeonardoCubeCreator implements IMeshCreator {
 	}
 
 	private void removeDoubles() {
-		for (Vector3f v : mesh.vertices)
-			v.roundLocalDecimalPlaces(2);
-
-		mesh.removeDoubles();
-
+		mesh.removeDoubles(2);
 		FaceSelection selection = new FaceSelection(mesh);
 		selection.selectDoubles();
 		mesh.faces.removeAll(selection.getFaces());
