@@ -47,15 +47,14 @@ public class SolidifyModifier implements IMeshModifier {
 
 		moveAlongVertexNormals(innerMesh);
 
-		extracted(mesh, result, innerMesh);
+		bridgeHoles(mesh, result, innerMesh);
 
 		applyResult(result);
 		
 		return mesh;
 	}
 
-	private void extracted(Mesh3D mesh, Mesh3D result, Mesh3D innerMesh) {
-		// Bridge holes if any.
+	private void bridgeHoles(Mesh3D mesh, Mesh3D result, Mesh3D innerMesh) {
 		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
 		for (Face3D f : faces) {
 			int size = f.indices.length;
