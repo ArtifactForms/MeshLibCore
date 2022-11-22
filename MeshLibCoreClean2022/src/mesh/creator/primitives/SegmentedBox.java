@@ -30,7 +30,7 @@ public class SegmentedBox implements IMeshCreator {
 	@Override
 	public Mesh3D create() {
 		initializeMesh();
-		refresh();
+		refreshSegmentSize();
 		createFront();
 		createBack();
 		createLeft();
@@ -41,7 +41,7 @@ public class SegmentedBox implements IMeshCreator {
 		return mesh;
 	}
 
-	private void refresh() {
+	private void refreshSegmentSize() {
 		segmentSizeX = width / (float) segmentsX;
 		segmentSizeY = height / (float) segmentsY;
 		segmentSizeZ = depth / (float) segmentsZ;
