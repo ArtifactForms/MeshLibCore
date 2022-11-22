@@ -14,6 +14,7 @@ public class SolidifyModifier implements IMeshModifier {
 
 	private float thickness;
 	private List<Vector3f> vertexNormals;
+	private HashSet<Pair> edges;
 
 	public SolidifyModifier() {
 		this.thickness = 0.01f;
@@ -27,20 +28,15 @@ public class SolidifyModifier implements IMeshModifier {
 	public Mesh3D modify(Mesh3D mesh) {
 		if (thickness == 0)
 			return mesh;
-		
+
 		Mesh3D m0 = new Mesh3D();
 		Mesh3D innerMesh = mesh.copy();
 
 		vertexNormals = calculateVertexNormals(mesh);
-		HashSet<Pair> edges = new HashSet<>();
-		
-		for (Face3D f : mesh.faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Pair edge = new Pair(f.indices[i], f.indices[(i + 1) % f.indices.length]);
-				edges.add(edge);
-			}
-		}
-		
+		edges = new HashSet<>();
+
+		mapEdges(mesh);
+
 		Mesh3DUtil.flipDirection(innerMesh);
 
 		// Combine meshes.
@@ -72,7 +68,16 @@ public class SolidifyModifier implements IMeshModifier {
 
 		return mesh;
 	}
-	
+
+	private void mapEdges(Mesh3D mesh) {
+		for (Face3D face : mesh.faces) {
+			for (int i = 0; i < face.indices.length; i++) {
+				Pair edge = new Pair(face.indices[i], face.indices[(i + 1) % face.indices.length]);
+				edges.add(edge);
+			}
+		}
+	}
+
 	private void moveAlongVertexNormals(Mesh3D mesh) {
 		for (int i = 0; i < mesh.vertices.size(); i++) {
 			Vector3f vertex = mesh.getVertexAt(i);
@@ -80,7 +85,7 @@ public class SolidifyModifier implements IMeshModifier {
 			vertex.set(normal.mult(-thickness).add(vertex));
 		}
 	}
-	
+
 	private List<Vector3f> calculateVertexNormals(Mesh3D mesh) {
 		return new VertexNormals(mesh).getVertexNormals();
 	}
