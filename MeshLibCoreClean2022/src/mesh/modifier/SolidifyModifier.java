@@ -109,4 +109,12 @@ public class SolidifyModifier implements IMeshModifier {
 		return mesh;
 	}
 
+	public float getThickness() {
+		return thickness;
+	}
+
+	public void setThickness(float thickness) {
+		this.thickness = thickness;
+	}
+
 }
