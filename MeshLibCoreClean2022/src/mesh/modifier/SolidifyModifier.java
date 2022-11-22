@@ -37,21 +37,18 @@ public class SolidifyModifier implements IMeshModifier {
 		createVertexNormals();
 		initializeEdgeMap();
 		mapEdges();
-		
-
-		innerMesh = mesh.copy();
-		
-
+		initializeInnerMesh();
 		flipDirectionOfInnerMesh();
-		// Combine meshes.
 		result.append(mesh, innerMesh);
-		
-		
 		moveInnerMeshAlongVertexNormals();
 		bridgeHoles(result, innerMesh);
 		applyResult(result);
 		
 		return mesh;
+	}
+	
+	private void initializeInnerMesh() {
+		innerMesh = mesh.copy();
 	}
 	
 	private void initializeEdgeMap() {
