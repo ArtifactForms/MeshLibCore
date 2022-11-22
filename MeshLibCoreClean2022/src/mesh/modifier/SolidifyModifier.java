@@ -1,7 +1,5 @@
 package mesh.modifier;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -10,6 +8,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.Pair;
 import mesh.util.Mesh3DUtil;
+import mesh.util.VertexNormals;
 
 public class SolidifyModifier implements IMeshModifier {
 
@@ -31,42 +30,15 @@ public class SolidifyModifier implements IMeshModifier {
 		Mesh3D m0 = new Mesh3D();
 		Mesh3D copy = mesh.copy();
 
-		// Map vertices to face normals.
-		// Store the face normal of each face the vertex belongs to.
-		HashMap<Vector3f, List<Vector3f>> map = new HashMap<>();
-		List<Vector3f> vertexNormals = new ArrayList<Vector3f>();
+		List<Vector3f> vertexNormals = calculateVertexNormals(mesh);
 		HashSet<Pair> pairs = new HashSet<>();
 		
 		for (Face3D f : mesh.faces) {
-			int size = f.indices.length;
-			Vector3f normal = mesh.calculateFaceNormal(f);
 			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = mesh.getVertexAt(f.indices[i]);
-				List<Vector3f> list = map.get(v);
-				if (list == null) {
-					list = new ArrayList<Vector3f>();
-					map.put(v, list);
-				}
-				list.add(normal);
 				// Map edge.
-				Pair pair = new Pair(f.indices[i], f.indices[(i + 1) % size]);
+				Pair pair = new Pair(f.indices[i], f.indices[(i + 1) % f.indices.length]);
 				pairs.add(pair);
 			}
-		}
-
-		// Calculate vertex normals.
-		for (Vector3f v : mesh.vertices) {
-			Vector3f n = new Vector3f();
-			List<Vector3f> list = map.get(v);
-			if (list == null) {
-				list = new ArrayList<Vector3f>();
-			}
-			for (Vector3f v0 : list) {
-				n.addLocal(v0);
-			}
-			n.divideLocal(list.size());
-			n.normalizeLocal();
-			vertexNormals.add(n);
 		}
 
 		// Flip inner mesh.
@@ -107,6 +79,10 @@ public class SolidifyModifier implements IMeshModifier {
 		mesh.addFaces(m0.faces);
 
 		return mesh;
+	}
+	
+	private List<Vector3f> calculateVertexNormals(Mesh3D mesh) {
+		return new VertexNormals(mesh).getVertexNormals();
 	}
 
 	public float getThickness() {
