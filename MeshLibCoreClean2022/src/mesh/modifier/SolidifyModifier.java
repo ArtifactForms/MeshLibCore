@@ -78,9 +78,9 @@ public class SolidifyModifier implements IMeshModifier {
 	
 	private void moveAlongVertexNormals(Mesh3D mesh) {
 		for (int i = 0; i < mesh.vertices.size(); i++) {
-			Vector3f v = mesh.getVertexAt(i);
-			Vector3f n = vertexNormals.get(i);
-			v.set(n.mult(-thickness).add(v));
+			Vector3f vertex = mesh.getVertexAt(i);
+			Vector3f normal = vertexNormals.get(i);
+			vertex.set(normal.mult(-thickness).add(vertex));
 		}
 	}
 	
