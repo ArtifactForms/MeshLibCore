@@ -82,7 +82,6 @@ public class LeonardoCubeCreator implements IMeshCreator {
 
 	private Mesh3D createCross(boolean extrudeEnds0, boolean extrudeEnds1) {
 		Mesh3D c0 = createConnector(extrudeEnds0, extrudeEnds1);
-		;
 		return c0;
 	}
 
