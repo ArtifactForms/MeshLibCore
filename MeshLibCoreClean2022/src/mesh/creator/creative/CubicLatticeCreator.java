@@ -32,24 +32,27 @@ public class CubicLatticeCreator implements IMeshCreator {
 	
 	private Mesh3D createSegment() {
 		Mesh3D mesh = new CubeCreator().create();
-		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
-		for (Face3D face : faces) {
+		List<Face3D> faces = mesh.getFaces();
+		for (Face3D face : faces)
 			Mesh3DUtil.extrudeFace(mesh, face, 1.0f, 0.5f);
-		}
 		mesh.faces.removeAll(faces);
 		return mesh;
 	}
 	
 	private void createSegments() {
-		for (int k = 0; k < segmentsZ; k++) {
-			for (int i = 0; i < segmentsY; i++) {
-				for (int j = 0; j < segmentsX; j++) {
-					Mesh3D mesh = createSegment();
-					mesh.translate(j * 3, i * 3, k * 3);
-					this.mesh.append(mesh);
+		for (int z = 0; z < segmentsZ; z++) {
+			for (int y = 0; y < segmentsY; y++) {
+				for (int x = 0; x < segmentsX; x++) {
+					createSegmentAt(x, y, z);
 				}
 			}
 		}
+	}
+	
+	private void createSegmentAt(int x, int y, int z) {
+		Mesh3D segment = createSegment();
+		segment.translate(x * 3, y * 3, z * 3);
+		this.mesh.append(segment);
 	}
 	
 	private void removeDoubles() {
