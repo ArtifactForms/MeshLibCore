@@ -15,6 +15,7 @@ public class SolidifyModifier implements IMeshModifier {
 	private float thickness;
 	private List<Vector3f> vertexNormals;
 	private HashSet<Pair> edges;
+	private Mesh3D mesh;
 
 	public SolidifyModifier() {
 		this.thickness = 0.01f;
@@ -28,8 +29,10 @@ public class SolidifyModifier implements IMeshModifier {
 	public Mesh3D modify(Mesh3D mesh) {
 		if (thickness == 0)
 			return mesh;
+		
+		this.mesh = mesh;
 
-		Mesh3D m0 = new Mesh3D();
+		Mesh3D result = new Mesh3D();
 		Mesh3D innerMesh = mesh.copy();
 
 		vertexNormals = calculateVertexNormals(mesh);
@@ -40,10 +43,18 @@ public class SolidifyModifier implements IMeshModifier {
 		Mesh3DUtil.flipDirection(innerMesh);
 
 		// Combine meshes.
-		m0.append(mesh, innerMesh);
+		result.append(mesh, innerMesh);
 
 		moveAlongVertexNormals(innerMesh);
 
+		extracted(mesh, result, innerMesh);
+
+		applyResult(result);
+		
+		return mesh;
+	}
+
+	private void extracted(Mesh3D mesh, Mesh3D result, Mesh3D innerMesh) {
 		// Bridge holes if any.
 		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
 		for (Face3D f : faces) {
@@ -56,17 +67,17 @@ public class SolidifyModifier implements IMeshModifier {
 					Vector3f v1 = innerMesh.getVertexAt(pair0.b);
 					Vector3f v2 = mesh.getVertexAt(pair0.a);
 					Vector3f v3 = mesh.getVertexAt(pair0.b);
-					Mesh3DUtil.bridge(m0, v0, v1, v2, v3);
+					Mesh3DUtil.bridge(result, v0, v1, v2, v3);
 				}
 			}
 		}
-
+	}
+	
+	private void applyResult(Mesh3D result) {
 		mesh.vertices.clear();
 		mesh.faces.clear();
-		mesh.addVertices(m0.vertices);
-		mesh.addFaces(m0.faces);
-
-		return mesh;
+		mesh.addVertices(result.vertices);
+		mesh.addFaces(result.faces);
 	}
 
 	private void mapEdges(Mesh3D mesh) {
