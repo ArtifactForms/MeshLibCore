@@ -13,12 +13,13 @@ import mesh.util.VertexNormals;
 public class SolidifyModifier implements IMeshModifier {
 
 	private float thickness;
+	private Mesh3D mesh;
+	private Mesh3D innerMesh;
 	private List<Vector3f> vertexNormals;
 	private HashSet<Pair> edges;
-	private Mesh3D mesh;
 
 	public SolidifyModifier() {
-		this.thickness = 0.01f;
+		this(0.01f);
 	}
 
 	public SolidifyModifier(float thickness) {
@@ -30,28 +31,35 @@ public class SolidifyModifier implements IMeshModifier {
 		if (thickness == 0)
 			return mesh;
 		
-		this.mesh = mesh;
-
 		Mesh3D result = new Mesh3D();
-		Mesh3D innerMesh = mesh.copy();
-
-		vertexNormals = calculateVertexNormals(mesh);
-		edges = new HashSet<>();
-
+		
+		setMesh(mesh);
+		createVertexNormals();
+		initializeEdgeMap();
 		mapEdges();
+		
 
-		Mesh3DUtil.flipDirection(innerMesh);
+		innerMesh = mesh.copy();
+		
 
+		flipDirectionOfInnerMesh();
 		// Combine meshes.
 		result.append(mesh, innerMesh);
-
-		moveAlongVertexNormals(innerMesh);
-
+		
+		
+		moveInnerMeshAlongVertexNormals();
 		bridgeHoles(result, innerMesh);
-
 		applyResult(result);
 		
 		return mesh;
+	}
+	
+	private void initializeEdgeMap() {
+		edges = new HashSet<>();
+	}
+	
+	private void flipDirectionOfInnerMesh() {
+		Mesh3DUtil.flipDirection(innerMesh);
 	}
 
 	private void bridgeHoles(Mesh3D result, Mesh3D innerMesh) {
@@ -88,16 +96,20 @@ public class SolidifyModifier implements IMeshModifier {
 		}
 	}
 
-	private void moveAlongVertexNormals(Mesh3D mesh) {
-		for (int i = 0; i < mesh.vertices.size(); i++) {
-			Vector3f vertex = mesh.getVertexAt(i);
+	private void moveInnerMeshAlongVertexNormals() {
+		for (int i = 0; i < innerMesh.vertices.size(); i++) {
+			Vector3f vertex = innerMesh.getVertexAt(i);
 			Vector3f normal = vertexNormals.get(i);
 			vertex.set(normal.mult(-thickness).add(vertex));
 		}
 	}
 
-	private List<Vector3f> calculateVertexNormals(Mesh3D mesh) {
-		return new VertexNormals(mesh).getVertexNormals();
+	private void createVertexNormals() {
+		vertexNormals = new VertexNormals(mesh).getVertexNormals();
+	}
+	
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
 	}
 
 	public float getThickness() {
