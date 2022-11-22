@@ -1,4 +1,4 @@
-package mesh.creator.unsorted;
+package mesh.creator.creative;
 
 import math.Vector3f;
 import mesh.Mesh3D;
