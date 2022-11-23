@@ -1,7 +1,6 @@
 package mesh.creator.primitives;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -48,9 +47,8 @@ public class SegmentedBox implements IMeshCreator {
 	}
 
 	private void removeDoubles() {
-		for (Vector3f v : mesh.vertices)
-			v.roundLocalDecimalPlaces(4);
-		mesh.removeDoubles();
+		int roundToDecimalPlaces = 4;
+		mesh.removeDoubles(roundToDecimalPlaces);
 	}
 
 	private void initializeMesh() {
