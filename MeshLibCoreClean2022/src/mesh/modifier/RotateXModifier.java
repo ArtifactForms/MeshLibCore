@@ -10,12 +10,10 @@ public class RotateXModifier implements IMeshModifier {
 	private float angle;
 
 	public RotateXModifier() {
-		super();
-		this.angle = 0;
+		this(0);
 	}
 
 	public RotateXModifier(float angle) {
-		super();
 		this.angle = angle;
 	}
 
