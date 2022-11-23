@@ -1,10 +1,6 @@
 package mesh.creator.primitives;
 
-import java.util.HashSet;
-
 import math.Mathf;
-import math.Vector3f;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -68,31 +64,8 @@ public class SegmentedCubeCreator implements IMeshCreator {
 		mesh.append(front);
 	}
 
-	private void roundVertices() {
-		for (Vector3f v : mesh.vertices) {
-			v.set(Mathf.round(v.x), Mathf.round(v.y), Mathf.round(v.z));
-		}
-	}
-
 	private void removeDoubles() {
-		Mesh3D m = new Mesh3D();
-		HashSet<Vector3f> vertexSet = new HashSet<Vector3f>();
-		for (Face3D f : mesh.faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = mesh.getVertexAt(f.indices[i]);
-				vertexSet.add(v);
-			}
-		}
-		m.vertices.addAll(vertexSet);
-		for (Face3D f : mesh.faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = mesh.getVertexAt(f.indices[i]);
-				int index = m.vertices.indexOf(v);
-				f.indices[i] = index;
-			}
-			m.add(f);
-		}
-		this.mesh = m;
+		mesh.removeDoubles(2);
 	}
 
 	private void scale() {
@@ -109,12 +82,11 @@ public class SegmentedCubeCreator implements IMeshCreator {
 		createBack();
 		createLeft();
 		createRight();
-		roundVertices();
 		removeDoubles();
 		scale();
 		return mesh;
 	}
-
+	
 	public int getSegments() {
 		return segments;
 	}
