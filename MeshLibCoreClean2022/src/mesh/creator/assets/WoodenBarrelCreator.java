@@ -29,6 +29,15 @@ public class WoodenBarrelCreator implements IMeshCreator {
 		this.rotationSegments = 16;
 		this.heightSegments = 8;
 	}
+	
+	@Override
+	public Mesh3D create() {
+		createBaseCylinder();
+		bend();
+		createInsets();
+		center();
+		return mesh;
+	}
 
 	private void createBaseCylinder() {
 		SegmentedCylinderCreator creator = new SegmentedCylinderCreator();
@@ -49,26 +58,21 @@ public class WoodenBarrelCreator implements IMeshCreator {
 		}
 	}
 
-	@Override
-	public Mesh3D create() {
-		createBaseCylinder();
-
+	private void createInsets() {
 		FaceSelection selection = new FaceSelection(mesh);
 		selection.selectTopFaces();
 		selection.selectBottomFaces();
-
-		bend();
-
+		
 		for (Face3D face : selection.getFaces()) {
 			Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
 			Mesh3DUtil.extrudeFace(mesh, face, 1.0f, -inset);
 			Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
 			new PlanarVertexCenterModifier().modify(mesh, face);
 		}
-
+	}
+	
+	private void center() {
 		mesh.translateY(-height * 0.5f);
-
-		return mesh;
 	}
 
 	public float getRadius() {
