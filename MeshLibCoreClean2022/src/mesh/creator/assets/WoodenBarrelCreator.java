@@ -22,18 +22,12 @@ public class WoodenBarrelCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public WoodenBarrelCreator() {
-		this(1f, 2.0f, 0.05f, 0.75f, 16, 8);
-	}
-
-	public WoodenBarrelCreator(float radius, float height, float inset, float bendFactor, int rotationSegments,
-			int heightSegments) {
-		super();
-		this.radius = radius;
-		this.height = height;
-		this.inset = inset;
-		this.bendFactor = bendFactor;
-		this.rotationSegments = rotationSegments;
-		this.heightSegments = heightSegments;
+		this.radius = 1.0f;
+		this.height = 2.0f;
+		this.inset = 0.05f;
+		this.bendFactor = 0.75f;
+		this.rotationSegments = 16;
+		this.heightSegments = 8;
 	}
 
 	private void createBaseCylinder() {
