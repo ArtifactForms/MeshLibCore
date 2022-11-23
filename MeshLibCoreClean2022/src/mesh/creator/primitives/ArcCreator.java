@@ -13,14 +13,10 @@ public class ArcCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public ArcCreator() {
-		this(0, Mathf.TWO_PI, 1, 32);
-	}
-
-	public ArcCreator(float startAngle, float endAngle, float radius, int vertices) {
-		this.startAngle = startAngle;
-		this.endAngle = endAngle;
-		this.radius = radius;
-		this.vertices = vertices;
+		this.startAngle = 0;
+		this.endAngle = Mathf.TWO_PI;
+		this.radius = 1;
+		this.vertices = 32;
 	}
 
 	private void createVertices() {
