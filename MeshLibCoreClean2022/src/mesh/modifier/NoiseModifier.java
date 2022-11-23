@@ -9,12 +9,11 @@ import mesh.util.VertexNormals;
 
 public class NoiseModifier implements IMeshModifier {
 
-	float minimum;
-	float maximum;
+	private float minimum;
+	private float maximum;
 	
 	public NoiseModifier() {
-		this.minimum = 0f;
-		this.maximum = 1f;
+		this(0.0f, 1.0f);
 	}
 	
 	public NoiseModifier(float minimum, float maximum) {
@@ -34,4 +33,20 @@ public class NoiseModifier implements IMeshModifier {
 		return mesh;
 	}
 
+	public float getMinimum() {
+		return minimum;
+	}
+
+	public void setMinimum(float minimum) {
+		this.minimum = minimum;
+	}
+
+	public float getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(float maximum) {
+		this.maximum = maximum;
+	}
+	
 }
