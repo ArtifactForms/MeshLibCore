@@ -19,7 +19,7 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 	private int centerIndex;
 	private int nextIndex;
 	private Mesh3D mesh;
-	private List<Face3D> toAdd;
+	private List<Face3D> newlyCreatedFaces;
 	private HashMap<Edge3D, Integer> edgeToEdgePointIndexMap;
 
 	@Override
@@ -62,7 +62,7 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 	}
 
 	private void addTriangle(int indexA, int indexB, int indexC) {
-		toAdd.add(new Face3D(indexA, indexB, indexC));
+		newlyCreatedFaces.add(new Face3D(indexA, indexB, indexC));
 	}
 
 	private void addCenterVertexOfFace(Face3D face) {
@@ -112,7 +112,7 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 	}
 
 	private void addNewFaces() {
-		mesh.faces.addAll(toAdd);
+		mesh.faces.addAll(newlyCreatedFaces);
 	}
 
 	private void map(int fromIndex, int toIndex, int index) {
@@ -124,7 +124,7 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 	}
 
 	private void initializeFaceList() {
-		toAdd = new ArrayList<Face3D>();
+		newlyCreatedFaces = new ArrayList<Face3D>();
 	}
 
 	private void initializeNextIndex() {
