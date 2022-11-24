@@ -12,19 +12,16 @@ public class HolesModifier implements IMeshModifier {
 	private float scaleExtrude;
 	
 	public HolesModifier() {
-		super();
 		this.scaleExtrude = 0.5f;
 	}
 	
 	public HolesModifier(float scaleExtrude) {
-		super();
 		this.scaleExtrude = scaleExtrude;
 	}
 	
 	public Mesh3D modify(Mesh3D mesh, Collection<Face3D> faces) {
-		for (Face3D face : faces) {
+		for (Face3D face : faces)
 			Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0.0f);
-		}
 		mesh.faces.removeAll(faces);
 		return mesh;
 	}
