@@ -49,7 +49,7 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 			int edgePointIndex = getEdgePointIndex(fromIndex, toIndex);
 			Vector3f edgePoint;
 			if (edgePointIndex < 0) {
-				edgePoint = calculateEdgePoint(from, to);
+				edgePoint = calculateMidPoint(from, to);
 				mesh.add(edgePoint);
 				map(fromIndex, toIndex, nextIndex);
 				edgePointIndex = nextIndex;
@@ -60,7 +60,7 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 		}
 	}
 	
-	private Vector3f calculateEdgePoint(Vector3f from, Vector3f to) {
+	private Vector3f calculateMidPoint(Vector3f from, Vector3f to) {
 		return GeometryUtil.getMidpoint(from, to);
 	}
 	
@@ -93,8 +93,7 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 	}
 	
 	private void map(int fromIndex, int toIndex, int index) {
-		Edge3D edge = new Edge3D(fromIndex, toIndex);
-		edgeToEdgePointIndexMap.put(edge, index);
+		edgeToEdgePointIndexMap.put(new Edge3D(fromIndex, toIndex), index);
 	}
 	
 	private void initializeEdgePointMap() {
