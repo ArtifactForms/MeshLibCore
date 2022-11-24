@@ -81,18 +81,20 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 	}
 
 	private int getEdgePointIndex() {
-		Integer index = -1;
-		Edge3D edge = new Edge3D(fromIndex, toIndex);
-
-		index = edgeToEdgePointIndexMap.get(edge);
-		if (index != null)
-			return index;
-
-		index = edgeToEdgePointIndexMap.get(edge.createPair());
-		if (index != null)
-			return index;
-
-		return -1;
+		Edge3D edge = getCurrentEdge();
+		Integer index = getIndexOfEdgePoint(edge);
+		if (index < 0)
+			index = getIndexOfEdgePoint(edge.createPair());
+		return index;
+	}
+	
+	private Edge3D getCurrentEdge() {
+		return new Edge3D(fromIndex, toIndex);
+	}
+	
+	private int getIndexOfEdgePoint(Edge3D edge) {
+		Integer index = edgeToEdgePointIndexMap.get(edge);
+		return index == null ? -1 : index;
 	}
 
 	private Vector3f calculateMidPoint() {
