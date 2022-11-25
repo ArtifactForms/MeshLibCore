@@ -272,6 +272,14 @@ public class Mesh3D {
 		}
 		return result;
 	}
+	
+	public void clearFaces() {
+		faces.clear();
+	}
+	
+	public void clearVertices() {
+		vertices.clear();
+	}
 
 	public void addVertex(float x, float y, float z) {
 		vertices.add(new Vector3f(x, y, z));
