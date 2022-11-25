@@ -42,7 +42,15 @@ public class LeonardoCubeCreator implements IMeshCreator {
 	}
 
 	private void removeDoubles() {
+		removeDoubleVertices();
+		removeDoubleFaces();
+	}
+	
+	private void removeDoubleVertices() {
 		mesh.removeDoubles(2);
+	}
+	
+	private void removeDoubleFaces() {
 		FaceSelection selection = new FaceSelection(mesh);
 		selection.selectDoubles();
 		mesh.faces.removeAll(selection.getFaces());
