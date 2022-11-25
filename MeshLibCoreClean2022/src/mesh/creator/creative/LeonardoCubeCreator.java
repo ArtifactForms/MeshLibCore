@@ -25,7 +25,6 @@ public class LeonardoCubeCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
 		initializeMesh();
 		createConnectors();
 		removeDoubles();
