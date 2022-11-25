@@ -3,7 +3,6 @@ package mesh;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import math.Mathf;
