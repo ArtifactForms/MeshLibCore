@@ -1,7 +1,6 @@
 package mesh.creator.primitives;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
@@ -22,6 +21,18 @@ public class UVSphereCreator implements IMeshCreator {
 		this.segments = segments;
 		this.radius = radius;
 	}
+	
+	@Override
+	public Mesh3D create() {
+		if (rings == 0 && segments == 0)
+			return new Mesh3D();
+
+		initializeMesh();
+		createVertices();
+		createFaces();
+
+		return mesh;
+	}
 
 	private void createVertices() {
 		float stepTheta = Mathf.PI / (float) rings;
@@ -33,16 +44,11 @@ public class UVSphereCreator implements IMeshCreator {
 				float x = radius * Mathf.cos(phi) * Mathf.sin(theta);
 				float y = radius * Mathf.cos(theta);
 				float z = radius * Mathf.sin(phi) * Mathf.sin(theta);
-				mesh.addVertex(x, y, z);
+				addVertex(x, y, z);
 			}
 		}
-		mesh.add(new Vector3f(0, -radius, 0));
-		mesh.add(new Vector3f(0, radius, 0));
-	}
-
-	private int getIndex(int row, int col) {
-		int idx = segments * row + col;
-		return idx % mesh.vertices.size();
+		addVertex(0, -radius, 0);
+		addVertex(0, radius, 0);
 	}
 
 	private void createFaces() {
@@ -60,17 +66,18 @@ public class UVSphereCreator implements IMeshCreator {
 			}
 		}
 	}
+	
+	private int getIndex(int row, int col) {
+		int idx = segments * row + col;
+		return idx % mesh.vertices.size();
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
 
-	@Override
-	public Mesh3D create() {
-		if (rings == 0 && segments == 0)
-			return new Mesh3D();
-
+	private void initializeMesh() {
 		mesh = new Mesh3D();
-		createVertices();
-		createFaces();
-
-		return mesh;
 	}
 
 	public int getRings() {
