@@ -18,6 +18,18 @@ public class PlaneCreator implements IMeshCreator {
 		this.radius = size;
 	}
 	
+	@Override
+	public Mesh3D create() {
+		initializeMesh();
+		createVertices();
+		createFaces();
+		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+	
 	private void createVertices() {
 		mesh.add(new Vector3f(radius, 0, -radius));
 		mesh.add(new Vector3f(radius, 0, radius));
@@ -28,15 +40,7 @@ public class PlaneCreator implements IMeshCreator {
 	private void createFaces() {
 		mesh.add(new Face3D(0, 1, 2, 3));
 	}
-
-	@Override
-	public Mesh3D create() {
-		mesh = new Mesh3D();
-		createVertices();
-		createFaces();
-		return mesh;
-	}
-
+	
 	public float getRadius() {
 		return radius;
 	}
