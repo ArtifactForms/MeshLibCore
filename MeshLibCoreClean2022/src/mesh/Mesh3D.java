@@ -9,6 +9,7 @@ import java.util.List;
 import math.Mathf;
 import math.Matrix3f;
 import math.Vector3f;
+import mesh.modifier.RemoveDoubleVerticesModifier;
 import mesh.util.Bounds3;
 
 public class Mesh3D {
@@ -226,42 +227,14 @@ public class Mesh3D {
 		return mesh;
 	}
 	
-	public boolean removeDoubles(int decimalPlaces) {
+	public void removeDoubles(int decimalPlaces) {
 		for (Vector3f v : vertices)
 			v.roundLocalDecimalPlaces(decimalPlaces);
-		return removeDoubles();
+		removeDoubles();
 	}
 
-	public boolean removeDoubles() {
-		int countBefore = getVertexCount();
-		Mesh3D m = new Mesh3D();
-		HashSet<Vector3f> vertexSet = new HashSet<Vector3f>();
-
-		for (Face3D f : faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = getVertexAt(f.indices[i]);
-				vertexSet.add(v);
-			}
-		}
-
-		m.vertices.addAll(vertexSet);
-
-		for (Face3D f : faces) {
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f v = getVertexAt(f.indices[i]);
-				int index = m.vertices.indexOf(v);
-				f.indices[i] = index;
-			}
-			m.add(f);
-		}
-
-		vertices.clear();
-		faces.clear();
-
-		vertices.addAll(m.vertices);
-		faces.addAll(m.faces);
-
-		return countBefore > getVertexCount();
+	public void removeDoubles() {
+		new RemoveDoubleVerticesModifier().modify(this);
 	}
 
 	public Collection<Face3D> getSelection(String tag) {
