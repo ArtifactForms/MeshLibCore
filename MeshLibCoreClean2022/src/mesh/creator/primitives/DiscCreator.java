@@ -13,19 +13,10 @@ public class DiscCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public DiscCreator() {
-		this(32, 1, 1.0f, 0.5f);
-	}
-
-	public DiscCreator(int rotationSegments, float outerRadius, float innerRadius) {
-		this(rotationSegments, 1, outerRadius, innerRadius);
-	}
-
-	public DiscCreator(int rotationSegments, int discSegments, float outerRadius, float innerRadius) {
-		super();
-		this.rotationSegments = rotationSegments;
-		this.discSegments = discSegments;
-		this.outerRadius = outerRadius;
-		this.innerRadius = innerRadius;
+		this.rotationSegments = 32;
+		this.discSegments = 1;
+		this.outerRadius = 1.0f;
+		this.innerRadius = 0.5f;
 	}
 
 	private void addFace(int i, int j, int segments) {
