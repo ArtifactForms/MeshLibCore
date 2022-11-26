@@ -18,82 +18,97 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 	private float scaleX;
 	private float scaleY;
 	private float scaleZ;
+	private Mesh3D mesh;
+	private Mesh3D[][][] cubes;
 
 	public CubeJointLatticeCubeCreator() {
-		this.subdivisionsX = 10;
-		this.subdivisionsY = 10;
-		this.subdivisionsZ = 10;
-		this.tileSizeX = 0.1f;
-		this.tileSizeY = 0.1f;
-		this.tileSizeZ = 0.1f;
-		this.jointSize = 0.01f;
-		this.scaleX = 0.5f;
-		this.scaleY = 0.5f;
-		this.scaleZ = 0.5f;
+		subdivisionsX = 10;
+		subdivisionsY = 10;
+		subdivisionsZ = 10;
+		tileSizeX = 0.1f;
+		tileSizeY = 0.1f;
+		tileSizeZ = 0.1f;
+		jointSize = 0.01f;
+		scaleX = 0.5f;
+		scaleY = 0.5f;
+		scaleZ = 0.5f;
 	}
 
 	@Override
 	public Mesh3D create() {
-		Mesh3D mesh = new Mesh3D();
-		Mesh3D[][][] cubes = new Mesh3D[subdivisionsY + 1][subdivisionsX + 1][subdivisionsZ + 1];
-
-		// Create joints
+		initializeMesh();
+		initializeCubes();
+		createJoints();
+		connectJoints();
+		centerOnOrigin();
+		return mesh;
+	}
+	
+	private void createJoints() {
 		for (int k = 0; k < cubes[0][0].length; k++) {
 			for (int i = 0; i < cubes.length; i++) {
 				for (int j = 0; j < cubes[0].length; j++) {
 					cubes[i][j][k] = new CubeCreator(jointSize).create();
-					cubes[i][j][k].translate(j * tileSizeX, i * tileSizeY, k
-							* tileSizeZ);
+					cubes[i][j][k].translate(j * tileSizeX, i * tileSizeY, k * tileSizeZ);
 					mesh.append(cubes[i][j][k]);
 				}
 			}
 		}
+	}
 
-		// Connect joints
+	private void connectJoints() {
 		for (int k = 0; k < cubes[0][0].length; k++) {
 			for (int i = 0; i < cubes.length; i++) {
 				for (int j = 0; j < cubes[0].length; j++) {
-
-					if ((j + 1) < cubes[0].length) {
-						Face3D f0 = cubes[i][j][k].faces.get(2); // right
-						Face3D f1 = cubes[i][j + 1][k].faces.get(4); // left
-						Mesh3DUtil.extrudeFace(mesh, f0, scaleX, 0.0f);
-						Mesh3DUtil.extrudeFace(mesh, f1, scaleX, 0.0f);
-						Mesh3DUtil.flipDirection(mesh, f1);
-						Mesh3DUtil.bridge(mesh, f0, f1);
-						mesh.faces.remove(f0);
-						mesh.faces.remove(f1);
-					}
-
-					if ((i + 1) < cubes.length) {
-						Face3D f2 = cubes[i][j][k].faces.get(1); // bottom
-						Face3D f3 = cubes[i + 1][j][k].faces.get(0); // top
-						Mesh3DUtil.extrudeFace(mesh, f2, scaleY, 0.0f);
-						Mesh3DUtil.extrudeFace(mesh, f3, scaleY, 0.0f);
-						Mesh3DUtil.flipDirection(mesh, f3);
-						Mesh3DUtil.bridge(mesh, f2, f3);
-						mesh.faces.remove(f2);
-						mesh.faces.remove(f3);
-					}
-					
-					if ((k + 1) < cubes[0][0].length) {
-						Face3D f2 = cubes[i][j][k].faces.get(3); // front
-						Face3D f3 = cubes[i][j][k + 1].faces.get(5); // back
-						Mesh3DUtil.extrudeFace(mesh, f2, scaleZ, 0.0f);
-						Mesh3DUtil.extrudeFace(mesh, f3, scaleZ, 0.0f);
-						Mesh3DUtil.flipDirection(mesh, f3);
-						Mesh3DUtil.bridge(mesh, f2, f3);
-						mesh.faces.remove(f2);
-						mesh.faces.remove(f3);
-					}
+					if ((j + 1) < cubes[0].length)
+						connectRightLeft(k, i, j);
+					if ((i + 1) < cubes.length)
+						connectBottomTop(k, i, j);
+					if ((k + 1) < cubes[0][0].length)
+						connectFrontBack(k, i, j);
 				}
 			}
 		}
-		
-		mesh.translate(-subdivisionsX * tileSizeX / 2f, -subdivisionsY
-				* tileSizeY / 2f, -subdivisionsZ * tileSizeZ / 2f);
+	}
 
-		return mesh;
+	private void connect(Face3D a, Face3D b, float extrude) {
+		Mesh3DUtil.extrudeFace(mesh, a, extrude, 0.0f);
+		Mesh3DUtil.extrudeFace(mesh, b, extrude, 0.0f);
+		Mesh3DUtil.flipDirection(mesh, b);
+		Mesh3DUtil.bridge(mesh, a, b);
+		mesh.faces.remove(a);
+		mesh.faces.remove(b);
+	}
+
+	private void connectBottomTop(int k, int i, int j) {
+		Face3D bottom = cubes[i][j][k].faces.get(1);
+		Face3D top = cubes[i + 1][j][k].faces.get(0);
+		connect(bottom, top, scaleY);
+	}
+
+	private void connectFrontBack(int k, int i, int j) {
+		Face3D front = cubes[i][j][k].faces.get(3);
+		Face3D back = cubes[i][j][k + 1].faces.get(5);
+		connect(front, back, scaleZ);
+	}
+
+	private void connectRightLeft(int k, int i, int j) {
+		Face3D right = cubes[i][j][k].faces.get(2);
+		Face3D left = cubes[i][j + 1][k].faces.get(4);
+		connect(right, left, scaleX);
+	}
+
+	private void centerOnOrigin() {
+		mesh.translate(-subdivisionsX * tileSizeX / 2f, -subdivisionsY * tileSizeY / 2f,
+				-subdivisionsZ * tileSizeZ / 2f);
+	}
+
+	private void initializeCubes() {
+		cubes = new Mesh3D[subdivisionsY + 1][subdivisionsX + 1][subdivisionsZ + 1];
+	}
+
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 
 	public int getSubdivisionsX() {
@@ -175,5 +190,5 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 	public void setScaleZ(float scaleZ) {
 		this.scaleZ = scaleZ;
 	}
-	
+
 }
