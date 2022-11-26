@@ -421,5 +421,9 @@ public class FaceSelection {
 	public Mesh3D getMesh() {
 		return mesh;
 	}
+	
+	public int size() {
+		return faceSet.size();
+	}
 
 }
