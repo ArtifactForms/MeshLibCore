@@ -106,24 +106,24 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 		return cubes[y][x][z].faces;
 	}
 	
-	private Face3D getFrontFaceOfCubeAt(int x, int y, int z) {
-		return getFacesOfCubeAt(x, y, z).get(3);
-	}
-	
 	private Face3D getTopFaceOfCubeAt(int x, int y, int z) {
 		return getFacesOfCubeAt(x, y, z).get(0);
+	}
+	
+	private Face3D getBottomFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(1);
 	}
 	
 	private Face3D getRightFaceOfCubeAt(int x, int y, int z) {
 		return getFacesOfCubeAt(x, y, z).get(2);
 	}
 	
-	private Face3D getLeftFaceOfCubeAt(int x, int y, int z) {
-		return getFacesOfCubeAt(x, y, z).get(4);
+	private Face3D getFrontFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(3);
 	}
 	
-	private Face3D getBottomFaceOfCubeAt(int x, int y, int z) {
-		return getFacesOfCubeAt(x, y, z).get(1);
+	private Face3D getLeftFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(4);
 	}
 	
 	private Face3D getBackFaceOfCubeAt(int x, int y, int z) {
