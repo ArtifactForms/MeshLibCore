@@ -1,4 +1,13 @@
-# MeshLibrary
+# Artifact Forms
+This library is a hobby project started around 2015/2016 with the intension to learn more about
+creating and manipulating geometry in Three-dimensional space. 
+I could build up on some small knowledge I gathered through my internship several years before.
+At this time I worked together with university students from the field of product design.
+This was also the time I got in touch with a programming language called 'Processing' for the first time. And I was hooked from day one.
+Processing is a language created to help people to learn programming in a visual context.
+If you are interested to find out more went to 
+[processing.org](https://processing.org). But processing is not absolutely necessary, cause the core of the library is decoupled from the processing
+environment. Nevertheless processing provides a convinent way to display constructed meshes through it's rendering pipeline. Under the hood processing makes use of *JAVA*, *JAVA2D* and *OPENGL*.
 
 ## Core elements
 * Mesh3D
@@ -8,9 +17,9 @@
 * Modifiers
 
 ## Creators
-The library provides a variety of mesh 'Creators' to construct various shapes the convenient way.
+The library provides a variety of so called mesh 'Creators' to construct various shapes the convenient way.
 More precisely the 'Factory Pattern' was applied for this purpose.
-Each creator derives from the 'IMeshCreator' interface. The following code example shows the interface for all mesh creators.
+Each creator derives from the 'IMeshCreator' interface. The following code example shows the interface for all mesh creators. 
 
 ```java
 package mesh.creator;
@@ -33,4 +42,5 @@ So the library could be used independently.
 
 ## Planed features
 * Convex Hull
-* Poisson-Disc sampling
+* Poisson-Disc Sampling
+* Marching Cubes
