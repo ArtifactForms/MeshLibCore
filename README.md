@@ -23,12 +23,14 @@ Some of them are already listed under 'Planed features'.
 * Mesh3D
 * Face3D
 * Edge3D
-* Creators
+* [Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/blob/master/MeshLibCoreClean2022/documentation/documentation.md)
 * Modifiers
 
 ## Creators
 The library provides a variety of so called mesh 'Creators' to construct various shapes the convenient way.
 More precisely the 'Factory Pattern' was applied for this purpose.
+In the meantime the library contains 100+ different mesh creators divided in various categories.
+Get a first impression and overview here: [Mesh Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/blob/master/MeshLibCoreClean2022/documentation/documentation.md).
 Each creator derives from the 'IMeshCreator' interface. The following code example shows the mentioned root interface for all mesh creators. 
 
 ```java
@@ -41,9 +43,8 @@ public interface IMeshCreator {
 	public Mesh3D create();
 	
 }
-```
-In the meantime the library contains 100+ different mesh creators divided in various categories.
 
+```
 ## Coordinate System
 The library is build up on a left-handed coordinate system.
 The decision was justified by using the 'Processing' rendering pipeline in the first place.
