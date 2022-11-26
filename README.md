@@ -19,7 +19,7 @@ environment. Nevertheless processing provides a convinent way to display constru
 ## Creators
 The library provides a variety of so called mesh 'Creators' to construct various shapes the convenient way.
 More precisely the 'Factory Pattern' was applied for this purpose.
-Each creator derives from the 'IMeshCreator' interface. The following code example shows the root interface for all mesh creators. 
+Each creator derives from the 'IMeshCreator' interface. The following code example shows the mentioned root interface for all mesh creators. 
 
 ```java
 package mesh.creator;
