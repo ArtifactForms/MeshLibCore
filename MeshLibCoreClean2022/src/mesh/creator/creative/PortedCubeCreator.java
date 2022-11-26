@@ -69,7 +69,7 @@ public class PortedCubeCreator implements IMeshCreator {
 
 	private void selectCenterFaces() {
 		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectCenterDistanceEquals(Vector3f.ZERO, 1.5f);
+		selection.selectCenterDistanceLessThan(Vector3f.ZERO, 1.6f);
 		centerFaces.addAll(selection.getFaces());
 	}
 
