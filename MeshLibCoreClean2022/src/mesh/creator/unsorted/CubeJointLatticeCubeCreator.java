@@ -85,25 +85,49 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 	}
 	
 	private void connectRightLeft(int x, int y, int z) {
-		Face3D right = getFaces(x, y, z).get(2);
-		Face3D left = getFaces(x + 1, y, z).get(4);
+		Face3D right = getRightFaceOfCubeAt(x, y, z);
+		Face3D left = getLeftFaceOfCubeAt(x + 1, y, z);
 		connect(right, left, scaleX);
 	}
 
 	private void connectBottomTop(int x, int y, int z) {
-		Face3D bottom = getFaces(x, y, z).get(1);
-		Face3D top = getFaces(x, y + 1, z).get(0);
+		Face3D bottom = getBottomFaceOfCubeAt(x, y, z);
+		Face3D top = getTopFaceOfCubeAt(x, y + 1, z);
 		connect(bottom, top, scaleY);
 	}
 
 	private void connectFrontBack(int x, int y, int z) {
-		Face3D front = getFaces(x, y, z).get(3);
-		Face3D back = getFaces(x, y, z + 1).get(5);
+		Face3D front = getFrontFaceOfCubeAt(x, y, z);
+		Face3D back = getBackFaceOfCubeAt(x, y, z + 1);
 		connect(front, back, scaleZ);
 	}
 
-	private List<Face3D> getFaces(int x, int y, int z) {
+	private List<Face3D> getFacesOfCubeAt(int x, int y, int z) {
 		return cubes[y][x][z].faces;
+	}
+	
+	private Face3D getFrontFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(3);
+	}
+	
+	private Face3D getTopFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(0);
+	}
+	
+	private Face3D getRightFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(2);
+	}
+	
+	private Face3D getLeftFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(4);
+	}
+	
+	private Face3D getBottomFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(1);
+	}
+	
+	private Face3D getBackFaceOfCubeAt(int x, int y, int z) {
+		return getFacesOfCubeAt(x, y, z).get(5);
 	}
 
 	private void centerAtOrigin() {
