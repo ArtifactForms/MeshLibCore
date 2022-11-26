@@ -10,7 +10,7 @@ This was also the time I got in touch with a programming language called 'Proces
 Processing is a language created with the intension to help people to learn programming in a visual context.
 If you are interested to find out more went to 
 [processing.org](https://processing.org). But processing is not absolutely necessary, cause the core of the library is decoupled from the processing
-environment. Nevertheless processing provides a convinent way to display constructed meshes through it's rendering pipeline. Under the hood processing makes use of *JAVA*, *JAVA2D* and *OPENGL*.
+environment. Nevertheless processing provides a convenient way to display constructed meshes through it's rendering pipeline. Under the hood processing makes use of *JAVA*, *JAVA2D* and *OPENGL*.
 
 ## Core elements
 * Mesh3D
