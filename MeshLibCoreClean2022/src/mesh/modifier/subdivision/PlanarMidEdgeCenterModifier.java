@@ -119,7 +119,12 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 		subdivideFaces();
 		removeOldFaces();
 		addNewFaces();
+		removeDoubleVertices();
 		clear();
+	}
+	
+	private void removeDoubleVertices() {
+		mesh.removeDoubles();
 	}
 	
 	private void initializeNextIndex() {
