@@ -4,7 +4,7 @@ creating and manipulating geometry in Three-dimensional space.
 I could build up on some small knowledge I gathered through my internship several years before.
 At this time I worked together with university students from the field of product design.
 This was also the time I got in touch with a programming language called 'Processing' for the first time. And I was hooked from day one.
-Processing is a language created to help people to learn programming in a visual context.
+Processing is a language created with the intension to help people to learn programming in a visual context.
 If you are interested to find out more went to 
 [processing.org](https://processing.org). But processing is not absolutely necessary, cause the core of the library is decoupled from the processing
 environment. Nevertheless processing provides a convinent way to display constructed meshes through it's rendering pipeline. Under the hood processing makes use of *JAVA*, *JAVA2D* and *OPENGL*.
