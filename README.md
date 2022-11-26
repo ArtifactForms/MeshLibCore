@@ -13,8 +13,11 @@ If you are interested to find out more went to
 environment. Nevertheless processing provides a convenient way to display constructed meshes through it's rendering pipeline. Under the hood processing makes use of *JAVA*, *JAVA2D* and *OPENGL*.
 
 ## Status Quo
-At the current stage I mainly work on the user documentation. Codewise a lot of refactoring is going on. And from time to time small additions are made. 
-Meanwhile all the processing specific and rendering stuff lives in it's own repository. So this is another project to went on with. 
+At the current stage I mainly work on the user documentation. Codewise a lot of refactoring is going on to keep the project clean. And from time to time small additions are made. Meanwhile all the processing specific and rendering stuff lives in it's own repository. So this is another project to went on with.
+
+## Future
+There are a lot of corresponding topics out there. So my wishlist of things to learn and implement is unspeakably large.
+Some of them are already listed under 'Planed features'.
 
 ## Core elements
 * Mesh3D
