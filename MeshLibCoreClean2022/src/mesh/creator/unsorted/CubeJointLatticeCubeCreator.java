@@ -1,5 +1,7 @@
 package mesh.creator.unsorted;
 
+import java.util.List;
+
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
@@ -40,35 +42,37 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 		initializeCubes();
 		createJoints();
 		connectJoints();
-		centerOnOrigin();
+		centerAtOrigin();
 		return mesh;
 	}
-	
+
 	private void createJoints() {
-		for (int k = 0; k < cubes[0][0].length; k++) {
-			for (int i = 0; i < cubes.length; i++) {
-				for (int j = 0; j < cubes[0].length; j++) {
-					cubes[i][j][k] = new CubeCreator(jointSize).create();
-					cubes[i][j][k].translate(j * tileSizeX, i * tileSizeY, k * tileSizeZ);
-					mesh.append(cubes[i][j][k]);
-				}
-			}
-		}
+		for (int z = 0; z < cubes[0][0].length; z++)
+			for (int y = 0; y < cubes.length; y++)
+				for (int x = 0; x < cubes[0].length; x++)
+					createJointAt(x, y, z);
+	}
+
+	private void createJointAt(int x, int y, int z) {
+		cubes[y][x][z] = new CubeCreator(jointSize).create();
+		cubes[y][x][z].translate(x * tileSizeX, y * tileSizeY, z * tileSizeZ);
+		mesh.append(cubes[y][x][z]);
 	}
 
 	private void connectJoints() {
-		for (int k = 0; k < cubes[0][0].length; k++) {
-			for (int i = 0; i < cubes.length; i++) {
-				for (int j = 0; j < cubes[0].length; j++) {
-					if ((j + 1) < cubes[0].length)
-						connectRightLeft(k, i, j);
-					if ((i + 1) < cubes.length)
-						connectBottomTop(k, i, j);
-					if ((k + 1) < cubes[0][0].length)
-						connectFrontBack(k, i, j);
-				}
-			}
-		}
+		for (int z = 0; z < cubes[0][0].length; z++)
+			for (int y = 0; y < cubes.length; y++)
+				for (int x = 0; x < cubes[0].length; x++)
+					connectJointAt(x, y, z);
+	}
+
+	private void connectJointAt(int x, int y, int z) {
+		if ((x + 1) < cubes[0].length)
+			connectRightLeft(x, y, z);
+		if ((y + 1) < cubes.length)
+			connectBottomTop(x, y, z);
+		if ((z + 1) < cubes[0][0].length)
+			connectFrontBack(x, y, z);
 	}
 
 	private void connect(Face3D a, Face3D b, float extrude) {
@@ -79,26 +83,30 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 		mesh.faces.remove(a);
 		mesh.faces.remove(b);
 	}
-
-	private void connectBottomTop(int k, int i, int j) {
-		Face3D bottom = cubes[i][j][k].faces.get(1);
-		Face3D top = cubes[i + 1][j][k].faces.get(0);
-		connect(bottom, top, scaleY);
-	}
-
-	private void connectFrontBack(int k, int i, int j) {
-		Face3D front = cubes[i][j][k].faces.get(3);
-		Face3D back = cubes[i][j][k + 1].faces.get(5);
-		connect(front, back, scaleZ);
-	}
-
-	private void connectRightLeft(int k, int i, int j) {
-		Face3D right = cubes[i][j][k].faces.get(2);
-		Face3D left = cubes[i][j + 1][k].faces.get(4);
+	
+	private void connectRightLeft(int x, int y, int z) {
+		Face3D right = getFaces(x, y, z).get(2);
+		Face3D left = getFaces(x + 1, y, z).get(4);
 		connect(right, left, scaleX);
 	}
 
-	private void centerOnOrigin() {
+	private void connectBottomTop(int x, int y, int z) {
+		Face3D bottom = getFaces(x, y, z).get(1);
+		Face3D top = getFaces(x, y + 1, z).get(0);
+		connect(bottom, top, scaleY);
+	}
+
+	private void connectFrontBack(int x, int y, int z) {
+		Face3D front = getFaces(x, y, z).get(3);
+		Face3D back = getFaces(x, y, z + 1).get(5);
+		connect(front, back, scaleZ);
+	}
+
+	private List<Face3D> getFaces(int x, int y, int z) {
+		return cubes[y][x][z].faces;
+	}
+
+	private void centerAtOrigin() {
 		mesh.translate(-subdivisionsX * tileSizeX / 2f, -subdivisionsY * tileSizeY / 2f,
 				-subdivisionsZ * tileSizeZ / 2f);
 	}
