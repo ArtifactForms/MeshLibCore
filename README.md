@@ -1,4 +1,7 @@
 # Artifact Forms
+A *JAVA* library to construct and manipulate geometry in Three-dimensional space.
+
+## Background / Intension
 This library is a hobby project started around 2015/2016 with the intension to learn more about
 creating and manipulating geometry in Three-dimensional space. 
 I could build up on some small knowledge I gathered through my internship several years before.
