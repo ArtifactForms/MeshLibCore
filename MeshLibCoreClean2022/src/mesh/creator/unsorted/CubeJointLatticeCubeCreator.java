@@ -32,22 +32,6 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 		this.scaleZ = 0.5f;
 	}
 
-	public CubeJointLatticeCubeCreator(int subdivisionsX, int subdivisionsY,
-			int subdivisionsZ, float tileSizeX, float tileSizeY,
-			float tileSizeZ, float jointSize, float scaleX, float scaleY,
-			float scaleZ) {
-		this.subdivisionsX = subdivisionsX;
-		this.subdivisionsY = subdivisionsY;
-		this.subdivisionsZ = subdivisionsZ;
-		this.tileSizeX = tileSizeX;
-		this.tileSizeY = tileSizeY;
-		this.tileSizeZ = tileSizeZ;
-		this.jointSize = jointSize;
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-		this.scaleZ = scaleZ;
-	}
-
 	@Override
 	public Mesh3D create() {
 		Mesh3D mesh = new Mesh3D();
