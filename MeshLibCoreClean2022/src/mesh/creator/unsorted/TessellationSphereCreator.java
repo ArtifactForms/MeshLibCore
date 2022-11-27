@@ -48,12 +48,16 @@ public class TessellationSphereCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
-		mesh = new IcoSphereCreator(radius, subdivisions).create();
+		createBaseIcoSphere();
 		tessellate();
 		createHoles();
 		pushToSphere();
 		solidify();
 		return mesh;
+	}
+	
+	private void createBaseIcoSphere() {
+		mesh = new IcoSphereCreator(radius, subdivisions).create();
 	}
 
 	public float getRadius() {
