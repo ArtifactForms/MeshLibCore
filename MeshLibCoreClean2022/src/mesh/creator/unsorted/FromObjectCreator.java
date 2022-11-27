@@ -11,13 +11,9 @@ public class FromObjectCreator implements IMeshCreator {
 	private float scale;
 	private String path;
 
-	public FromObjectCreator(String path) {
-		this(1.0f, path);
-	}
-
-	public FromObjectCreator(float scale, String path) {
-		this.scale = scale;
-		this.path = path;
+	public FromObjectCreator() {
+		this.scale = 1.0f;
+		this.path = "";
 	}
 
 	@Override
@@ -27,6 +23,22 @@ public class FromObjectCreator implements IMeshCreator {
 		Mesh3D mesh = in.read(file);
 		mesh.scale(scale);
 		return mesh;
+	}
+
+	public float getScale() {
+		return scale;
+	}
+
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }
