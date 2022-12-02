@@ -49,7 +49,7 @@ corner. To make things a bit more explanatory we compose the quad out of two tri
 ```
 
 ### Mesh3D Object
-The base class for all shapes is **mesh.Mesh3D**.
+The base class for all shapes is ```mesh.Mesh3D```.
 
 ```java
 import mesh.Mesh3D;
@@ -62,6 +62,36 @@ mesh.add(new Vector3f(1, 0, -1));
 mesh.add(new Vector3f(1, 0, 1);
 mesh.add(new Vector3f(-1, 0, 1);
 mesh.add(new Vector3f(-1, 0, -1);
+```
+
+Alternatively use ```addVertex(x, y, z)```
+
+```java
+mesh.addVertex(1, 0, -1);
+mesh.addVertex(1, 0, 1);
+mesh.addVertex(-1, 0, 1);
+mesh.addVertex(-1, 0, -1);
+```
+
+After adding the vertices they are at an indexed position within the mesh.
+
+```
+     3              0
+     o--------------o
+     |  .           |
+     |    .         |
+     |      .       |
+     |        .     |
+     |          .   |
+     o--------------o
+     2              1
+```
+
+Knowing the index of each vertex makes adding faces a piece of cake.
+
+```java
+mesh.addFace(0, 1, 3);
+mesh.addFace(1, 2, 3);
 ```
 
 ## Creators
