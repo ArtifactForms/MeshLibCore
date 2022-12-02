@@ -18,15 +18,25 @@ public class ArcCreator implements IMeshCreator {
 		this.radius = 1;
 		this.vertices = 32;
 	}
+	
+	@Override
+	public Mesh3D create() {
+		initializeMesh();
+		createVertices();
+		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
 
 	private void createVertices() {
 		float angleStep = calculateAngleStep();
 
 		for (int i = 0; i < vertices; i++) {
 			float x = radius * Mathf.cos(startAngle + (angleStep * i));
-			float y = 0;
 			float z = radius * Mathf.sin(startAngle + (angleStep * i));
-			mesh.addVertex(x, y, z);
+			mesh.addVertex(x, 0, z);
 		}
 	}
 	
@@ -34,17 +44,6 @@ public class ArcCreator implements IMeshCreator {
 		 return (endAngle - startAngle) / ((float) vertices - 1);
 	}
 	
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
-
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVertices();
-		return mesh;
-	}
-
 	public float getStartAngle() {
 		return startAngle;
 	}
