@@ -73,7 +73,7 @@ mesh.addVertex(-1, 0, 1);
 mesh.addVertex(-1, 0, -1);
 ```
 
-After adding the vertices they are at an indexed position within the mesh.
+The added vertices are now at an indexed position within the mesh.
 
 ```
      3              0
