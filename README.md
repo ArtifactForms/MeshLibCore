@@ -40,7 +40,8 @@ So the library could be used independently.
 
 ## Mesh3D
 The following example shows how to work with the base mesh class. For this purpose we want to create a simple quad. The quad has four vertices, one for each
-corner. To make things a bit more explanatory we compose the quad out of two triangular faces.
+corner. To make things a bit more explanatory we compose the quad out of two triangular faces. **Important:** This is just an example to illustrate the base concepts. The library already provides a convenient way to construct primitives and more complex shapes. But we dive into this at a later point. For now
+let's keep things simple. But also keep in mind that it might be useful to construct shapes by yourself in some cases.
 
 ```
 (-1, 0, -1)     (1, 0, -1)
@@ -107,6 +108,15 @@ mesh.addFace(1, 2, 3);
 ```
 
 ![](MeshLibCoreClean2022/documentation/images/quad_example.png)
+
+### Modify the mesh
+
+Now we have a mesh constisting of four vertices and two triangular faces. This could be retrieved by using:
+
+```java
+int vertexCount = mesh.getVertexCount();
+int faceCount = mesh.getFaceCount();
+```
 
 ## Creators
 The library provides a variety of so called mesh 'Creators' to construct various shapes the convenient way.
