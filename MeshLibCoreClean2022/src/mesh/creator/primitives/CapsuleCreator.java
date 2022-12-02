@@ -15,31 +15,18 @@ public class CapsuleCreator implements IMeshCreator {
 	private int bottomCapSegments;
 	private int cylinderSegments;
 	private int rotationSegments;
-
 	private Mesh3D mesh;
 
 	public CapsuleCreator() {
-		this(1, 2, 1, 16, 8, 32);
-	}
-
-	public CapsuleCreator(float radius, float cylinderHeight, float capHeight, int capSegments, int cylinderSegments,
-			int rotationSegments) {
-		this(radius, radius, cylinderHeight, capHeight, capHeight, capSegments, capSegments, cylinderSegments,
-				rotationSegments);
-	}
-
-	public CapsuleCreator(float topRadius, float bottomRadius, float cylinderHeight, float topCapHeight,
-			float bottomCapHeight, int topCapSegments, int bottomCapSegments, int cylinderSegments,
-			int rotationSegments) {
-		this.topRadius = topRadius;
-		this.bottomRadius = bottomRadius;
-		this.cylinderHeight = cylinderHeight;
-		this.topCapHeight = topCapHeight;
-		this.bottomCapHeight = bottomCapHeight;
-		this.topCapSegments = topCapSegments;
-		this.bottomCapSegments = bottomCapSegments;
-		this.cylinderSegments = cylinderSegments;
-		this.rotationSegments = rotationSegments;
+		this.topRadius = 1;
+		this.bottomRadius = 1;
+		this.cylinderHeight = 2;
+		this.topCapHeight = 1;
+		this.bottomCapHeight = 1;
+		this.topCapSegments = 16;
+		this.bottomCapSegments = 16;
+		this.cylinderSegments = 8;
+		this.rotationSegments = 32;
 	}
 
 	private void addFace(int i, int j) {
