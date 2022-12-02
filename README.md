@@ -12,6 +12,12 @@ If you are interested to find out more went to
 [processing.org](https://processing.org). But processing is not absolutely necessary, cause the core of the library is decoupled from the processing
 environment. Nevertheless processing provides a convenient way to display constructed meshes through it's rendering pipeline. Under the hood processing makes use of *JAVA*, *JAVA2D* and *OPENGL*.
 
+## Showcase
+![](MeshLibCoreClean2022/documentation/images/lib_showcase_1.png)
+![](MeshLibCoreClean2022/documentation/images/lib_showcase_2.png)
+![](MeshLibCoreClean2022/documentation/images/lib_showcase_3.png)
+
+
 ## Status Quo
 At the current stage I mainly work on the user documentation. Codewise a lot of refactoring is going on to keep the project clean. And from time to time small additions are made. Meanwhile all the processing specific and rendering stuff lives in it's own repository. So this is another project to went on with.
 
@@ -27,11 +33,23 @@ Some of them are already listed under 'Planed features'.
 * Modifiers
 
 ## Mesh3D
-The following example shows how to work with the base mesh class. For this purpose we want to create a simple Quad. The quad has four vertices, one for each
+The following example shows how to work with the base mesh class. For this purpose we want to create a simple quad. The quad has four vertices, one for each
 corner. To make things a bit more explanatory we compose the quad out of two triangular faces.
 
+```
+(-1, 0, -1)     (1, 0, -1)
+     o--------------o
+     |  .           |
+     |    .         |
+     |      .       |
+     |        .     |
+     |          .   |
+     o--------------o
+(-1, 0, 1)      (1, 0, 1)
+```
+
 ### Mesh3D Object
-The base class for all shapes is **mesh.Mesh3D**.
+The base class for all shapes is ```mesh.Mesh3D```.
 
 ```java
 import mesh.Mesh3D;
@@ -44,6 +62,36 @@ mesh.add(new Vector3f(1, 0, -1));
 mesh.add(new Vector3f(1, 0, 1);
 mesh.add(new Vector3f(-1, 0, 1);
 mesh.add(new Vector3f(-1, 0, -1);
+```
+
+Alternatively use ```addVertex(x, y, z)```
+
+```java
+mesh.addVertex(1, 0, -1);
+mesh.addVertex(1, 0, 1);
+mesh.addVertex(-1, 0, 1);
+mesh.addVertex(-1, 0, -1);
+```
+
+The added vertices are now at an indexed position within the mesh.
+
+```
+     3              0
+     o--------------o
+     |  .           |
+     |    .         |
+     |      .       |
+     |        .     |
+     |          .   |
+     o--------------o
+     2              1
+```
+
+Knowing the index of each vertex makes adding faces a piece of cake.
+
+```java
+mesh.addFace(0, 1, 3);
+mesh.addFace(1, 2, 3);
 ```
 
 ## Creators
