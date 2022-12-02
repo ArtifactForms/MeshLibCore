@@ -36,6 +36,18 @@ Some of them are already listed under 'Planed features'.
 The following example shows how to work with the base mesh class. For this purpose we want to create a simple quad. The quad has four vertices, one for each
 corner. To make things a bit more explanatory we compose the quad out of two triangular faces.
 
+```
+(-1, 0, -1)     (1, 0, -1)
+     o--------------o
+     |  .           |
+     |    .         |
+     |      .       |
+     |        .     |
+     |          .   |
+     o--------------o
+(-1, 0, 1)      (1, 0, 1)
+```
+
 ### Mesh3D Object
 The base class for all shapes is **mesh.Mesh3D**.
 
