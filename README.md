@@ -246,7 +246,7 @@ creator.setSize(4);
 mesh = creator.create();
 ```
 
-This explains the overall concept of mesh creators pretty good. You should now have an idea how to use existing creators and implement your own custom ones. 
+This explains the overall concept of mesh creators pretty well. You should now have an idea how to use existing creators and implement your own custom ones. 
 See also: [Mesh Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/blob/master/MeshLibCoreClean2022/documentation/documentation.md)
 
 ## Planed features
