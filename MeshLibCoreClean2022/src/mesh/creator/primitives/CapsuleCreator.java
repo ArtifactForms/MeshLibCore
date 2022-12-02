@@ -18,15 +18,15 @@ public class CapsuleCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public CapsuleCreator() {
-		this.topRadius = 1;
-		this.bottomRadius = 1;
-		this.cylinderHeight = 2;
-		this.topCapHeight = 1;
-		this.bottomCapHeight = 1;
-		this.topCapSegments = 16;
-		this.bottomCapSegments = 16;
-		this.cylinderSegments = 8;
-		this.rotationSegments = 32;
+		topRadius = 1;
+		bottomRadius = 1;
+		cylinderHeight = 2;
+		topCapHeight = 1;
+		bottomCapHeight = 1;
+		topCapSegments = 16;
+		bottomCapSegments = 16;
+		cylinderSegments = 8;
+		rotationSegments = 32;
 	}
 	
 	@Override
