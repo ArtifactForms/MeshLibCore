@@ -26,6 +26,26 @@ Some of them are already listed under 'Planed features'.
 * [Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/blob/master/MeshLibCoreClean2022/documentation/documentation.md)
 * Modifiers
 
+## Mesh3D
+The following example shows how to work with the base mesh class. For this purpose we want to create a simple Quad. The quad has four vertices, one for each
+corner. To make things a bit more explanatory we compose the quad out of two triangular faces.
+
+### Mesh3D Object
+The base class for all shapes is **mesh.Mesh3D**.
+
+```java
+import mesh.Mesh3D;
+
+Mesh3D mesh = new Mesh3D();
+```
+Next we determine the shape's coordinates in Three-Dimensional space. In this case the shape lies flat on the xz plane, so each y-coordinate is 0.0f.
+```java
+mesh.add(new Vector3f(1, 0, -1));
+mesh.add(new Vector3f(1, 0, 1);
+mesh.add(new Vector3f(-1, 0, 1);
+mesh.add(new Vector3f(-1, 0, -1);
+```
+
 ## Creators
 The library provides a variety of so called mesh 'Creators' to construct various shapes the convenient way.
 More precisely the 'Factory Pattern' was applied for this purpose.
