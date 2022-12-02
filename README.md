@@ -237,7 +237,7 @@ public class MyQuadCreator implements IMeshCreator {
 }
 ```
 
-Now we can use our creator the following way.
+Now we can use our creator the following way:
 
 ```java
 Mesh3D mesh;
@@ -246,7 +246,7 @@ creator.setSize(4);
 mesh = creator.create();
 ```
 
-This explains the overall concept of the Mesh Creator pretty good. You should know have an idea how to use existing creators and implement your own custom ones. 
+This explains the overall concept of the Mesh Creator pretty good. You should now have an idea how to use existing creators and implement your own custom ones. 
 
 ## Planed features
 * Convex Hull
