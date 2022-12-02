@@ -62,7 +62,10 @@ import mesh.Mesh3D;
 
 Mesh3D mesh = new Mesh3D();
 ```
+
+### Vertex Coordinates
 Next we determine the shape's coordinates in Three-Dimensional space. In this case the shape lies flat on the xz plane, so each y-coordinate is 0.0f.
+
 ```java
 mesh.add(new Vector3f(1, 0, -1));
 mesh.add(new Vector3f(1, 0, 1);
@@ -79,6 +82,8 @@ mesh.addVertex(-1, 0, 1);
 mesh.addVertex(-1, 0, -1);
 ```
 
+### Construct Faces
+
 The added vertices are now at an indexed position within the mesh.
 
 ```
@@ -93,7 +98,7 @@ The added vertices are now at an indexed position within the mesh.
      2              1
 ```
 
-Knowing the index of each vertex makes adding faces a piece of cake. We have to take care of the winding order. In this case the winding order
+Knowing the index of each vertex makes adding faces a piece of cake. We only have to take care of the winding order. In this case the winding order
 is counter-clockwise with all face normals pointing up towards negative y.
 
 ```java
