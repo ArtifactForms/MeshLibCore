@@ -12,6 +12,12 @@ If you are interested to find out more went to
 [processing.org](https://processing.org). But processing is not absolutely necessary, cause the core of the library is decoupled from the processing
 environment. Nevertheless processing provides a convenient way to display constructed meshes through it's rendering pipeline. Under the hood processing makes use of *JAVA*, *JAVA2D* and *OPENGL*.
 
+## Showcase
+![](MeshLibCoreClean2022/documentation/images/lib_showcase_1.png)
+![](MeshLibCoreClean2022/documentation/images/lib_showcase_2.png)
+![](MeshLibCoreClean2022/documentation/images/lib_showcase_3.png)
+
+
 ## Status Quo
 At the current stage I mainly work on the user documentation. Codewise a lot of refactoring is going on to keep the project clean. And from time to time small additions are made. Meanwhile all the processing specific and rendering stuff lives in it's own repository. So this is another project to went on with.
 
