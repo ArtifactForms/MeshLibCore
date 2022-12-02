@@ -87,12 +87,15 @@ The added vertices are now at an indexed position within the mesh.
      2              1
 ```
 
-Knowing the index of each vertex makes adding faces a piece of cake.
+Knowing the index of each vertex makes adding faces a piece of cake. We have to take care of the winding order. In this case the winding order
+is counter-clockwise with all face normals pointing up towars negative y.
 
 ```java
 mesh.addFace(0, 1, 3);
 mesh.addFace(1, 2, 3);
 ```
+
+![](MeshLibCoreClean2022/documentation/images/quad_example.png)
 
 ## Creators
 The library provides a variety of so called mesh 'Creators' to construct various shapes the convenient way.
