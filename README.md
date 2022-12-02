@@ -173,6 +173,7 @@ Let's have a look at our example code again.
 
 ```java
 import mesh.Mesh3D;
+import mesh.creator.IMeshCreator;
 
 Mesh3D mesh = new Mesh3d();
 mesh.addVertex(1, 0, -1);
@@ -183,10 +184,11 @@ mesh.addFace(0, 1, 3);
 mesh.addFace(1, 2, 3);
 ```
 
-First we plug the code into the factory method of a mesh creator class.
+First we move our example code code into the factory method of a custom mesh creator class.
 
 ```java
 import mesh.Mesh3D;
+import mesh.creator.IMeshCreator;
 
 public class MyQuadCreator implements IMeshCreator {
 
@@ -204,15 +206,14 @@ public class MyQuadCreator implements IMeshCreator {
 }
 ```
 
-Let's assume we want to generalize the code a bit further. First we need to introduce parameter for the vertex coordinates. We name it *size*.
+Let's assume we want to generalize the code a bit further. We introduce a parameter for the vertex coordinates named *halfSize*.
 
 ```java
 import mesh.Mesh3D;
 
 public class MyQuadCreator implements IMeshCreator {
 
-	float size = 1;
-	float halfSize = size / 2.0f;
+	private float halfSize;
 
 	public Mesh3D create() {
 		Mesh3D mesh = new Mesh3d();
@@ -224,9 +225,28 @@ public class MyQuadCreator implements IMeshCreator {
 		mesh.addFace(1, 2, 3);
 		return mesh;
 	}
+	
+	public void setSize(float size) {
+		halfSize = size / 2.0f;
+	}
+	
+	public float getSize() {
+		return halfSize * 2;
+	}
 
 }
 ```
+
+Now we can use our creator the following way.
+
+```java
+Mesh3D mesh;
+MyQuadCreator creator = new MyQuadCreator();
+creator.setSize(4);
+mesh = creator.create();
+```
+
+This explains the overall concept of the Mesh Creator pretty good. You should know have an idea how to use existing creators and implement your own custom ones. 
 
 ## Planed features
 * Convex Hull
