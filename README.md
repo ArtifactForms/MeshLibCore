@@ -31,6 +31,9 @@ bend bend bend mesh...
 ![](MeshLibCoreClean2022/documentation/images/lib_showcase_3.png)
 Throwing some conway operations on a cube seed.
 
+## Features
+Will be added soon...
+
 ## Core elements
 * Mesh3D
 * Face3D
