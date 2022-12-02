@@ -33,7 +33,7 @@ Some of them are already listed under 'Planed features'.
 * Modifiers
 
 ## Mesh3D
-The following example shows how to work with the base mesh class. For this purpose we want to create a simple Quad. The quad has four vertices, one for each
+The following example shows how to work with the base mesh class. For this purpose we want to create a simple quad. The quad has four vertices, one for each
 corner. To make things a bit more explanatory we compose the quad out of two triangular faces.
 
 ### Mesh3D Object
