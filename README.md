@@ -183,20 +183,49 @@ mesh.addFace(0, 1, 3);
 mesh.addFace(1, 2, 3);
 ```
 
-Assume we want to generalize the code. First we need to introduce some parameter for the vertex coordinates.
-Let's call it *size*.
+First we plug the code into the factory method of a mesh creator class.
 
 ```java
 import mesh.Mesh3D;
-float size = 1;
-float halfSize = size / 2.0f;
-Mesh3D mesh = new Mesh3d();
-mesh.addVertex(halfSize, 0, -halfSize);
-mesh.addVertex(halfSize, 0, halfSize);
-mesh.addVertex(-halfSize, 0, halfSize);
-mesh.addVertex(-halfSize, 0, -halfSize);
-mesh.addFace(0, 1, 3);
-mesh.addFace(1, 2, 3);
+
+public class MyQuadCreator implements IMeshCreator {
+
+	public Mesh3D create() {
+		Mesh3D mesh = new Mesh3d();
+		mesh.addVertex(1, 0, -1);
+		mesh.addVertex(1, 0, 1);
+		mesh.addVertex(-1, 0, 1);
+		mesh.addVertex(-1, 0, -1);
+		mesh.addFace(0, 1, 3);
+		mesh.addFace(1, 2, 3);
+		return mesh;
+	}
+
+}
+```
+
+Let's assume we want to generalize the code a bit further. First we need to introduce parameter for the vertex coordinates. We name it *size*.
+
+```java
+import mesh.Mesh3D;
+
+public class MyQuadCreator implements IMeshCreator {
+
+	float size = 1;
+	float halfSize = size / 2.0f;
+
+	public Mesh3D create() {
+		Mesh3D mesh = new Mesh3d();
+		mesh.addVertex(halfSize, 0, -halfSize);
+		mesh.addVertex(halfSize, 0, halfSize);
+		mesh.addVertex(-halfSize, 0, halfSize);
+		mesh.addVertex(-halfSize, 0, -halfSize);
+		mesh.addFace(0, 1, 3);
+		mesh.addFace(1, 2, 3);
+		return mesh;
+	}
+
+}
 ```
 
 ## Planed features
