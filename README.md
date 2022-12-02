@@ -20,9 +20,16 @@ There are a lot of corresponding topics out there. So my wishlist of things to l
 Some of them are already listed under 'Planed features'.
 
 ## Showcase
+The following images are showing the library in action.
+
 ![](MeshLibCoreClean2022/documentation/images/lib_showcase_1.png)
+Subdivision is so beautiful and satisfying too look at.
+
 ![](MeshLibCoreClean2022/documentation/images/lib_showcase_2.png)
+bend bend bend mesh...
+
 ![](MeshLibCoreClean2022/documentation/images/lib_showcase_3.png)
+Throwing some conway operations on a cube seed.
 
 ## Core elements
 * Mesh3D
