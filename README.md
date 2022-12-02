@@ -32,6 +32,12 @@ Some of them are already listed under 'Planed features'.
 * [Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/blob/master/MeshLibCoreClean2022/documentation/documentation.md)
 * Modifiers
 
+## Coordinate System
+The library is build up on a left-handed coordinate system.
+The decision was justified by using the 'Processing' rendering pipeline in the first place.
+But the core library is highly decoupled from the 'Processing' environment.
+So the library could be used independently.
+
 ## Mesh3D
 The following example shows how to work with the base mesh class. For this purpose we want to create a simple quad. The quad has four vertices, one for each
 corner. To make things a bit more explanatory we compose the quad out of two triangular faces.
@@ -88,7 +94,7 @@ The added vertices are now at an indexed position within the mesh.
 ```
 
 Knowing the index of each vertex makes adding faces a piece of cake. We have to take care of the winding order. In this case the winding order
-is counter-clockwise with all face normals pointing up towars negative y.
+is counter-clockwise with all face normals pointing up towards negative y.
 
 ```java
 mesh.addFace(0, 1, 3);
@@ -116,11 +122,6 @@ public interface IMeshCreator {
 }
 
 ```
-## Coordinate System
-The library is build up on a left-handed coordinate system.
-The decision was justified by using the 'Processing' rendering pipeline in the first place.
-But the core library is highly decoupled from the 'Processing' environment.
-So the library could be used independently.
 
 ## Planed features
 * Convex Hull
