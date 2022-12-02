@@ -184,7 +184,7 @@ mesh.addFace(0, 1, 3);
 mesh.addFace(1, 2, 3);
 ```
 
-First we move our example code code into the factory method of a custom mesh creator class.
+First we move our example code into the factory method of a custom mesh creator class.
 
 ```java
 import mesh.Mesh3D;
