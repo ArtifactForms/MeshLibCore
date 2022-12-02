@@ -167,7 +167,36 @@ public interface IMeshCreator {
 	public Mesh3D create();
 	
 }
+```
+To get a little more specific we can plug the quad example code into a custom creator to illustrate the overall concept.
+Let's have a look at our example code again. 
 
+```java
+import mesh.Mesh3D;
+
+Mesh3D mesh = new Mesh3d();
+mesh.addVertex(1, 0, -1);
+mesh.addVertex(1, 0, 1);
+mesh.addVertex(-1, 0, 1);
+mesh.addVertex(-1, 0, -1);
+mesh.addFace(0, 1, 3);
+mesh.addFace(1, 2, 3);
+```
+
+Assume we want to generalize the code. First we need to introduce some parameter for the vertex coordinates.
+Let's call it *size*.
+
+```java
+import mesh.Mesh3D;
+float size = 1;
+float halfSize = size / 2.0f;
+Mesh3D mesh = new Mesh3d();
+mesh.addVertex(halfSize, 0, -halfSize);
+mesh.addVertex(halfSize, 0, halfSize);
+mesh.addVertex(-halfSize, 0, halfSize);
+mesh.addVertex(-halfSize, 0, -halfSize);
+mesh.addFace(0, 1, 3);
+mesh.addFace(1, 2, 3);
 ```
 
 ## Planed features
