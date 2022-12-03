@@ -1,5 +1,6 @@
 package mesh.creator.primitives;
 
+import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -10,8 +11,8 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public SquareBasedPyramidCreator() {
-		this.size = 1f;
-		this.height = 2f;
+		size = 1f;
+		height = 2f;
 	}
 	
 	public SquareBasedPyramidCreator(float size, float height) {
@@ -20,19 +21,19 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
 	}
 	
 	private void createVertices() {		
-		mesh.addVertex(-1, 0, -1);
-		mesh.addVertex(-1, 0, 1);
-		mesh.addVertex(1, 0, 1);
-		mesh.addVertex(1, 0, -1);
-		mesh.addVertex(0, -1, 0);
+		addVertex(-1, 0, -1);
+		addVertex(-1, 0, 1);
+		addVertex(1, 0, 1);
+		addVertex(1, 0, -1);
+		addVertex(0, -1, 0);
 	}
 	
 	private void createFaces() {
-		mesh.addFace(0, 1, 2, 3);
-		mesh.addFace(1, 0, 4);
-		mesh.addFace(2, 1, 4);
-		mesh.addFace(3, 2, 4);
-		mesh.addFace(0, 3, 4);
+		addFace(0, 1, 2, 3);
+		addFace(1, 0, 4);
+		addFace(2, 1, 4);
+		addFace(3, 2, 4);
+		addFace(0, 3, 4);
 	}
 	
 	private void transform() {
@@ -42,11 +43,23 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createFaces();
 		transform();
 		return mesh;
+	}
+	
+	private void addFace(int... indices) {
+		mesh.add(new Face3D(indices));
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 
 	public float getSize() {
