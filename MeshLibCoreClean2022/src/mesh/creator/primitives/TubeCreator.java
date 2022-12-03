@@ -58,11 +58,13 @@ public class TubeCreator implements IMeshCreator {
 	}
 
 	private void transformVertices(int num, float radius, float originY) {
-		Vector3f origin = new Vector3f(0, originY, 0);
-		for (int i = num * vertices; i < (num * vertices + vertices); i++) {
+		int startIndex = num * vertices;
+		int endIndex = startIndex + vertices;
+		
+		for (int i = startIndex; i < endIndex; i++) {
 			Vector3f v = mesh.getVertexAt(i);
-			Vector3f v0 = new Vector3f(v.x - origin.x, v.y - origin.y, v.z - origin.z).normalizeLocal();
-			v.set(v0.mult(radius).add(origin));
+			Vector3f v0 = new Vector3f(v.x, v.y -originY, v.z).normalizeLocal();
+			v.set(v0.mult(radius).add(0, v.y, 0));
 		}
 	}
 
