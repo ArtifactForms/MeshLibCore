@@ -17,12 +17,12 @@ public class TubeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public TubeCreator() {
-		this.vertices = 32;
-		this.topOuterRadius = 1.0f;
-		this.topInnerRadius = 0.5f;
-		this.bottomOuterRadius = 1.0f;
-		this.bottomInnerRadius = 0.5f;
-		this.height = 2.0f;
+		vertices = 32;
+		topOuterRadius = 1.0f;
+		topInnerRadius = 0.5f;
+		bottomOuterRadius = 1.0f;
+		bottomInnerRadius = 0.5f;
+		height = 2.0f;
 	}
 	
 	@Override
