@@ -34,11 +34,20 @@ public class TubeCreator implements IMeshCreator {
 	}
 	
 	private void createBaseCylinder() {
-		mesh = new CylinderCreator(vertices, 1f, 1f, height, FillType.NOTHING, FillType.NOTHING).create();
+		mesh = createCylinderCreator().create();
+	}
+	
+	private CylinderCreator createCylinderCreator() {
+		CylinderCreator creator = new CylinderCreator();
+		creator.setVertices(vertices);
+		creator.setHeight(height);
+		creator.setTopCapFillType(FillType.NOTHING);
+		creator.setBottomCapFillType(FillType.NOTHING);
+		return creator;
 	}
 	
 	private void solidifyBaseCylinder() {
-		new SolidifyModifier(0.2f).modify(mesh);
+		new SolidifyModifier().modify(mesh);
 	}
 	
 	private void transform() {
