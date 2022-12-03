@@ -49,10 +49,13 @@ public class TorusCreator implements IMeshCreator {
 				int index1 = k[0] * minorSegments + k[2];
 				int index2 = k[1] * minorSegments + k[3];
 				int index3 = k[0] * minorSegments + k[3];
-				Face3D f = new Face3D(index0, index1, index3, index2);
-				mesh.add(f);
+				addFace(index0, index1, index3, index2);
 			}
 		}
+	}
+	
+	private void addFace(int... indices) {
+		mesh.add(new Face3D(indices));
 	}
 	
 	@Override
