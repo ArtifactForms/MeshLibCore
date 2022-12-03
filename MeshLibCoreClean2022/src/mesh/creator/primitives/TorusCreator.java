@@ -15,10 +15,10 @@ public class TorusCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public TorusCreator() {
-		this.majorRadius = 1f;
-		this.minorRadius = 0.25f;
-		this.majorSegments = 48;
-		this.minorSegments = 12;
+		majorRadius = 1f;
+		minorRadius = 0.25f;
+		majorSegments = 48;
+		minorSegments = 12;
 	}
 
 	public TorusCreator(float majorRadius, float minorRadius,
