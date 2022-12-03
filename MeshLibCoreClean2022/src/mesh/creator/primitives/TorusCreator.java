@@ -20,14 +20,6 @@ public class TorusCreator implements IMeshCreator {
 		majorSegments = 48;
 		minorSegments = 12;
 	}
-
-	public TorusCreator(float majorRadius, float minorRadius,
-			int majorSegments, int minorSegments) {
-		this.majorRadius = majorRadius;
-		this.minorRadius = minorRadius;
-		this.majorSegments = majorSegments;
-		this.minorSegments = minorSegments;
-	}
 	
 	private void createVertices() {
 		float u = 0;
@@ -65,10 +57,14 @@ public class TorusCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createFaces();
 		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 	
 	public float getMajorRadius() {
