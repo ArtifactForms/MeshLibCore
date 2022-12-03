@@ -14,7 +14,6 @@ public class TubeCreator implements IMeshCreator {
 	private float bottomOuterRadius;
 	private float bottomInnerRadius;
 	private float height;
-
 	private Mesh3D mesh;
 
 	public TubeCreator() {
@@ -24,16 +23,6 @@ public class TubeCreator implements IMeshCreator {
 		this.bottomOuterRadius = 1.0f;
 		this.bottomInnerRadius = 0.5f;
 		this.height = 2.0f;
-	}
-
-	public TubeCreator(int vertices, float topOuterRadius, float topInnerRadius, float bottomOuterRadius,
-			float bottomInnerRadius, float height) {
-		this.vertices = vertices;
-		this.topOuterRadius = topOuterRadius;
-		this.topInnerRadius = topInnerRadius;
-		this.bottomOuterRadius = bottomOuterRadius;
-		this.bottomInnerRadius = bottomInnerRadius;
-		this.height = height;
 	}
 	
 	@Override
