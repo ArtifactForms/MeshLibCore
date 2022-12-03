@@ -32,7 +32,7 @@ public class TorusCreator implements IMeshCreator {
 				float x = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
 				float y = minorRadius * Mathf.sin(u);
 				float z = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
-				mesh.add(new Vector3f(x, y, z));
+				addVertex(x, y, z);
 				u += stepU;
 			}
 			u = 0;
@@ -52,6 +52,10 @@ public class TorusCreator implements IMeshCreator {
 				addFace(index0, index1, index3, index2);
 			}
 		}
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.add(new Vector3f(x, y, z));
 	}
 	
 	private void addFace(int... indices) {
