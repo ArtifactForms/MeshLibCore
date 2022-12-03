@@ -152,7 +152,8 @@ modifier.modify(mesh);
 
 ## Creators
 The library provides a variety of so called mesh 'Creators' to construct various shapes the convenient way.
-More precisely the 'Factory Method' / 'Builder' pattern was applied for this purpose.
+More precisely the 'Factory Method' / 'Builder' pattern was applied for this purpose. A mesh creator works like a classis builder. 
+The creator differs mainly in two points from a classic builder. We also provide getters and chaining was left out.
 In the meantime the library contains 100+ different mesh creators divided in various categories.
 Get a first impression and overview here: [Mesh Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/blob/master/MeshLibCoreClean2022/documentation/documentation.md).
 Each creator derives from the 'IMeshCreator' interface. The following code example shows the mentioned root interface for all mesh creators. 
