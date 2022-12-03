@@ -102,18 +102,26 @@ public class CapsuleCreator implements IMeshCreator {
 	}
 
 	private void createTriangleFaces() {
-		int offset = (getSegmentsCount() - 2) * rotationSegments;
+		createTopCapTriangleFan();
+		createBottomCapTriangleFan();
+	}
+	
+	private void createTopCapTriangleFan() {
 		triangleFan(0, -cylinderHeight / 2 - topCapHeight);
+	}
+	
+	private void createBottomCapTriangleFan() {
+		int offset = (getSegmentsCount() - 2) * rotationSegments;
 		triangleFan(offset, cylinderHeight / 2f + bottomCapHeight);
 	}
 
-	private void triangleFan(int offset, float y) {
+	private void triangleFan(int indexOffset, float centerY) {
 		int centerIndex = mesh.vertices.size();
-		mesh.addVertex(0, y, 0);
+		mesh.addVertex(0, centerY, 0);
 		for (int i = 0; i < rotationSegments; i++) {
-			int idx0 = i + offset;
-			int idx1 = (i + 1) % rotationSegments + offset;
-			if (offset == 0) {
+			int idx0 = i + indexOffset;
+			int idx1 = (i + 1) % rotationSegments + indexOffset;
+			if (indexOffset == 0) {
 				mesh.addFace(idx0, idx1, centerIndex);
 			} else {
 				mesh.addFace(idx1, idx0, centerIndex);
