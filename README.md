@@ -38,7 +38,7 @@ Will be added soon...
 * Mesh3D
 * Face3D
 * Edge3D
-* [Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/blob/master/MeshLibCoreClean2022/documentation/documentation.md)
+* [Creators](#creators)
 * Modifiers
 
 ## Coordinate System
