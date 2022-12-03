@@ -35,9 +35,32 @@ public class TubeCreator implements IMeshCreator {
 		this.bottomInnerRadius = bottomInnerRadius;
 		this.height = height;
 	}
+	
+	@Override
+	public Mesh3D create() {
+		createBaseCylinder();
+		solidifyBaseCylinder();
+		transform();
+		return mesh;
+	}
+	
+	private void createBaseCylinder() {
+		mesh = new CylinderCreator(vertices, 1f, 1f, height, FillType.NOTHING, FillType.NOTHING).create();
+	}
+	
+	private void solidifyBaseCylinder() {
+		new SolidifyModifier(0.2f).modify(mesh);
+	}
+	
+	private void transform() {
+		transformTopOuterVertices();
+		transformTopInnerVertices();
+		transformBottomOuterVertices();
+		transformBottomInnerVertices();
+	}
 
-	private void transformVertices(int num, float radius, boolean top) {
-		Vector3f origin = new Vector3f(0, top ? -height / 2 : height / 2, 0);
+	private void transformVertices(int num, float radius, float originY) {
+		Vector3f origin = new Vector3f(0, originY, 0);
 		for (int i = num * vertices; i < (num * vertices + vertices); i++) {
 			Vector3f v = mesh.getVertexAt(i);
 			Vector3f v0 = new Vector3f(v.x - origin.x, v.y - origin.y, v.z - origin.z).normalizeLocal();
@@ -46,34 +69,19 @@ public class TubeCreator implements IMeshCreator {
 	}
 
 	private void transformTopOuterVertices() {
-		transformVertices(0, topOuterRadius, true);
+		transformVertices(0, topOuterRadius, -height / 2.0f);
 	}
 
 	private void transformTopInnerVertices() {
-		transformVertices(2, topInnerRadius, true);
+		transformVertices(2, topInnerRadius, -height / 2.0f);
 	}
 
 	private void transformBottomOuterVertices() {
-		transformVertices(1, bottomOuterRadius, false);
+		transformVertices(1, bottomOuterRadius, height / 2.0f);
 	}
 
 	private void transformBottomInnerVertices() {
-		transformVertices(3, bottomInnerRadius, false);
-	}
-
-	private void transform() {
-		transformTopOuterVertices();
-		transformTopInnerVertices();
-		transformBottomOuterVertices();
-		transformBottomInnerVertices();
-	}
-
-	@Override
-	public Mesh3D create() {
-		mesh = new CylinderCreator(vertices, 1f, 1f, height, FillType.NOTHING, FillType.NOTHING).create();
-		new SolidifyModifier(0.2f).modify(mesh);
-		transform();
-		return mesh;
+		transformVertices(3, bottomInnerRadius, height / 2.0f);
 	}
 
 	public int getVertices() {
