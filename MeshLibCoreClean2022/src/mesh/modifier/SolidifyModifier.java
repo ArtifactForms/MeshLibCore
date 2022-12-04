@@ -1,5 +1,7 @@
 package mesh.modifier;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -8,21 +10,18 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.Pair;
 import mesh.util.Mesh3DUtil;
-import mesh.util.VertexNormals;
 
 public class SolidifyModifier implements IMeshModifier {
 
 	private float thickness;
-	private Mesh3D mesh;
-	private Mesh3D innerMesh;
-	private List<Vector3f> vertexNormals;
-	private HashSet<Pair> edges;
 
 	public SolidifyModifier() {
-		this(0.01f);
+		super();
+		this.thickness = 0.01f;
 	}
 
 	public SolidifyModifier(float thickness) {
+		super();
 		this.thickness = thickness;
 	}
 
@@ -31,90 +30,88 @@ public class SolidifyModifier implements IMeshModifier {
 		if (thickness == 0)
 			return mesh;
 		
-		Mesh3D result = new Mesh3D();
-		
-		setMesh(mesh);
-		createVertexNormals();
-		initializeEdgeMap();
-		mapEdges();
-		initializeInnerMesh();
-		flipDirectionOfInnerMesh();
-		result.append(mesh, innerMesh);
-		moveInnerMeshAlongVertexNormals();
-		bridgeHoles(result, innerMesh);
-		applyResult(result);
-		
-		return mesh;
-	}
-	
-	private void initializeInnerMesh() {
-		innerMesh = mesh.copy();
-	}
-	
-	private void initializeEdgeMap() {
-		edges = new HashSet<>();
-	}
-	
-	private void flipDirectionOfInnerMesh() {
-		Mesh3DUtil.flipDirection(innerMesh);
-	}
+		Mesh3D m0 = null;
+		Mesh3D copy = mesh.copy();
 
-	private void bridgeHoles(Mesh3D result, Mesh3D innerMesh) {
+		// Map vertices to face normals.
+		// Store the face normal of each face the vertex belongs to.
+		HashMap<Vector3f, List<Vector3f>> map = new HashMap<>();
+		List<Vector3f> vertexNormals = new ArrayList<Vector3f>();
+		HashSet<Pair> pairs = new HashSet<>();
+		
+		for (Face3D f : mesh.faces) {
+			int size = f.indices.length;
+			// Calculate the face normal.
+			Vector3f n = mesh.calculateFaceNormal(f);
+			// For each vertex of the face.
+			for (int i = 0; i < f.indices.length; i++) {
+				Vector3f v = mesh.getVertexAt(f.indices[i]);
+				List<Vector3f> list = map.get(v);
+				if (list == null) {
+					list = new ArrayList<Vector3f>();
+					map.put(v, list);
+				}
+				list.add(n);
+				// Map edge.
+				Pair pair = new Pair(f.indices[i], f.indices[(i + 1) % size]);
+				pairs.add(pair);
+			}
+		}
+
+		// Calculate vertex normals.
+		for (Vector3f v : mesh.vertices) {
+			Vector3f n = new Vector3f();
+			List<Vector3f> list = map.get(v);
+			if (list == null) {
+				list = new ArrayList<Vector3f>();
+			}
+			for (Vector3f v0 : list) {
+				n.addLocal(v0);
+			}
+			n.divideLocal(list.size());
+			n.normalizeLocal();
+			vertexNormals.add(n);
+		}
+
+		// Flip inner mesh.
+		for (Face3D f : copy.faces) {
+			Mesh3DUtil.flipDirection(mesh, f);
+		}
+
+		// Combine meshes.
+		m0 = new Mesh3D();
+		m0.append(mesh, copy);
+
+		// Move vertices along the vertex normals.
+		for (int i = 0; i < copy.vertices.size(); i++) {
+			Vector3f v = copy.getVertexAt(i);
+			Vector3f n = vertexNormals.get(i);
+			v.set(n.mult(-thickness).add(v));
+		}
+
+		// Bridge holes if any.
 		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
 		for (Face3D f : faces) {
 			int size = f.indices.length;
 			for (int i = 0; i < f.indices.length; i++) {
 				Pair pair0 = new Pair(f.indices[i], f.indices[(i + 1) % size]);
 				Pair pair1 = new Pair(f.indices[(i + 1) % size], f.indices[i]);
-				if (!edges.contains(pair1)) {
-					Vector3f v0 = innerMesh.getVertexAt(pair0.a);
-					Vector3f v1 = innerMesh.getVertexAt(pair0.b);
+				if (!pairs.contains(pair1)) {
+					Vector3f v0 = copy.getVertexAt(pair0.a);
+					Vector3f v1 = copy.getVertexAt(pair0.b);
 					Vector3f v2 = mesh.getVertexAt(pair0.a);
 					Vector3f v3 = mesh.getVertexAt(pair0.b);
-					Mesh3DUtil.bridge(result, v0, v1, v2, v3);
+					Mesh3DUtil.bridge(m0, v0, v1, v2, v3);
 				}
 			}
 		}
-	}
-	
-	private void applyResult(Mesh3D result) {
+
 		mesh.vertices.clear();
 		mesh.faces.clear();
-		mesh.addVertices(result.vertices);
-		mesh.addFaces(result.faces);
-	}
+		mesh.addVertices(m0.vertices);
+		mesh.addFaces(m0.faces);
 
-	private void mapEdges() {
-		for (Face3D face : mesh.faces) {
-			for (int i = 0; i < face.indices.length; i++) {
-				Pair edge = new Pair(face.indices[i], face.indices[(i + 1) % face.indices.length]);
-				edges.add(edge);
-			}
-		}
-	}
-
-	private void moveInnerMeshAlongVertexNormals() {
-		for (int i = 0; i < innerMesh.vertices.size(); i++) {
-			Vector3f vertex = innerMesh.getVertexAt(i);
-			Vector3f normal = vertexNormals.get(i);
-			vertex.set(normal.mult(-thickness).add(vertex));
-		}
-	}
-
-	private void createVertexNormals() {
-		vertexNormals = new VertexNormals(mesh).getVertexNormals();
-	}
-	
-	private void setMesh(Mesh3D mesh) {
-		this.mesh = mesh;
-	}
-
-	public float getThickness() {
-		return thickness;
-	}
-
-	public void setThickness(float thickness) {
-		this.thickness = thickness;
+		return mesh;
 	}
 
 }
