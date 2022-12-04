@@ -20,24 +20,13 @@ public class TubeLatticeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public TubeLatticeCreator() {
-		this.segments = 10;
-		this.vertices = 32;
-		this.outerRadius = 1f;
-		this.innerRadius = 0.9f;
-		this.height = 2f;
-		this.scaleExtrude = 0.5f;
-		this.thickness = 0.1f;
-	}
-
-	public TubeLatticeCreator(int segments, int vertices, float outerRadius, float innerRadius, float height,
-			float scaleExtrude, Mesh3D mesh) {
-		this.segments = segments;
-		this.vertices = vertices;
-		this.outerRadius = outerRadius;
-		this.innerRadius = innerRadius;
-		this.height = height;
-		this.scaleExtrude = scaleExtrude;
-		this.mesh = mesh;
+		segments = 10;
+		vertices = 32;
+		outerRadius = 1f;
+		innerRadius = 0.9f;
+		height = 2f;
+		scaleExtrude = 0.5f;
+		thickness = 0.1f;
 	}
 
 	@Override
