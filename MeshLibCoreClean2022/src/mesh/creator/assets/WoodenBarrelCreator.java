@@ -22,12 +22,12 @@ public class WoodenBarrelCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public WoodenBarrelCreator() {
-		this.radius = 1.0f;
-		this.height = 2.0f;
-		this.inset = 0.05f;
-		this.bendFactor = 0.75f;
-		this.rotationSegments = 16;
-		this.heightSegments = 8;
+		radius = 1.0f;
+		height = 2.0f;
+		inset = 0.05f;
+		bendFactor = 0.75f;
+		rotationSegments = 16;
+		heightSegments = 8;
 	}
 	
 	@Override
