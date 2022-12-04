@@ -61,27 +61,30 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 	private void connectJoints() {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
-
-				Face3D f0 = cubes[i][j].faces.get(3);
-				Face3D f1 = cubes[i][(j + 1) % cubes[0].length].faces.get(5);
-				Mesh3DUtil.extrudeFace(mesh, f0, scale0, 0.0f);
-				Mesh3DUtil.extrudeFace(mesh, f1, scale0, 0.0f);
-				Mesh3DUtil.flipDirection(mesh, f1);
-				Mesh3DUtil.bridge(mesh, f0, f1);
-				mesh.faces.remove(f0);
-				mesh.faces.remove(f1);
-
-				if ((i + 1) < cubes.length) {
-					Face3D f2 = cubes[i][j].faces.get(1);
-					Face3D f3 = cubes[i + 1][j].faces.get(0);
-					Mesh3DUtil.extrudeFace(mesh, f2, scale1, 0.0f);
-					Mesh3DUtil.extrudeFace(mesh, f3, scale1, 0.0f);
-					Mesh3DUtil.flipDirection(mesh, f3);
-					Mesh3DUtil.bridge(mesh, f2, f3);
-					mesh.faces.remove(f2);
-					mesh.faces.remove(f3);
-				}
+				connectJointsAt(i, j);
 			}
+		}
+	}
+
+	private void connectJointsAt(int i, int j) {
+		Face3D f0 = cubes[i][j].faces.get(3);
+		Face3D f1 = cubes[i][(j + 1) % cubes[0].length].faces.get(5);
+		Mesh3DUtil.extrudeFace(mesh, f0, scale0, 0.0f);
+		Mesh3DUtil.extrudeFace(mesh, f1, scale0, 0.0f);
+		Mesh3DUtil.flipDirection(mesh, f1);
+		Mesh3DUtil.bridge(mesh, f0, f1);
+		mesh.faces.remove(f0);
+		mesh.faces.remove(f1);
+
+		if ((i + 1) < cubes.length) {
+			Face3D f2 = cubes[i][j].faces.get(1);
+			Face3D f3 = cubes[i + 1][j].faces.get(0);
+			Mesh3DUtil.extrudeFace(mesh, f2, scale1, 0.0f);
+			Mesh3DUtil.extrudeFace(mesh, f3, scale1, 0.0f);
+			Mesh3DUtil.flipDirection(mesh, f3);
+			Mesh3DUtil.bridge(mesh, f2, f3);
+			mesh.faces.remove(f2);
+			mesh.faces.remove(f3);
 		}
 	}
 	
