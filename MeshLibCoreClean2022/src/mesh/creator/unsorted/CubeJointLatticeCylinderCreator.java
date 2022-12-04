@@ -18,25 +18,13 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 	private float scale1;
 
 	public CubeJointLatticeCylinderCreator() {
-		this.vertices = 32;
-		this.subdivisionsY = 6;
-		this.radius = 1f;
-		this.height = 2f;
-		this.jointSize = 0.01f;
-		this.scale0 = 0.5f;
-		this.scale1 = 0.5f;
-	}
-	
-	public CubeJointLatticeCylinderCreator(int vertices, int subdivisionsY,
-			float radius, float height, float jointSize, float scale0,
-			float scale1) {
-		this.vertices = vertices;
-		this.subdivisionsY = subdivisionsY;
-		this.radius = radius;
-		this.height = height;
-		this.jointSize = jointSize;
-		this.scale0 = scale0;
-		this.scale1 = scale1;
+		vertices = 32;
+		subdivisionsY = 6;
+		radius = 1f;
+		height = 2f;
+		jointSize = 0.01f;
+		scale0 = 0.5f;
+		scale1 = 0.5f;
 	}
 	
 	@Override
