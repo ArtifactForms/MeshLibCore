@@ -49,7 +49,17 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 			angle = 0;
 		}
 
-		// Connect joints
+		connectJoints(mesh, cubes);
+		centerOnAxisY(mesh);
+
+		return mesh;
+	}
+
+	private void centerOnAxisY(Mesh3D mesh) {
+		mesh.translate(0, -subdivisionsY * (height / subdivisionsY) / 2f, 0);
+	}
+
+	private void connectJoints(Mesh3D mesh, Mesh3D[][] cubes) {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 
@@ -74,10 +84,6 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 				}
 			}
 		}
-
-		mesh.translate(0, -subdivisionsY * dy / 2f, 0);
-
-		return mesh;
 	}
 
 	public int getVertices() {
