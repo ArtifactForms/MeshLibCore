@@ -41,7 +41,12 @@ public class TorusCageCreator implements IMeshCreator {
 	}
 	
 	private void createTorus() {
-		mesh = new TorusCreator(majorRadius, minorRadius, majorSegments, minorSegments).create();
+		TorusCreator creator = new TorusCreator();
+		creator.setMajorRadius(majorRadius);
+		creator.setMinorRadius(minorRadius);
+		creator.setMajorSegments(majorSegments);
+		creator.setMinorSegments(minorSegments);
+		mesh = creator.create();
 	}
 	
 	private void createHoles() {
