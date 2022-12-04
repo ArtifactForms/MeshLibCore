@@ -18,16 +18,11 @@ public class ChainLinkCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public ChainLinkCreator() {
-		this(1.5f, 1f, 0.25f, 12, 12);
-	}
-	
-	public ChainLinkCreator(float centerPieceSize, float majorRadius, float minorRadius, int majorSegments,
-			int minorSegments) {
-		this.centerPieceSize = centerPieceSize;
-		this.majorRadius = majorRadius;
-		this.minorRadius = minorRadius;
-		this.majorSegments = majorSegments;
-		this.minorSegments = minorSegments;
+		centerPieceSize = 1.5f;
+		majorRadius = 1f;
+		minorRadius = 0.25f;
+		majorSegments = 12;
+		minorSegments = 12;
 	}
 
 	private void createVertices() {
