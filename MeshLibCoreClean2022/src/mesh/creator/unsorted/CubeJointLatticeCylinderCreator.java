@@ -16,6 +16,8 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 	private float jointSize;
 	private float scale0;
 	private float scale1;
+	private Mesh3D mesh;
+	private Mesh3D[][] cubes;
 
 	public CubeJointLatticeCylinderCreator() {
 		vertices = 32;
@@ -29,13 +31,19 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
+		initializeMesh();
+		initializeCubes();
+		createJoints();
+		connectJoints();
+		centerOnAxisY();
+		return mesh;
+	}
+
+	private void createJoints() {
 		float dy = height / subdivisionsY;
 		float angle = 0;
 		float step = Mathf.TWO_PI / vertices;
-		Mesh3D mesh = new Mesh3D();
-		Mesh3D[][] cubes = new Mesh3D[subdivisionsY + 1][vertices];
 
-		// Create joints
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 				float x = radius * Mathf.cos(angle);
@@ -48,18 +56,9 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 			}
 			angle = 0;
 		}
-
-		connectJoints(mesh, cubes);
-		centerOnAxisY(mesh);
-
-		return mesh;
 	}
-
-	private void centerOnAxisY(Mesh3D mesh) {
-		mesh.translate(0, -subdivisionsY * (height / subdivisionsY) / 2f, 0);
-	}
-
-	private void connectJoints(Mesh3D mesh, Mesh3D[][] cubes) {
+	
+	private void connectJoints() {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 
@@ -84,6 +83,18 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 				}
 			}
 		}
+	}
+	
+	private void initializeCubes() {
+		 cubes = new Mesh3D[subdivisionsY + 1][vertices];
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+
+	private void centerOnAxisY() {
+		mesh.translate(0, -subdivisionsY * (height / subdivisionsY) / 2f, 0);
 	}
 
 	public int getVertices() {
