@@ -11,17 +11,9 @@ public class TriangleFanCreator implements IMeshCreator {
 	private int vertices;
 
 	public TriangleFanCreator() {
-		this(32, 1, 0);
-	}
-
-	public TriangleFanCreator(int vertices, float radius) {
-		this(vertices, radius, 0);
-	}
-
-	public TriangleFanCreator(int vertices, float radius, float centerY) {
-		this.radius = radius;
-		this.centerY = centerY;
-		this.vertices = vertices;
+		radius = 1;
+		centerY = 0;
+		vertices = 32;
 	}
 
 	@Override
