@@ -49,32 +49,40 @@ public class ModularKitDoorSegmentCreator implements IMeshCreator {
 	}
 	
 	private void createVerticesAtGroundLevel() {
-		mesh.addVertex(-segmentWidthHalf, 0, 0);
-		mesh.addVertex(-doorWidthHalf, 0, 0);
-		mesh.addVertex(doorWidthHalf, 0, 0);
-		mesh.addVertex(segmentWidthHalf, 0, 0);
+		addVertex(-segmentWidthHalf, 0, 0);
+		addVertex(-doorWidthHalf, 0, 0);
+		addVertex(doorWidthHalf, 0, 0);
+		addVertex(segmentWidthHalf, 0, 0);
 	}
 	
 	private void createVerticesAtDoorHeightLevel() {
-		mesh.addVertex(-segmentWidthHalf, -doorHeight, 0);
-		mesh.addVertex(-doorWidthHalf, -doorHeight, 0);
-		mesh.addVertex(doorWidthHalf, -doorHeight, 0);
-		mesh.addVertex(segmentWidthHalf, -doorHeight, 0);
+		addVertex(-segmentWidthHalf, -doorHeight, 0);
+		addVertex(-doorWidthHalf, -doorHeight, 0);
+		addVertex(doorWidthHalf, -doorHeight, 0);
+		addVertex(segmentWidthHalf, -doorHeight, 0);
 	}
 	
 	private void createVeticesAtSegmentHeightLevel() {
-		mesh.addVertex(-segmentWidthHalf, -segmentHeight, 0);
-		mesh.addVertex(-doorWidthHalf, -segmentHeight, 0);
-		mesh.addVertex(doorWidthHalf, -segmentHeight, 0);
-		mesh.addVertex(segmentWidthHalf, -segmentHeight, 0);
+		addVertex(-segmentWidthHalf, -segmentHeight, 0);
+		addVertex(-doorWidthHalf, -segmentHeight, 0);
+		addVertex(doorWidthHalf, -segmentHeight, 0);
+		addVertex(segmentWidthHalf, -segmentHeight, 0);
 	}
 	
 	private void createFaces() {
-		mesh.addFace(8, 9, 5, 4);
-		mesh.addFace(9, 10, 6, 5);
-		mesh.addFace(10, 11, 7, 6);
-		mesh.addFace(4, 5, 1, 0);
-		mesh.addFace(6, 7, 3, 2);
+		addFace(8, 9, 5, 4);
+		addFace(9, 10, 6, 5);
+		addFace(10, 11, 7, 6);
+		addFace(4, 5, 1, 0);
+		addFace(6, 7, 3, 2);
+	}
+	
+	private void addFace(int... indices) {
+		mesh.addFace(indices);
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
 	}
 	
 	private void solidify() {
@@ -83,7 +91,7 @@ public class ModularKitDoorSegmentCreator implements IMeshCreator {
 		new SolidifyModifier(segmentDepth).modify(mesh);
 		mesh.translateZ(segmentDepth);
 	}
-
+	
 	public float getDoorWidth() {
 		return doorWidth;
 	}
