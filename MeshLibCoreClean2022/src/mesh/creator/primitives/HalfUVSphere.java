@@ -20,7 +20,7 @@ public class HalfUVSphere implements IMeshCreator {
 		this(16, 32, 1);
 	}
 
-	public HalfUVSphere(int rings, int segments, float radius) {
+	private HalfUVSphere(int rings, int segments, float radius) {
 		this.rings = rings * 2;
 		this.segments = segments;
 		this.radius = radius;
