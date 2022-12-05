@@ -12,7 +12,6 @@ public class BendModifier implements IMeshModifier {
 	private float factor;
 
 	public BendModifier(float factor) {
-		super();
 		this.factor = factor;
 	}
 
@@ -33,9 +32,8 @@ public class BendModifier implements IMeshModifier {
 
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		for (Vector3f v : mesh.vertices) {
+		for (Vector3f v : mesh.vertices)
 			simpleDeformBend(factor, v);
-		}
 		return mesh;
 	}
 
