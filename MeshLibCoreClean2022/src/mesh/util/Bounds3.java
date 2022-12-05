@@ -4,8 +4,8 @@ import math.Vector3f;
 
 public class Bounds3 {
 
-	public Vector3f min;
-	public Vector3f max;
+	private Vector3f min;
+	private Vector3f max;
 
 	public Bounds3() {
 		this.min = new Vector3f();
