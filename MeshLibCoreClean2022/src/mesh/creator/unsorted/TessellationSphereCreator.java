@@ -19,10 +19,10 @@ public class TessellationSphereCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public TessellationSphereCreator() {
-		this.radius = 6f;
-		this.thickness = 0.1f;
-		this.scaleExtrude = 0.8f;
-		this.subdivisions = 1;
+		radius = 6f;
+		thickness = 0.1f;
+		scaleExtrude = 0.8f;
+		subdivisions = 1;
 	}
 	
 	private void createHoles() {
