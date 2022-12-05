@@ -22,11 +22,11 @@ public class TessellationRingCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public TessellationRingCreator() {
-		this.vertices = 12;
-		this.topRadius = 1f;
-		this.bottomRadius = 1f;
-		this.thickness = 0.1f;
-		this.extrudeScale = 0.6f;
+		vertices = 12;
+		topRadius = 1f;
+		bottomRadius = 1f;
+		thickness = 0.1f;
+		extrudeScale = 0.6f;
 	}
 	
 	private void createFaces() {
