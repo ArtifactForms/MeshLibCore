@@ -41,8 +41,11 @@ public class TessellationSphereCreator implements IMeshCreator {
 		Mesh3DUtil.pushToSphere(mesh, radius);
 	}
 	
-	private void solidify() {
+	private void flipFaceNormals() {
 		Mesh3DUtil.flipDirection(mesh);
+	}
+	
+	private void solidify() {
 		new SolidifyModifier(thickness).modify(mesh);
 	}
 	
@@ -52,6 +55,7 @@ public class TessellationSphereCreator implements IMeshCreator {
 		tessellate();
 		createHoles();
 		pushToSphere();
+		flipFaceNormals();
 		solidify();
 		return mesh;
 	}
