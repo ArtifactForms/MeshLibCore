@@ -42,14 +42,14 @@ public class AnimationManager {
 		}
 	}
 	
-	protected void updateTime() {
+	private void updateTime() {
 		long time = System.currentTimeMillis();
 		long delta = time - lastTime;
 		lastTime = time;
 		tpf = delta / 1000f;
 	}
 	
-	protected void updateAnimators(float tpf) {
+	private void updateAnimators(float tpf) {
 		if (finished)
 			return;
 		int finishedAnimatorsCount = 0;
