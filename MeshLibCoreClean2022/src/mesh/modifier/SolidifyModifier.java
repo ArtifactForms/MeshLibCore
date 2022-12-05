@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import math.Vector3f;
+import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.Pair;
 import mesh.util.Mesh3DUtil;
 import mesh.util.VertexNormals;
 
@@ -16,7 +16,7 @@ public class SolidifyModifier implements IMeshModifier {
 	private Mesh3D mesh;
 	private Mesh3D innerMesh;
 	private List<Vector3f> vertexNormals;
-	private HashSet<Pair> edges;
+	private HashSet<Edge3D> edges;
 
 	public SolidifyModifier() {
 		this(0.01f);
@@ -64,13 +64,13 @@ public class SolidifyModifier implements IMeshModifier {
 		for (Face3D f : faces) {
 			int size = f.indices.length;
 			for (int i = 0; i < f.indices.length; i++) {
-				Pair pair0 = new Pair(f.indices[i], f.indices[(i + 1) % size]);
-				Pair pair1 = new Pair(f.indices[(i + 1) % size], f.indices[i]);
-				if (!edges.contains(pair1)) {
-					Vector3f v0 = innerMesh.getVertexAt(pair0.a);
-					Vector3f v1 = innerMesh.getVertexAt(pair0.b);
-					Vector3f v2 = mesh.getVertexAt(pair0.a);
-					Vector3f v3 = mesh.getVertexAt(pair0.b);
+				Edge3D edge0 = new Edge3D(f.indices[i], f.indices[(i + 1) % size]);
+				Edge3D edge1 = new Edge3D(f.indices[(i + 1) % size], f.indices[i]);
+				if (!edges.contains(edge1)) {
+					Vector3f v0 = innerMesh.getVertexAt(edge0.fromIndex);
+					Vector3f v1 = innerMesh.getVertexAt(edge0.toIndex);
+					Vector3f v2 = mesh.getVertexAt(edge0.fromIndex);
+					Vector3f v3 = mesh.getVertexAt(edge0.toIndex);
 					Mesh3DUtil.bridge(result, v0, v1, v2, v3);
 				}
 			}
@@ -87,7 +87,7 @@ public class SolidifyModifier implements IMeshModifier {
 	private void mapEdges() {
 		for (Face3D face : mesh.faces) {
 			for (int i = 0; i < face.indices.length; i++) {
-				Pair edge = new Pair(face.indices[i], face.indices[(i + 1) % face.indices.length]);
+				Edge3D edge = new Edge3D(face.indices[i], face.indices[(i + 1) % face.indices.length]);
 				edges.add(edge);
 			}
 		}
