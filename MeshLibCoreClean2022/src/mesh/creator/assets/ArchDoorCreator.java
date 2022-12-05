@@ -24,13 +24,17 @@ public class ArchDoorCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createTopVertices();
 		createBottomVertices();
 		createFaces();
 		solidify();
 		translate();
 		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 	
 	private void createBottomVertices() {
