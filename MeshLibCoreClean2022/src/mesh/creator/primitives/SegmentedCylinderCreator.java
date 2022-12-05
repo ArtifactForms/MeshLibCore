@@ -18,26 +18,14 @@ public class SegmentedCylinderCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public SegmentedCylinderCreator() {
-		this(1, 1, 2, 32, 1, true, true);
-	}
-
-	public SegmentedCylinderCreator(float topRadius, float bottomRadius, float height, int rotationSegments,
-			int heightSegments, boolean capTop, boolean capBottom) {
-		this(topRadius, bottomRadius, height, rotationSegments, heightSegments, capBottom, capBottom,
-				FillType.TRIANGLE_FAN);
-	}
-
-	public SegmentedCylinderCreator(float topRadius, float bottomRadius, float height, int rotationSegments,
-			int heightSegments, boolean capTop, boolean capBottom, FillType capFillType) {
-		super();
-		this.topRadius = topRadius;
-		this.bottomRadius = bottomRadius;
-		this.height = height;
-		this.rotationSegments = rotationSegments;
-		this.heightSegments = heightSegments;
-		this.capTop = capTop;
-		this.capBottom = capBottom;
-		this.capFillType = capFillType;
+		topRadius = 1;
+		bottomRadius = 1;
+		height = 2;
+		rotationSegments = 32;
+		heightSegments = 1;
+		capTop = true;
+		capBottom = true;
+		capFillType = FillType.TRIANGLE_FAN;
 	}
 
 	private void addFace(int i, int j) {
