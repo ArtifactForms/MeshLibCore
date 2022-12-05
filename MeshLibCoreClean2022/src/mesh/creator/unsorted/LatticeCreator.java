@@ -20,39 +20,18 @@ public class LatticeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public LatticeCreator() {
-		this.subdivisionsX = 10;
-		this.subdivisionsZ = 10;
-		this.openingPercent = 0.5f;
-		this.tileSizeX = 0.2f;
-		this.tileSizeZ = 0.2f;
-		this.height = 0.2f;
-	}
-
-	public LatticeCreator(int subdivisionsX, int subdivisionsZ,
-			float tileSizeX, float tileSizeZ, float height) {
-		this.subdivisionsX = subdivisionsX;
-		this.subdivisionsZ = subdivisionsZ;
-		this.openingPercent = 0.5f;
-		this.tileSizeX = tileSizeX;
-		this.tileSizeZ = tileSizeZ;
-		this.height = height;
-	}
-
-	public LatticeCreator(int subdivisionsX, int subdivisionsZ, float scale,
-			float tileSizeX, float tileSizeZ, float height) {
-		this.subdivisionsX = subdivisionsX;
-		this.subdivisionsZ = subdivisionsZ;
-		this.openingPercent = scale;
-		this.tileSizeX = tileSizeX;
-		this.tileSizeZ = tileSizeZ;
-		this.height = height;
+		subdivisionsX = 10;
+		subdivisionsZ = 10;
+		openingPercent = 0.5f;
+		tileSizeX = 0.2f;
+		tileSizeZ = 0.2f;
+		height = 0.2f;
 	}
 	
 	private void createFaces() {
 		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
-		for (Face3D f : faces) {
+		for (Face3D f : faces)
 			Mesh3DUtil.extrudeFace(mesh, f, openingPercent, 0f);
-		}
 		mesh.faces.removeAll(faces);
 	}
 
