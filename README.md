@@ -17,7 +17,7 @@ At the current stage I mainly work on the user documentation. Over the years I l
 
 ## Future
 There are a lot of corresponding topics out there. So my wishlist of things to learn and implement is unspeakably large.
-Some of them are already listed under 'Planed features'.
+Some are already listed under 'Planed features'.
 
 ## Showcase
 The following images are showing the library in action.
