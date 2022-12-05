@@ -1,8 +1,7 @@
-package mesh.creator.unsorted;
+package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.creator.primitives.GridCreator;
 import mesh.modifier.SolidifyModifier;
 import mesh.operators.ExtrudeIndividualFacesOperator;
 
