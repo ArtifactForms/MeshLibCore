@@ -17,25 +17,12 @@ public class CylinderCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public CylinderCreator() {
-		this(32, 1, 1, 2, FillType.N_GON, FillType.N_GON);
-	}
-	
-	public CylinderCreator(int vertices, float radius, float height, FillType fillType) {
-		this(vertices, radius, radius, height, fillType, fillType);
-	}
-	
-	public CylinderCreator(int vertices, float radius, float height) {
-		this(vertices, radius, radius, height, FillType.N_GON, FillType.N_GON);
-	}
-
-	public CylinderCreator(int vertices, float topRadius, float bottomRadius, float height, FillType topCapFillType,
-			FillType bottomCapFillType) {
-		this.vertices = vertices;
-		this.topRadius = topRadius;
-		this.bottomRadius = bottomRadius;
-		this.height = height;
-		this.topCapFillType = topCapFillType;
-		this.bottomCapFillType = bottomCapFillType;
+		vertices = 32;
+		topRadius = 1;
+		bottomRadius = 1;
+		height = 2;
+		topCapFillType = FillType.N_GON;
+		bottomCapFillType = FillType.N_GON;
 	}
 
 	private void flipDirectionOfFaces(Mesh3D mesh) {
