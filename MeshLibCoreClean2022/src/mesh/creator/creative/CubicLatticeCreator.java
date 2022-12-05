@@ -13,11 +13,18 @@ import mesh.util.Mesh3DUtil;
 
 public class CubicLatticeCreator implements IMeshCreator {
 
-	private int segmentsX = 3;
-	private int segmentsY = 3;
-	private int segmentsZ = 3;
-	private int subdivisions = 2;
+	private int segmentsX;
+	private int segmentsY;
+	private int segmentsZ;
+	private int subdivisions;
 	private Mesh3D mesh;
+	
+	public CubicLatticeCreator() {
+		segmentsX = 3;
+		segmentsY = 3;
+		segmentsZ = 3;
+		subdivisions = 2;
+	}
 
 	@Override
 	public Mesh3D create() {
