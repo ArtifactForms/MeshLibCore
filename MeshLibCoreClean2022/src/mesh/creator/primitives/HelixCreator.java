@@ -46,8 +46,8 @@ public class HelixCreator implements IMeshCreator {
 		float stepY = dy / (float) majorSegments;
 		float majorAngle = 0;
 		float minorAngle = 0;
-		float majorStep = Mathf.TWO_PI / majorSegments;
-		float minorStep = Mathf.TWO_PI / minorSegments;
+		float majorAngleStep = Mathf.TWO_PI / majorSegments;
+		float minorAngleStep = Mathf.TWO_PI / minorSegments;
 		Vector3f[] verts = new Vector3f[majorSegments * minorSegments * turns];
 
 		for (int n = 0; n < turns; n++) {
@@ -64,13 +64,15 @@ public class HelixCreator implements IMeshCreator {
 					float z2 = -Mathf.sin(a) * v1.x + Mathf.cos(a) * v1.z;
 					v1.set(x2, v1.y, z2);
 					v1.addLocal(v0);
-					minorAngle += minorStep;
+					
+					
+					minorAngle += minorAngleStep;
 
 					verts[n * (majorSegments * minorSegments)
 							+ (j * minorSegments + i)] = v1;
 				}
 				y0 += stepY;
-				majorAngle += majorStep;
+				majorAngle += majorAngleStep;
 			}
 		}
 		
