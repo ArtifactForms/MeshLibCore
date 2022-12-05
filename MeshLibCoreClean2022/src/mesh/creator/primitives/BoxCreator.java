@@ -10,9 +10,9 @@ public class BoxCreator implements IMeshCreator {
 	private float depth;
 	
 	public BoxCreator() {
-		this.width = 1.0f;
-		this.height = 1.0f;
-		this.depth = 1.0f;
+		width = 1.0f;
+		height = 1.0f;
+		depth = 1.0f;
 	}
 
 	public BoxCreator(float width, float height, float depth) {
