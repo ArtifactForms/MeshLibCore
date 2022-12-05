@@ -28,31 +28,51 @@ public class TubeLatticeCreator implements IMeshCreator {
 		scaleExtrude = 0.5f;
 		thickness = 0.1f;
 	}
-
-	@Override
-	public Mesh3D create() {
+	
+	private SegmentedTubeCreator createSegmentedTubeCreator() {
 		SegmentedTubeCreator creator = new SegmentedTubeCreator();
 		creator.setSegments(segments);
 		creator.setVertices(vertices);
 		creator.setInnerRadius(innerRadius);
 		creator.setOuterRadius(outerRadius);
 		creator.setHeight(height);
+		return creator;
+	}
+	
+	private void createBaseSegmentedTube() {
+		mesh = createSegmentedTubeCreator().create();
+	}
 
-		mesh = creator.create();
-
+	@Override
+	public Mesh3D create() {
+		createBaseSegmentedTube();
+		createHoles();
+		flipFaceNormals();
+		solidify();
+		return mesh;
+	}
+	
+	private FaceSelection select() {
 		FaceSelection selection = new FaceSelection(mesh);
 		selection.selectTopFaces();
 		selection.selectBottomFaces();
 		selection.invert();
-
+		return selection;
+	}
+	
+	private void createHoles() {
 		ExtrudeIndividualFacesOperator operator = new ExtrudeIndividualFacesOperator(mesh);
 		operator.setScale(scaleExtrude);
 		operator.setRemoveFace(true);
-		operator.apply(selection.getFaces());
-
-		Mesh3DUtil.flipDirection(mesh);
+		operator.apply(select().getFaces());
+	}
+	
+	private void solidify() {
 		new SolidifyModifier(thickness).modify(mesh);
-		return mesh;
+	}
+	
+	private void flipFaceNormals() {
+		Mesh3DUtil.flipDirection(mesh);
 	}
 
 	public float getThickness() {
