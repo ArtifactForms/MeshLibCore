@@ -22,13 +22,13 @@ public class TorusCageCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public TorusCageCreator() {
-		this.subdivisions = 1;
-		this.majorSegments = 24;
-		this.minorSegments = 12;
-		this.thickness = 0.05f;
-		this.majorRadius = 1.0f;
-		this.minorRadius = 0.5f;
-		this.extrude = 0.8f;
+		subdivisions = 1;
+		majorSegments = 24;
+		minorSegments = 12;
+		thickness = 0.05f;
+		majorRadius = 1.0f;
+		minorRadius = 0.5f;
+		extrude = 0.8f;
 	}
 
 	@Override
