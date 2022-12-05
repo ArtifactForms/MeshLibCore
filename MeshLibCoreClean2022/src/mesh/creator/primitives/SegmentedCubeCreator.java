@@ -37,7 +37,7 @@ public class SegmentedCubeCreator implements IMeshCreator {
 
 	private void createBottom() {
 		Mesh3D bottom = createSide();
-		bottom.rotateX(Mathf.toRadians(180));
+		bottom.rotateX(Mathf.PI);
 		bottom.translateY(creationSize);
 		append(bottom);
 	}
