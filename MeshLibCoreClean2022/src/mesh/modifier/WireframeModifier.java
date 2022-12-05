@@ -13,23 +13,31 @@ public class WireframeModifier implements IMeshModifier {
 	private Mesh3D mesh;
 	
 	public WireframeModifier() {
-		this.scaleExtrude = 0.9f;
-		this.thickness = 0.02f;
+		scaleExtrude = 0.9f;
+		thickness = 0.02f;
 	}
 	
 	private void createHoles() {
-		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
+		List<Face3D> faces = mesh.getFaces();
 		for (Face3D face : faces) {
 			Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0.0f);
 		}
 		mesh.faces.removeAll(faces);
 	}
 	
+	private void solidify() {
+		new SolidifyModifier(thickness).modify(mesh);
+	}
+	
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
+	}
+	
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		this.mesh = mesh;
+		setMesh(mesh);
 		createHoles();
-		new SolidifyModifier(thickness).modify(mesh);
+		solidify();
 		return mesh;
 	}
 
