@@ -56,7 +56,7 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	}
 	
 	private void createQuadFaces() {
-		for (int i = 0; i < segments - 1; i++) {
+		for (int i = 0; i < segments; i++) {
 			for (int j = 0; j < vertices; j++) {
 				addFace(i, j);
 			}
