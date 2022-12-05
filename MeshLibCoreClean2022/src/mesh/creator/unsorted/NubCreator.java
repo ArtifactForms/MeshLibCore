@@ -8,14 +8,23 @@ import mesh.modifier.subdivision.CatmullClarkModifier;
 
 public class NubCreator implements IMeshCreator {
 
-	private int subdivisions = 1;
-	private int heightSegments = 7;
-	private int rotationSegments = 16;
-	private float radius = 1;
-	private float minorRadius = 0.7f;
-	private float segmentHeight = 0.5f;
+	private int subdivisions;
+	private int heightSegments;
+	private int rotationSegments;
+	private float radius;
+	private float minorRadius;
+	private float segmentHeight;
 	private Mesh3D mesh;
 
+	public NubCreator() {
+		subdivisions = 1;
+		heightSegments = 7;
+		rotationSegments = 16;
+		radius = 1;
+		minorRadius = 0.7f;
+		segmentHeight = 0.5f;
+	}
+	
 	@Override
 	public Mesh3D create() {
 		initializeMesh();
