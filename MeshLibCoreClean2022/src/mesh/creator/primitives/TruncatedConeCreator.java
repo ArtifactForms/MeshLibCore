@@ -27,7 +27,14 @@ public class TruncatedConeCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		return new CylinderCreator(vertices, topRadius, bottomRadius, height, FillType.N_GON, FillType.N_GON).create();
+		CylinderCreator creator = new CylinderCreator();
+		creator.setVertices(vertices);
+		creator.setTopRadius(topRadius);
+		creator.setBottomRadius(bottomRadius);
+		creator.setHeight(height);
+		creator.setTopCapFillType(FillType.N_GON);
+		creator.setBottomCapFillType(FillType.N_GON);
+		return creator.create();
 	}
 
 	public int getVertices() {
