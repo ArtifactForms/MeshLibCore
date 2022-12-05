@@ -83,7 +83,12 @@ public class HelixCreator implements IMeshCreator {
 		if (!cap)
 			return mesh;
 		
-		// End caps
+		capEnds(mesh);
+
+		return mesh;
+	}
+
+	private void capEnds(Mesh3D mesh) {
 		int n = mesh.vertices.size() - 1;
 		int m = minorSegments - 1;
 		Face3D f0 = new Face3D(new int[minorSegments]);
@@ -99,8 +104,6 @@ public class HelixCreator implements IMeshCreator {
 
 		new PlanarVertexCenterModifier().modify(mesh, f0);
 		new PlanarVertexCenterModifier().modify(mesh, f1);
-
-		return mesh;
 	}
 
 	public float getMajorRadius() {
