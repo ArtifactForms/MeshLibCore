@@ -72,10 +72,14 @@ public class SegmentedCubeCreator implements IMeshCreator {
 		mesh.scale(1.0f / creationSize, 1.0f / creationSize, 1.0f / creationSize);
 		mesh.scale(size);
 	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
 
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createTop();
 		createBottom();
 		createFront();
