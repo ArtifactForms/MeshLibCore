@@ -1,13 +1,10 @@
 package mesh.creator.unsorted;
 
-import java.util.List;
-
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.GridCreator;
 import mesh.modifier.SolidifyModifier;
-import mesh.util.Mesh3DUtil;
+import mesh.operators.ExtrudeIndividualFacesOperator;
 
 public class LatticeCreator implements IMeshCreator {
 
@@ -28,17 +25,18 @@ public class LatticeCreator implements IMeshCreator {
 		height = 0.2f;
 	}
 	
-	private void createFaces() {
-		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
-		for (Face3D f : faces)
-			Mesh3DUtil.extrudeFace(mesh, f, openingPercent, 0f);
-		mesh.faces.removeAll(faces);
+	private void createHoles() {
+		ExtrudeIndividualFacesOperator extrude = new ExtrudeIndividualFacesOperator(mesh);
+		extrude.setRemoveFace(true);
+		extrude.setAmount(0);
+		extrude.setScale(openingPercent);
+		extrude.apply(mesh.getFaces());
 	}
 
 	@Override
 	public Mesh3D create() {
 		createBaseGrid();
-		createFaces();
+		createHoles();
 		solidify();
 		centerOnAxisY();
 		return mesh;
