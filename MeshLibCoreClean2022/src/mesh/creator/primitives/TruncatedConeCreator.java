@@ -12,17 +12,10 @@ public class TruncatedConeCreator implements IMeshCreator {
 	private float height;
 
 	public TruncatedConeCreator() {
-		this.vertices = 32;
-		this.topRadius = 0.5f;
-		this.bottomRadius = 1f;
-		this.height = 2f;
-	}
-
-	public TruncatedConeCreator(int vertices, float topRadius, float bottomRadius, float height) {
-		this.vertices = vertices;
-		this.topRadius = topRadius;
-		this.bottomRadius = bottomRadius;
-		this.height = height;
+		vertices = 32;
+		topRadius = 0.5f;
+		bottomRadius = 1f;
+		height = 2f;
 	}
 
 	@Override
