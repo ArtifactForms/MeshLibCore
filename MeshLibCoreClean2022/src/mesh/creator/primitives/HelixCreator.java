@@ -62,8 +62,19 @@ public class HelixCreator implements IMeshCreator {
 				majorAngle += majorStep;
 			}
 		}
+		
+		
+		mesh.add(verts);
 
-		// Create faces
+		createFaces(mesh);
+
+		if (cap)
+			capEnds(mesh);
+		
+		return mesh;
+	}
+
+	private void createFaces(Mesh3D mesh) {
 		int l = majorSegments * turns;
 		for (int j = 0; j < majorSegments * turns - 1; j++) {
 			for (int i = 0; i < minorSegments; i++) {
@@ -77,13 +88,6 @@ public class HelixCreator implements IMeshCreator {
 				mesh.add(f);
 			}
 		}
-
-		mesh.add(verts);
-
-		if (cap)
-			capEnds(mesh);
-		
-		return mesh;
 	}
 
 	private void capEnds(Mesh3D mesh) {
