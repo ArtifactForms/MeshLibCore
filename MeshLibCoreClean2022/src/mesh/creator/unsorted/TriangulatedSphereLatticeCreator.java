@@ -39,16 +39,24 @@ public class TriangulatedSphereLatticeCreator implements IMeshCreator {
 	}
 	
 	private void solidify() {
-		Mesh3DUtil.flipDirection(mesh);
 		new SolidifyModifier(thickness).modify(mesh);
+	}
+	
+	private void flipFaceNormals() {
+		Mesh3DUtil.flipDirection(mesh);
+	}
+	
+	private void initializeMesh() {
+		mesh = new CubeCreator().create();
 	}
 	
 	@Override
 	public Mesh3D create() {
-		mesh = new CubeCreator().create();
+		initializeMesh();
 		tessellate();
 		pushToSphere();
 		createHoles();
+		flipFaceNormals();
 		solidify();
 		return mesh;
 	}
