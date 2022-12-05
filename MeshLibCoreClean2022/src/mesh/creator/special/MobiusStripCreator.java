@@ -14,14 +14,9 @@ public class MobiusStripCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public MobiusStripCreator() {
-		this(5, 32, 1f);
-	}
-	
-	public MobiusStripCreator(int rings, int segments, float radius) {
-		super();
-		this.rings = rings;
-		this.segments = segments;
-		this.radius = radius;
+		rings = 5;
+		segments = 32;
+		radius = 1;
 	}
 
 	private void createVertices() {
@@ -61,9 +56,13 @@ public class MobiusStripCreator implements IMeshCreator {
 		}
 	}
 	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+	
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createFaces();
 		return mesh;
