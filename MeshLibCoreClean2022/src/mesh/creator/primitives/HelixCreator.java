@@ -111,9 +111,13 @@ public class HelixCreator implements IMeshCreator {
 
 		mesh.add(f0);
 		mesh.add(f1);
-
-		new PlanarVertexCenterModifier().modify(mesh, f0);
-		new PlanarVertexCenterModifier().modify(mesh, f1);
+		
+		splitFace(f0);
+		splitFace(f1);
+	}
+	
+	private void splitFace(Face3D face) {
+		new PlanarVertexCenterModifier().modify(mesh, face);
 	}
 
 	public float getMajorRadius() {
