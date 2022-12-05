@@ -14,17 +14,11 @@ public class EggCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public EggCreator() {
-		this.size = 1f;
-		this.topScale = 0.5f;
-		this.subdivisions = 3;
+		size = 1f;
+		topScale = 0.5f;
+		subdivisions = 3;
 	}
-	
-	public EggCreator(float size, float topScale, int subdivisions) {
-		this.size = size;
-		this.topScale = topScale;
-		this.subdivisions = subdivisions;
-	}
-	
+
 	private void createCube() {
 		mesh = new CubeCreator(size).create();
 	}
