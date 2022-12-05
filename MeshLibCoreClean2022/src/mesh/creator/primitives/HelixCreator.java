@@ -101,16 +101,16 @@ public class HelixCreator implements IMeshCreator {
 		
 		int n = mesh.vertices.size() - 1;
 		int m = minorSegments - 1;
-		Face3D f0 = new Face3D(new int[minorSegments]);
-		Face3D f1 = new Face3D(new int[minorSegments]);
+		Face3D endCapFace = new Face3D(new int[minorSegments]);
+		Face3D startCapFace = new Face3D(new int[minorSegments]);
 		
 		for (int i = 0; i < minorSegments; i++) {
-			f0.indices[m - i] = i;
-			f1.indices[m - i] = n - i;
+			endCapFace.indices[m - i] = i;
+			startCapFace.indices[m - i] = n - i;
 		}
 
-		splitFace(f0);
-		splitFace(f1);
+		splitFace(endCapFace);
+		splitFace(startCapFace);
 	}
 	
 	private void splitFace(Face3D face) {
