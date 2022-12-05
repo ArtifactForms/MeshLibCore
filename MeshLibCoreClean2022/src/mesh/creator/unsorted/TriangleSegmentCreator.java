@@ -2,7 +2,6 @@ package mesh.creator.unsorted;
 
 import java.util.List;
 
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
@@ -18,22 +17,26 @@ public class TriangleSegmentCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public TriangleSegmentCreator() {
-		this.size = 1f;
-		this.height = 0.125f;
-		this.scaleExtrude = 0.9f;
+		size = 1f;
+		height = 0.125f;
+		scaleExtrude = 0.9f;
 	}
 	
 	private void createVertices() {
-		mesh.add(new Vector3f(-0.866f, 0f, -0.5f));
-		mesh.add(new Vector3f(0.866f, 0f, -0.5f));
-		mesh.add(new Vector3f(0f, 0f, 1f));
+		addVertex(-0.866f, 0f, -0.5f);
+		addVertex(0.866f, 0f, -0.5f);
+		addVertex(0f, 0f, 1f);
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
 	}
 	
 	private void createFaces() {
 		mesh.add(new Face3D(0, 2, 1));
 	}
 	
-	private void transform() {
+	private void scale() {
 		mesh.scale(size);
 	}
 	
@@ -48,14 +51,26 @@ public class TriangleSegmentCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createFaces();
 		extrude();
-		transform();
-		new SolidifyModifier(height).modify(mesh);
-		mesh.translateY(height / 2f);
+		scale();
+		solidify();
+		centerOnAxisY();
 		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+	
+	private void solidify() {
+		new SolidifyModifier(height).modify(mesh);
+	}
+	
+	private void centerOnAxisY() {
+		mesh.translateY(height / 2f);
 	}
 
 	public float getSize() {
