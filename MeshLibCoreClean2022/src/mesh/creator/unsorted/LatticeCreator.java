@@ -37,12 +37,28 @@ public class LatticeCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		mesh = new GridCreator(subdivisionsX, subdivisionsZ, tileSizeX,
-				tileSizeZ).create();
+		createBaseGrid();
 		createFaces();
-		new SolidifyModifier(height).modify(mesh);
-		mesh.translateY(-height / 2f);
+		solidify();
+		centerOnAxisY();
 		return mesh;
+	}
+	
+	private void createBaseGrid() {
+		GridCreator creator = new GridCreator();
+		creator.setSubdivisionsX(subdivisionsX);
+		creator.setSubdivisionsZ(subdivisionsZ);
+		creator.setTileSizeX(tileSizeX);
+		creator.setTileSizeZ(tileSizeZ);
+		mesh = creator.create();
+	}
+	
+	private void centerOnAxisY() {
+		mesh.translateY(-height / 2f);
+	}
+	
+	private void solidify() {
+		new SolidifyModifier(height).modify(mesh);
 	}
 
 	public int getSubdivisionsX() {
