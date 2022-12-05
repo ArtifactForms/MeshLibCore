@@ -79,17 +79,17 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		connect(right, left, scaleX);
 	}
 	
-	private void connect(Face3D f0, Face3D f1, float scale) {
-		extrude(f0, scale);
-		extrude(f1, scale);
-		flipDirection(f1);
-		bridge(f0, f1);
-		removeFace(f0);
-		removeFace(f1);
+	private void connect(Face3D face0, Face3D face1, float scale) {
+		extrude(face0, scale);
+		extrude(face1, scale);
+		flipDirection(face1);
+		bridge(face0, face1);
+		removeFace(face0);
+		removeFace(face1);
 	}
 	
-	private void bridge(Face3D f0, Face3D f1) {
-		Mesh3DUtil.bridge(mesh, f0, f1);
+	private void bridge(Face3D face0, Face3D face1) {
+		Mesh3DUtil.bridge(mesh, face0, face1);
 	}
 	
 	private void flipDirection(Face3D face) {
