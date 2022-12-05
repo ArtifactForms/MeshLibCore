@@ -80,11 +80,9 @@ public class HelixCreator implements IMeshCreator {
 
 		mesh.add(verts);
 
-		if (!cap)
-			return mesh;
+		if (cap)
+			capEnds(mesh);
 		
-		capEnds(mesh);
-
 		return mesh;
 	}
 
