@@ -4,7 +4,7 @@ import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
-public class SegmentedBox implements IMeshCreator {
+public class SegmentedBoxCreator implements IMeshCreator {
 
 	private int segmentsX;
 	private int segmentsY;
@@ -17,7 +17,7 @@ public class SegmentedBox implements IMeshCreator {
 	private float segmentSizeZ;
 	private Mesh3D mesh;
 
-	public SegmentedBox() {
+	public SegmentedBoxCreator() {
 		segmentsX = 10;
 		segmentsY = 10;
 		segmentsZ = 10;
