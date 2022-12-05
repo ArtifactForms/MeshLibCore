@@ -15,16 +15,11 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public SegmentedTubeCreator() {
-		this(2, 32, 1, 0.5f, 2);
-	}
-	
-	public SegmentedTubeCreator(int segments, int vertices, float outerRadius,
-			float innerRadius, float height) {
-		this.segments = segments;
-		this.vertices = vertices;
-		this.outerRadius = outerRadius;
-		this.innerRadius = innerRadius;
-		this.height = height;
+		segments = 2;
+		vertices = 32;
+		outerRadius = 1;
+		innerRadius = 0.5f;
+		height = 2;
 	}
 	
 	@Override
