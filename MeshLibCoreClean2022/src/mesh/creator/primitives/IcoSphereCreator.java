@@ -10,10 +10,10 @@ public class IcoSphereCreator implements IMeshCreator {
 
 	private float radius;
 	private int subdivisions;
-
+	private Mesh3D mesh;
+	
 	public IcoSphereCreator() {
-		this.radius = 1f;
-		this.subdivisions = 0;
+		this(1, 0);
 	}
 
 	public IcoSphereCreator(float radius, int subdivisions) {
@@ -23,10 +23,22 @@ public class IcoSphereCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		Mesh3D mesh = new IcosahedronCreator().create();
-		new PlanarMidEdgeModifier(subdivisions).modify(mesh);
-		Mesh3DUtil.pushToSphere(mesh, radius);
+		createBaseIcosahedron();
+		subdivideIcosahedron();
+		spherifyIcosahedron();
 		return mesh;
+	}
+	
+	private void createBaseIcosahedron() {
+		mesh = new IcosahedronCreator().create();
+	}
+	
+	private void subdivideIcosahedron() {
+		new PlanarMidEdgeModifier(subdivisions).modify(mesh);
+	}
+	
+	private void spherifyIcosahedron() {
+		Mesh3DUtil.pushToSphere(mesh, radius);
 	}
 
 	public float getRadius() {
