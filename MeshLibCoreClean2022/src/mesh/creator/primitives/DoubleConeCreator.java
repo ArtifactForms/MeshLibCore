@@ -17,12 +17,6 @@ public class DoubleConeCreator implements IMeshCreator {
 		this.radius = 1f;
 		this.height = 2f;
 	}
-
-	public DoubleConeCreator(int vertices, float radius, float height) {
-		this.vertices = vertices;
-		this.radius = radius;
-		this.height = height;
-	}
 	
 	private void initializeMeshAndCreateVertices() {
 		mesh = new CircleCreator(vertices, radius).create();
