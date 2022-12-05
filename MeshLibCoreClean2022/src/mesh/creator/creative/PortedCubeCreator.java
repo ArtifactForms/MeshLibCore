@@ -34,7 +34,7 @@ public class PortedCubeCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		centerFaces.clear();
+		clearCenterFacesList();
 		createSegmentedCube();
 		removeCornerFaces();
 		selectCenterFaces();
@@ -44,6 +44,10 @@ public class PortedCubeCreator implements IMeshCreator {
 		subdivide();
 		scale();
 		return mesh;
+	}
+	
+	private void clearCenterFacesList() {
+		centerFaces.clear();
 	}
 	
 	private void createSegmentedCube() {
