@@ -17,15 +17,11 @@ public class ConeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public ConeCreator() {
-		this(32, 10, 0, 1, 2);
-	}
-
-	public ConeCreator(int rotationSegments, int heightSegments, float topRadius, float bottomRadius, float height) {
-		this.rotationSegments = rotationSegments;
-		this.heightSegments = heightSegments;
-		this.topRadius = topRadius;
-		this.bottomRadius = bottomRadius;
-		this.height = height;
+		rotationSegments = 32;
+		heightSegments = 10;
+		topRadius = 0;
+		bottomRadius = 1;
+		height = 2;
 	}
 
 	private float getSegmentHeight() {
