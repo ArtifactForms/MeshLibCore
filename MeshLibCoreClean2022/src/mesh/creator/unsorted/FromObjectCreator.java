@@ -10,19 +10,28 @@ public class FromObjectCreator implements IMeshCreator {
 
 	private float scale;
 	private String path;
+	private Mesh3D mesh;
 
 	public FromObjectCreator() {
-		this.scale = 1.0f;
-		this.path = "";
+		scale = 1.0f;
+		path = "";
 	}
 
 	@Override
 	public Mesh3D create() {
+		readMeshFromFile();
+		scaleMesh();
+		return mesh;
+	}
+	
+	private void readMeshFromFile() {
 		File file = new File(path);
 		SimpleObjectReader in = new SimpleObjectReader();
-		Mesh3D mesh = in.read(file);
+		mesh = in.read(file);
+	}
+	
+	private void scaleMesh() {
 		mesh.scale(scale);
-		return mesh;
 	}
 
 	public float getScale() {
