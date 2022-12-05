@@ -14,7 +14,7 @@ public class LeonardoCubeCreator implements IMeshCreator {
 	private int subdivisions;
 	private float innerRadius;
 	private float outerRadius;
-
+	private float connectorRadius;
 	private Mesh3D mesh;
 
 	public LeonardoCubeCreator() {
@@ -25,11 +25,16 @@ public class LeonardoCubeCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
+		initializeConnectorRadius();
 		initializeMesh();
 		createConnectors();
 		removeDoubles();
 		subdivide();
 		return mesh;
+	}
+	
+	private void initializeConnectorRadius() {
+		connectorRadius = calculateConnectorRadius();
 	}
 	
 	private void subdivide() {
@@ -54,47 +59,58 @@ public class LeonardoCubeCreator implements IMeshCreator {
 		selection.selectDoubles();
 		mesh.faces.removeAll(selection.getFaces());
 	}
-
-	private void createConnectors() {
-		float a = calculateConnectorRadius();
-
-		Mesh3D top = createCross(true, false);
-		top.translateY(-outerRadius + a);
+	
+	private void createTopConnector() {
+		Mesh3D top = createConnector(true, false);
+		top.translateY(-outerRadius + connectorRadius);
 		mesh.append(top);
-
-		Mesh3D bottom = createCross(true, false);
-		bottom.translateY(outerRadius - a);
+	}
+	
+	private void createBottomConnector() {
+		Mesh3D bottom = createConnector(true, false);
+		bottom.translateY(outerRadius - connectorRadius);
 		mesh.append(bottom);
-
-		Mesh3D left = createCross(false, false);
+	}
+	
+	private void createLeftConnector() {
+		Mesh3D left = createConnector(false, false);
 		left.rotateZ(-Mathf.HALF_PI);
-		left.translateX(-outerRadius + a);
+		left.translateX(-outerRadius + connectorRadius);
 		mesh.append(left);
-
-		Mesh3D right = createCross(false, false);
+	}
+	
+	private void createRightConnector() {
+		Mesh3D right = createConnector(false, false);
 		right.rotateZ(Mathf.HALF_PI);
-		right.translateX(outerRadius - a);
+		right.translateX(outerRadius - connectorRadius);
 		mesh.append(right);
-
-		Mesh3D back = createCross(true, true);
+	}
+	
+	private void createBackConnector() {
+		Mesh3D back = createConnector(true, true);
 		back.rotateX(-Mathf.HALF_PI);
-		back.translateZ(-outerRadius + a);
+		back.translateZ(-outerRadius + connectorRadius);
 		mesh.append(back);
-
-		Mesh3D front = createCross(true, true);
+	}
+	
+	private void createFrontConnector() {
+		Mesh3D front = createConnector(true, true);
 		front.rotateX(-Mathf.HALF_PI);
-		front.translateZ(outerRadius - a);
+		front.translateZ(outerRadius - connectorRadius);
 		mesh.append(front);
 	}
 
-	private Mesh3D createCross(boolean extrudeEnds0, boolean extrudeEnds1) {
-		Mesh3D c0 = createConnector(extrudeEnds0, extrudeEnds1);
-		return c0;
+	private void createConnectors() {
+		createTopConnector();
+		createBottomConnector();
+		createLeftConnector();
+		createRightConnector();
+		createBackConnector();
+		createFrontConnector();
 	}
 
 	private Mesh3D createConnector(boolean extrudeEnds0, boolean extrudeEnds1) {
-		float a = calculateConnectorRadius();
-		CubeCreator creator = new CubeCreator(a);
+		CubeCreator creator = new CubeCreator(connectorRadius);
 		Mesh3D m = creator.create();
 
 		FaceSelection selection0 = new FaceSelection(m);
@@ -106,15 +122,15 @@ public class LeonardoCubeCreator implements IMeshCreator {
 		selection1.selectFrontFaces();
 
 		for (Face3D f : selection0.getFaces()) {
-			Mesh3DUtil.extrudeFace(m, f, 1, outerRadius - (3 * a));
+			Mesh3DUtil.extrudeFace(m, f, 1, outerRadius - (3 * connectorRadius));
 			if (extrudeEnds0)
-				Mesh3DUtil.extrudeFace(m, f, 1, (2 * a));
+				Mesh3DUtil.extrudeFace(m, f, 1, (2 * connectorRadius));
 		}
 
 		for (Face3D f : selection1.getFaces()) {
-			Mesh3DUtil.extrudeFace(m, f, 1, outerRadius - (3 * a));
+			Mesh3DUtil.extrudeFace(m, f, 1, outerRadius - (3 * connectorRadius));
 			if (extrudeEnds1)
-				Mesh3DUtil.extrudeFace(m, f, 1, (2 * a));
+				Mesh3DUtil.extrudeFace(m, f, 1, (2 * connectorRadius));
 		}
 
 		return m;
