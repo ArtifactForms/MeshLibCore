@@ -27,12 +27,12 @@ public class RingCageCreator implements IMeshCreator {
 	private  ArrayList<Mesh3D> circles = new ArrayList<Mesh3D>();
 
 	public RingCageCreator() {
-		this.subdivisions = 2;
-		this.segments = 3;
-		this.vertices = 16;
-		this.outerRadius = 1f;
-		this.innerRadius = 0.9f;
-		this.controlLoopDistance = 0.001f;
+		subdivisions = 2;
+		segments = 3;
+		vertices = 16;
+		outerRadius = 1f;
+		innerRadius = 0.9f;
+		controlLoopDistance = 0.001f;
 	}
 
 	@Override
