@@ -23,19 +23,14 @@ public class PillarCreator implements IMeshCreator {
 	private FaceSelection selection;
 
 	public PillarCreator() {
-		this(8, 3, 2, 1.0f, 2.0f, 5.0f, 1.0f);
-	}
-
-	public PillarCreator(int rotationSegments, int topSegments, int bottomSegments, float topHeight, float bottomHeight,
-			float centerHeight, float radius) {
-		this.rotationSegments = rotationSegments;
-		this.topSegments = topSegments;
-		this.bottomSegments = bottomSegments;
-		this.topHeight = topHeight;
-		this.bottomHeight = bottomHeight;
-		this.centerHeight = centerHeight;
-		this.radius = radius;
-		this.capFillType = FillType.N_GON;
+		rotationSegments = 8;
+		topSegments = 2;
+		bottomSegments = 2;
+		topHeight = 1.0f;
+		bottomHeight = 2.0f;
+		centerHeight = 5.0f;
+		radius = 1.0f;
+		capFillType = FillType.N_GON;
 	}
 
 	private void processCaps() {
