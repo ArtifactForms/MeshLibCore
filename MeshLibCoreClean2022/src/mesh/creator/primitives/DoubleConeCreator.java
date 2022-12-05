@@ -13,9 +13,9 @@ public class DoubleConeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public DoubleConeCreator() {
-		this.vertices = 32;
-		this.radius = 1f;
-		this.height = 2f;
+		vertices = 32;
+		radius = 1f;
+		height = 2f;
 	}
 	
 	private void initializeMeshAndCreateVertices() {
