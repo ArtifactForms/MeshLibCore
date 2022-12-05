@@ -22,46 +22,50 @@ public class SegmentedCubeCreator implements IMeshCreator {
 		this.size = size;
 		this.creationSize = (float) segments;
 	}
+	
+	private Mesh3D createSide() {
+		return new GridCreator(segments, segments, creationSize).create();
+	}
 
 	private void createTop() {
-		Mesh3D top = new GridCreator(segments, segments, creationSize).create();
+		Mesh3D top = createSide();
 		top.translateY(-creationSize);
 		mesh.append(top);
 	}
 
 	private void createBottom() {
-		Mesh3D bottom = new GridCreator(segments, segments, creationSize).create();
+		Mesh3D bottom = createSide();
 		bottom.rotateX(Mathf.toRadians(180));
 		bottom.translateY(creationSize);
 		mesh.append(bottom);
 	}
 
 	private void createFront() {
-		Mesh3D front = new GridCreator(segments, segments, creationSize).create();
+		Mesh3D front = createSide();
 		front.rotateX(Mathf.HALF_PI);
 		front.translateZ(-creationSize);
 		mesh.append(front);
 	}
 
 	private void createBack() {
-		Mesh3D front = new GridCreator(segments, segments, creationSize).create();
-		front.rotateX(-Mathf.HALF_PI);
-		front.translateZ(creationSize);
-		mesh.append(front);
+		Mesh3D back = createSide();
+		back.rotateX(-Mathf.HALF_PI);
+		back.translateZ(creationSize);
+		mesh.append(back);
 	}
 
 	private void createLeft() {
-		Mesh3D front = new GridCreator(segments, segments, creationSize).create();
-		front.rotateZ(-Mathf.HALF_PI);
-		front.translateX(-creationSize);
-		mesh.append(front);
+		Mesh3D left = createSide();
+		left.rotateZ(-Mathf.HALF_PI);
+		left.translateX(-creationSize);
+		mesh.append(left);
 	}
 
 	private void createRight() {
-		Mesh3D front = new GridCreator(segments, segments, creationSize).create();
-		front.rotateZ(Mathf.HALF_PI);
-		front.translateX(creationSize);
-		mesh.append(front);
+		Mesh3D right = createSide();
+		right.rotateZ(Mathf.HALF_PI);
+		right.translateX(creationSize);
+		mesh.append(right);
 	}
 
 	private void removeDoubles() {
