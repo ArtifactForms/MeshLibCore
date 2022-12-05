@@ -31,17 +31,22 @@ public class ArcCreator implements IMeshCreator {
 	}
 
 	private void createVertices() {
-		float angleStep = calculateAngleStep();
+		float angleBetweenPoints = calculateAngleBetweenPoints();
 
 		for (int i = 0; i < vertices; i++) {
-			float x = radius * Mathf.cos(startAngle + (angleStep * i));
-			float z = radius * Mathf.sin(startAngle + (angleStep * i));
-			mesh.addVertex(x, 0, z);
+			float currentAngle = angleBetweenPoints * i;
+			float x = radius * Mathf.cos(currentAngle);
+			float z = radius * Mathf.sin(currentAngle);
+			addVertex(x, 0, z);
 		}
 	}
 	
-	private float calculateAngleStep() {
-		 return (endAngle - startAngle) / ((float) vertices - 1);
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private float calculateAngleBetweenPoints() {
+		 return startAngle + ((endAngle - startAngle) / ((float) vertices - 1));
 	}
 	
 	public float getStartAngle() {
