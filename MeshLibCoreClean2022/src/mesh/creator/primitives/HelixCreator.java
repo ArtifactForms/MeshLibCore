@@ -109,9 +109,6 @@ public class HelixCreator implements IMeshCreator {
 			f1.indices[m - i] = n - i;
 		}
 
-		mesh.add(f0);
-		mesh.add(f1);
-		
 		splitFace(f0);
 		splitFace(f1);
 	}
