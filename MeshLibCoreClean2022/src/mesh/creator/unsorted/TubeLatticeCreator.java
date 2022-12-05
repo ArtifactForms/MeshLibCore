@@ -32,11 +32,11 @@ public class TubeLatticeCreator implements IMeshCreator {
 	@Override
 	public Mesh3D create() {
 		SegmentedTubeCreator creator = new SegmentedTubeCreator();
-		creator.setHeight(height);
-		creator.setInnerRadius(innerRadius);
-		creator.setOuterRadius(outerRadius);
 		creator.setSegments(segments);
 		creator.setVertices(vertices);
+		creator.setInnerRadius(innerRadius);
+		creator.setOuterRadius(outerRadius);
+		creator.setHeight(height);
 
 		mesh = creator.create();
 

@@ -19,18 +19,10 @@ public class LatticeSphereCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public LatticeSphereCreator() {
-		this.radius = 1.0f;
-		this.scale = 0.9f;
-		this.subdivisions = 2;
-		this.thickness = 0.01f;
-	}
-
-	public LatticeSphereCreator(float radius, float scale, float thickness,
-			int subdivisions) {
-		this.radius = radius;
-		this.scale = scale;
-		this.thickness = thickness;
-		this.subdivisions = subdivisions;
+		radius = 1.0f;
+		scale = 0.9f;
+		subdivisions = 2;
+		thickness = 0.01f;
 	}
 
 	private void createQuadSphere() {
