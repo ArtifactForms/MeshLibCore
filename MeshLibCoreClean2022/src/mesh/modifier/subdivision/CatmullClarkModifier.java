@@ -155,12 +155,9 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	private Vector3f calculateFaceCenter(Face3D face) {
 		Vector3f facePoint = new Vector3f();
-		for (int i = 0; i < face.indices.length; i++) {
-			Vector3f v = mesh.vertices.get(face.indices[i]);
-			facePoint.addLocal(v);
-		}
-		facePoint.divideLocal(face.indices.length);
-		return facePoint;
+		for (int i = 0; i < face.indices.length; i++)
+			facePoint.addLocal(mesh.vertices.get(face.indices[i]));
+		return facePoint.divideLocal(face.indices.length);
 	}
 
 	private Vector3f calculateEdgePoint(Edge3D edge) {
