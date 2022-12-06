@@ -164,9 +164,9 @@ public class CatmullClarkModifier implements IMeshModifier {
 		extracted(face, idxs, edgePoints);
 
 		for (int i = 0; i < face.indices.length; i++) {
-			int vIndex = face.indices[i];
-			List<Vector3f> facepoints = originalVerticesToFacePointsMap.get(vIndex);
-			List<Vector3f> edgePoints2 = verticesToEdgePointsMap.get(vIndex);
+			int vertexIndex = face.indices[i];
+			List<Vector3f> facepoints = originalVerticesToFacePointsMap.get(vertexIndex);
+			List<Vector3f> edgePoints2 = verticesToEdgePointsMap.get(vertexIndex);
 
 			// create new faces
 			Face3D f0 = new Face3D(face.indices[i], idxs[i + 1], idxs[0], idxs[i == 0 ? face.indices.length : i]);
@@ -174,12 +174,12 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 			if (facepoints == null) {
 				facepoints = new ArrayList<Vector3f>();
-				originalVerticesToFacePointsMap.put(vIndex, facepoints);
+				originalVerticesToFacePointsMap.put(vertexIndex, facepoints);
 			}
 
 			if (edgePoints2 == null) {
 				edgePoints2 = new ArrayList<Vector3f>();
-				verticesToEdgePointsMap.put(vIndex, edgePoints2);
+				verticesToEdgePointsMap.put(vertexIndex, edgePoints2);
 			}
 
 			// map vertices to face point
