@@ -30,11 +30,15 @@ public class CatmullClarkModifier implements IMeshModifier {
 		this.subdivisions = subdivisions;
 		this.originalVertexCount = 0;
 		this.mesh = null;
-		this.edgesToFacepointMap = new HashMap<Pair, Vector3f>();
-		this.edgesToEdgePointsMap = new HashMap<Pair, Integer>();
-		this.vertexIndexToNumberOfOutgoingEdgesMap = new HashMap<Integer, Integer>();
-		this.originalVerticesToFacePointsMap = new HashMap<Integer, List<Vector3f>>();
-		this.verticesToEdgePointsMap = new HashMap<Integer, List<Vector3f>>();
+		initializeMaps();
+	}
+
+	private void initializeMaps() {
+		edgesToFacepointMap = new HashMap<Pair, Vector3f>();
+		edgesToEdgePointsMap = new HashMap<Pair, Integer>();
+		vertexIndexToNumberOfOutgoingEdgesMap = new HashMap<Integer, Integer>();
+		originalVerticesToFacePointsMap = new HashMap<Integer, List<Vector3f>>();
+		verticesToEdgePointsMap = new HashMap<Integer, List<Vector3f>>();
 	}
 
 	@Override
