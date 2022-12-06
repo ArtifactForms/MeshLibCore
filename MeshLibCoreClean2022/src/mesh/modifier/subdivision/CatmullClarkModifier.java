@@ -42,7 +42,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 		verticesToEdgePointsMap = new HashMap<Integer, List<Vector3f>>();
 	}
 	
-	protected void incrementOutgoingEdgesOfVertex(Edge3D edge) {
+	private void incrementOutgoingEdgesOfVertex(Edge3D edge) {
 		Integer n = vertexIndexToNumberOfOutgoingEdgesMap.get(edge.fromIndex);
 		if (n == null)
 			n = 0;
@@ -50,7 +50,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 		vertexIndexToNumberOfOutgoingEdgesMap.put(edge.fromIndex, n);
 	}
 
-	protected void smoothVertices() {
+	private void smoothVertices() {
 		for (int i = 0; i < originalVertexCount; i++) {
 			float n = (float) vertexIndexToNumberOfOutgoingEdgesMap.get(i);
 			Vector3f d = mesh.vertices.get(i);
@@ -62,7 +62,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 		}
 	}
 
-	protected void processEdgePoints() {
+	private void processEdgePoints() {
 		for (Edge3D edge : edgesToEdgePointsMap.keySet()) {
 			int index = edgesToEdgePointsMap.get(edge);
 			Vector3f v0 = mesh.vertices.get(edge.fromIndex);
