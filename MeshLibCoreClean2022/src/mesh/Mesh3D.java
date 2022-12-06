@@ -21,11 +21,6 @@ public class Mesh3D {
 		faces = new ArrayList<Face3D>();
 	}
 
-	public Mesh3D(Vector3f[] vertices, Face3D[] faces) {
-		this.vertices.addAll(Arrays.asList(vertices));
-		this.faces.addAll(Arrays.asList(faces));
-	}
-
 	public void updateFaceNormals() {
 		for (Face3D face : faces) {
 			face.normal = calculateFaceNormal(face);
@@ -174,7 +169,7 @@ public class Mesh3D {
 
 		return copy;
 	}
-
+	
 	public Mesh3D scaledCopy(Vector3f scale) {
 		Mesh3D copy = new Mesh3D();
 		List<Vector3f> vertices = copy.vertices;
