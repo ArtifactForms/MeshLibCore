@@ -21,8 +21,6 @@ public class CatmullClarkModifier implements IMeshModifier {
 	private HashMap<Integer, Integer> vertexIndexToNumberOfOutgoingEdgesMap;
 	private HashMap<Integer, List<Vector3f>> originalVerticesToFacePointsMap;
 	private HashMap<Integer, List<Vector3f>> verticesToEdgePointsMap;
-	private ArrayList<Face3D> facesToAdd;
-	private ArrayList<Face3D> facesToRemove;
 
 	public CatmullClarkModifier() {
 		this(1);
@@ -32,9 +30,6 @@ public class CatmullClarkModifier implements IMeshModifier {
 		this.subdivisions = subdivisions;
 		this.originalVertexCount = 0;
 		this.mesh = null;
-		facesToAdd = new ArrayList<>();
-		facesToRemove = new ArrayList<>();
-		initializeMaps();
 	}
 
 	private void initializeMaps() {
@@ -50,11 +45,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 		this.mesh = mesh;
 		for (int i = 0; i < subdivisions; i++) {
 			originalVertexCount = mesh.getVertexCount();
-			edgesToFacepointMap.clear();
-			edgesToEdgePointsMap.clear();
-			vertexIndexToNumberOfOutgoingEdgesMap.clear();
-			originalVerticesToFacePointsMap.clear();
-			verticesToEdgePointsMap.clear();
+			initializeMaps();
 			subdivideMesh();
 			processEdgePoints();
 			smoothVertices();
@@ -117,27 +108,9 @@ public class CatmullClarkModifier implements IMeshModifier {
 		}
 	}
 
-	protected void subdivideMesh() {		
-		clear();
-		extracted();
-		removeOldFaces();
-		addNewFaces();
-	}
-	
-	private void clear() {
-		facesToAdd.clear();
-		facesToRemove.clear();
-	}
-	
-	private void removeOldFaces() {
-		mesh.faces.removeAll(facesToRemove);
-	}
-	
-	private void addNewFaces() {
-		mesh.faces.addAll(facesToAdd);
-	}
-
-	private void extracted() {
+	private void subdivideMesh() {
+		List<Face3D> facesToAdd = new ArrayList<>();
+		List<Face3D> facesToRemove = new ArrayList<>();
 		// for each original face
 		int index = mesh.getVertexCount();
 		for (Face3D f : mesh.faces) {
@@ -216,6 +189,9 @@ public class CatmullClarkModifier implements IMeshModifier {
 			// remove old face
 			facesToRemove.add(f);
 		}
+		
+		mesh.faces.removeAll(facesToRemove);
+		mesh.faces.addAll(facesToAdd);
 	}
 
 	public int getSubdivisions() {
