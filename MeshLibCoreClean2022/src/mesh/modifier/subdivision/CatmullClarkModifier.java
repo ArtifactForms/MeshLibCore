@@ -162,22 +162,19 @@ public class CatmullClarkModifier implements IMeshModifier {
 		}
 	}
 	
-	private Vector3f calculateFacePointsAverage(int index) {
-		Vector3f v0 = new Vector3f();
-		List<Vector3f> facePoints = originalVerticesToFacePointsMap.get(index);
-		for (Vector3f v1 : facePoints) {
-			v0.addLocal(v1);
-		}
-		return v0.mult(1f / (float) facePoints.size());
+	private Vector3f calculateFacePointsAverage(int originalVertexIndex) {
+		return caluclateAverage(originalVerticesToFacePointsMap.get(originalVertexIndex));
 	}
 
-	private Vector3f calculateEdgePointAverage(int index) {
-		Vector3f v0 = new Vector3f();
-		List<Vector3f> edgePoints = verticesToEdgePointsMap.get(index);
-		for (Vector3f v1 : edgePoints) {
-			v0.addLocal(v1);
-		}
-		return v0.mult(1f / (float) edgePoints.size());
+	private Vector3f calculateEdgePointAverage(int originalVertexIndex) {
+		return caluclateAverage(verticesToEdgePointsMap.get(originalVertexIndex));
+	}
+	
+	private Vector3f caluclateAverage(List<Vector3f> vertices) {
+		Vector3f sum = new Vector3f();
+		for (Vector3f v : vertices)
+			sum.addLocal(v);
+		return sum.mult(1f / (float) vertices.size());
 	}
 
 	private Vector3f calculateFaceCenter(Face3D face) {
