@@ -15,6 +15,9 @@ environment. Nevertheless processing provides a convenient way to display constr
 ## Status Quo
 At the current stage I mainly work on the user documentation. Over the years I learned new things about code structure and architecture, so codewise a lot of refactoring is going on to keep the project clean. And from time to time small additions are made. Meanwhile all the processing specific and rendering stuff lives in it's own repository. So this is another project to went on with.
 
+Overall the code base is more a playground for working with *legacy code*. I try to love, work and live with legacy code. 
+It offers the possibility to learn and try new testing approaches. Building tests around existing code for refactroing purposes is quite an interesting and useful field. And in my opinion indispensable. 
+ 
 ## Future
 There are a lot of corresponding topics out there. So my wishlist of things to learn and implement is unspeakably large.
 Some are already listed under 'Planed features'.
