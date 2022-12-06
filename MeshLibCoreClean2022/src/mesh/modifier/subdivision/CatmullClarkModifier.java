@@ -21,6 +21,8 @@ public class CatmullClarkModifier implements IMeshModifier {
 	private HashMap<Integer, Integer> vertexIndexToNumberOfOutgoingEdgesMap;
 	private HashMap<Integer, List<Vector3f>> originalVerticesToFacePointsMap;
 	private HashMap<Integer, List<Vector3f>> verticesToEdgePointsMap;
+	private ArrayList<Face3D> facesToAdd;
+	private ArrayList<Face3D> facesToRemove;
 
 	public CatmullClarkModifier() {
 		this(1);
@@ -30,6 +32,8 @@ public class CatmullClarkModifier implements IMeshModifier {
 		this.subdivisions = subdivisions;
 		this.originalVertexCount = 0;
 		this.mesh = null;
+		facesToAdd = new ArrayList<>();
+		facesToRemove = new ArrayList<>();
 		initializeMaps();
 	}
 
@@ -113,12 +117,29 @@ public class CatmullClarkModifier implements IMeshModifier {
 		}
 	}
 
-	protected void subdivideMesh() {
-		int index = mesh.getVertexCount();
-		ArrayList<Face3D> facesToAdd = new ArrayList<Face3D>();
-		ArrayList<Face3D> facesToRemove = new ArrayList<Face3D>();
+	protected void subdivideMesh() {		
+		clear();
+		extracted();
+		removeOldFaces();
+		addNewFaces();
+	}
+	
+	private void clear() {
+		facesToAdd.clear();
+		facesToRemove.clear();
+	}
+	
+	private void removeOldFaces() {
+		mesh.faces.removeAll(facesToRemove);
+	}
+	
+	private void addNewFaces() {
+		mesh.faces.addAll(facesToAdd);
+	}
 
+	private void extracted() {
 		// for each original face
+		int index = mesh.getVertexCount();
 		for (Face3D f : mesh.faces) {
 			int n = f.indices.length;
 			int[] idxs = new int[n + 1];
@@ -195,11 +216,6 @@ public class CatmullClarkModifier implements IMeshModifier {
 			// remove old face
 			facesToRemove.add(f);
 		}
-
-		// remove old faces from the mesh
-		mesh.faces.removeAll(facesToRemove);
-		// add all new faces to the mesh
-		mesh.faces.addAll(facesToAdd);
 	}
 
 	public int getSubdivisions() {
