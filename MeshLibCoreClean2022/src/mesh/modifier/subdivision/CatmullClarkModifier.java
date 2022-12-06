@@ -35,12 +35,11 @@ public class CatmullClarkModifier implements IMeshModifier {
 	private void smoothVertices() {
 		for (int vertexIndex = 0; vertexIndex < originalVertexCount; vertexIndex++) {
 			float n = (float) vertexIndexToNumberOfOutgoingEdgesMap.get(vertexIndex);
-			Vector3f d = mesh.vertices.get(vertexIndex);
+			Vector3f originalVertex = mesh.vertices.get(vertexIndex);
 			Vector3f fpSum = calculateFacePointsAverage(vertexIndex);
 			Vector3f epSum = calculateEdgePointAverage(vertexIndex);
-			Vector3f v = fpSum.add(epSum.mult(2f).add(d.mult(n - 3)));
-			v.divideLocal(n);
-			d.set(v);
+			Vector3f v = fpSum.add(epSum.mult(2f).add(originalVertex.mult(n - 3)));
+			originalVertex.set(v.divideLocal(n));
 		}
 	}
 
