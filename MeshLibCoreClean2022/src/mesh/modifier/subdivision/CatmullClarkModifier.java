@@ -11,51 +11,30 @@ import mesh.Mesh3D;
 import mesh.Pair;
 import mesh.modifier.IMeshModifier;
 
-/**
- * An implementation of the Catmull-Clark subdivision surface. It was developed
- * in 1978 by Edwin Catmull and Jim Clark.
- * 
- * @author - Simon Dietz
- * @version 0.3, 30 June 2016
- */
 public class CatmullClarkModifier implements IMeshModifier {
 
 	private int subdivisions;
-
 	private int originalVertexCount;
-
-	// the mesh to subdivide
 	private Mesh3D mesh;
-
-	// mapping edges to face points
-	private HashMap<Pair, Vector3f> edgeFacepointMap;
-
-	// mapping edges to edge point indices
-	private HashMap<Pair, Integer> edges;
-
-	// mapping vertex index to number of outgoing edges
-	private HashMap<Integer, Integer> nMap;
-
-	// mapping original vertices to face points
-	private HashMap<Integer, List<Vector3f>> vertexFacepointMap;
-
-	// mapping vertices to edge points
-	private HashMap<Integer, List<Vector3f>> vertexEdgepointMap;
+	private HashMap<Pair, Vector3f> edgesToFacepointMap;
+	private HashMap<Pair, Integer> edgesToEdgePointsMap;
+	private HashMap<Integer, Integer> vertexIndexToNumberOfOutgoingEdgesMap;
+	private HashMap<Integer, List<Vector3f>> originalVerticesToFacePointsMap;
+	private HashMap<Integer, List<Vector3f>> verticesToEdgePointsMap;
 
 	public CatmullClarkModifier() {
 		this(1);
 	}
 
 	public CatmullClarkModifier(int subdivisions) {
-		super();
 		this.subdivisions = subdivisions;
 		this.originalVertexCount = 0;
-		this.mesh = null; // TODO Decide if we initialize with = new Mesh3D();
-		this.edgeFacepointMap = new HashMap<Pair, Vector3f>();
-		this.edges = new HashMap<Pair, Integer>();
-		this.nMap = new HashMap<Integer, Integer>();
-		this.vertexFacepointMap = new HashMap<Integer, List<Vector3f>>();
-		this.vertexEdgepointMap = new HashMap<Integer, List<Vector3f>>();
+		this.mesh = null;
+		this.edgesToFacepointMap = new HashMap<Pair, Vector3f>();
+		this.edgesToEdgePointsMap = new HashMap<Pair, Integer>();
+		this.vertexIndexToNumberOfOutgoingEdgesMap = new HashMap<Integer, Integer>();
+		this.originalVerticesToFacePointsMap = new HashMap<Integer, List<Vector3f>>();
+		this.verticesToEdgePointsMap = new HashMap<Integer, List<Vector3f>>();
 	}
 
 	@Override
@@ -63,11 +42,11 @@ public class CatmullClarkModifier implements IMeshModifier {
 		this.mesh = mesh;
 		for (int i = 0; i < subdivisions; i++) {
 			originalVertexCount = mesh.getVertexCount();
-			edgeFacepointMap.clear();
-			edges.clear();
-			nMap.clear();
-			vertexFacepointMap.clear();
-			vertexEdgepointMap.clear();
+			edgesToFacepointMap.clear();
+			edgesToEdgePointsMap.clear();
+			vertexIndexToNumberOfOutgoingEdgesMap.clear();
+			originalVerticesToFacePointsMap.clear();
+			verticesToEdgePointsMap.clear();
 			subdivideMesh();
 			processEdgePoints();
 			smoothVertices();
@@ -77,7 +56,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	protected Vector3f getFacePointsAverage(int index) {
 		Vector3f v0 = new Vector3f();
-		List<Vector3f> facePoints = vertexFacepointMap.get(index);
+		List<Vector3f> facePoints = originalVerticesToFacePointsMap.get(index);
 		for (Vector3f v1 : facePoints) {
 			v0.addLocal(v1);
 		}
@@ -86,7 +65,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	protected Vector3f getEdgePointAverage(int index) {
 		Vector3f v0 = new Vector3f();
-		List<Vector3f> edgePoints = vertexEdgepointMap.get(index);
+		List<Vector3f> edgePoints = verticesToEdgePointsMap.get(index);
 		for (Vector3f v1 : edgePoints) {
 			v0.addLocal(v1);
 		}
@@ -95,18 +74,18 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	protected void incrementN(Pair[] pairs) {
 		for (Pair p : pairs) {
-			Integer n = nMap.get(p.a);
+			Integer n = vertexIndexToNumberOfOutgoingEdgesMap.get(p.a);
 			if (n == null) {
 				n = 0;
 			}
 			n += 1;
-			nMap.put(p.a, n);
+			vertexIndexToNumberOfOutgoingEdgesMap.put(p.a, n);
 		}
 	}
 
 	protected void smoothVertices() {
 		for (int i = 0; i < originalVertexCount; i++) {
-			float n = (float) nMap.get(i);
+			float n = (float) vertexIndexToNumberOfOutgoingEdgesMap.get(i);
 			Vector3f d = mesh.vertices.get(i);
 			Vector3f fpSum = getFacePointsAverage(i);
 			Vector3f epSum = getEdgePointAverage(i);
@@ -117,12 +96,12 @@ public class CatmullClarkModifier implements IMeshModifier {
 	}
 
 	protected void processEdgePoints() {
-		for (Pair p : edges.keySet()) {
-			int index = edges.get(p);
+		for (Pair p : edgesToEdgePointsMap.keySet()) {
+			int index = edgesToEdgePointsMap.get(p);
 			Vector3f v0 = mesh.vertices.get(p.a);
 			Vector3f v1 = mesh.vertices.get(p.b);
-			Vector3f fp0 = edgeFacepointMap.get(p);
-			Vector3f fp1 = edgeFacepointMap.get(new Pair(p.b, p.a));
+			Vector3f fp0 = edgesToFacepointMap.get(p);
+			Vector3f fp1 = edgesToFacepointMap.get(new Pair(p.b, p.a));
 			if (v0 != null && v1 != null && fp0 != null && fp1 != null) {
 				Vector3f ep = v0.add(v1).add(fp0).add(fp1).mult(0.25f);
 				mesh.vertices.get(index).set(ep);
@@ -162,7 +141,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 				Pair p = new Pair(f.indices[i % n], f.indices[(i + 1) % n]);
 				pairs[i] = p;
 				// map edges to face point
-				edgeFacepointMap.put(p, fp);
+				edgesToFacepointMap.put(p, fp);
 				// midpoints (edge points)
 				edgePoints[i] = GeometryUtil.getMidpoint(vertices[i % n], vertices[(i + 1) % n]);
 			}
@@ -172,22 +151,22 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 			for (int i = 0; i < n; i++) {
 				// adjacent edge already processed?
-				Integer epIndex = edges.get(new Pair(pairs[i].b, pairs[i].a));
+				Integer epIndex = edgesToEdgePointsMap.get(new Pair(pairs[i].b, pairs[i].a));
 				if (epIndex == null) {
 					mesh.vertices.add(edgePoints[i]); // next index + 1
 					idxs[i + 1] = index;
-					edges.put(pairs[i], index);
+					edgesToEdgePointsMap.put(pairs[i], index);
 					index++;
 				} else {
 					idxs[i + 1] = epIndex;
-					edges.put(pairs[i], epIndex);
+					edgesToEdgePointsMap.put(pairs[i], epIndex);
 				}
 			}
 
 			for (int i = 0; i < n; i++) {
 				int vIndex = f.indices[i];
-				List<Vector3f> facepoints = vertexFacepointMap.get(vIndex);
-				List<Vector3f> edgePoints2 = vertexEdgepointMap.get(vIndex);
+				List<Vector3f> facepoints = originalVerticesToFacePointsMap.get(vIndex);
+				List<Vector3f> edgePoints2 = verticesToEdgePointsMap.get(vIndex);
 
 				// create new faces
 				Face3D f0 = new Face3D(f.indices[i], idxs[i + 1], idxs[0], idxs[i == 0 ? f.indices.length : i]);
@@ -195,12 +174,12 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 				if (facepoints == null) {
 					facepoints = new ArrayList<Vector3f>();
-					vertexFacepointMap.put(vIndex, facepoints);
+					originalVerticesToFacePointsMap.put(vIndex, facepoints);
 				}
 
 				if (edgePoints2 == null) {
 					edgePoints2 = new ArrayList<Vector3f>();
-					vertexEdgepointMap.put(vIndex, edgePoints2);
+					verticesToEdgePointsMap.put(vIndex, edgePoints2);
 				}
 
 				// map vertices to face point
