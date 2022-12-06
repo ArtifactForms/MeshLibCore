@@ -8,6 +8,7 @@ import org.junit.Test;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.creator.platonic.DodecahedronCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.io.SimpleObjectReader;
 import mesh.modifier.subdivision.CatmullClarkModifier;
@@ -36,9 +37,31 @@ public class CatmullClarkTest {
 	private void verticesAreEqual(Mesh3D expected, Mesh3D actual) {
 		for (int j = 0; j < expected.getVertexCount(); j++) {
 			Vector3f expectedVertex = expected.getVertexAt(j);
-			Vector3f actualVertex = actual.getVertexAt(j);
+			Vector3f actualVertex = actual.getVertexAt(j);			
 			Assert.assertEquals(expectedVertex, actualVertex);
 		}
+	}
+	
+	@Test
+	public void subdivideOtherShapeInAdvanceTestFaces() {
+		Mesh3D advance = new DodecahedronCreator().create();
+		Mesh3D expected = loadReference(4);
+		Mesh3D actual = new CubeCreator().create();
+		CatmullClarkModifier modifier = new CatmullClarkModifier(4);
+		modifier.modify(advance);
+		modifier.modify(actual);
+		facesAreEqual(expected, actual);
+	}
+	
+	@Test
+	public void subdivideOtherShapeInAdvanceTestVertices() {
+		Mesh3D advance =  new DodecahedronCreator().create();
+		Mesh3D expected = loadReference(4);
+		Mesh3D actual = new CubeCreator().create();
+		CatmullClarkModifier modifier = new CatmullClarkModifier(4);
+		modifier.modify(advance);
+		modifier.modify(actual);
+		verticesAreEqual(expected, actual);
 	}
 	
 	@Test
