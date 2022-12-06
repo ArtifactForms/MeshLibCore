@@ -32,14 +32,6 @@ public class CatmullClarkModifier implements IMeshModifier {
 		setSubdivisions(subdivisions);
 	}
 
-	private void initializeMaps() {
-		edgesToFacepointMap = new HashMap<Edge3D, Vector3f>();
-		edgesToEdgePointsMap = new HashMap<Edge3D, Integer>();
-		vertexIndexToNumberOfOutgoingEdgesMap = new HashMap<Integer, Integer>();
-		originalVerticesToFacePointsMap = new HashMap<Integer, List<Vector3f>>();
-		verticesToEdgePointsMap = new HashMap<Integer, List<Vector3f>>();
-	}
-	
 	private void incrementOutgoingEdgesOfVertex(Edge3D edge) {
 		Integer n = vertexIndexToNumberOfOutgoingEdgesMap.get(edge.fromIndex);
 		if (n == null)
@@ -84,7 +76,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	private void processOneIteration() {
 		setOriginalVertexCount(mesh.getVertexCount());
-		initializeMaps();
+		initialize();
 		subdivideMesh();
 		processEdgePoints();
 		smoothVertices();
@@ -92,18 +84,12 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	private void subdivideMesh() {
 		nextIndex = originalVertexCount;
-		initializeFaceLists();
 		for (Face3D face : mesh.faces) {
 			processFace(face);
 			facesToRemove.add(face);
 		}
 		removeOldFaces();
 		addNewFaces();
-	}
-
-	private void initializeFaceLists() {
-		facesToAdd = new ArrayList<>();
-		facesToRemove = new ArrayList<>();
 	}
 
 	private void processFace(Face3D face) {
@@ -208,8 +194,22 @@ public class CatmullClarkModifier implements IMeshModifier {
 		facepoints.add(facePoint);
 	}
 	
-	private void setOriginalVertexCount(int originalVertexCount) {
-		this.originalVertexCount = originalVertexCount;
+	private void initializeMaps() {
+		edgesToFacepointMap = new HashMap<>();
+		edgesToEdgePointsMap = new HashMap<>();
+		vertexIndexToNumberOfOutgoingEdgesMap = new HashMap<>();
+		originalVerticesToFacePointsMap = new HashMap<>();
+		verticesToEdgePointsMap = new HashMap<>();
+	}
+	
+	private void initializeFaceLists() {
+		facesToAdd = new ArrayList<>();
+		facesToRemove = new ArrayList<>();
+	}
+	
+	private void initialize() {
+		initializeMaps();
+		initializeFaceLists();
 	}
 	
 	private void addVertex(Vector3f v) {
@@ -223,6 +223,10 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	private void addNewFaces() {
 		mesh.faces.addAll(facesToAdd);
+	}
+	
+	private void setOriginalVertexCount(int originalVertexCount) {
+		this.originalVertexCount = originalVertexCount;
 	}
 
 	private void setMesh(Mesh3D mesh) {
