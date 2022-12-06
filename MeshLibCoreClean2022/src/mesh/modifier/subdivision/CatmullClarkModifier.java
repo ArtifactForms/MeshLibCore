@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import math.GeometryUtil;
 import math.Vector3f;
 import mesh.Edge3D;
 import mesh.Face3D;
@@ -184,7 +183,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 	private Vector3f calculateEdgePoint(Edge3D edge) {
 		Vector3f from = mesh.getVertexAt(edge.fromIndex);
 		Vector3f to = mesh.getVertexAt(edge.toIndex);
-		return GeometryUtil.getMidpoint(from, to);
+		return from.add(to).mult(0.5f);
 	}
 	
 	private void mapEdgeToFacePoint(Edge3D edge, Vector3f facePoint) {
