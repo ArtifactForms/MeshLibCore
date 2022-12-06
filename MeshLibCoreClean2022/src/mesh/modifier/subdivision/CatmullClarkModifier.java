@@ -35,7 +35,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 	private void smoothVertices() {
 		for (int vertexIndex = 0; vertexIndex < originalVertexCount; vertexIndex++) {
 			float n = (float) vertexIndexToNumberOfOutgoingEdgesMap.get(vertexIndex);
-			Vector3f originalVertex = mesh.vertices.get(vertexIndex);
+			Vector3f originalVertex = getVertexAt(vertexIndex);
 			Vector3f fpSum = calculateFacePointsAverage(vertexIndex);
 			Vector3f epSum = calculateEdgePointAverage(vertexIndex);
 			Vector3f v = fpSum.add(epSum.mult(2f).add(originalVertex.mult(n - 3)));
@@ -44,16 +44,19 @@ public class CatmullClarkModifier implements IMeshModifier {
 	}
 
 	private void processEdgePoints() {
-		for (Edge3D edge : edgesToEdgePointsMap.keySet()) {
-			int index = edgesToEdgePointsMap.get(edge);
-			Vector3f v0 = mesh.vertices.get(edge.fromIndex);
-			Vector3f v1 = mesh.vertices.get(edge.toIndex);
-			Vector3f fp0 = edgesToFacepointMap.get(edge);
-			Vector3f fp1 = edgesToFacepointMap.get(new Edge3D(edge.toIndex, edge.fromIndex));
-			if (v0 != null && v1 != null && fp0 != null && fp1 != null) {
-				Vector3f ep = v0.add(v1).add(fp0).add(fp1).mult(0.25f);
-				mesh.vertices.get(index).set(ep);
-			}
+		for (Edge3D edge : edgesToEdgePointsMap.keySet())
+			processEdgePoint(edge);
+	}
+	
+	private void processEdgePoint(Edge3D edge) {
+		int index = edgesToEdgePointsMap.get(edge);
+		Vector3f v0 = getVertexAt(edge.fromIndex);
+		Vector3f v1 = getVertexAt(edge.toIndex);
+		Vector3f fp0 = edgesToFacepointMap.get(edge);
+		Vector3f fp1 = edgesToFacepointMap.get(edge.createPair());
+		if (v0 != null && v1 != null && fp0 != null && fp1 != null) {
+			Vector3f ep = v0.add(v1).add(fp0).add(fp1).mult(0.25f);
+			getVertexAt(index).set(ep);
 		}
 	}
 
@@ -224,6 +227,10 @@ public class CatmullClarkModifier implements IMeshModifier {
 	
 	private void setOriginalVertexCount(int originalVertexCount) {
 		this.originalVertexCount = originalVertexCount;
+	}
+	
+	private Vector3f getVertexAt(int index) {
+		return mesh.vertices.get(index);
 	}
 
 	private void setMesh(Mesh3D mesh) {
