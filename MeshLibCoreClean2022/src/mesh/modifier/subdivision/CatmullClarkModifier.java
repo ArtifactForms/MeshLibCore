@@ -33,11 +33,11 @@ public class CatmullClarkModifier implements IMeshModifier {
 	}
 
 	private void smoothVertices() {
-		for (int i = 0; i < originalVertexCount; i++) {
-			float n = (float) vertexIndexToNumberOfOutgoingEdgesMap.get(i);
-			Vector3f d = mesh.vertices.get(i);
-			Vector3f fpSum = calculateFacePointsAverage(i);
-			Vector3f epSum = calculateEdgePointAverage(i);
+		for (int vertexIndex = 0; vertexIndex < originalVertexCount; vertexIndex++) {
+			float n = (float) vertexIndexToNumberOfOutgoingEdgesMap.get(vertexIndex);
+			Vector3f d = mesh.vertices.get(vertexIndex);
+			Vector3f fpSum = calculateFacePointsAverage(vertexIndex);
+			Vector3f epSum = calculateEdgePointAverage(vertexIndex);
 			Vector3f v = fpSum.add(epSum.mult(2f).add(d.mult(n - 3)));
 			v.divideLocal(n);
 			d.set(v);
@@ -78,7 +78,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 		nextIndex = originalVertexCount;
 		for (Face3D face : mesh.faces) {
 			processFace(face);
-			facesToRemove.add(face);
+			removeFace(face);
 		}
 		removeOldFaces();
 		addNewFaces();
@@ -220,6 +220,10 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	private void addNewFaces() {
 		mesh.faces.addAll(facesToAdd);
+	}
+	
+	private void removeFace(Face3D face) {
+		facesToRemove.add(face);
 	}
 	
 	private void setOriginalVertexCount(int originalVertexCount) {
