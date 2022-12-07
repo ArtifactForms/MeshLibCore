@@ -96,14 +96,17 @@ public class CatmullClarkModifier implements IMeshModifier {
 	}
 
 	private void smoothVertices() {
-		for (int vertexIndex = 0; vertexIndex < originalVertexCount; vertexIndex++) {
-			float n = (float) vertexIndexToNumberOfOutgoingEdgesMap.get(vertexIndex);
-			Vector3f originalVertex = getVertexAt(vertexIndex);
-			Vector3f fpSum = calculateFacePointsAverage(vertexIndex);
-			Vector3f epSum = calculateEdgePointAverage(vertexIndex);
-			Vector3f v = fpSum.add(epSum.mult(2f).add(originalVertex.mult(n - 3)));
-			originalVertex.set(v.divideLocal(n));
-		}
+		for (int vertexIndex = 0; vertexIndex < originalVertexCount; vertexIndex++)
+			smoothVertexAt(vertexIndex);
+	}
+	
+	private void smoothVertexAt(int vertexIndex) {
+		float n = (float) vertexIndexToNumberOfOutgoingEdgesMap.get(vertexIndex);
+		Vector3f originalVertex = getVertexAt(vertexIndex);
+		Vector3f fpSum = calculateFacePointsAverage(vertexIndex);
+		Vector3f epSum = calculateEdgePointAverage(vertexIndex);
+		Vector3f v = fpSum.add(epSum.mult(2f).add(originalVertex.mult(n - 3)));
+		originalVertex.set(v.divideLocal(n));
 	}
 
 	private Edge3D createEdgeAt(Face3D face, int index) {
