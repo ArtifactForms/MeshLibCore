@@ -197,8 +197,11 @@ public class Bounds3 {
 		this.max.set(max);
 	}
 
-	public void setMinMax(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+	public void setMin(float minX, float minY, float minZ) {
 		min.set(minX, minY, minZ);
+	}
+	
+	public void setMax(float maxX, float maxY, float maxZ) {
 		max.set(maxX, maxY, maxZ);
 	}
 
