@@ -25,12 +25,10 @@ import mesh.util.TraverseHelper;
 public class DooSabinModifier implements IMeshModifier {
 
 	private int subdivisions;
-
 	private Mesh3D source;
 	private Mesh3D target;
-
-	private HashSet<Pair> edges;
-	private HashMap<Pair, Face3D> edgeToFaceMap;
+	private HashSet<Edge3D> edges;
+	private HashMap<Edge3D, Face3D> edgeToFaceMap;
 	private HashMap<Vector3f, List<Vector3f>> oldToNewVertexMap;
 	private HashMap<VertexFacePair, Integer> vertexFaceMap;
 
@@ -51,8 +49,8 @@ public class DooSabinModifier implements IMeshModifier {
 	public DooSabinModifier(int subdivisions) {
 		this.subdivisions = subdivisions;
 		oldToNewVertexMap = new HashMap<Vector3f, List<Vector3f>>();
-		edgeToFaceMap = new HashMap<Pair, Face3D>();
-		edges = new HashSet<Pair>();
+		edgeToFaceMap = new HashMap<>();
+		edges = new HashSet<>();
 		vertexFaceMap = new HashMap<VertexFacePair, Integer>();
 	}
 
@@ -104,11 +102,11 @@ public class DooSabinModifier implements IMeshModifier {
 	 * generated for the faces that are adjacent to the respective edge.
 	 */
 	private void createFacesAdjacentToEdge() {
-		for (Pair pair : edges) {
-			Face3D face0 = edgeToFaceMap.get(pair);
-			Face3D face1 = edgeToFaceMap.get(new Pair(pair.b, pair.a));
-			Vector3f v0 = source.getVertexAt(pair.a);
-			Vector3f v1 = source.getVertexAt(pair.b);
+		for (Edge3D edge : edges) {
+			Face3D face0 = edgeToFaceMap.get(edge);
+			Face3D face1 = edgeToFaceMap.get(edge.createPair());
+			Vector3f v0 = source.getVertexAt(edge.fromIndex);
+			Vector3f v1 = source.getVertexAt(edge.toIndex);
 			int idx0 = vertexFaceMap.get(new VertexFacePair(v1, face0));
 			int idx1 = vertexFaceMap.get(new VertexFacePair(v0, face0));
 			int idx2 = vertexFaceMap.get(new VertexFacePair(v0, face1));
@@ -168,8 +166,8 @@ public class DooSabinModifier implements IMeshModifier {
 			for (int i = 0; i < face.indices.length; i++) {
 				int a = face.indices[i];
 				int b = face.indices[(i + 1) % face.indices.length];
-				Pair pair0 = new Pair(a, b);
-				Pair pair1 = new Pair(b, a);
+				Edge3D pair0 = new Edge3D(a, b);
+				Edge3D pair1 = new Edge3D(b, a);
 				if (!edges.contains(pair1)) {
 					edges.add(pair0);
 				}
@@ -212,10 +210,10 @@ public class DooSabinModifier implements IMeshModifier {
 
 	private class VertexFacePair {
 
-		public Vector3f vertex;
-		public Face3D face;
+		private Vector3f vertex;
+		private Face3D face;
 
-		public VertexFacePair(Vector3f vertex, Face3D face) {
+		private VertexFacePair(Vector3f vertex, Face3D face) {
 			this.vertex = vertex;
 			this.face = face;
 		}
@@ -258,49 +256,6 @@ public class DooSabinModifier implements IMeshModifier {
 			return DooSabinModifier.this;
 		}
 
-	}
-	
-	private class Pair {
-
-		public int a;
-		public int b;
-		
-		public Pair(int a, int b) {
-			super();
-			this.a = a;
-			this.b = b;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + a;
-			result = prime * result + b;
-			return result;
-		}
-		
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Pair other = (Pair) obj;
-			if (a != other.a)
-				return false;
-			if (b != other.b)
-				return false;
-			return true;
-		}
-		
-		@Override
-		public String toString() {
-			return "Pair [a=" + a + ", b=" + b + "]";
-		}
-		
 	}
 
 }
