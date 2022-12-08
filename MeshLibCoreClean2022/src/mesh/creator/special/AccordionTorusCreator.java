@@ -15,10 +15,10 @@ public class AccordionTorusCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public AccordionTorusCreator() {
-		this.majorRadius = 1f;
-		this.majorSegments = 48;
-		this.minorRadii = new float[majorSegments];
-		this.minorSegments = 12;
+		majorRadius = 1f;
+		majorSegments = 48;
+		minorRadii = new float[majorSegments];
+		minorSegments = 12;
 		updateRadii();
 	}
 
@@ -73,10 +73,14 @@ public class AccordionTorusCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createFaces();
 		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 
 	public float getMajorRadius() {
