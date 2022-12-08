@@ -78,7 +78,7 @@ public class AccordionTorusCreator implements IMeshCreator {
 		createFaces();
 		return mesh;
 	}
-	
+
 	private void initializeMesh() {
 		mesh = new Mesh3D();
 	}
