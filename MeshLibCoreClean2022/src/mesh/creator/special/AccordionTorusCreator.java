@@ -22,14 +22,6 @@ public class AccordionTorusCreator implements IMeshCreator {
 		updateRadii();
 	}
 
-	public AccordionTorusCreator(float majorRadius, float[] minorRadi, int majorSegments, int minorSegments) {
-		this.majorRadius = majorRadius;
-		this.minorRadii = minorRadi;
-		this.majorSegments = majorSegments;
-		this.minorSegments = minorSegments;
-		updateRadii();
-	}
-
 	private void createVertices() {
 		float majorAngle = 0;
 		float minorAngle = 0;
