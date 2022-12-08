@@ -16,7 +16,9 @@ public class BendModifier implements IMeshModifier {
 	}
 
 	public void simpleDeformBend(float factor, Vector3f v) {
-		float x = v.x, y = v.y, z = v.z;
+		float x = v.x;
+		float y = v.y;
+		float z = v.z;
 		float theta, sint, cost;
 
 		theta = x * factor;
