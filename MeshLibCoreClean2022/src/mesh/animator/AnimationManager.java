@@ -6,11 +6,8 @@ import java.util.List;
 public class AnimationManager {
 
 	private boolean finished;
-	
 	private float tpf;
-	
 	private long lastTime;
-	
 	private boolean running;
 	
 	private List<IAnimator> animators;

@@ -14,10 +14,15 @@ import mesh.util.Mesh3DUtil;
 public class HoneyCombCreator implements IMeshCreator {
 
 	private int rowCount;
+	
 	private int colCount;
+	
 	private float cellRadius;
+	
 	private float height;
+	
 	private float innerScale;
+	
 	private Mesh3D mesh;
 
 	public HoneyCombCreator() {

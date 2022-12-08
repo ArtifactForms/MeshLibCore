@@ -15,7 +15,6 @@ import mesh.util.Mesh3DUtil;
 public class RingCageCreator implements IMeshCreator {
 
 	private float[] segmentsHeights = new float[4];
-
 	private int subdivisions;
 	private int segments;
 	private int vertices;
