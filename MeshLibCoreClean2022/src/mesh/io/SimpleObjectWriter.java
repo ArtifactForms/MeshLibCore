@@ -11,6 +11,7 @@ import mesh.Mesh3D;
 
 public class SimpleObjectWriter {
 	
+	private int vertexOffset;
 	private StringBuffer buffer;
 	private String objectName;
 	private File file;
@@ -18,6 +19,7 @@ public class SimpleObjectWriter {
 	
 	public SimpleObjectWriter(File file) {
 		this.file = file;
+		initializeBuffer();
 	}
 	
 	private void writeVerticesToBuffer() {
@@ -45,7 +47,7 @@ public class SimpleObjectWriter {
 		for (Face3D f : mesh.faces) {
 			buffer.append("f ");
 			for (int i = 0; i < f.indices.length; i++) {
-				append(f.indices[i] + 1);
+				append(f.indices[i] + 1 + vertexOffset);
 				append(" ");
 			}
 			append("\n");
@@ -62,10 +64,13 @@ public class SimpleObjectWriter {
 	public void write(Mesh3D mesh, String objectName) throws IOException {
 		setObjectName(objectName);
 		setMesh(mesh);
-		initializeBuffer();
 		writeObjectNameToBuffer();
 		writeVerticesToBuffer();
 		writeFacesToBuffer();
+		vertexOffset += mesh.getVertexCount();
+	}
+	
+	public void close() throws IOException {
 		writeBufferToFile();
 	}
 	
