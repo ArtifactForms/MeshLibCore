@@ -36,11 +36,6 @@ public class PrimitivesCreatorsManifoldTest {
 	}
 	
 	@Test
-	public void arc() {
-		// Arc is not manifold
-	}
-	
-	@Test
 	public void manifoldBox() {
 		test(new BoxCreator());
 	}
@@ -66,11 +61,6 @@ public class PrimitivesCreatorsManifoldTest {
 	}
 	
 	@Test
-	public void disc() {
-		// Disc is not manifold
-	}
-
-	@Test
 	public void manifoldDoubleCone() {
 		test(new DoubleConeCreator());
 	}
@@ -79,12 +69,7 @@ public class PrimitivesCreatorsManifoldTest {
 	public void manifoldFlatTopPyramidCreator() {
 		test(new FlatTopPyramidCreator());
 	}
-	
-	@Test
-	public void grid() {
-		// Grid is not manifold
-	}
-	
+
 	@Test
 	public void manifoldHalfUVSphere() {
 		test(new HalfUVSphere());
@@ -98,11 +83,6 @@ public class PrimitivesCreatorsManifoldTest {
 	@Test
 	public void manifoldIcoSphere() {
 		test(new IcoSphereCreator());
-	}
-	
-	@Test
-	public void plane() {
-		// Plane is not manifold
 	}
 	
 	@Test
@@ -151,11 +131,6 @@ public class PrimitivesCreatorsManifoldTest {
 	@Test
 	public void manifoldTorus() {
 		test(new TorusCreator());
-	}
-	
-	@Test
-	public void triangleFan() {
-		// Triangle fan is not manifold
 	}
 	
 	@Test

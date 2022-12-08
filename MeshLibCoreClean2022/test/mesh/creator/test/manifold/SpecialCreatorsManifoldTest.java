@@ -41,23 +41,8 @@ public class SpecialCreatorsManifoldTest {
 	}
 	
 	@Test
-	public void mobiusStrip() {
-		// Mobius strip is not manifold
-	}
-	
-	@Test
-	public void quadStrip() {
-		// Quad strip is not manifold
-	}
-	
-	@Test
 	public void manifoldSimpleStar() {
 		test(new SimpleStarCreator());
-	}
-	
-	@Test
-	public void manifoldSpin() {
-		// Depends on settings
 	}
 	
 	@Test
