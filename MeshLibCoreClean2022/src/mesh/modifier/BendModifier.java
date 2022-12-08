@@ -19,7 +19,9 @@ public class BendModifier implements IMeshModifier {
 		float x = v.x;
 		float y = v.y;
 		float z = v.z;
-		float theta, sint, cost;
+		float theta;
+		float sint;
+		float cost;
 
 		theta = x * factor;
 		sint = Mathf.sin(theta);
