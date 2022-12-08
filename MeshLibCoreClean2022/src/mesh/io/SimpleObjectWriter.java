@@ -9,55 +9,88 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 
-/**
- * 
- * @author - Simon
- * @version 0.2, 21 June 2016
- */
 public class SimpleObjectWriter {
 	
-	public static void write(Mesh3D mesh, String name) {		
-		StringBuilder s = new StringBuilder();
-		s.append("o ");
-		s.append(name);
-		s.append("\n");
-		
-		// vertices
-		for (Vector3f v : mesh.vertices) {
-			s.append("v ");
-			s.append(v.x);
-			s.append(" ");
-			s.append(v.y);
-			s.append(" ");
-			s.append(v.z);
-			s.append("\n");
-		}
-		
-		// faces
-		for (Face3D f : mesh.faces) {
-			s.append("f ");
-			for (int i = 0; i < f.indices.length; i++) {
-				s.append(f.indices[i] + 1);
-				s.append(" ");
-			}
-			s.append("\n");
-		}
-		
-		try {
-			File file = new File("./MyShape.obj");
-			BufferedWriter out = new BufferedWriter(new FileWriter(file));
-			out.write(s.toString());
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println("Finished writing .obj file.");
+	private StringBuffer buffer;
+	private String objectName;
+	private File file;
+	private Mesh3D mesh;
+	
+	public SimpleObjectWriter(File file) {
+		this.file = file;
 	}
 	
-	public static void writeMesh(Mesh3D mesh) {
-		write(mesh, "Object");
+	private void writeVerticesToBuffer() {
+		for (Vector3f vertex : mesh.vertices)
+			writeVertex(vertex);
+	}
+	
+	private void writeVertex(Vector3f vertex) {
+		append("v ");
+		append(vertex.x);
+		append(" ");
+		append(vertex.y);
+		append(" ");
+		append(vertex.z);
+		append("\n");
+	}
+	
+	private void writeObjectNameToBuffer() {
+		append("o ");
+		append(objectName);
+		append("\n");
+	}
+	
+	private void writeFacesToBuffer() {
+		for (Face3D f : mesh.faces) {
+			buffer.append("f ");
+			for (int i = 0; i < f.indices.length; i++) {
+				append(f.indices[i] + 1);
+				append(" ");
+			}
+			append("\n");
+		}
+	}
+
+	private void writeBufferToFile() throws IOException {
+		BufferedWriter out = new BufferedWriter(new FileWriter(file));
+		out.write(buffer.toString());
+		out.flush();
+		out.close();
+	}
+	
+	public void write(Mesh3D mesh, String objectName) throws IOException {
+		setObjectName(objectName);
+		setMesh(mesh);
+		initializeBuffer();
+		writeObjectNameToBuffer();
+		writeVerticesToBuffer();
+		writeFacesToBuffer();
+		writeBufferToFile();
+	}
+	
+	private void append(String str) {
+		buffer.append(str);
+	}
+	
+	private void append(float value) {
+		buffer.append(value);
+	}
+	
+	private void append(int value) {
+		buffer.append(value);
+	}
+	
+	private void initializeBuffer() {
+		buffer = new StringBuffer();
+	}
+	
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
+	}
+	
+	private void setObjectName(String objectName) {
+		this.objectName = objectName;
 	}
 
 }

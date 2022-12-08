@@ -6,11 +6,17 @@ import mesh.Mesh3D;
 public class Morpher extends AbstractAnimator {
 
 	private float maxDistance = 0;
+	
 	private float minDistance = 0;
+	
 	private float speed = 60;
+	
 	private int count;
+	
 	private Mesh3D mesh;
+	
 	private Mesh3D source;
+	
 	private Mesh3D target;
 
 	public Morpher(Mesh3D source, Mesh3D target) {

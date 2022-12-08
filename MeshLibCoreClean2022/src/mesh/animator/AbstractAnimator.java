@@ -3,6 +3,7 @@ package mesh.animator;
 public abstract class AbstractAnimator implements IAnimator {
 
 	private boolean enabled;
+	
 	private boolean finished;
 
 	public AbstractAnimator() {
