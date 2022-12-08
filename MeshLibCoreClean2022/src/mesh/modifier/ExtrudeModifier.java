@@ -10,7 +10,6 @@ import mesh.util.Mesh3DUtil;
 public class ExtrudeModifier implements IMeshModifier {
 	
 	private float scale;
-	
 	private float amount;
 
 	public ExtrudeModifier(float scale, float amount) {

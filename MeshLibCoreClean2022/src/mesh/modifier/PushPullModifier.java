@@ -6,7 +6,6 @@ import mesh.Mesh3D;
 public class PushPullModifier implements IMeshModifier {
 
 	private float distance;
-	
 	private Vector3f center;
 	
 	public PushPullModifier() {

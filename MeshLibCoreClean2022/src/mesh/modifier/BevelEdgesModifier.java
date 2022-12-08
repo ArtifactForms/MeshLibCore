@@ -16,19 +16,12 @@ import mesh.util.TraverseHelper;
 public class BevelEdgesModifier implements IMeshModifier {
 
 	private float inset;
-	
 	private float amount;
-	
 	private WidthType widthType = WidthType.OFFSET;
-	
 	private Mesh3D mesh;
-	
 	private List<Face3D> facesToAdd;
-	
 	private List<Vector3f> verticesToAdd;
-	
 	private HashMap<Edge3D, Edge3D> oldEdgeToNewEdge;
-	
 	private HashSet<Edge3D> processed;
 
 	public BevelEdgesModifier(float amount) {

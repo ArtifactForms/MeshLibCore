@@ -11,9 +11,7 @@ import mesh.Mesh3D;
 public class SmoothModifier implements IMeshModifier {
 
 	private float factor;
-	
 	private List<Vector3f> smoothedVertices;
-	
 	private HashMap<Vector3f, List<Vector3f>> map;
 
 	public SmoothModifier() {
