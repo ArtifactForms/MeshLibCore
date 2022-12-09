@@ -12,6 +12,10 @@ public class TranslateModifier implements IMeshModifier {
 	public TranslateModifier() {
 		this(0, 0, 0);
 	}
+	
+	public TranslateModifier(Vector3f delta) {
+		this(delta.x, delta.y, delta.z);
+	}
 
 	public TranslateModifier(float deltaX, float deltaY, float deltaZ) {
 		this.deltaX = deltaX;
@@ -19,17 +23,10 @@ public class TranslateModifier implements IMeshModifier {
 		this.deltaZ = deltaZ;
 	}
 
-	public TranslateModifier(Vector3f delta) {
-		deltaX = delta.x;
-		deltaY = delta.y;
-		deltaZ = delta.z;
-	}
-
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		for (Vector3f v : mesh.vertices) {
+		for (Vector3f v : mesh.vertices)
 			v.addLocal(deltaX, deltaY, deltaZ);
-		}
 		return mesh;
 	}
 
