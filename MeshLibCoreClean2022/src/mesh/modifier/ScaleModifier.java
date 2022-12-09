@@ -9,15 +9,11 @@ public class ScaleModifier implements IMeshModifier {
 	private float scaleZ;
 
 	public ScaleModifier() {
-		this.scaleX = 1.0f;
-		this.scaleY = 1.0f;
-		this.scaleZ = 1.0f;
+		this(1, 1, 1);
 	}
 	
 	public ScaleModifier(float scale) {
-		this.scaleX = scale;
-		this.scaleY = scale;
-		this.scaleZ = scale;
+		this(scale, scale, scale);
 	}
 
 	public ScaleModifier(float scaleX, float scaleY, float scaleZ) {
