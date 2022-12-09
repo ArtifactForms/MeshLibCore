@@ -141,5 +141,12 @@ public class CatmullClarkTest {
 			MeshTest.assertIsManifold(cube);
 		}
 	}
+	
+	@Test
+	public void resultConsistsOfQuadsOnly() {
+		Mesh3D cube = new CubeCreator().create();
+		int faceCount = cube.getFaceCount();
+		MeshTest.assertQuadCountEquals(cube, faceCount);
+	}
 
 }
