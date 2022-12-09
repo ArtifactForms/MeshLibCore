@@ -50,28 +50,30 @@ public class MeshTest {
 		}
 	}
 	
-	public static void assertTriangleCountEquals(Mesh3D mesh, int expectedTriangleCount) {
+	private static void assertFaceByVertexCount(Mesh3D mesh, int vertices, int expected) {
 		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectTriangles();
-		Assert.assertEquals(expectedTriangleCount, selection.size());
+		selection.selectByVertexCount(vertices);
+		Assert.assertEquals(expected, selection.size());
+	}
+	
+	public static void assertTriangleCountEquals(Mesh3D mesh, int expectedTriangleCount) {
+		assertFaceByVertexCount(mesh, 3, expectedTriangleCount);
 	}
 	
 	public static void assertQuadCountEquals(Mesh3D mesh, int expectedQuadCount) {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectQuads();
-		Assert.assertEquals(expectedQuadCount, selection.size());
+		assertFaceByVertexCount(mesh, 4, expectedQuadCount);
+	}
+	
+	public static void assertHexagonCountEquals(Mesh3D mesh, int expectedHexagonCount) {
+		assertFaceByVertexCount(mesh, 6, expectedHexagonCount);
 	}
 	
 	public static void assertPentagonCountEquals(Mesh3D mesh, int expectedPentagonCount) {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectByVertexCount(5);
-		Assert.assertEquals(expectedPentagonCount, selection.size());
+		assertFaceByVertexCount(mesh, 5, expectedPentagonCount);
 	}
 	
 	public static void assertOctagonCountEquals(Mesh3D mesh, int expectedOctagonCount) {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectByVertexCount(8);
-		Assert.assertEquals(expectedOctagonCount, selection.size());
+		assertFaceByVertexCount(mesh, 8, expectedOctagonCount);
 	}
 	
 	public static void assertIsManifold(Mesh3D mesh) {
