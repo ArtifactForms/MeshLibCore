@@ -12,6 +12,7 @@ import mesh.creator.platonic.DodecahedronCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.io.SimpleObjectReader;
 import mesh.modifier.subdivision.CatmullClarkModifier;
+import util.MeshTest;
 
 public class CatmullClarkTest {
 	
@@ -130,6 +131,15 @@ public class CatmullClarkTest {
 		CatmullClarkModifier modifier = new CatmullClarkModifier();
 		modifier.setSubdivisions(iterations);
 		Assert.assertEquals(iterations, modifier.getSubdivisions());
+	}
+	
+	@Test
+	public void cubeStaysManifold() {
+		Mesh3D cube = new CubeCreator().create();
+		for (int i = 0; i < ITERATIONS_TO_TEST; i++) {
+			new CatmullClarkModifier().modify(cube);
+			MeshTest.assertIsManifold(cube);
+		}
 	}
 
 }
