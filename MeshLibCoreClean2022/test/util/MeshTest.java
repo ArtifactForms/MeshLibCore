@@ -76,6 +76,10 @@ public class MeshTest {
 		assertFaceByVertexCount(mesh, 8, expectedOctagonCount);
 	}
 	
+	public static void assertDecagonCountEquals(Mesh3D mesh, int expectedDecagonCount) {
+		assertFaceByVertexCount(mesh, 10, expectedDecagonCount);
+	}
+	
 	public static void assertIsManifold(Mesh3D mesh) {
 		new ManifoldTest(mesh).assertIsManifold();
 	}

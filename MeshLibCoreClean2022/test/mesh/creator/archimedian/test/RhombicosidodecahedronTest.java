@@ -56,5 +56,11 @@ public class RhombicosidodecahedronTest {
 	public void fulfillsEulerCharacteristic() {
 		MeshTest.assertFulfillsEulerCharacteristic(mesh);
 	}
+	
+	@Test
+	public void everyEdgeHasALengthOfTwo() {
+		float delta = 0.00001f;
+		MeshTest.assertEveryEgdgeHasALengthOf(mesh, 2, delta);
+	}
 
 }
