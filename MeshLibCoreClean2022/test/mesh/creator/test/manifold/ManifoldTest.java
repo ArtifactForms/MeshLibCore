@@ -19,11 +19,11 @@ public class ManifoldTest {
 		this.meshUnderTest = meshUnderTest;
 	}
 	
-	public void executeTest() {
-		eachEdgeHasExactlyTwoAdjacentFaces();
+	public void assertIsManifold() {
+		assertEachEdgeHasExactlyTwoAdjacentFaces();
 	}
 	
-	private void eachEdgeHasExactlyTwoAdjacentFaces() {			
+	private void assertEachEdgeHasExactlyTwoAdjacentFaces() {			
 		HashMap<Edge3D, Integer> edges = new HashMap<Edge3D, Integer>();
 		
 		for (Face3D face : meshUnderTest.getFaces()) {

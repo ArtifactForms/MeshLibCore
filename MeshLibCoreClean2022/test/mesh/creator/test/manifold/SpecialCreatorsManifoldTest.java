@@ -16,7 +16,7 @@ public class SpecialCreatorsManifoldTest {
 
 	private void test(IMeshCreator creator) {
 		Mesh3D mesh = creator.create();
-		new ManifoldTest(mesh).executeTest();
+		new ManifoldTest(mesh).assertIsManifold();
 	}
 	
 	@Test
