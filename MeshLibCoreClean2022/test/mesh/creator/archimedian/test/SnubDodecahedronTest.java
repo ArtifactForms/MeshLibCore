@@ -5,16 +5,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import mesh.Mesh3D;
-import mesh.creator.archimedian.RhombicosidodecahedronCreator;
+import mesh.creator.archimedian.SnubDodecahedronCreator;
 import util.MeshTest;
 
-public class RhombicosidodecahedronTest {
-	
+public class SnubDodecahedronTest {
+
 	private Mesh3D mesh;
 	
 	@Before
 	public void setUp() {
-		mesh = new RhombicosidodecahedronCreator().create();
+		mesh = new SnubDodecahedronCreator().create();
 	}
 	
 	@Test
@@ -23,18 +23,13 @@ public class RhombicosidodecahedronTest {
 	}
 	
 	@Test
-	public void hasSixtyTwoFaces() {
-		Assert.assertEquals(62, mesh.getFaceCount());
+	public void hasNintyTwoFaces() {
+		Assert.assertEquals(92, mesh.getFaceCount());
 	}
 	
 	@Test
-	public void hasTwentyTriangularFaces() {
-		MeshTest.assertTriangleCountEquals(mesh, 20);
-	}
-	
-	@Test
-	public void hasThirtyQuadFaces() {
-		MeshTest.assertQuadCountEquals(mesh, 30);
+	public void hasEightyTriangularFaces() {
+		MeshTest.assertTriangleCountEquals(mesh, 80);
 	}
 	
 	@Test
@@ -43,8 +38,8 @@ public class RhombicosidodecahedronTest {
 	}
 	
 	@Test
-	public void hasHundredTwentyEdges() {
-		MeshTest.assertEdgeCountEquals(mesh, 120);
+	public void hasHundredFiftyEdges() {
+		MeshTest.assertEdgeCountEquals(mesh, 150);
 	}
 	
 	@Test
@@ -58,9 +53,9 @@ public class RhombicosidodecahedronTest {
 	}
 	
 	@Test
-	public void everyEdgeHasALengthOfTwo() {
-		float delta = 0.00001f;
-		MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, delta);
+	public void everyEdgeHasLengthOf() {
+		// TODO implement
+		Assert.assertFalse(true);
 	}
-
+	
 }

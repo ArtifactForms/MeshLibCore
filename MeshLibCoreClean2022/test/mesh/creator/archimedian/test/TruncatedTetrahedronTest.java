@@ -57,7 +57,7 @@ public class TruncatedTetrahedronTest {
 	public void everyEdgeHasLengthOfSqrtOfEight() {
 		float delta = 0;
 		float expcted = Mathf.sqrt(8);
-		MeshTest.assertEveryEgdgeHasALengthOf(mesh, expcted, delta);
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, expcted, delta);
 	}
 
 }

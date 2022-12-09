@@ -57,7 +57,7 @@ public class TruncatedDodecahedronTest {
 	public void everyEdgeHasLengthOfTwiceTheGoldenRatioMinusTwo() {
 		float delta = 0.000001f;
 		float expcted = 2 * Geometry.GOLDEN_RATIO - 2;
-		MeshTest.assertEveryEgdgeHasALengthOf(mesh, expcted, delta);
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, expcted, delta);
 	}
 	
 }

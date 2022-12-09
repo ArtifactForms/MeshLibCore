@@ -40,7 +40,7 @@ public class MeshTest {
 		Assert.assertEquals(2, actual);
 	}
 	
-	public static void assertEveryEgdgeHasALengthOf(Mesh3D mesh, float expectedEdgeLength, float delta) {
+	public static void assertEveryEdgeHasALengthOf(Mesh3D mesh, float expectedEdgeLength, float delta) {
 		for (Face3D face: mesh.faces) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v0 = mesh.vertices.get(face.indices[i]);

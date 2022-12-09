@@ -55,7 +55,7 @@ public class CuboctahedronTest {
 
 	@Test
 	public void everyEdgeHasLengthOfSqrtOfTwo() {
-		MeshTest.assertEveryEgdgeHasALengthOf(mesh, Mathf.sqrt(2), 0);
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, Mathf.sqrt(2), 0);
 	}
 
 }

@@ -54,7 +54,7 @@ public class RhombicuboctahedronTest {
 	
 	@Test
 	public void everyEdgeHasLengthOfTwo() {
-		MeshTest.assertEveryEgdgeHasALengthOf(mesh, 2, 0);
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, 0);
 	}
 
 }

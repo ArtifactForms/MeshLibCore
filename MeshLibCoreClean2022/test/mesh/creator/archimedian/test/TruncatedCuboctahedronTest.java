@@ -60,7 +60,7 @@ public class TruncatedCuboctahedronTest {
 	@Test
 	public void everyEdgeHasLengthOfTwo() {
 		float delta = 0.000001f;
-		MeshTest.assertEveryEgdgeHasALengthOf(mesh, 2, delta);
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, delta);
 	}
 
 }

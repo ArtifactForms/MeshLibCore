@@ -55,7 +55,7 @@ public class TruncatedIcosahedronTest {
 	@Test
 	public void everyEdgeHasALengthOfTwo() {
 		float delta = 0.00001f;
-		MeshTest.assertEveryEgdgeHasALengthOf(mesh, 2, delta);
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, delta);
 	}
 
 }

@@ -4,18 +4,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import math.Mathf;
 import mesh.Mesh3D;
-import mesh.creator.archimedian.TruncatedOctahedronCreator;
+import mesh.creator.archimedian.TruncatedCubeCreator;
 import util.MeshTest;
 
-public class TruncatedOctahedronTest {
-
+public class TruncatedCubeTest {
+	
 	private Mesh3D mesh;
 	
 	@Before
 	public void setUp() {
-		mesh = new TruncatedOctahedronCreator().create();
+		mesh = new TruncatedCubeCreator().create();
 	}
 	
 	@Test
@@ -29,13 +28,13 @@ public class TruncatedOctahedronTest {
 	}
 	
 	@Test
-	public void hasSixQuadFaces() {
-		MeshTest.assertQuadCountEquals(mesh, 6);
+	public void hasEightTriangularFaces() {
+		MeshTest.assertTriangleCountEquals(mesh, 8);
 	}
 	
 	@Test
-	public void hasEightHexagonFaces() {
-		MeshTest.assertHexagonCountEquals(mesh, 8);
+	public void hasSixOctagonFaces() {
+		MeshTest.assertOctagonCountEquals(mesh, 6);
 	}
 	
 	@Test
@@ -52,10 +51,11 @@ public class TruncatedOctahedronTest {
 	public void fulfillsEulerCharacteristic() {
 		MeshTest.assertFulfillsEulerCharacteristic(mesh);
 	}
-	
+
 	@Test
-	public void everyEdgeHasLengthOfSqrtOfTwo() {
-		MeshTest.assertEveryEdgeHasALengthOf(mesh, Mathf.sqrt(2), 0);
+	public void everyEdgeHasLengthOf() {
+		// TODO implement
+		Assert.assertFalse(true);
 	}
-	
+
 }

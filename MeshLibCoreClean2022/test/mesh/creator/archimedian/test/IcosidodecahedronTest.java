@@ -56,7 +56,7 @@ public class IcosidodecahedronTest {
 	public void everyEdgeHasALengthOfOneIfRadiusIsGoldenRatio() {
 		float delta = 0.000001f;
 		float expectedEdgeLength = 1f;
-		MeshTest.assertEveryEgdgeHasALengthOf(mesh, expectedEdgeLength, delta);
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, expectedEdgeLength, delta);
 	}
 
 }
