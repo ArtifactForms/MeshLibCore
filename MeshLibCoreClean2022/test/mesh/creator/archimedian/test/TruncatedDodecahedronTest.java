@@ -1,0 +1,63 @@
+package mesh.creator.archimedian.test;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import mesh.Mesh3D;
+import mesh.creator.archimedian.TruncatedDodecahedronCreator;
+import mesh.util.Geometry;
+import util.MeshTest;
+
+public class TruncatedDodecahedronTest {
+
+	private Mesh3D mesh;
+	
+	@Before
+	public void setUp() {
+		mesh = new TruncatedDodecahedronCreator().create();
+	}
+	
+	@Test
+	public void hasSixtyVertices() {
+		Assert.assertEquals(60, mesh.getVertexCount());
+	}
+	
+	@Test
+	public void hasThirtyTwoFaces() {
+		Assert.assertEquals(32, mesh.getFaceCount());
+	}
+	
+	@Test
+	public void hasTwentyTriangularFaces() {
+		MeshTest.assertTriangleCountEquals(mesh, 20);
+	}
+	
+	@Test
+	public void hasTwelveDecagons() {
+		MeshTest.assertDecagonCountEquals(mesh, 12);
+	}
+	
+	@Test
+	public void hasNinetyEdges() {
+		MeshTest.assertEdgeCountEquals(mesh, 90);
+	}
+	
+	@Test
+	public void isManifold() {
+		MeshTest.assertIsManifold(mesh);
+	}
+	
+	@Test
+	public void fulfillsEulerCharacteristic() {
+		MeshTest.assertFulfillsEulerCharacteristic(mesh);
+	}
+	
+	@Test
+	public void everyEdgeHasLengthIsTwiceTheGoldenRatioMinusTwo() {
+		float delta = 0.000001f;
+		float expcted = 2 * Geometry.GOLDEN_RATIO - 2;
+		MeshTest.assertEveryEgdgeHasALengthOf(mesh, expcted, delta);
+	}
+	
+}
