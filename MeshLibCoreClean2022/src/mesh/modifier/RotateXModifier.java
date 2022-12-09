@@ -8,6 +8,8 @@ import mesh.Mesh3D;
 public class RotateXModifier implements IMeshModifier {
 
 	private float angle;
+	private Mesh3D mesh;
+	private Matrix3f rotationMatrix;
 
 	public RotateXModifier() {
 		this(0);
@@ -19,16 +21,24 @@ public class RotateXModifier implements IMeshModifier {
 
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		float a = angle;
-		Matrix3f m = new Matrix3f(1, 0, 0, 0, Mathf.cos(a), -Mathf.sin(a), 0,
-				Mathf.sin(a), Mathf.cos(a));
-
-		for (Vector3f v : mesh.vertices) {
-			Vector3f v0 = v.mult(m);
-			v.set(v.x, v0.y, v0.z);
-		}
-
+		setMesh(mesh);
+		createRotationMatrix();
+		rotateMesh();
 		return mesh;
+	}
+
+	private void createRotationMatrix() {
+		rotationMatrix = new Matrix3f(1, 0, 0, 0, Mathf.cos(angle), -Mathf.sin(angle), 0, Mathf.sin(angle),
+				Mathf.cos(angle));
+	}
+
+	private void rotateMesh() {
+		for (Vector3f v : mesh.vertices)
+			v.multLocal(rotationMatrix);
+	}
+
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
 	}
 
 	public float getAngle() {
