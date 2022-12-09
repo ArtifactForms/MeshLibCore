@@ -40,12 +40,12 @@ public class MeshTest {
 		Assert.assertEquals(2, actual);
 	}
 	
-	public static void assertEveryEgdgeHasALengthOf(Mesh3D mesh, float expectedEdgeLength) {
+	public static void assertEveryEgdgeHasALengthOf(Mesh3D mesh, float expectedEdgeLength, float delta) {
 		for (Face3D face: mesh.faces) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v0 = mesh.vertices.get(face.indices[i]);
 				Vector3f v1 = mesh.vertices.get(face.indices[(i + 1) % face.indices.length]);
-				Assert.assertEquals(expectedEdgeLength, v0.distance(v1), 0);
+				Assert.assertEquals(expectedEdgeLength, v0.distance(v1), delta);
 			}
 		}
 	}
@@ -60,6 +60,18 @@ public class MeshTest {
 		FaceSelection selection = new FaceSelection(mesh);
 		selection.selectQuads();
 		Assert.assertEquals(expectedQuadCount, selection.size());
+	}
+	
+	public static void assertPentagonCountEquals(Mesh3D mesh, int expectedPentagonCount) {
+		FaceSelection selection = new FaceSelection(mesh);
+		selection.selectByVertexCount(5);
+		Assert.assertEquals(expectedPentagonCount, selection.size());
+	}
+	
+	public static void assertOctagonCountEquals(Mesh3D mesh, int expectedOctagonCount) {
+		FaceSelection selection = new FaceSelection(mesh);
+		selection.selectByVertexCount(8);
+		Assert.assertEquals(expectedOctagonCount, selection.size());
 	}
 	
 	public static void assertIsManifold(Mesh3D mesh) {
