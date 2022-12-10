@@ -49,6 +49,10 @@ public class PlaneCreator implements IMeshCreator {
 		this.radius = radius;
 	}
 	
+	public float getSize() {
+		return radius * 2;
+	}
+	
 	public void setSize(float size) {
 		setRadius(size * 0.5f);
 	}
