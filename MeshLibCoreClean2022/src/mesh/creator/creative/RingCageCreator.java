@@ -145,7 +145,7 @@ public class RingCageCreator implements IMeshCreator {
 		return outerRadius;
 	}
 
-	public void setRadius(float outerRadius) {
+	public void setOuterRadius(float outerRadius) {
 		this.outerRadius = outerRadius;
 	}
 
