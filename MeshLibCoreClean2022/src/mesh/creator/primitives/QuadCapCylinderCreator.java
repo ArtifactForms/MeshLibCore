@@ -185,12 +185,12 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 		this.height = height;
 	}
 
-	public int getSegments() {
+	public int getHeightSegments() {
 		return heightSegments;
 	}
 
-	public void setHeightSegments(int segments) {
-		this.heightSegments = segments;
+	public void setHeightSegments(int heightSegments) {
+		this.heightSegments = heightSegments;
 	}
 
 }
