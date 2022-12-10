@@ -50,6 +50,20 @@ public class MeshTest {
 		}
 	}
 	
+	public static void assertFaceCountEquals(Mesh3D mesh, int expectedFaceCount) {
+		Assert.assertEquals(expectedFaceCount, mesh.getFaceCount());
+		Assert.assertEquals(expectedFaceCount, mesh.faces.size());
+		Assert.assertEquals(expectedFaceCount, mesh.getFaces().size());
+		Assert.assertEquals(expectedFaceCount, mesh.getFaces(0, mesh.getFaceCount()).size());
+	}
+	
+	public static void assertVertexCountEquals(Mesh3D mesh, int expectedVertexCount) {
+		Assert.assertEquals(expectedVertexCount, mesh.getVertexCount());
+		Assert.assertEquals(expectedVertexCount, mesh.vertices.size());
+		Assert.assertEquals(expectedVertexCount, mesh.getVertices().size());
+		Assert.assertEquals(expectedVertexCount, mesh.getVertices(0, mesh.getVertexCount()).size());
+	}
+	
 	private static void assertFaceByVertexCount(Mesh3D mesh, int vertices, int expected) {
 		FaceSelection selection = new FaceSelection(mesh);
 		selection.selectByVertexCount(vertices);
