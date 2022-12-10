@@ -1,6 +1,7 @@
 package mesh.creator.beam;
 
 import math.Mathf;
+import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.modifier.SolidifyModifier;
 
@@ -36,24 +37,35 @@ public class BeamTProfileCreator implements IBeamCreator {
 	}
 	
 	private void createVertices() {
-		float thicknessTaper = this.thickness * (1f - taper);
-		mesh.addVertex(-thicknessTaper / 2f, 0, 0);
-		mesh.addVertex(thicknessTaper / 2f, 0, 0);
-		mesh.addVertex(-thickness / 2f, -height + thickness, 0);
-		mesh.addVertex(thickness / 2f, -height + thickness, 0);
-		mesh.addVertex(-thickness / 2f, -height, 0);
-		mesh.addVertex(thickness / 2, -height, 0);
-		mesh.addVertex(-width / 2f, -height + thicknessTaper, 0);
-		mesh.addVertex(width / 2, -height + thicknessTaper, 0);
-		mesh.addVertex(-width / 2f, -height, 0);
-		mesh.addVertex(width / 2f, -height, 0);
+		float halfWidth = width / 2f;
+		float halfThickness = thickness / 2f;
+		float thicknessTaper = thickness * (1f - taper);
+		
+		addVertex(-thicknessTaper / 2f, 0, 0);
+		addVertex(thicknessTaper / 2f, 0, 0);
+		addVertex(-halfThickness, -height + thickness, 0);
+		addVertex(+halfThickness, -height + thickness, 0);
+		addVertex(-halfThickness, -height, 0);
+		addVertex(+halfThickness, -height, 0);
+		addVertex(-halfWidth, -height + thicknessTaper, 0);
+		addVertex(+halfWidth, -height + thicknessTaper, 0);
+		addVertex(-halfWidth, -height, 0);
+		addVertex(+halfWidth, -height, 0);
 	}
 	
 	private void createFaces() {
-		mesh.addFace(0, 2, 3, 1);
-		mesh.addFace(2, 4, 5, 3);
-		mesh.addFace(6, 8, 4, 2);
-		mesh.addFace(3, 5, 9, 7);
+		addFace(0, 2, 3, 1);
+		addFace(2, 4, 5, 3);
+		addFace(6, 8, 4, 2);
+		addFace(3, 5, 9, 7);
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private void addFace(int... indices) {
+		mesh.add(new Face3D(indices));
 	}
 	
 	private void solidify() {
