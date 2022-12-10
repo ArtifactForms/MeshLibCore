@@ -38,6 +38,7 @@ public class BeamCProfileCreator implements IBeamCreator {
 	
 	private void createVertices() {
 		float halfHeight = height / 2f;
+		
 		addVertex(-halfHeight, 0, 0);
 		addVertex(+halfHeight, 0, 0);
 		addVertex(-halfHeight, -width, 0);
