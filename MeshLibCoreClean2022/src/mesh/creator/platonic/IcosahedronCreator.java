@@ -31,12 +31,10 @@ public class IcosahedronCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public IcosahedronCreator() {
-		super();
-		this.size = 1f;
+		this(1);
 	}
 
 	public IcosahedronCreator(float size) {
-		super();
 		this.size = size;
 	}
 
@@ -56,11 +54,19 @@ public class IcosahedronCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createFaces();
-		mesh.scale(size);
+		scaleMesh();
 		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+	
+	private void scaleMesh() {
+		mesh.scale(size);
 	}
 
 	public float getSize() {
