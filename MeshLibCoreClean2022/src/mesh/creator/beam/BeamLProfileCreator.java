@@ -1,6 +1,7 @@
 package mesh.creator.beam;
 
 import math.Mathf;
+import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.modifier.SolidifyModifier;
 
@@ -36,17 +37,27 @@ public class BeamLProfileCreator implements IBeamCreator {
 	}
 	
 	private void createVertices() {
-		mesh.addVertex(-width / 2f, 0, 0);
-		mesh.addVertex(width / 2f, 0, 0);
-		mesh.addVertex(-width / 2f + thickness, -thickness, 0);
-		mesh.addVertex(+width / 2f, -(thickness * (1f - taper)), 0);
-		mesh.addVertex(-width / 2f, -height, 0);
-		mesh.addVertex(-width / 2f + (thickness * (1f - taper)), -height, 0);
+		float halfWidth = width / 2f;
+		
+		addVertex(-halfWidth, 0, 0);
+		addVertex(+halfWidth, 0, 0);
+		addVertex(-halfWidth + thickness, -thickness, 0);
+		addVertex(+halfWidth, -(thickness * (1f - taper)), 0);
+		addVertex(-halfWidth, -height, 0);
+		addVertex(-halfWidth + (thickness * (1f - taper)), -height, 0);
 	}
 	
 	private void createFaces() {
-		mesh.addFace(0, 2, 3, 1);
-		mesh.addFace(0, 4, 5, 2);
+		addFace(0, 2, 3, 1);
+		addFace(0, 4, 5, 2);
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private void addFace(int... indices) {
+		mesh.add(new Face3D(indices));
 	}
 	
 	private void solidify() {
