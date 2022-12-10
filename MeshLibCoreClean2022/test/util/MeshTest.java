@@ -1,6 +1,7 @@
 package util;
 
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Assert;
 
@@ -12,6 +13,17 @@ import mesh.creator.test.manifold.ManifoldTest;
 import mesh.selection.FaceSelection;
 
 public class MeshTest {
+	
+	public static void assertMeshHasNoLooseVertices(Mesh3D mesh) {
+		List<Vector3f> vertices = mesh.getVertices();
+		for (Face3D face : mesh.getFaces()) {
+			for (int i = 0; i < face.indices.length; i++) {
+				Vector3f v = mesh.getVertexAt(face.indices[i]);
+				vertices.remove(v);
+			}
+		}
+		Assert.assertTrue(vertices.isEmpty());
+	}
 
 	private static int calculateEdgeCount(Mesh3D mesh) {
 		HashSet<Edge3D> edges = new HashSet<Edge3D>();
