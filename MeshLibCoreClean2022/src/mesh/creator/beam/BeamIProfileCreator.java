@@ -1,6 +1,7 @@
 package mesh.creator.beam;
 
 import math.Mathf;
+import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.modifier.SolidifyModifier;
 
@@ -37,32 +38,40 @@ public class BeamIProfileCreator implements IBeamCreator {
 	
 	private void createVertices() {
 		float thicknessTaper = this.thickness * (1f - taper);
-		mesh.addVertex(-thickness / 2f, -thickness, 0);
-		mesh.addVertex(thickness / 2f, -thickness, 0);
-		mesh.addVertex(-thickness / 2f, -height + thickness, 0);
-		mesh.addVertex(thickness / 2f, -height + thickness, 0);
-		mesh.addVertex(-thickness / 2f, -height, 0);
-		mesh.addVertex(thickness / 2f, -height, 0);
-		mesh.addVertex(-width / 2f, -height + thicknessTaper, 0);
-		mesh.addVertex(width / 2f, -height + thicknessTaper, 0);
-		mesh.addVertex(-width / 2f, -height, 0);
-		mesh.addVertex(width / 2f, -height, 0);
-		mesh.addVertex(-thicknessTaper / 2f, 0, 0);
-		mesh.addVertex(thicknessTaper / 2, 0, 0);
-		mesh.addVertex(-width / 2f, 0, 0);
-		mesh.addVertex(width / 2f, 0, 0);
-		mesh.addVertex(-width / 2f, -thicknessTaper, 0);
-		mesh.addVertex(width / 2f, -thicknessTaper, 0);
+		addVertex(-thickness / 2f, -thickness, 0);
+		addVertex(thickness / 2f, -thickness, 0);
+		addVertex(-thickness / 2f, -height + thickness, 0);
+		addVertex(thickness / 2f, -height + thickness, 0);
+		addVertex(-thickness / 2f, -height, 0);
+		addVertex(thickness / 2f, -height, 0);
+		addVertex(-width / 2f, -height + thicknessTaper, 0);
+		addVertex(width / 2f, -height + thicknessTaper, 0);
+		addVertex(-width / 2f, -height, 0);
+		addVertex(width / 2f, -height, 0);
+		addVertex(-thicknessTaper / 2f, 0, 0);
+		addVertex(thicknessTaper / 2, 0, 0);
+		addVertex(-width / 2f, 0, 0);
+		addVertex(width / 2f, 0, 0);
+		addVertex(-width / 2f, -thicknessTaper, 0);
+		addVertex(width / 2f, -thicknessTaper, 0);
 	}
 	
 	private void createFaces() {
-		mesh.addFace(0, 2, 3, 1);
-		mesh.addFace(2, 4, 5, 3);
-		mesh.addFace(6, 8, 4, 2);
-		mesh.addFace(3, 5, 9, 7);
-		mesh.addFace(10, 0, 1, 11);
-		mesh.addFace(12, 14, 0, 10);
-		mesh.addFace(11, 1, 15, 13);
+		addFace(0, 2, 3, 1);
+		addFace(2, 4, 5, 3);
+		addFace(6, 8, 4, 2);
+		addFace(3, 5, 9, 7);
+		addFace(10, 0, 1, 11);
+		addFace(12, 14, 0, 10);
+		addFace(11, 1, 15, 13);
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private void addFace(int... indices) {
+		mesh.add(new Face3D(indices));
 	}
 	
 	private void solidify() {
