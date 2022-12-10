@@ -37,20 +37,28 @@ public class BeamCProfileCreator implements IBeamCreator {
 	}
 	
 	private void createVertices() {
-		mesh.addVertex(-height / 2f, 0, 0);
-		mesh.addVertex(height / 2f, 0, 0);
-		mesh.addVertex(-height / 2f, -width, 0);
-		mesh.addVertex(height / 2f, -width, 0);
-		mesh.addVertex(-height / 2f + thickness, -thickness, 0);
-		mesh.addVertex(+height / 2f - thickness, -thickness, 0);
-		mesh.addVertex(-height / 2f + (thickness * (1f - taper)), -width, 0);
-		mesh.addVertex(+height / 2f - (thickness * (1f - taper)), -width, 0);
+		addVertex(-height / 2f, 0, 0);
+		addVertex(height / 2f, 0, 0);
+		addVertex(-height / 2f, -width, 0);
+		addVertex(height / 2f, -width, 0);
+		addVertex(-height / 2f + thickness, -thickness, 0);
+		addVertex(+height / 2f - thickness, -thickness, 0);
+		addVertex(-height / 2f + (thickness * (1f - taper)), -width, 0);
+		addVertex(+height / 2f - (thickness * (1f - taper)), -width, 0);
 	}
 	
 	private void createFaces() {
-		mesh.addFace(0, 4, 5, 1);
-		mesh.addFace(0, 2, 6, 4);
-		mesh.addFace(5, 7, 3, 1);
+		addFace(0, 4, 5, 1);
+		addFace(0, 2, 6, 4);
+		addFace(5, 7, 3, 1);
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private void addFace(int... indices) {
+		mesh.addFace(indices);
 	}
 	
 	private void rotate() {
