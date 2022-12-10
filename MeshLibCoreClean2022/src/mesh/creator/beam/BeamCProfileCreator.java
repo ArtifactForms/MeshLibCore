@@ -37,14 +37,15 @@ public class BeamCProfileCreator implements IBeamCreator {
 	}
 	
 	private void createVertices() {
-		addVertex(-height / 2f, 0, 0);
-		addVertex(height / 2f, 0, 0);
-		addVertex(-height / 2f, -width, 0);
-		addVertex(height / 2f, -width, 0);
-		addVertex(-height / 2f + thickness, -thickness, 0);
-		addVertex(+height / 2f - thickness, -thickness, 0);
-		addVertex(-height / 2f + (thickness * (1f - taper)), -width, 0);
-		addVertex(+height / 2f - (thickness * (1f - taper)), -width, 0);
+		float halfHeight = height / 2f;
+		addVertex(-halfHeight, 0, 0);
+		addVertex(+halfHeight, 0, 0);
+		addVertex(-halfHeight, -width, 0);
+		addVertex(+halfHeight, -width, 0);
+		addVertex(-halfHeight + thickness, -thickness, 0);
+		addVertex(+halfHeight - thickness, -thickness, 0);
+		addVertex(-halfHeight + (thickness * (1f - taper)), -width, 0);
+		addVertex(+halfHeight - (thickness * (1f - taper)), -width, 0);
 	}
 	
 	private void createFaces() {
