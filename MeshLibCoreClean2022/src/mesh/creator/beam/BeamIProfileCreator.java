@@ -37,23 +37,26 @@ public class BeamIProfileCreator implements IBeamCreator {
 	}
 	
 	private void createVertices() {
-		float thicknessTaper = this.thickness * (1f - taper);
-		addVertex(-thickness / 2f, -thickness, 0);
-		addVertex(thickness / 2f, -thickness, 0);
-		addVertex(-thickness / 2f, -height + thickness, 0);
-		addVertex(thickness / 2f, -height + thickness, 0);
-		addVertex(-thickness / 2f, -height, 0);
-		addVertex(thickness / 2f, -height, 0);
-		addVertex(-width / 2f, -height + thicknessTaper, 0);
-		addVertex(width / 2f, -height + thicknessTaper, 0);
-		addVertex(-width / 2f, -height, 0);
-		addVertex(width / 2f, -height, 0);
+		float halfWidth = width / 2f;
+		float halfThickness = thickness / 2f;
+		float thicknessTaper = thickness * (1f - taper);
+		
+		addVertex(-halfThickness, -thickness, 0);
+		addVertex(+halfThickness, -thickness, 0);
+		addVertex(-halfThickness, -height + thickness, 0);
+		addVertex(+halfThickness, -height + thickness, 0);
+		addVertex(-halfThickness, -height, 0);
+		addVertex(+halfThickness, -height, 0);
+		addVertex(-halfWidth, -height + thicknessTaper, 0);
+		addVertex(+halfWidth, -height + thicknessTaper, 0);
+		addVertex(-halfWidth, -height, 0);
+		addVertex(+halfWidth, -height, 0);
 		addVertex(-thicknessTaper / 2f, 0, 0);
-		addVertex(thicknessTaper / 2, 0, 0);
-		addVertex(-width / 2f, 0, 0);
-		addVertex(width / 2f, 0, 0);
-		addVertex(-width / 2f, -thicknessTaper, 0);
-		addVertex(width / 2f, -thicknessTaper, 0);
+		addVertex(+thicknessTaper / 2, 0, 0);
+		addVertex(-halfWidth, 0, 0);
+		addVertex(+halfWidth, 0, 0);
+		addVertex(-halfWidth, -thicknessTaper, 0);
+		addVertex(+halfWidth, -thicknessTaper, 0);
 	}
 	
 	private void createFaces() {
