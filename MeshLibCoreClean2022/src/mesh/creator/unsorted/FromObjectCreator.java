@@ -19,9 +19,15 @@ public class FromObjectCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
+		if (noNeedToLoadFile())
+			return new Mesh3D();
 		readMeshFromFile();
 		scaleMesh();
 		return mesh;
+	}
+	
+	private boolean noNeedToLoadFile() {
+		return path == null || path.isEmpty() || path.isBlank();
 	}
 	
 	private void readMeshFromFile() {
