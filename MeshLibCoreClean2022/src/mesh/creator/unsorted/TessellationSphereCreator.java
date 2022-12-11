@@ -22,7 +22,7 @@ public class TessellationSphereCreator implements IMeshCreator {
 		radius = 6f;
 		thickness = 0.1f;
 		scaleExtrude = 0.8f;
-		subdivisions = 1;
+		subdivisions = 0;
 	}
 	
 	private void createHoles() {
