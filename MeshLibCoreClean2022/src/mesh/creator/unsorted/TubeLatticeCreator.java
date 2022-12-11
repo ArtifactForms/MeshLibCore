@@ -20,8 +20,8 @@ public class TubeLatticeCreator implements IMeshCreator {
 	private Mesh3D mesh;
 
 	public TubeLatticeCreator() {
-		segments = 10;
-		vertices = 32;
+		segments = 2;
+		vertices = 16;
 		outerRadius = 1f;
 		innerRadius = 0.9f;
 		height = 2f;
