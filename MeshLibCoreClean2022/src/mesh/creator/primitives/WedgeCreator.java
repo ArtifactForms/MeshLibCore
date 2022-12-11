@@ -61,11 +61,11 @@ public class WedgeCreator implements IMeshCreator {
 		addFace(4, 2, 1);
 	}
 
-	public void addTopFace() {
+	private void addTopFace() {
 		addFace(1, 0, 5, 4);
 	}
 
-	public void addBackFace() {
+	private void addBackFace() {
 		addFace(4, 5, 3, 2);
 	}
 
