@@ -143,7 +143,7 @@ public class SolidArcCreator implements IMeshCreator {
 	}
 
 	public int getRotationSegments() {
-		return vertices;
+		return vertices - 1;
 	}
 
 	public void setRotationSegments(int rotationSegments) {
