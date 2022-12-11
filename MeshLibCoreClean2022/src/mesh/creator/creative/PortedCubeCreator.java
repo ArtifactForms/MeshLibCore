@@ -25,7 +25,7 @@ public class PortedCubeCreator implements IMeshCreator {
 	private List<Face3D> centerFaces;
 
 	public PortedCubeCreator() {
-		subdivisions = 3;
+		subdivisions = 1;
 		radius = 1;
 		thickness = 0.1f;
 		removeCorners = true;
