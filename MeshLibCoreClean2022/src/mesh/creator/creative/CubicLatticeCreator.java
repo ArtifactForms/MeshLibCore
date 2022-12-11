@@ -23,7 +23,7 @@ public class CubicLatticeCreator implements IMeshCreator {
 		segmentsX = 3;
 		segmentsY = 3;
 		segmentsZ = 3;
-		subdivisions = 2;
+		subdivisions = 1;
 	}
 
 	@Override
