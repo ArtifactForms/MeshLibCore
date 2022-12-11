@@ -1,6 +1,7 @@
 package mesh.creator.primitives;
 
 import math.Mathf;
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -59,12 +60,17 @@ public class SolidArcCreator implements IMeshCreator {
 	}
 	
 	private void createVertices() {
+		float halfHeight = height / 2f;
 		for (int i = 0; i < vertices; i++) {
-			mesh.add(outerArc.getVertexAt(i).add(0, -height / 2.0f, 0));
-			mesh.add(innerArc.getVertexAt(i).add(0, -height / 2.0f, 0));
-			mesh.add(innerArc.getVertexAt(i).add(0, height / 2.0f, 0));
-			mesh.add(outerArc.getVertexAt(i).add(0, height / 2.0f, 0));
+			addVertex(outerArc.getVertexAt(i).add(0, -halfHeight, 0));
+			addVertex(innerArc.getVertexAt(i).add(0, -halfHeight, 0));
+			addVertex(innerArc.getVertexAt(i).add(0, +halfHeight, 0));
+			addVertex(outerArc.getVertexAt(i).add(0, +halfHeight, 0));
 		}
+	}
+	
+	private void addVertex(Vector3f v) {
+		mesh.add(v);
 	}
 	
 	private void capStart() {
@@ -91,22 +97,22 @@ public class SolidArcCreator implements IMeshCreator {
 	}
 	
 	private void addTopFaceAtIndex() {
-		addFace(1, 0, 4, 5);
+		addFaceAtIndex(1, 0, 4, 5);
 	}
 	
 	private void addOuterFaceAtIndex() {
-		addFace(4, 0, 3, 7);
+		addFaceAtIndex(4, 0, 3, 7);
 	}
 	
 	private void addBottomFaceAtIndex() {
-		addFace(2, 6, 7, 3);
+		addFaceAtIndex(2, 6, 7, 3);
 	}
 	
 	private void addInnerFaceAtIndex() {
-		addFace(6, 2, 1, 5);
+		addFaceAtIndex(6, 2, 1, 5);
 	}
 	
-	private void addFace(int... indices) {
+	private void addFaceAtIndex(int... indices) {
 		int[] indices1 = new int[indices.length];
 		for (int i = 0; i < indices.length; i++) {
 			indices1[i] = index + indices[i];
