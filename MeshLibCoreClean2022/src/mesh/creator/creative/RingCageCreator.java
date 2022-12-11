@@ -26,7 +26,7 @@ public class RingCageCreator implements IMeshCreator {
 	private  ArrayList<Mesh3D> circles = new ArrayList<Mesh3D>();
 
 	public RingCageCreator() {
-		subdivisions = 2;
+		subdivisions = 1;
 		segments = 3;
 		vertices = 16;
 		outerRadius = 1f;
