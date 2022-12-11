@@ -24,9 +24,9 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 	private Mesh3D[][][] cubes;
 
 	public CubeJointLatticeCubeCreator() {
-		subdivisionsX = 10;
-		subdivisionsY = 10;
-		subdivisionsZ = 10;
+		subdivisionsX = 5;
+		subdivisionsY = 5;
+		subdivisionsZ = 5;
 		tileSizeX = 0.1f;
 		tileSizeY = 0.1f;
 		tileSizeZ = 0.1f;
