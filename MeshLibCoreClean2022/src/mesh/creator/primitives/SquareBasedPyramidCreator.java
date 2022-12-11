@@ -35,9 +35,12 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
 		addFace(3, 2, 4);
 		addFace(0, 3, 4);
 	}
-	
-	private void transform() {
+		
+	private void scale() {
 		mesh.scale(size, height, size);
+	}
+	
+	private void centerAlongAxisY() {
 		mesh.translate(0, height / 2f, 0);
 	}
 
@@ -46,7 +49,8 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
 		initializeMesh();
 		createVertices();
 		createFaces();
-		transform();
+		scale();
+		centerAlongAxisY();
 		return mesh;
 	}
 	
