@@ -21,7 +21,7 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 
 	public CubeJointLatticeCylinderCreator() {
 		vertices = 32;
-		subdivisionsY = 6;
+		subdivisionsY = 3;
 		radius = 1f;
 		height = 2f;
 		jointSize = 0.01f;
