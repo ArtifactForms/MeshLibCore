@@ -88,9 +88,14 @@ public class HalfUVSphere implements IMeshCreator {
 			break;
 		case TRIANGLE_FAN:
 			capNGon();
-			new PlanarVertexCenterModifier().modify(mesh, mesh.getFaceAt(mesh.faces.size() - 1));
+			splitCapIntoTriangleFan();
 			break;
 		}
+	}
+	
+	private void splitCapIntoTriangleFan() {
+		Face3D faceToSplit =  mesh.getFaceAt(mesh.faces.size() - 1);
+		new PlanarVertexCenterModifier().modify(mesh, faceToSplit);
 	}
 
 	private void capNGon() {
