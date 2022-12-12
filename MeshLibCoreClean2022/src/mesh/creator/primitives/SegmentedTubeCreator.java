@@ -64,11 +64,15 @@ public class SegmentedTubeCreator implements IMeshCreator {
 	}
 	
 	private void addFace(int i, int j)  {
-		int idx0 = Mathf.toOneDimensionalIndex(i, j, vertices);
-		int idx1 = Mathf.toOneDimensionalIndex(i + 1, j, vertices);
-		int idx2 = Mathf.toOneDimensionalIndex(i + 1, (j + 1) % vertices, vertices);
-		int idx3 = Mathf.toOneDimensionalIndex(i, (j + 1) % vertices, vertices);
+		int idx0 = toOneDimensionalIndex(i, j);
+		int idx1 = toOneDimensionalIndex(i + 1, j);
+		int idx2 = toOneDimensionalIndex(i + 1, j + 1);
+		int idx3 = toOneDimensionalIndex(i, j + 1);
 		mesh.addFace(idx0, idx1, idx2, idx3);
+	}
+	
+	private int toOneDimensionalIndex(int i, int j) {
+		 return Mathf.toOneDimensionalIndex(i, j % vertices, vertices);
 	}
 
 	public int getSegments() {
