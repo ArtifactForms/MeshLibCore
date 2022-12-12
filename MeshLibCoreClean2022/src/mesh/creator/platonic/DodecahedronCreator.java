@@ -18,11 +18,7 @@ public class DodecahedronCreator implements IMeshCreator {
 	public DodecahedronCreator() {
 		this.radius = Mathf.sqrt(3f) / 4f * (1f + Mathf.sqrt(5f));
 	}
-
-	public DodecahedronCreator(float radius) {
-		this.radius = radius;
-	}
-
+	
 	@Override
 	public Mesh3D create() {
 		initializeMesh();
