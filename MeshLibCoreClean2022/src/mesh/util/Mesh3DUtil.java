@@ -21,7 +21,7 @@ public class Mesh3DUtil {
 	public static Mesh3D pushToSphere(Mesh3D mesh, Vector3f center, float radius) {
 		Vector3f origin = new Vector3f(center);
 		for (Vector3f v : mesh.vertices) {
-			Vector3f v0 = new Vector3f(v.x - origin.x, v.y - origin.y, v.z - origin.z).normalizeLocal();
+			Vector3f v0 = new Vector3f(v.subtract(origin)).normalizeLocal();
 			v.set(v0.mult(radius).add(origin));
 		}
 		return mesh;
@@ -32,7 +32,7 @@ public class Mesh3DUtil {
 		Vector3f origin = mesh.calculateFaceCenter(face);
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f v = mesh.getVertexAt(face.indices[i]);
-			Vector3f v0 = new Vector3f(v.x - origin.x, v.y - origin.y, v.z - origin.z).normalizeLocal();
+			Vector3f v0 = new Vector3f(v.subtract(origin)).normalizeLocal();
 			v.set(v0.mult(radius).add(origin));
 		}
 		return mesh;
