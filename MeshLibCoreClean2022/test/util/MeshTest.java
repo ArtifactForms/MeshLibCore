@@ -13,20 +13,36 @@ import mesh.creator.test.manifold.ManifoldTest;
 import mesh.selection.FaceSelection;
 
 public class MeshTest {
+
+	public static void assertMeshHasNoDuplicatedFaces(Mesh3D mesh) {
+		int duplicatedFaces = 0;
+		
+		for (Face3D face0 : mesh.getFaces()) {
+			for (Face3D face1 : mesh.getFaces()) {
+				if (face0 != face1 && face0.sharesSameIndices(face1))
+					duplicatedFaces++;
+			}
+		}
+		
+		Assert.assertEquals(0, duplicatedFaces);
+	}
 	
 	public static void assertMeshHasNoLooseVertices(Mesh3D mesh) {
 		List<Vector3f> vertices = mesh.getVertices();
+		
 		for (Face3D face : mesh.getFaces()) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v = mesh.getVertexAt(face.indices[i]);
 				vertices.remove(v);
 			}
 		}
+		
 		Assert.assertTrue(vertices.isEmpty());
 	}
 
 	private static int calculateEdgeCount(Mesh3D mesh) {
 		HashSet<Edge3D> edges = new HashSet<Edge3D>();
+		
 		for (Face3D face: mesh.faces) {
 			for (int i = 0; i < face.indices.length; i++) {
 				int fromIndex  = face.indices[i];
@@ -37,6 +53,7 @@ public class MeshTest {
 					edges.add(edge);
 			}
 		}
+		
 		return edges.size();
 	}
 	
@@ -108,6 +125,13 @@ public class MeshTest {
 	
 	public static void assertIsManifold(Mesh3D mesh) {
 		new ManifoldTest(mesh).assertIsManifold();
+	}
+	
+	public static void assertFaceContainsVertexIndex(Face3D face, int expectedVertexIndex) {
+		int count = 0;
+		for (int i = 0; i < face.indices.length; i++)
+			count += face.indices[i] == expectedVertexIndex ? 1 : 0;
+		Assert.assertEquals(1, count);
 	}
 	
 }
