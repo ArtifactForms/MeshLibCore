@@ -1,9 +1,10 @@
 package mesh.creator.primitives;
 
-import mesh.Face3D;
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.FlipFacesModifier;
 import mesh.util.Mesh3DUtil;
 
 public class CylinderCreator implements IMeshCreator {
@@ -25,27 +26,34 @@ public class CylinderCreator implements IMeshCreator {
 		bottomCapFillType = FillType.N_GON;
 	}
 
-	private void flipDirectionOfFaces(Mesh3D mesh) {
-		for (Face3D face : mesh.faces) {
-			Mesh3DUtil.flipDirection(mesh, face);
-		}
-	}
-
 	private void bridge(Mesh3D m0, Mesh3D m1) {
 		for (int i = 0; i < vertices; i++) {
-			Mesh3DUtil.bridge(mesh, m1.getVertexAt(i), m1.getVertexAt((i + 1) % vertices), m0.getVertexAt(i),
-					m0.getVertexAt((i + 1) % vertices));
+			Vector3f v0 = m1.getVertexAt(i);
+			Vector3f v1 = m1.getVertexAt((i + 1) % vertices) ;
+			Vector3f v2 = m0.getVertexAt(i);
+			Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
+			Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
 		}
 	}
 
 	private Mesh3D createTopCap() {
-		return new CircleCreator(vertices, topRadius, -height / 2f, topCapFillType).create();
+		CircleCreator creator = new CircleCreator();
+		creator.setVertices(vertices);
+		creator.setRadius(topRadius);
+		creator.setFillType(topCapFillType);
+		creator.setCenterY(-height / 2f);
+		return creator.create();
 	}
 
 	private Mesh3D createBottomCap() {
-		Mesh3D mesh = new CircleCreator(vertices, bottomRadius, height / 2f, bottomCapFillType).create();
-		flipDirectionOfFaces(mesh);
-		return mesh;
+		Mesh3D mesh;
+		CircleCreator creator = new CircleCreator();
+		creator.setVertices(vertices);
+		creator.setRadius(bottomRadius);
+		creator.setCenterY(height / 2f);
+		creator.setFillType(bottomCapFillType);
+		mesh = creator.create();
+		return new FlipFacesModifier().modify(mesh);
 	}
 
 	@Override
