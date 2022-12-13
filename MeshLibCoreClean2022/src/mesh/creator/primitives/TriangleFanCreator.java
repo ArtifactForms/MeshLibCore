@@ -18,7 +18,12 @@ public class TriangleFanCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		return new CircleCreator(vertices, radius, centerY, FillType.TRIANGLE_FAN).create();
+		CircleCreator creator = new CircleCreator();
+		creator.setVertices(vertices);
+		creator.setRadius(radius);
+		creator.setCenterY(centerY);
+		creator.setFillType(FillType.TRIANGLE_FAN);
+		return creator.create();
 	}
 
 	public float getRadius() {
