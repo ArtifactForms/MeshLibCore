@@ -119,4 +119,12 @@ public class CircleCreator implements IMeshCreator {
 		this.fillType = fillType;
 	}
 
+	public float getCenterY() {
+		return centerY;
+	}
+
+	public void setCenterY(float centerY) {
+		this.centerY = centerY;
+	}
+
 }
