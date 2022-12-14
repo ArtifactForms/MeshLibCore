@@ -54,7 +54,7 @@ public class ConeCreator implements IMeshCreator {
 		int idx3 = Mathf.toOneDimensionalIndex(i, (j + 1) % rotationSegments, rotationSegments);
 		mesh.addFace(idx0, idx1, idx2, idx3);
 	}
-
+	
 	private void createQuadFaces() {
 		int end = topRadius > 0 ? 0 : 1;
 		end += bottomRadius > 0 ? 0 : 1;
@@ -107,11 +107,10 @@ public class ConeCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
-
 		if (parametersAreZero())
-			return mesh;
-
+			return new Mesh3D();
+		
+		mesh = new Mesh3D();
 		createVertices();
 		createQuadFaces();
 		createTopCap();
