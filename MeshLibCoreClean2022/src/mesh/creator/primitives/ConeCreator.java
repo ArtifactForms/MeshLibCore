@@ -48,11 +48,16 @@ public class ConeCreator implements IMeshCreator {
 	}
 
 	private void addFace(int i, int j) {
-		int idx0 = Mathf.toOneDimensionalIndex(i, j, rotationSegments);
-		int idx1 = Mathf.toOneDimensionalIndex(i + 1, j, rotationSegments);
-		int idx2 = Mathf.toOneDimensionalIndex(i + 1, (j + 1) % rotationSegments, rotationSegments);
-		int idx3 = Mathf.toOneDimensionalIndex(i, (j + 1) % rotationSegments, rotationSegments);
+		int idx0 = toOneDimensionalIndex(i, j);
+		int idx1 = toOneDimensionalIndex(i + 1, j);
+		int idx2 = toOneDimensionalIndex(i + 1, j + 1);
+		int idx3 = toOneDimensionalIndex(i, j + 1);
 		mesh.addFace(idx0, idx1, idx2, idx3);
+	}
+	
+	private int toOneDimensionalIndex(int i, int j) {
+		j %= rotationSegments;
+		return Mathf.toOneDimensionalIndex(i, j, rotationSegments);
 	}
 	
 	private void createQuadFaces() {
@@ -110,7 +115,7 @@ public class ConeCreator implements IMeshCreator {
 		if (parametersAreZero())
 			return new Mesh3D();
 		
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createQuadFaces();
 		createTopCap();
@@ -121,8 +126,16 @@ public class ConeCreator implements IMeshCreator {
 		return mesh;
 	}
 	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+	
 	private boolean parametersAreZero() {
-		return ((topRadius == 0 && bottomRadius == 0) || height == 0 || rotationSegments == 0 || heightSegments == 0);
+		return radiiAreZero() || height == 0 || rotationSegments == 0 || heightSegments == 0;
+	}
+	
+	private boolean radiiAreZero() {
+		return topRadius == 0 && bottomRadius == 0; 
 	}
 
 	public int getRotationSegments() {
