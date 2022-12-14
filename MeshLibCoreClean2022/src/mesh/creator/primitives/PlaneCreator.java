@@ -1,6 +1,5 @@
 package mesh.creator.primitives;
 
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
@@ -22,7 +21,7 @@ public class PlaneCreator implements IMeshCreator {
 	public Mesh3D create() {
 		initializeMesh();
 		createVertices();
-		createFaces();
+		createFace();
 		return mesh;
 	}
 	
@@ -31,13 +30,17 @@ public class PlaneCreator implements IMeshCreator {
 	}
 	
 	private void createVertices() {
-		mesh.add(new Vector3f(radius, 0, -radius));
-		mesh.add(new Vector3f(radius, 0, radius));
-		mesh.add(new Vector3f(-radius, 0, radius));
-		mesh.add(new Vector3f(-radius, 0, -radius));
+		addVertex(+radius, 0, -radius);
+		addVertex(+radius, 0, +radius);
+		addVertex(-radius, 0, +radius);
+		addVertex(-radius, 0, -radius);
 	}
 	
-	private void createFaces() {
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private void createFace() {
 		mesh.add(new Face3D(0, 1, 2, 3));
 	}
 	
