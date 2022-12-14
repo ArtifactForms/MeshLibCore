@@ -40,15 +40,20 @@ public class PitchedRoofCreator implements IMeshCreator {
 	}
 	
 	private void createTopVertices() {
-		addVertex(0, -height / 2.0f, -depth / 2.0f);
-		addVertex(0, -height / 2.0f, depth / 2.0f);
+		float halfHeight = height / 2.0f;
+		float halfDepth = depth / 2.0f;
+		addVertex(0, -halfHeight, -halfDepth);
+		addVertex(0, -halfHeight, +halfDepth);
 	}
 	
 	private void createBottomVertices() {
-		addVertex(-width / 2.0f, height / 2.0f, -depth / 2.0f);
-		addVertex(width / 2.0f, height / 2.0f, -depth / 2.0f);
-		addVertex(width / 2.0f, height / 2.0f, depth / 2.0f);
-		addVertex(-width / 2.0f, height / 2.0f, depth / 2.0f);
+		float halfWidth = width / 2.0f;
+		float halfHeight = height / 2.0f;
+		float halfDepth = depth / 2.0f;
+		addVertex(-halfWidth, +halfHeight, -halfDepth);
+		addVertex(+halfWidth, +halfHeight, -halfDepth);
+		addVertex(+halfWidth, +halfHeight, +halfDepth);
+		addVertex(-halfWidth, +halfHeight, +halfDepth);
 	}
 	
 	private void createFaces() {
@@ -76,21 +81,18 @@ public class PitchedRoofCreator implements IMeshCreator {
 	}
 	
 	private void createBottomFace() {
-		if (!capBottom)
-			return;
-		addFace(3, 2, 1, 0);
+		if (isCapBottom())
+			addFace(3, 2, 1, 0);
 	}
 	
 	private void triangulate() {
-		if (!triangulate)
-			return;
-		new QuadsToTrianglesModifier().modify(mesh);
+		if (isTriangulate())
+			new QuadsToTrianglesModifier().modify(mesh);
 	}
 	
 	private void snapToGround() {
-		if (!snapToGround)
-			return;
-		mesh.translateY(-height / 2.0f);
+		if (isSnapToGround())
+			mesh.translateY(-height / 2.0f);
 	}
 	
 	private void addVertex(float x, float y, float z) {
