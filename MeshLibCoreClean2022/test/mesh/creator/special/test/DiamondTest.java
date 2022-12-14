@@ -6,12 +6,19 @@ import org.junit.Test;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 import mesh.creator.special.DiamondCreator;
 import mesh.selection.FaceSelection;
 import util.MeshTest;
 
 public class DiamondTest {
+	
+	@Test
+	public void creatorImplementsCreatorInterface() {
+		DiamondCreator creator = new DiamondCreator();
+		Assert.assertTrue(creator instanceof IMeshCreator);
+	}
 	
 	@Test
 	public void getSegmentsReturnsDefaultValue() {
