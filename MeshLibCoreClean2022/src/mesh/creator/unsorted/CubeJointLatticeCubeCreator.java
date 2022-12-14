@@ -131,8 +131,10 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 	}
 
 	private void centerAtOrigin() {
-		mesh.translate(-subdivisionsX * tileSizeX / 2f, -subdivisionsY * tileSizeY / 2f,
-				-subdivisionsZ * tileSizeZ / 2f);
+		float tx = -subdivisionsX * tileSizeX / 2f;
+		float ty = -subdivisionsY * tileSizeY / 2f;
+		float tz = -subdivisionsZ * tileSizeZ / 2f;
+		mesh.translate(tx, ty, tz);
 	}
 
 	private void initializeCubes() {
