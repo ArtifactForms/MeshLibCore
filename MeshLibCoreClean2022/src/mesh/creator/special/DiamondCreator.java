@@ -1,9 +1,10 @@
 package mesh.creator.special;
 
 import mesh.Mesh3D;
+import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 
-public class DiamondCreator {
+public class DiamondCreator implements IMeshCreator {
 
 	private int segments;
 	private float girdleRadius;
@@ -20,6 +21,7 @@ public class DiamondCreator {
 		pavillionHeight = 0.8f;
 	}
 
+	@Override
 	public Mesh3D create() {
 		initializeMesh();
 		createVertices();
