@@ -112,7 +112,7 @@ public class ConeCreator implements IMeshCreator {
 
 	@Override
 	public Mesh3D create() {
-		if (parametersAreZero())
+		if (shouldNotCreate())
 			return new Mesh3D();
 		
 		initializeMesh();
@@ -130,7 +130,7 @@ public class ConeCreator implements IMeshCreator {
 		mesh = new Mesh3D();
 	}
 	
-	private boolean parametersAreZero() {
+	private boolean shouldNotCreate() {
 		return radiiAreZero() || height == 0 || rotationSegments == 0 || heightSegments == 0;
 	}
 	
