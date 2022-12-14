@@ -32,7 +32,7 @@ public class CubicLatticeCreator implements IMeshCreator {
 		createSegments();
 		removeDoubleFaces();
 		removeDoubleVertices();
-		translate();
+		centerAtOrigin();
 		solidify();
 		subdivide();
 		return mesh;
@@ -74,7 +74,7 @@ public class CubicLatticeCreator implements IMeshCreator {
 		mesh = new Mesh3D();
 	}
 
-	private void translate() {
+	private void centerAtOrigin() {
 		mesh.translateX(-((segmentsX - 1) * 3f) / 2f);
 		mesh.translateY(-((segmentsY - 1) * 3f) / 2f);
 		mesh.translateZ(-((segmentsZ - 1) * 3f) / 2f);
