@@ -23,7 +23,7 @@ public class RingCageCreator implements IMeshCreator {
 	private float segmentHeight;
 	private float controlLoopDistance;
 	private Mesh3D mesh;
-	private  ArrayList<Mesh3D> circles = new ArrayList<Mesh3D>();
+	private ArrayList<Mesh3D> circles = new ArrayList<Mesh3D>();
 
 	public RingCageCreator() {
 		subdivisions = 1;
@@ -50,14 +50,14 @@ public class RingCageCreator implements IMeshCreator {
 		subdivide();
 		return mesh;
 	}
-	
+
 	private void updateSegmentHeight() {
 		Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
 		Vector3f v0 = mesh.getVertexAt(0);
 		Vector3f v1 = mesh.getVertexAt(1);
 		segmentHeight = v0.distance(v1);
 	}
-	
+
 	private void updateSegmentHeights() {
 		float height = segmentHeight - (controlLoopDistance * 2);
 		segmentsHeights[0] = 0;
@@ -88,8 +88,11 @@ public class RingCageCreator implements IMeshCreator {
 
 	private void bridge(Mesh3D m0, Mesh3D m1) {
 		for (int i = 0; i < vertices; i++) {
-			Mesh3DUtil.bridge(mesh, m1.getVertexAt(i), m1.getVertexAt((i + 1) % vertices), m0.getVertexAt(i),
-					m0.getVertexAt((i + 1) % vertices));
+			Vector3f v0 = m1.getVertexAt(i);
+			Vector3f v1 = m1.getVertexAt((i + 1) % vertices);
+			Vector3f v2 = m0.getVertexAt(i);
+			Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
+			Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
 		}
 	}
 
@@ -100,27 +103,27 @@ public class RingCageCreator implements IMeshCreator {
 		}
 		mesh.faces.removeAll(faces);
 	}
-	
+
 	private void updateInnerRadius() {
-		innerRadius = outerRadius -0.1f;
+		innerRadius = outerRadius - 0.1f;
 	}
-	
+
 	private void initializeMesh() {
 		mesh = new Mesh3D();
 	}
-	
+
 	private void clear() {
 		circles.clear();
 	}
-	
+
 	private void solidify() {
 		new SolidifyModifier((outerRadius - innerRadius)).modify(mesh);
 	}
-	
+
 	private void subdivide() {
 		new CatmullClarkModifier(subdivisions).modify(mesh);
 	}
-	
+
 	private void translate() {
 		mesh.translateY(-segmentHeight / 2.0f);
 	}
