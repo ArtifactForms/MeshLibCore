@@ -30,14 +30,14 @@ public class CubeCreator implements IMeshCreator {
     }
 
     private void createVertices() {
-	addVertex(radius, -radius, -radius);
-	addVertex(radius, -radius, radius);
-	addVertex(-radius, -radius, radius);
+	addVertex(+radius, -radius, -radius);
+	addVertex(+radius, -radius, +radius);
+	addVertex(-radius, -radius, +radius);
 	addVertex(-radius, -radius, -radius);
-	addVertex(radius, radius, -radius);
-	addVertex(radius, radius, radius);
-	addVertex(-radius, radius, radius);
-	addVertex(-radius, radius, -radius);
+	addVertex(+radius, +radius, -radius);
+	addVertex(+radius, +radius, +radius);
+	addVertex(-radius, +radius, +radius);
+	addVertex(-radius, +radius, -radius);
     }
 
     private void createFaces() {
