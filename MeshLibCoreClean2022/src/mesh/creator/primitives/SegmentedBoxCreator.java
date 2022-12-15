@@ -7,23 +7,14 @@ import mesh.creator.IMeshCreator;
 public class SegmentedBoxCreator implements IMeshCreator {
 
     private int segmentsX;
-
     private int segmentsY;
-
     private int segmentsZ;
-
     private float width;
-
     private float height;
-
     private float depth;
-
     private float segmentSizeX;
-
     private float segmentSizeY;
-
     private float segmentSizeZ;
-
     private Mesh3D mesh;
 
     public SegmentedBoxCreator() {

@@ -11,13 +11,9 @@ import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 public class HalfUVSphere implements IMeshCreator {
 
     private int rings;
-
     private int segments;
-
     private float radius;
-
     private Mesh3D mesh;
-
     private FillType fillType;
 
     public HalfUVSphere() {

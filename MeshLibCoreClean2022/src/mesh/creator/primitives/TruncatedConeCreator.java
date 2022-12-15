@@ -7,11 +7,8 @@ import mesh.creator.IMeshCreator;
 public class TruncatedConeCreator implements IMeshCreator {
 
     private int vertices;
-
     private float topRadius;
-
     private float bottomRadius;
-
     private float height;
 
     public TruncatedConeCreator() {

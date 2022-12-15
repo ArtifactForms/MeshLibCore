@@ -8,11 +8,8 @@ import mesh.creator.IMeshCreator;
 public class DoubleConeCreator implements IMeshCreator {
 
     private int vertices;
-
     private float radius;
-
     private float height;
-
     private Mesh3D mesh;
 
     public DoubleConeCreator() {

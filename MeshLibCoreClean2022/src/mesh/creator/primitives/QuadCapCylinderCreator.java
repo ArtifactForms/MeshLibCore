@@ -13,17 +13,11 @@ import mesh.util.Mesh3DUtil;
 public class QuadCapCylinderCreator implements IMeshCreator {
 
     private float radius;
-
     private float height;
-
     private int vertices;
-
     private int heightSegments;
-
     private int capRows;
-
     private int capCols;
-
     private Mesh3D mesh;
 
     public QuadCapCylinderCreator() {

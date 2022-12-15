@@ -7,23 +7,14 @@ import mesh.creator.IMeshCreator;
 public class CapsuleCreator implements IMeshCreator {
 
     private float topRadius;
-
     private float bottomRadius;
-
     private float cylinderHeight;
-
     private float topCapHeight;
-
     private float bottomCapHeight;
-
     private int topCapSegments;
-
     private int bottomCapSegments;
-
     private int cylinderSegments;
-
     private int rotationSegments;
-
     private Mesh3D mesh;
 
     public CapsuleCreator() {

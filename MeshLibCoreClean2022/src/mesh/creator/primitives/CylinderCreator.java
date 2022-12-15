@@ -10,17 +10,11 @@ import mesh.util.Mesh3DUtil;
 public class CylinderCreator implements IMeshCreator {
 
     private int vertices;
-
     private float topRadius;
-
     private float bottomRadius;
-
     private float height;
-
     private FillType topCapFillType;
-
     private FillType bottomCapFillType;
-
     private Mesh3D mesh;
 
     public CylinderCreator() {

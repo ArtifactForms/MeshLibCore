@@ -8,17 +8,11 @@ import mesh.creator.IMeshCreator;
 public class GridCreator implements IMeshCreator {
 
     private int subdivisionsX;
-
     private int subdivisionsZ;
-
     private float tileSizeX;
-
     private float tileSizeZ;
-
     private float offsetX;
-
     private float offsetZ;
-
     private Mesh3D mesh;
 
     public GridCreator() {

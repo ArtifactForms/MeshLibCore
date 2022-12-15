@@ -9,17 +9,11 @@ import mesh.modifier.SolidifyModifier;
 public class TubeCreator implements IMeshCreator {
 
     private int vertices;
-
     private float topOuterRadius;
-
     private float topInnerRadius;
-
     private float bottomOuterRadius;
-
     private float bottomInnerRadius;
-
     private float height;
-
     private Mesh3D mesh;
 
     public TubeCreator() {

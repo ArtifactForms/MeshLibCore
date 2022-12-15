@@ -8,15 +8,10 @@ import mesh.modifier.SolidifyModifier;
 public class SegmentedTubeCreator implements IMeshCreator {
 
     private int segments;
-
     private int vertices;
-
     private float outerRadius;
-
     private float innerRadius;
-
     private float height;
-
     private Mesh3D mesh;
 
     public SegmentedTubeCreator() {

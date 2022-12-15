@@ -9,13 +9,9 @@ import mesh.creator.IMeshCreator;
 public class CircleCreator implements IMeshCreator {
 
     private int vertices;
-
     private float radius;
-
     private float centerY;
-
     private FillType fillType;
-
     private Mesh3D mesh;
 
     public CircleCreator() {

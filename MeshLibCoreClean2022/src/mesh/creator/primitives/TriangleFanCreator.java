@@ -7,9 +7,7 @@ import mesh.creator.IMeshCreator;
 public class TriangleFanCreator implements IMeshCreator {
 
     private float radius;
-
     private float centerY;
-
     private int vertices;
 
     public TriangleFanCreator() {

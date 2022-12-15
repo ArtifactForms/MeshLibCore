@@ -9,9 +9,7 @@ import mesh.util.Mesh3DUtil;
 public class IcoSphereCreator implements IMeshCreator {
 
     private float radius;
-
     private int subdivisions;
-
     private Mesh3D mesh;
 
     public IcoSphereCreator() {

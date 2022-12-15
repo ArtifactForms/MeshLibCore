@@ -7,13 +7,9 @@ import mesh.creator.IMeshCreator;
 public class ArcCreator implements IMeshCreator {
 
     private float startAngle;
-
     private float endAngle;
-
     private float radius;
-
     private int vertices;
-
     private Mesh3D mesh;
 
     public ArcCreator() {

@@ -8,17 +8,11 @@ import mesh.operators.ExtrudeIndividualFacesOperator;
 public class LatticeCreator implements IMeshCreator {
 
     private int subdivisionsX;
-
     private int subdivisionsZ;
-
     private float openingPercent;
-
     private float tileSizeX;
-
     private float tileSizeZ;
-
     private float height;
-
     private Mesh3D mesh;
 
     public LatticeCreator() {
