@@ -16,13 +16,9 @@ import mesh.util.Mesh3DUtil;
 public class FloorPatternNoiseCreator implements IMeshCreator {
 
     private float height;
-
     private float radius;
-
     private int subdivisions;
-
     private Mesh3D mesh;
-
     private FaceSelection faceSelection;
 
     public FloorPatternNoiseCreator() {

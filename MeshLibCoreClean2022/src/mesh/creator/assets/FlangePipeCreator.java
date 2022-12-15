@@ -12,29 +12,17 @@ import mesh.creator.special.VariableCylinderCreator;
 public class FlangePipeCreator implements IMeshCreator {
 
     private int segmentCount;
-
     private int boltCount;
-
     private int rotationSegments;
-
     private float flangeOuterRadius;
-
     private float flangeGrooveWidth;
-
     private float pipeRadius;
-
     private float flangeDepth;
-
     private float pipeSegmentLength;
-
     private float boltHeadPercantage;
-
     private float boltHeadHeight;
-
     private FillType boltCapFillType;
-
     private Mesh3D segment;
-
     private Mesh3D pipe;
 
     public FlangePipeCreator() {

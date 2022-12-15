@@ -7,21 +7,14 @@ import mesh.creator.IMeshCreator;
 import mesh.modifier.SolidifyModifier;
 
 public class ArchCreator implements IMeshCreator {
-
+    
     private int segments;
-
     private float radius;
-
     private float extendTop;
-
     private float extendBottom;
-
     private float extendLeft;
-
     private float extendRight;
-
     private float depth;
-
     private Mesh3D mesh;
 
     public ArchCreator() {
