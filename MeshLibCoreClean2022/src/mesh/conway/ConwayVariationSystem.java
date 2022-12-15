@@ -10,13 +10,9 @@ import mesh.modifier.FitToAABBModifier;
 public class ConwayVariationSystem {
 
     private boolean fitToBounds = true;
-
     private int currentIndex;
-
     private int k;
-
     private String[] operations = { "a", "k", "d" };
-
     private List<String> expressions;
 
     public ConwayVariationSystem(int k) {

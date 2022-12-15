@@ -9,9 +9,7 @@ import mesh.modifier.FitToAABBModifier;
 public class RandomConwayCreator implements IMeshCreator {
 
     private int expressionLength;
-
     private boolean fitToBounds;
-
     private String lastExpression;
 
     public RandomConwayCreator() {

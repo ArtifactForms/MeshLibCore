@@ -14,9 +14,7 @@ import mesh.util.TraverseHelper;
 public class ConwayAmboModifier implements IMeshModifier {
 
     private Mesh3D mesh;
-
     private ArrayList<Face3D> facesToAdd;
-
     private List<Vector3f> verticesToAdd;
 
     @Override
