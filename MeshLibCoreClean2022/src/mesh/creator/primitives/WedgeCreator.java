@@ -30,14 +30,14 @@ public class WedgeCreator implements IMeshCreator {
 	}
 
 	private void addBottomVertices() {
-		addVertex(-radius, radius, radius);
-		addVertex(radius, radius, radius);
-		addVertex(radius, radius, -radius);
-		addVertex(-radius, radius, -radius);
+		addVertex(-radius, +radius, +radius);
+		addVertex(+radius, +radius, +radius);
+		addVertex(+radius, +radius, -radius);
+		addVertex(-radius, +radius, -radius);
 	}
 
 	private void addTopVertices() {
-		addVertex(radius, -radius, -radius);
+		addVertex(+radius, -radius, -radius);
 		addVertex(-radius, -radius, -radius);
 	}
 
