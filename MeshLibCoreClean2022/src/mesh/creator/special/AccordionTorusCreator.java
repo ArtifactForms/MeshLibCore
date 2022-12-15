@@ -1,10 +1,10 @@
 package mesh.creator.special;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.creator.primitives.CircleCreator;
 
 public class AccordionTorusCreator implements IMeshCreator {
 
@@ -21,42 +21,30 @@ public class AccordionTorusCreator implements IMeshCreator {
 		minorSegments = 12;
 		updateRadii();
 	}
+	
+	private Mesh3D createMinorCircleAt(int j) {
+		float minorRadius = getMinorRadiusAt(j);
+		CircleCreator creator = new CircleCreator();
+		creator.setRadius(minorRadius);
+		creator.setVertices(minorSegments);
+		return creator.create();
+	}
 
 	private void createVertices() {
 		float majorAngle = 0;
-		float minorAngle = 0;
 		float majorStep = Mathf.TWO_PI / majorSegments;
-		float minorStep = Mathf.TWO_PI / minorSegments;
-		Vector3f[] verts = new Vector3f[majorSegments * minorSegments];
-
 		for (int j = 0; j < majorSegments; j++) {
-			float majorX = majorRadius * Mathf.cos(majorAngle);
-			float majorZ = majorRadius * Mathf.sin(majorAngle);
-			Vector3f v0 = new Vector3f(majorX, 0, majorZ);
-			
-			for (int i = 0; i < minorSegments; i++) {
-				float minorRadius = getMinorRadiusAt(j);
-				float minorX = minorRadius * Mathf.cos(minorAngle);
-				float minorY = minorRadius * Mathf.sin(minorAngle);
-				Vector3f v1 = new Vector3f(minorX, minorY, 0);
-				rotate(v1, majorAngle);
-				v1.addLocal(v0);
-				minorAngle += minorStep;
-				verts[j * minorSegments + i] = v1;
-			}
+			float x = majorRadius * Mathf.cos(majorAngle);
+			float z = majorRadius * Mathf.sin(majorAngle);
+			Mesh3D circle = createMinorCircleAt(j);
+			circle.rotateZ(-Mathf.HALF_PI);
+			circle.rotateY(Mathf.HALF_PI - majorAngle);
+			circle.translate(x, 0, z);
+			mesh.addVertices(circle.getVertices());
 			majorAngle += majorStep;
 		}
-
-		mesh.add(verts);
 	}
 	
-	private void rotate(Vector3f v, float majorAngle) {
-		float angle = Mathf.TWO_PI - majorAngle;
-		float x = Mathf.cos(angle) * v.x + Mathf.sin(angle) * v.z;
-		float z = -Mathf.sin(angle) * v.x + Mathf.cos(angle) * v.z;
-		v.set(x, v.y, z);
-	}
-
 	private void createFaces() {
 		for (int i = 0; i < majorSegments; i++)
 			for (int j = 0; j < minorSegments; j++)
