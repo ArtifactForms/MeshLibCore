@@ -34,15 +34,19 @@ public class AccordionTorusCreator implements IMeshCreator {
 		float majorAngle = 0;
 		float majorStep = Mathf.TWO_PI / majorSegments;
 		for (int i = 0; i < majorSegments; i++) {
-			float x = majorRadius * Mathf.cos(majorAngle);
-			float z = majorRadius * Mathf.sin(majorAngle);
 			Mesh3D circle = createMinorCircleAt(i);
 			circle.rotateZ(-Mathf.HALF_PI);
 			circle.rotateY(Mathf.HALF_PI - majorAngle);
-			circle.translate(x, 0, z);
+			translateToPointOnCircle(circle, majorAngle);
 			mesh.addVertices(circle.getVertices());
 			majorAngle += majorStep;
 		}
+	}
+	
+	private void translateToPointOnCircle(Mesh3D mesh, float majorAngle) {
+		float x = majorRadius * Mathf.cos(majorAngle);
+		float z = majorRadius * Mathf.sin(majorAngle);
+		mesh.translate(x, 0, z);
 	}
 	
 	private void createFaces() {
