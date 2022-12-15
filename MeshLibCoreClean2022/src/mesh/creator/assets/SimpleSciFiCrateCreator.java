@@ -10,8 +10,11 @@ import mesh.selection.FaceSelection;
 public class SimpleSciFiCrateCreator implements IMeshCreator {
 
 	private float extrudeAmount;
+	
 	private float extrudeScale;
+	
 	private Mesh3D mesh;
+	
 	private FaceSelection faceSelection;
 	
 	public SimpleSciFiCrateCreator() {

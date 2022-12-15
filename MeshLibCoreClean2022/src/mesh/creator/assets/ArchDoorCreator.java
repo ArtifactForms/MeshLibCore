@@ -10,9 +10,13 @@ import mesh.modifier.SolidifyModifier;
 public class ArchDoorCreator implements IMeshCreator {
 
 	private int segments;
+	
 	private float radius;
+	
 	private float depth;
+	
 	private float extendBottom;
+	
 	private Mesh3D mesh;
 	
 	public ArchDoorCreator() {

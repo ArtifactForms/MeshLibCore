@@ -13,11 +13,17 @@ import mesh.util.Mesh3DUtil;
 public class ProfileWallCreator implements IMeshCreator {
 
 	private int segmentsCount;
+	
 	private float y;
+	
 	private float maxDepth;
+	
 	private float width;
+	
 	private boolean corner;
+	
 	private QuadStripCreator creator;
+	
 	private Mesh3D mesh;
 	
 	public ProfileWallCreator() {

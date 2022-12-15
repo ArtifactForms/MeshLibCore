@@ -12,10 +12,15 @@ import mesh.util.Mesh3DUtil;
 public class CrateCreator implements IMeshCreator {
 
 	private float radius;
+	
 	private float crossBeamRadius;
+	
 	private float inset;
+	
 	private float insetDepth;
+	
 	private CrossBeamType crossBeamType;
+	
 	private Mesh3D mesh;
 
 	public CrateCreator() {
