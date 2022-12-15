@@ -50,15 +50,19 @@ public class SpinCreator implements IMeshCreator {
 		float angle = 0;
 		float angleStep = -this.angle / (float) (steps - 1);
 		for (int j = 0; j < steps; j++) {
-			for (int i = 0; i < vertices.size(); i++) {
-				Vector3f v0 = vertices.get(i);
-				Vector3f v1 = new Vector3f(Mathf.cos(angle), 0,
-						Mathf.sin(angle));
-				v1 = v1.multLocal(new Vector3f(v0.x, 1, v0.x));
-				v1.addLocal(0, v0.y, 0);
-				mesh.add(v1);
-			}
+			createVerticesAtAngle(angle);
 			angle += angleStep;
+		}
+	}
+
+	private void createVerticesAtAngle(float angle) {
+		for (int i = 0; i < vertices.size(); i++) {
+			Vector3f v0 = vertices.get(i);
+			Vector3f v1 = new Vector3f(Mathf.cos(angle), 0,
+					Mathf.sin(angle));
+			v1 = v1.multLocal(new Vector3f(v0.x, 1, v0.x));
+			v1.addLocal(0, v0.y, 0);
+			mesh.add(v1);
 		}
 	}
 
