@@ -14,6 +14,7 @@ import mesh.util.Bounds3;
 public class Mesh3D {
 
 	public ArrayList<Vector3f> vertices;
+	
 	public ArrayList<Face3D> faces;
 
 	public Mesh3D() {
