@@ -1,114 +1,121 @@
-## Creators
+# Creators
 
 In the meantime 100+ creators are available.
 
-* [CuboctahedronCreator](#CuboctahedronCreator)
-* [IcosidodecahedronCreator](#IcosidodecahedronCreator)
-* [RhombicosidodecahedronCreator](#RhombicosidodecahedronCreator)
-* [RhombicuboctahedronCreator](#RhombicuboctahedronCreator)
-* [SnubCubeCreator](#SnubCubeCreator)
-* [SnubDodecahedronCreator](#SnubDodecahedronCreator)
-* [TruncatedCubeCreator](#TruncatedCubeCreator)
-* [TruncatedCuboctahedronCreator](#TruncatedCuboctahedronCreator)
-* [TruncatedDodecahedronCreator](#TruncatedDodecahedronCreator)
-* [TruncatedIcosahedronCreator](#TruncatedIcosahedronCreator)
-* [TruncatedIcosidodecahedronCreator](#TruncatedIcosidodecahedronCreator)
-* [TruncatedOctahedronCreator](#TruncatedOctahedronCreator)
-* [TruncatedTetrahedronCreator](#TruncatedTetrahedronCreator)
-* [ArchCreator](#ArchCreator)
-* [ArchDoorCreator](#ArchDoorCreator)
-* [BridgeCreator](#BridgeCreator)
-* [CentralStringerStaircaseCreator](#CentralStringerStaircaseCreator)
-* [ChainLinkCreator](#ChainLinkCreator)
-* [CircularRailingCreator](#CircularRailingCreator)
-* [CrateCreator](#CrateCreator)
-* [CubedPillarCreator](#CubedPillarCreator)
-* [DresserCreator](#DresserCreator)
-* [FlangePipeCreator](#FlangePipeCreator)
-* [FloorPatternCreator](#FloorPatternCreator)
-* [FloorPatternNoiseCreator](#FloorPatternNoiseCreator)
-* [MedievalTowerRoundCreator](#MedievalTowerRoundCreator)
-* [MFloorCeiling](#MFloorCeiling)
-* [ModularKitWall](#ModularKitWall)
-* [ModularKitDoorSegmentCreator](#ModularKitDoorSegmentCreator)
-* [ModularKitFloorSegmentCreator](#ModularKitFloorSegmentCreator)
-* [PillarCreator](#PillarCreator)
-* [PitchedRoofCreator](#PitchedRoofCreator)
-* [ProfileWallCreator](#ProfileWallCreator)
-* [SciFiFloorCreator](#SciFiFloorCreator)
-* [SciFiFloorSupportCreator](#SciFiFloorSupportCreator)
-* [SciFiPlatformCreator](#SciFiPlatformCreator)
-* [SimpleCrateCreator](#SimpleCrateCreator)
-* [SimpleSciFiCrateCreator](#SimpleSciFiCrateCreator)
-* [StairsCreator](#StairsCreator)
-* [WallSegmentCreator](#WallSegmentCreator)
-* [WoodenBarrelCreator](#WoodenBarrelCreator)
-* [BeamCProfileCreator](#BeamCProfileCreator)
-* [BeamCreator](#BeamCreator)
-* [BeamIProfileCreator](#BeamIProfileCreator)
-* [BeamLProfileCreator](#BeamLProfileCreator)
-* [BeamOProfileCreator](#BeamOProfileCreator)
-* [BeamTProfileCreator](#BeamTProfileCreator)
-* [BeamUProfileCreator](#BeamUProfileCreator)
-* [RhombicDodecahedronCreator](#RhombicDodecahedronCreator)
-* [TriakisTetrahedronCreator](#TriakisTetrahedronCreator)
-* [CubicLatticeCreator](#CubicLatticeCreator)
-* [LeonardoCubeCreator](#LeonardoCubeCreator)
-* [PortedCubeCreator](#PortedCubeCreator)
-* [RingCageCreator](#RingCageCreator)
-* [TessellationRingCreator](#TessellationRingCreator)
-* [TorusCageCreator](#TorusCageCreator)
-* [DodecahedronCreator](#DodecahedronCreator)
-* [HexahedronCreator](#HexahedronCreator)
-* [IcosahedronCreator](#IcosahedronCreator)
-* [OctahedronCreator](#OctahedronCreator)
-* [TetrahedronCreator](#TetrahedronCreator)
-* [ArcCreator](#ArcCreator)
-* [BoxCreator](#BoxCreator)
-* [CapsuleCreator](#CapsuleCreator)
-* [CircleCreator](#CircleCreator)
-* [ConeCreator](#ConeCreator)
-* [CubeCreator](#CubeCreator)
-* [CylinderCreator](#CylinderCreator)
-* [DiscCreator](#DiscCreator)
-* [DoubleConeCreator](#DoubleConeCreator)
-* [FlatTopPyramidCreator](#FlatTopPyramidCreator)
-* [GridCreator](#GridCreator)
-* [HalfUVSphere](#HalfUVSphere)
-* [HelixCreator](#HelixCreator)
-* [IcoSphereCreator](#IcoSphereCreator)
-* [PlaneCreator](#PlaneCreator)
-* [QuadCapCapsule](#QuadCapCapsule)
-* [QuadCapCylinderCreator](#QuadCapCylinderCreator)
-* [QuadSphereCreator](#QuadSphereCreator)
-* [SegmentedBox](#SegmentedBox)
-* [SegmentedCubeCreator](#SegmentedCubeCreator)
-* [SegmentedCylinderCreator](#SegmentedCylinderCreator)
-* [SolidArcCreator](#SolidArcCreator)
-* [SquareBasedPyramidCreator](#SquareBasedPyramidCreator)
-* [TorusCreator](#TorusCreator)
-* [TriangleFanCreator](#TriangleFanCreator)
-* [TruncatedConeCreator](#TruncatedConeCreator)
-* [TubeCreator](#TubeCreator)
-* [UVSphereCreator](#UVSphereCreator)
-* [WedgeCreator](#WedgeCreator)
-* [AccordionTorusCreator](#AccordionTorusCreator)
-* [AntiprismCreator](#AntiprismCreator)
-* [HoneyCombCreator](#HoneyCombCreator)
-* [MobiusStripCreator](#MobiusStripCreator)
-* [QuadStripCreator](#QuadStripCreator)
-* [SimpleStarCreator](#SimpleStarCreator)
-* [SpinCreator](#SpinCreator)
-* [CubeJointLatticeCreator](#CubeJointLatticeCreator)
-* [CubeJointLatticeCubeCreator](#CubeJointLatticeCubeCreator)
-* [CubeJointLatticeCylinderCreator](#CubeJointLatticeCylinderCreator)
-* [EggCreator](#EggCreator)
-* [LatticeCreator](#LatticeCreator)
-* [LatticeSphereCreator](#LatticeSphereCreator)
-* [NubCreator](#NubCreator)
-* [TessellationSphereCreator](#TessellationSphereCreator)
-* [TriangleSegmentCreator](#TriangleSegmentCreator)
-* [TriangulatedSphereLatticeCreator](#TriangulatedSphereLatticeCreator)
+  * [CuboctahedronCreator](#CuboctahedronCreator)
+  * [IcosidodecahedronCreator](#IcosidodecahedronCreator)
+  * [RhombicosidodecahedronCreator](#RhombicosidodecahedronCreator)
+  * [RhombicuboctahedronCreator](#RhombicuboctahedronCreator)
+  * [SnubCubeCreator](#SnubCubeCreator)
+  * [SnubDodecahedronCreator](#SnubDodecahedronCreator)
+  * [TruncatedCubeCreator](#TruncatedCubeCreator)
+  * [TruncatedCuboctahedronCreator](#TruncatedCuboctahedronCreator)
+  * [TruncatedDodecahedronCreator](#TruncatedDodecahedronCreator)
+  * [TruncatedIcosahedronCreator](#TruncatedIcosahedronCreator)
+  * [TruncatedIcosidodecahedronCreator](#TruncatedIcosidodecahedronCreator)
+  * [TruncatedOctahedronCreator](#TruncatedOctahedronCreator)
+  * [TruncatedTetrahedronCreator](#TruncatedTetrahedronCreator)
+  * [ArchCreator](#ArchCreator)
+  * [ArchDoorCreator](#ArchDoorCreator)
+  * [BridgeCreator](#BridgeCreator)
+  * [CentralStringerStaircaseCreator](#CentralStringerStaircaseCreator)
+  * [ChainLinkCreator](#ChainLinkCreator)
+  * [CircularRailingCreator](#CircularRailingCreator)
+  * [CrateCreator](#CrateCreator)
+  * [CubedPillarCreator](#CubedPillarCreator)
+  * [DresserCreator](#DresserCreator)
+  * [FlangePipeCreator](#FlangePipeCreator)
+  * [FloorPatternCreator](#FloorPatternCreator)
+  * [FloorPatternNoiseCreator](#FloorPatternNoiseCreator)
+  * [GearCreator](#GearCreator)
+  * [MedievalTowerRoundCreator](#MedievalTowerRoundCreator)
+  * [MFloorCeiling](#MFloorCeiling)
+  * [ModularKitWall](#ModularKitWall)
+  * [ModularKitDoorSegmentCreator](#ModularKitDoorSegmentCreator)
+  * [ModularKitFloorSegmentCreator](#ModularKitFloorSegmentCreator)
+  * [PillarCreator](#PillarCreator)
+  * [PitchedRoofCreator](#PitchedRoofCreator)
+  * [ProfileWallCreator](#ProfileWallCreator)
+  * [SciFiFloorCreator](#SciFiFloorCreator)
+  * [SciFiFloorSupportCreator](#SciFiFloorSupportCreator)
+  * [SciFiPlatformCreator](#SciFiPlatformCreator)
+  * [SimpleCrateCreator](#SimpleCrateCreator)
+  * [SimpleSciFiCrateCreator](#SimpleSciFiCrateCreator)
+  * [StairsCreator](#StairsCreator)
+  * [WallSegmentCreator](#WallSegmentCreator)
+  * [WoodenBarrelCreator](#WoodenBarrelCreator)
+  * [BeamCProfileCreator](#BeamCProfileCreator)
+  * [BeamCreator](#BeamCreator)
+  * [BeamIProfileCreator](#BeamIProfileCreator)
+  * [BeamLProfileCreator](#BeamLProfileCreator)
+  * [BeamOProfileCreator](#BeamOProfileCreator)
+  * [BeamTProfileCreator](#BeamTProfileCreator)
+  * [BeamUProfileCreator](#BeamUProfileCreator)
+  * [RhombicDodecahedronCreator](#RhombicDodecahedronCreator)
+  * [TriakisTetrahedronCreator](#TriakisTetrahedronCreator)
+  * [CubicLatticeCreator](#CubicLatticeCreator)
+  * [LeonardoCubeCreator](#LeonardoCubeCreator)
+  * [PortedCubeCreator](#PortedCubeCreator)
+  * [RingCageCreator](#RingCageCreator)
+  * [TessellationRingCreator](#TessellationRingCreator)
+  * [TorusCageCreator](#TorusCageCreator)
+  * [DodecahedronCreator](#DodecahedronCreator)
+  * [HexahedronCreator](#HexahedronCreator)
+  * [IcosahedronCreator](#IcosahedronCreator)
+  * [OctahedronCreator](#OctahedronCreator)
+  * [TetrahedronCreator](#TetrahedronCreator)
+  * [ArcCreator](#ArcCreator)
+  * [BoxCreator](#BoxCreator)
+  * [CapsuleCreator](#CapsuleCreator)
+  * [CircleCreator](#CircleCreator)
+  * [ConeCreator](#ConeCreator)
+  * [CubeCreator](#CubeCreator)
+  * [CylinderCreator](#CylinderCreator)
+  * [DiscCreator](#DiscCreator)
+  * [DoubleConeCreator](#DoubleConeCreator)
+  * [FlatTopPyramidCreator](#FlatTopPyramidCreator)
+  * [GridCreator](#GridCreator)
+  * [HalfUVSphere](#HalfUVSphere)
+  * [HelixCreator](#HelixCreator)
+  * [IcoSphereCreator](#IcoSphereCreator)
+  * [LatticeCreator](#LatticeCreator)
+  * [PlaneCreator](#PlaneCreator)
+  * [QuadCapCapsule](#QuadCapCapsule)
+  * [QuadCapCylinderCreator](#QuadCapCylinderCreator)
+  * [QuadSphereCreator](#QuadSphereCreator)
+  * [SegmentedBoxCreator](#SegmentedBoxCreator)
+  * [SegmentedCubeCreator](#SegmentedCubeCreator)
+  * [SegmentedCylinderCreator](#SegmentedCylinderCreator)
+  * [SegmentedTubeCreator](#SegmentedTubeCreator)
+  * [SolidArcCreator](#SolidArcCreator)
+  * [SquareBasedPyramidCreator](#SquareBasedPyramidCreator)
+  * [TorusCreator](#TorusCreator)
+  * [TriangleFanCreator](#TriangleFanCreator)
+  * [TruncatedConeCreator](#TruncatedConeCreator)
+  * [TubeCreator](#TubeCreator)
+  * [UVSphereCreator](#UVSphereCreator)
+  * [WedgeCreator](#WedgeCreator)
+  * [AccordionTorusCreator](#AccordionTorusCreator)
+  * [AntiprismCreator](#AntiprismCreator)
+  * [DiamondCreator](#DiamondCreator)
+  * [GemCreator](#GemCreator)
+  * [HoneyCombCreator](#HoneyCombCreator)
+  * [MobiusStripCreator](#MobiusStripCreator)
+  * [MucubeCreator](#MucubeCreator)
+  * [QuadStripCreator](#QuadStripCreator)
+  * [SimpleStarCreator](#SimpleStarCreator)
+  * [SpinCreator](#SpinCreator)
+  * [CubeJointLatticeCreator](#CubeJointLatticeCreator)
+  * [CubeJointLatticeCubeCreator](#CubeJointLatticeCubeCreator)
+  * [CubeJointLatticeCylinderCreator](#CubeJointLatticeCylinderCreator)
+  * [EggCreator](#EggCreator)
+  * [FromObjectCreator](#FromObjectCreator)
+  * [LatticeSphereCreator](#LatticeSphereCreator)
+  * [NubCreator](#NubCreator)
+  * [TessellationSphereCreator](#TessellationSphereCreator)
+  * [TriangleSegmentCreator](#TriangleSegmentCreator)
+  * [TriangulatedSphereLatticeCreator](#TriangulatedSphereLatticeCreator)
+  * [TubeLatticeCreator](#TubeLatticeCreator)
 
 # CuboctahedronCreator
 
@@ -460,13 +467,13 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **ExtendTop**
-* **Segments**
-* **ExtendBottom**
-* **ExtendLeft**
-* **Depth**
-* **ExtendRight**
+  * **Radius**
+  * **ExtendTop**
+  * **ExtendBottom**
+  * **Segments**
+  * **ExtendLeft**
+  * **ExtendRight**
+  * **Depth**
 
 
 **Usage:**
@@ -493,10 +500,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Segments**
-* **ExtendBottom**
-* **Depth**
+  * **Radius**
+  * **ExtendBottom**
+  * **Segments**
+  * **Depth**
 
 
 **Usage:**
@@ -549,9 +556,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Height**
-* **StepsCount**
-* **RailingRotationSegments**
+  * **Height**
+  * **StepsCount**
+  * **RailingRotationSegments**
 
 
 **Usage:**
@@ -578,11 +585,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **MinorRadius**
-* **CenterPieceSize**
-* **MajorSegments**
-* **MajorRadius**
-* **MinorSegments**
+  * **CenterPieceSize**
+  * **MajorSegments**
+  * **MinorRadius**
+  * **MinorSegments**
+  * **MajorRadius**
 
 
 **Usage:**
@@ -635,10 +642,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Inset**
-* **InsetDepth**
-* **CroosBeamType**
+  * **CroosBeamType**
+  * **InsetDepth**
+  * **Inset**
+  * **Radius**
 
 
 **Usage:**
@@ -665,9 +672,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **SegmentCount**
-* **Extrude**
-* **SegmentRadius**
+  * **Extrude**
+  * **SegmentCount**
+  * **SegmentRadius**
 
 
 **Usage:**
@@ -694,12 +701,12 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Height**
-* **Width**
-* **DrawerCols**
-* **DrawerRows**
-* **PanelThickness**
+  * **Height**
+  * **Width**
+  * **DrawerRows**
+  * **PanelThickness**
+  * **DrawerCols**
+  * **Depth**
 
 
 **Usage:**
@@ -726,17 +733,17 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **SegmentCount**
-* **BoltCapFillType**
-* **BoltHeadHeight**
-* **BoltCount**
-* **FlangeDepth**
-* **PipeRadius**
-* **FlangeGrooveWidth**
-* **FlangeOuterRadius**
-* **PipeSegmentLength**
-* **BoltHeadPercantage**
-* **RotationSegments**
+  * **PipeSegmentLength**
+  * **FlangeGrooveWidth**
+  * **RotationSegments**
+  * **FlangeOuterRadius**
+  * **BoltHeadPercantage**
+  * **SegmentCount**
+  * **FlangeDepth**
+  * **PipeRadius**
+  * **BoltCount**
+  * **BoltHeadHeight**
+  * **BoltCapFillType**
 
 
 **Usage:**
@@ -763,9 +770,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Height**
-* **Subdivisions**
+  * **Height**
+  * **Subdivisions**
+  * **Radius**
 
 
 **Usage:**
@@ -792,9 +799,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Height**
-* **Subdivisions**
+  * **Height**
+  * **Subdivisions**
+  * **Radius**
 
 
 **Usage:**
@@ -804,6 +811,36 @@ import mesh.Mesh3D
 import mesh.creator.assets.FloorPatternNoiseCreator;
 
 FloorPatternNoiseCreator creator = new FloorPatternNoiseCreator();
+Mesh3D mesh = creator.create();
+```
+
+[Back to top](#Creators)
+
+# GearCreator
+
+<img src="images/GearCreator.png" alt="" width="960"/>
+
+
+
+**Name:** GearCreator
+
+**Category:** assets
+
+**Parameters:** 
+
+  * **Width**
+  * **Base**
+  * **NumberOfTeeth**
+  * **Radius**
+
+
+**Usage:**
+
+```java
+import mesh.Mesh3D
+import mesh.creator.assets.GearCreator;
+
+GearCreator creator = new GearCreator();
 Mesh3D mesh = creator.create();
 ```
 
@@ -821,11 +858,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **FloorSegments**
-* **CapFillType**
-* **RotationSegments**
-* **FloorSegmentHeight**
+  * **RotationSegments**
+  * **FloorSegmentHeight**
+  * **FloorSegments**
+  * **CapFillType**
+  * **Radius**
 
 
 **Usage:**
@@ -904,11 +941,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **DoorHeight**
-* **DoorWidth**
-* **SegmentWidth**
-* **SegmentDepth**
-* **SegmentHeight**
+  * **DoorHeight**
+  * **DoorWidth**
+  * **SegmentWidth**
+  * **SegmentHeight**
+  * **SegmentDepth**
 
 
 **Usage:**
@@ -935,9 +972,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **FloorWidth**
-* **FloorHeight**
-* **FloorDepth**
+  * **FloorWidth**
+  * **FloorDepth**
+  * **FloorHeight**
 
 
 **Usage:**
@@ -964,14 +1001,14 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **CapFillType**
-* **TopSegments**
-* **BottomSegments**
-* **TopHeight**
-* **CenterHeight**
-* **BottomHeight**
-* **RotationSegments**
+  * **RotationSegments**
+  * **CapFillType**
+  * **BottomHeight**
+  * **TopHeight**
+  * **TopSegments**
+  * **BottomSegments**
+  * **CenterHeight**
+  * **Radius**
 
 
 **Usage:**
@@ -998,12 +1035,12 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Height**
-* **Width**
-* **CapBottom**
-* **Triangulate**
-* **SnapToGround**
+  * **Height**
+  * **Width**
+  * **Triangulate**
+  * **CapBottom**
+  * **SnapToGround**
+  * **Depth**
 
 
 **Usage:**
@@ -1030,8 +1067,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Width**
-* **Corner**
+  * **Width**
+  * **Corner**
 
 
 **Usage:**
@@ -1084,20 +1121,20 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **ExtendTop**
-* **Segments**
-* **ExtendBottom**
-* **Width**
-* **CapBottom**
-* **MirrorGap**
-* **ExtendFront**
-* **CapTop**
-* **CapBack**
-* **SupportCount**
-* **Mirror**
-* **Gap**
-* **ExtendBack**
+  * **Width**
+  * **CapBottom**
+  * **Gap**
+  * **SupportCount**
+  * **Mirror**
+  * **CapTop**
+  * **ExtendFront**
+  * **CapBack**
+  * **MirrorGap**
+  * **ExtendBack**
+  * **Radius**
+  * **ExtendTop**
+  * **ExtendBottom**
+  * **Segments**
 
 
 **Usage:**
@@ -1150,8 +1187,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **ExtrudeAmount**
-* **Inset**
+  * **Inset**
+  * **ExtrudeAmount**
 
 
 **Usage:**
@@ -1178,8 +1215,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **ExtrudeScale**
-* **ExtrudeAmount**
+  * **ExtrudeAmount**
+  * **ExtrudeScale**
 
 
 **Usage:**
@@ -1206,11 +1243,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **StepDepth**
-* **StepHeight**
-* **Floating**
-* **NumSteps**
-* **Width**
+  * **Width**
+  * **NumSteps**
+  * **StepDepth**
+  * **Floating**
+  * **StepHeight**
 
 
 **Usage:**
@@ -1263,12 +1300,12 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Height**
-* **Inset**
-* **RotationSegments**
-* **HeightSegments**
-* **BendFactor**
+  * **Height**
+  * **RotationSegments**
+  * **Inset**
+  * **BendFactor**
+  * **HeightSegments**
+  * **Radius**
 
 
 **Usage:**
@@ -1295,11 +1332,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Thickness**
-* **Height**
-* **Width**
-* **Taper**
+  * **Height**
+  * **Width**
+  * **Taper**
+  * **Thickness**
+  * **Depth**
 
 
 **Usage:**
@@ -1326,12 +1363,12 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Type**
-* **Depth**
-* **Thickness**
-* **Height**
-* **Width**
-* **Taper**
+  * **Height**
+  * **Width**
+  * **Type**
+  * **Taper**
+  * **Thickness**
+  * **Depth**
 
 
 **Usage:**
@@ -1358,11 +1395,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Thickness**
-* **Height**
-* **Width**
-* **Taper**
+  * **Height**
+  * **Width**
+  * **Taper**
+  * **Thickness**
+  * **Depth**
 
 
 **Usage:**
@@ -1389,11 +1426,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Thickness**
-* **Height**
-* **Width**
-* **Taper**
+  * **Height**
+  * **Width**
+  * **Taper**
+  * **Thickness**
+  * **Depth**
 
 
 **Usage:**
@@ -1420,11 +1457,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Thickness**
-* **Height**
-* **Width**
-* **Taper**
+  * **Height**
+  * **Width**
+  * **Taper**
+  * **Thickness**
+  * **Depth**
 
 
 **Usage:**
@@ -1451,11 +1488,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Thickness**
-* **Height**
-* **Width**
-* **Taper**
+  * **Height**
+  * **Width**
+  * **Taper**
+  * **Thickness**
+  * **Depth**
 
 
 **Usage:**
@@ -1482,11 +1519,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Thickness**
-* **Height**
-* **Width**
-* **Taper**
+  * **Height**
+  * **Width**
+  * **Taper**
+  * **Thickness**
+  * **Depth**
 
 
 **Usage:**
@@ -1565,10 +1602,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Subdivisions**
-* **SegmentsZ**
-* **SegmentsX**
-* **SegmentsY**
+  * **Subdivisions**
+  * **SegmentsY**
+  * **SegmentsZ**
+  * **SegmentsX**
 
 
 **Usage:**
@@ -1595,9 +1632,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **InnerRadius**
-* **OuterRadius**
-* **Subdivisions**
+  * **Subdivisions**
+  * **OuterRadius**
+  * **InnerRadius**
 
 
 **Usage:**
@@ -1624,9 +1661,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **RemoveCorners**
-* **Thickness**
-* **Subdivisions**
+  * **Subdivisions**
+  * **Thickness**
+  * **RemoveCorners**
 
 
 **Usage:**
@@ -1653,9 +1690,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Vertices**
-* **Subdivisions**
+  * **Vertices**
+  * **Subdivisions**
+  * **OuterRadius**
 
 
 **Usage:**
@@ -1682,11 +1719,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **ExtrudeScale**
-* **Thickness**
-* **Vertices**
-* **TopRadius**
-* **BottomRadius**
+  * **Vertices**
+  * **TopRadius**
+  * **BottomRadius**
+  * **ExtrudeScale**
+  * **Thickness**
 
 
 **Usage:**
@@ -1713,13 +1750,13 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Thickness**
-* **MinorRadius**
-* **MajorSegments**
-* **MajorRadius**
-* **MinorSegments**
-* **Extrude**
-* **Subdivisions**
+  * **MajorSegments**
+  * **MinorRadius**
+  * **MinorSegments**
+  * **MajorRadius**
+  * **Extrude**
+  * **Subdivisions**
+  * **Thickness**
 
 
 **Usage:**
@@ -1746,7 +1783,7 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
+  * **Radius**
 
 
 **Usage:**
@@ -1773,7 +1810,7 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
+  * **Radius**
 
 
 **Usage:**
@@ -1800,7 +1837,7 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Size**
+  * **Size**
 
 
 **Usage:**
@@ -1827,7 +1864,7 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
+  * **Radius**
 
 
 **Usage:**
@@ -1854,7 +1891,7 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
+  * **Radius**
 
 
 **Usage:**
@@ -1881,10 +1918,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **StartAngle**
-* **EndAngle**
-* **Vertices**
+  * **Vertices**
+  * **StartAngle**
+  * **EndAngle**
+  * **Radius**
 
 
 **Usage:**
@@ -1911,9 +1948,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Depth**
-* **Height**
-* **Width**
+  * **Height**
+  * **Width**
+  * **Depth**
 
 
 **Usage:**
@@ -1940,15 +1977,15 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **TopRadius**
-* **BottomRadius**
-* **CylinderSegments**
-* **BottomCapSegments**
-* **RotationSegments**
-* **TopCapHeight**
-* **TopCapSegments**
-* **BottomCapHeight**
-* **CylinderHeight**
+  * **TopRadius**
+  * **BottomRadius**
+  * **RotationSegments**
+  * **CylinderSegments**
+  * **BottomCapSegments**
+  * **TopCapSegments**
+  * **TopCapHeight**
+  * **CylinderHeight**
+  * **BottomCapHeight**
 
 
 **Usage:**
@@ -1975,9 +2012,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Vertices**
-* **FillType**
+  * **Vertices**
+  * **CenterY**
+  * **FillType**
+  * **Radius**
 
 
 **Usage:**
@@ -2004,11 +2042,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **TopRadius**
-* **Height**
-* **BottomRadius**
-* **RotationSegments**
-* **HeightSegments**
+  * **TopRadius**
+  * **BottomRadius**
+  * **Height**
+  * **RotationSegments**
+  * **HeightSegments**
 
 
 **Usage:**
@@ -2035,7 +2073,7 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
+  * **Radius**
 
 
 **Usage:**
@@ -2062,12 +2100,12 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Vertices**
-* **TopCapFillType**
-* **TopRadius**
-* **Height**
-* **BottomRadius**
-* **BottomCapFillType**
+  * **Vertices**
+  * **TopCapFillType**
+  * **TopRadius**
+  * **BottomRadius**
+  * **Height**
+  * **BottomCapFillType**
 
 
 **Usage:**
@@ -2094,10 +2132,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **InnerRadius**
-* **OuterRadius**
-* **DiscSegments**
-* **RotationSegments**
+  * **RotationSegments**
+  * **OuterRadius**
+  * **InnerRadius**
+  * **DiscSegments**
 
 
 **Usage:**
@@ -2124,9 +2162,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Vertices**
-* **Height**
+  * **Vertices**
+  * **Height**
+  * **Radius**
 
 
 **Usage:**
@@ -2153,8 +2191,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Size**
-* **TopScale**
+  * **Size**
+  * **TopScale**
 
 
 **Usage:**
@@ -2181,10 +2219,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **SubdivisionsX**
-* **TileSizeZ**
-* **TileSizeX**
-* **SubdivisionsZ**
+  * **SubdivisionsZ**
+  * **TileSizeX**
+  * **SubdivisionsX**
+  * **TileSizeZ**
 
 
 **Usage:**
@@ -2211,10 +2249,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Rings**
-* **Radius**
-* **Segments**
-* **FillType**
+  * **FillType**
+  * **Radius**
+  * **Segments**
+  * **Rings**
 
 
 **Usage:**
@@ -2241,13 +2279,13 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Turns**
-* **Cap**
-* **Dy**
-* **MinorRadius**
-* **MajorSegments**
-* **MajorRadius**
-* **MinorSegments**
+  * **MajorSegments**
+  * **MinorRadius**
+  * **MinorSegments**
+  * **MajorRadius**
+  * **Dy**
+  * **Turns**
+  * **Cap**
 
 
 **Usage:**
@@ -2274,8 +2312,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Subdivisions**
+  * **Subdivisions**
+  * **Radius**
 
 
 **Usage:**
@@ -2285,6 +2323,38 @@ import mesh.Mesh3D
 import mesh.creator.primitives.IcoSphereCreator;
 
 IcoSphereCreator creator = new IcoSphereCreator();
+Mesh3D mesh = creator.create();
+```
+
+[Back to top](#Creators)
+
+# LatticeCreator
+
+<img src="images/LatticeCreator.png" alt="" width="960"/>
+
+
+
+**Name:** LatticeCreator
+
+**Category:** primitives
+
+**Parameters:** 
+
+  * **Height**
+  * **SubdivisionsZ**
+  * **TileSizeX**
+  * **SubdivisionsX**
+  * **TileSizeZ**
+  * **OpeningPercent**
+
+
+**Usage:**
+
+```java
+import mesh.Mesh3D
+import mesh.creator.primitives.LatticeCreator;
+
+LatticeCreator creator = new LatticeCreator();
 Mesh3D mesh = creator.create();
 ```
 
@@ -2302,8 +2372,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Size**
-* **Radius**
+  * **Size**
+  * **Radius**
 
 
 **Usage:**
@@ -2356,10 +2426,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Vertices**
-* **Height**
-* **HeightSegments**
+  * **Vertices**
+  * **Height**
+  * **HeightSegments**
+  * **Radius**
 
 
 **Usage:**
@@ -2386,8 +2456,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Subdivisions**
+  * **Subdivisions**
+  * **Radius**
 
 
 **Usage:**
@@ -2402,33 +2472,33 @@ Mesh3D mesh = creator.create();
 
 [Back to top](#Creators)
 
-# SegmentedBox
+# SegmentedBoxCreator
 
-<img src="images/SegmentedBox.png" alt="" width="960"/>
+<img src="images/SegmentedBoxCreator.png" alt="" width="960"/>
 
 
 
-**Name:** SegmentedBox
+**Name:** SegmentedBoxCreator
 
 **Category:** primitives
 
 **Parameters:** 
 
-* **Depth**
-* **Height**
-* **Width**
-* **SegmentsZ**
-* **SegmentsX**
-* **SegmentsY**
+  * **Height**
+  * **Width**
+  * **SegmentsY**
+  * **SegmentsZ**
+  * **SegmentsX**
+  * **Depth**
 
 
 **Usage:**
 
 ```java
 import mesh.Mesh3D
-import mesh.creator.primitives.SegmentedBox;
+import mesh.creator.primitives.SegmentedBoxCreator;
 
-SegmentedBox creator = new SegmentedBox();
+SegmentedBoxCreator creator = new SegmentedBoxCreator();
 Mesh3D mesh = creator.create();
 ```
 
@@ -2446,8 +2516,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Size**
-* **Segments**
+  * **Size**
+  * **Segments**
 
 
 **Usage:**
@@ -2474,14 +2544,14 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **TopRadius**
-* **Height**
-* **BottomRadius**
-* **CapFillType**
-* **CapBottom**
-* **CapTop**
-* **RotationSegments**
-* **HeightSegments**
+  * **TopRadius**
+  * **BottomRadius**
+  * **Height**
+  * **RotationSegments**
+  * **CapFillType**
+  * **CapBottom**
+  * **CapTop**
+  * **HeightSegments**
 
 
 **Usage:**
@@ -2491,6 +2561,37 @@ import mesh.Mesh3D
 import mesh.creator.primitives.SegmentedCylinderCreator;
 
 SegmentedCylinderCreator creator = new SegmentedCylinderCreator();
+Mesh3D mesh = creator.create();
+```
+
+[Back to top](#Creators)
+
+# SegmentedTubeCreator
+
+<img src="images/SegmentedTubeCreator.png" alt="" width="960"/>
+
+
+
+**Name:** SegmentedTubeCreator
+
+**Category:** primitives
+
+**Parameters:** 
+
+  * **Vertices**
+  * **Height**
+  * **Segments**
+  * **OuterRadius**
+  * **InnerRadius**
+
+
+**Usage:**
+
+```java
+import mesh.Mesh3D
+import mesh.creator.primitives.SegmentedTubeCreator;
+
+SegmentedTubeCreator creator = new SegmentedTubeCreator();
 Mesh3D mesh = creator.create();
 ```
 
@@ -2508,13 +2609,13 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **InnerRadius**
-* **OuterRadius**
-* **Height**
-* **RotationSegments**
-* **CapStart**
-* **Angle**
-* **CapEnd**
+  * **Height**
+  * **RotationSegments**
+  * **CapStart**
+  * **CapEnd**
+  * **Angle**
+  * **OuterRadius**
+  * **InnerRadius**
 
 
 **Usage:**
@@ -2541,8 +2642,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Size**
-* **Height**
+  * **Height**
+  * **Size**
 
 
 **Usage:**
@@ -2569,10 +2670,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **MinorRadius**
-* **MajorSegments**
-* **MajorRadius**
-* **MinorSegments**
+  * **MajorSegments**
+  * **MinorRadius**
+  * **MinorSegments**
+  * **MajorRadius**
 
 
 **Usage:**
@@ -2599,9 +2700,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Vertices**
-* **CenterY**
+  * **Vertices**
+  * **CenterY**
+  * **Radius**
 
 
 **Usage:**
@@ -2628,10 +2729,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Vertices**
-* **TopRadius**
-* **Height**
-* **BottomRadius**
+  * **Vertices**
+  * **TopRadius**
+  * **BottomRadius**
+  * **Height**
 
 
 **Usage:**
@@ -2658,12 +2759,12 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Vertices**
-* **Height**
-* **BottomInnerRadius**
-* **BottomOuterRadius**
-* **TopOuterRadius**
-* **TopInnerRadius**
+  * **Vertices**
+  * **Height**
+  * **BottomOuterRadius**
+  * **BottomInnerRadius**
+  * **TopOuterRadius**
+  * **TopInnerRadius**
 
 
 **Usage:**
@@ -2690,9 +2791,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Rings**
-* **Radius**
-* **Segments**
+  * **Radius**
+  * **Segments**
+  * **Rings**
 
 
 **Usage:**
@@ -2719,7 +2820,7 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
+  * **Radius**
 
 
 **Usage:**
@@ -2746,11 +2847,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **MajorSegments**
-* **MajorRadius**
-* **MinorSegments**
-* **MinorRadii**
-* **MinorRadiusAt**
+  * **MajorSegments**
+  * **MinorSegments**
+  * **MajorRadius**
+  * **MinorRadiusAt**
+  * **MinorRadii**
 
 
 **Usage:**
@@ -2777,7 +2878,7 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **N**
+  * **N**
 
 
 **Usage:**
@@ -2787,6 +2888,68 @@ import mesh.Mesh3D
 import mesh.creator.special.AntiprismCreator;
 
 AntiprismCreator creator = new AntiprismCreator();
+Mesh3D mesh = creator.create();
+```
+
+[Back to top](#Creators)
+
+# DiamondCreator
+
+<img src="images/DiamondCreator.png" alt="" width="960"/>
+
+
+
+**Name:** DiamondCreator
+
+**Category:** special
+
+**Parameters:** 
+
+  * **Segments**
+  * **GirdleRadius**
+  * **TableRadius**
+  * **PavillionHeight**
+  * **CrownHeight**
+
+
+**Usage:**
+
+```java
+import mesh.Mesh3D
+import mesh.creator.special.DiamondCreator;
+
+DiamondCreator creator = new DiamondCreator();
+Mesh3D mesh = creator.create();
+```
+
+[Back to top](#Creators)
+
+# GemCreator
+
+<img src="images/GemCreator.png" alt="" width="960"/>
+
+
+
+**Name:** GemCreator
+
+**Category:** special
+
+**Parameters:** 
+
+  * **Radius**
+  * **Segments**
+  * **TableRadius**
+  * **PavillionHeight**
+  * **TableHeight**
+
+
+**Usage:**
+
+```java
+import mesh.Mesh3D
+import mesh.creator.special.GemCreator;
+
+GemCreator creator = new GemCreator();
 Mesh3D mesh = creator.create();
 ```
 
@@ -2804,11 +2967,11 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Height**
-* **RowCount**
-* **ColCount**
-* **CellRadius**
-* **InnerScale**
+  * **Height**
+  * **RowCount**
+  * **InnerScale**
+  * **ColCount**
+  * **CellRadius**
 
 
 **Usage:**
@@ -2835,9 +2998,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Rings**
-* **Radius**
-* **Segments**
+  * **Radius**
+  * **Segments**
+  * **Rings**
 
 
 **Usage:**
@@ -2847,6 +3010,33 @@ import mesh.Mesh3D
 import mesh.creator.special.MobiusStripCreator;
 
 MobiusStripCreator creator = new MobiusStripCreator();
+Mesh3D mesh = creator.create();
+```
+
+[Back to top](#Creators)
+
+# MucubeCreator
+
+<img src="images/MucubeCreator.png" alt="" width="960"/>
+
+
+
+**Name:** MucubeCreator
+
+**Category:** special
+
+**Parameters:** 
+
+  * **N**
+
+
+**Usage:**
+
+```java
+import mesh.Mesh3D
+import mesh.creator.special.MucubeCreator;
+
+MucubeCreator creator = new MucubeCreator();
 Mesh3D mesh = creator.create();
 ```
 
@@ -2890,10 +3080,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **InnerRadius**
-* **OuterRadius**
-* **Vertices**
-* **Height**
+  * **Vertices**
+  * **Height**
+  * **OuterRadius**
+  * **InnerRadius**
 
 
 **Usage:**
@@ -2920,9 +3110,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Angle**
-* **Close**
-* **Steps**
+  * **Angle**
+  * **Steps**
+  * **Close**
 
 
 **Usage:**
@@ -2949,13 +3139,13 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **SubdivisionsX**
-* **TileSizeX**
-* **TileSizeY**
-* **JointSize**
-* **SubdivisionsY**
-* **ScaleX**
-* **ScaleY**
+  * **TileSizeX**
+  * **SubdivisionsX**
+  * **ScaleX**
+  * **SubdivisionsY**
+  * **ScaleY**
+  * **TileSizeY**
+  * **JointSize**
 
 
 **Usage:**
@@ -2982,16 +3172,16 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **SubdivisionsX**
-* **TileSizeZ**
-* **TileSizeX**
-* **SubdivisionsZ**
-* **TileSizeY**
-* **JointSize**
-* **SubdivisionsY**
-* **ScaleX**
-* **ScaleY**
-* **ScaleZ**
+  * **SubdivisionsZ**
+  * **TileSizeX**
+  * **SubdivisionsX**
+  * **TileSizeZ**
+  * **ScaleX**
+  * **SubdivisionsY**
+  * **ScaleY**
+  * **TileSizeY**
+  * **JointSize**
+  * **ScaleZ**
 
 
 **Usage:**
@@ -3018,13 +3208,13 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Vertices**
-* **Height**
-* **Scale1**
-* **Scale0**
-* **JointSize**
-* **SubdivisionsY**
+  * **Vertices**
+  * **Height**
+  * **Radius**
+  * **SubdivisionsY**
+  * **JointSize**
+  * **Scale1**
+  * **Scale0**
 
 
 **Usage:**
@@ -3051,9 +3241,9 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Size**
-* **TopScale**
-* **Subdivisions**
+  * **Size**
+  * **Subdivisions**
+  * **TopScale**
 
 
 **Usage:**
@@ -3068,33 +3258,29 @@ Mesh3D mesh = creator.create();
 
 [Back to top](#Creators)
 
-# LatticeCreator
+# FromObjectCreator
 
-<img src="images/LatticeCreator.png" alt="" width="960"/>
+<img src="images/FromObjectCreator.png" alt="" width="960"/>
 
 
 
-**Name:** LatticeCreator
+**Name:** FromObjectCreator
 
 **Category:** unsorted
 
 **Parameters:** 
 
-* **Height**
-* **SubdivisionsX**
-* **TileSizeZ**
-* **TileSizeX**
-* **SubdivisionsZ**
-* **OpeningPercent**
+  * **Path**
+  * **Scale**
 
 
 **Usage:**
 
 ```java
 import mesh.Mesh3D
-import mesh.creator.unsorted.LatticeCreator;
+import mesh.creator.unsorted.FromObjectCreator;
 
-LatticeCreator creator = new LatticeCreator();
+FromObjectCreator creator = new FromObjectCreator();
 Mesh3D mesh = creator.create();
 ```
 
@@ -3112,10 +3298,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **Thickness**
-* **Scale**
-* **Subdivisions**
+  * **Scale**
+  * **Subdivisions**
+  * **Radius**
+  * **Thickness**
 
 
 **Usage:**
@@ -3142,12 +3328,12 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Radius**
-* **MinorRadius**
-* **Subdivisions**
-* **SegmentHeight**
-* **RotationSegments**
-* **HeightSegments**
+  * **RotationSegments**
+  * **MinorRadius**
+  * **Subdivisions**
+  * **SegmentHeight**
+  * **HeightSegments**
+  * **Radius**
 
 
 **Usage:**
@@ -3174,10 +3360,10 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **ScaleExtrude**
-* **Radius**
-* **Thickness**
-* **Subdivisions**
+  * **Subdivisions**
+  * **Radius**
+  * **Thickness**
+  * **ScaleExtrude**
 
 
 **Usage:**
@@ -3204,8 +3390,8 @@ Mesh3D mesh = creator.create();
 
 **Parameters:** 
 
-* **Size**
-* **Height**
+  * **Height**
+  * **Size**
 
 
 **Usage:**
@@ -3241,6 +3427,39 @@ import mesh.Mesh3D
 import mesh.creator.unsorted.TriangulatedSphereLatticeCreator;
 
 TriangulatedSphereLatticeCreator creator = new TriangulatedSphereLatticeCreator();
+Mesh3D mesh = creator.create();
+```
+
+[Back to top](#Creators)
+
+# TubeLatticeCreator
+
+<img src="images/TubeLatticeCreator.png" alt="" width="960"/>
+
+
+
+**Name:** TubeLatticeCreator
+
+**Category:** unsorted
+
+**Parameters:** 
+
+  * **Vertices**
+  * **Height**
+  * **Segments**
+  * **Thickness**
+  * **OuterRadius**
+  * **InnerRadius**
+  * **ScaleExtrude**
+
+
+**Usage:**
+
+```java
+import mesh.Mesh3D
+import mesh.creator.unsorted.TubeLatticeCreator;
+
+TubeLatticeCreator creator = new TubeLatticeCreator();
 Mesh3D mesh = creator.create();
 ```
 
