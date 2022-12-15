@@ -105,15 +105,15 @@ public class VariableCylinderCreator implements IMeshCreator {
 	}
 	
 	private void addFace(int i, int j)  {
-		int idx0 = getOneDimensionalIndex(i, j);
-		int idx1 = getOneDimensionalIndex(i + 1, j);
-		int idx2 = getOneDimensionalIndex(i + 1, (j + 1) % rotationSegments);
-		int idx3 = getOneDimensionalIndex(i, (j + 1) % rotationSegments);
+		int idx0 = toOneDimensionalIndex(i, j);
+		int idx1 = toOneDimensionalIndex(i + 1, j);
+		int idx2 = toOneDimensionalIndex(i + 1, j + 1);
+		int idx3 = toOneDimensionalIndex(i, j + 1);
 		mesh.addFace(idx3, idx2, idx1, idx0);
 	}
 	
-	private int getOneDimensionalIndex(int i, int j) {
-		return Mathf.toOneDimensionalIndex(i, j, rotationSegments);
+	private int toOneDimensionalIndex(int i, int j) {
+		return Mathf.toOneDimensionalIndex(i, j % rotationSegments, rotationSegments);
 	}
 	
 	public void add(float radius, float height) {
