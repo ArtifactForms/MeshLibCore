@@ -28,6 +28,7 @@ public class IcosahedronCreator implements IMeshCreator {
 			{ 7, 6, 11 }, { 8, 7, 11 }, { 9, 8, 11 }, { 10, 9, 11 }, };
 
 	private float size;
+	
 	private Mesh3D mesh;
 
 	public IcosahedronCreator() {
