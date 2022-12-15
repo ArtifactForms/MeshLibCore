@@ -257,3 +257,7 @@ See also: [Mesh Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/
 * Convex Hull
 * Poisson-Disc Sampling
 * Marching Cubes
+
+## Licence 
+
+[MIT](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE)
