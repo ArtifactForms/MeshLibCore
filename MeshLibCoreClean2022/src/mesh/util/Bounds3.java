@@ -17,8 +17,8 @@ public class Bounds3 {
     }
 
     public Bounds3(Vector3f center, Vector3f size) {
-	this.min = new Vector3f(center.x - (size.x * 0.5f), center.y - (size.y * 0.5f), center.z - (size.z * 0.5f));
-	this.max = new Vector3f(center.x + (size.x * 0.5f), center.y + (size.y * 0.5f), center.z + (size.z * 0.5f));
+	min = center.subtract(size.mult(0.5f));
+	max = center.add(size.mult(0.5f));
     }
 
     public Bounds3(Bounds3 bounds) {
