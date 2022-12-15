@@ -55,18 +55,20 @@ public class AccordionTorusCreator implements IMeshCreator {
 	}
 
 	private void createFaces() {
-		for (int j = 0; j < majorSegments; j++) {
-			for (int i = 0; i < minorSegments; i++) {
-				int[] k = new int[] { j % majorSegments, (j + 1) % majorSegments, i % minorSegments,
-						(i + 1) % minorSegments };
-				int index0 = k[1] * minorSegments + k[2];
-				int index1 = k[0] * minorSegments + k[2];
-				int index2 = k[1] * minorSegments + k[3];
-				int index3 = k[0] * minorSegments + k[3];
-				Face3D f = new Face3D(index0, index1, index3, index2);
-				mesh.add(f);
-			}
-		}
+		for (int j = 0; j < majorSegments; j++)
+			for (int i = 0; i < minorSegments; i++)
+				createFaceAt(j, i);
+	}
+	
+	private void createFaceAt(int j, int i) {
+		int[] k = new int[] { j % majorSegments, (j + 1) % majorSegments, i % minorSegments,
+				(i + 1) % minorSegments };
+		int index0 = k[1] * minorSegments + k[2];
+		int index1 = k[0] * minorSegments + k[2];
+		int index2 = k[1] * minorSegments + k[3];
+		int index3 = k[0] * minorSegments + k[3];
+		Face3D f = new Face3D(index0, index1, index3, index2);
+		mesh.add(f);
 	}
 
 	private void updateRadii() {
