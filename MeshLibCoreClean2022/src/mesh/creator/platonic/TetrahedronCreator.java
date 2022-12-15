@@ -6,7 +6,6 @@ import mesh.creator.IMeshCreator;
 public class TetrahedronCreator implements IMeshCreator {
 
     private float radius;
-
     private Mesh3D mesh;
 
     public TetrahedronCreator() {
