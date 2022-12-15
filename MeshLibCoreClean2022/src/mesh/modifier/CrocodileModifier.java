@@ -12,7 +12,9 @@ import mesh.selection.FaceSelection;
 public class CrocodileModifier implements IMeshModifier {
 
 	private float distance;
+	
 	private Mesh3D mesh;
+	
 	private FaceSelection selection;
 
 	@Override

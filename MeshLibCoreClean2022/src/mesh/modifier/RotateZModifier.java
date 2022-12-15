@@ -8,7 +8,9 @@ import mesh.Mesh3D;
 public class RotateZModifier implements IMeshModifier {
 
 	private float angle;
+	
 	private Mesh3D mesh;
+	
 	private Matrix3f rotationMatrix;
 
 	public RotateZModifier() {
