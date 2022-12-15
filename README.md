@@ -259,5 +259,4 @@ See also: [Mesh Creators](https://github.com/ArtifactForms/MeshLibCoreClean2022/
 * Marching Cubes
 
 ## Licence 
-
-[MIT](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE)
+[MIT](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE) License Copyright (c) 2022 Simon Dietz
