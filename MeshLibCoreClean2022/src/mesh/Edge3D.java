@@ -3,7 +3,6 @@ package mesh;
 public class Edge3D {
 
     public int fromIndex;
-
     public int toIndex;
 
     public Edge3D(int fromIndex, int toIndex) {

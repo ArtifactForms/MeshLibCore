@@ -8,11 +8,8 @@ import math.Vector3f;
 public class Face3D {
 
     public Color color;
-
     public int[] indices;
-
     public Vector3f normal;
-
     public String tag;
 
     public Face3D() {
