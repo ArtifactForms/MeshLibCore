@@ -13,9 +13,9 @@ public class TetrahedronCreator implements IMeshCreator {
 	}
 		
 	private void createVertices() {
-		addVertex(-radius, radius, radius);
-		addVertex(radius, radius, -radius);
-		addVertex(radius, -radius, radius);
+		addVertex(-radius, +radius, +radius);
+		addVertex(+radius, +radius, -radius);
+		addVertex(+radius, -radius, +radius);
 		addVertex(-radius, -radius, -radius);
 	}
 	
