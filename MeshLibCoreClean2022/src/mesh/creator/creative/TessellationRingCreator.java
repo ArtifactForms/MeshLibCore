@@ -13,12 +13,19 @@ import mesh.util.Mesh3DUtil;
 public class TessellationRingCreator implements IMeshCreator {
 
 	private int vertices;
+	
 	private float topRadius;
+	
 	private float bottomRadius;
+	
 	private float thickness;
+	
 	private float extrudeScale;
+	
 	private Mesh3D topCircle;
+	
 	private Mesh3D bottomCircle;
+	
 	private Mesh3D mesh;
 	
 	public TessellationRingCreator() {
