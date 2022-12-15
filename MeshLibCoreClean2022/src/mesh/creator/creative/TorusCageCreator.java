@@ -13,19 +13,12 @@ import mesh.util.Mesh3DUtil;
 public class TorusCageCreator implements IMeshCreator {
 
     private int subdivisions;
-
     private int majorSegments;
-
     private int minorSegments;
-
     private float thickness;
-
     private float majorRadius;
-
     private float minorRadius;
-
     private float extrude;
-
     private Mesh3D mesh;
 
     public TorusCageCreator() {

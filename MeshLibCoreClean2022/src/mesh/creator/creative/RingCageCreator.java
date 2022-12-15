@@ -15,23 +15,14 @@ import mesh.util.Mesh3DUtil;
 public class RingCageCreator implements IMeshCreator {
 
     private float[] segmentsHeights = new float[4];
-
     private int subdivisions;
-
     private int segments;
-
     private int vertices;
-
     private float outerRadius;
-
     private float innerRadius;
-
     private float segmentHeight;
-
     private float controlLoopDistance;
-
     private Mesh3D mesh;
-
     private ArrayList<Mesh3D> circles = new ArrayList<Mesh3D>();
 
     public RingCageCreator() {

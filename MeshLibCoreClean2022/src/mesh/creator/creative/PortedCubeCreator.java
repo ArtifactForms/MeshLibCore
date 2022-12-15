@@ -18,15 +18,10 @@ import mesh.util.Mesh3DUtil;
 public class PortedCubeCreator implements IMeshCreator {
 
     private int subdivisions;
-
     private float radius;
-
     private float thickness;
-
     private boolean removeCorners;
-
     private Mesh3D mesh;
-
     private List<Face3D> centerFaces;
 
     public PortedCubeCreator() {
