@@ -186,8 +186,11 @@ public class Mesh3DUtil {
 	}
 
 	for (int i = 0; i < n; i++) {
-	    Face3D f0 = new Face3D(f.indices[i], f.indices[(i + 1) % n], idx + ((i + 1) % n), idx + i);
-	    mesh.add(f0);
+	    int index0 = f.indices[i];
+	    int index1 = f.indices[(i + 1) % n];
+	    int index2 = idx + ((i + 1) % n);
+	    int index3 = idx + i;
+	    mesh.addFace(index0, index1, index2, index3);
 	}
 
 	for (int i = 0; i < n; i++) {
