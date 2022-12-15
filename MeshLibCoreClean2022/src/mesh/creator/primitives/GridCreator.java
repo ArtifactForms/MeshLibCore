@@ -16,10 +16,10 @@ public class GridCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public GridCreator() {
-		this.subdivisionsX = 10;
-		this.subdivisionsZ = 10;
-		this.tileSizeX = 0.1f;
-		this.tileSizeZ = 0.1f;
+		subdivisionsX = 10;
+		subdivisionsZ = 10;
+		tileSizeX = 0.1f;
+		tileSizeZ = 0.1f;
 	}
 	
 	public GridCreator(int subdivisionsX, int subdivisionsZ, float radius) {
