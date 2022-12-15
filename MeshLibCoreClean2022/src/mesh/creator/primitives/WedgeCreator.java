@@ -6,6 +6,7 @@ import mesh.creator.IMeshCreator;
 public class WedgeCreator implements IMeshCreator {
 
 	private float radius;
+	
 	private Mesh3D mesh;
 
 	public WedgeCreator() {

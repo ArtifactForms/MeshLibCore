@@ -6,7 +6,9 @@ import mesh.creator.IMeshCreator;
 public class BoxCreator implements IMeshCreator {
 
 	private float width;
+	
 	private float height;
+	
 	private float depth;
 	
 	public BoxCreator() {

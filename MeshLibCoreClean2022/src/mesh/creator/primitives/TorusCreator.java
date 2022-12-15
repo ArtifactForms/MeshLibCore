@@ -9,9 +9,13 @@ import mesh.creator.IMeshCreator;
 public class TorusCreator implements IMeshCreator {
 	
 	private float majorRadius;
+	
 	private float minorRadius;
+	
 	private int majorSegments;
+	
 	private int minorSegments;
+	
 	private Mesh3D mesh;
 
 	public TorusCreator() {

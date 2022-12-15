@@ -6,6 +6,7 @@ import mesh.creator.IMeshCreator;
 public class CubeCreator implements IMeshCreator {
 
 	private float radius;
+	
 	private Mesh3D mesh;
 
 	public CubeCreator() {

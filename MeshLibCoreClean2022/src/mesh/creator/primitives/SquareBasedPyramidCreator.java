@@ -7,7 +7,9 @@ import mesh.creator.IMeshCreator;
 public class SquareBasedPyramidCreator implements IMeshCreator {
 
 	private float size;
+	
 	private float height;
+	
 	private Mesh3D mesh;
 	
 	public SquareBasedPyramidCreator() {
