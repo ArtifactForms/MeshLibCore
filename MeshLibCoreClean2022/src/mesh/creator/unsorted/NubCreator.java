@@ -42,33 +42,40 @@ public class NubCreator implements IMeshCreator {
 	}
 	
 	private void createVertices() {
-		int n = heightSegments;
-		for (int i = 0; i <= n; i++) {
+		for (int i = 0; i <= heightSegments; i++)
 			createSegmentVerticesAt(i);
-		}
 	}
-
-	private void createSegmentVerticesAt(int i) {
+	
+	private Mesh3D createMajorCircle(float centerY) {
+		return createCircle(radius, centerY);
+	}
+	
+	private Mesh3D createMinorCircle(float centerY) {
+		return createCircle(minorRadius, centerY);
+	}
+	
+	private Mesh3D createCircle(float radius, float centerY) {
 		CircleCreator creator = new CircleCreator();
 		creator.setRadius(radius);
 		creator.setVertices(rotationSegments);
-		creator.setCenterY(segmentHeight * i);
-		Mesh3D circle0 = creator.create();
-		creator.setRadius(minorRadius);
-		Mesh3D circle1 = creator.create();
+		creator.setCenterY(centerY);
+		return creator.create();
+	}
+
+	private void createSegmentVerticesAt(int i) {
+		Mesh3D majorCircle = createMajorCircle(segmentHeight * i);
+		Mesh3D minorCircle = createMinorCircle(segmentHeight * i);
 		if (i % 2 == 0) {
-			mesh.append(circle1, circle0);
+			mesh.append(minorCircle, majorCircle);
 		} else {
-			mesh.append(circle0, circle1);
+			mesh.append(majorCircle, minorCircle);
 		}
 	}
 	
 	private void createQuadFaces() {
-		for (int i = 0; i <= (heightSegments * 2); i++) {
-			for (int j = 0; j < rotationSegments; j++) {
+		for (int i = 0; i <= (heightSegments * 2); i++)
+			for (int j = 0; j < rotationSegments; j++)
 				addFace(i, j);
-			}
-		}
 	}
 
 	private void addFace(int i, int j) {
@@ -85,9 +92,8 @@ public class NubCreator implements IMeshCreator {
 
 	private void capTop() {
 		int[] indices = new int[rotationSegments];
-		for (int i = 0; i < rotationSegments; i++) {
+		for (int i = 0; i < rotationSegments; i++)
 			indices[i] = i;
-		}
 		mesh.addFace(indices);
 	}
 
