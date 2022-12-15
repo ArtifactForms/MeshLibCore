@@ -35,10 +35,15 @@ import mesh.modifier.IMeshModifier;
 public class LinearSubdivisionModifier implements IMeshModifier {
 
 	private int iterations;
+	
 	private int nextIndex;
+	
 	private int[] indices;
+	
 	private Face3D face;
+	
 	private Mesh3D mesh;
+	
 	private ArrayList<Face3D> newFaces;
 
 	public LinearSubdivisionModifier() {
