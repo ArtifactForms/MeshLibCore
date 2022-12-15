@@ -44,15 +44,22 @@ public class NubCreator implements IMeshCreator {
 	private void createVertices() {
 		int n = heightSegments;
 		for (int i = 0; i <= n; i++) {
-			Mesh3D circle0 = new CircleCreator(rotationSegments, radius).create();
-			Mesh3D circle1 = new CircleCreator(rotationSegments, minorRadius).create();
-			circle0.translateY(segmentHeight * i);
-			circle1.translateY(segmentHeight * i);
-			if (i % 2 == 0) {
-				mesh.append(circle1, circle0);
-			} else {
-				mesh.append(circle0, circle1);
-			}
+			createSegmentVerticesAt(i);
+		}
+	}
+
+	private void createSegmentVerticesAt(int i) {
+		CircleCreator creator = new CircleCreator();
+		creator.setRadius(radius);
+		creator.setVertices(rotationSegments);
+		creator.setCenterY(segmentHeight * i);
+		Mesh3D circle0 = creator.create();
+		creator.setRadius(minorRadius);
+		Mesh3D circle1 = creator.create();
+		if (i % 2 == 0) {
+			mesh.append(circle1, circle0);
+		} else {
+			mesh.append(circle0, circle1);
 		}
 	}
 	
