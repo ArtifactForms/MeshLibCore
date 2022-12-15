@@ -19,9 +19,9 @@ public class SpinCreator implements IMeshCreator {
 	private List<Vector3f> vertices;
 
 	public SpinCreator() {
-		this.steps = 9;
-		this.angle = Mathf.QUARTER_PI;
-		this.vertices = new ArrayList<Vector3f>();
+		steps = 9;
+		angle = Mathf.QUARTER_PI;
+		vertices = new ArrayList<Vector3f>();
 	}
 
 	public SpinCreator(int steps, float angle, boolean close) {
