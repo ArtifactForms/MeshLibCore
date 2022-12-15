@@ -32,7 +32,7 @@ public class NubCreator implements IMeshCreator {
 		createQuadFaces();
 		capTop();
 		capBottom();
-		translate();
+		centerOnAxisY();
 		subdivide();
 		return mesh;
 	}
@@ -99,7 +99,7 @@ public class NubCreator implements IMeshCreator {
 		mesh.addFace(indices);
 	}
 
-	private void translate() {
+	private void centerOnAxisY() {
 		mesh.translateY(-(heightSegments * segmentHeight) * 0.5f);
 	}
 
