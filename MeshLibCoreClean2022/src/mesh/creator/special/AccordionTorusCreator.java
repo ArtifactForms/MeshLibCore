@@ -76,9 +76,11 @@ public class AccordionTorusCreator implements IMeshCreator {
 	}
 	
 	private void updateRadii() {
+		float majorRadius = 0.25f * this.majorRadius;
+		float minorRadius = 0.125f * this.majorRadius;
 		minorRadii = new float[majorSegments + 1];
 		for (int i = 0; i < majorSegments; i++) {
-			minorRadii[i] = (i % 2 == 0) ? (0.25f * majorRadius) : 0.125f * (majorRadius);
+			minorRadii[i] = (i % 2 == 0) ? majorRadius : minorRadius;
 		}
 	}
 
