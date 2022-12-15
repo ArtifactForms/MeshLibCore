@@ -22,8 +22,8 @@ public class AccordionTorusCreator implements IMeshCreator {
 		updateRadii();
 	}
 	
-	private Mesh3D createMinorCircleAt(int j) {
-		float minorRadius = getMinorRadiusAt(j);
+	private Mesh3D createMinorCircleAt(int index) {
+		float minorRadius = getMinorRadiusAt(index);
 		CircleCreator creator = new CircleCreator();
 		creator.setRadius(minorRadius);
 		creator.setVertices(minorSegments);
@@ -33,10 +33,10 @@ public class AccordionTorusCreator implements IMeshCreator {
 	private void createVertices() {
 		float majorAngle = 0;
 		float majorStep = Mathf.TWO_PI / majorSegments;
-		for (int j = 0; j < majorSegments; j++) {
+		for (int i = 0; i < majorSegments; i++) {
 			float x = majorRadius * Mathf.cos(majorAngle);
 			float z = majorRadius * Mathf.sin(majorAngle);
-			Mesh3D circle = createMinorCircleAt(j);
+			Mesh3D circle = createMinorCircleAt(i);
 			circle.rotateZ(-Mathf.HALF_PI);
 			circle.rotateY(Mathf.HALF_PI - majorAngle);
 			circle.translate(x, 0, z);
