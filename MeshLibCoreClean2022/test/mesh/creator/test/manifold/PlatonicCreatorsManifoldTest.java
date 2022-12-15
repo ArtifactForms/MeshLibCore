@@ -12,34 +12,34 @@ import mesh.creator.platonic.TetrahedronCreator;
 
 public class PlatonicCreatorsManifoldTest {
 
-	private void test(IMeshCreator creator) {
-		Mesh3D mesh = creator.create();
-		new ManifoldTest(mesh).assertIsManifold();
-	}
-	
-	@Test
-	public void manifoldDodecahedron() {
-		test(new DodecahedronCreator());
-	}
-	
-	@Test
-	public void manifoldHexahedron() {
-		test(new HexahedronCreator());
-	}
-	
-	@Test
-	public void manifoldIcosahedron() {
-		test(new IcosahedronCreator());
-	}
-	
-	@Test
-	public void manifoldOctahedron() {
-		test(new OctahedronCreator());
-	}
-	
-	@Test
-	public void manifoldTetrahedron() {
-		test(new TetrahedronCreator());
-	}
- 	
+    private void test(IMeshCreator creator) {
+	Mesh3D mesh = creator.create();
+	new ManifoldTest(mesh).assertIsManifold();
+    }
+
+    @Test
+    public void manifoldDodecahedron() {
+	test(new DodecahedronCreator());
+    }
+
+    @Test
+    public void manifoldHexahedron() {
+	test(new HexahedronCreator());
+    }
+
+    @Test
+    public void manifoldIcosahedron() {
+	test(new IcosahedronCreator());
+    }
+
+    @Test
+    public void manifoldOctahedron() {
+	test(new OctahedronCreator());
+    }
+
+    @Test
+    public void manifoldTetrahedron() {
+	test(new TetrahedronCreator());
+    }
+
 }
