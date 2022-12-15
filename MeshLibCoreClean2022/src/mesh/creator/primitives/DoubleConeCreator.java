@@ -18,32 +18,44 @@ public class DoubleConeCreator implements IMeshCreator {
 		height = 2f;
 	}
 	
-	private void initializeMeshAndCreateVertices() {
-		mesh = new CircleCreator(vertices, radius).create();
-		mesh.add(new Vector3f(0, -height / 2f, 0));
-		mesh.add(new Vector3f(0, height / 2f, 0));
+	@Override
+	public Mesh3D create() {
+		createVertices();
+		createFaces();
+		return mesh;
 	}
 	
-	private void createTopFaces() {
-		for (int i = 0; i < vertices; i++)
-			mesh.add(new Face3D(vertices, i, (i + 1) % vertices));
-	}
-	
-	private void createBottomFaces() {
-		for (int i = 0; i < vertices; i++)
-			mesh.add(new Face3D(vertices + 1, (i + 1) % vertices, i));
+	private void createVertices() {
+		createVerticesAroundOrigin();
+		createTopCenterVertex();
+		createBottomCenterVertex();
 	}
 	
 	private void createFaces() {
-		createTopFaces();
-		createBottomFaces();
+		for (int i = 0; i < vertices; i++) {
+			createTopFaceAt(i);
+			createBottomFaceAt(i);
+		}
 	}
 	
-	@Override
-	public Mesh3D create() {
-		initializeMeshAndCreateVertices();
-		createFaces();
-		return mesh;
+	private void createVerticesAroundOrigin() {
+		mesh = new CircleCreator(vertices, radius).create();
+	}
+	
+	private void createBottomCenterVertex() {
+		mesh.add(new Vector3f(0, height / 2f, 0));
+	}
+	
+	private void createTopCenterVertex() {
+		mesh.add(new Vector3f(0, -height / 2f, 0));
+	}
+	
+	private void createTopFaceAt(int i) {
+		mesh.add(new Face3D(vertices, i, (i + 1) % vertices));
+	}
+	
+	private void createBottomFaceAt(int i) {
+		mesh.add(new Face3D(vertices + 1, (i + 1) % vertices, i));
 	}
 
 	public int getVertices() {
