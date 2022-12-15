@@ -26,7 +26,9 @@ public class SolidArcCreator implements IMeshCreator {
     private Mesh3D mesh;
 
     private ArcCreator creator;
+    
     private Mesh3D outerArc;
+    
     private Mesh3D innerArc;
 
     public SolidArcCreator() {
