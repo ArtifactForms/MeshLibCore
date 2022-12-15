@@ -78,7 +78,8 @@ public class SegmentedCubeCreator implements IMeshCreator {
     }
 
     private void scale() {
-	mesh.scale(1.0f / creationSize, 1.0f / creationSize, 1.0f / creationSize);
+	float scale = 1.0f / creationSize;
+	mesh.scale(scale, scale, scale);
 	mesh.scale(size);
     }
 
