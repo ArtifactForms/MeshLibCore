@@ -8,13 +8,9 @@ import mesh.modifier.SolidifyModifier;
 public class SimpleStarCreator implements IMeshCreator {
 
     private int vertices;
-
     private float outerRadius;
-
     private float innerRadius;
-
     private float height;
-
     private Mesh3D mesh;
 
     public SimpleStarCreator() {

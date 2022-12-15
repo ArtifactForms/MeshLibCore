@@ -9,13 +9,9 @@ import mesh.creator.primitives.CircleCreator;
 public class AccordionTorusCreator implements IMeshCreator {
 
     private float majorRadius;
-
     private float[] minorRadii;
-
     private int majorSegments;
-
     private int minorSegments;
-
     private Mesh3D mesh;
 
     public AccordionTorusCreator() {

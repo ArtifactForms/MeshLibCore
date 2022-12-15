@@ -9,11 +9,8 @@ import mesh.creator.IMeshCreator;
 public class MobiusStripCreator implements IMeshCreator {
 
     private int rings;
-
     private int segments;
-
     private float radius;
-
     private Mesh3D mesh;
 
     public MobiusStripCreator() {

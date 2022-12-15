@@ -7,15 +7,10 @@ import mesh.creator.primitives.CircleCreator;
 public class DiamondCreator implements IMeshCreator {
 
     private int segments;
-
     private float girdleRadius;
-
     private float tableRadius;
-
     private float crownHeight;
-
     private float pavillionHeight;
-
     private Mesh3D mesh;
 
     public DiamondCreator() {

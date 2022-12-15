@@ -11,7 +11,6 @@ import mesh.creator.IMeshCreator;
 public class QuadStripCreator implements IMeshCreator {
 
     private List<Vector3f> vertices;
-
     private Mesh3D mesh;
 
     public QuadStripCreator() {
