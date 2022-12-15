@@ -5,11 +5,17 @@ import mesh.Mesh3D;
 public class BeamCreator implements IBeamCreator {
 
 	private float width;
+	
 	private float height;
+	
 	private float depth;
+	
 	private float thickness;
+	
 	private float taper;
+	
 	private ProfileType type;
+	
 	private IBeamCreator creator;
 	
 	public BeamCreator() {
