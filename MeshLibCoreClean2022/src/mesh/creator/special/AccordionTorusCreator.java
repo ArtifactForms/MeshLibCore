@@ -39,11 +39,7 @@ public class AccordionTorusCreator implements IMeshCreator {
 				float minorX = minorRadius * Mathf.cos(minorAngle);
 				float minorY = minorRadius * Mathf.sin(minorAngle);
 				Vector3f v1 = new Vector3f(minorX, minorY, 0);
-				// Rotate
-				float angle = Mathf.TWO_PI - majorAngle;
-				float x2 = Mathf.cos(angle) * v1.x + Mathf.sin(angle) * v1.z;
-				float z2 = -Mathf.sin(angle) * v1.x + Mathf.cos(angle) * v1.z;
-				v1.set(x2, v1.y, z2);
+				rotate(v1, majorAngle);
 				v1.addLocal(v0);
 				minorAngle += minorStep;
 				verts[j * minorSegments + i] = v1;
@@ -52,6 +48,13 @@ public class AccordionTorusCreator implements IMeshCreator {
 		}
 
 		mesh.add(verts);
+	}
+	
+	private void rotate(Vector3f v, float majorAngle) {
+		float angle = Mathf.TWO_PI - majorAngle;
+		float x = Mathf.cos(angle) * v.x + Mathf.sin(angle) * v.z;
+		float z = -Mathf.sin(angle) * v.x + Mathf.cos(angle) * v.z;
+		v.set(x, v.y, z);
 	}
 
 	private void createFaces() {
