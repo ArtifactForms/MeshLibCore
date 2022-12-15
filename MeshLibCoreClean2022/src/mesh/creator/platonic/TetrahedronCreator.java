@@ -9,34 +9,41 @@ public class TetrahedronCreator implements IMeshCreator {
 	private Mesh3D mesh;
 	
 	public TetrahedronCreator() {
-		this(1);
+		radius = 1;
 	}
-	
-	public TetrahedronCreator(float radius) {
-		super();
-		this.radius = radius;
-	}
-	
+		
 	private void createVertices() {
-		mesh.addVertex(-radius, radius, radius);
-		mesh.addVertex(radius, radius, -radius);
-		mesh.addVertex(radius, -radius, radius);
-		mesh.addVertex(-radius, -radius, -radius);
+		addVertex(-radius, radius, radius);
+		addVertex(radius, radius, -radius);
+		addVertex(radius, -radius, radius);
+		addVertex(-radius, -radius, -radius);
 	}
 	
 	private void createFaces() {
-		mesh.addFace(0, 3, 2);
-		mesh.addFace(2, 3, 1);
-		mesh.addFace(0, 2, 1);
-		mesh.addFace(1, 3, 0);
+		addFace(0, 3, 2);
+		addFace(2, 3, 1);
+		addFace(0, 2, 1);
+		addFace(1, 3, 0);
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private void addFace(int... indices) {
+		mesh.addFace(indices);
 	}
 	
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createFaces();
 		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 
 	public float getRadius() {
