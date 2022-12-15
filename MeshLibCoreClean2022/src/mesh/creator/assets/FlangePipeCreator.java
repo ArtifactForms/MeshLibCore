@@ -181,11 +181,11 @@ public class FlangePipeCreator implements IMeshCreator {
 	return (flangeOuterRadius - pipeRadius) / 2f * boltHeadPercantage;
     }
 
-    public float calculateSegmentHeight() {
+    private float calculateSegmentHeight() {
 	return pipeSegmentLength + flangeDepth + flangeDepth + flangeGrooveWidth;
     }
 
-    public float calculateTotalHeight() {
+    private float calculateTotalHeight() {
 	return calculateSegmentHeight() * segmentCount;
     }
 
