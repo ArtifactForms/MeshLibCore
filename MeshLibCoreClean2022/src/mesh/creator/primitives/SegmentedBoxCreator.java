@@ -6,158 +6,158 @@ import mesh.creator.IMeshCreator;
 
 public class SegmentedBoxCreator implements IMeshCreator {
 
-	private int segmentsX;
-	
-	private int segmentsY;
-	
-	private int segmentsZ;
-	
-	private float width;
-	
-	private float height;
-	
-	private float depth;
-	
-	private float segmentSizeX;
-	
-	private float segmentSizeY;
-	
-	private float segmentSizeZ;
-	
-	private Mesh3D mesh;
+    private int segmentsX;
 
-	public SegmentedBoxCreator() {
-		segmentsX = 10;
-		segmentsY = 10;
-		segmentsZ = 10;
-		width = 2;
-		height = 2;
-		depth = 2;
-	}
+    private int segmentsY;
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		refreshSegmentSize();
-		createFront();
-		createBack();
-		createLeft();
-		createRight();
-		createTop();
-		createBottom();
-		removeDoubles();
-		return mesh;
-	}
+    private int segmentsZ;
 
-	private void refreshSegmentSize() {
-		segmentSizeX = width / (float) segmentsX;
-		segmentSizeY = height / (float) segmentsY;
-		segmentSizeZ = depth / (float) segmentsZ;
-	}
+    private float width;
 
-	private void removeDoubles() {
-		int roundToDecimalPlaces = 4;
-		mesh.removeDoubles(roundToDecimalPlaces);
-	}
+    private float height;
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private float depth;
 
-	private Mesh3D createGrid(int subdivisionsX, int subdivisionsZ, float tileSizeX, float tileSizeZ) {
-		GridCreator creator = new GridCreator(subdivisionsX, subdivisionsZ, tileSizeX, tileSizeZ);
-		return creator.create();
-	}
+    private float segmentSizeX;
 
-	private void createFront() {
-		Mesh3D front = createGrid(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
-		front.rotateX(-Mathf.HALF_PI);
-		front.translateZ(depth / 2f);
-		mesh.append(front);
-	}
+    private float segmentSizeY;
 
-	private void createBack() {
-		Mesh3D back = createGrid(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
-		back.rotateX(Mathf.HALF_PI);
-		back.translateZ(-depth / 2f);
-		mesh.append(back);
-	}
+    private float segmentSizeZ;
 
-	private void createLeft() {
-		Mesh3D left = createGrid(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
-		left.rotateX(Mathf.HALF_PI);
-		left.rotateY(Mathf.HALF_PI);
-		left.translateX(-width / 2f);
-		mesh.append(left);
-	}
+    private Mesh3D mesh;
 
-	private void createRight() {
-		Mesh3D right = createGrid(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
-		right.rotateX(Mathf.HALF_PI);
-		right.rotateY(-Mathf.HALF_PI);
-		right.translateX(width / 2f);
-		mesh.append(right);
-	}
+    public SegmentedBoxCreator() {
+	segmentsX = 10;
+	segmentsY = 10;
+	segmentsZ = 10;
+	width = 2;
+	height = 2;
+	depth = 2;
+    }
 
-	private void createTop() {
-		Mesh3D top = createGrid(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
-		top.translateY(-height / 2f);
-		mesh.append(top);
-	}
+    @Override
+    public Mesh3D create() {
+	initializeMesh();
+	refreshSegmentSize();
+	createFront();
+	createBack();
+	createLeft();
+	createRight();
+	createTop();
+	createBottom();
+	removeDoubles();
+	return mesh;
+    }
 
-	private void createBottom() {
-		Mesh3D bottom = createGrid(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
-		bottom.rotateX(-Mathf.PI);
-		bottom.translateY(height / 2f);
-		mesh.append(bottom);
-	}
+    private void refreshSegmentSize() {
+	segmentSizeX = width / (float) segmentsX;
+	segmentSizeY = height / (float) segmentsY;
+	segmentSizeZ = depth / (float) segmentsZ;
+    }
 
-	public int getSegmentsX() {
-		return segmentsX;
-	}
+    private void removeDoubles() {
+	int roundToDecimalPlaces = 4;
+	mesh.removeDoubles(roundToDecimalPlaces);
+    }
 
-	public void setSegmentsX(int segmentsX) {
-		this.segmentsX = segmentsX;
-	}
+    private void initializeMesh() {
+	mesh = new Mesh3D();
+    }
 
-	public int getSegmentsY() {
-		return segmentsY;
-	}
+    private Mesh3D createGrid(int subdivisionsX, int subdivisionsZ, float tileSizeX, float tileSizeZ) {
+	GridCreator creator = new GridCreator(subdivisionsX, subdivisionsZ, tileSizeX, tileSizeZ);
+	return creator.create();
+    }
 
-	public void setSegmentsY(int segmentsY) {
-		this.segmentsY = segmentsY;
-	}
+    private void createFront() {
+	Mesh3D front = createGrid(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
+	front.rotateX(-Mathf.HALF_PI);
+	front.translateZ(depth / 2f);
+	mesh.append(front);
+    }
 
-	public int getSegmentsZ() {
-		return segmentsZ;
-	}
+    private void createBack() {
+	Mesh3D back = createGrid(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
+	back.rotateX(Mathf.HALF_PI);
+	back.translateZ(-depth / 2f);
+	mesh.append(back);
+    }
 
-	public void setSegmentsZ(int segmentsZ) {
-		this.segmentsZ = segmentsZ;
-	}
+    private void createLeft() {
+	Mesh3D left = createGrid(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
+	left.rotateX(Mathf.HALF_PI);
+	left.rotateY(Mathf.HALF_PI);
+	left.translateX(-width / 2f);
+	mesh.append(left);
+    }
 
-	public float getWidth() {
-		return width;
-	}
+    private void createRight() {
+	Mesh3D right = createGrid(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
+	right.rotateX(Mathf.HALF_PI);
+	right.rotateY(-Mathf.HALF_PI);
+	right.translateX(width / 2f);
+	mesh.append(right);
+    }
 
-	public void setWidth(float width) {
-		this.width = width;
-	}
+    private void createTop() {
+	Mesh3D top = createGrid(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
+	top.translateY(-height / 2f);
+	mesh.append(top);
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    private void createBottom() {
+	Mesh3D bottom = createGrid(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
+	bottom.rotateX(-Mathf.PI);
+	bottom.translateY(height / 2f);
+	mesh.append(bottom);
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    public int getSegmentsX() {
+	return segmentsX;
+    }
 
-	public float getDepth() {
-		return depth;
-	}
+    public void setSegmentsX(int segmentsX) {
+	this.segmentsX = segmentsX;
+    }
 
-	public void setDepth(float depth) {
-		this.depth = depth;
-	}
+    public int getSegmentsY() {
+	return segmentsY;
+    }
+
+    public void setSegmentsY(int segmentsY) {
+	this.segmentsY = segmentsY;
+    }
+
+    public int getSegmentsZ() {
+	return segmentsZ;
+    }
+
+    public void setSegmentsZ(int segmentsZ) {
+	this.segmentsZ = segmentsZ;
+    }
+
+    public float getWidth() {
+	return width;
+    }
+
+    public void setWidth(float width) {
+	this.width = width;
+    }
+
+    public float getHeight() {
+	return height;
+    }
+
+    public void setHeight(float height) {
+	this.height = height;
+    }
+
+    public float getDepth() {
+	return depth;
+    }
+
+    public void setDepth(float depth) {
+	this.depth = depth;
+    }
 
 }

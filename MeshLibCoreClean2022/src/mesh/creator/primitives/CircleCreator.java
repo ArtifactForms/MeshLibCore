@@ -8,127 +8,127 @@ import mesh.creator.IMeshCreator;
 
 public class CircleCreator implements IMeshCreator {
 
-	private int vertices;
-	
-	private float radius;
-	
-	private float centerY;
-	
-	private FillType fillType;
-	
-	private Mesh3D mesh;
+    private int vertices;
 
-	public CircleCreator() {
-		this(32, 1);
-	}
+    private float radius;
 
-	public CircleCreator(int vertices, float radius) {
-		this(vertices, radius, 0);
-	}
+    private float centerY;
 
-	public CircleCreator(int vertices, float radius, float centerY) {
-		this(vertices, radius, centerY, FillType.NOTHING);
-	}
+    private FillType fillType;
 
-	public CircleCreator(int vertices, float radius, float centerY, FillType fillType) {
-		this.vertices = vertices;
-		this.radius = radius;
-		this.centerY = centerY;
-		this.fillType = fillType;
-	}
+    private Mesh3D mesh;
 
-	private void createVertices() {
-		float angle = 0;
-		float step = Mathf.TWO_PI / (float) vertices;
+    public CircleCreator() {
+	this(32, 1);
+    }
 
-		for (int i = 0; i < vertices; i++) {
-			float x = radius * Mathf.cos(angle);
-			float z = radius * Mathf.sin(angle);
-			mesh.add(new Vector3f(x, centerY, z));
-			angle += step;
-		}
-	}
+    public CircleCreator(int vertices, float radius) {
+	this(vertices, radius, 0);
+    }
 
-	private void createCenterVertex() {
-		if (fillType != FillType.TRIANGLE_FAN)
-			return;
-		mesh.addVertex(0, centerY, 0);
-	}
+    public CircleCreator(int vertices, float radius, float centerY) {
+	this(vertices, radius, centerY, FillType.NOTHING);
+    }
 
-	private void createFaces() {
-		switch (fillType) {
-		case NOTHING:
-			break;
-		case TRIANGLE_FAN:
-			createTriangleFan();
-			break;
-		case N_GON:
-			createNGon();
-			break;
-		default:
-			break;
-		}
-	}
+    public CircleCreator(int vertices, float radius, float centerY, FillType fillType) {
+	this.vertices = vertices;
+	this.radius = radius;
+	this.centerY = centerY;
+	this.fillType = fillType;
+    }
 
-	private void createTriangleFan() {
-		for (int i = 0; i < vertices; i++) {
-			int idx0 = i % vertices;
-			int idx1 = (i + 1) % vertices;
-			mesh.addFace(idx0, idx1, vertices);
-		}
-	}
+    private void createVertices() {
+	float angle = 0;
+	float step = Mathf.TWO_PI / (float) vertices;
 
-	private void createNGon() {
-		int[] indices = new int[vertices];
-		for (int i = 0; i < vertices; i++) {
-			indices[i] = i;
-		}
-		mesh.addFace(indices);
+	for (int i = 0; i < vertices; i++) {
+	    float x = radius * Mathf.cos(angle);
+	    float z = radius * Mathf.sin(angle);
+	    mesh.add(new Vector3f(x, centerY, z));
+	    angle += step;
 	}
+    }
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVertices();
-		createCenterVertex();
-		createFaces();
-		return mesh;
-	}
-	
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private void createCenterVertex() {
+	if (fillType != FillType.TRIANGLE_FAN)
+	    return;
+	mesh.addVertex(0, centerY, 0);
+    }
 
-	public int getVertices() {
-		return vertices;
+    private void createFaces() {
+	switch (fillType) {
+	case NOTHING:
+	    break;
+	case TRIANGLE_FAN:
+	    createTriangleFan();
+	    break;
+	case N_GON:
+	    createNGon();
+	    break;
+	default:
+	    break;
 	}
+    }
 
-	public void setVertices(int vertices) {
-		this.vertices = vertices;
+    private void createTriangleFan() {
+	for (int i = 0; i < vertices; i++) {
+	    int idx0 = i % vertices;
+	    int idx1 = (i + 1) % vertices;
+	    mesh.addFace(idx0, idx1, vertices);
 	}
+    }
 
-	public float getRadius() {
-		return radius;
+    private void createNGon() {
+	int[] indices = new int[vertices];
+	for (int i = 0; i < vertices; i++) {
+	    indices[i] = i;
 	}
+	mesh.addFace(indices);
+    }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+    @Override
+    public Mesh3D create() {
+	initializeMesh();
+	createVertices();
+	createCenterVertex();
+	createFaces();
+	return mesh;
+    }
 
-	public FillType getFillType() {
-		return fillType;
-	}
+    private void initializeMesh() {
+	mesh = new Mesh3D();
+    }
 
-	public void setFillType(FillType fillType) {
-		this.fillType = fillType;
-	}
+    public int getVertices() {
+	return vertices;
+    }
 
-	public float getCenterY() {
-		return centerY;
-	}
+    public void setVertices(int vertices) {
+	this.vertices = vertices;
+    }
 
-	public void setCenterY(float centerY) {
-		this.centerY = centerY;
-	}
+    public float getRadius() {
+	return radius;
+    }
+
+    public void setRadius(float radius) {
+	this.radius = radius;
+    }
+
+    public FillType getFillType() {
+	return fillType;
+    }
+
+    public void setFillType(FillType fillType) {
+	this.fillType = fillType;
+    }
+
+    public float getCenterY() {
+	return centerY;
+    }
+
+    public void setCenterY(float centerY) {
+	this.centerY = centerY;
+    }
 
 }

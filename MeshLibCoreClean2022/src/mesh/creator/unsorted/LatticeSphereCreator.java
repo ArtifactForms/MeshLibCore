@@ -12,77 +12,77 @@ import mesh.util.Mesh3DUtil;
 
 public class LatticeSphereCreator implements IMeshCreator {
 
-	private float radius;
-	
-	private float scale;
-	
-	private float thickness;
-	
-	private int subdivisions;
-	
-	private Mesh3D mesh;
+    private float radius;
 
-	public LatticeSphereCreator() {
-		radius = 1.0f;
-		scale = 0.9f;
-		subdivisions = 2;
-		thickness = 0.01f;
-	}
+    private float scale;
 
-	private void createQuadSphere() {
-		mesh = new QuadSphereCreator(radius, subdivisions).create();
-	}
+    private float thickness;
 
-	private void extrudeFaces() {
-		List<Face3D> faces = new ArrayList<Face3D>(mesh.getFaces());
-		for (Face3D f : faces) {
-			Mesh3DUtil.extrudeFace(mesh, f, scale, 0);
-		}
-		mesh.faces.removeAll(faces);
-	}
+    private int subdivisions;
 
-	private void solidify() {
-		new SolidifyModifier(thickness).modify(mesh);
-	}
+    private Mesh3D mesh;
 
-	@Override
-	public Mesh3D create() {
-		createQuadSphere();
-		extrudeFaces();
-		solidify();
-		return mesh;
-	}
+    public LatticeSphereCreator() {
+	radius = 1.0f;
+	scale = 0.9f;
+	subdivisions = 2;
+	thickness = 0.01f;
+    }
 
-	public float getRadius() {
-		return radius;
-	}
+    private void createQuadSphere() {
+	mesh = new QuadSphereCreator(radius, subdivisions).create();
+    }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
+    private void extrudeFaces() {
+	List<Face3D> faces = new ArrayList<Face3D>(mesh.getFaces());
+	for (Face3D f : faces) {
+	    Mesh3DUtil.extrudeFace(mesh, f, scale, 0);
 	}
+	mesh.faces.removeAll(faces);
+    }
 
-	public float getScale() {
-		return scale;
-	}
+    private void solidify() {
+	new SolidifyModifier(thickness).modify(mesh);
+    }
 
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
+    @Override
+    public Mesh3D create() {
+	createQuadSphere();
+	extrudeFaces();
+	solidify();
+	return mesh;
+    }
 
-	public float getThickness() {
-		return thickness;
-	}
+    public float getRadius() {
+	return radius;
+    }
 
-	public void setThickness(float thickness) {
-		this.thickness = thickness;
-	}
+    public void setRadius(float radius) {
+	this.radius = radius;
+    }
 
-	public int getSubdivisions() {
-		return subdivisions;
-	}
+    public float getScale() {
+	return scale;
+    }
 
-	public void setSubdivisions(int subdivisions) {
-		this.subdivisions = subdivisions;
-	}
+    public void setScale(float scale) {
+	this.scale = scale;
+    }
+
+    public float getThickness() {
+	return thickness;
+    }
+
+    public void setThickness(float thickness) {
+	this.thickness = thickness;
+    }
+
+    public int getSubdivisions() {
+	return subdivisions;
+    }
+
+    public void setSubdivisions(int subdivisions) {
+	this.subdivisions = subdivisions;
+    }
 
 }

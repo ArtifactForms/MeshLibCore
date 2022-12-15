@@ -7,104 +7,104 @@ import mesh.modifier.SolidifyModifier;
 
 public class SimpleStarCreator implements IMeshCreator {
 
-	private int vertices;
-	
-	private float outerRadius;
-	
-	private float innerRadius;
-	
-	private float height;
-	
-	private Mesh3D mesh;
+    private int vertices;
 
-	public SimpleStarCreator() {
-		vertices = 5;
-		outerRadius = 1;
-		innerRadius = 0.5f;
-		height = 0.5f;
-	}
+    private float outerRadius;
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVerticesAndFaces();
-		createCenterVertex();
-		solidify();
-		center();
-		rotate();
-		return mesh;
-	}
+    private float innerRadius;
 
-	private void rotate() {
-		if (vertices % 2 == 0)
-			return;
-		mesh.rotateY(calculateAngleStep() / 2f);
-	}
+    private float height;
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private Mesh3D mesh;
 
-	private void createCenterVertex() {
-		mesh.addVertex(0, 0, 0);
-	}
+    public SimpleStarCreator() {
+	vertices = 5;
+	outerRadius = 1;
+	innerRadius = 0.5f;
+	height = 0.5f;
+    }
 
-	private void createVerticesAndFaces() {
-		int centerIndex = vertices * 2;
-		float angle = 0;
-		float angleStep = calculateAngleStep();
-		for (int i = 0; i < vertices * 2; i++) {
-			float radius = i % 2 == 0 ? outerRadius : innerRadius;
-			float x = radius * Mathf.cos(angle);
-			float z = radius * Mathf.sin(angle);
-			angle += angleStep;
-			mesh.addVertex(x, 0, z);
-			mesh.addFace(centerIndex, i, (i + 1) % (vertices * 2));
-		}
-	}
+    @Override
+    public Mesh3D create() {
+	initializeMesh();
+	createVerticesAndFaces();
+	createCenterVertex();
+	solidify();
+	center();
+	rotate();
+	return mesh;
+    }
 
-	private void center() {
-		mesh.translateY(-height / 2.0f);
-	}
+    private void rotate() {
+	if (vertices % 2 == 0)
+	    return;
+	mesh.rotateY(calculateAngleStep() / 2f);
+    }
 
-	private void solidify() {
-		new SolidifyModifier(height).modify(mesh);
-	}
+    private void initializeMesh() {
+	mesh = new Mesh3D();
+    }
 
-	private float calculateAngleStep() {
-		return Mathf.TWO_PI / (float) (vertices * 2);
-	}
+    private void createCenterVertex() {
+	mesh.addVertex(0, 0, 0);
+    }
 
-	public int getVertices() {
-		return vertices;
+    private void createVerticesAndFaces() {
+	int centerIndex = vertices * 2;
+	float angle = 0;
+	float angleStep = calculateAngleStep();
+	for (int i = 0; i < vertices * 2; i++) {
+	    float radius = i % 2 == 0 ? outerRadius : innerRadius;
+	    float x = radius * Mathf.cos(angle);
+	    float z = radius * Mathf.sin(angle);
+	    angle += angleStep;
+	    mesh.addVertex(x, 0, z);
+	    mesh.addFace(centerIndex, i, (i + 1) % (vertices * 2));
 	}
+    }
 
-	public void setVertices(int vertices) {
-		this.vertices = vertices;
-	}
+    private void center() {
+	mesh.translateY(-height / 2.0f);
+    }
 
-	public float getOuterRadius() {
-		return outerRadius;
-	}
+    private void solidify() {
+	new SolidifyModifier(height).modify(mesh);
+    }
 
-	public void setOuterRadius(float outerRadius) {
-		this.outerRadius = outerRadius;
-	}
+    private float calculateAngleStep() {
+	return Mathf.TWO_PI / (float) (vertices * 2);
+    }
 
-	public float getInnerRadius() {
-		return innerRadius;
-	}
+    public int getVertices() {
+	return vertices;
+    }
 
-	public void setInnerRadius(float innerRadius) {
-		this.innerRadius = innerRadius;
-	}
+    public void setVertices(int vertices) {
+	this.vertices = vertices;
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    public float getOuterRadius() {
+	return outerRadius;
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    public void setOuterRadius(float outerRadius) {
+	this.outerRadius = outerRadius;
+    }
+
+    public float getInnerRadius() {
+	return innerRadius;
+    }
+
+    public void setInnerRadius(float innerRadius) {
+	this.innerRadius = innerRadius;
+    }
+
+    public float getHeight() {
+	return height;
+    }
+
+    public void setHeight(float height) {
+	this.height = height;
+    }
 
 }

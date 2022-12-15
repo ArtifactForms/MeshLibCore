@@ -12,119 +12,119 @@ import mesh.creator.IMeshCreator;
 
 public class SpinCreator implements IMeshCreator {
 
-	private int steps;
-	
-	private float angle;
-	
-	private boolean close;
-	
-	private Mesh3D mesh;
-	
-	private List<Vector3f> vertices;
+    private int steps;
 
-	public SpinCreator() {
-		steps = 9;
-		angle = Mathf.QUARTER_PI;
-		vertices = new ArrayList<Vector3f>();
-	}
+    private float angle;
 
-	public SpinCreator(int steps, float angle, boolean close) {
-		this.steps = steps;
-		this.angle = angle;
-		this.close = close;
-		this.vertices = new ArrayList<Vector3f>();
-	}
+    private boolean close;
 
-	public void add(Vector3f v) {
-		if (v != null)
-			vertices.add(v);
-	}
+    private Mesh3D mesh;
 
-	public void addAll(Collection<Vector3f> vertices) {
-		for (Vector3f v : vertices)
-			if (v != null)
-				this.vertices.add(v);
-	}
-	
-	public void clearVertices() {
-		vertices.clear();
-	}
+    private List<Vector3f> vertices;
 
-	private void createVertices() {
-		float angleStep = -this.angle / (float) (steps - 1);
-		for (int j = 0; j < steps; j++)
-			createVerticesAtAngle(j * angleStep);
-	}
+    public SpinCreator() {
+	steps = 9;
+	angle = Mathf.QUARTER_PI;
+	vertices = new ArrayList<Vector3f>();
+    }
 
-	private void createVerticesAtAngle(float angle) {
-		for (int i = 0; i < vertices.size(); i++) {
-			Vector3f v0 = vertices.get(i);
-			Vector3f v1 = createPointOnCircle(angle, v0.y);
-			Vector3f v2 = new Vector3f(v0.x, 1, v0.x);
-			v1.multLocal(v2);
-			mesh.add(v1);
-		}
-	}
-	
-	private Vector3f createPointOnCircle(float angle, float y) {
-		float x = Mathf.cos(angle);
-		float z = Mathf.sin(angle);
-		return new Vector3f(x, y, z);
-	}
+    public SpinCreator(int steps, float angle, boolean close) {
+	this.steps = steps;
+	this.angle = angle;
+	this.close = close;
+	this.vertices = new ArrayList<Vector3f>();
+    }
 
-	private void createFaces() {
-		int n = vertices.size();
-		int m = close ? steps : steps - 1;
-		for (int j = 0; j < m; j++) {
-			for (int i = 0; i < n - 1; i++) {
-				mesh.add(createQuadFace(j, i, n));
-			}
-		}
-	}
+    public void add(Vector3f v) {
+	if (v != null)
+	    vertices.add(v);
+    }
 
-	private Face3D createQuadFace(int j, int i, int n) {
-		Face3D face = new Face3D(new int[4]);
-		face.indices[3] = ((j + 1) % steps * n) + i;
-		face.indices[2] = ((j + 1) % steps * n) + i + 1;
-		face.indices[1] = (j * n) + i + 1;
-		face.indices[0] = (j * n) + i;
-		return face;
-	}
+    public void addAll(Collection<Vector3f> vertices) {
+	for (Vector3f v : vertices)
+	    if (v != null)
+		this.vertices.add(v);
+    }
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVertices();
-		createFaces();
-		return mesh;
-	}
-	
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    public void clearVertices() {
+	vertices.clear();
+    }
 
-	public int getSteps() {
-		return steps;
-	}
+    private void createVertices() {
+	float angleStep = -this.angle / (float) (steps - 1);
+	for (int j = 0; j < steps; j++)
+	    createVerticesAtAngle(j * angleStep);
+    }
 
-	public void setSteps(int steps) {
-		this.steps = steps;
+    private void createVerticesAtAngle(float angle) {
+	for (int i = 0; i < vertices.size(); i++) {
+	    Vector3f v0 = vertices.get(i);
+	    Vector3f v1 = createPointOnCircle(angle, v0.y);
+	    Vector3f v2 = new Vector3f(v0.x, 1, v0.x);
+	    v1.multLocal(v2);
+	    mesh.add(v1);
 	}
+    }
 
-	public float getAngle() {
-		return angle;
-	}
+    private Vector3f createPointOnCircle(float angle, float y) {
+	float x = Mathf.cos(angle);
+	float z = Mathf.sin(angle);
+	return new Vector3f(x, y, z);
+    }
 
-	public void setAngle(float angle) {
-		this.angle = angle;
+    private void createFaces() {
+	int n = vertices.size();
+	int m = close ? steps : steps - 1;
+	for (int j = 0; j < m; j++) {
+	    for (int i = 0; i < n - 1; i++) {
+		mesh.add(createQuadFace(j, i, n));
+	    }
 	}
+    }
 
-	public boolean isClose() {
-		return close;
-	}
+    private Face3D createQuadFace(int j, int i, int n) {
+	Face3D face = new Face3D(new int[4]);
+	face.indices[3] = ((j + 1) % steps * n) + i;
+	face.indices[2] = ((j + 1) % steps * n) + i + 1;
+	face.indices[1] = (j * n) + i + 1;
+	face.indices[0] = (j * n) + i;
+	return face;
+    }
 
-	public void setClose(boolean close) {
-		this.close = close;
-	}
+    @Override
+    public Mesh3D create() {
+	initializeMesh();
+	createVertices();
+	createFaces();
+	return mesh;
+    }
+
+    private void initializeMesh() {
+	mesh = new Mesh3D();
+    }
+
+    public int getSteps() {
+	return steps;
+    }
+
+    public void setSteps(int steps) {
+	this.steps = steps;
+    }
+
+    public float getAngle() {
+	return angle;
+    }
+
+    public void setAngle(float angle) {
+	this.angle = angle;
+    }
+
+    public boolean isClose() {
+	return close;
+    }
+
+    public void setClose(boolean close) {
+	this.close = close;
+    }
 
 }

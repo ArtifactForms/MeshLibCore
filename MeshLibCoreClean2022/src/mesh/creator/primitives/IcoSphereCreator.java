@@ -8,55 +8,55 @@ import mesh.util.Mesh3DUtil;
 
 public class IcoSphereCreator implements IMeshCreator {
 
-	private float radius;
-	
-	private int subdivisions;
-	
-	private Mesh3D mesh;
-	
-	public IcoSphereCreator() {
-		this(1, 0);
-	}
+    private float radius;
 
-	public IcoSphereCreator(float radius, int subdivisions) {
-		this.radius = radius;
-		this.subdivisions = subdivisions;
-	}
+    private int subdivisions;
 
-	@Override
-	public Mesh3D create() {
-		createBaseIcosahedron();
-		subdivideIcosahedron();
-		spherifyIcosahedron();
-		return mesh;
-	}
-	
-	private void createBaseIcosahedron() {
-		mesh = new IcosahedronCreator().create();
-	}
-	
-	private void subdivideIcosahedron() {
-		new PlanarMidEdgeModifier(subdivisions).modify(mesh);
-	}
-	
-	private void spherifyIcosahedron() {
-		Mesh3DUtil.pushToSphere(mesh, radius);
-	}
+    private Mesh3D mesh;
 
-	public float getRadius() {
-		return radius;
-	}
+    public IcoSphereCreator() {
+	this(1, 0);
+    }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+    public IcoSphereCreator(float radius, int subdivisions) {
+	this.radius = radius;
+	this.subdivisions = subdivisions;
+    }
 
-	public int getSubdivisions() {
-		return subdivisions;
-	}
+    @Override
+    public Mesh3D create() {
+	createBaseIcosahedron();
+	subdivideIcosahedron();
+	spherifyIcosahedron();
+	return mesh;
+    }
 
-	public void setSubdivisions(int subdivisions) {
-		this.subdivisions = subdivisions;
-	}
+    private void createBaseIcosahedron() {
+	mesh = new IcosahedronCreator().create();
+    }
+
+    private void subdivideIcosahedron() {
+	new PlanarMidEdgeModifier(subdivisions).modify(mesh);
+    }
+
+    private void spherifyIcosahedron() {
+	Mesh3DUtil.pushToSphere(mesh, radius);
+    }
+
+    public float getRadius() {
+	return radius;
+    }
+
+    public void setRadius(float radius) {
+	this.radius = radius;
+    }
+
+    public int getSubdivisions() {
+	return subdivisions;
+    }
+
+    public void setSubdivisions(int subdivisions) {
+	this.subdivisions = subdivisions;
+    }
 
 }

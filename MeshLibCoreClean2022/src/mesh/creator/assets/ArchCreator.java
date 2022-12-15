@@ -8,172 +8,172 @@ import mesh.modifier.SolidifyModifier;
 
 public class ArchCreator implements IMeshCreator {
 
-	private int segments;
-	
-	private float radius;
-	
-	private float extendTop;
-	
-	private float extendBottom;
-	
-	private float extendLeft;
-	
-	private float extendRight;
-	
-	private float depth;
-	
-	private Mesh3D mesh;
+    private int segments;
 
-	public ArchCreator() {
-		segments = 15;
-		radius = 1;
-		extendTop = 0.5f;
-		extendBottom = 2;
-		extendLeft = 1;
-		extendRight = 1;
-		depth = 1;
+    private float radius;
+
+    private float extendTop;
+
+    private float extendBottom;
+
+    private float extendLeft;
+
+    private float extendRight;
+
+    private float depth;
+
+    private Mesh3D mesh;
+
+    public ArchCreator() {
+	segments = 15;
+	radius = 1;
+	extendTop = 0.5f;
+	extendBottom = 2;
+	extendLeft = 1;
+	extendRight = 1;
+	depth = 1;
+    }
+
+    @Override
+    public Mesh3D create() {
+	initializeMesh();
+	createLeftVertices();
+	createRightVertices();
+	createLeftFace();
+	createRightFace();
+	createArc();
+	solidify();
+	translate();
+	return mesh;
+    }
+
+    private void createArc() {
+	float extendStep = calculateWidth() / (float) segments;
+	float offsetLeft = -radius - extendLeft;
+	float angle = Mathf.PI;
+	float angleStep = Mathf.PI / (float) segments;
+
+	for (int i = 0; i <= segments; i++) {
+	    Vector3f v0 = pointOnCircle(angle);
+	    Vector3f v1 = new Vector3f(offsetLeft + (i * extendStep), -radius - extendTop, 0);
+
+	    if (i > 0 && i < segments)
+		v1.setX(v0.x);
+
+	    if (i < segments)
+		addFaceAt(i);
+
+	    mesh.add(v0);
+	    mesh.add(v1);
+	    angle += angleStep;
 	}
+    }
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createLeftVertices();
-		createRightVertices();
-		createLeftFace();
-		createRightFace();
-		createArc();
-		solidify();
-		translate();
-		return mesh;
-	}
+    private Vector3f pointOnCircle(float angrad) {
+	float x = radius * Mathf.cos(angrad);
+	float y = radius * Mathf.sin(angrad);
+	return new Vector3f(x, y, 0);
+    }
 
-	private void createArc() {
-		float extendStep = calculateWidth() / (float) segments;
-		float offsetLeft = -radius - extendLeft;
-		float angle = Mathf.PI;
-		float angleStep = Mathf.PI / (float) segments;
+    private float calculateWidth() {
+	return radius + radius + extendLeft + extendRight;
+    }
 
-		for (int i = 0; i <= segments; i++) {
-			Vector3f v0 = pointOnCircle(angle);
-			Vector3f v1 = new Vector3f(offsetLeft + (i * extendStep), -radius - extendTop, 0);
-			
-			if (i > 0 && i < segments)
-				v1.setX(v0.x);
+    private void translate() {
+	mesh.translateY(-extendBottom);
+	mesh.translateZ(depth / 2f);
+    }
 
-			if (i < segments)
-				addFaceAt(i);
+    private void initializeMesh() {
+	mesh = new Mesh3D();
+    }
 
-			mesh.add(v0);
-			mesh.add(v1);
-			angle += angleStep;
-		}
-	}
+    private void solidify() {
+	new SolidifyModifier(depth).modify(mesh);
+    }
 
-	private Vector3f pointOnCircle(float angrad) {
-		float x = radius * Mathf.cos(angrad);
-		float y = radius * Mathf.sin(angrad);
-		return new Vector3f(x, y, 0);
-	}
+    private void createLeftFace() {
+	mesh.addFace(0, 1, 5, 4);
+    }
 
-	private float calculateWidth() {
-		return radius + radius + extendLeft + extendRight;
-	}
+    private void createRightFace() {
+	int a = 2 * ((segments + 1)) + 4;
+	mesh.addFace(3, 2, a - 2, a - 1);
+    }
 
-	private void translate() {
-		mesh.translateY(-extendBottom);
-		mesh.translateZ(depth / 2f);
-	}
+    private void createLeftVertices() {
+	mesh.addVertex(-radius, extendBottom, 0);
+	mesh.addVertex(-radius - extendLeft, extendBottom, 0);
+    }
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private void createRightVertices() {
+	mesh.addVertex(radius, extendBottom, 0);
+	mesh.addVertex(radius + extendRight, extendBottom, 0);
+    }
 
-	private void solidify() {
-		new SolidifyModifier(depth).modify(mesh);
-	}
+    private void addFaceAt(int i) {
+	int index = (i * 2) + 4;
+	int index0 = index;
+	int index1 = index + 1;
+	int index2 = index + 3;
+	int index3 = index + 2;
+	mesh.addFace(index0, index1, index2, index3);
+    }
 
-	private void createLeftFace() {
-		mesh.addFace(0, 1, 5, 4);
-	}
+    public int getSegments() {
+	return segments;
+    }
 
-	private void createRightFace() {
-		int a = 2 * ((segments + 1)) + 4;
-		mesh.addFace(3, 2, a - 2, a - 1);
-	}
+    public void setSegments(int segments) {
+	this.segments = segments;
+    }
 
-	private void createLeftVertices() {
-		mesh.addVertex(-radius, extendBottom, 0);
-		mesh.addVertex(-radius - extendLeft, extendBottom, 0);
-	}
+    public float getRadius() {
+	return radius;
+    }
 
-	private void createRightVertices() {
-		mesh.addVertex(radius, extendBottom, 0);
-		mesh.addVertex(radius + extendRight, extendBottom, 0);
-	}
+    public void setRadius(float radius) {
+	this.radius = radius;
+    }
 
-	private void addFaceAt(int i) {
-		int index = (i * 2) + 4;
-		int index0 = index;
-		int index1 = index + 1;
-		int index2 = index + 3;
-		int index3 = index + 2;
-		mesh.addFace(index0, index1, index2, index3);
-	}
+    public float getExtendTop() {
+	return extendTop;
+    }
 
-	public int getSegments() {
-		return segments;
-	}
+    public void setExtendTop(float extendTop) {
+	this.extendTop = extendTop;
+    }
 
-	public void setSegments(int segments) {
-		this.segments = segments;
-	}
+    public float getExtendBottom() {
+	return extendBottom;
+    }
 
-	public float getRadius() {
-		return radius;
-	}
+    public void setExtendBottom(float extendBottom) {
+	this.extendBottom = extendBottom;
+    }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+    public float getExtendLeft() {
+	return extendLeft;
+    }
 
-	public float getExtendTop() {
-		return extendTop;
-	}
+    public void setExtendLeft(float extendLeft) {
+	this.extendLeft = extendLeft;
+    }
 
-	public void setExtendTop(float extendTop) {
-		this.extendTop = extendTop;
-	}
+    public float getExtendRight() {
+	return extendRight;
+    }
 
-	public float getExtendBottom() {
-		return extendBottom;
-	}
+    public void setExtendRight(float extendRight) {
+	this.extendRight = extendRight;
+    }
 
-	public void setExtendBottom(float extendBottom) {
-		this.extendBottom = extendBottom;
-	}
+    public float getDepth() {
+	return depth;
+    }
 
-	public float getExtendLeft() {
-		return extendLeft;
-	}
-
-	public void setExtendLeft(float extendLeft) {
-		this.extendLeft = extendLeft;
-	}
-
-	public float getExtendRight() {
-		return extendRight;
-	}
-
-	public void setExtendRight(float extendRight) {
-		this.extendRight = extendRight;
-	}
-
-	public float getDepth() {
-		return depth;
-	}
-
-	public void setDepth(float depth) {
-		this.depth = depth;
-	}
+    public void setDepth(float depth) {
+	this.depth = depth;
+    }
 
 }

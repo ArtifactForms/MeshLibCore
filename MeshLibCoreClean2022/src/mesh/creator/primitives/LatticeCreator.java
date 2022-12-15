@@ -7,109 +7,109 @@ import mesh.operators.ExtrudeIndividualFacesOperator;
 
 public class LatticeCreator implements IMeshCreator {
 
-	private int subdivisionsX;
-	
-	private int subdivisionsZ;
-	
-	private float openingPercent;
-	
-	private float tileSizeX;
-	
-	private float tileSizeZ;
-	
-	private float height;
-	
-	private Mesh3D mesh;
+    private int subdivisionsX;
 
-	public LatticeCreator() {
-		subdivisionsX = 10;
-		subdivisionsZ = 10;
-		openingPercent = 0.5f;
-		tileSizeX = 0.2f;
-		tileSizeZ = 0.2f;
-		height = 0.2f;
-	}
-	
-	private void createHoles() {
-		ExtrudeIndividualFacesOperator extrude = new ExtrudeIndividualFacesOperator(mesh);
-		extrude.setRemoveFace(true);
-		extrude.setAmount(0);
-		extrude.setScale(openingPercent);
-		extrude.apply(mesh.getFaces());
-	}
+    private int subdivisionsZ;
 
-	@Override
-	public Mesh3D create() {
-		createBaseGrid();
-		createHoles();
-		solidify();
-		centerOnAxisY();
-		return mesh;
-	}
-	
-	private void createBaseGrid() {
-		GridCreator creator = new GridCreator();
-		creator.setSubdivisionsX(subdivisionsX);
-		creator.setSubdivisionsZ(subdivisionsZ);
-		creator.setTileSizeX(tileSizeX);
-		creator.setTileSizeZ(tileSizeZ);
-		mesh = creator.create();
-	}
-	
-	private void centerOnAxisY() {
-		mesh.translateY(-height / 2f);
-	}
-	
-	private void solidify() {
-		new SolidifyModifier(height).modify(mesh);
-	}
+    private float openingPercent;
 
-	public int getSubdivisionsX() {
-		return subdivisionsX;
-	}
+    private float tileSizeX;
 
-	public void setSubdivisionsX(int subdivisionsX) {
-		this.subdivisionsX = subdivisionsX;
-	}
+    private float tileSizeZ;
 
-	public int getSubdivisionsZ() {
-		return subdivisionsZ;
-	}
+    private float height;
 
-	public void setSubdivisionsZ(int subdivisionsZ) {
-		this.subdivisionsZ = subdivisionsZ;
-	}
+    private Mesh3D mesh;
 
-	public float getOpeningPercent() {
-		return openingPercent;
-	}
+    public LatticeCreator() {
+	subdivisionsX = 10;
+	subdivisionsZ = 10;
+	openingPercent = 0.5f;
+	tileSizeX = 0.2f;
+	tileSizeZ = 0.2f;
+	height = 0.2f;
+    }
 
-	public void setOpeningPercent(float openingPercent) {
-		this.openingPercent = openingPercent;
-	}
+    private void createHoles() {
+	ExtrudeIndividualFacesOperator extrude = new ExtrudeIndividualFacesOperator(mesh);
+	extrude.setRemoveFace(true);
+	extrude.setAmount(0);
+	extrude.setScale(openingPercent);
+	extrude.apply(mesh.getFaces());
+    }
 
-	public float getTileSizeX() {
-		return tileSizeX;
-	}
+    @Override
+    public Mesh3D create() {
+	createBaseGrid();
+	createHoles();
+	solidify();
+	centerOnAxisY();
+	return mesh;
+    }
 
-	public void setTileSizeX(float tileSizeX) {
-		this.tileSizeX = tileSizeX;
-	}
+    private void createBaseGrid() {
+	GridCreator creator = new GridCreator();
+	creator.setSubdivisionsX(subdivisionsX);
+	creator.setSubdivisionsZ(subdivisionsZ);
+	creator.setTileSizeX(tileSizeX);
+	creator.setTileSizeZ(tileSizeZ);
+	mesh = creator.create();
+    }
 
-	public float getTileSizeZ() {
-		return tileSizeZ;
-	}
+    private void centerOnAxisY() {
+	mesh.translateY(-height / 2f);
+    }
 
-	public void setTileSizeZ(float tileSizeZ) {
-		this.tileSizeZ = tileSizeZ;
-	}
+    private void solidify() {
+	new SolidifyModifier(height).modify(mesh);
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    public int getSubdivisionsX() {
+	return subdivisionsX;
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    public void setSubdivisionsX(int subdivisionsX) {
+	this.subdivisionsX = subdivisionsX;
+    }
+
+    public int getSubdivisionsZ() {
+	return subdivisionsZ;
+    }
+
+    public void setSubdivisionsZ(int subdivisionsZ) {
+	this.subdivisionsZ = subdivisionsZ;
+    }
+
+    public float getOpeningPercent() {
+	return openingPercent;
+    }
+
+    public void setOpeningPercent(float openingPercent) {
+	this.openingPercent = openingPercent;
+    }
+
+    public float getTileSizeX() {
+	return tileSizeX;
+    }
+
+    public void setTileSizeX(float tileSizeX) {
+	this.tileSizeX = tileSizeX;
+    }
+
+    public float getTileSizeZ() {
+	return tileSizeZ;
+    }
+
+    public void setTileSizeZ(float tileSizeZ) {
+	this.tileSizeZ = tileSizeZ;
+    }
+
+    public float getHeight() {
+	return height;
+    }
+
+    public void setHeight(float height) {
+	this.height = height;
+    }
 
 }

@@ -6,114 +6,114 @@ import mesh.creator.IMeshCreator;
 
 public class SegmentedCubeCreator implements IMeshCreator {
 
-	private int segments;
-	
-	private float size;
-	
-	private float creationSize;
-	
-	private Mesh3D mesh;
+    private int segments;
 
-	public SegmentedCubeCreator() {
-		this(10, 1);
-	}
+    private float size;
 
-	public SegmentedCubeCreator(int segments, float size) {
-		this.segments = segments;
-		this.size = size;
-		this.creationSize = (float) segments;
-	}
-	
-	private Mesh3D createSide() {
-		return new GridCreator(segments, segments, creationSize).create();
-	}
-	
-	private void append(Mesh3D mesh) {
-		this.mesh.append(mesh);
-	}
+    private float creationSize;
 
-	private void createTop() {
-		Mesh3D top = createSide();
-		top.translateY(-creationSize);
-		append(top);
-	}
+    private Mesh3D mesh;
 
-	private void createBottom() {
-		Mesh3D bottom = createSide();
-		bottom.rotateX(Mathf.PI);
-		bottom.translateY(creationSize);
-		append(bottom);
-	}
+    public SegmentedCubeCreator() {
+	this(10, 1);
+    }
 
-	private void createFront() {
-		Mesh3D front = createSide();
-		front.rotateX(Mathf.HALF_PI);
-		front.translateZ(-creationSize);
-		append(front);
-	}
+    public SegmentedCubeCreator(int segments, float size) {
+	this.segments = segments;
+	this.size = size;
+	this.creationSize = (float) segments;
+    }
 
-	private void createBack() {
-		Mesh3D back = createSide();
-		back.rotateX(-Mathf.HALF_PI);
-		back.translateZ(creationSize);
-		append(back);
-	}
+    private Mesh3D createSide() {
+	return new GridCreator(segments, segments, creationSize).create();
+    }
 
-	private void createLeft() {
-		Mesh3D left = createSide();
-		left.rotateZ(-Mathf.HALF_PI);
-		left.translateX(-creationSize);
-		append(left);
-	}
+    private void append(Mesh3D mesh) {
+	this.mesh.append(mesh);
+    }
 
-	private void createRight() {
-		Mesh3D right = createSide();
-		right.rotateZ(Mathf.HALF_PI);
-		right.translateX(creationSize);
-		append(right);
-	}
+    private void createTop() {
+	Mesh3D top = createSide();
+	top.translateY(-creationSize);
+	append(top);
+    }
 
-	private void removeDoubles() {
-		mesh.removeDoubles(2);
-	}
+    private void createBottom() {
+	Mesh3D bottom = createSide();
+	bottom.rotateX(Mathf.PI);
+	bottom.translateY(creationSize);
+	append(bottom);
+    }
 
-	private void scale() {
-		mesh.scale(1.0f / creationSize, 1.0f / creationSize, 1.0f / creationSize);
-		mesh.scale(size);
-	}
-	
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private void createFront() {
+	Mesh3D front = createSide();
+	front.rotateX(Mathf.HALF_PI);
+	front.translateZ(-creationSize);
+	append(front);
+    }
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createTop();
-		createBottom();
-		createFront();
-		createBack();
-		createLeft();
-		createRight();
-		removeDoubles();
-		scale();
-		return mesh;
-	}
-	
-	public int getSegments() {
-		return segments;
-	}
+    private void createBack() {
+	Mesh3D back = createSide();
+	back.rotateX(-Mathf.HALF_PI);
+	back.translateZ(creationSize);
+	append(back);
+    }
 
-	public void setSegments(int segments) {
-		this.segments = segments;
-	}
+    private void createLeft() {
+	Mesh3D left = createSide();
+	left.rotateZ(-Mathf.HALF_PI);
+	left.translateX(-creationSize);
+	append(left);
+    }
 
-	public float getSize() {
-		return size;
-	}
+    private void createRight() {
+	Mesh3D right = createSide();
+	right.rotateZ(Mathf.HALF_PI);
+	right.translateX(creationSize);
+	append(right);
+    }
 
-	public void setSize(float size) {
-		this.size = size;
-	}
+    private void removeDoubles() {
+	mesh.removeDoubles(2);
+    }
+
+    private void scale() {
+	mesh.scale(1.0f / creationSize, 1.0f / creationSize, 1.0f / creationSize);
+	mesh.scale(size);
+    }
+
+    private void initializeMesh() {
+	mesh = new Mesh3D();
+    }
+
+    @Override
+    public Mesh3D create() {
+	initializeMesh();
+	createTop();
+	createBottom();
+	createFront();
+	createBack();
+	createLeft();
+	createRight();
+	removeDoubles();
+	scale();
+	return mesh;
+    }
+
+    public int getSegments() {
+	return segments;
+    }
+
+    public void setSegments(int segments) {
+	this.segments = segments;
+    }
+
+    public float getSize() {
+	return size;
+    }
+
+    public void setSize(float size) {
+	this.size = size;
+    }
 
 }

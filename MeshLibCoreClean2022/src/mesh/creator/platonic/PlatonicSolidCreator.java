@@ -5,41 +5,41 @@ import mesh.creator.IMeshCreator;
 
 public class PlatonicSolidCreator implements IMeshCreator {
 
-	private PlatonicSolid type;
+    private PlatonicSolid type;
 
-	public PlatonicSolidCreator(PlatonicSolid type) {
-		this.type = type;
-	}
-	
-	protected IMeshCreator getCreator() {
-		switch (type) {
-		case TETRAHEDRON:
-			return new TetrahedronCreator();
-		case HEXAHEDRON:
-			return new HexahedronCreator();
-		case OCTAHEDRON:
-			return new OctahedronCreator();
-		case ICOSAHEDRON:
-			return new IcosahedronCreator();
-		case DODECAHEDRON:
-			return new DodecahedronCreator();
-		default:
-			return null;
-		}
-	}
+    public PlatonicSolidCreator(PlatonicSolid type) {
+	this.type = type;
+    }
 
-	@Override
-	public Mesh3D create() {
-		IMeshCreator creator = getCreator();
-		return creator.create();
+    protected IMeshCreator getCreator() {
+	switch (type) {
+	case TETRAHEDRON:
+	    return new TetrahedronCreator();
+	case HEXAHEDRON:
+	    return new HexahedronCreator();
+	case OCTAHEDRON:
+	    return new OctahedronCreator();
+	case ICOSAHEDRON:
+	    return new IcosahedronCreator();
+	case DODECAHEDRON:
+	    return new DodecahedronCreator();
+	default:
+	    return null;
 	}
+    }
 
-	public PlatonicSolid getType() {
-		return type;
-	}
+    @Override
+    public Mesh3D create() {
+	IMeshCreator creator = getCreator();
+	return creator.create();
+    }
 
-	public void setType(PlatonicSolid type) {
-		this.type = type;
-	}
-	
+    public PlatonicSolid getType() {
+	return type;
+    }
+
+    public void setType(PlatonicSolid type) {
+	this.type = type;
+    }
+
 }

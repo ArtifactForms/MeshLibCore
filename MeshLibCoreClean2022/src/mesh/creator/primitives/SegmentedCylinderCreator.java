@@ -7,201 +7,201 @@ import mesh.creator.IMeshCreator;
 
 public class SegmentedCylinderCreator implements IMeshCreator {
 
-	private float topRadius;
-	
-	private float bottomRadius;
-	
-	private float height;
-	
-	private int rotationSegments;
-	
-	private int heightSegments;
-	
-	private boolean capTop;
-	
-	private boolean capBottom;
-	
-	private FillType capFillType;
-	
-	private Mesh3D mesh;
+    private float topRadius;
 
-	public SegmentedCylinderCreator() {
-		topRadius = 1;
-		bottomRadius = 1;
-		height = 2;
-		rotationSegments = 32;
-		heightSegments = 1;
-		capTop = true;
-		capBottom = true;
-		capFillType = FillType.TRIANGLE_FAN;
-	}
+    private float bottomRadius;
 
-	private void addFace(int i, int j) {
-		int idx0 = toOneDimensionalIndex(i, j);
-		int idx1 = toOneDimensionalIndex(i + 1, j);
-		int idx2 = toOneDimensionalIndex(i + 1, (j + 1) % rotationSegments);
-		int idx3 = toOneDimensionalIndex(i, (j + 1) % rotationSegments);
-		mesh.addFace(idx0, idx1, idx2, idx3);
-	}
-	
-	private int toOneDimensionalIndex(int i, int j) {
-		return Mathf.toOneDimensionalIndex(i, j, rotationSegments);
-	}
+    private float height;
 
-	private void createVertices() {
-		float radiusStep = (topRadius - bottomRadius) / (float) heightSegments;
-		float angle = Mathf.TWO_PI / (float) rotationSegments;
-		float segmentHeight = height / (float) heightSegments;
-		for (int i = 0; i <= heightSegments; i++) {
-			for (int j = 0; j < rotationSegments; j++) {
-				float x = (topRadius - (i * radiusStep)) * (Mathf.cos(j * angle));
-				float y = i * segmentHeight - height / 2f;
-				float z = (topRadius - (i * radiusStep)) * (Mathf.sin(j * angle));
-				mesh.addVertex(x, y, z);
-			}
-		}
-	}
+    private int rotationSegments;
 
-	private void createQuadFaces() {
-		for (int i = 0; i < heightSegments; i++) {
-			for (int j = 0; j < rotationSegments; j++) {
-				addFace(i, j);
-			}
-		}
-	}
+    private int heightSegments;
 
-	private void createTriangleFanCaps() {
-		int offset = (heightSegments * rotationSegments);
-		if (capTop)
-			createTriangleFan(0, -height / 2);
-		if (capBottom)
-			createTriangleFan(offset, height / 2);
-	}
+    private boolean capTop;
 
-	private void createTriangleFan(int offset, float y) {
-		int idx = mesh.vertices.size();
-		mesh.addVertex(0, y, 0);
-		for (int i = 0; i < rotationSegments; i++) {
-			int idx0 = i + offset;
-			int idx1 = (i + 1) % rotationSegments + offset;
-			if (offset == 0) {
-				mesh.addFace(idx0, idx1, idx);
-			} else {
-				mesh.addFace(idx1, idx0, idx);
-			}
-		}
-	}
+    private boolean capBottom;
 
-	private void createNGonCaps() {
-		if (capTop)
-			createTopNGon();
-		if (capBottom)
-			createBottomNGon();
-	}
+    private FillType capFillType;
 
-	private void createTopNGon() {
-		int[] indices = new int[rotationSegments];
-		for (int i = 0; i < indices.length; i++) {
-			indices[i] = i;
-		}
-		mesh.addFace(indices);
-	}
+    private Mesh3D mesh;
 
-	private void createBottomNGon() {
-		int max = rotationSegments * (heightSegments + 1) - 1;
-		int[] indices = new int[rotationSegments];
-		for (int i = 0; i < rotationSegments; i++) {
-			indices[i] = max - i;
-		}
-		mesh.addFace(indices);
-	}
+    public SegmentedCylinderCreator() {
+	topRadius = 1;
+	bottomRadius = 1;
+	height = 2;
+	rotationSegments = 32;
+	heightSegments = 1;
+	capTop = true;
+	capBottom = true;
+	capFillType = FillType.TRIANGLE_FAN;
+    }
 
-	private void createCaps() {
-		switch (capFillType) {
-		case TRIANGLE_FAN:
-			createTriangleFanCaps();
-			break;
-		case N_GON:
-			createNGonCaps();
-			break;
-		case NOTHING:
-			break;
-		default:
-			break;
-		}
-	}
+    private void addFace(int i, int j) {
+	int idx0 = toOneDimensionalIndex(i, j);
+	int idx1 = toOneDimensionalIndex(i + 1, j);
+	int idx2 = toOneDimensionalIndex(i + 1, (j + 1) % rotationSegments);
+	int idx3 = toOneDimensionalIndex(i, (j + 1) % rotationSegments);
+	mesh.addFace(idx0, idx1, idx2, idx3);
+    }
 
-	@Override
-	public Mesh3D create() {
-		mesh = new Mesh3D();
-		createVertices();
-		createQuadFaces();
-		createCaps();
-		return mesh;
-	}
+    private int toOneDimensionalIndex(int i, int j) {
+	return Mathf.toOneDimensionalIndex(i, j, rotationSegments);
+    }
 
-	public float getTopRadius() {
-		return topRadius;
+    private void createVertices() {
+	float radiusStep = (topRadius - bottomRadius) / (float) heightSegments;
+	float angle = Mathf.TWO_PI / (float) rotationSegments;
+	float segmentHeight = height / (float) heightSegments;
+	for (int i = 0; i <= heightSegments; i++) {
+	    for (int j = 0; j < rotationSegments; j++) {
+		float x = (topRadius - (i * radiusStep)) * (Mathf.cos(j * angle));
+		float y = i * segmentHeight - height / 2f;
+		float z = (topRadius - (i * radiusStep)) * (Mathf.sin(j * angle));
+		mesh.addVertex(x, y, z);
+	    }
 	}
+    }
 
-	public void setTopRadius(float topRadius) {
-		this.topRadius = topRadius;
+    private void createQuadFaces() {
+	for (int i = 0; i < heightSegments; i++) {
+	    for (int j = 0; j < rotationSegments; j++) {
+		addFace(i, j);
+	    }
 	}
+    }
 
-	public float getBottomRadius() {
-		return bottomRadius;
-	}
+    private void createTriangleFanCaps() {
+	int offset = (heightSegments * rotationSegments);
+	if (capTop)
+	    createTriangleFan(0, -height / 2);
+	if (capBottom)
+	    createTriangleFan(offset, height / 2);
+    }
 
-	public void setBottomRadius(float bottomRadius) {
-		this.bottomRadius = bottomRadius;
+    private void createTriangleFan(int offset, float y) {
+	int idx = mesh.vertices.size();
+	mesh.addVertex(0, y, 0);
+	for (int i = 0; i < rotationSegments; i++) {
+	    int idx0 = i + offset;
+	    int idx1 = (i + 1) % rotationSegments + offset;
+	    if (offset == 0) {
+		mesh.addFace(idx0, idx1, idx);
+	    } else {
+		mesh.addFace(idx1, idx0, idx);
+	    }
 	}
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    private void createNGonCaps() {
+	if (capTop)
+	    createTopNGon();
+	if (capBottom)
+	    createBottomNGon();
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
+    private void createTopNGon() {
+	int[] indices = new int[rotationSegments];
+	for (int i = 0; i < indices.length; i++) {
+	    indices[i] = i;
 	}
+	mesh.addFace(indices);
+    }
 
-	public int getRotationSegments() {
-		return rotationSegments;
+    private void createBottomNGon() {
+	int max = rotationSegments * (heightSegments + 1) - 1;
+	int[] indices = new int[rotationSegments];
+	for (int i = 0; i < rotationSegments; i++) {
+	    indices[i] = max - i;
 	}
+	mesh.addFace(indices);
+    }
 
-	public void setRotationSegments(int rotationSegments) {
-		this.rotationSegments = rotationSegments;
+    private void createCaps() {
+	switch (capFillType) {
+	case TRIANGLE_FAN:
+	    createTriangleFanCaps();
+	    break;
+	case N_GON:
+	    createNGonCaps();
+	    break;
+	case NOTHING:
+	    break;
+	default:
+	    break;
 	}
+    }
 
-	public int getHeightSegments() {
-		return heightSegments;
-	}
+    @Override
+    public Mesh3D create() {
+	mesh = new Mesh3D();
+	createVertices();
+	createQuadFaces();
+	createCaps();
+	return mesh;
+    }
 
-	public void setHeightSegments(int heightSegments) {
-		this.heightSegments = heightSegments;
-	}
+    public float getTopRadius() {
+	return topRadius;
+    }
 
-	public boolean isCapTop() {
-		return capTop;
-	}
+    public void setTopRadius(float topRadius) {
+	this.topRadius = topRadius;
+    }
 
-	public void setCapTop(boolean capTop) {
-		this.capTop = capTop;
-	}
+    public float getBottomRadius() {
+	return bottomRadius;
+    }
 
-	public boolean isCapBottom() {
-		return capBottom;
-	}
+    public void setBottomRadius(float bottomRadius) {
+	this.bottomRadius = bottomRadius;
+    }
 
-	public void setCapBottom(boolean capBottom) {
-		this.capBottom = capBottom;
-	}
+    public float getHeight() {
+	return height;
+    }
 
-	public FillType getCapFillType() {
-		return capFillType;
-	}
+    public void setHeight(float height) {
+	this.height = height;
+    }
 
-	public void setCapFillType(FillType capFillType) {
-		this.capFillType = capFillType;
-	}
+    public int getRotationSegments() {
+	return rotationSegments;
+    }
+
+    public void setRotationSegments(int rotationSegments) {
+	this.rotationSegments = rotationSegments;
+    }
+
+    public int getHeightSegments() {
+	return heightSegments;
+    }
+
+    public void setHeightSegments(int heightSegments) {
+	this.heightSegments = heightSegments;
+    }
+
+    public boolean isCapTop() {
+	return capTop;
+    }
+
+    public void setCapTop(boolean capTop) {
+	this.capTop = capTop;
+    }
+
+    public boolean isCapBottom() {
+	return capBottom;
+    }
+
+    public void setCapBottom(boolean capBottom) {
+	this.capBottom = capBottom;
+    }
+
+    public FillType getCapFillType() {
+	return capFillType;
+    }
+
+    public void setCapFillType(FillType capFillType) {
+	this.capFillType = capFillType;
+    }
 
 }

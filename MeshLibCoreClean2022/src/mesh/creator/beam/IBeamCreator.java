@@ -3,25 +3,25 @@ package mesh.creator.beam;
 import mesh.creator.IMeshCreator;
 
 public interface IBeamCreator extends IMeshCreator {
-	
-	float getWidth();
 
-	void setWidth(float width);
-	
-	float getHeight();
+    float getWidth();
 
-	void setHeight(float height);
+    void setWidth(float width);
 
-	float getDepth();
+    float getHeight();
 
-	void setDepth(float depth);
-	
-	float getThickness();
-	
-	void setThickness(float thickness);
+    void setHeight(float height);
 
-	float getTaper();
+    float getDepth();
 
-	void setTaper(float taper);
+    void setDepth(float depth);
+
+    float getThickness();
+
+    void setThickness(float thickness);
+
+    float getTaper();
+
+    void setTaper(float taper);
 
 }

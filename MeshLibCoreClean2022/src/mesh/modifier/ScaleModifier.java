@@ -4,54 +4,54 @@ import mesh.Mesh3D;
 
 public class ScaleModifier implements IMeshModifier {
 
-	private float scaleX;
-	
-	private float scaleY;
-	
-	private float scaleZ;
+    private float scaleX;
 
-	public ScaleModifier() {
-		this(1, 1, 1);
-	}
-	
-	public ScaleModifier(float scale) {
-		this(scale, scale, scale);
-	}
+    private float scaleY;
 
-	public ScaleModifier(float scaleX, float scaleY, float scaleZ) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-		this.scaleZ = scaleZ;
-	}
+    private float scaleZ;
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		mesh.scale(scaleX, scaleZ, scaleZ);
-		return mesh;
-	}
+    public ScaleModifier() {
+	this(1, 1, 1);
+    }
 
-	public float getScaleX() {
-		return scaleX;
-	}
+    public ScaleModifier(float scale) {
+	this(scale, scale, scale);
+    }
 
-	public void setScaleX(float scaleX) {
-		this.scaleX = scaleX;
-	}
+    public ScaleModifier(float scaleX, float scaleY, float scaleZ) {
+	this.scaleX = scaleX;
+	this.scaleY = scaleY;
+	this.scaleZ = scaleZ;
+    }
 
-	public float getScaleY() {
-		return scaleY;
-	}
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+	mesh.scale(scaleX, scaleZ, scaleZ);
+	return mesh;
+    }
 
-	public void setScaleY(float scaleY) {
-		this.scaleY = scaleY;
-	}
+    public float getScaleX() {
+	return scaleX;
+    }
 
-	public float getScaleZ() {
-		return scaleZ;
-	}
+    public void setScaleX(float scaleX) {
+	this.scaleX = scaleX;
+    }
 
-	public void setScaleZ(float scaleZ) {
-		this.scaleZ = scaleZ;
-	}
+    public float getScaleY() {
+	return scaleY;
+    }
+
+    public void setScaleY(float scaleY) {
+	this.scaleY = scaleY;
+    }
+
+    public float getScaleZ() {
+	return scaleZ;
+    }
+
+    public void setScaleZ(float scaleZ) {
+	this.scaleZ = scaleZ;
+    }
 
 }

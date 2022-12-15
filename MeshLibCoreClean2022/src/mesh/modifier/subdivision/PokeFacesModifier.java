@@ -9,58 +9,57 @@ import mesh.modifier.IMeshModifier;
 
 public class PokeFacesModifier implements IMeshModifier {
 
-	private float pokeOffset;
-	
-	private Mesh3D mesh;
+    private float pokeOffset;
 
-	public PokeFacesModifier() {
-		this.pokeOffset = 0.1f;
-	}
-	
-	public PokeFacesModifier(float pokeOffset) {
-		this.pokeOffset = pokeOffset;
-	}
+    private Mesh3D mesh;
 
-	private void createFaces(int index, Face3D face) {
-		int vertexCount = face.indices.length;
-		for (int i = 0; i < vertexCount; i++) {
-			Face3D f = new Face3D(index, face.indices[i % vertexCount],
-					face.indices[(i + 1) % vertexCount]);
-			mesh.add(f);
-		}
-	}
+    public PokeFacesModifier() {
+	this.pokeOffset = 0.1f;
+    }
 
-	private void createVertex(Face3D face) {
-		Vector3f center = mesh.calculateFaceCenter(face);
-		Vector3f normal = mesh.calculateFaceNormal(face);
-		center.addLocal(normal.multLocal(pokeOffset));
-		mesh.add(center);
-	}
+    public PokeFacesModifier(float pokeOffset) {
+	this.pokeOffset = pokeOffset;
+    }
 
-	private void extrude() {
-		int index = mesh.getVertexCount();
-		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
-		for (Face3D face : faces) {
-			createVertex(face);
-			createFaces(index, face);
-			index++;
-		}
-		mesh.faces.removeAll(faces);
+    private void createFaces(int index, Face3D face) {
+	int vertexCount = face.indices.length;
+	for (int i = 0; i < vertexCount; i++) {
+	    Face3D f = new Face3D(index, face.indices[i % vertexCount], face.indices[(i + 1) % vertexCount]);
+	    mesh.add(f);
 	}
+    }
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		this.mesh = mesh;
-		extrude();
-		return mesh;
-	}
+    private void createVertex(Face3D face) {
+	Vector3f center = mesh.calculateFaceCenter(face);
+	Vector3f normal = mesh.calculateFaceNormal(face);
+	center.addLocal(normal.multLocal(pokeOffset));
+	mesh.add(center);
+    }
 
-	public float getPokeOffset() {
-		return pokeOffset;
+    private void extrude() {
+	int index = mesh.getVertexCount();
+	List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
+	for (Face3D face : faces) {
+	    createVertex(face);
+	    createFaces(index, face);
+	    index++;
 	}
+	mesh.faces.removeAll(faces);
+    }
 
-	public void setPokeOffset(float pokeOffset) {
-		this.pokeOffset = pokeOffset;
-	}
-	
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+	this.mesh = mesh;
+	extrude();
+	return mesh;
+    }
+
+    public float getPokeOffset() {
+	return pokeOffset;
+    }
+
+    public void setPokeOffset(float pokeOffset) {
+	this.pokeOffset = pokeOffset;
+    }
+
 }

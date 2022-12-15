@@ -13,120 +13,120 @@ import mesh.util.Mesh3DUtil;
 
 public class WoodenBarrelCreator implements IMeshCreator {
 
-	private float radius;
-	
-	private float height;
-	
-	private float inset;
-	
-	private float bendFactor;
-	
-	private int rotationSegments;
-	
-	private int heightSegments;
-	
-	private Mesh3D mesh;
+    private float radius;
 
-	public WoodenBarrelCreator() {
-		radius = 1.0f;
-		height = 2.0f;
-		inset = 0.05f;
-		bendFactor = 0.75f;
-		rotationSegments = 16;
-		heightSegments = 8;
-	}
-	
-	@Override
-	public Mesh3D create() {
-		createBaseCylinder();
-		bend();
-		createInsets();
-		center();
-		return mesh;
-	}
+    private float height;
 
-	private void createBaseCylinder() {
-		SegmentedCylinderCreator creator = new SegmentedCylinderCreator();
-		creator.setHeight(height);
-		creator.setRotationSegments(rotationSegments);
-		creator.setHeightSegments(heightSegments);
-		creator.setTopRadius(radius);
-		creator.setBottomRadius(radius);
-		creator.setCapFillType(FillType.N_GON);
-		mesh = creator.create();
-	}
+    private float inset;
 
-	private void bend() {
-		for (Vector3f v : mesh.getVertices(0, mesh.getVertexCount())) {
-			float y = v.y;
-			float m = Mathf.cos(Mathf.abs(y * bendFactor));
-			v.multLocal(new Vector3f(m, 1, m));
-		}
-	}
+    private float bendFactor;
 
-	private void createInsets() {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectTopFaces();
-		selection.selectBottomFaces();
-		
-		for (Face3D face : selection.getFaces()) {
-			Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
-			Mesh3DUtil.extrudeFace(mesh, face, 1.0f, -inset);
-			Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
-			new PlanarVertexCenterModifier().modify(mesh, face);
-		}
-	}
-	
-	private void center() {
-		mesh.translateY(-height * 0.5f);
-	}
+    private int rotationSegments;
 
-	public float getRadius() {
-		return radius;
-	}
+    private int heightSegments;
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+    private Mesh3D mesh;
 
-	public float getHeight() {
-		return height;
-	}
+    public WoodenBarrelCreator() {
+	radius = 1.0f;
+	height = 2.0f;
+	inset = 0.05f;
+	bendFactor = 0.75f;
+	rotationSegments = 16;
+	heightSegments = 8;
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    @Override
+    public Mesh3D create() {
+	createBaseCylinder();
+	bend();
+	createInsets();
+	center();
+	return mesh;
+    }
 
-	public float getInset() {
-		return inset;
-	}
+    private void createBaseCylinder() {
+	SegmentedCylinderCreator creator = new SegmentedCylinderCreator();
+	creator.setHeight(height);
+	creator.setRotationSegments(rotationSegments);
+	creator.setHeightSegments(heightSegments);
+	creator.setTopRadius(radius);
+	creator.setBottomRadius(radius);
+	creator.setCapFillType(FillType.N_GON);
+	mesh = creator.create();
+    }
 
-	public void setInset(float inset) {
-		this.inset = inset;
+    private void bend() {
+	for (Vector3f v : mesh.getVertices(0, mesh.getVertexCount())) {
+	    float y = v.y;
+	    float m = Mathf.cos(Mathf.abs(y * bendFactor));
+	    v.multLocal(new Vector3f(m, 1, m));
 	}
+    }
 
-	public float getBendFactor() {
-		return bendFactor;
-	}
+    private void createInsets() {
+	FaceSelection selection = new FaceSelection(mesh);
+	selection.selectTopFaces();
+	selection.selectBottomFaces();
 
-	public void setBendFactor(float bendFactor) {
-		this.bendFactor = bendFactor;
+	for (Face3D face : selection.getFaces()) {
+	    Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
+	    Mesh3DUtil.extrudeFace(mesh, face, 1.0f, -inset);
+	    Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
+	    new PlanarVertexCenterModifier().modify(mesh, face);
 	}
+    }
 
-	public int getRotationSegments() {
-		return rotationSegments;
-	}
+    private void center() {
+	mesh.translateY(-height * 0.5f);
+    }
 
-	public void setRotationSegments(int rotationSegments) {
-		this.rotationSegments = rotationSegments;
-	}
+    public float getRadius() {
+	return radius;
+    }
 
-	public int getHeightSegments() {
-		return heightSegments;
-	}
+    public void setRadius(float radius) {
+	this.radius = radius;
+    }
 
-	public void setHeightSegments(int heightSegments) {
-		this.heightSegments = heightSegments;
-	}
+    public float getHeight() {
+	return height;
+    }
+
+    public void setHeight(float height) {
+	this.height = height;
+    }
+
+    public float getInset() {
+	return inset;
+    }
+
+    public void setInset(float inset) {
+	this.inset = inset;
+    }
+
+    public float getBendFactor() {
+	return bendFactor;
+    }
+
+    public void setBendFactor(float bendFactor) {
+	this.bendFactor = bendFactor;
+    }
+
+    public int getRotationSegments() {
+	return rotationSegments;
+    }
+
+    public void setRotationSegments(int rotationSegments) {
+	this.rotationSegments = rotationSegments;
+    }
+
+    public int getHeightSegments() {
+	return heightSegments;
+    }
+
+    public void setHeightSegments(int heightSegments) {
+	this.heightSegments = heightSegments;
+    }
 
 }
