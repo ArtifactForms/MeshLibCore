@@ -47,24 +47,34 @@ public class UVSphereCreator implements IMeshCreator {
 				addVertex(x, y, z);
 			}
 		}
+		addTopCenterVertex();
+		addBottomCenterVertex();
+	}
+	
+	private void addTopCenterVertex() {
 		addVertex(0, -radius, 0);
+	}
+	
+	private void addBottomCenterVertex() {
 		addVertex(0, radius, 0);
 	}
 
 	private void createFaces() {
-		for (int row = 0; row < rings - 2; row++) {
-			for (int col = 0; col < segments; col++) {
-				int a = getIndex(row, (col + 1) % segments);
-				int b = getIndex(row + 1, (col + 1) % segments);
-				int c = getIndex(row + 1, col);
-				int d = getIndex(row, col);
-				mesh.add(new Face3D(a, b, c, d));
-				if (row == 0) 
-					mesh.add(new Face3D(d, mesh.vertices.size() - 1, a));
-				if (row == rings - 3) 
-					mesh.add(new Face3D(c, b, mesh.vertices.size() - 2));
-			}
-		}
+		for (int row = 0; row < rings - 2; row++)
+			for (int col = 0; col < segments; col++)
+				createFaceAt(row, col);
+	}
+	
+	private void createFaceAt(int row, int col) {
+		int a = getIndex(row, (col + 1) % segments);
+		int b = getIndex(row + 1, (col + 1) % segments);
+		int c = getIndex(row + 1, col);
+		int d = getIndex(row, col);
+		mesh.add(new Face3D(a, b, c, d));
+		if (row == 0) 
+			mesh.add(new Face3D(d, mesh.vertices.size() - 1, a));
+		if (row == rings - 3) 
+			mesh.add(new Face3D(c, b, mesh.vertices.size() - 2));
 	}
 	
 	private int getIndex(int row, int col) {
