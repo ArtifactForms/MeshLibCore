@@ -13,11 +13,17 @@ import mesh.creator.primitives.CircleCreator;
 public class VariableCylinderCreator implements IMeshCreator {
 
 	private Mesh3D mesh;
+	
 	private float lastY;
+	
 	private int rotationSegments;
+	
 	private FillType capBottomFillType;
+	
 	private FillType capTopFillType;
+	
 	private List<Float> radii;
+	
 	private List<Float> yCoordinates;
 	
 	public VariableCylinderCreator() {
