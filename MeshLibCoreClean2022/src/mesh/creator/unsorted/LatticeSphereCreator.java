@@ -13,13 +13,9 @@ import mesh.util.Mesh3DUtil;
 public class LatticeSphereCreator implements IMeshCreator {
 
     private float radius;
-
     private float scale;
-
     private float thickness;
-
     private int subdivisions;
-
     private Mesh3D mesh;
 
     public LatticeSphereCreator() {

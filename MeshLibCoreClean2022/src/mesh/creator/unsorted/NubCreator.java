@@ -9,17 +9,11 @@ import mesh.modifier.subdivision.CatmullClarkModifier;
 public class NubCreator implements IMeshCreator {
 
     private int subdivisions;
-
     private int heightSegments;
-
     private int rotationSegments;
-
     private float radius;
-
     private float minorRadius;
-
     private float segmentHeight;
-
     private Mesh3D mesh;
 
     public NubCreator() {

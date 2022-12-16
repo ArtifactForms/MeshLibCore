@@ -10,19 +10,12 @@ import mesh.util.Mesh3DUtil;
 public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 
     private int vertices;
-
     private int subdivisionsY;
-
     private float radius;
-
     private float height;
-
     private float jointSize;
-
     private float scale0;
-
     private float scale1;
-
     private Mesh3D mesh;
 
     private Mesh3D[][] cubes;

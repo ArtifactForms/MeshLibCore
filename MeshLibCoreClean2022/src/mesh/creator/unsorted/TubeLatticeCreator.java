@@ -11,19 +11,12 @@ import mesh.util.Mesh3DUtil;
 public class TubeLatticeCreator implements IMeshCreator {
 
     private int segments;
-
     private int vertices;
-
     private float outerRadius;
-
     private float innerRadius;
-
     private float height;
-
     private float scaleExtrude;
-
     private float thickness;
-
     private Mesh3D mesh;
 
     public TubeLatticeCreator() {

@@ -9,9 +9,7 @@ import mesh.io.SimpleObjectReader;
 public class FromObjectCreator implements IMeshCreator {
 
     private float scale;
-
     private String path;
-
     private Mesh3D mesh;
 
     public FromObjectCreator() {

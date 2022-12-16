@@ -12,13 +12,9 @@ import mesh.util.Mesh3DUtil;
 public class TriangulatedSphereLatticeCreator implements IMeshCreator {
 
     private int tessellations;
-
     private float radius;
-
     private float thickness;
-
     private float scaleExtrude;
-
     private Mesh3D mesh;
 
     public TriangulatedSphereLatticeCreator() {
