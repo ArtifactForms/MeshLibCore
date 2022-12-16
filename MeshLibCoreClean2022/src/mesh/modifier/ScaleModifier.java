@@ -5,9 +5,7 @@ import mesh.Mesh3D;
 public class ScaleModifier implements IMeshModifier {
 
     private float scaleX;
-
     private float scaleY;
-
     private float scaleZ;
 
     public ScaleModifier() {

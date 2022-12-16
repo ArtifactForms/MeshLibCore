@@ -13,13 +13,9 @@ import mesh.util.VertexNormals;
 public class SolidifyModifier implements IMeshModifier {
 
     private float thickness;
-
     private Mesh3D mesh;
-
     private Mesh3D innerMesh;
-
     private List<Vector3f> vertexNormals;
-
     private HashSet<Edge3D> edges;
 
     public SolidifyModifier() {

@@ -9,9 +9,7 @@ import mesh.util.Mesh3DUtil;
 public class WireframeModifier implements IMeshModifier {
 
     private float scaleExtrude;
-
     private float thickness;
-
     private Mesh3D mesh;
 
     public WireframeModifier() {

@@ -10,7 +10,6 @@ import mesh.util.VertexNormals;
 public class NoiseModifier implements IMeshModifier {
 
     private float minimum;
-
     private float maximum;
 
     public NoiseModifier() {

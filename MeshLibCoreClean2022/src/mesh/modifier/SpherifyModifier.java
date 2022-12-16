@@ -6,9 +6,7 @@ import mesh.Mesh3D;
 public class SpherifyModifier implements IMeshModifier {
 
     private float factor;
-
     private float radius;
-
     private Vector3f center;
 
     public SpherifyModifier() {
