@@ -4,6 +4,6 @@ import mesh.Mesh3D;
 
 public interface IMeshCreator {
 
-    public Mesh3D create();
+    Mesh3D create();
 
 }
