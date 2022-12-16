@@ -7,15 +7,10 @@ import mesh.modifier.SolidifyModifier;
 public class BeamCProfileCreator implements IBeamCreator {
 
     private float width;
-
     private float height;
-
     private float depth;
-
     private float thickness;
-
     private float taper;
-
     private Mesh3D mesh;
 
     public BeamCProfileCreator() {
