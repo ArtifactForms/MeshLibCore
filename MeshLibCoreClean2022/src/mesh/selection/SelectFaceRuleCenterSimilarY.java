@@ -7,7 +7,6 @@ import mesh.Mesh3D;
 public class SelectFaceRuleCenterSimilarY implements IFaceSelectionRule {
 
     private float y;
-    
     private float threshold;
 
     public SelectFaceRuleCenterSimilarY(float y, float threshold) {

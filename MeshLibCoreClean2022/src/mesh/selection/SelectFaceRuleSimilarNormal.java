@@ -7,7 +7,6 @@ import mesh.Mesh3D;
 public class SelectFaceRuleSimilarNormal implements IFaceSelectionRule {
 
     private float threshold;
-    
     private Vector3f compare;
 
     public SelectFaceRuleSimilarNormal(float threshold, Vector3f compare) {

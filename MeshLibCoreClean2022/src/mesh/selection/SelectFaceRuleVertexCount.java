@@ -6,7 +6,6 @@ import mesh.Mesh3D;
 public class SelectFaceRuleVertexCount implements IFaceSelectionRule {
 
     private int vertexCount;
-    
     private CompareType compare;
 
     public SelectFaceRuleVertexCount(int vertexCount, CompareType compare) {

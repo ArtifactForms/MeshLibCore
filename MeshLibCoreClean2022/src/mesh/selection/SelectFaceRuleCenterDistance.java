@@ -7,9 +7,7 @@ import mesh.Mesh3D;
 public class SelectFaceRuleCenterDistance implements IFaceSelectionRule {
 
     private float distance;
-    
     private Vector3f origin;
-    
     private CompareType compare;
 
     public SelectFaceRuleCenterDistance(Vector3f origin, CompareType compare, float distance) {
