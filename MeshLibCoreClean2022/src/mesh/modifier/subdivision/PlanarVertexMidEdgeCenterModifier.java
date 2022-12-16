@@ -14,19 +14,12 @@ import mesh.modifier.IMeshModifier;
 public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 
     private int fromIndex;
-
     private int toIndex;
-
     private int edgePointIndex;
-
     private int centerIndex;
-
     private int nextIndex;
-
     private Mesh3D mesh;
-
     private List<Face3D> newlyCreatedFaces;
-
     private HashMap<Edge3D, Integer> edgeToEdgePointIndexMap;
 
     @Override

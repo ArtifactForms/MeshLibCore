@@ -13,13 +13,9 @@ import mesh.modifier.IMeshModifier;
 public class PlanarMidEdgeModifier implements IMeshModifier {
 
     private int nextIndex;
-
     private int iterations;
-
     private Mesh3D mesh;
-
     private List<Face3D> facesToAdd;
-
     private HashMap<Edge3D, Integer> edgeToMidPointIndex;
 
     public PlanarMidEdgeModifier() {

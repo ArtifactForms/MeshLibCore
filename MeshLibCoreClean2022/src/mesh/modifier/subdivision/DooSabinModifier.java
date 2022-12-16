@@ -25,17 +25,11 @@ import mesh.util.TraverseHelper;
 public class DooSabinModifier implements IMeshModifier {
 
     private int subdivisions;
-
     private Mesh3D source;
-
     private Mesh3D target;
-
     private HashSet<Edge3D> edges;
-
     private HashMap<Edge3D, Face3D> edgeToFaceMap;
-
     private HashMap<Vector3f, List<Vector3f>> oldToNewVertexMap;
-
     private HashMap<VertexFacePair, Integer> vertexFaceMap;
 
     /**
