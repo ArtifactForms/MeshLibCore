@@ -67,13 +67,7 @@ public class ConwayVariationSystem {
 	    result.addAll(toAdd);
 	    toAdd.clear();
 	}
-
-//		int expected = (int) Math.pow(operations.length, k);
-//		System.out.println("expected:" + expected);
-//		System.out.println("size: " + result.size());
-//		for (String s : result) {
-//			System.out.println(s);
-//		}
+	
 	return result;
     }
 
