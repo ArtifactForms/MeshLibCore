@@ -36,20 +36,21 @@ public class ArchCreator implements IMeshCreator {
 	createRightFace();
 	createArc();
 	solidify();
-	translate();
+	snapToGround();
 	return mesh;
     }
 
     private void createArc() {
-	float extendStep = calculateWidth() / (float) segments;
+	float extendStep = calculateWidth() / segments;
 	float offsetLeft = -radius - extendLeft;
 	float angle = Mathf.PI;
-	float angleStep = Mathf.PI / (float) segments;
+	float angleStep = Mathf.PI / segments;
 
 	for (int i = 0; i <= segments; i++) {
+	    float x = offsetLeft + (i * extendStep);
+	    float y = -radius - extendTop;
+	    Vector3f v1 = new Vector3f(x, y, 0);
 	    Vector3f v0 = pointOnCircle(angle);
-	    Vector3f v1 = new Vector3f(offsetLeft + (i * extendStep), -radius - extendTop, 0);
-
 	    if (i > 0 && i < segments)
 		v1.setX(v0.x);
 
@@ -72,7 +73,7 @@ public class ArchCreator implements IMeshCreator {
 	return radius + radius + extendLeft + extendRight;
     }
 
-    private void translate() {
+    private void snapToGround() {
 	mesh.translateY(-extendBottom);
 	mesh.translateZ(depth / 2f);
     }
