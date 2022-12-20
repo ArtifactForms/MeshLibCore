@@ -7,17 +7,11 @@ import mesh.modifier.subdivision.QuadsToTrianglesModifier;
 public class PitchedRoofCreator implements IMeshCreator {
 
     private float width;
-
     private float height;
-
     private float depth;
-
     private boolean triangulate;
-
     private boolean capBottom;
-
     private boolean snapToGround;
-
     private Mesh3D mesh;
 
     public PitchedRoofCreator() {
