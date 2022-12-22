@@ -21,10 +21,10 @@ public class QuadCapCylinderCreator implements IMeshCreator {
     private Mesh3D mesh;
 
     public QuadCapCylinderCreator() {
-	this.vertices = 32;
-	this.heightSegments = 1;
-	this.radius = 1;
-	this.height = 2;
+	vertices = 32;
+	heightSegments = 1;
+	radius = 1;
+	height = 2;
 	updateCapParameters();
     }
 
@@ -114,41 +114,40 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 
     @Override
     public Mesh3D create() {
+	List<Mesh3D> meshes = new ArrayList<Mesh3D>();
 	initializeMesh();
 
 	Mesh3D top = createCap();
+	meshes.add(top);
+	mesh.append(top);
+
 	Mesh3D bottom = top.copy();
 	bottom.translateY(height);
 	Mesh3DUtil.flipDirection(bottom);
 
-	List<Mesh3D> meshes = new ArrayList<Mesh3D>();
-
-	meshes.add(top);
-	mesh.append(top);
-
-
 	createCircles(meshes);
-
 	meshes.add(bottom);
 	mesh.append(bottom);
-
 	bridge(meshes);
 
 	return mesh;
     }
-    
+
     public void createCircles(List<Mesh3D> meshes) {
 	float segmentHeight = height / heightSegments;
+	float a = Mathf.TWO_PI / vertices;
 	for (int i = 0; i < heightSegments - 1; i++) {
-	    float a = Mathf.TWO_PI / vertices;
-	    Mesh3D circle = new CircleCreator(vertices, radius, segmentHeight + i * segmentHeight - height / 2f)
-		    .create();
+	    CircleCreator creator = new CircleCreator();
+	    creator.setVertices(vertices);
+	    creator.setRadius(radius);
+	    creator.setCenterY(segmentHeight + i * segmentHeight - height / 2f);
+	    Mesh3D circle = creator.create();
 	    circle.rotateY(Mathf.HALF_PI + (capCols % 2 == 1 ? -a / 2f : 0));
 	    meshes.add(circle);
 	    mesh.append(circle);
 	}
     }
-    
+
     private void initializeMesh() {
 	mesh = new Mesh3D();
     }
