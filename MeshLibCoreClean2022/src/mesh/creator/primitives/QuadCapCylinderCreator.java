@@ -114,11 +114,9 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 
     @Override
     public Mesh3D create() {
-
-	mesh = new Mesh3D();
+	initializeMesh();
 
 	Mesh3D top = createCap();
-
 	Mesh3D bottom = top.copy();
 	bottom.translateY(height);
 	Mesh3DUtil.flipDirection(bottom);
@@ -128,6 +126,18 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 	meshes.add(top);
 	mesh.append(top);
 
+
+	createCircles(meshes);
+
+	meshes.add(bottom);
+	mesh.append(bottom);
+
+	bridge(meshes);
+
+	return mesh;
+    }
+    
+    public void createCircles(List<Mesh3D> meshes) {
 	float segmentHeight = height / heightSegments;
 	for (int i = 0; i < heightSegments - 1; i++) {
 	    float a = Mathf.TWO_PI / vertices;
@@ -137,13 +147,10 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 	    meshes.add(circle);
 	    mesh.append(circle);
 	}
-
-	meshes.add(bottom);
-	mesh.append(bottom);
-
-	bridge(meshes);
-
-	return mesh;
+    }
+    
+    private void initializeMesh() {
+	mesh = new Mesh3D();
     }
 
     private void bridge(List<Mesh3D> meshes) {
