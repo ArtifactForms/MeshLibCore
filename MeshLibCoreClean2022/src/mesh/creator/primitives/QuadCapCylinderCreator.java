@@ -21,16 +21,11 @@ public class QuadCapCylinderCreator implements IMeshCreator {
     private Mesh3D mesh;
 
     public QuadCapCylinderCreator() {
-	this(32, 1, 1, 2);
-    }
-
-    public QuadCapCylinderCreator(int vertices, int segments, float radius, float height) {
-	this.vertices = vertices;
-	this.heightSegments = segments;
-	this.radius = radius;
-	this.height = height;
+	this.vertices = 32;
+	this.heightSegments = 1;
+	this.radius = 1;
+	this.height = 2;
 	updateCapParameters();
-	validateParameters();
     }
 
     private void updateCapParameters() {
@@ -38,7 +33,7 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 	capCols = (vertices + 2) / 4;
     }
 
-    protected void validateParameters() {
+    private void validateParameters() {
 	if (vertices % 2 == 1)
 	    throw new IllegalArgumentException("The number of vertices must be even.");
 	if (vertices < 4)
@@ -167,6 +162,7 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 
     public void setVertices(int vertices) {
 	this.vertices = vertices;
+	validateParameters();
 	updateCapParameters();
     }
 
