@@ -32,7 +32,6 @@ public class ArcCreator implements IMeshCreator {
 
     private void createVertices() {
 	float angleBetweenPoints = calculateAngleBetweenPoints();
-
 	for (int i = 0; i < vertices; i++) {
 	    float currentAngle = angleBetweenPoints * i;
 	    float x = radius * Mathf.cos(currentAngle);
