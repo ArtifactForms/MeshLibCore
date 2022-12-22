@@ -5,20 +5,17 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.subdivision.CatmullClarkModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 
 public class LeonardoCubeCreator implements IMeshCreator {
 
-    private int subdivisions;
     private float innerRadius;
     private float outerRadius;
     private float connectorRadius;
     private Mesh3D mesh;
 
     public LeonardoCubeCreator() {
-	subdivisions = 0;
 	innerRadius = 0.9f;
 	outerRadius = 1.0f;
     }
@@ -29,16 +26,11 @@ public class LeonardoCubeCreator implements IMeshCreator {
 	initializeMesh();
 	createConnectors();
 	removeDoubles();
-	subdivide();
 	return mesh;
     }
 
     private void initializeConnectorRadius() {
 	connectorRadius = calculateConnectorRadius();
-    }
-
-    private void subdivide() {
-	new CatmullClarkModifier(subdivisions).modify(mesh);
     }
 
     private void initializeMesh() {
@@ -134,14 +126,6 @@ public class LeonardoCubeCreator implements IMeshCreator {
 	}
 
 	return m;
-    }
-
-    public int getSubdivisions() {
-	return subdivisions;
-    }
-
-    public void setSubdivisions(int subdivisions) {
-	this.subdivisions = subdivisions;
     }
 
     private float calculateConnectorRadius() {
