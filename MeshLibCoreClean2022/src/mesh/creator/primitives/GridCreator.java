@@ -1,7 +1,6 @@
 package mesh.creator.primitives;
 
 import math.Vector3f;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
