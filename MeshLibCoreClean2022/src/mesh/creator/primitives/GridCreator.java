@@ -63,9 +63,11 @@ public class GridCreator implements IMeshCreator {
     private void createFaces() {
 	for (int i = 0; i < subdivisionsZ; i++) {
 	    for (int j = 0; j < subdivisionsX; j++) {
-		int index = i * (subdivisionsX + 1) + j;
-		Face3D face = new Face3D(index, index + 1, index + subdivisionsX + 2, index + subdivisionsX + 1);
-		mesh.faces.add(face);
+		int index0 = i * (subdivisionsX + 1) + j;
+		int index1 = index0 + 1;
+		int index2 = index0 + subdivisionsX + 2;
+		int index3 = index2 - 1;
+		mesh.addFace(index0, index1, index2, index3);
 	    }
 	}
     }
