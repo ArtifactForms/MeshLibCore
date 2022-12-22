@@ -141,6 +141,12 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 	meshes.add(bottom);
 	mesh.append(bottom);
 
+	bridge(meshes);
+
+	return mesh;
+    }
+
+    private void bridge(List<Mesh3D> meshes) {
 	for (int j = 0; j < meshes.size() - 1; j++) {
 	    Mesh3D mesh0 = meshes.get(j);
 	    Mesh3D mesh1 = meshes.get(j + 1);
@@ -152,8 +158,6 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 		Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
 	    }
 	}
-
-	return mesh;
     }
 
     public int getVertices() {
