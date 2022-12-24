@@ -41,7 +41,11 @@ public class FloorPatternCreator implements IMeshCreator {
     }
 
     private void extrude() {
-	new ExtrudeModifier(0.9f, height * 0.5f).modify(mesh, faceSelection.getFaces());
+	ExtrudeModifier extrude = new ExtrudeModifier();
+	extrude.setScale(0.9f);
+	extrude.setAmount(height * 0.5f);
+	extrude.setFacesToExtrude(faceSelection.getFaces());
+	extrude.modify(mesh);
     }
 
     private void solidify() {
