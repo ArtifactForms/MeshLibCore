@@ -14,17 +14,11 @@ import mesh.util.Mesh3DUtil;
 public class WoodenBarrelCreator implements IMeshCreator {
 
     private float radius;
-
     private float height;
-
     private float inset;
-
     private float bendFactor;
-
     private int rotationSegments;
-
     private int heightSegments;
-
     private Mesh3D mesh;
 
     public WoodenBarrelCreator() {

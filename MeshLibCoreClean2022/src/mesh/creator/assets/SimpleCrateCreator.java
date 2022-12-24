@@ -10,11 +10,8 @@ import mesh.selection.FaceSelection;
 public class SimpleCrateCreator implements IMeshCreator {
 
     private float inset;
-
     private float extrudeAmount;
-
     private Mesh3D mesh;
-
     private FaceSelection faceSelection;
 
     public SimpleCrateCreator() {
@@ -39,7 +36,6 @@ public class SimpleCrateCreator implements IMeshCreator {
 
     private void extrudeSelectedFaces() {
 	new ExtrudeModifier(1, -extrudeAmount).modify(mesh, faceSelection.getFaces());
-	;
     }
 
     private void selectAllFaces() {
