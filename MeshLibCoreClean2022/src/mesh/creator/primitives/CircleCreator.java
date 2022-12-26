@@ -23,14 +23,10 @@ public class CircleCreator implements IMeshCreator {
     }
 
     public CircleCreator(int vertices, float radius, float centerY) {
-	this(vertices, radius, centerY, FillType.NOTHING);
-    }
-
-    public CircleCreator(int vertices, float radius, float centerY, FillType fillType) {
 	this.vertices = vertices;
 	this.radius = radius;
 	this.centerY = centerY;
-	this.fillType = fillType;
+	this.fillType = FillType.NOTHING;
     }
 
     private void createVertices() {
