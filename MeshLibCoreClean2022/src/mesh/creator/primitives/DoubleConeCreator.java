@@ -1,6 +1,5 @@
 package mesh.creator.primitives;
 
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
@@ -43,11 +42,11 @@ public class DoubleConeCreator implements IMeshCreator {
     }
 
     private void createBottomCenterVertex() {
-	mesh.add(new Vector3f(0, height / 2f, 0));
+	addVertex(0, height / 2f, 0);
     }
 
     private void createTopCenterVertex() {
-	mesh.add(new Vector3f(0, -height / 2f, 0));
+	addVertex(0, -height / 2f, 0);
     }
 
     private void createTopFaceAt(int i) {
@@ -56,6 +55,10 @@ public class DoubleConeCreator implements IMeshCreator {
 
     private void createBottomFaceAt(int i) {
 	mesh.add(new Face3D(vertices + 1, (i + 1) % vertices, i));
+    }
+    
+    private void addVertex(float x, float y, float z) {
+	mesh.addVertex(x, y, z);
     }
 
     public int getVertices() {
