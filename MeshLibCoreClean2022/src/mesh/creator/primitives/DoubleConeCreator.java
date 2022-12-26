@@ -1,6 +1,5 @@
 package mesh.creator.primitives;
 
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -50,15 +49,19 @@ public class DoubleConeCreator implements IMeshCreator {
     }
 
     private void createTopFaceAt(int i) {
-	mesh.add(new Face3D(vertices, i, (i + 1) % vertices));
+	addFace(vertices, i, (i + 1) % vertices);
     }
 
     private void createBottomFaceAt(int i) {
-	mesh.add(new Face3D(vertices + 1, (i + 1) % vertices, i));
+	addFace(vertices + 1, (i + 1) % vertices, i);
     }
     
     private void addVertex(float x, float y, float z) {
 	mesh.addVertex(x, y, z);
+    }
+    
+    private void addFace(int... indices) {
+	mesh.addFace(indices);
     }
 
     public int getVertices() {
