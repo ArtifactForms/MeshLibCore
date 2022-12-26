@@ -15,11 +15,6 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
 	height = 2f;
     }
 
-    public SquareBasedPyramidCreator(float size, float height) {
-	this.size = size;
-	this.height = height;
-    }
-
     private void createVertices() {
 	addVertex(-1, 0, -1);
 	addVertex(-1, 0, 1);
