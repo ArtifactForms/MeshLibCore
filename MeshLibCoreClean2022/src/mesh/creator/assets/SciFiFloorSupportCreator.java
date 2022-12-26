@@ -10,35 +10,20 @@ import mesh.selection.FaceSelectionRules;
 public class SciFiFloorSupportCreator implements IMeshCreator {
 
     private int supportCount;
-
     private int segments;
-
     private float gap;
-
     private float width;
-
     private float radius;
-
     private float extendBottom;
-
     private float extendTop;
-
     private float extendFront;
-
     private float extendBack;
-
     private float mirrorGap;
-
     private boolean capBack;
-
     private boolean capBottom;
-
     private boolean capTop;
-
     private boolean mirror;
-
     private Mesh3D mesh;
-
     private Mesh3D support;
 
     public SciFiFloorSupportCreator() {

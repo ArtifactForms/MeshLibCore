@@ -8,17 +8,11 @@ import mesh.creator.primitives.BoxCreator;
 public class StairsCreator implements IMeshCreator {
 
     private int nextIndex;
-
     private Mesh3D mesh;
-
     private int numSteps;
-
     private float width;
-
     private float stepDepth;
-
     private float stepHeight;
-
     private boolean floating;
 
     public StairsCreator() {

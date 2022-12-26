@@ -12,23 +12,14 @@ import mesh.util.Mesh3DUtil;
 public class PillarCreator implements IMeshCreator {
 
     private int rotationSegments;
-
     private int topSegments;
-
     private int bottomSegments;
-
     private float topHeight;
-
     private float bottomHeight;
-
     private float centerHeight;
-
     private float radius;
-
     private FillType capFillType;
-
     private Mesh3D mesh;
-
     private FaceSelection selection;
 
     public PillarCreator() {
