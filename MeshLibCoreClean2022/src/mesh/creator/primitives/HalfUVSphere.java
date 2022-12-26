@@ -1,7 +1,6 @@
 package mesh.creator.primitives;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.FillType;
@@ -40,7 +39,7 @@ public class HalfUVSphere implements IMeshCreator {
 		mesh.addVertex(x, y, z);
 	    }
 	}
-	mesh.add(new Vector3f(0, radius, 0));
+	addVertex(0, radius, 0);
     }
 
     private int getIndex(int row, int col) {
@@ -55,11 +54,11 @@ public class HalfUVSphere implements IMeshCreator {
 		int b = getIndex(row + 1, (col + 1) % segments);
 		int c = getIndex(row + 1, col);
 		int d = getIndex(row, col);
-		mesh.add(new Face3D(a, b, c, d));
+		addFace(a, b, c, d);
 		if (row == 0)
-		    mesh.add(new Face3D(d, mesh.vertices.size() - 1, a));
+		    addFace(d, mesh.vertices.size() - 1, a);
 		if (row == rings - 3)
-		    mesh.add(new Face3D(c, b, mesh.vertices.size() - 2));
+		    addFace(c, b, mesh.vertices.size() - 2);
 	    }
 	}
     }
@@ -100,9 +99,16 @@ public class HalfUVSphere implements IMeshCreator {
 
     private void capNGon() {
 	int[] indices = new int[segments];
-	for (int i = 0; i < segments; i++) {
+	for (int i = 0; i < segments; i++)
 	    indices[i] = (mesh.getFaceCount() - (segments)) + i;
-	}
+	addFace(indices);
+    }
+    
+    private void addVertex(float x, float y, float z) {
+	mesh.addVertex(x, y, z);
+    }
+    
+    private void addFace(int... indices) {
 	mesh.addFace(indices);
     }
 
