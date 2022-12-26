@@ -7,19 +7,12 @@ import mesh.modifier.SolidifyModifier;
 public class ModularKitDoorSegmentCreator implements IMeshCreator {
 
     private float doorWidth;
-
     private float doorHeight;
-
     private float segmentWidth;
-
     private float segmentHeight;
-
     private float segmentDepth;
-
     private float doorWidthHalf;
-
     private float segmentWidthHalf;
-
     private Mesh3D mesh;
 
     public ModularKitDoorSegmentCreator() {
