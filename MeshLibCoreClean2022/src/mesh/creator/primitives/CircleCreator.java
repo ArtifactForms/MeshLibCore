@@ -22,7 +22,7 @@ public class CircleCreator implements IMeshCreator {
 	this(vertices, radius, 0);
     }
 
-    public CircleCreator(int vertices, float radius, float centerY) {
+    protected CircleCreator(int vertices, float radius, float centerY) {
 	this.vertices = vertices;
 	this.radius = radius;
 	this.centerY = centerY;
