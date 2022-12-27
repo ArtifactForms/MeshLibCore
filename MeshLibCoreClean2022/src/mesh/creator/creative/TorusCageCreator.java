@@ -1,14 +1,11 @@
 package mesh.creator.creative;
 
-import java.util.List;
-
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.TorusCreator;
+import mesh.modifier.ExtrudeModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
-import mesh.util.Mesh3DUtil;
 
 public class TorusCageCreator implements IMeshCreator {
 
@@ -50,10 +47,11 @@ public class TorusCageCreator implements IMeshCreator {
     }
 
     private void createHoles() {
-	List<Face3D> faces = mesh.getFaces();
-	for (Face3D face : faces)
-	    Mesh3DUtil.extrudeFace(mesh, face, extrude, 0f);
-	mesh.faces.removeAll(faces);
+	ExtrudeModifier modifier = new ExtrudeModifier();
+	modifier.setScale(extrude);
+	modifier.setAmount(0);
+	modifier.setRemoveFaces(true);
+	modifier.modify(mesh, mesh.getFaces());
     }
 
     private void solidify() {
