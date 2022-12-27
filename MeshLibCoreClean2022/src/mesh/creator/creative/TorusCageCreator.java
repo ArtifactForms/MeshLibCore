@@ -51,7 +51,7 @@ public class TorusCageCreator implements IMeshCreator {
 	modifier.setScale(extrude);
 	modifier.setAmount(0);
 	modifier.setRemoveFaces(true);
-	modifier.modify(mesh, mesh.getFaces());
+	modifier.modify(mesh);
     }
 
     private void solidify() {
