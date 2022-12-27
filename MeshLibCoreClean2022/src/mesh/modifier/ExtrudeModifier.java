@@ -1,6 +1,5 @@
 package mesh.modifier;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import mesh.Face3D;
@@ -9,8 +8,14 @@ import mesh.util.Mesh3DUtil;
 
 public class ExtrudeModifier implements IMeshModifier {
 
+    private boolean removeFaces;
     private float scale;
     private float amount;
+    private Collection<Face3D> faces;
+    
+    public ExtrudeModifier() {
+	
+    }
 
     public ExtrudeModifier(float scale, float amount) {
 	this.scale = scale;
@@ -18,14 +23,17 @@ public class ExtrudeModifier implements IMeshModifier {
     }
 
     public Mesh3D modify(Mesh3D mesh) {
-	modify(mesh, new ArrayList<>(mesh.faces));
+	if (faces == null) 
+	    faces = mesh.getFaces();
+	modify(mesh, faces);
 	return mesh;
     }
 
     public void modify(Mesh3D mesh, Collection<Face3D> faces) {
-	for (Face3D face : faces) {
+	for (Face3D face : faces)
 	    Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
-	}
+	if (removeFaces)
+	    mesh.faces.removeAll(faces);
     }
 
     public float getScale() {
@@ -43,5 +51,17 @@ public class ExtrudeModifier implements IMeshModifier {
     public void setAmount(float amount) {
 	this.amount = amount;
     }
+    
+    public void setFacesToExtrude(Collection<Face3D> faces) {
+	this.faces = faces;
+    }
 
+    public boolean isRemoveFaces() {
+        return removeFaces;
+    }
+
+    public void setRemoveFaces(boolean removeFaces) {
+        this.removeFaces = removeFaces;
+    }
+    
 }
