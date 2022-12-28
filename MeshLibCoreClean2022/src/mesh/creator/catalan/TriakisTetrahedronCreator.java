@@ -7,9 +7,7 @@ import mesh.creator.IMeshCreator;
 public class TriakisTetrahedronCreator implements IMeshCreator {
 
     private float a;
-
     private float b;
-
     private Mesh3D mesh;
 
     public TriakisTetrahedronCreator() {
