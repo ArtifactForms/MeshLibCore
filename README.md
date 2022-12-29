@@ -218,16 +218,29 @@ import mesh.Mesh3D;
 public class MyQuadCreator implements IMeshCreator {
 
 	private float halfSize;
+	private Mesh3D mesh;
 
 	public Mesh3D create() {
-		Mesh3D mesh = new Mesh3d();
-		mesh.addVertex(halfSize, 0, -halfSize);
-		mesh.addVertex(halfSize, 0, halfSize);
-		mesh.addVertex(-halfSize, 0, halfSize);
-		mesh.addVertex(-halfSize, 0, -halfSize);
-		mesh.addFace(0, 1, 3);
-		mesh.addFace(1, 2, 3);
+		initializeMesh();
+		addVertex(halfSize, 0, -halfSize);
+		addVertex(halfSize, 0, halfSize);
+		addVertex(-halfSize, 0, halfSize);
+		addVertex(-halfSize, 0, -halfSize);
+		addFace(0, 1, 3);
+		addFace(1, 2, 3);
 		return mesh;
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+	
+	private void addVertex(float x, float y, float z) {
+		mesh.addVertex(x, y, z);
+	}
+	
+	private void addFace(int... indices) {
+		mesh.add(new Face3D(indices));
 	}
 	
 	public void setSize(float size) {
