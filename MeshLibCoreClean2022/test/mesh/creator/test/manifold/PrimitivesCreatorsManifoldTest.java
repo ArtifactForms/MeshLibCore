@@ -14,7 +14,6 @@ import mesh.creator.primitives.FlatTopPyramidCreator;
 import mesh.creator.primitives.HalfUVSphere;
 import mesh.creator.primitives.HelixCreator;
 import mesh.creator.primitives.IcoSphereCreator;
-import mesh.creator.primitives.QuadCapCapsule;
 import mesh.creator.primitives.QuadCapCylinderCreator;
 import mesh.creator.primitives.QuadSphereCreator;
 import mesh.creator.primitives.SegmentedBoxCreator;
@@ -83,11 +82,6 @@ public class PrimitivesCreatorsManifoldTest {
     @Test
     public void manifoldIcoSphere() {
 	test(new IcoSphereCreator());
-    }
-
-    @Test
-    public void manifoldQuadCapCapsule() {
-	test(new QuadCapCapsule());
     }
 
     @Test
