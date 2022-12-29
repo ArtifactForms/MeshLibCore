@@ -2,8 +2,8 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.ExtrudeModifier;
 import mesh.modifier.SolidifyModifier;
-import mesh.operators.ExtrudeIndividualFacesOperator;
 
 public class LatticeCreator implements IMeshCreator {
 
@@ -25,11 +25,11 @@ public class LatticeCreator implements IMeshCreator {
     }
 
     private void createHoles() {
-	ExtrudeIndividualFacesOperator extrude = new ExtrudeIndividualFacesOperator(mesh);
-	extrude.setRemoveFace(true);
-	extrude.setAmount(0);
-	extrude.setScale(openingPercent);
-	extrude.apply(mesh.getFaces());
+	ExtrudeModifier modifier = new ExtrudeModifier();
+	modifier.setRemoveFaces(true);
+	modifier.setAmount(0);
+	modifier.setScale(openingPercent);
+	modifier.modify(mesh);
     }
 
     @Override
