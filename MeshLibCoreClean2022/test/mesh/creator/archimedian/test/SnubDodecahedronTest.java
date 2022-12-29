@@ -52,10 +52,4 @@ public class SnubDodecahedronTest {
 	MeshTest.assertFulfillsEulerCharacteristic(mesh);
     }
 
-    @Test
-    public void everyEdgeHasLengthOf() {
-	// TODO implement
-	Assert.assertFalse(true);
-    }
-
 }
