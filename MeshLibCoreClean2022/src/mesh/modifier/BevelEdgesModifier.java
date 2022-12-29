@@ -1,10 +1,10 @@
 package mesh.modifier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
 
 import math.Mathf;
 import math.Vector3f;
@@ -120,7 +120,7 @@ public class BevelEdgesModifier implements IMeshModifier {
 	for (int i = 0; i < mesh.getVertexCount(); i++) {
 	    Edge3D outgoingEdge = helper.getOutgoing(i);
 	    Edge3D edge = outgoingEdge;
-	    Vector<Integer> indices = new Vector<Integer>();
+	    List<Integer> indices = new ArrayList<Integer>();
 	    do {
 		Edge3D newEdge = oldEdgeToNewEdge.get(edge);
 		int index = newEdge.fromIndex;
@@ -163,8 +163,7 @@ public class BevelEdgesModifier implements IMeshModifier {
     }
 
     private Edge3D createEdgeAt(int[] indices, int i) {
-	Edge3D edge = new Edge3D(indices[i], indices[(i + 1) % indices.length]);
-	return edge;
+	return new Edge3D(indices[i], indices[(i + 1) % indices.length]);
     }
 
     private int[] createIndices(int size, int nextVertexIndex) {
@@ -174,13 +173,11 @@ public class BevelEdgesModifier implements IMeshModifier {
 	return indices;
     }
 
-    private int[] toReverseArray(Vector<Integer> values) {
-	int[] a = new int[values.size()];
-	for (int j = 0; j < a.length; j++) {
-	    int index = a.length - j - 1;
-	    a[index] = values.get(j);
-	}
-	return a;
+    private int[] toReverseArray(List<Integer> values) {
+	return values.stream()
+		.sorted(Collections.reverseOrder())
+		.mapToInt(x -> x)
+		.toArray();
     }
 
     private void clearAll() {
