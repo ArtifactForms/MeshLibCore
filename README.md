@@ -222,17 +222,25 @@ public class MyQuadCreator implements IMeshCreator {
 
 	public Mesh3D create() {
 		initializeMesh();
-		addVertex(halfSize, 0, -halfSize);
-		addVertex(halfSize, 0, halfSize);
-		addVertex(-halfSize, 0, halfSize);
-		addVertex(-halfSize, 0, -halfSize);
-		addFace(0, 1, 3);
-		addFace(1, 2, 3);
+		createVertices();
+		createFaces();
 		return mesh;
 	}
 	
 	private void initializeMesh() {
 		mesh = new Mesh3D();
+	}
+	
+	private void createVertices() {
+		addVertex(halfSize, 0, -halfSize);
+		addVertex(halfSize, 0, halfSize);
+		addVertex(-halfSize, 0, halfSize);
+		addVertex(-halfSize, 0, -halfSize);
+	}
+	
+	private void createFaces() {
+		addFace(0, 1, 3);
+		addFace(1, 2, 3);
 	}
 	
 	private void addVertex(float x, float y, float z) {
