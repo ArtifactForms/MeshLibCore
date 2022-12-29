@@ -3,8 +3,8 @@ package mesh.creator.unsorted;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.SegmentedTubeCreator;
+import mesh.modifier.ExtrudeModifier;
 import mesh.modifier.SolidifyModifier;
-import mesh.operators.ExtrudeIndividualFacesOperator;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 
@@ -61,10 +61,10 @@ public class TubeLatticeCreator implements IMeshCreator {
     }
 
     private void createHoles() {
-	ExtrudeIndividualFacesOperator operator = new ExtrudeIndividualFacesOperator(mesh);
-	operator.setScale(scaleExtrude);
-	operator.setRemoveFace(true);
-	operator.apply(select().getFaces());
+	ExtrudeModifier modifier = new ExtrudeModifier();
+	modifier.setScale(scaleExtrude);
+	modifier.setRemoveFaces(true);
+	modifier.modify(mesh, select().getFaces());
     }
 
     private void solidify() {
