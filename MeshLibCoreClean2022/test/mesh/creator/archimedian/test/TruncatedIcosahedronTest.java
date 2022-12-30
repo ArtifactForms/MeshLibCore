@@ -10,52 +10,52 @@ import util.MeshTest;
 
 public class TruncatedIcosahedronTest {
 
-    private Mesh3D mesh;
+	private Mesh3D mesh;
 
-    @Before
-    public void setUp() {
-	mesh = new TruncatedIcosahedronCreator().create();
-    }
+	@Before
+	public void setUp() {
+		mesh = new TruncatedIcosahedronCreator().create();
+	}
 
-    @Test
-    public void hasSixtyVertices() {
-	Assert.assertEquals(60, mesh.getVertexCount());
-    }
+	@Test
+	public void hasSixtyVertices() {
+		Assert.assertEquals(60, mesh.getVertexCount());
+	}
 
-    @Test
-    public void hasThirtyTwoFaces() {
-	Assert.assertEquals(32, mesh.getFaceCount());
-    }
+	@Test
+	public void hasThirtyTwoFaces() {
+		Assert.assertEquals(32, mesh.getFaceCount());
+	}
 
-    @Test
-    public void hasTwelvePentagonFaces() {
-	MeshTest.assertPentagonCountEquals(mesh, 12);
-    }
+	@Test
+	public void hasTwelvePentagonFaces() {
+		MeshTest.assertPentagonCountEquals(mesh, 12);
+	}
 
-    @Test
-    public void hasTwentyHexagonFaces() {
-	MeshTest.assertHexagonCountEquals(mesh, 20);
-    }
+	@Test
+	public void hasTwentyHexagonFaces() {
+		MeshTest.assertHexagonCountEquals(mesh, 20);
+	}
 
-    @Test
-    public void hasNinetyEdges() {
-	MeshTest.assertEdgeCountEquals(mesh, 90);
-    }
+	@Test
+	public void hasNinetyEdges() {
+		MeshTest.assertEdgeCountEquals(mesh, 90);
+	}
 
-    @Test
-    public void isManifold() {
-	MeshTest.assertIsManifold(mesh);
-    }
+	@Test
+	public void isManifold() {
+		MeshTest.assertIsManifold(mesh);
+	}
 
-    @Test
-    public void fulfillsEulerCharacteristic() {
-	MeshTest.assertFulfillsEulerCharacteristic(mesh);
-    }
+	@Test
+	public void fulfillsEulerCharacteristic() {
+		MeshTest.assertFulfillsEulerCharacteristic(mesh);
+	}
 
-    @Test
-    public void everyEdgeHasALengthOfTwo() {
-	float delta = 0.00001f;
-	MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, delta);
-    }
+	@Test
+	public void everyEdgeHasALengthOfTwo() {
+		float delta = 0.00001f;
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, delta);
+	}
 
 }
