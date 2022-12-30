@@ -10,8 +10,8 @@ public class FlatTopPyramidCreator implements IMeshCreator {
 	private float topScale;
 
 	public FlatTopPyramidCreator() {
-		this.size = 1f;
-		this.topScale = 0.5f;
+		size = 1f;
+		topScale = 0.5f;
 	}
 
 	public FlatTopPyramidCreator(float size, float topScale) {
