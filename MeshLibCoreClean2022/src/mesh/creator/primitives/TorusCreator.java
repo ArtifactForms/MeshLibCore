@@ -22,36 +22,36 @@ public class TorusCreator implements IMeshCreator {
 	}
 
 	private void createVertices() {
-		float u = 0;
-		float v = 0;
 		float stepU = Mathf.TWO_PI / minorSegments;
 		float stepV = Mathf.TWO_PI / majorSegments;
-
 		for (int i = 0; i < majorSegments; i++) {
+			float v = i * stepV;
 			for (int j = 0; j < minorSegments; j++) {
+				float u = j * stepU;
 				float x = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
 				float y = minorRadius * Mathf.sin(u);
 				float z = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
 				addVertex(x, y, z);
-				u += stepU;
 			}
-			u = 0;
-			v += stepV;
 		}
 	}
 
 	private void createFaces() {
-		for (int j = 0; j < majorSegments; j++) {
-			for (int i = 0; i < minorSegments; i++) {
-				int[] k = new int[] { j % majorSegments, (j + 1) % majorSegments, i % minorSegments,
-						(i + 1) % minorSegments };
-				int index0 = k[1] * minorSegments + k[2];
-				int index1 = k[0] * minorSegments + k[2];
-				int index2 = k[1] * minorSegments + k[3];
-				int index3 = k[0] * minorSegments + k[3];
-				addFace(index0, index1, index3, index2);
-			}
-		}
+		for (int i = 0; i < minorSegments; i++)
+			for (int j = 0; j < majorSegments; j++)
+				createFaceAt(i, j);
+	}
+
+	private void createFaceAt(int i, int j) {
+		int index0 = toOneDimensionalIndex(i, j + 1);
+		int index1 = toOneDimensionalIndex(i, j);
+		int index2 = toOneDimensionalIndex(i + 1, j);
+		int index3 = toOneDimensionalIndex(i + 1, j + 1);
+		addFace(index0, index1, index2, index3);
+	}
+
+	private int toOneDimensionalIndex(int i, int j) {
+		return (j % majorSegments) * minorSegments + (i % minorSegments);
 	}
 
 	private void addVertex(float x, float y, float z) {
