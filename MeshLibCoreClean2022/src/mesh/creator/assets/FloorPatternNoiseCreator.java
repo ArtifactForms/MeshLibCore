@@ -15,87 +15,87 @@ import mesh.util.Mesh3DUtil;
  */
 public class FloorPatternNoiseCreator implements IMeshCreator {
 
-    private float height;
-    private float radius;
-    private int subdivisions;
-    private Mesh3D mesh;
-    private FaceSelection faceSelection;
+	private float height;
+	private float radius;
+	private int subdivisions;
+	private Mesh3D mesh;
+	private FaceSelection faceSelection;
 
-    public FloorPatternNoiseCreator() {
-	this(0.2f, 2, 4);
-    }
-
-    public FloorPatternNoiseCreator(float height, float radius, int subdivisions) {
-	this.height = height;
-	this.radius = radius;
-	this.subdivisions = subdivisions;
-    }
-
-    @Override
-    public Mesh3D create() {
-	createGrid();
-	initializeFaceSelection();
-	selectAllFaces();
-	solidify();
-	extrude();
-	snapToGround();
-	rotateFaces();
-	return mesh;
-    }
-
-    private void rotateFaces() {
-	for (Face3D face : faceSelection.getFaces()) {
-	    Mesh3DUtil.rotateFaceZ(mesh, face, Mathf.toRadians(Mathf.random(0, 2)));
-	    Mesh3DUtil.rotateFaceX(mesh, face, Mathf.toRadians(Mathf.random(0, 2)));
+	public FloorPatternNoiseCreator() {
+		this(0.2f, 2, 4);
 	}
-    }
 
-    private void snapToGround() {
-	mesh.translateY(-height * 0.5f);
-    }
+	public FloorPatternNoiseCreator(float height, float radius, int subdivisions) {
+		this.height = height;
+		this.radius = radius;
+		this.subdivisions = subdivisions;
+	}
 
-    private void extrude() {
-	new ExtrudeModifier(0.9f, height * 0.5f).modify(mesh, faceSelection.getFaces());
-    }
+	@Override
+	public Mesh3D create() {
+		createGrid();
+		initializeFaceSelection();
+		selectAllFaces();
+		solidify();
+		extrude();
+		snapToGround();
+		rotateFaces();
+		return mesh;
+	}
 
-    private void solidify() {
-	new SolidifyModifier(height * 0.5f).modify(mesh);
-    }
+	private void rotateFaces() {
+		for (Face3D face : faceSelection.getFaces()) {
+			Mesh3DUtil.rotateFaceZ(mesh, face, Mathf.toRadians(Mathf.random(0, 2)));
+			Mesh3DUtil.rotateFaceX(mesh, face, Mathf.toRadians(Mathf.random(0, 2)));
+		}
+	}
 
-    private void initializeFaceSelection() {
-	faceSelection = new FaceSelection(mesh);
-    }
+	private void snapToGround() {
+		mesh.translateY(-height * 0.5f);
+	}
 
-    private void selectAllFaces() {
-	faceSelection.selectAll();
-    }
+	private void extrude() {
+		new ExtrudeModifier(0.9f, height * 0.5f).modify(mesh, faceSelection.getFaces());
+	}
 
-    private void createGrid() {
-	mesh = new GridCreator(subdivisions, subdivisions, radius).create();
-    }
+	private void solidify() {
+		new SolidifyModifier(height * 0.5f).modify(mesh);
+	}
 
-    public float getHeight() {
-	return height;
-    }
+	private void initializeFaceSelection() {
+		faceSelection = new FaceSelection(mesh);
+	}
 
-    public void setHeight(float height) {
-	this.height = height;
-    }
+	private void selectAllFaces() {
+		faceSelection.selectAll();
+	}
 
-    public float getRadius() {
-	return radius;
-    }
+	private void createGrid() {
+		mesh = new GridCreator(subdivisions, subdivisions, radius).create();
+	}
 
-    public void setRadius(float radius) {
-	this.radius = radius;
-    }
+	public float getHeight() {
+		return height;
+	}
 
-    public int getSubdivisions() {
-	return subdivisions;
-    }
+	public void setHeight(float height) {
+		this.height = height;
+	}
 
-    public void setSubdivisions(int subdivisions) {
-	this.subdivisions = subdivisions;
-    }
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+
+	public int getSubdivisions() {
+		return subdivisions;
+	}
+
+	public void setSubdivisions(int subdivisions) {
+		this.subdivisions = subdivisions;
+	}
 
 }

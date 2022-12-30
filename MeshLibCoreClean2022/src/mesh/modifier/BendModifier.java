@@ -9,44 +9,44 @@ import mesh.Mesh3D;
  */
 public class BendModifier implements IMeshModifier {
 
-    private float factor;
+	private float factor;
 
-    public BendModifier(float factor) {
-	this.factor = factor;
-    }
-
-    public void simpleDeformBend(float factor, Vector3f v) {
-	float x = v.x;
-	float y = v.y;
-	float z = v.z;
-	float theta;
-	float sint;
-	float cost;
-
-	theta = x * factor;
-	sint = Mathf.sin(theta);
-	cost = Mathf.cos(theta);
-
-	if (Mathf.abs(factor) > 1e-7f) {
-	    v.x = -(y - 1.0f / factor) * sint;
-	    v.y = (y - 1.0f / factor) * cost + 1.0f / factor;
-	    v.z = z;
+	public BendModifier(float factor) {
+		this.factor = factor;
 	}
-    }
 
-    @Override
-    public Mesh3D modify(Mesh3D mesh) {
-	for (Vector3f v : mesh.vertices)
-	    simpleDeformBend(factor, v);
-	return mesh;
-    }
+	public void simpleDeformBend(float factor, Vector3f v) {
+		float x = v.x;
+		float y = v.y;
+		float z = v.z;
+		float theta;
+		float sint;
+		float cost;
 
-    public float getFactor() {
-	return factor;
-    }
+		theta = x * factor;
+		sint = Mathf.sin(theta);
+		cost = Mathf.cos(theta);
 
-    public void setFactor(float factor) {
-	this.factor = factor;
-    }
+		if (Mathf.abs(factor) > 1e-7f) {
+			v.x = -(y - 1.0f / factor) * sint;
+			v.y = (y - 1.0f / factor) * cost + 1.0f / factor;
+			v.z = z;
+		}
+	}
+
+	@Override
+	public Mesh3D modify(Mesh3D mesh) {
+		for (Vector3f v : mesh.vertices)
+			simpleDeformBend(factor, v);
+		return mesh;
+	}
+
+	public float getFactor() {
+		return factor;
+	}
+
+	public void setFactor(float factor) {
+		this.factor = factor;
+	}
 
 }

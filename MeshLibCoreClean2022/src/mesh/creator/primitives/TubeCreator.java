@@ -8,128 +8,128 @@ import mesh.modifier.SolidifyModifier;
 
 public class TubeCreator implements IMeshCreator {
 
-    private int vertices;
-    private float topOuterRadius;
-    private float topInnerRadius;
-    private float bottomOuterRadius;
-    private float bottomInnerRadius;
-    private float height;
-    private Mesh3D mesh;
+	private int vertices;
+	private float topOuterRadius;
+	private float topInnerRadius;
+	private float bottomOuterRadius;
+	private float bottomInnerRadius;
+	private float height;
+	private Mesh3D mesh;
 
-    public TubeCreator() {
-	vertices = 32;
-	topOuterRadius = 1.0f;
-	topInnerRadius = 0.5f;
-	bottomOuterRadius = 1.0f;
-	bottomInnerRadius = 0.5f;
-	height = 2.0f;
-    }
-
-    @Override
-    public Mesh3D create() {
-	createBaseCylinder();
-	solidifyBaseCylinder();
-	transform();
-	return mesh;
-    }
-
-    private void createBaseCylinder() {
-	mesh = createCylinderCreator().create();
-    }
-
-    private CylinderCreator createCylinderCreator() {
-	CylinderCreator creator = new CylinderCreator();
-	creator.setVertices(vertices);
-	creator.setHeight(height);
-	creator.setTopCapFillType(FillType.NOTHING);
-	creator.setBottomCapFillType(FillType.NOTHING);
-	return creator;
-    }
-
-    private void solidifyBaseCylinder() {
-	new SolidifyModifier().modify(mesh);
-    }
-
-    private void transform() {
-	transformTopOuterVertices();
-	transformTopInnerVertices();
-	transformBottomOuterVertices();
-	transformBottomInnerVertices();
-    }
-
-    private void transformVertices(int num, float radius, float originY) {
-	int startIndex = num * vertices;
-	int endIndex = startIndex + vertices;
-
-	for (int i = startIndex; i < endIndex; i++) {
-	    Vector3f v = mesh.getVertexAt(i);
-	    Vector3f v0 = new Vector3f(v.x, v.y - originY, v.z).normalizeLocal();
-	    v.set(v0.mult(radius).add(0, v.y, 0));
+	public TubeCreator() {
+		vertices = 32;
+		topOuterRadius = 1.0f;
+		topInnerRadius = 0.5f;
+		bottomOuterRadius = 1.0f;
+		bottomInnerRadius = 0.5f;
+		height = 2.0f;
 	}
-    }
 
-    private void transformTopOuterVertices() {
-	transformVertices(0, topOuterRadius, -height / 2.0f);
-    }
+	@Override
+	public Mesh3D create() {
+		createBaseCylinder();
+		solidifyBaseCylinder();
+		transform();
+		return mesh;
+	}
 
-    private void transformTopInnerVertices() {
-	transformVertices(2, topInnerRadius, -height / 2.0f);
-    }
+	private void createBaseCylinder() {
+		mesh = createCylinderCreator().create();
+	}
 
-    private void transformBottomOuterVertices() {
-	transformVertices(1, bottomOuterRadius, height / 2.0f);
-    }
+	private CylinderCreator createCylinderCreator() {
+		CylinderCreator creator = new CylinderCreator();
+		creator.setVertices(vertices);
+		creator.setHeight(height);
+		creator.setTopCapFillType(FillType.NOTHING);
+		creator.setBottomCapFillType(FillType.NOTHING);
+		return creator;
+	}
 
-    private void transformBottomInnerVertices() {
-	transformVertices(3, bottomInnerRadius, height / 2.0f);
-    }
+	private void solidifyBaseCylinder() {
+		new SolidifyModifier().modify(mesh);
+	}
 
-    public int getVertices() {
-	return vertices;
-    }
+	private void transform() {
+		transformTopOuterVertices();
+		transformTopInnerVertices();
+		transformBottomOuterVertices();
+		transformBottomInnerVertices();
+	}
 
-    public void setVertices(int vertices) {
-	this.vertices = vertices;
-    }
+	private void transformVertices(int num, float radius, float originY) {
+		int startIndex = num * vertices;
+		int endIndex = startIndex + vertices;
 
-    public float getTopOuterRadius() {
-	return topOuterRadius;
-    }
+		for (int i = startIndex; i < endIndex; i++) {
+			Vector3f v = mesh.getVertexAt(i);
+			Vector3f v0 = new Vector3f(v.x, v.y - originY, v.z).normalizeLocal();
+			v.set(v0.mult(radius).add(0, v.y, 0));
+		}
+	}
 
-    public void setTopOuterRadius(float topOuterRadius) {
-	this.topOuterRadius = topOuterRadius;
-    }
+	private void transformTopOuterVertices() {
+		transformVertices(0, topOuterRadius, -height / 2.0f);
+	}
 
-    public float getTopInnerRadius() {
-	return topInnerRadius;
-    }
+	private void transformTopInnerVertices() {
+		transformVertices(2, topInnerRadius, -height / 2.0f);
+	}
 
-    public void setTopInnerRadius(float topInnerRadius) {
-	this.topInnerRadius = topInnerRadius;
-    }
+	private void transformBottomOuterVertices() {
+		transformVertices(1, bottomOuterRadius, height / 2.0f);
+	}
 
-    public float getBottomOuterRadius() {
-	return bottomOuterRadius;
-    }
+	private void transformBottomInnerVertices() {
+		transformVertices(3, bottomInnerRadius, height / 2.0f);
+	}
 
-    public void setBottomOuterRadius(float bottomOuterRadius) {
-	this.bottomOuterRadius = bottomOuterRadius;
-    }
+	public int getVertices() {
+		return vertices;
+	}
 
-    public float getBottomInnerRadius() {
-	return bottomInnerRadius;
-    }
+	public void setVertices(int vertices) {
+		this.vertices = vertices;
+	}
 
-    public void setBottomInnerRadius(float bottomInnerRadius) {
-	this.bottomInnerRadius = bottomInnerRadius;
-    }
+	public float getTopOuterRadius() {
+		return topOuterRadius;
+	}
 
-    public float getHeight() {
-	return height;
-    }
+	public void setTopOuterRadius(float topOuterRadius) {
+		this.topOuterRadius = topOuterRadius;
+	}
 
-    public void setHeight(float height) {
-	this.height = height;
-    }
+	public float getTopInnerRadius() {
+		return topInnerRadius;
+	}
+
+	public void setTopInnerRadius(float topInnerRadius) {
+		this.topInnerRadius = topInnerRadius;
+	}
+
+	public float getBottomOuterRadius() {
+		return bottomOuterRadius;
+	}
+
+	public void setBottomOuterRadius(float bottomOuterRadius) {
+		this.bottomOuterRadius = bottomOuterRadius;
+	}
+
+	public float getBottomInnerRadius() {
+		return bottomInnerRadius;
+	}
+
+	public void setBottomInnerRadius(float bottomInnerRadius) {
+		this.bottomInnerRadius = bottomInnerRadius;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
 
 }

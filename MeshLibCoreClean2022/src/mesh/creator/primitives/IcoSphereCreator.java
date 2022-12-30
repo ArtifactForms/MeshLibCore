@@ -8,53 +8,53 @@ import mesh.util.Mesh3DUtil;
 
 public class IcoSphereCreator implements IMeshCreator {
 
-    private float radius;
-    private int subdivisions;
-    private Mesh3D mesh;
+	private float radius;
+	private int subdivisions;
+	private Mesh3D mesh;
 
-    public IcoSphereCreator() {
-	this(1, 0);
-    }
+	public IcoSphereCreator() {
+		this(1, 0);
+	}
 
-    public IcoSphereCreator(float radius, int subdivisions) {
-	this.radius = radius;
-	this.subdivisions = subdivisions;
-    }
+	public IcoSphereCreator(float radius, int subdivisions) {
+		this.radius = radius;
+		this.subdivisions = subdivisions;
+	}
 
-    @Override
-    public Mesh3D create() {
-	createBaseIcosahedron();
-	subdivideIcosahedron();
-	spherifyIcosahedron();
-	return mesh;
-    }
+	@Override
+	public Mesh3D create() {
+		createBaseIcosahedron();
+		subdivideIcosahedron();
+		spherifyIcosahedron();
+		return mesh;
+	}
 
-    private void createBaseIcosahedron() {
-	mesh = new IcosahedronCreator().create();
-    }
+	private void createBaseIcosahedron() {
+		mesh = new IcosahedronCreator().create();
+	}
 
-    private void subdivideIcosahedron() {
-	new PlanarMidEdgeModifier(subdivisions).modify(mesh);
-    }
+	private void subdivideIcosahedron() {
+		new PlanarMidEdgeModifier(subdivisions).modify(mesh);
+	}
 
-    private void spherifyIcosahedron() {
-	Mesh3DUtil.pushToSphere(mesh, radius);
-    }
+	private void spherifyIcosahedron() {
+		Mesh3DUtil.pushToSphere(mesh, radius);
+	}
 
-    public float getRadius() {
-	return radius;
-    }
+	public float getRadius() {
+		return radius;
+	}
 
-    public void setRadius(float radius) {
-	this.radius = radius;
-    }
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
 
-    public int getSubdivisions() {
-	return subdivisions;
-    }
+	public int getSubdivisions() {
+		return subdivisions;
+	}
 
-    public void setSubdivisions(int subdivisions) {
-	this.subdivisions = subdivisions;
-    }
+	public void setSubdivisions(int subdivisions) {
+		this.subdivisions = subdivisions;
+	}
 
 }

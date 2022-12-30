@@ -12,109 +12,109 @@ import mesh.util.Mesh3DUtil;
 
 public class TessellationRingCreator implements IMeshCreator {
 
-    private int vertices;
-    private float topRadius;
-    private float bottomRadius;
-    private float thickness;
-    private float extrudeScale;
-    private Mesh3D topCircle;
-    private Mesh3D bottomCircle;
-    private Mesh3D mesh;
+	private int vertices;
+	private float topRadius;
+	private float bottomRadius;
+	private float thickness;
+	private float extrudeScale;
+	private Mesh3D topCircle;
+	private Mesh3D bottomCircle;
+	private Mesh3D mesh;
 
-    public TessellationRingCreator() {
-	vertices = 12;
-	topRadius = 1f;
-	bottomRadius = 1f;
-	thickness = 0.1f;
-	extrudeScale = 0.6f;
-    }
-
-    private void createFaces() {
-	int n = vertices;
-	for (int i = 0; i < n; i++) {
-	    Vector3f v0 = bottomCircle.getVertexAt(i % n);
-	    Vector3f v1 = bottomCircle.getVertexAt((i + 1) % n);
-	    Vector3f v3 = topCircle.getVertexAt((i + 1) % n);
-	    Vector3f v2 = topCircle.getVertexAt(i % n);
-	    Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
+	public TessellationRingCreator() {
+		vertices = 12;
+		topRadius = 1f;
+		bottomRadius = 1f;
+		thickness = 0.1f;
+		extrudeScale = 0.6f;
 	}
-    }
 
-    private void createVertices() {
-	topCircle = new CircleCreator(vertices, topRadius).create();
-	bottomCircle = new CircleCreator(vertices, bottomRadius).create();
-	topCircle.translateY(-0.25f);
-	bottomCircle.translateY(0.25f);
-	mesh.append(topCircle, bottomCircle);
-    }
+	private void createFaces() {
+		int n = vertices;
+		for (int i = 0; i < n; i++) {
+			Vector3f v0 = bottomCircle.getVertexAt(i % n);
+			Vector3f v1 = bottomCircle.getVertexAt((i + 1) % n);
+			Vector3f v3 = topCircle.getVertexAt((i + 1) % n);
+			Vector3f v2 = topCircle.getVertexAt(i % n);
+			Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
+		}
+	}
 
-    private void tessellate() {
-	new PlanarVertexCenterModifier().modify(mesh);
-	new PlanarMidEdgeCenterModifier().modify(mesh);
-    }
+	private void createVertices() {
+		topCircle = new CircleCreator(vertices, topRadius).create();
+		bottomCircle = new CircleCreator(vertices, bottomRadius).create();
+		topCircle.translateY(-0.25f);
+		bottomCircle.translateY(0.25f);
+		mesh.append(topCircle, bottomCircle);
+	}
 
-    private void createHoles() {
-	new HolesModifier(extrudeScale).modify(mesh);
-    }
+	private void tessellate() {
+		new PlanarVertexCenterModifier().modify(mesh);
+		new PlanarMidEdgeCenterModifier().modify(mesh);
+	}
 
-    private void solidify() {
-	Mesh3DUtil.flipDirection(mesh);
-	new SolidifyModifier(thickness).modify(mesh);
-    }
+	private void createHoles() {
+		new HolesModifier(extrudeScale).modify(mesh);
+	}
 
-    @Override
-    public Mesh3D create() {
-	initializeMesh();
-	createVertices();
-	createFaces();
-	tessellate();
-	createHoles();
-	solidify();
-	return mesh;
-    }
+	private void solidify() {
+		Mesh3DUtil.flipDirection(mesh);
+		new SolidifyModifier(thickness).modify(mesh);
+	}
 
-    private void initializeMesh() {
-	mesh = new Mesh3D();
-    }
+	@Override
+	public Mesh3D create() {
+		initializeMesh();
+		createVertices();
+		createFaces();
+		tessellate();
+		createHoles();
+		solidify();
+		return mesh;
+	}
 
-    public int getVertices() {
-	return vertices;
-    }
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
 
-    public void setVertices(int vertices) {
-	this.vertices = vertices;
-    }
+	public int getVertices() {
+		return vertices;
+	}
 
-    public float getTopRadius() {
-	return topRadius;
-    }
+	public void setVertices(int vertices) {
+		this.vertices = vertices;
+	}
 
-    public void setTopRadius(float topRadius) {
-	this.topRadius = topRadius;
-    }
+	public float getTopRadius() {
+		return topRadius;
+	}
 
-    public float getBottomRadius() {
-	return bottomRadius;
-    }
+	public void setTopRadius(float topRadius) {
+		this.topRadius = topRadius;
+	}
 
-    public void setBottomRadius(float bottomRadius) {
-	this.bottomRadius = bottomRadius;
-    }
+	public float getBottomRadius() {
+		return bottomRadius;
+	}
 
-    public float getThickness() {
-	return thickness;
-    }
+	public void setBottomRadius(float bottomRadius) {
+		this.bottomRadius = bottomRadius;
+	}
 
-    public void setThickness(float thickness) {
-	this.thickness = thickness;
-    }
+	public float getThickness() {
+		return thickness;
+	}
 
-    public float getExtrudeScale() {
-	return extrudeScale;
-    }
+	public void setThickness(float thickness) {
+		this.thickness = thickness;
+	}
 
-    public void setExtrudeScale(float extrudeScale) {
-	this.extrudeScale = extrudeScale;
-    }
+	public float getExtrudeScale() {
+		return extrudeScale;
+	}
+
+	public void setExtrudeScale(float extrudeScale) {
+		this.extrudeScale = extrudeScale;
+	}
 
 }

@@ -9,66 +9,66 @@ import mesh.selection.FaceSelection;
 
 public class SimpleCrateCreator implements IMeshCreator {
 
-    private float inset;
-    private float extrudeAmount;
-    private Mesh3D mesh;
-    private FaceSelection faceSelection;
+	private float inset;
+	private float extrudeAmount;
+	private Mesh3D mesh;
+	private FaceSelection faceSelection;
 
-    public SimpleCrateCreator() {
-	inset = 0.3f;
-	extrudeAmount = 0.1f;
-    }
+	public SimpleCrateCreator() {
+		inset = 0.3f;
+		extrudeAmount = 0.1f;
+	}
 
-    @Override
-    public Mesh3D create() {
-	createCube();
-	initializeFaceSelection();
-	selectAllFaces();
-	insetSelectedFaces();
-	extrudeSelectedFaces();
-	snapToGround();
-	return mesh;
-    }
+	@Override
+	public Mesh3D create() {
+		createCube();
+		initializeFaceSelection();
+		selectAllFaces();
+		insetSelectedFaces();
+		extrudeSelectedFaces();
+		snapToGround();
+		return mesh;
+	}
 
-    private void insetSelectedFaces() {
-	new InsetModifier(inset).modify(mesh, faceSelection.getFaces());
-    }
+	private void insetSelectedFaces() {
+		new InsetModifier(inset).modify(mesh, faceSelection.getFaces());
+	}
 
-    private void extrudeSelectedFaces() {
-	new ExtrudeModifier(1, -extrudeAmount).modify(mesh, faceSelection.getFaces());
-    }
+	private void extrudeSelectedFaces() {
+		new ExtrudeModifier(1, -extrudeAmount).modify(mesh, faceSelection.getFaces());
+	}
 
-    private void selectAllFaces() {
-	faceSelection.selectAll();
-    }
+	private void selectAllFaces() {
+		faceSelection.selectAll();
+	}
 
-    private void initializeFaceSelection() {
-	faceSelection = new FaceSelection(mesh);
-    }
+	private void initializeFaceSelection() {
+		faceSelection = new FaceSelection(mesh);
+	}
 
-    private void createCube() {
-	CubeCreator creator = new CubeCreator();
-	mesh = creator.create();
-    }
+	private void createCube() {
+		CubeCreator creator = new CubeCreator();
+		mesh = creator.create();
+	}
 
-    private void snapToGround() {
-	mesh.translateY(-1);
-    }
+	private void snapToGround() {
+		mesh.translateY(-1);
+	}
 
-    public float getInset() {
-	return inset;
-    }
+	public float getInset() {
+		return inset;
+	}
 
-    public void setInset(float inset) {
-	this.inset = inset;
-    }
+	public void setInset(float inset) {
+		this.inset = inset;
+	}
 
-    public float getExtrudeAmount() {
-	return extrudeAmount;
-    }
+	public float getExtrudeAmount() {
+		return extrudeAmount;
+	}
 
-    public void setExtrudeAmount(float extrudeAmount) {
-	this.extrudeAmount = extrudeAmount;
-    }
+	public void setExtrudeAmount(float extrudeAmount) {
+		this.extrudeAmount = extrudeAmount;
+	}
 
 }

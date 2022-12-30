@@ -9,109 +9,109 @@ import mesh.util.Mesh3DUtil;
 
 public class CylinderCreator implements IMeshCreator {
 
-    private int vertices;
-    private float topRadius;
-    private float bottomRadius;
-    private float height;
-    private FillType topCapFillType;
-    private FillType bottomCapFillType;
-    private Mesh3D mesh;
+	private int vertices;
+	private float topRadius;
+	private float bottomRadius;
+	private float height;
+	private FillType topCapFillType;
+	private FillType bottomCapFillType;
+	private Mesh3D mesh;
 
-    public CylinderCreator() {
-	vertices = 32;
-	topRadius = 1;
-	bottomRadius = 1;
-	height = 2;
-	topCapFillType = FillType.N_GON;
-	bottomCapFillType = FillType.N_GON;
-    }
-
-    private void bridge(Mesh3D m0, Mesh3D m1) {
-	for (int i = 0; i < vertices; i++) {
-	    Vector3f v0 = m1.getVertexAt(i);
-	    Vector3f v1 = m1.getVertexAt((i + 1) % vertices);
-	    Vector3f v2 = m0.getVertexAt(i);
-	    Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
-	    Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
+	public CylinderCreator() {
+		vertices = 32;
+		topRadius = 1;
+		bottomRadius = 1;
+		height = 2;
+		topCapFillType = FillType.N_GON;
+		bottomCapFillType = FillType.N_GON;
 	}
-    }
 
-    private Mesh3D createTopCap() {
-	CircleCreator creator = new CircleCreator();
-	creator.setVertices(vertices);
-	creator.setRadius(topRadius);
-	creator.setFillType(topCapFillType);
-	creator.setCenterY(-height / 2f);
-	return creator.create();
-    }
+	private void bridge(Mesh3D m0, Mesh3D m1) {
+		for (int i = 0; i < vertices; i++) {
+			Vector3f v0 = m1.getVertexAt(i);
+			Vector3f v1 = m1.getVertexAt((i + 1) % vertices);
+			Vector3f v2 = m0.getVertexAt(i);
+			Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
+			Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
+		}
+	}
 
-    private Mesh3D createBottomCap() {
-	Mesh3D mesh;
-	CircleCreator creator = new CircleCreator();
-	creator.setVertices(vertices);
-	creator.setRadius(bottomRadius);
-	creator.setCenterY(height / 2f);
-	creator.setFillType(bottomCapFillType);
-	mesh = creator.create();
-	return new FlipFacesModifier().modify(mesh);
-    }
+	private Mesh3D createTopCap() {
+		CircleCreator creator = new CircleCreator();
+		creator.setVertices(vertices);
+		creator.setRadius(topRadius);
+		creator.setFillType(topCapFillType);
+		creator.setCenterY(-height / 2f);
+		return creator.create();
+	}
 
-    @Override
-    public Mesh3D create() {
-	Mesh3D topCap = createTopCap();
-	Mesh3D bottomCap = createBottomCap();
-	mesh = new Mesh3D();
-	mesh.append(topCap, bottomCap);
-	bridge(topCap, bottomCap);
-	return mesh;
-    }
+	private Mesh3D createBottomCap() {
+		Mesh3D mesh;
+		CircleCreator creator = new CircleCreator();
+		creator.setVertices(vertices);
+		creator.setRadius(bottomRadius);
+		creator.setCenterY(height / 2f);
+		creator.setFillType(bottomCapFillType);
+		mesh = creator.create();
+		return new FlipFacesModifier().modify(mesh);
+	}
 
-    public int getVertices() {
-	return vertices;
-    }
+	@Override
+	public Mesh3D create() {
+		Mesh3D topCap = createTopCap();
+		Mesh3D bottomCap = createBottomCap();
+		mesh = new Mesh3D();
+		mesh.append(topCap, bottomCap);
+		bridge(topCap, bottomCap);
+		return mesh;
+	}
 
-    public void setVertices(int vertices) {
-	this.vertices = vertices;
-    }
+	public int getVertices() {
+		return vertices;
+	}
 
-    public float getTopRadius() {
-	return topRadius;
-    }
+	public void setVertices(int vertices) {
+		this.vertices = vertices;
+	}
 
-    public void setTopRadius(float topRadius) {
-	this.topRadius = topRadius;
-    }
+	public float getTopRadius() {
+		return topRadius;
+	}
 
-    public float getBottomRadius() {
-	return bottomRadius;
-    }
+	public void setTopRadius(float topRadius) {
+		this.topRadius = topRadius;
+	}
 
-    public void setBottomRadius(float bottomRadius) {
-	this.bottomRadius = bottomRadius;
-    }
+	public float getBottomRadius() {
+		return bottomRadius;
+	}
 
-    public float getHeight() {
-	return height;
-    }
+	public void setBottomRadius(float bottomRadius) {
+		this.bottomRadius = bottomRadius;
+	}
 
-    public void setHeight(float height) {
-	this.height = height;
-    }
+	public float getHeight() {
+		return height;
+	}
 
-    public FillType getTopCapFillType() {
-	return topCapFillType;
-    }
+	public void setHeight(float height) {
+		this.height = height;
+	}
 
-    public void setTopCapFillType(FillType topCapFillType) {
-	this.topCapFillType = topCapFillType;
-    }
+	public FillType getTopCapFillType() {
+		return topCapFillType;
+	}
 
-    public FillType getBottomCapFillType() {
-	return bottomCapFillType;
-    }
+	public void setTopCapFillType(FillType topCapFillType) {
+		this.topCapFillType = topCapFillType;
+	}
 
-    public void setBottomCapFillType(FillType bottomCapFillType) {
-	this.bottomCapFillType = bottomCapFillType;
-    }
+	public FillType getBottomCapFillType() {
+		return bottomCapFillType;
+	}
+
+	public void setBottomCapFillType(FillType bottomCapFillType) {
+		this.bottomCapFillType = bottomCapFillType;
+	}
 
 }

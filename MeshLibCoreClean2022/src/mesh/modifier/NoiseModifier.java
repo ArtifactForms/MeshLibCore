@@ -9,44 +9,44 @@ import mesh.util.VertexNormals;
 
 public class NoiseModifier implements IMeshModifier {
 
-    private float minimum;
-    private float maximum;
+	private float minimum;
+	private float maximum;
 
-    public NoiseModifier() {
-	this(0.0f, 1.0f);
-    }
-
-    public NoiseModifier(float minimum, float maximum) {
-	this.minimum = minimum;
-	this.maximum = maximum;
-    }
-
-    @Override
-    public Mesh3D modify(Mesh3D mesh) {
-	List<Vector3f> normals = new VertexNormals(mesh).getVertexNormals();
-	for (int i = 0; i < mesh.vertices.size(); i++) {
-	    Vector3f vertex = mesh.getVertexAt(i);
-	    Vector3f normal = normals.get(i);
-	    float random = Mathf.random(minimum, maximum);
-	    vertex.addLocal(normal.mult(random));
+	public NoiseModifier() {
+		this(0.0f, 1.0f);
 	}
-	return mesh;
-    }
 
-    public float getMinimum() {
-	return minimum;
-    }
+	public NoiseModifier(float minimum, float maximum) {
+		this.minimum = minimum;
+		this.maximum = maximum;
+	}
 
-    public void setMinimum(float minimum) {
-	this.minimum = minimum;
-    }
+	@Override
+	public Mesh3D modify(Mesh3D mesh) {
+		List<Vector3f> normals = new VertexNormals(mesh).getVertexNormals();
+		for (int i = 0; i < mesh.vertices.size(); i++) {
+			Vector3f vertex = mesh.getVertexAt(i);
+			Vector3f normal = normals.get(i);
+			float random = Mathf.random(minimum, maximum);
+			vertex.addLocal(normal.mult(random));
+		}
+		return mesh;
+	}
 
-    public float getMaximum() {
-	return maximum;
-    }
+	public float getMinimum() {
+		return minimum;
+	}
 
-    public void setMaximum(float maximum) {
-	this.maximum = maximum;
-    }
+	public void setMinimum(float minimum) {
+		this.minimum = minimum;
+	}
+
+	public float getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(float maximum) {
+		this.maximum = maximum;
+	}
 
 }

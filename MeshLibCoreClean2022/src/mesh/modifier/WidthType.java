@@ -2,8 +2,6 @@ package mesh.modifier;
 
 public enum WidthType {
 
-    OFFSET,
-    WIDTH,
-    DEPTH,
+	OFFSET, WIDTH, DEPTH,
 
 }

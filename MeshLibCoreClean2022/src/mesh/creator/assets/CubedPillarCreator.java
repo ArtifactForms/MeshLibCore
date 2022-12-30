@@ -8,79 +8,79 @@ import mesh.selection.FaceSelection;
 
 public class CubedPillarCreator implements IMeshCreator {
 
-    private int segmentCount;
-    private float segmentRadius;
-    private float extrude;
-    private Mesh3D mesh;
-    private FaceSelection selection;
+	private int segmentCount;
+	private float segmentRadius;
+	private float extrude;
+	private Mesh3D mesh;
+	private FaceSelection selection;
 
-    public CubedPillarCreator() {
-	this(5, 0.5f, 0.05f);
-    }
-
-    public CubedPillarCreator(int segmentCount, float segmentRadius, float extrude) {
-	this.segmentCount = segmentCount;
-	this.segmentRadius = segmentRadius;
-	this.extrude = extrude;
-    }
-
-    @Override
-    public Mesh3D create() {
-	createBaseMesh();
-	select();
-	extrude();
-	snapToGround();
-	return mesh;
-    }
-
-    private void extrude() {
-	for (int i = 0; i < segmentCount - 1; i++) {
-	    new ExtrudeModifier(0.9f, extrude).modify(mesh, selection.getFaces());
-	    new ExtrudeModifier(1.1f, extrude).modify(mesh, selection.getFaces());
-	    new ExtrudeModifier(1, getExtrudeHeight()).modify(mesh, selection.getFaces());
+	public CubedPillarCreator() {
+		this(5, 0.5f, 0.05f);
 	}
-    }
 
-    private void select() {
-	selection = new FaceSelection(mesh);
-	selection.selectTopFaces();
-    }
+	public CubedPillarCreator(int segmentCount, float segmentRadius, float extrude) {
+		this.segmentCount = segmentCount;
+		this.segmentRadius = segmentRadius;
+		this.extrude = extrude;
+	}
 
-    private void createBaseMesh() {
-	CubeCreator creator = new CubeCreator(segmentRadius);
-	mesh = creator.create();
-    }
+	@Override
+	public Mesh3D create() {
+		createBaseMesh();
+		select();
+		extrude();
+		snapToGround();
+		return mesh;
+	}
 
-    private void snapToGround() {
-	mesh.translateY(-segmentRadius);
-    }
+	private void extrude() {
+		for (int i = 0; i < segmentCount - 1; i++) {
+			new ExtrudeModifier(0.9f, extrude).modify(mesh, selection.getFaces());
+			new ExtrudeModifier(1.1f, extrude).modify(mesh, selection.getFaces());
+			new ExtrudeModifier(1, getExtrudeHeight()).modify(mesh, selection.getFaces());
+		}
+	}
 
-    private float getExtrudeHeight() {
-	return segmentRadius + segmentRadius - extrude - extrude;
-    }
+	private void select() {
+		selection = new FaceSelection(mesh);
+		selection.selectTopFaces();
+	}
 
-    public float getExtrude() {
-	return extrude;
-    }
+	private void createBaseMesh() {
+		CubeCreator creator = new CubeCreator(segmentRadius);
+		mesh = creator.create();
+	}
 
-    public void setExtrude(float extrude) {
-	this.extrude = extrude;
-    }
+	private void snapToGround() {
+		mesh.translateY(-segmentRadius);
+	}
 
-    public int getSegmentCount() {
-	return segmentCount;
-    }
+	private float getExtrudeHeight() {
+		return segmentRadius + segmentRadius - extrude - extrude;
+	}
 
-    public void setSegmentCount(int segmentCount) {
-	this.segmentCount = segmentCount;
-    }
+	public float getExtrude() {
+		return extrude;
+	}
 
-    public float getSegmentRadius() {
-	return segmentRadius;
-    }
+	public void setExtrude(float extrude) {
+		this.extrude = extrude;
+	}
 
-    public void setSegmentRadius(float segmentRadius) {
-	this.segmentRadius = segmentRadius;
-    }
+	public int getSegmentCount() {
+		return segmentCount;
+	}
+
+	public void setSegmentCount(int segmentCount) {
+		this.segmentCount = segmentCount;
+	}
+
+	public float getSegmentRadius() {
+		return segmentRadius;
+	}
+
+	public void setSegmentRadius(float segmentRadius) {
+		this.segmentRadius = segmentRadius;
+	}
 
 }
