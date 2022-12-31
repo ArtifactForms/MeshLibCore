@@ -27,12 +27,15 @@ public class NoiseModifier implements IMeshModifier {
 		for (int i = 0; i < mesh.vertices.size(); i++) {
 			Vector3f vertex = mesh.getVertexAt(i);
 			Vector3f normal = normals.get(i);
-			float random = Mathf.random(minimum, maximum);
-			vertex.addLocal(normal.mult(random));
+			vertex.addLocal(normal.mult(createRandomValue()));
 		}
 		return mesh;
 	}
-
+	
+	private float createRandomValue() {
+		return Mathf.random(minimum, maximum);
+	}
+	
 	public float getMinimum() {
 		return minimum;
 	}
