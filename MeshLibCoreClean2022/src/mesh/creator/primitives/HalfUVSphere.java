@@ -43,15 +43,15 @@ public class HalfUVSphere implements IMeshCreator {
 	}
 
 	private int getIndex(int row, int col) {
-		int idx = segments * row + col;
+		int idx = segments * row + (col % segments);
 		return idx % mesh.vertices.size();
 	}
 
 	private void createFaces() {
 		for (int row = 0; row < (rings - 2) / 2; row++) {
 			for (int col = 0; col < segments; col++) {
-				int a = getIndex(row, (col + 1) % segments);
-				int b = getIndex(row + 1, (col + 1) % segments);
+				int a = getIndex(row, col + 1);
+				int b = getIndex(row + 1, col + 1);
 				int c = getIndex(row + 1, col);
 				int d = getIndex(row, col);
 				addFace(a, b, c, d);
@@ -62,19 +62,17 @@ public class HalfUVSphere implements IMeshCreator {
 			}
 		}
 	}
-
+	
 	@Override
 	public Mesh3D create() {
-		initializeMesh();
-
 		if (!shouldCreate())
-			return mesh;
+			return new Mesh3D();
 
+		initializeMesh();
 		createVertices();
 		createFaces();
 		createCap();
 		translate();
-
 		return mesh;
 	}
 
