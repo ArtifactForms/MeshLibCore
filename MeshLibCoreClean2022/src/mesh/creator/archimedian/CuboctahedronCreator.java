@@ -25,17 +25,17 @@ public class CuboctahedronCreator implements IMeshCreator {
 	}
 
 	private void createVertices() {
-		addVertex(0, -a, a);
-		addVertex(a, 0, a);
-		addVertex(0, a, a);
-		addVertex(-a, 0, a);
-		addVertex(a, -a, 0);
-		addVertex(a, a, 0);
-		addVertex(-a, a, 0);
+		addVertex(0, -a, +a);
+		addVertex(+a, 0, +a);
+		addVertex(0, +a, +a);
+		addVertex(-a, 0, +a);
+		addVertex(+a, -a, 0);
+		addVertex(+a, +a, 0);
+		addVertex(-a, +a, 0);
 		addVertex(-a, -a, 0);
 		addVertex(0, -a, -a);
-		addVertex(a, 0, -a);
-		addVertex(0, a, -a);
+		addVertex(+a, 0, -a);
+		addVertex(0, +a, -a);
 		addVertex(-a, 0, -a);
 	}
 
