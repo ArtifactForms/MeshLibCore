@@ -13,6 +13,11 @@ import mesh.creator.primitives.IcoSphereCreator;
 public class FlipFacesTest {
 	
 	@Test
+	public void modifierImplementsModifierInterface() {
+		Assert.assertTrue(new FlipFacesModifier() instanceof IMeshModifier);
+	}
+	
+	@Test
 	public void keepsFaceCount() {
 		Mesh3D originalMesh = new CapsuleCreator().create();
 		Mesh3D flippedMesh = new CapsuleCreator().create();
