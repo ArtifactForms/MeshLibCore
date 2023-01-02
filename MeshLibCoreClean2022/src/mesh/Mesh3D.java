@@ -33,7 +33,7 @@ public class Mesh3D {
 
 		for (Vector3f v : vertices) {
 			Vector3f v0 = v.mult(m);
-			v.set(v.x, v0.y, v0.z);
+			v.set(v.getX(), v0.getY(), v0.getZ());
 		}
 
 		return this;
@@ -45,7 +45,7 @@ public class Mesh3D {
 
 		for (Vector3f v : vertices) {
 			Vector3f v0 = v.mult(m);
-			v.set(v0.x, v.y, v0.z);
+			v.set(v0.getX(), v.getY(), v0.getZ());
 		}
 
 		return this;
@@ -57,7 +57,7 @@ public class Mesh3D {
 
 		for (Vector3f v : vertices) {
 			Vector3f v0 = v.mult(m);
-			v.set(v0.x, v0.y, v.z);
+			v.set(v0.getX(), v0.getY(), v.getZ());
 		}
 
 		return this;
@@ -103,7 +103,7 @@ public class Mesh3D {
 		return this;
 	}
 
-	public Mesh3D translate(float tx, float ty, float tz) {
+	public Mesh3D translate(float tx, float ty, float tz) {		
 		for (Vector3f v : vertices) {
 			v.addLocal(tx, ty, tz);
 		}
@@ -122,9 +122,10 @@ public class Mesh3D {
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f currentVertex = vertices.get(face.indices[i]);
 			Vector3f nextVertex = vertices.get(face.indices[(i + 1) % face.indices.length]);
-			faceNormal.x += (currentVertex.y - nextVertex.y) * (currentVertex.z + nextVertex.z);
-			faceNormal.y += (currentVertex.z - nextVertex.z) * (currentVertex.x + nextVertex.x);
-			faceNormal.z += (currentVertex.x - nextVertex.x) * (currentVertex.y + nextVertex.y);
+			float x = (currentVertex.getY() - nextVertex.getY()) * (currentVertex.getZ() + nextVertex.getZ());
+			float y = (currentVertex.getZ() - nextVertex.getZ()) * (currentVertex.getX() + nextVertex.getX());
+			float z = (currentVertex.getX() - nextVertex.getX()) * (currentVertex.getY() + nextVertex.getY());
+			faceNormal.addLocal(x, y, z);
 		}
 		return faceNormal.normalize();
 	}
@@ -145,12 +146,14 @@ public class Mesh3D {
 		Vector3f max = new Vector3f(getVertexAt(0));
 		Bounds3 bounds = new Bounds3();
 		for (Vector3f v : vertices) {
-			min.x = v.x < min.x ? v.x : min.x;
-			min.y = v.y < min.y ? v.y : min.y;
-			min.z = v.z < min.z ? v.z : min.z;
-			max.x = v.x > max.x ? v.x : max.x;
-			max.y = v.y > max.y ? v.y : max.y;
-			max.z = v.z > max.z ? v.z : max.z;
+			float minX = v.getX() < min.getX() ? v.getX() : min.getX();
+			float minY = v.getY() < min.getY() ? v.getY() : min.getY();
+			float minZ = v.getZ() < min.getZ() ? v.getZ() : min.getZ();
+			float maxX = v.getX() > max.getX() ? v.getX() : max.getX();
+			float maxY = v.getY() > max.getY() ? v.getY() : max.getY();
+			float maxZ = v.getZ() > max.getZ() ? v.getZ() : max.getZ();
+			min.set(minX, minY, minZ);
+			max.set(maxX, maxX, maxZ);
 		}
 		bounds.setMinMax(min, max);
 		return bounds;
