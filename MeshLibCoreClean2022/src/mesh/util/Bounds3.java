@@ -26,36 +26,38 @@ public class Bounds3 {
 	}
 
 	public boolean containsPoint(Vector3f v) {
-		return min.x <= v.x && min.y <= v.y && min.z <= v.z && v.x <= max.x && v.y <= max.y && v.z <= max.z;
+		return min.getX() <= v.getX() && min.getY() <= v.getY() && min.getZ() <= v.getZ() && v.getX() <= max.getX() && v.getY() <= max.getY() && v.getZ() <= max.getZ();
 	}
 
 	public boolean containsPoint(float x, float y, float z) {
-		return min.x <= x && min.y <= y && min.z <= z && x <= max.x && y <= max.y && z <= max.z;
+		return min.getX() <= x && min.getY() <= y && min.getZ() <= z && x <= max.getX() && y <= max.getY() && z <= max.getZ();
 	}
 
 	public boolean contains(Bounds3 other) {
-		return min.x <= other.min.x && min.y <= other.min.y && min.z <= other.min.z && other.max.x <= max.x
-				&& other.max.y <= max.y && other.max.z <= max.z;
+		return min.getX() <= other.min.getX() && min.getY() <= other.min.getY() && min.getZ() <= other.min.getZ() && other.max.getX() <= max.getX()
+				&& other.max.getY() <= max.getY() && other.max.getZ() <= max.getZ();
 	}
 
 	public void encapsulate(Vector3f v) {
-		min.x = v.x < min.x ? v.x : min.x;
-		min.y = v.y < min.y ? v.y : min.y;
-		min.z = v.z < min.z ? v.z : min.z;
-
-		max.x = v.x > max.x ? v.x : max.x;
-		max.y = v.y > max.y ? v.y : max.y;
-		max.z = v.z > max.z ? v.z : max.z;
+		float minX = v.getX() < min.getX() ? v.getX() : min.getX();
+		float minY = v.getY() < min.getY() ? v.getY() : min.getY();
+		float minZ = v.getZ() < min.getZ() ? v.getZ() : min.getZ();
+		float maxX = v.getX() > max.getX() ? v.getX() : max.getX();
+		float maxY = v.getY() > max.getY() ? v.getY() : max.getY();
+		float maxZ = v.getZ() > max.getZ() ? v.getZ() : max.getZ();
+		min.set(minX, minY, minZ);
+		max.set(maxX, maxY, maxZ);
 	}
 
 	public void encapsulate(Bounds3 bounds) {
-		min.x = bounds.min.x < min.x ? bounds.min.x : min.x;
-		min.y = bounds.min.y < min.y ? bounds.min.y : min.y;
-		min.z = bounds.min.z < min.z ? bounds.min.z : min.z;
-
-		max.x = bounds.max.x > max.x ? bounds.max.x : max.x;
-		max.y = bounds.max.y > max.y ? bounds.max.y : max.y;
-		max.z = bounds.max.z > max.z ? bounds.max.z : max.z;
+		float minX = bounds.min.getX() < min.getX() ? bounds.min.getX() : min.getX();
+		float minY = bounds.min.getY() < min.getY() ? bounds.min.getY() : min.getY();
+		float minZ = bounds.min.getZ() < min.getZ() ? bounds.min.getZ() : min.getZ();
+		float maxX = bounds.max.getX() > max.getX() ? bounds.max.getX() : max.getX();
+		float maxY = bounds.max.getY() > max.getY() ? bounds.max.getY() : max.getY(); 
+		float maxZ = bounds.max.getZ() > max.getZ() ? bounds.max.getZ() : max.getZ();
+		min.set(minX, minY, minZ);
+		max.set(maxX, maxY, maxZ);
 	}
 
 	public void expand(float amount) {
@@ -71,9 +73,9 @@ public class Bounds3 {
 	}
 
 	public boolean intersects(Bounds3 other) {
-		if (min.x - other.max.x > 0.0f || min.y - other.max.y > 0.0f || min.z - other.max.z > 0.0f)
+		if (min.getX() - other.max.getX() > 0.0f || min.getY() - other.max.getY() > 0.0f || min.getZ() - other.max.getZ() > 0.0f)
 			return false;
-		if (other.min.x - max.x > 0.0f || other.min.y - max.y > 0.0f || other.min.z - max.z > 0.0f)
+		if (other.min.getX() - max.getX() > 0.0f || other.min.getY() - max.getY() > 0.0f || other.min.getZ() - max.getZ() > 0.0f)
 			return false;
 		return true;
 	}
@@ -118,15 +120,15 @@ public class Bounds3 {
 	}
 
 	public float getCenterX() {
-		return (min.x + max.x) * 0.5f;
+		return (min.getX() + max.getX()) * 0.5f;
 	}
 
 	public float getCenterY() {
-		return (min.y + max.y) * 0.5f;
+		return (min.getY() + max.getY()) * 0.5f;
 	}
 
 	public float getCenterZ() {
-		return (min.z + max.z) * 0.5f;
+		return (min.getZ() + max.getZ()) * 0.5f;
 	}
 
 	public Vector3f getMin() {
@@ -138,39 +140,39 @@ public class Bounds3 {
 	}
 
 	public float getMinX() {
-		return min.x;
+		return min.getX();
 	}
 
 	public float getMaxX() {
-		return max.x;
+		return max.getX();
 	}
 
 	public float getMinY() {
-		return min.y;
+		return min.getY();
 	}
 
 	public float getMaxY() {
-		return max.y;
+		return max.getY();
 	}
 
 	public float getMinZ() {
-		return min.z;
+		return min.getZ();
 	}
 
 	public float getMaxZ() {
-		return max.z;
+		return max.getZ();
 	}
 
 	public float getWidth() {
-		return max.x - min.x;
+		return max.getX() - min.getX();
 	}
 
 	public float getHeight() {
-		return max.y - min.y;
+		return max.getY() - min.getY();
 	}
 
 	public float getDepth() {
-		return max.z - min.z;
+		return max.getZ() - min.getZ();
 	}
 
 	public Vector3f getMin(Vector3f store) {

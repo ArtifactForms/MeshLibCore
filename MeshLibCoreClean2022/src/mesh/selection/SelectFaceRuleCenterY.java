@@ -15,7 +15,7 @@ public class SelectFaceRuleCenterY implements IFaceSelectionRule {
 
 	@Override
 	public boolean isValid(Mesh3D mesh, Face3D face) {
-		return Compare.compare(compare, mesh.calculateFaceCenter(face).y, y);
+		return Compare.compare(compare, mesh.calculateFaceCenter(face).getY(), y);
 	}
 
 }

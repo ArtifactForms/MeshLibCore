@@ -81,7 +81,7 @@ public class Mesh3DUtil {
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f v = mesh.vertices.get(face.indices[i]);
 			Vector3f v0 = v.mult(m);
-			v.set(v.x, v0.y, v0.z);
+			v.set(v.getX(), v0.getY(), v0.getZ());
 		}
 	}
 
@@ -91,7 +91,7 @@ public class Mesh3DUtil {
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f v = mesh.vertices.get(face.indices[i]);
 			Vector3f v0 = v.mult(m);
-			v.set(v0.x, v.y, v0.z);
+			v.set(v0.getX(), v.getY(), v0.getZ());
 		}
 	}
 
@@ -101,7 +101,7 @@ public class Mesh3DUtil {
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f v = mesh.vertices.get(face.indices[i]);
 			Vector3f v0 = v.mult(m);
-			v.set(v0.x, v0.y, v.z);
+			v.set(v0.getX(), v0.getY(), v.getZ());
 		}
 	}
 
