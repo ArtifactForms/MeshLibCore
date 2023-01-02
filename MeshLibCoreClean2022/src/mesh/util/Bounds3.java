@@ -85,18 +85,7 @@ public class Bounds3 {
 	public Bounds3 copy() {
 		return new Bounds3(this);
 	}
-
-	public Bounds3 getBounds() {
-		Bounds3 b = new Bounds3();
-		b.min.x = min.x;
-		b.min.y = min.y;
-		b.min.z = min.z;
-		b.max.x = max.x;
-		b.max.y = max.y;
-		b.max.z = max.z;
-		return b;
-	}
-
+	
 	public Vector3f getExtents() {
 		return max.subtract(min).mult(0.5f);
 	}
