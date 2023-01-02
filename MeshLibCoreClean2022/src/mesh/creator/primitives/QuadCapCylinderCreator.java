@@ -41,8 +41,8 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 	}
 
 	private List<Vector3f> getBorderVerticesFromGrid(Mesh3D grid) {
-		float valueX = Mathf.abs(grid.getVertexAt(0).x);
-		float valueZ = Mathf.abs(grid.getVertexAt(0).z);
+		float valueX = Mathf.abs(grid.getVertexAt(0).getX());
+		float valueZ = Mathf.abs(grid.getVertexAt(0).getZ());
 
 		List<Vector3f> vertices0 = new ArrayList<Vector3f>();
 		List<Vector3f> vertices1 = new ArrayList<Vector3f>();
@@ -51,16 +51,16 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 
 		for (int i = 0; i < grid.vertices.size(); i++) {
 			Vector3f v = grid.getVertexAt(i);
-			if (v.z == -valueZ) {
+			if (v.getZ() == -valueZ) {
 				vertices0.add(v);
 			}
-			if (v.x == valueX) {
+			if (v.getX() == valueX) {
 				vertices1.add(v);
 			}
-			if (v.z == valueZ) {
+			if (v.getZ() == valueZ) {
 				vertices2.add(v);
 			}
-			if (v.x == -valueX) {
+			if (v.getX() == -valueX) {
 				vertices3.add(v);
 			}
 		}

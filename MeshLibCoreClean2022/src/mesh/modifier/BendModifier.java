@@ -16,9 +16,9 @@ public class BendModifier implements IMeshModifier {
 	}
 
 	private void simpleDeformBend(float factor, Vector3f v) {
-		float x = v.x;
-		float y = v.y;
-		float z = v.z;
+		float x = v.getX();
+		float y = v.getY();
+		float z = v.getZ();
 		float theta;
 		float sint;
 		float cost;
@@ -28,9 +28,10 @@ public class BendModifier implements IMeshModifier {
 		cost = Mathf.cos(theta);
 
 		if (Mathf.abs(factor) > 1e-7f) {
-			v.x = -(y - 1.0f / factor) * sint;
-			v.y = (y - 1.0f / factor) * cost + 1.0f / factor;
-			v.z = z;
+			float bx = -(y - 1.0f / factor) * sint;
+			float by = (y - 1.0f / factor) * cost + 1.0f / factor;
+			float bz = z;
+			v.set(bx, by, bz);
 		}
 	}
 

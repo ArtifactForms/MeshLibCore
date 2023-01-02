@@ -63,8 +63,8 @@ public class TubeCreator implements IMeshCreator {
 
 		for (int i = startIndex; i < endIndex; i++) {
 			Vector3f v = mesh.getVertexAt(i);
-			Vector3f v0 = new Vector3f(v.x, v.y - originY, v.z).normalizeLocal();
-			v.set(v0.mult(radius).add(0, v.y, 0));
+			Vector3f v0 = new Vector3f(v.getX(), v.getY() - originY, v.getZ()).normalizeLocal();
+			v.set(v0.mult(radius).add(0, v.getY(), 0));
 		}
 	}
 

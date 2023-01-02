@@ -59,9 +59,9 @@ public class HelixCreator implements IMeshCreator {
 							0);
 					// Rotate
 					float a = Mathf.TWO_PI - majorAngle;
-					float x2 = Mathf.cos(a) * v1.x + Mathf.sin(a) * v1.z;
-					float z2 = -Mathf.sin(a) * v1.x + Mathf.cos(a) * v1.z;
-					v1.set(x2, v1.y, z2);
+					float x2 = Mathf.cos(a) * v1.getX() + Mathf.sin(a) * v1.getZ();
+					float z2 = -Mathf.sin(a) * v1.getX() + Mathf.cos(a) * v1.getZ();
+					v1.set(x2, v1.getY(), z2);
 					v1.addLocal(v0);
 
 					minorAngle += minorAngleStep;

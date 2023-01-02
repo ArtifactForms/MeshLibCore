@@ -52,7 +52,7 @@ public class WoodenBarrelCreator implements IMeshCreator {
 
 	private void bend() {
 		for (Vector3f v : mesh.getVertices(0, mesh.getVertexCount())) {
-			float y = v.y;
+			float y = v.getY();
 			float m = Mathf.cos(Mathf.abs(y * bendFactor));
 			v.multLocal(new Vector3f(m, 1, m));
 		}

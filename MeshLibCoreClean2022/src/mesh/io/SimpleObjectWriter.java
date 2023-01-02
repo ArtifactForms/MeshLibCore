@@ -29,11 +29,11 @@ public class SimpleObjectWriter {
 
 	private void writeVertex(Vector3f vertex) {
 		append("v ");
-		append(vertex.x);
+		append(vertex.getX());
 		append(" ");
-		append(vertex.y);
+		append(vertex.getY());
 		append(" ");
-		append(vertex.z);
+		append(vertex.getZ());
 		append("\n");
 	}
 

@@ -52,7 +52,7 @@ public class ArchCreator implements IMeshCreator {
 			Vector3f v1 = new Vector3f(x, y, 0);
 			Vector3f v0 = pointOnCircle(angle);
 			if (i > 0 && i < segments)
-				v1.setX(v0.x);
+				v1.setX(v0.getX());
 
 			if (i < segments)
 				addFaceAt(i);

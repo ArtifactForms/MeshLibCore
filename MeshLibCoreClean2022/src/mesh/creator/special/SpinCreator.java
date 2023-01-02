@@ -55,8 +55,8 @@ public class SpinCreator implements IMeshCreator {
 	private void createVerticesAtAngle(float angle) {
 		for (int i = 0; i < vertices.size(); i++) {
 			Vector3f v0 = vertices.get(i);
-			Vector3f v1 = createPointOnCircle(angle, v0.y);
-			Vector3f v2 = new Vector3f(v0.x, 1, v0.x);
+			Vector3f v1 = createPointOnCircle(angle, v0.getY());
+			Vector3f v2 = new Vector3f(v0.getX(), 1, v0.getX());
 			v1.multLocal(v2);
 			mesh.add(v1);
 		}

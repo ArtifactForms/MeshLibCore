@@ -14,7 +14,7 @@ public class TranslateModifier implements IMeshModifier {
 	}
 
 	public TranslateModifier(Vector3f delta) {
-		this(delta.x, delta.y, delta.z);
+		this(delta.getX(), delta.getY(), delta.getZ());
 	}
 
 	public TranslateModifier(float deltaX, float deltaY, float deltaZ) {
