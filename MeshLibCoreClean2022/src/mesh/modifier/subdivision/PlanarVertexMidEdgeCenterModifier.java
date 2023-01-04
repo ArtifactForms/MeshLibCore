@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import math.GeometryUtil;
 import math.Vector3f;
 import mesh.Edge3D;
 import mesh.Face3D;
@@ -100,7 +99,7 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 	private Vector3f calculateMidPoint() {
 		Vector3f from = mesh.vertices.get(fromIndex);
 		Vector3f to = mesh.vertices.get(toIndex);
-		return GeometryUtil.getMidpoint(from, to);
+		return from.add(to).mult(0.5f);
 	}
 
 	private Vector3f calculateFaceCenter(Face3D face) {
