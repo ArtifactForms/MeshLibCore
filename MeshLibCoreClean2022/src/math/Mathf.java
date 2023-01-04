@@ -7,7 +7,9 @@ public class Mathf {
 	public static final float TWO_PI = PI + PI;
 	public static final float ONE_THIRD = 1f / 3f;
 	public static final float QUARTER_PI = PI / 4f;
-	public static final float ZERO_TOLERANCE = 0.00001f;;
+	public static final float ZERO_TOLERANCE = 0.00001f;
+	public static final float TRIBONACCI_CONSTANT = 1.8392868f;
+	public static final float GOLDEN_RATIO = (1f + Mathf.sqrt(5f)) / 2f;
 
 	public static float abs(float a) {
 		return (float) Math.abs(a);
