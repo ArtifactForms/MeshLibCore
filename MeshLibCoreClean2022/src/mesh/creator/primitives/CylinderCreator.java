@@ -60,10 +60,18 @@ public class CylinderCreator implements IMeshCreator {
 	public Mesh3D create() {
 		Mesh3D topCap = createTopCap();
 		Mesh3D bottomCap = createBottomCap();
-		mesh = new Mesh3D();
-		mesh.append(topCap, bottomCap);
+		initializeMesh();
+		append(topCap, bottomCap);
 		bridge(topCap, bottomCap);
 		return mesh;
+	}
+	
+	private void append(Mesh3D... meshes) {
+		mesh.append(meshes);
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 
 	public int getVertices() {
