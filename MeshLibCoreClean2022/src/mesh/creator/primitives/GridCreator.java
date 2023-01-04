@@ -60,13 +60,13 @@ public class GridCreator implements IMeshCreator {
 	}
 
 	private void createFaces() {
-		for (int i = 0; i < subdivisionsZ; i++)
-			for (int j = 0; j < subdivisionsX; j++)
-				createFaceAt(i, j);
+		for (int z = 0; z < subdivisionsZ; z++)
+			for (int x = 0; x < subdivisionsX; x++)
+				createFaceAt(z, x);
 	}
 
-	private void createFaceAt(int i, int j) {
-		int index0 = i * (subdivisionsX + 1) + j;
+	private void createFaceAt(int z, int x) {
+		int index0 = z * (subdivisionsX + 1) + x;
 		int index1 = index0 + 1;
 		int index2 = index0 + subdivisionsX + 2;
 		int index3 = index2 - 1;
