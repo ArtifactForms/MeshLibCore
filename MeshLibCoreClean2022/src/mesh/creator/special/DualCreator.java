@@ -43,21 +43,33 @@ public class DualCreator implements IMeshCreator {
 			addFace(indices);
 		}
 	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
+	
+	private void createVertices() {
+		for (int i = 0; i < source.getFaceCount(); i++) {
+			Face3D face = source.getFaceAt(i);
+			Vector3f center = source.calculateFaceCenter(face);
+			addVertex(center);
+			mapFaceToCenterVertexIndex(face, i);
+		}
+	}
+	
+	private void addVertex(Vector3f v) {
+		mesh.add(v);
+	}
+
+	private void mapFaceToCenterVertexIndex(Face3D face, int index) {
+		faceVertexMap.put(face, index);
+	}
 
 	@Override
 	public Mesh3D create() {
-		int index = 0;
-		mesh = new Mesh3D();
-
-		for (Face3D face : source.faces) {
-			Vector3f center = source.calculateFaceCenter(face);
-			mesh.add(center);
-			faceVertexMap.put(face, index);
-			index++;
-		}
-
+		initializeMesh();
+		createVertices();
 		createFaces();
-
 		return mesh;
 	}
 
