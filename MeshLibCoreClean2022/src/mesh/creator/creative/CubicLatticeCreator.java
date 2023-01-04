@@ -2,10 +2,12 @@ package mesh.creator.creative;
 
 import java.util.List;
 
+import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.CenterAtModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
 import mesh.selection.FaceSelection;
@@ -76,9 +78,7 @@ public class CubicLatticeCreator implements IMeshCreator {
 	}
 
 	private void centerAtOrigin() {
-		mesh.translateX(-((segmentsX - 1) * 3f) / 2f);
-		mesh.translateY(-((segmentsY - 1) * 3f) / 2f);
-		mesh.translateZ(-((segmentsZ - 1) * 3f) / 2f);
+		new CenterAtModifier(Vector3f.ZERO).modify(mesh);
 	}
 
 	private void subdivide() {
