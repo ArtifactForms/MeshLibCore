@@ -7,7 +7,6 @@ import org.junit.Test;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.archimedian.SnubCubeCreator;
-import mesh.util.Geometry;
 import util.MeshTest;
 
 public class SnubCubeTest {
