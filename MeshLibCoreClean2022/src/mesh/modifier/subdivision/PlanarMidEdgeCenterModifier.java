@@ -2,7 +2,6 @@ package mesh.modifier.subdivision;
 
 import java.util.ArrayList;
 
-import math.GeometryUtil;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
