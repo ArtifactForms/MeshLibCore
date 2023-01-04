@@ -2,7 +2,6 @@ package mesh.modifier.subdivision;
 
 import java.util.ArrayList;
 
-import math.GeometryUtil;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
@@ -62,14 +61,14 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 	private void createEdgePoints() {
 		int n = face.indices.length;
 		for (int i = 0; i < n; i++) {
-			Vector3f v0 = mesh.getVertexAt(face.indices[i % n]);
-			Vector3f v1 = mesh.getVertexAt(face.indices[(i + 1) % n]);
-			Vector3f ep = GeometryUtil.getMidpoint(v0, v1);
-			int idx = mesh.vertices.indexOf(ep);
+			Vector3f from = mesh.getVertexAt(face.indices[i % n]);
+			Vector3f to = mesh.getVertexAt(face.indices[(i + 1) % n]);
+			Vector3f edgePoint = from.add(to).mult(0.5f);
+			int idx = mesh.vertices.indexOf(edgePoint);
 			if (idx > -1) {
 				indices[i + 1] = idx;
 			} else {
-				mesh.add(ep);
+				mesh.add(edgePoint);
 				indices[i + 1] = nextIndex;
 				nextIndex++;
 			}
