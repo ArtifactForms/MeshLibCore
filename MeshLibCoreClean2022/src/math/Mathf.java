@@ -13,7 +13,7 @@ public class Mathf {
 		return (float) Math.abs(a);
 	}
 
-	public static float clamp(float min, float max, float value) {
+	public static float clamp(float value, float min, float max) {
 		float clampedValue = value;
 		clampedValue = clampedValue < min ? min : clampedValue;
 		clampedValue = clampedValue > max ? max : clampedValue;
