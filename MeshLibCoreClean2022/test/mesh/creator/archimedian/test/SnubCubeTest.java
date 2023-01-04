@@ -56,7 +56,7 @@ public class SnubCubeTest {
 
 	@Test
 	public void everyEdgeHasLengthOfAlpha() {
-		float t = Geometry.TRIBONACCI_CONSTANT;
+		float t = Mathf.TRIBONACCI_CONSTANT;
 		float alpha = Mathf.sqrt(2 + (4 * t) - (2 * t * t));
 		float delta = 0.000001f;
 		MeshTest.assertEveryEdgeHasALengthOf(mesh, alpha, delta);

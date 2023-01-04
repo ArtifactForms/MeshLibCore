@@ -4,9 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.archimedian.TruncatedIcosidodecahedronCreator;
-import mesh.util.Geometry;
 import util.MeshTest;
 
 public class TruncatedIcosidodecahedronTest {
@@ -61,7 +61,7 @@ public class TruncatedIcosidodecahedronTest {
 	@Test
 	public void everyEdgeHasLengthOfTwiceTheGoldenRatioMinusTwo() {
 		float delta = 0.000001f;
-		float expcted = 2 * Geometry.GOLDEN_RATIO - 2;
+		float expcted = 2 * Mathf.GOLDEN_RATIO - 2;
 		MeshTest.assertEveryEdgeHasALengthOf(mesh, expcted, delta);
 	}
 
