@@ -153,7 +153,7 @@ public class Mesh3D {
 			float maxY = v.getY() > max.getY() ? v.getY() : max.getY();
 			float maxZ = v.getZ() > max.getZ() ? v.getZ() : max.getZ();
 			min.set(minX, minY, minZ);
-			max.set(maxX, maxX, maxZ);
+			max.set(maxX, maxY, maxZ);
 		}
 		bounds.setMinMax(min, max);
 		return bounds;
