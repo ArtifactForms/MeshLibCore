@@ -13,8 +13,8 @@ public class PlaneCreator implements IMeshCreator {
 		this(1);
 	}
 
-	public PlaneCreator(float size) {
-		this.radius = size;
+	public PlaneCreator(float radius) {
+		this.radius = radius;
 	}
 
 	@Override
