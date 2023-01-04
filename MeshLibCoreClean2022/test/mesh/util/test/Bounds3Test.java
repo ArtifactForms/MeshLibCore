@@ -95,57 +95,57 @@ public class Bounds3Test {
 	@Test
 	public void getSetRandomMin() {
 		Vector3f randomMin = createRandomVector();
-		bounds.setMin(randomMin.x, randomMin.y, randomMin.z);
+		bounds.setMin(randomMin.getX(), randomMin.getY(), randomMin.getZ());
 		Assert.assertEquals(randomMin, bounds.getMin());
 	}
 
 	@Test
 	public void getSetRandomMax() {
 		Vector3f randomMax = createRandomVector();
-		bounds.setMax(randomMax.x, randomMax.y, randomMax.z);
+		bounds.setMax(randomMax.getX(), randomMax.getY(), randomMax.getZ());
 		Assert.assertEquals(randomMax, bounds.getMax());
 	}
 
 	@Test
 	public void getRandomMinX() {
 		Vector3f randomMin = createRandomVector();
-		bounds.setMin(randomMin.x, randomMin.y, randomMin.z);
-		Assert.assertEquals(randomMin.x, bounds.getMinX(), 0);
+		bounds.setMin(randomMin.getX(), randomMin.getY(), randomMin.getZ());
+		Assert.assertEquals(randomMin.getX(), bounds.getMinX(), 0);
 	}
 
 	@Test
 	public void getRandomMinY() {
 		Vector3f randomMin = createRandomVector();
-		bounds.setMin(randomMin.x, randomMin.y, randomMin.z);
-		Assert.assertEquals(randomMin.y, bounds.getMinY(), 0);
+		bounds.setMin(randomMin.getX(), randomMin.getY(), randomMin.getZ());
+		Assert.assertEquals(randomMin.getY(), bounds.getMinY(), 0);
 	}
 
 	@Test
 	public void getRandomMinZ() {
 		Vector3f randomMin = createRandomVector();
-		bounds.setMin(randomMin.x, randomMin.y, randomMin.z);
-		Assert.assertEquals(randomMin.z, bounds.getMinZ(), 0);
+		bounds.setMin(randomMin.getX(), randomMin.getY(), randomMin.getZ());
+		Assert.assertEquals(randomMin.getZ(), bounds.getMinZ(), 0);
 	}
 	
 	@Test
 	public void getRandomMaxX() {
 		Vector3f randomMax = createRandomVector();
-		bounds.setMax(randomMax.x, randomMax.y, randomMax.z);
-		Assert.assertEquals(randomMax.x, bounds.getMaxX(), 0);
+		bounds.setMax(randomMax.getX(), randomMax.getY(), randomMax.getZ());
+		Assert.assertEquals(randomMax.getX(), bounds.getMaxX(), 0);
 	}
 
 	@Test
 	public void getRandomMaxY() {
 		Vector3f randomMax = createRandomVector();
-		bounds.setMax(randomMax.x, randomMax.y, randomMax.z);
-		Assert.assertEquals(randomMax.y, bounds.getMaxY(), 0);
+		bounds.setMax(randomMax.getX(), randomMax.getY(), randomMax.getZ());
+		Assert.assertEquals(randomMax.getY(), bounds.getMaxY(), 0);
 	}
 
 	@Test
 	public void getRandomMaxZ() {
 		Vector3f randomMax = createRandomVector();
-		bounds.setMax(randomMax.x, randomMax.y, randomMax.z);
-		Assert.assertEquals(randomMax.z, bounds.getMaxZ(), 0);
+		bounds.setMax(randomMax.getX(), randomMax.getY(), randomMax.getZ());
+		Assert.assertEquals(randomMax.getZ(), bounds.getMaxZ(), 0);
 	}
 	
 	@Test
@@ -157,7 +157,7 @@ public class Bounds3Test {
 	public void volumeOfBoundsConstructedWithSpecifiedSize() {
 		Vector3f size = createRandomVector();
 		Bounds3 bounds = new Bounds3(size);
-		float expected = size.x * size.y * size.z;
+		float expected = size.getX() * size.getY() * size.getZ();
 		Assert.assertEquals(expected, bounds.volume(), Mathf.ZERO_TOLERANCE);
 	}
 	

@@ -53,9 +53,9 @@ public class TranslateModifierTest {
 		for (int i = 0; i < original.getVertexCount(); i++) {
 			Vector3f expected = original.getVertexAt(i);
 			Vector3f actual = mesh.getVertexAt(i);
-			Assert.assertEquals(expected.x, actual.x, 0);
-			Assert.assertEquals(expected.y, actual.y, 0);
-			Assert.assertEquals(expected.z, actual.z, 0);
+			Assert.assertEquals(expected.getX(), actual.getX(), 0);
+			Assert.assertEquals(expected.getY(), actual.getY(), 0);
+			Assert.assertEquals(expected.getZ(), actual.getZ(), 0);
 		}
 	}
 	
@@ -115,9 +115,9 @@ public class TranslateModifierTest {
 		for (int i = 0; i < original.getVertexCount(); i++) {
 			Vector3f expected = original.getVertexAt(i);
 			Vector3f actual = mesh.getVertexAt(i);
-			Assert.assertEquals(expected.x + deltaX, actual.x, 0);
-			Assert.assertEquals(expected.y + deltaY, actual.y, 0);
-			Assert.assertEquals(expected.z + deltaZ, actual.z, 0);
+			Assert.assertEquals(expected.getX() + deltaX, actual.getX(), 0);
+			Assert.assertEquals(expected.getY() + deltaY, actual.getY(), 0);
+			Assert.assertEquals(expected.getZ() + deltaZ, actual.getZ(), 0);
 		}
 	}
 	
@@ -133,9 +133,9 @@ public class TranslateModifierTest {
 		for (int i = 0; i < original.getVertexCount(); i++) {
 			Vector3f expected = original.getVertexAt(i);
 			Vector3f actual = mesh.getVertexAt(i);
-			Assert.assertEquals(expected.x + deltaX, actual.x, 0);
-			Assert.assertEquals(expected.y + deltaY, actual.y, 0);
-			Assert.assertEquals(expected.z + deltaZ, actual.z, 0);
+			Assert.assertEquals(expected.getX() + deltaX, actual.getX(), 0);
+			Assert.assertEquals(expected.getY() + deltaY, actual.getY(), 0);
+			Assert.assertEquals(expected.getZ() + deltaZ, actual.getZ(), 0);
 		}
 	}
 	
@@ -152,9 +152,9 @@ public class TranslateModifierTest {
 		for (int i = 0; i < original.getVertexCount(); i++) {
 			Vector3f expected = original.getVertexAt(i);
 			Vector3f actual = mesh.getVertexAt(i);
-			Assert.assertEquals(expected.x + deltaX, actual.x, 0);
-			Assert.assertEquals(expected.y + deltaY, actual.y, 0);
-			Assert.assertEquals(expected.z + deltaZ, actual.z, 0);
+			Assert.assertEquals(expected.getX() + deltaX, actual.getX(), 0);
+			Assert.assertEquals(expected.getY() + deltaY, actual.getY(), 0);
+			Assert.assertEquals(expected.getZ() + deltaZ, actual.getZ(), 0);
 		}
 	}
 	
@@ -172,9 +172,9 @@ public class TranslateModifierTest {
 		for (int i = 0; i < original.getVertexCount(); i++) {
 			Vector3f expected = original.getVertexAt(i);
 			Vector3f actual = mesh.getVertexAt(i);
-			Assert.assertEquals(expected.x + deltaX, actual.x, 0);
-			Assert.assertEquals(expected.y + deltaY, actual.y, 0);
-			Assert.assertEquals(expected.z + deltaZ, actual.z, 0);
+			Assert.assertEquals(expected.getX() + deltaX, actual.getX(), 0);
+			Assert.assertEquals(expected.getY() + deltaY, actual.getY(), 0);
+			Assert.assertEquals(expected.getZ() + deltaZ, actual.getZ(), 0);
 		}
 	}
 	

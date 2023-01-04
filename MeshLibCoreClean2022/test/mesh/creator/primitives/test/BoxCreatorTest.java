@@ -71,21 +71,21 @@ public class BoxCreatorTest {
 	public void absValueOfEveryXCoordinateIsOPointFiveByDefault() {
 		Mesh3D mesh = new BoxCreator().create();
 		for (Vector3f v : mesh.vertices)
-			Assert.assertEquals(0.5f, Mathf.abs(v.x), 0);
+			Assert.assertEquals(0.5f, Mathf.abs(v.getX()), 0);
 	}
 
 	@Test
 	public void absValueOfEveryYCoordinateIsOPointFiveByDefault() {
 		Mesh3D mesh = new BoxCreator().create();
 		for (Vector3f v : mesh.vertices)
-			Assert.assertEquals(0.5f, Mathf.abs(v.y), 0);
+			Assert.assertEquals(0.5f, Mathf.abs(v.getY()), 0);
 	}
 
 	@Test
 	public void absValueOfEveryZCoordinateIsOPointFiveByDefault() {
 		Mesh3D mesh = new BoxCreator().create();
 		for (Vector3f v : mesh.vertices)
-			Assert.assertEquals(0.5f, Mathf.abs(v.z), 0);
+			Assert.assertEquals(0.5f, Mathf.abs(v.getZ()), 0);
 	}
 
 	@Test

@@ -82,7 +82,7 @@ public class PlanarVertexCenterCubeTest {
 		for (Face3D face : selection.getFaces()) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v = cube.getVertexAt(face.indices[i]);
-				Assert.assertEquals(-1, v.y, 0);
+				Assert.assertEquals(-1, v.getY(), 0);
 			}
 		}
 	}
@@ -94,7 +94,7 @@ public class PlanarVertexCenterCubeTest {
 		for (Face3D face : selection.getFaces()) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v = cube.getVertexAt(face.indices[i]);
-				Assert.assertEquals(1, v.y, 0);
+				Assert.assertEquals(1, v.getY(), 0);
 			}
 		}
 	}
@@ -106,7 +106,7 @@ public class PlanarVertexCenterCubeTest {
 		for (Face3D face : selection.getFaces()) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v = cube.getVertexAt(face.indices[i]);
-				Assert.assertEquals(-1, v.x, 0);
+				Assert.assertEquals(-1, v.getX(), 0);
 			}
 		}
 	}
@@ -118,7 +118,7 @@ public class PlanarVertexCenterCubeTest {
 		for (Face3D face : selection.getFaces()) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v = cube.getVertexAt(face.indices[i]);
-				Assert.assertEquals(1, v.x, 0);
+				Assert.assertEquals(1, v.getX(), 0);
 			}
 		}
 	}
@@ -130,7 +130,7 @@ public class PlanarVertexCenterCubeTest {
 		for (Face3D face : selection.getFaces()) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v = cube.getVertexAt(face.indices[i]);
-				Assert.assertEquals(-1, v.z, 0);
+				Assert.assertEquals(-1, v.getZ(), 0);
 			}
 		}
 	}
@@ -142,7 +142,7 @@ public class PlanarVertexCenterCubeTest {
 		for (Face3D face : selection.getFaces()) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v = cube.getVertexAt(face.indices[i]);
-				Assert.assertEquals(1, v.z, 0);
+				Assert.assertEquals(1, v.getZ(), 0);
 			}
 		}
 	}

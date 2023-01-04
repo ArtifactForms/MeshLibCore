@@ -39,9 +39,9 @@ public class CatmullClarkTest {
 		for (int j = 0; j < expected.getVertexCount(); j++) {
 			Vector3f expectedVertex = expected.getVertexAt(j);
 			Vector3f actualVertex = actual.getVertexAt(j);
-			Assert.assertEquals(expectedVertex.x, actualVertex.x, 0.000001f);
-			Assert.assertEquals(expectedVertex.y, actualVertex.y, 0.000001f);
-			Assert.assertEquals(expectedVertex.z, actualVertex.z, 0.000001f);
+			Assert.assertEquals(expectedVertex.getX(), actualVertex.getX(), 0.000001f);
+			Assert.assertEquals(expectedVertex.getY(), actualVertex.getY(), 0.000001f);
+			Assert.assertEquals(expectedVertex.getZ(), actualVertex.getZ(), 0.000001f);
 		}
 	}
 

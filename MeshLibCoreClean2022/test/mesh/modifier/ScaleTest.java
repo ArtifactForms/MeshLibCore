@@ -103,8 +103,8 @@ public class ScaleTest {
 		for (int i = 0; i < original.getVertexCount(); i++) {
 			Vector3f originalVertex = original.getVertexAt(i);
 			Vector3f scaledVertex = scaled.getVertexAt(i);
-			float expectedX = originalVertex.x * scaleX;
-			float actaual = scaledVertex.x;
+			float expectedX = originalVertex.getX() * scaleX;
+			float actaual = scaledVertex.getX();
 			Assert.assertEquals(expectedX, actaual, 0);
 		}
 	}
@@ -120,8 +120,8 @@ public class ScaleTest {
 		for (int i = 0; i < original.getVertexCount(); i++) {
 			Vector3f originalVertex = original.getVertexAt(i);
 			Vector3f scaledVertex = scaled.getVertexAt(i);
-			float expectedY = originalVertex.y * scaleY;
-			float actaual = scaledVertex.y;
+			float expectedY = originalVertex.getY() * scaleY;
+			float actaual = scaledVertex.getY();
 			Assert.assertEquals(expectedY, actaual, 0);
 		}
 	}
@@ -137,8 +137,8 @@ public class ScaleTest {
 		for (int i = 0; i < original.getVertexCount(); i++) {
 			Vector3f originalVertex = original.getVertexAt(i);
 			Vector3f scaledVertex = scaled.getVertexAt(i);
-			float expectedZ = originalVertex.z * scaleZ;
-			float actaual = scaledVertex.z;
+			float expectedZ = originalVertex.getZ() * scaleZ;
+			float actaual = scaledVertex.getZ();
 			Assert.assertEquals(expectedZ, actaual, 0);
 		}
 	}

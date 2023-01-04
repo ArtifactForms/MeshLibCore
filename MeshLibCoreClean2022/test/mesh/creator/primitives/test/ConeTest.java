@@ -113,7 +113,7 @@ public class ConeTest {
 		for (Face3D face : selection.getFaces()) {
 			for (int i = 0; i < face.indices.length; i++) {
 				Vector3f v = cone.getVertexAt(face.indices[i]);
-				Assert.assertEquals(1, v.y, 0);
+				Assert.assertEquals(1, v.getY(), 0);
 			}
 		}
 	}
