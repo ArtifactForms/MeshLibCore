@@ -238,4 +238,9 @@ public class Vector3f {
 		this.z = z;
 	}
 
+	@Override
+	public String toString() {
+		return "Vector3f [x=" + x + ", y=" + y + ", z=" + z + "]";
+	}
+
 }
