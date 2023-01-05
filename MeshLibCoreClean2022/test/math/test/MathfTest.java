@@ -95,7 +95,7 @@ public class MathfTest {
 		float min = (float) (Math.random() * 1000);
 		float random = min - (float) (Math.random() * 10000f);
 		float expected = min;
-		float actual = Mathf.clamp(min, 2000, random);
+		float actual = Mathf.clamp(random, min, min + 1000);
 		Assert.assertEquals(expected, actual, 0);
 	}
 	
@@ -146,6 +146,13 @@ public class MathfTest {
 		float random = -5000 + (float) (Math.random() * 10000);
 		float expected = (float) Math.abs(random);
 		Assert.assertEquals(expected, Mathf.abs(random), 0);
+	}
+	
+	@Test
+	public void randomRountToInt() {
+		float random = -5000 + (float) (Math.random() * 10000);
+		int expected = Math.round(random);
+		Assert.assertEquals(expected, Mathf.roundToInt(random), 0);
 	}
 	
 }
