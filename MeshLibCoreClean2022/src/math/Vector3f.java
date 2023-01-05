@@ -48,18 +48,14 @@ public class Vector3f {
 
 	public Vector3f normalize() {
 		float length = length();
-		if (length != 0) {
-			return divide(length);
-		}
-		return divide(1);
+		length = length == 0 ? 1 : length;
+		return divide(length);
 	}
 
 	public Vector3f normalizeLocal() {
 		float length = length();
-		if (length != 0) {
-			return divideLocal(length);
-		}
-		return divideLocal(1);
+		length = length == 0 ? 1 : length;
+		return divideLocal(length);
 	}
 
 	public float dot(Vector3f v) {
