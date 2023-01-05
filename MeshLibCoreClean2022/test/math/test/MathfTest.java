@@ -155,4 +155,11 @@ public class MathfTest {
 		Assert.assertEquals(expected, Mathf.roundToInt(random), 0);
 	}
 	
+	@Test
+	public void randomToRadians() {
+		float random = -5000 + (float) (Math.random() * 10000);
+		float expected = (float) Math.toRadians(random);
+		Assert.assertEquals(expected, Mathf.toRadians(random), 0);
+	}
+	
 }
