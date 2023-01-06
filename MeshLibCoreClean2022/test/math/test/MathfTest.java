@@ -162,4 +162,44 @@ public class MathfTest {
 		Assert.assertEquals(expected, Mathf.toRadians(random), 0);
 	}
 	
+	@Test
+	public void powSecondArgumentPositiveZeroResultsInOne() {
+		float a = 1000;
+		float expected = 1;
+		float actual = Mathf.pow(a, 0);
+		Assert.assertEquals(expected, actual, 0);
+	}
+	
+	@Test
+	public void powSecondArgumentNegativeZeroResultsInOne() {
+		float a = -827;
+		float expected = 1;
+		float actual = Mathf.pow(a, -0);
+		Assert.assertEquals(expected, actual, 0);
+	}
+	
+	@Test
+	public void powReturnsFirstArgumentIfSecondIsOne() {
+		float a = 827272.01f;
+		float expected = a;
+		float actual = Mathf.pow(a, 1);
+		Assert.assertEquals(expected, actual, 0);
+	}
+	
+	@Test
+	public void powResultIsNanIfSecondArgumentIsNan() {
+		float a = 725241.1123f;
+		float expected = Float.NaN;
+		float actual = Mathf.pow(a, Float.NaN);
+		Assert.assertEquals(expected, actual, 0);
+	}
+	
+	@Test
+	public void powSecondArgumentIsNoneZeroAndFirstIsNanResultIsNan() {
+		float a = Float.NaN;
+		float expected = Float.NaN;
+		float actual = Mathf.pow(a, 1923);
+		Assert.assertEquals(expected, actual, 0);
+	}
+	
 }
