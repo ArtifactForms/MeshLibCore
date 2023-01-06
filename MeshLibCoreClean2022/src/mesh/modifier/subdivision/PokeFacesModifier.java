@@ -23,7 +23,10 @@ public class PokeFacesModifier implements IMeshModifier {
 	private void createFaces(int index, Face3D face) {
 		int vertexCount = face.indices.length;
 		for (int i = 0; i < vertexCount; i++) {
-			Face3D f = new Face3D(index, face.indices[i % vertexCount], face.indices[(i + 1) % vertexCount]);
+			int index0 = index;
+			int index1 = face.indices[i % vertexCount];
+			int index2 = face.indices[(i + 1) % vertexCount];
+			Face3D f = new Face3D(index0, index1, index2);
 			mesh.add(f);
 		}
 	}
