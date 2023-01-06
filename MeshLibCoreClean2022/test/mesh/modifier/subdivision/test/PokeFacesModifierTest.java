@@ -142,4 +142,20 @@ public class PokeFacesModifierTest {
 		MeshTest.assertIsManifold(capsule);
 	}
 	
+	@Test
+	public void distanceFaceCentersToOriginCubeCase() {
+		float radius = 10;
+		float randomPokeOffset = (float) (Math.random() * 10223);
+		float expectedDistance = randomPokeOffset + radius;
+		Mesh3D mesh = new CubeCreator(radius).create();
+		Mesh3D modifiedMesh = new CubeCreator(radius).create();
+		modifier.setPokeOffset(randomPokeOffset);
+		modifier.modify(modifiedMesh);
+		modifiedMesh.vertices.removeAll(mesh.getVertices());
+		for (Vector3f v : modifiedMesh.getVertices()) {
+			float distance = v.distance(Vector3f.ZERO);
+			Assert.assertEquals(expectedDistance, distance, 0);
+		}
+	}
+	
 }
