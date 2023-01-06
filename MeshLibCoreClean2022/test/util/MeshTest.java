@@ -13,6 +13,17 @@ import mesh.creator.test.manifold.ManifoldTest;
 import mesh.selection.FaceSelection;
 
 public class MeshTest {
+	
+	public static void assertNormalsPointOutwards(Mesh3D mesh) {
+		Vector3f center = new Vector3f();
+		for (Face3D face : mesh.getFaces()) {
+			Vector3f faceNormal = mesh.calculateFaceNormal(face);
+			Vector3f faceCenter = mesh.calculateFaceCenter(face);
+			Vector3f a = faceCenter.subtract(center);
+			float dotProduct = faceNormal.dot(a);
+			Assert.assertTrue(dotProduct >= 0);
+		}
+	}
 
 	public static void assertMeshHasNoDuplicatedFaces(Mesh3D mesh) {
 		int duplicatedFaces = 0;
