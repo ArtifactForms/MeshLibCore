@@ -89,6 +89,13 @@ public class Vector3f {
 		z += v.z;
 		return this;
 	}
+	
+	public Vector3f cross(Vector3f v) {
+		float x = (y * v.z) - (z * v.y);
+		float y = (z * v.x) - (x * v.z);
+		float z = (x * v.y) - (y * v.x);
+		return new Vector3f(x, y, z);
+	}
 
 	public Vector3f subtractLocal(float x, float y, float z) {
 		this.x -= x;
