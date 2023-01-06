@@ -1,4 +1,4 @@
-package mesh.modifier;
+package mesh.modifier.subdivision.test;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CapsuleCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.IMeshModifier;
 import mesh.modifier.subdivision.PokeFacesModifier;
 import util.MeshTest;
 
