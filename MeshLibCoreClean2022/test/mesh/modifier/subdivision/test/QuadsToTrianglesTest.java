@@ -1,4 +1,4 @@
-package mesh.modifier;
+package mesh.modifier.subdivision.test;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,6 +10,7 @@ import mesh.creator.archimedian.SnubCubeCreator;
 import mesh.creator.platonic.IcosahedronCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
+import mesh.modifier.IMeshModifier;
 import mesh.modifier.subdivision.QuadsToTrianglesModifier;
 import util.MeshTest;
 
