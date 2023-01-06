@@ -83,9 +83,7 @@ public class QuadsToTrianglesTest {
 		for (int i = 0; i < expected.getFaceCount(); i++) {
 			int[] expectedIndices = expected.getFaceAt(i).indices;
 			int[] actualIndices = actual.getFaceAt(i).indices;
-			for (int j = 0; j < expectedIndices.length; j++) {
-				Assert.assertEquals(expectedIndices[j], actualIndices[j]);
-			}
+			Assert.assertArrayEquals(expectedIndices, actualIndices);
 		}
 	}
 	
