@@ -11,6 +11,11 @@ import mesh.creator.primitives.CubeCreator;
 public class RemoveDoubleVerticesTest {
 
 	@Test
+	public void modifierImplementsModifierInterface() {
+		Assert.assertTrue(new RemoveDoubleVerticesModifier() instanceof IMeshModifier);
+	}
+	
+	@Test
 	public void removeDoublesFromCube() {
 		Mesh3D mesh = new CubeCreator().create();
 		mesh.addVertices(new CubeCreator().create().getVertices());
