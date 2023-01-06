@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import math.Vector3f;
+import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.archimedian.SnubCubeCreator;
 import mesh.creator.platonic.IcosahedronCreator;
@@ -100,6 +101,48 @@ public class QuadsToTrianglesTest {
 		int expected = 44;
 		modifier.modify(mesh);
 		MeshTest.assertTriangleCountEquals(mesh, expected);
+	}
+	
+	@Test
+	public void subdividePlaneVertexIndicesOfFaceOne() {
+		Mesh3D mesh = new PlaneCreator().create();
+		modifier.modify(mesh);
+		int[] expected = new int[] {0, 1, 2};
+		int[] actual = mesh.getFaceAt(0).indices;
+		Assert.assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void subdividePlaneVertexIndicesOfFaceTwo() {
+		Mesh3D mesh = new PlaneCreator().create();
+		modifier.modify(mesh);
+		int[] expected = new int[] {2, 3, 0};
+		int[] actual = mesh.getFaceAt(1).indices;
+		Assert.assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void subdivideCubeFaceCheckFirstTriangleIndices() {
+		Mesh3D cube = new CubeCreator().create();
+		Mesh3D modifiedCube = new CubeCreator().create();
+		modifier.modify(modifiedCube);
+		for (int i = 0; i < cube.getFaceCount(); i++) {
+			Face3D originalFace = cube.getFaceAt(i);
+			Face3D modifiedFace = modifiedCube.getFaceAt(i * 2);
+			int[] originalIndices = originalFace.indices;
+			int index0 = originalIndices[0];
+			int index1 = originalIndices[1];
+			int index2 = originalIndices[2];
+			int[] expectedIndices = new int[] {index0, index1, index2};
+			Assert.assertArrayEquals(expectedIndices, modifiedFace.indices);
+		}
+	}
+	
+	@Test
+	public void normalsPointOutwards() {
+		Mesh3D cube = new CubeCreator().create();
+		modifier.modify(cube);
+		MeshTest.assertNormalsPointOutwards(cube);
 	}
 	
 }
