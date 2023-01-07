@@ -3,7 +3,7 @@ package mesh.animator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimationManager {
+public class Animation {
 
 	private boolean finished;
 	private float tpf;
@@ -11,7 +11,7 @@ public class AnimationManager {
 	private boolean running;
 	private List<IAnimator> animators;
 
-	public AnimationManager() {
+	public Animation() {
 		animators = new ArrayList<IAnimator>();
 	}
 
