@@ -83,7 +83,7 @@ public class ArchemedianSolidTest {
 	
 	@Test
 	public void getTypeAtIndexThree() {
-		ArchimedianSolid expected = ArchimedianSolid.CUBOCAHEDRON;
+		ArchimedianSolid expected = ArchimedianSolid.CUBOCTAHEDRON;
 		Assert.assertEquals(expected, ArchimedianSolid.getType(3));
 	}
 	
@@ -101,7 +101,7 @@ public class ArchemedianSolidTest {
 	
 	@Test
 	public void getTypeAtIndexSix() {
-		ArchimedianSolid expected = ArchimedianSolid.RHOMBICOSADODECAHEDRON;
+		ArchimedianSolid expected = ArchimedianSolid.RHOMBISOSIDODECAHEDRON;
 		Assert.assertEquals(expected, ArchimedianSolid.getType(6));
 	}
 	
