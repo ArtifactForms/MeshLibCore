@@ -1,6 +1,7 @@
 package mesh.modifier.subdivision.test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Assert;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.creator.archimedian.CuboctahedronCreator;
 import mesh.creator.platonic.IcosahedronCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
@@ -228,6 +230,76 @@ public class LinearSubdivisionModifierTest {
 			}
 		}
 		return edgePoints;
+	}
+	
+	@Test
+	public void subdividedCuboctahedronHasThrirtyTwoTriangularFaces() {
+		CuboctahedronCreator creator = new CuboctahedronCreator();
+		Mesh3D mesh = creator.create();
+		modifier.modify(mesh);	
+		MeshTest.assertTriangleCountEquals(mesh, 32);
+	}
+	
+	@Test
+	public void subdividedCuboctahedronHasTwentyFourQuads() {
+		CuboctahedronCreator creator = new CuboctahedronCreator();
+		Mesh3D mesh = creator.create();
+		modifier.modify(mesh);	
+		MeshTest.assertQuadCountEquals(mesh, 24);
+	}
+	
+	@Test
+	public void subdividedCuboctahedronHasNoLooseVertices() {
+		CuboctahedronCreator creator = new CuboctahedronCreator();
+		Mesh3D mesh = creator.create();
+		modifier.modify(mesh);	
+		MeshTest.assertMeshHasNoLooseVertices(mesh);
+	}
+	
+	@Test
+	public void subdividedCuboctahedronHasNoDuplicatedFaces() {
+		CuboctahedronCreator creator = new CuboctahedronCreator();
+		Mesh3D mesh = creator.create();
+		modifier.modify(mesh);	
+		MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
+	}
+	
+	@Test
+	public void subdividedCuboctahedronIsManifold() {
+		CuboctahedronCreator creator = new CuboctahedronCreator();
+		Mesh3D mesh = creator.create();
+		modifier.modify(mesh);	
+		MeshTest.assertIsManifold(mesh);
+	}
+	
+	@Test
+	public void subdividedCuboctahedronHasFourtyTwoVertices() {
+		CuboctahedronCreator creator = new CuboctahedronCreator();
+		Mesh3D mesh = creator.create();
+		modifier.modify(mesh);
+		Assert.assertEquals(42, mesh.getVertexCount());
+	}
+	
+	@Test
+	public void subdividedCuboctahedronHasNoDuplicatedVertices() {
+		CuboctahedronCreator creator = new CuboctahedronCreator();
+		Mesh3D mesh = creator.create();
+		modifier.modify(mesh);
+		HashSet<Vector3f> vertices = new HashSet<>();
+		vertices.addAll(mesh.getVertices());
+		Assert.assertEquals(42, mesh.getVertexCount());
+	}
+	
+	@Test
+	public void subdividedCuboctahedronHasNoDuplicatedVerticesThreshold() {
+		CuboctahedronCreator creator = new CuboctahedronCreator();
+		Mesh3D mesh = creator.create();
+		modifier.modify(mesh);
+		for (Vector3f v : mesh.vertices)
+			v.roundLocalDecimalPlaces(2);
+		HashSet<Vector3f> vertices = new HashSet<>();
+		vertices.addAll(mesh.getVertices());
+		Assert.assertEquals(42, mesh.getVertexCount());
 	}
 	
 }
