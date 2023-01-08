@@ -103,29 +103,35 @@ public class LeonardoCubeCreator implements IMeshCreator {
 
 	private Mesh3D createConnector(boolean extrudeEnds0, boolean extrudeEnds1) {
 		CubeCreator creator = new CubeCreator(connectorRadius);
-		Mesh3D m = creator.create();
+		Mesh3D mesh = creator.create();
+		FaceSelection selection0 = selectLeftRight(mesh);
+		FaceSelection selection1 = selectBackFront(mesh);
+		extrudeSelection(selection0, extrudeEnds0);
+		extrudeSelection(selection1, extrudeEnds1);
+		return mesh;
+	}
+	
+	private FaceSelection selectLeftRight(Mesh3D mesh) {
+		FaceSelection selection = new FaceSelection(mesh);
+		selection.selectLeftFaces();
+		selection.selectRightFaces();
+		return selection;
+	}
+	
+	private FaceSelection selectBackFront(Mesh3D mesh) {
+		FaceSelection selection = new FaceSelection(mesh);
+		selection.selectBackFaces();
+		selection.selectFrontFaces();
+		return selection;
+	}
 
-		FaceSelection selection0 = new FaceSelection(m);
-		selection0.selectLeftFaces();
-		selection0.selectRightFaces();
-
-		FaceSelection selection1 = new FaceSelection(m);
-		selection1.selectBackFaces();
-		selection1.selectFrontFaces();
-
-		for (Face3D f : selection0.getFaces()) {
-			Mesh3DUtil.extrudeFace(m, f, 1, outerRadius - (3 * connectorRadius));
-			if (extrudeEnds0)
-				Mesh3DUtil.extrudeFace(m, f, 1, (2 * connectorRadius));
+	private void extrudeSelection(FaceSelection selection, boolean extrudeEnds) {
+		Mesh3D mesh = selection.getMesh();
+		for (Face3D f : selection.getFaces()) {
+			Mesh3DUtil.extrudeFace(mesh, f, 1, outerRadius - (3 * connectorRadius));
+			if (extrudeEnds)
+				Mesh3DUtil.extrudeFace(mesh, f, 1, (2 * connectorRadius));
 		}
-
-		for (Face3D f : selection1.getFaces()) {
-			Mesh3DUtil.extrudeFace(m, f, 1, outerRadius - (3 * connectorRadius));
-			if (extrudeEnds1)
-				Mesh3DUtil.extrudeFace(m, f, 1, (2 * connectorRadius));
-		}
-
-		return m;
 	}
 
 	private float calculateConnectorRadius() {
