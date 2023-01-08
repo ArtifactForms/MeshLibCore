@@ -16,7 +16,7 @@ public class ArchimedianSolidCreator implements IMeshCreator {
 		case ICOSIDODECAHEDRON:
 			return new IcosidodecahedronCreator();
 		case TRUNCATED_CUBOCTAHEDRON:
-			return new CuboctahedronCreator();
+			return new TruncatedCuboctahedronCreator();
 		case TRUNCATED_ICOSIDODECAHEDRON:
 			return new TruncatedIcosidodecahedronCreator();
 		case CUBOCTAHEDRON:
