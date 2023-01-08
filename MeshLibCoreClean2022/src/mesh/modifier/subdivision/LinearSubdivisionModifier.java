@@ -32,7 +32,6 @@ import mesh.modifier.IMeshModifier;
 public class LinearSubdivisionModifier implements IMeshModifier {
 
 	private int iterations;
-	private int nextIndex;
 	private int[] indices;
 	private Face3D face;
 	private Mesh3D mesh;
@@ -51,9 +50,8 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 		if (face.indices.length <= 3)
 			return;
 		Vector3f center = mesh.calculateFaceCenter(face);
+		indices[0] = getNextIndex();
 		mesh.add(center);
-		indices[0] = nextIndex;
-		nextIndex++;
 	}
 
 	private void createEdgePoints() {
@@ -66,9 +64,8 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 			if (idx > -1) {
 				indices[i + 1] = idx;
 			} else {
+				indices[i + 1] = getNextIndex();
 				mesh.add(edgePoint);
-				indices[i + 1] = nextIndex;
-				nextIndex++;
 			}
 		}
 	}
@@ -109,7 +106,6 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 	}
 
 	private void subdivide() {
-		nextIndex = mesh.getVertexCount();
 		for (Face3D face : mesh.getFaces()) {
 			this.face = face;
 			indices = new int[face.indices.length + 1];
@@ -118,6 +114,10 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 			createFaces();
 		}
 		applyFaces();
+	}
+	
+	private int getNextIndex() {
+		return mesh.getVertexCount();
 	}
 
 	@Override
