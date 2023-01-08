@@ -21,8 +21,6 @@ import mesh.modifier.IMeshModifier;
  * |       |       | /   \ |
  * o-------o       o-------o
  * </pre>
- * 
- * @version 0.1, 20 June 2016
  */
 public class PlanarVertexCenterModifier implements IMeshModifier {
 

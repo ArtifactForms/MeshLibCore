@@ -38,9 +38,6 @@ import mesh.modifier.IMeshModifier;
  *  /                 \        /        .        \
  * o-------------------o      o---------o---------o
  * </pre>
- * 
- * @version 0.1, 20 June 2016
- * @version 0.2 19 October 2022
  */
 public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 
