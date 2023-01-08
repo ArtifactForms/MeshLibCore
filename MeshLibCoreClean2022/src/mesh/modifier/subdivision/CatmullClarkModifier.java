@@ -52,7 +52,7 @@ public class CatmullClarkModifier implements IMeshModifier {
 
 	private void initialize() {
 		originalVertexCount = mesh.getVertexCount();
-		facesToProcess = new ArrayList<>(mesh.getFaces());
+		facesToProcess = mesh.getFaces();
 		edgeToEdgePointIndex = new HashMap<Edge3D, Integer>();
 		vertexDataMap = new HashMap<Integer, VertexData>();
 	}
