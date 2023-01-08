@@ -105,7 +105,7 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 		newFaces.clear();
 	}
 
-	private void subdivide() {
+	private void oneIteration() {
 		for (Face3D face : mesh.getFaces()) {
 			this.face = face;
 			indices = new int[face.indices.length + 1];
@@ -116,6 +116,11 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 		applyFaces();
 	}
 	
+	private void subdivide() {
+		for (int i = 0; i < iterations; i++)
+			oneIteration();
+	}
+	
 	private int getNextIndex() {
 		return mesh.getVertexCount();
 	}
@@ -123,8 +128,7 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
 		setMesh(mesh);
-		for (int i = 0; i < iterations; i++)
-			subdivide();
+		subdivide();
 		return mesh;
 	}
 	
