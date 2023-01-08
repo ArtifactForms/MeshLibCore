@@ -120,13 +120,14 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		this.mesh = mesh;
-
-		for (int i = 0; i < iterations; i++) {
+		setMesh(mesh);
+		for (int i = 0; i < iterations; i++)
 			subdivide();
-		}
-
 		return mesh;
+	}
+	
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
 	}
 
 }
