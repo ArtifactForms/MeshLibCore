@@ -207,4 +207,26 @@ public class LinearSubdivisionModifierTest {
 		}
 	}
 	
+	@Test
+	public void removingEdgePointsLeavesOriginalVerticesIcosahedronCase() {
+		Mesh3D original = new IcosahedronCreator().create();
+		Mesh3D mesh = new IcosahedronCreator().create();
+		int expectedVertexCount = original.getVertexCount();
+		modifier.modify(mesh);
+		List<Vector3f> vertices = mesh.getVertices();
+		for (Face3D face : original.getFaces()) {
+			int length = face.indices.length;
+			for (int i = 0; i < length; i++) {
+				Vector3f from = original.getVertexAt(face.indices[i]);
+				Vector3f to = original.getVertexAt(face.indices[(i + 1) % length]);
+				Vector3f edgePoint = from.add(to).mult(0.5f);
+				vertices.remove(edgePoint);
+			}
+		}
+		Assert.assertEquals(expectedVertexCount, vertices.size());
+		for (Vector3f v : original.getVertices()) {
+			Assert.assertTrue(vertices.contains(v));
+		}
+	}
+	
 }
