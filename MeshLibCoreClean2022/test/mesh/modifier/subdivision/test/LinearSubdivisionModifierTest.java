@@ -1,5 +1,6 @@
 package mesh.modifier.subdivision.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -190,16 +191,10 @@ public class LinearSubdivisionModifierTest {
 		Mesh3D originalCube = new CubeCreator().create();
 		modifier.modify(cubeMesh);
 		List<Vector3f> vertices = cubeMesh.getVertices();
+		vertices.removeAll(calculateEdgePoints(originalCube));
 		for (Face3D face : originalCube.getFaces()) {
-			int length = face.indices.length;
 			Vector3f center = originalCube.calculateFaceCenter(face);
 			vertices.remove(center);
-			for (int i = 0; i < length; i++) {
-				Vector3f from = originalCube.getVertexAt(face.indices[i]);
-				Vector3f to = originalCube.getVertexAt(face.indices[(i + 1) % length]);
-				Vector3f edgePoint = from.add(to).mult(0.5f);
-				vertices.remove(edgePoint);
-			}
 		}
 		Assert.assertEquals(8, vertices.size());
 		for (Vector3f v : originalCube.getVertices()) {
@@ -208,25 +203,31 @@ public class LinearSubdivisionModifierTest {
 	}
 	
 	@Test
-	public void removingEdgePointsLeavesOriginalVerticesIcosahedronCase() {
+	public void removingEdgePointsLeavesOriginalVerticesTriangleCase() {
 		Mesh3D original = new IcosahedronCreator().create();
 		Mesh3D mesh = new IcosahedronCreator().create();
 		int expectedVertexCount = original.getVertexCount();
 		modifier.modify(mesh);
 		List<Vector3f> vertices = mesh.getVertices();
-		for (Face3D face : original.getFaces()) {
-			int length = face.indices.length;
-			for (int i = 0; i < length; i++) {
-				Vector3f from = original.getVertexAt(face.indices[i]);
-				Vector3f to = original.getVertexAt(face.indices[(i + 1) % length]);
-				Vector3f edgePoint = from.add(to).mult(0.5f);
-				vertices.remove(edgePoint);
-			}
-		}
+		vertices.removeAll(calculateEdgePoints(original));
 		Assert.assertEquals(expectedVertexCount, vertices.size());
 		for (Vector3f v : original.getVertices()) {
 			Assert.assertTrue(vertices.contains(v));
 		}
+	}
+	
+	private List<Vector3f> calculateEdgePoints(Mesh3D mesh) {
+		List<Vector3f> edgePoints = new ArrayList<>();
+		for (Face3D face : mesh.getFaces()) {
+			int length = face.indices.length;
+			for (int i = 0; i < length; i++) {
+				Vector3f from = mesh.getVertexAt(face.indices[i]);
+				Vector3f to = mesh.getVertexAt(face.indices[(i + 1) % length]);
+				Vector3f edgePoint = from.add(to).mult(0.5f);
+				edgePoints.add(edgePoint);
+			}
+		}
+		return edgePoints;
 	}
 	
 }
