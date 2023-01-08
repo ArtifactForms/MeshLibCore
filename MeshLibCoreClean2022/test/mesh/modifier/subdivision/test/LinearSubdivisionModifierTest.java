@@ -186,7 +186,7 @@ public class LinearSubdivisionModifierTest {
 	}
 
 	@Test
-	public void removingCenterAndEdgePointsLeavesOriginalVertices() {
+	public void removingCenterAndEdgePointsLeavesOriginalVerticesCubeCase() {
 		Mesh3D originalCube = new CubeCreator().create();
 		modifier.modify(cubeMesh);
 		List<Vector3f> vertices = cubeMesh.getVertices();
