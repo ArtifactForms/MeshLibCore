@@ -86,9 +86,11 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 
 	private void centerSplit() {
 		for (int i = 0; i < face.indices.length; i++) {
-			Face3D f0 = new Face3D(face.indices[i], indices[i + 1], indices[0],
-					indices[i == 0 ? face.indices.length : i]);
-			newFaces.add(f0);
+			int index0 = face.indices[i];
+			int index1 = indices[i + 1];
+			int index2 = indices[0];
+			int index3 = indices[i == 0 ? face.indices.length : i];
+			addFace(index0, index1, index2, index3);
 		}
 	}
 
