@@ -28,8 +28,6 @@ import mesh.modifier.IMeshModifier;
  * |       |         |   |   |
  * o-------o         o---o---o
  * </pre>
- * 
- * @version 0.2, 7 December 2017
  */
 public class LinearSubdivisionModifier implements IMeshModifier {
 
@@ -76,14 +74,14 @@ public class LinearSubdivisionModifier implements IMeshModifier {
 	}
 
 	private void oneToFourTriangleSplit() {
-		Face3D f0 = new Face3D(indices[1], indices[2], indices[3]);
-		Face3D f1 = new Face3D(face.indices[0], indices[1], indices[3]);
-		Face3D f2 = new Face3D(face.indices[1], indices[2], indices[1]);
-		Face3D f3 = new Face3D(face.indices[2], indices[3], indices[2]);
-		newFaces.add(f0);
-		newFaces.add(f1);
-		newFaces.add(f2);
-		newFaces.add(f3);
+		addFace(indices[1], indices[2], indices[3]);
+		addFace(face.indices[0], indices[1], indices[3]);
+		addFace(face.indices[1], indices[2], indices[1]);
+		addFace(face.indices[2], indices[3], indices[2]);
+	}
+	
+	private void addFace(int... indices) {
+		newFaces.add(new Face3D(indices));
 	}
 
 	private void centerSplit() {
