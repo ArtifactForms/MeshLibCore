@@ -127,10 +127,10 @@ public class LeonardoCubeCreator implements IMeshCreator {
 
 	private void extrudeSelection(FaceSelection selection, boolean extrudeEnds) {
 		Mesh3D mesh = selection.getMesh();
-		for (Face3D f : selection.getFaces()) {
-			Mesh3DUtil.extrudeFace(mesh, f, 1, outerRadius - (3 * connectorRadius));
+		for (Face3D face : selection.getFaces()) {
+			Mesh3DUtil.extrudeFace(mesh, face, 1, outerRadius - (3 * connectorRadius));
 			if (extrudeEnds)
-				Mesh3DUtil.extrudeFace(mesh, f, 1, (2 * connectorRadius));
+				Mesh3DUtil.extrudeFace(mesh, face, 1, (2 * connectorRadius));
 		}
 	}
 
