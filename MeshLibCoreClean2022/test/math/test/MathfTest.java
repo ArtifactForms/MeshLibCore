@@ -202,4 +202,78 @@ public class MathfTest {
 		Assert.assertEquals(expected, actual, 0);
 	}
 	
+	@Test
+	public void clampIntAllValuesZero() {
+		int expected = 0;
+		int actual = Mathf.clampInt(0, 0, 0);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampMinusOneBetweenZeroAndZero() {
+		int expected = 0;
+		int actual = Mathf.clampInt(-1, 0, 0);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampOneBetweenZeroAndOne() {
+		int expected = 1;
+		int actual = Mathf.clampInt(1, 0, 1);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampIntMinReturnsMin() {
+		int expected = -200;
+		int actual = Mathf.clampInt(-200, -200, 50);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampIntMaxReturnsMax() {
+		int expected = 50;
+		int actual = Mathf.clampInt(50, -200, 50);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampIntMinMinusOneReturnsMin() {
+		int expected = -100;
+		int actual = Mathf.clampInt(-101, -100, 0);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampIntMaxPlusOneReturnsMax() {
+		int expected = 100;
+		int actual = Mathf.clampInt(101, -100, 100);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampIntRandomMax() {
+		int max = (int) (Math.random() * 50000);
+		int actual = Mathf.clampInt(max + 1000, -1000, max);
+		int expected = max;
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampIntRandomMin() {
+		int value = (int) (Math.random() * 50000);
+		int actual = Mathf.clampInt(value - 2000, value -1000, value + 1000);
+		int expected = value - 1000;
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void clampIntRandomBetweenMinAndMax() {
+		int value = (int) (Math.random() * 50000);
+		int min = value - 5000;
+		int max = value + 5000;
+		int actual = Mathf.clampInt(value, min, max);
+		Assert.assertEquals(value, actual);
+	}
+	
 }
