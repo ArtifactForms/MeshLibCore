@@ -32,3 +32,20 @@ Mesh3D plane = new PlaneCreator().create();
 FlipFacesModifier modifier = new FlipFacesModifier();
 modifier.modify(plane);
 ```
+
+### ScaleModifier
+
+This modifier scales the mesh.
+
+```java
+import mesh.Mesh3D;
+import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.ScaleModifier;
+
+Mesh3D cube = new CubeCreator().create();
+ScaleModifier modifier = new ScaleModifier();
+modifier.setScaleX(2);
+modifier.setScaleY(10);
+modifier.setScaleZ(4);
+modifier.modify(cube);
+```
