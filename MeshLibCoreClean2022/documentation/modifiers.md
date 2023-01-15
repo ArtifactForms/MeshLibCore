@@ -4,6 +4,7 @@ The following example shows how to center the mesh
 at a specified location.
 
 ```java
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.CenterAtModifier;
