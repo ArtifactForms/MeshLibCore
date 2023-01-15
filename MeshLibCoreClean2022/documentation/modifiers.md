@@ -1,7 +1,8 @@
-### Center mesh
+### CenterAtModifier
 
 The following example shows how to center the mesh
-at a specified location.
+at a specified location. In other words this modifier 
+sets the center of the mesh to the specified location.
 
 ```java
 import math.Vector3f;
@@ -15,7 +16,7 @@ modifier.setCenter(new Vector3f(-4,0,8));
 modifier.modify(cube);
 ```
 
-### Flip face normals
+### FlipFacesModifier
 
 The following example shows how to reverse the diretion
 of all face normals. The modifier does not change the
