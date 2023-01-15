@@ -1,3 +1,18 @@
+### Center mesh
+
+The following example shows how to center the mesh
+at a specified location.
+
+```java
+import mesh.Mesh3D;
+import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.CenterAtModifier;
+
+Mesh3D cube = new CubeCreator().create();
+CenterAtModifier modifier = new CenterAtModifier();
+modifier.setCenter(new Vector3f(-4,0,8));
+modifier.modify(cube);
+
 ### Flip face normals
 
 The following example shows how to reverse the diretion
