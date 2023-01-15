@@ -18,7 +18,7 @@ modifier.modify(cube);
 ### Flip face normals
 
 The following example shows how to reverse the diretion
-of all face normals. The modifiers does not change the
+of all face normals. The modifier does not change the
 orientation nor it solves any winding order issues.
 It simply reverses the vertex index entries of the face.
 
