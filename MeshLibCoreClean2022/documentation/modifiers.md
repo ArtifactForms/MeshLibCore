@@ -12,6 +12,7 @@ Mesh3D cube = new CubeCreator().create();
 CenterAtModifier modifier = new CenterAtModifier();
 modifier.setCenter(new Vector3f(-4,0,8));
 modifier.modify(cube);
+```
 
 ### Flip face normals
 
