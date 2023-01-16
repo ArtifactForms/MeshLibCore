@@ -1,3 +1,19 @@
+### ExtrudeModifier
+
+The following example shows how to extrude all individual faces of a mesh.
+
+```java
+import mesh.Mesh3D;
+import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.ExtrudeModifier;
+
+Mesh3D cube = new CubeCreator().create();
+ExtrudeModifier modifier = new ExtrudeModifier();
+modifier.setAmount(3.5f);
+modofier.setScale(1);
+modifier.modify(cube);
+```
+
 ### CenterAtModifier
 
 The following example shows how to center the mesh
@@ -20,7 +36,7 @@ modifier.modify(cube);
 
 The following example shows how to reverse the diretion
 of all face normals. The modifier does not change the
-orientation nor it solves any winding order issues.
+orientation of the face normals nor it solves any winding order issues.
 It simply reverses the vertex index entries of the face.
 
 ```java
