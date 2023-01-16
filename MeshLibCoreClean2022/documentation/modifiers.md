@@ -10,7 +10,8 @@ import mesh.modifier.NoiseModifier;
 
 Mesh3D sphere = new IcoSphereCreator().create();
 NoiseModifier modifier = new NoiseModifier();
-
+setMinimum(1.0f);
+setMaximum(1.5f);
 modifier.modify(sphere);
 ```
 
