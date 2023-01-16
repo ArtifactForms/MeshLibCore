@@ -1,6 +1,6 @@
 ### ExtrudeModifier
 
-The following example shows how to extrude all individual faces of a mesh.
+The following example shows how to extrude the individual faces of a mesh.
 
 ```java
 import mesh.Mesh3D;
