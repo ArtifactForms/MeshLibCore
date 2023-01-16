@@ -1,3 +1,19 @@
+### NoiseModifier
+
+This modifier moves all vertices along their corresponding 
+vertex normals by a random amount.
+
+```java
+import mesh.Mesh3D;
+import mesh.creator.IcoSphereCreator;
+import mesh.modifier.NoiseModifier;
+
+Mesh3D sphere = new IcoSphereCreator().create();
+NoiseModifier modifier = new NoiseModifier();
+
+modifier.modify(sphere);
+```
+
 ### ExtrudeModifier
 
 The following example shows how to extrude all faces of a mesh. The faces are extruded along 
