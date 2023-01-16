@@ -1,7 +1,8 @@
 ### ExtrudeModifier
 
 The following example shows how to extrude all faces of a mesh. The faces are extruded along 
-their own individual normals.
+their own individual normals. Newly created geometry is kept
+connected with the original vertices.
 
 ```java
 import mesh.Mesh3D;
