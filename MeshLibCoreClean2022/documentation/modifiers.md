@@ -1,7 +1,9 @@
 ### NoiseModifier
 
 This modifier moves all vertices along their corresponding 
-vertex normals by a random amount.
+vertex normals by a random amount. Minimum and maximum are defining
+the range of rhe random amount. For each vertex an individual
+random value is applied.
 
 ```java
 import mesh.Mesh3D;
