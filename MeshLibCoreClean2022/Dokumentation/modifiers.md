@@ -1,3 +1,18 @@
+### RemoveDoubleVerticesModifier
+This modifier removes all diplicated vertices from the 
+the provided mesh. Vertices are compared with 
+a zero tolerance. No threshhold option is provided.
+
+```java
+import mesh.Mesh3D;
+import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.RemoveDoubleVerticesModifier;
+
+Mesh3D cube0 = new CubeCreator().create();
+Mesh3D cube1 = new CubeCreator().create();
+cube0.add
+```
+
 ### SpherifyModifier
 This modifier projects all vertices onto the surface of a 
 given sphere. In the following example the sphere is defined 
