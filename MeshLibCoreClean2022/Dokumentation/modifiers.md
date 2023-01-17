@@ -5,7 +5,7 @@ by it`s radius. The center of the sphere is at (0, 0, 0).
 
 ```java
 import mesh.Mesh3D;
-import mesh.creator.SegmentedCubeCreator;
+import mesh.creator.primitives.SegmentedCubeCreator;
 import mesh.modifier.SpherifyModifier;
 
 float radius = 4.0f;
