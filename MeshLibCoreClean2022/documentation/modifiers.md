@@ -1,3 +1,17 @@
+### SpherifyModifier
+This modifier projects all vertices onto the surface of a 
+given sphere.
+
+```java
+import mesh.Mesh3D;
+import mesh.creator.SegmentedCubeCreator;
+import mesh.modifier.SpherifyModifier;
+
+Mesh3D cube = new SegmentedCubeCreator().create();
+SpherifyModifier modifier = new SpherifyModifier();
+
+```
+
 ### FitToAABModifier
 Scales the mesh so that it fits into the given
 bounding box. The propotions of the mesh are kept.
