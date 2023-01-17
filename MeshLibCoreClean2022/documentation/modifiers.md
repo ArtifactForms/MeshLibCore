@@ -1,3 +1,20 @@
+### FitToAAB
+Scales the mesh so that it fits into the given
+bounding box. The propotions of the mesh are kept.
+Also the modifier does not adapt the location of
+the bounding box to the mesh. The following example
+illustrates how to use the modifier.
+
+```java
+import mesh.Mesh3D;
+import mesh.creator.primitives.IcoSphere;
+import mesh.modifier.
+
+Mesh3D sphere = new IcoSphereCreator().create();
+
+
+
+
 ### NoiseModifier
 
 This modifier moves all vertices along their corresponding 
