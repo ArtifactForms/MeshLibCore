@@ -1,4 +1,4 @@
-### FitToAAB
+### FitToAABModifier
 Scales the mesh so that it fits into the given
 bounding box. The propotions of the mesh are kept.
 Also the modifier does not adapt the location of
@@ -8,12 +8,15 @@ illustrates how to use the modifier.
 ```java
 import mesh.Mesh3D;
 import mesh.creator.primitives.IcoSphere;
-import mesh.modifier.
+import mesh.modifier.FitToAABModifier;
 
+float width = 4.0f;
+float height = 3.0f;
+float depth = 1.0f;
 Mesh3D sphere = new IcoSphereCreator().create();
-
-
-
+FitToAABModifier modifier = new FitToAABModifier(width, height, depth);
+modifier.modify(sphere);
+```
 
 ### NoiseModifier
 
