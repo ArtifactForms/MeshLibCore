@@ -7,9 +7,10 @@ import mesh.Mesh3D;
 import mesh.creator.SegmentedCubeCreator;
 import mesh.modifier.SpherifyModifier;
 
+float radius = 4.0f;
 Mesh3D cube = new SegmentedCubeCreator().create();
 SpherifyModifier modifier = new SpherifyModifier();
-
+modifier.modify(cube);
 ```
 
 ### FitToAABModifier
