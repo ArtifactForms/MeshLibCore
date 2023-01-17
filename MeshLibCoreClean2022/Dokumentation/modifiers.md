@@ -1,6 +1,7 @@
 ### SpherifyModifier
 This modifier projects all vertices onto the surface of a 
-given sphere.
+given sphere. In the following example the sphere is defined 
+by it`s radius. The center of the sphere is at (0, 0, 0).
 
 ```java
 import mesh.Mesh3D;
