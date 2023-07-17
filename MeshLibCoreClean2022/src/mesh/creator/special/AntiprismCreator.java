@@ -22,7 +22,7 @@ public class AntiprismCreator implements IMeshCreator {
 	public Mesh3D create() {
 		initializeMesh();
 		createVertices();
-		createFaces(mesh);
+		createFaces();
 		return mesh;
 	}
 	
@@ -42,21 +42,24 @@ public class AntiprismCreator implements IMeshCreator {
 		}
 	}
 
-	private void createFaces(Mesh3D mesh) {
+	private void createFaces() {
 		int n2 = n + n;
-		int[] indices0 = new int[n];
-		int[] indices1 = new int[n];
-		for (int i = 0; i < 2 * n; i++) {
+		int[] indicesTop = new int[n];
+		int[] indicesBottom = new int[n];
+		for (int i = 0; i < n2; i++) {
+			int index0 = i % n2;
+			int index1 = (i + 1) % n2;
+			int index2 = (i + 2) % n2;
 			if (i % 2 == 1) {
-				mesh.addFace(i % n2, (i + 1) % n2, (i + 2) % n2);
-				indices0[i / 2] = i;
+				mesh.addFace(index0, index1, index2);
+				indicesTop[i / 2] = i;
 			} else {
-				mesh.addFace(i % n2, (i + 2) % n2, (i + 1) % n2);
-				indices1[(n - 1) - (i / 2)] = i;
+				mesh.addFace(index0, index2, index1);
+				indicesBottom[(n - 1) - (i / 2)] = i;
 			}
 		}
-		mesh.add(new Face3D(indices0));
-		mesh.add(new Face3D(indices1));
+		mesh.add(new Face3D(indicesTop));
+		mesh.add(new Face3D(indicesBottom));
 	}
 
 	public int getN() {
