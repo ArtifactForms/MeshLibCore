@@ -16,9 +16,24 @@ import mesh.Mesh3D;
  */
 public class TraverseHelper {
 
+	/**
+	 * The mesh to traverse.
+	 */
 	private Mesh3D mesh;
+
+	/**
+	 * Maps edges to the faces they belong to.
+	 */
 	private HashMap<Edge3D, Face3D> edgeFaceMap;
+
+	/**
+	 * Maps an edge to the next edge in a face.
+	 */
 	private HashMap<Edge3D, Edge3D> edgeNextMap;
+
+	/**
+	 * Maps vertex indices to their outgoing edges.
+	 */
 	private HashMap<Integer, Edge3D> outgoingEdgeMap;
 
 	/**
@@ -27,29 +42,47 @@ public class TraverseHelper {
 	 * @param mesh The 3D mesh to be traversed.
 	 */
 	public TraverseHelper(Mesh3D mesh) {
-		this.mesh = mesh;
-		edgeFaceMap = new HashMap<Edge3D, Face3D>();
-		edgeNextMap = new HashMap<Edge3D, Edge3D>();
-		outgoingEdgeMap = new HashMap<Integer, Edge3D>();
+		setMesh(mesh);
+		initializeMaps();
 		map();
+	}
+
+	/**
+	 * Initializes the internal data structures used for mesh traversal.
+	 */
+	private void initializeMaps() {
+		edgeFaceMap = new HashMap<>();
+		edgeNextMap = new HashMap<>();
+		outgoingEdgeMap = new HashMap<>();
 	}
 
 	/**
 	 * Populates the internal data structures with edge and face relationships.
 	 */
 	private void map() {
-		for (Face3D face : mesh.faces) {
-			for (int i = 0; i <= face.indices.length; i++) {
-				int from = face.indices[i % face.indices.length];
-				int to = face.indices[(i + 1) % face.indices.length];
-				int nextFrom = to;
-				int nextTo = face.indices[(i + 2) % face.indices.length];
-				Edge3D edge = new Edge3D(from, to);
-				Edge3D next = new Edge3D(nextFrom, nextTo);
-				edgeFaceMap.put(edge, face);
-				edgeNextMap.put(edge, next);
-				outgoingEdgeMap.put(from, edge);
-			}
+		for (Face3D face : mesh.faces)
+			mapFace(face);
+	}
+
+	/**
+	 * Populates the internal data structures for a specific face.
+	 *
+	 * For each edge of the face, it creates an `Edge3D` object representing the
+	 * edge, and adds it to the appropriate maps.
+	 *
+	 * @param face The face to process.
+	 */
+	private void mapFace(Face3D face) {
+		for (int i = 0; i <= face.indices.length; i++) {
+			int from = face.indices[i % face.indices.length];
+			int to = face.indices[(i + 1) % face.indices.length];
+			int nextFrom = to;
+			int nextTo = face.indices[(i + 2) % face.indices.length];
+			Edge3D edge = new Edge3D(from, to);
+			Edge3D next = new Edge3D(nextFrom, nextTo);
+			edgeFaceMap.put(edge, face);
+			edgeNextMap.put(edge, next);
+			outgoingEdgeMap.put(from, edge);
 		}
 	}
 
@@ -118,6 +151,16 @@ public class TraverseHelper {
 	public void clear() {
 		edgeFaceMap.clear();
 		edgeNextMap.clear();
+		outgoingEdgeMap.clear();
+	}
+
+	/**
+	 * Sets the mesh to traverse to the specified mesh.
+	 * 
+	 * @param mesh The mesh to traverse.
+	 */
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
 	}
 
 }
