@@ -7,100 +7,75 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.util.VertexNormals;
 
-/**
- * A modifier that adds random noise to a 3D mesh.
- * 
- * This modifier displaces the vertex positions along their normal vectors by a
- * random value, creating a more irregular surface appearance.
- */
 public class NoiseModifier implements IMeshModifier {
 
-	/**
-	 * The minimum value for the random noise.
-	 */
 	private float minimum;
-
-	/**
-	 * The maximum value for the random noise.
-	 */
 	private float maximum;
-
-	/**
-	 * Creates a new NoiseModifier with a default noise range from 0.0 to 1.0.
-	 */
+	private Mesh3D mesh;
+	private List<Vector3f> vertexNormals;
+	
 	public NoiseModifier() {
 		this(0.0f, 1.0f);
 	}
 
-	/**
-	 * Creates a new NoiseModifier with a custom noise range.
-	 *
-	 * @param minimum The minimum value for the noise.
-	 * @param maximum The maximum value for the noise.
-	 */
 	public NoiseModifier(float minimum, float maximum) {
 		this.minimum = minimum;
 		this.maximum = maximum;
 	}
 
-	/**
-	 * Modifies the given mesh by adding noise.
-	 *
-	 * @param mesh The mesh to be modified.
-	 * @return The modified mesh.
-	 */
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		List<Vector3f> normals = new VertexNormals(mesh).getVertexNormals();
-		for (int i = 0; i < mesh.vertices.size(); i++) {
-			Vector3f vertex = mesh.getVertexAt(i);
-			Vector3f normal = normals.get(i);
-			vertex.addLocal(normal.mult(createRandomValue()));
-		}
+		setMesh(mesh);
+		calculateVertexNormals();
+		applyNoise();
 		return mesh;
 	}
 
-	/**
-	 * Creates a random value within the specified minimum and maximum range.
-	 *
-	 * @return A random float value between `minimum` and `maximum`, inclusive.
-	 */
+	private void applyNoise() {
+		for (int i = 0; i < getVertexCount(); i++) {
+			float length = createRandomValue();
+			Vector3f vertex = getVertexAt(i);
+			Vector3f normal = getVertexNormalAt(i);
+			vertex.addLocal(normal.mult(length));
+		}
+	}
+
+	private Vector3f getVertexAt(int index) {
+		return mesh.getVertexAt(index);
+	}
+	
+	private Vector3f getVertexNormalAt(int index) {
+		return vertexNormals.get(index);
+	}
+
+	private int getVertexCount() {
+		return mesh.vertices.size();
+	}
+
+	private void calculateVertexNormals() {
+		vertexNormals = new VertexNormals(mesh).getVertexNormals();
+	}
+
 	private float createRandomValue() {
 		return Mathf.random(minimum, maximum);
 	}
 
-	/**
-	 * Gets the minimum value for the random noise.
-	 *
-	 * @return The minimum value.
-	 */
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
+	}
+
 	public float getMinimum() {
 		return minimum;
 	}
 
-	/**
-	 * Sets the minimum value for the random noise.
-	 *
-	 * @param minimum The new minimum value.
-	 */
 	public void setMinimum(float minimum) {
 		this.minimum = minimum;
 	}
 
-	/**
-	 * Gets the maximum value for the random noise.
-	 *
-	 * @return The maximum value.
-	 */
 	public float getMaximum() {
 		return maximum;
 	}
 
-	/**
-	 * Sets the maximum value for the random noise.
-	 *
-	 * @param maximum The new maximum value.
-	 */
 	public void setMaximum(float maximum) {
 		this.maximum = maximum;
 	}
