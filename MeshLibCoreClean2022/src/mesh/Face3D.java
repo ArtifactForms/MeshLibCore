@@ -32,6 +32,14 @@ public class Face3D {
 		Arrays.sort(indices1);
 		return Arrays.equals(indices0, indices1);
 	}
+	
+	public int getIndexAt(int index) {
+		return indices[index % indices.length];
+	}
+	
+	public int getVertexCount() {
+		return indices.length;
+	}
 
 	public Face3D(Face3D f) {
 		this(f.indices);

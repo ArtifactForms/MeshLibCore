@@ -7,53 +7,86 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
+/**
+ * A mesh modifier that splits each selected face into a triangle fan.
+ *
+ * This modifier creates a new vertex at the center of each face and connects it
+ * to the original face's vertices, effectively extruding the face. The offset
+ * can be used to create spikes or depressions.
+ */
 public class PokeFacesModifier implements IMeshModifier {
 
 	private float pokeOffset;
 	private Mesh3D mesh;
+	private List<Face3D> originalFaces;
 
 	public PokeFacesModifier() {
-		this.pokeOffset = 0.1f;
+		this(0.1f);
 	}
 
 	public PokeFacesModifier(float pokeOffset) {
 		this.pokeOffset = pokeOffset;
 	}
 
-	private void createFaces(int index, Face3D face) {
-		int vertexCount = face.indices.length;
-		for (int i = 0; i < vertexCount; i++) {
-			int index0 = index;
-			int index1 = face.indices[i % vertexCount];
-			int index2 = face.indices[(i + 1) % vertexCount];
-			Face3D f = new Face3D(index0, index1, index2);
-			mesh.add(f);
+	private void createPointedFaces(Face3D face) {
+		int centerVertexIndex = mesh.getVertexCount() - 1;
+		for (int i = 0; i < face.getVertexCount(); i++) {
+			int index0 = centerVertexIndex;
+			int index1 = face.getIndexAt(i);
+			int index2 = face.getIndexAt(i + 1);
+			addFace(index0, index1, index2);
 		}
 	}
 
-	private void createVertex(Face3D face) {
-		Vector3f center = mesh.calculateFaceCenter(face);
-		Vector3f normal = mesh.calculateFaceNormal(face);
-		center.addLocal(normal.multLocal(pokeOffset));
-		mesh.add(center);
+	private void createPointedCenterVertex(Face3D face) {
+		Vector3f center = calculateFaceCenter(face);
+		Vector3f normal = calculateFaceNormal(face);
+		center.addLocal(normal.mult(getPokeOffset()));
+		addVertex(center);
 	}
 
-	private void extrude() {
-		int index = mesh.getVertexCount();
-		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
-		for (Face3D face : faces) {
-			createVertex(face);
-			createFaces(index, face);
-			index++;
+	private void pokeFaces() {
+		for (Face3D face : originalFaces) {
+			createPointedCenterVertex(face);
+			createPointedFaces(face);
 		}
-		mesh.faces.removeAll(faces);
 	}
 
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		this.mesh = mesh;
-		extrude();
+		setMesh(mesh);
+		setOriginalFaces();
+		pokeFaces();
+		removeOriginalFaces();
 		return mesh;
+	}
+
+	private void setOriginalFaces() {
+		originalFaces = mesh.getFaces(0, mesh.getFaceCount());
+	}
+
+	private void removeOriginalFaces() {
+		mesh.faces.removeAll(originalFaces);
+	}
+
+	private void addFace(int... indices) {
+		mesh.add(new Face3D(indices));
+	}
+
+	private void addVertex(Vector3f v) {
+		mesh.add(v);
+	}
+
+	private Vector3f calculateFaceCenter(Face3D face) {
+		return mesh.calculateFaceCenter(face);
+	}
+
+	private Vector3f calculateFaceNormal(Face3D face) {
+		return mesh.calculateFaceNormal(face);
+	}
+
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
 	}
 
 	public float getPokeOffset() {
