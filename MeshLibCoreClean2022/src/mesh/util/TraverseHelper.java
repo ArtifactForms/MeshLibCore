@@ -1,6 +1,9 @@
 package mesh.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import mesh.Edge3D;
 import mesh.Face3D;
@@ -37,23 +40,29 @@ public class TraverseHelper {
 	private HashMap<Integer, Edge3D> outgoingEdgeMap;
 
 	/**
+	 * A set of unique edges in the mesh.
+	 */
+	private HashSet<Edge3D> edges;
+
+	/**
 	 * Constructs a new TraverseHelper for the given mesh.
 	 *
 	 * @param mesh The 3D mesh to be traversed.
 	 */
 	public TraverseHelper(Mesh3D mesh) {
 		setMesh(mesh);
-		initializeMaps();
+		initialize();
 		map();
 	}
 
 	/**
 	 * Initializes the internal data structures used for mesh traversal.
 	 */
-	private void initializeMaps() {
+	private void initialize() {
 		edgeFaceMap = new HashMap<>();
 		edgeNextMap = new HashMap<>();
 		outgoingEdgeMap = new HashMap<>();
+		edges = new HashSet<>();
 	}
 
 	/**
@@ -83,7 +92,14 @@ public class TraverseHelper {
 			edgeFaceMap.put(edge, face);
 			edgeNextMap.put(edge, next);
 			outgoingEdgeMap.put(from, edge);
+			collectUniqueEdge(edge);
 		}
+	}
+
+	private void collectUniqueEdge(Edge3D edge) {
+		if (edges.contains(edge.createPair()))
+			return;
+		edges.add(edge);
 	}
 
 	/**
@@ -143,6 +159,15 @@ public class TraverseHelper {
 		Edge3D edge = new Edge3D(toIndex, fromIndex);
 		return edgeNextMap.get(edge);
 
+	}
+
+	/**
+	 * Collects a unique edge, ensuring it's not already present in the `edges` set.
+	 *
+	 * @param edge The edge to be collected.
+	 */
+	public List<Edge3D> getAllEdges() {
+		return new ArrayList<Edge3D>(edges);
 	}
 
 	/**
