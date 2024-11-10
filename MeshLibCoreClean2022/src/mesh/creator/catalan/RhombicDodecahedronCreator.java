@@ -16,6 +16,11 @@ public class RhombicDodecahedronCreator implements IMeshCreator {
 	}
 
 	private void createVertices() {
+		createInnerVertices();
+		createOuterVertices();
+	}
+	
+	private void createInnerVertices() {
 		addVertex(-1, 1, 1);
 		addVertex(-1, 1, -1);
 		addVertex(1, 1, -1);
@@ -24,6 +29,9 @@ public class RhombicDodecahedronCreator implements IMeshCreator {
 		addVertex(-1, -1, -1);
 		addVertex(1, -1, -1);
 		addVertex(1, -1, 1);
+	}
+	
+	private void createOuterVertices() {
 		addVertex(0, 2, 0);
 		addVertex(0, -2, 0);
 		addVertex(2, 0, 0);
