@@ -909,4 +909,32 @@ public class Mathf {
 		return value;
 	}
 	
+	/**
+	 * Maps a value from one range to another using linear interpolation.
+	 *
+	 * @param value The value to be mapped.
+	 * @param from0 The lower bound of the input range.
+	 * @param to0   The upper bound of the input range.
+	 * @param from1 The lower bound of the output range.
+	 * @param to1   The upper bound of the output range.
+	 * @return The mapped value.
+	 *
+	 * @throws IllegalArgumentException if `from0 == to0` or `from1 == to1`.
+	 */
+	public static float map(float value, float from0, float to0, float from1, float to1) {
+	    if (from0 == to0 || from1 == to1) {
+	        throw new IllegalArgumentException("Invalid input ranges");
+	    }
+
+	    float result = from1 + (to1 - from1) * ((value - from0) / (to0 - from0));
+
+	    if (Float.isNaN(result)) {
+	        throw new IllegalArgumentException("Result is NaN");
+	    } else if (Float.isInfinite(result)) {
+	        throw new IllegalArgumentException("Result is infinite");
+	    }
+
+	    return result;
+	}
+	
 }
