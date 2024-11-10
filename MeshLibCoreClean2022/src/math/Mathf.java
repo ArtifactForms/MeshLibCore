@@ -701,7 +701,6 @@ public class Mathf {
 	 * @return the next power of two greater than or equal to the input value
 	 */
 	public static int nextPowerOfTwo(int value) {
-//	    return Integer.highestOneBit(value) << 1;
 		return value > 0 ? Integer.highestOneBit(value - 1) << 1 : 1;
 	}
 
