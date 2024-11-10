@@ -82,16 +82,19 @@ public class TraverseHelper {
 	 * @param face The face to process.
 	 */
 	private void mapFace(Face3D face) {
-		for (int i = 0; i <= face.getVertexCount(); i++) {
-			int from = face.getIndexAt(i);
-			int to = face.getIndexAt(i + 1);
-			int nextFrom = to;			
-			int nextTo = face.getIndexAt(i + 2);
-			Edge3D edge = new Edge3D(from, to);
-			Edge3D next = new Edge3D(nextFrom, nextTo);
+		int vertexCount = face.getVertexCount();
+		for (int i = 0; i <= vertexCount; i++) {
+			int current = face.getIndexAt(i);
+			int next = face.getIndexAt(i + 1);
+			int nextNext = face.getIndexAt(i + 2);
+			
+			Edge3D edge = new Edge3D(current, next);
+			Edge3D nextEdge = new Edge3D(next, nextNext);
+			
 			addEdgeFaceMapping(edge, face);
-			addNextEdgeMapping(edge, next);
-			addOutgoingEdgeMapping(from, edge);
+			addNextEdgeMapping(edge, nextEdge);
+			addOutgoingEdgeMapping(current, edge);
+			
 			collectUniqueEdge(edge);
 		}
 	}
