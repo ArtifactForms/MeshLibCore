@@ -280,6 +280,19 @@ public class Mathf {
 	public static float clamp(float a, float min, float max) {
 		return Math.max(min, Math.min(max, a));
 	}
+	
+	/**
+	 * Clamps a between min and max and returns the clamped value.
+	 * 
+	 * @param a   The value to clamp
+	 * @param min The minimum for a.
+	 * @param max The maximum for a.
+	 * @return The clamped value.
+	 */
+	public static int clampInt(int a, int min, int max) {
+		a = a < min ? min : (a > max ? max : a);
+		return a;
+	}
 
 	/**
 	 * Clamps the given float value to be between 0 and 1. This method is equivalent
