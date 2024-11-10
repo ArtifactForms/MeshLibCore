@@ -177,6 +177,7 @@ public class TraverseHelper {
 		edgeFaceMap.clear();
 		edgeNextMap.clear();
 		outgoingEdgeMap.clear();
+		edges.clear();
 	}
 
 	/**
