@@ -82,18 +82,48 @@ public class TraverseHelper {
 	 * @param face The face to process.
 	 */
 	private void mapFace(Face3D face) {
-		for (int i = 0; i <= face.indices.length; i++) {
-			int from = face.indices[i % face.indices.length];
-			int to = face.indices[(i + 1) % face.indices.length];
-			int nextFrom = to;
-			int nextTo = face.indices[(i + 2) % face.indices.length];
+		for (int i = 0; i <= face.getVertexCount(); i++) {
+			int from = face.getIndexAt(i);
+			int to = face.getIndexAt(i + 1);
+			int nextFrom = to;			
+			int nextTo = face.getIndexAt(i + 2);
 			Edge3D edge = new Edge3D(from, to);
 			Edge3D next = new Edge3D(nextFrom, nextTo);
-			edgeFaceMap.put(edge, face);
-			edgeNextMap.put(edge, next);
-			outgoingEdgeMap.put(from, edge);
+			addEdgeFaceMapping(edge, face);
+			addNextEdgeMapping(edge, next);
+			addOutgoingEdgeMapping(from, edge);
 			collectUniqueEdge(edge);
 		}
+	}
+	
+	/**
+	 * Adds a mapping from the given edge to the next edge in a face.
+	 *
+	 * @param edge The current edge.
+	 * @param next The next edge in the face.
+	 */
+	private void addNextEdgeMapping(Edge3D edge, Edge3D next) {
+	    edgeNextMap.put(edge, next);
+	}
+
+	/**
+	 * Adds a mapping from a vertex index to its outgoing edge.
+	 *
+	 * @param from The index of the vertex.
+	 * @param edge The outgoing edge from the vertex.
+	 */
+	private void addOutgoingEdgeMapping(int from, Edge3D edge) {
+	    outgoingEdgeMap.put(from, edge);
+	}
+
+	/**
+	 * Adds a mapping from an edge to the face it belongs to.
+	 *
+	 * @param edge The edge.
+	 * @param face The face that the edge belongs to.
+	 */
+	private void addEdgeFaceMapping(Edge3D edge, Face3D face) {
+	    edgeFaceMap.put(edge, face);
 	}
 
 	/**
@@ -127,7 +157,6 @@ public class TraverseHelper {
 	public Face3D getFaceByEdge(int fromIndex, int toIndex) {
 		Edge3D edge = new Edge3D(fromIndex, toIndex);
 		return edgeFaceMap.get(edge);
-
 	}
 
 	/**
@@ -163,7 +192,6 @@ public class TraverseHelper {
 	public Edge3D getPairNext(int fromIndex, int toIndex) {
 		Edge3D edge = new Edge3D(toIndex, fromIndex);
 		return edgeNextMap.get(edge);
-
 	}
 
 	/**
