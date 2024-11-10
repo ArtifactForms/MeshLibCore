@@ -268,6 +268,20 @@ public class Mathf {
 	public static int roundToInt(float a) {
 		return Math.round(a);
 	}
+	
+	/**
+	 * Rounds a float value to the nearest integer.
+	 *
+	 * <p>This method rounds the given float value to the nearest integer.
+	 * If the fractional part is 0.5 or greater, the value is rounded up.
+	 * Otherwise, it is rounded down.
+	 *
+	 * @param a The float value to be rounded.
+	 * @return The rounded float value.
+	 */
+	public static float round(float a) {
+	    return Math.round(a);
+	}
 
 	/**
 	 * Clamps a value between a minimum and maximum value.
@@ -894,5 +908,5 @@ public class Mathf {
 		value += (value == 0) ? 1 : 0;
 		return value;
 	}
-
+	
 }
