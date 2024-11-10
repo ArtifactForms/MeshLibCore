@@ -18,14 +18,22 @@ public class TriakisTetrahedronCreator implements IMeshCreator {
 	}
 	
 	private void createVertices() {
-		addVertex(a, a, a);
-		addVertex(a, -a, -a);
-		addVertex(-a, -a, a);
-		addVertex(-a, a, -a);
-		addVertex(1.0f, -1.0f, 1.0f);
-		addVertex(-1.0f, 1.0f, 1.0f);
-		addVertex(1.0f, 1.0f, -1.0f);
-		addVertex(-1.0f, -1.0f, -1.0f);
+	    createTetrahedronVertices();
+	    createMidEdgeVertices();
+	}
+
+	private void createTetrahedronVertices() {
+	    addVertex(a, a, a);
+	    addVertex(a, -a, -a);
+	    addVertex(-a, -a, a);
+	    addVertex(-a, a, -a);
+	}
+
+	private void createMidEdgeVertices() {
+	    addVertex(1.0f, -1.0f, 1.0f);
+	    addVertex(-1.0f, 1.0f, 1.0f);
+	    addVertex(1.0f, 1.0f, -1.0f);
+	    addVertex(-1.0f, -1.0f, -1.0f);
 	}
 	
 	public void createFaces() {
