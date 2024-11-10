@@ -96,6 +96,11 @@ public class TraverseHelper {
 		}
 	}
 
+	/**
+	 * Collects a unique edge, ensuring it's not already present in the `edges` set.
+	 *
+	 * @param edge The edge to be collected.
+	 */
 	private void collectUniqueEdge(Edge3D edge) {
 		if (edges.contains(edge.createPair()))
 			return;
@@ -162,9 +167,9 @@ public class TraverseHelper {
 	}
 
 	/**
-	 * Collects a unique edge, ensuring it's not already present in the `edges` set.
+	 * Returns a list of all unique edges in the mesh.
 	 *
-	 * @param edge The edge to be collected.
+	 * @return A list of unique edges.
 	 */
 	public List<Edge3D> getAllEdges() {
 		return new ArrayList<Edge3D>(edges);
