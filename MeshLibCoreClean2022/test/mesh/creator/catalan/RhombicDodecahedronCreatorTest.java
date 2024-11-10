@@ -1,5 +1,6 @@
 package mesh.creator.catalan;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,11 @@ public class RhombicDodecahedronCreatorTest {
         RhombicDodecahedronCreator creator = new RhombicDodecahedronCreator();
         mesh = creator.create();
     }
+    
+	@Test
+	public void testCreatedMeshIsNotNull() {
+		assertNotNull(mesh);
+	}
 
     @Test
     public void testRhombusFaces() {
