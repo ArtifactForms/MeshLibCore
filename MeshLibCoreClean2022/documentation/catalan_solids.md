@@ -1,3 +1,5 @@
+**Catalan Solids**
+
 Catalan solids are a set of 13 convex polyhedra that are dual to the Archimedean solids. This means that each Catalan solid has the same number of faces as the corresponding Archimedean solid has vertices, and vice versa.
 
 **Key characteristics of Catalan solids:**
@@ -24,18 +26,18 @@ Catalan solids are a set of 13 convex polyhedra that are dual to the Archimedean
 
 These solids are named after the Belgian mathematician Eugène Charles Catalan, who first described them in 1865. They are fascinating geometric objects with many applications in art, architecture, and design.
 
-| Solid Name | Face Count | Edge Count | Vertex Count |
-|---|---|---|---|
-| Rhombic dodecahedron | 12 | 24 | 14 |
-| Rhombic triacontahedron | 30 | 60 | 32 |
-| Triakis tetrahedron | 12 | 18 | 8 |
-| Tetrakis hexahedron | 24 | 36 | 14 |
-| Pentakis dodecahedron | 60 | 90 | 32 |
-| Hexakis octahedron | 48 | 72 | 26 |
-| Disdyakis triacontahedron | 120 | 180 | 62 |
-| Deltoidal icositetrahedron | 24 | 48 | 26 |
-| Deltoidal hexacontahedron | 60 | 120 | 62 |
-| Pentagonal icositetrahedron | 24 | 60 | 38 |
-| Pentagonal hexacontahedron | 60 | 150 | 92 |
-| Rhombicuboctahedron | 26 | 48 | 24 |
-| Rhombicosidodecahedron | 62 | 120 | 60 |
+| Solid Name | Face Count | Edge Count | Vertex Count | Face Types | Creator implemented|
+|---|---|---|---|---|---|
+| Rhombic dodecahedron | 12 | 24 | 14 | Rhombus | YES |
+| Rhombic triacontahedron | 30 | 60 | 32 | Rhombus | NO |
+| Triakis tetrahedron | 12 | 18 | 8 | Equilateral triangle | NO |
+| Tetrakis hexahedron | 24 | 36 | 14 | Isosceles triangle | YES |
+| Pentakis dodecahedron | 60 | 90 | 32 | Isosceles triangle | NO |
+| Hexakis octahedron | 48 | 72 | 26 | Kite | NO |
+| Disdyakis triacontahedron | 120 | 180 | 62 | Scalene triangle | NO |
+| Deltoidal icositetrahedron | 24 | 48 | 26 | Kite | NO |
+| Deltoidal hexacontahedron | 60 | 120 | 62 | Kite | NO |
+| Pentagonal icositetrahedron | 24 | 60 | 38 | Pentagon and isosceles triangle | NO |
+| Pentagonal hexacontahedron | 60 | 150 | 92 | Pentagon and isosceles triangle | NO |
+| Rhombicuboctahedron | 26 | 48 | 24 | Square, triangle, and hexagon | NO |
+| Rhombicosidodecahedron | 62 | 120 | 60 | Square, triangle, pentagon, and hexagon | NO |
