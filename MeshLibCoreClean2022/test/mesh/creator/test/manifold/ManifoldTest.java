@@ -13,39 +13,39 @@ import mesh.Mesh3D;
  */
 public class ManifoldTest {
 
-	private Mesh3D meshUnderTest;
+    private Mesh3D meshUnderTest;
 
-	public ManifoldTest(Mesh3D meshUnderTest) {
-		this.meshUnderTest = meshUnderTest;
-	}
+    public ManifoldTest(Mesh3D meshUnderTest) {
+        this.meshUnderTest = meshUnderTest;
+    }
 
-	public void assertIsManifold() {
-		assertEachEdgeHasExactlyTwoAdjacentFaces();
-	}
+    public void assertIsManifold() {
+        assertEachEdgeHasExactlyTwoAdjacentFaces();
+    }
 
-	private void assertEachEdgeHasExactlyTwoAdjacentFaces() {
-		HashMap<Edge3D, Integer> edges = new HashMap<Edge3D, Integer>();
+    private void assertEachEdgeHasExactlyTwoAdjacentFaces() {
+        HashMap<Edge3D, Integer> edges = new HashMap<Edge3D, Integer>();
 
-		for (Face3D face : meshUnderTest.getFaces()) {
-			for (int i = 0; i < face.indices.length; i++) {
-				int fromIndex = face.indices[i];
-				int toIndex = face.indices[(i + 1) % face.indices.length];
+        for (Face3D face : meshUnderTest.getFaces()) {
+            for (int i = 0; i < face.indices.length; i++) {
+                int fromIndex = face.indices[i];
+                int toIndex = face.indices[(i + 1) % face.indices.length];
 
-				Edge3D edge = new Edge3D(fromIndex, toIndex);
-				Edge3D pair = edge.createPair();
+                Edge3D edge = new Edge3D(fromIndex, toIndex);
+                Edge3D pair = edge.createPair();
 
-				if (edges.containsKey(pair)) {
-					edges.put(pair, edges.get(pair) + 1);
-				} else {
-					edges.put(edge, 1);
-				}
-			}
-		}
+                if (edges.containsKey(pair)) {
+                    edges.put(pair, edges.get(pair) + 1);
+                } else {
+                    edges.put(edge, 1);
+                }
+            }
+        }
 
-		for (Edge3D edge : edges.keySet()) {
-			Integer adjacentFacesCount = edges.get(edge);
-			Assert.assertEquals(2, (int) adjacentFacesCount);
-		}
-	}
+        for (Edge3D edge : edges.keySet()) {
+            Integer adjacentFacesCount = edges.get(edge);
+            Assert.assertEquals(2, (int) adjacentFacesCount);
+        }
+    }
 
 }

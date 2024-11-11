@@ -13,39 +13,39 @@ import mesh.creator.creative.TorusCageCreator;
 
 public class CreativeCreatorsManifoldTest {
 
-	private void test(IMeshCreator creator) {
-		Mesh3D mesh = creator.create();
-		new ManifoldTest(mesh).assertIsManifold();
-	}
+    private void test(IMeshCreator creator) {
+        Mesh3D mesh = creator.create();
+        new ManifoldTest(mesh).assertIsManifold();
+    }
 
-	@Test
-	public void manifoldCubicLattice() {
-		test(new CubicLatticeCreator());
-	}
+    @Test
+    public void manifoldCubicLattice() {
+        test(new CubicLatticeCreator());
+    }
 
-	@Test
-	public void manifoldLeonardoCube() {
-		test(new LeonardoCubeCreator());
-	}
+    @Test
+    public void manifoldLeonardoCube() {
+        test(new LeonardoCubeCreator());
+    }
 
-	@Test
-	public void manifoldPortedCube() {
-		test(new PortedCubeCreator());
-	}
+    @Test
+    public void manifoldPortedCube() {
+        test(new PortedCubeCreator());
+    }
 
-	@Test
-	public void manifoldRingCageCreator() {
-		test(new RingCageCreator());
-	}
+    @Test
+    public void manifoldRingCageCreator() {
+        test(new RingCageCreator());
+    }
 
-	@Test
-	public void manifoldTessellationRing() {
-		test(new TessellationRingCreator());
-	}
+    @Test
+    public void manifoldTessellationRing() {
+        test(new TessellationRingCreator());
+    }
 
-	@Test
-	public void manifoldTorusCage() {
-		test(new TorusCageCreator());
-	}
+    @Test
+    public void manifoldTorusCage() {
+        test(new TorusCageCreator());
+    }
 
 }

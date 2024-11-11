@@ -22,18 +22,18 @@ public class RhombicDodecahedronCreatorTest {
         RhombicDodecahedronCreator creator = new RhombicDodecahedronCreator();
         mesh = creator.create();
     }
-    
-	@Test
-	public void testCreatedMeshIsNotNull() {
-		assertNotNull(mesh);
-	}
+
+    @Test
+    public void testCreatedMeshIsNotNull() {
+        assertNotNull(mesh);
+    }
 
     @Test
     public void testRhombusFaces() {
         for (Face3D face : mesh.getFaces()) {
-        	Vector3f v1 = mesh.getVertexAt(face.getIndexAt(0));
-        	Vector3f v2 = mesh.getVertexAt(face.getIndexAt(1));
-        	Vector3f v3 = mesh.getVertexAt(face.getIndexAt(2));
+            Vector3f v1 = mesh.getVertexAt(face.getIndexAt(0));
+            Vector3f v2 = mesh.getVertexAt(face.getIndexAt(1));
+            Vector3f v3 = mesh.getVertexAt(face.getIndexAt(2));
             Vector3f v4 = mesh.getVertexAt(face.getIndexAt(3));
 
             // Check for opposite sides being equal
@@ -45,9 +45,9 @@ public class RhombicDodecahedronCreatorTest {
     @Test
     public void testDiagonalsPerpendicular() {
         for (Face3D face : mesh.getFaces()) {
-        	Vector3f v1 = mesh.getVertexAt(face.getIndexAt(0));
-        	Vector3f v2 = mesh.getVertexAt(face.getIndexAt(1));
-        	Vector3f v3 = mesh.getVertexAt(face.getIndexAt(2));
+            Vector3f v1 = mesh.getVertexAt(face.getIndexAt(0));
+            Vector3f v2 = mesh.getVertexAt(face.getIndexAt(1));
+            Vector3f v3 = mesh.getVertexAt(face.getIndexAt(2));
             Vector3f v4 = mesh.getVertexAt(face.getIndexAt(3));
 
             Vector3f diagonal1 = v1.subtract(v3);
@@ -57,54 +57,54 @@ public class RhombicDodecahedronCreatorTest {
             assertEquals(diagonal1.dot(diagonal2), 0.0, Mathf.ZERO_TOLERANCE);
         }
     }
-    
-	@Test
-	public void testQuadCount() {
-		int expectedQuadCount = 12;
-		MeshTest.assertQuadCountEquals(mesh, expectedQuadCount);
-	}
 
-	@Test
-	public void testFaceCount() {
-		int expectedFaceCount = 12;
-		assertEquals(expectedFaceCount, mesh.getFaceCount());
-	}
+    @Test
+    public void testQuadCount() {
+        int expectedQuadCount = 12;
+        MeshTest.assertQuadCountEquals(mesh, expectedQuadCount);
+    }
 
-	@Test
-	public void testVertexCount() {
-		int expectedVertexCount = 14;
-		assertEquals(expectedVertexCount, mesh.getVertexCount());
-	}
+    @Test
+    public void testFaceCount() {
+        int expectedFaceCount = 12;
+        assertEquals(expectedFaceCount, mesh.getFaceCount());
+    }
 
-	@Test
-	public void testEdgeCount() {
-		int expectedEdgeCount = 24;
-		MeshTest.assertEdgeCountEquals(mesh, expectedEdgeCount);
-	}
+    @Test
+    public void testVertexCount() {
+        int expectedVertexCount = 14;
+        assertEquals(expectedVertexCount, mesh.getVertexCount());
+    }
 
-	@Test
-	public void testMeshIsManifold() {
-		MeshTest.assertIsManifold(mesh);
-	}
+    @Test
+    public void testEdgeCount() {
+        int expectedEdgeCount = 24;
+        MeshTest.assertEdgeCountEquals(mesh, expectedEdgeCount);
+    }
 
-	@Test
-	public void testFulfillsEulerCharacteristic() {
-		MeshTest.assertFulfillsEulerCharacteristic(mesh);
-	}
+    @Test
+    public void testMeshIsManifold() {
+        MeshTest.assertIsManifold(mesh);
+    }
 
-	@Test
-	public void testNoDuplicatedFaces() {
-		MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
-	}
+    @Test
+    public void testFulfillsEulerCharacteristic() {
+        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+    }
 
-	@Test
-	public void testMeshHasNoLooseVertices() {
-		MeshTest.assertMeshHasNoLooseVertices(mesh);
-	}
+    @Test
+    public void testNoDuplicatedFaces() {
+        MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
+    }
 
-	@Test
-	public void testNormalsPointOutwards() {
-		MeshTest.assertNormalsPointOutwards(mesh);
-	}
+    @Test
+    public void testMeshHasNoLooseVertices() {
+        MeshTest.assertMeshHasNoLooseVertices(mesh);
+    }
+
+    @Test
+    public void testNormalsPointOutwards() {
+        MeshTest.assertNormalsPointOutwards(mesh);
+    }
 
 }
