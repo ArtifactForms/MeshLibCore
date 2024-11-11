@@ -9,8 +9,11 @@ import mesh.util.Mesh3DUtil;
 public class ExtrudeModifier implements IMeshModifier {
 
 	private boolean removeFaces;
+	
 	private float scale;
+	
 	private float amount;
+	
 	private Collection<Face3D> faces;
 
 	public ExtrudeModifier() {

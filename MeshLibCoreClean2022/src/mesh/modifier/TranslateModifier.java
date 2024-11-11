@@ -6,7 +6,9 @@ import mesh.Mesh3D;
 public class TranslateModifier implements IMeshModifier {
 
 	private float deltaX;
+	
 	private float deltaY;
+	
 	private float deltaZ;
 
 	public TranslateModifier() {

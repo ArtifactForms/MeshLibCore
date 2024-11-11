@@ -9,7 +9,9 @@ import mesh.Mesh3D;
 public class RemoveDoubleVerticesModifier implements IMeshModifier {
 
 	private Mesh3D temporaryMesh;
+	
 	private Mesh3D mesh;
+	
 	private HashSet<Vector3f> vertexSet;
 
 	@Override

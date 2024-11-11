@@ -14,9 +14,13 @@ import mesh.util.TraverseHelper;
 public class BevelVerticesModifier implements IMeshModifier {
 
 	private float amount;
+	
 	private Mesh3D mesh;
+	
 	private List<Vector3f> verticesToAdd;
+	
 	private List<Face3D> facesToAdd;
+	
 	private HashMap<Edge3D, Integer> edgeToEdgePointIndex;
 
 	public BevelVerticesModifier() {

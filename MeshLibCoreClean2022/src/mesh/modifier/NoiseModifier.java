@@ -10,8 +10,11 @@ import mesh.util.VertexNormals;
 public class NoiseModifier implements IMeshModifier {
 
 	private float minimum;
+	
 	private float maximum;
+	
 	private Mesh3D mesh;
+	
 	private List<Vector3f> vertexNormals;
 	
 	public NoiseModifier() {

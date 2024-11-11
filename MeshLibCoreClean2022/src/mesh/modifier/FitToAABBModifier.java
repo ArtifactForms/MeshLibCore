@@ -7,8 +7,11 @@ import mesh.util.Bounds3;
 public class FitToAABBModifier implements IMeshModifier {
 
 	private float width;
+	
 	private float height;
+	
 	private float depth;
+	
 	private Mesh3D mesh;
 
 	public FitToAABBModifier(float width, float height, float depth) {
