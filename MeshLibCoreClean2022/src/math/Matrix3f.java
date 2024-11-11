@@ -5,29 +5,42 @@ import java.util.Arrays;
 public class Matrix3f {
 
 	public static final Matrix3f ZERO = new Matrix3f(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+	
 	public static final Matrix3f UNIT = new Matrix3f(1f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f);
+	
 	public static final Matrix3f ONE = new Matrix3f(1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f);
 
 	public static final int M00 = 0;
+	
 	public static final int M01 = 1;
+	
 	public static final int M02 = 2;
+	
 	public static final int M10 = 3;
+	
 	public static final int M11 = 4;
+	
 	public static final int M12 = 5;
+	
 	public static final int M20 = 6;
+	
 	public static final int M21 = 7;
+	
 	public static final int M22 = 8;
-
+	
 	public float[] values = new float[9];
 
 	public Matrix3f() {
+		super();
 	}
 
 	public Matrix3f(float[] values) {
+		super();
 		set(values);
 	}
 
 	public Matrix3f(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22) {
+		super();
 		values[M00] = m00;
 		values[M01] = m01;
 		values[M02] = m02;
@@ -40,12 +53,14 @@ public class Matrix3f {
 	}
 
 	public Matrix3f(Matrix3f m) {
+		super();
 		set(m);
 	}
-
+	
+	// TODO Test
 	public Matrix3f mult(Matrix3f m) {
 		Matrix3f result = new Matrix3f();
-		float[] a = values;
+		float[] a = values; 
 		float[] b = m.values;
 		float[] c = result.values;
 		c[M00] = a[M00] * b[M00] + a[M01] * b[M10] + a[M02] * b[M20];
@@ -59,7 +74,7 @@ public class Matrix3f {
 		c[M22] = a[M20] * b[M02] + a[M21] * b[M12] + a[M22] * b[M22];
 		return result;
 	}
-
+	
 	public Matrix3f multLocal(Matrix3f m) {
 		set(this.mult(m));
 		return this;
@@ -190,7 +205,7 @@ public class Matrix3f {
 		values[index] = value;
 		return this;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

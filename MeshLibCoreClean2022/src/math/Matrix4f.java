@@ -2,47 +2,62 @@ package math;
 
 import java.util.Arrays;
 
+/**
+ * https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix
+ * 
+ * @author -
+ */
 public class Matrix4f {
 
 	public static final Matrix4f ZERO = new Matrix4f(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	
 	public static final Matrix4f UNIT = new Matrix4f(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+	
 	public static final Matrix4f ONE = new Matrix4f(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-	public static final int M00 = 0;
-	public static final int M01 = 1;
-	public static final int M02 = 2;
-	public static final int M03 = 3;
+	private static final int M00 = 0;
+	
+	private static final int M01 = 1;
+	
+	private static final int M02 = 2;
+	
+	private static final int M03 = 3;
 
-	public static final int M10 = 4;
-	public static final int M11 = 5;
-	public static final int M12 = 6;
-	public static final int M13 = 7;
+	private static final int M10 = 4;
+	
+	private static final int M11 = 5;
+	
+	private static final int M12 = 6;
+	
+	private static final int M13 = 7;
 
-	public static final int M20 = 8;
-	public static final int M21 = 9;
-	public static final int M22 = 10;
-	public static final int M23 = 11;
+	private static final int M20 = 8;
+	
+	private static final int M21 = 9;
+	
+	private static final int M22 = 10;
+	
+	private static final int M23 = 11;
 
-	public static final int M30 = 12;
-	public static final int M31 = 13;
-	public static final int M32 = 14;
-	public static final int M33 = 15;
+	private static final int M30 = 12;
+	
+	private static final int M31 = 13;
+	
+	private static final int M32 = 14;
+	
+	private static final int M33 = 15;
 
 	private float[] values;
 
 	public Matrix4f() {
 		values = new float[16];
 	}
-
+	
 	public Matrix4f(Matrix4f m) {
 		values = new float[16];
 		for (int i = 0; i < m.values.length; i++) {
 			this.values[i] = m.values[i];
 		}
-	}
-
-	public float getValueAt(int index) {
-		return values[index];
 	}
 
 	public Matrix4f(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20,
@@ -219,13 +234,21 @@ public class Matrix4f {
 		return store;
 	}
 
+	public Quaternion mult(Quaternion q) {
+		Quaternion result = new Quaternion();
+		result.x = q.x * values[M00] + q.y * values[M01] + q.z * values[M02] + q.w * values[M03];
+		result.y = q.x * values[M10] + q.y * values[M11] + q.z * values[M12] + q.w * values[M13];
+		result.z = q.x * values[M20] + q.y * values[M21] + q.z * values[M22] + q.w * values[M23];
+		result.w = q.x * values[M30] + q.y * values[M31] + q.z * values[M32] + q.w * values[M33];
+		return result;
+	}
+
 	public Vector3f mult(Vector3f v) {
 		Vector3f result = new Vector3f();
-		float vx = v.getX(), vy = v.getY(), vz = v.getZ();
-		float x = values[M00] * vx + values[M01] * vy + values[M02] * vz + values[M03];
-		float y = values[M10] * vx + values[M11] * vy + values[M12] * vz + values[M13];
-		float z = values[M20] * vx + values[M21] * vy + values[M22] * vz + values[M23];
-		result.set(x, y, z);
+		float vx = v.x, vy = v.y, vz = v.z;
+		result.x = values[M00] * vx + values[M01] * vy + values[M02] * vz + values[M03];
+		result.y = values[M10] * vx + values[M11] * vy + values[M12] * vz + values[M13];
+		result.z = values[M20] * vx + values[M21] * vy + values[M22] * vz + values[M23];
 		return result;
 	}
 
@@ -238,13 +261,13 @@ public class Matrix4f {
 	 * @return the resulting view matrix
 	 */
 	public static Matrix4f lookAtRH(Vector3f eye, Vector3f target, Vector3f up) {
-		Vector3f zaxis = eye.subtract(target).normalize();
-		Vector3f xaxis = up.cross(zaxis).normalize();
-		Vector3f yaxis = zaxis.cross(xaxis); 
+		// https://www.3dgep.com/understanding-the-view-matrix/
+		Vector3f zaxis = eye.subtract(target).normalize(); // The "forward" vector.
+		Vector3f xaxis = up.cross(zaxis).normalize();// The "right" vector.
+		Vector3f yaxis = zaxis.cross(xaxis); // The "up" vector.
 
-		Matrix4f viewMatrix = new Matrix4f(xaxis.getX(), yaxis.getX(), zaxis.getZ(), 0, xaxis.getY(), yaxis.getY(),
-				zaxis.getY(), 0, xaxis.getZ(), yaxis.getZ(), zaxis.getZ(), 0, -xaxis.dot(eye), -yaxis.dot(eye),
-				-zaxis.dot(eye), 1);
+		Matrix4f viewMatrix = new Matrix4f(xaxis.x, yaxis.x, zaxis.x, 0, xaxis.y, yaxis.y, zaxis.y, 0, xaxis.z, yaxis.z,
+				zaxis.z, 0, -xaxis.dot(eye), -yaxis.dot(eye), -zaxis.dot(eye), 1);
 
 		return viewMatrix;
 	}
@@ -258,6 +281,7 @@ public class Matrix4f {
 	 * @return the resulting view matrix
 	 */
 	public static Matrix4f fpsViewRH(Vector3f eye, float pitch, float yaw) {
+		// https://www.3dgep.com/understanding-the-view-matrix/
 		float cosPitch = Mathf.cos(pitch);
 		float sinPitch = Mathf.sin(pitch);
 		float cosYaw = Mathf.cos(yaw);
@@ -267,9 +291,9 @@ public class Matrix4f {
 		Vector3f yaxis = new Vector3f(sinYaw * sinPitch, cosPitch, cosYaw * sinPitch);
 		Vector3f zaxis = new Vector3f(sinYaw * cosPitch, -sinPitch, cosPitch * cosYaw);
 
-		Matrix4f viewMatrix = new Matrix4f(xaxis.getX(), yaxis.getX(), zaxis.getX(), 0, xaxis.getY(), yaxis.getY(),
-				zaxis.getY(), 0, xaxis.getZ(), yaxis.getZ(), zaxis.getZ(), 0, -xaxis.dot(eye), -yaxis.dot(eye),
-				-zaxis.dot(eye), 1);
+		// Create a 4x4 view matrix from the right, up, forward and eye position vectors
+		Matrix4f viewMatrix = new Matrix4f(xaxis.x, yaxis.x, zaxis.x, 0, xaxis.y, yaxis.y, zaxis.y, 0, xaxis.z, yaxis.z,
+				zaxis.z, 0, -xaxis.dot(eye), -yaxis.dot(eye), -zaxis.dot(eye), 1);
 
 		return viewMatrix;
 	}
