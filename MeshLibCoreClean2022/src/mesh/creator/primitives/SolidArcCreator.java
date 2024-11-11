@@ -8,16 +8,27 @@ import mesh.creator.IMeshCreator;
 public class SolidArcCreator implements IMeshCreator {
 
 	private int index;
+	
 	private int vertices;
+	
 	private float angle;
+	
 	private float outerRadius;
+	
 	private float innerRadius;
+	
 	private float height;
+	
 	private boolean capStart;
+	
 	private boolean capEnd;
+	
 	private Mesh3D mesh;
+	
 	private ArcCreator creator;
+	
 	private Mesh3D outerArc;
+	
 	private Mesh3D innerArc;
 
 	public SolidArcCreator() {

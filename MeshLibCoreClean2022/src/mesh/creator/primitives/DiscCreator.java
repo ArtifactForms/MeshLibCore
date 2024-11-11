@@ -7,9 +7,13 @@ import mesh.creator.IMeshCreator;
 public class DiscCreator implements IMeshCreator {
 
 	private int rotationSegments;
+	
 	private int discSegments;
+	
 	private float outerRadius;
+	
 	private float innerRadius;
+	
 	private Mesh3D mesh;
 
 	public DiscCreator() {

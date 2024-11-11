@@ -7,8 +7,11 @@ import mesh.creator.IMeshCreator;
 public class SegmentedCubeCreator implements IMeshCreator {
 
 	private int segments;
+	
 	private float size;
+	
 	private float creationSize;
+	
 	private Mesh3D mesh;
 
 	public SegmentedCubeCreator() {

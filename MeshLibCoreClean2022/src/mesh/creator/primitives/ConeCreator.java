@@ -9,10 +9,15 @@ import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 public class ConeCreator implements IMeshCreator {
 
 	private int rotationSegments;
+	
 	private int heightSegments;
+	
 	private float topRadius;
+	
 	private float bottomRadius;
+	
 	private float height;
+	
 	private Mesh3D mesh;
 
 	public ConeCreator() {

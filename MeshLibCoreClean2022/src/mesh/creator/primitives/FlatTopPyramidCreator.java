@@ -7,6 +7,7 @@ import mesh.util.Mesh3DUtil;
 public class FlatTopPyramidCreator implements IMeshCreator {
 
 	private float size;
+	
 	private float topScale;
 
 	public FlatTopPyramidCreator() {

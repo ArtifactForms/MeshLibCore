@@ -10,12 +10,19 @@ import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 public class HelixCreator implements IMeshCreator {
 
 	private float majorRadius;
+	
 	private float minorRadius;
+	
 	private int majorSegments;
+	
 	private int minorSegments;
+	
 	private int turns;
+	
 	private float dy;
+	
 	private boolean cap;
+	
 	private Mesh3D mesh;
 
 	public HelixCreator() {

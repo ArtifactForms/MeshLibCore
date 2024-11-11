@@ -7,6 +7,7 @@ import mesh.creator.IMeshCreator;
 public class PlaneCreator implements IMeshCreator {
 
 	private float radius;
+	
 	private Mesh3D mesh;
 
 	public PlaneCreator() {

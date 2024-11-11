@@ -8,13 +8,21 @@ import mesh.creator.IMeshCreator;
 public class SegmentedCylinderCreator implements IMeshCreator {
 
 	private float topRadius;
+	
 	private float bottomRadius;
+	
 	private float height;
+	
 	private int rotationSegments;
+	
 	private int heightSegments;
+	
 	private boolean capTop;
+	
 	private boolean capBottom;
+	
 	private FillType capFillType;
+	
 	private Mesh3D mesh;
 
 	public SegmentedCylinderCreator() {
