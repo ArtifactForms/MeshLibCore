@@ -11,85 +11,85 @@ import mesh.util.Mesh3DUtil;
 
 public class TriangleSegmentCreator implements IMeshCreator {
 
-	private float size;
-	
-	private float height;
-	
-	private float scaleExtrude;
-	
-	private Mesh3D mesh;
+    private float size;
 
-	public TriangleSegmentCreator() {
-		size = 1f;
-		height = 0.125f;
-		scaleExtrude = 0.9f;
-	}
+    private float height;
 
-	private void createVertices() {
-		addVertex(-0.866f, 0f, -0.5f);
-		addVertex(0.866f, 0f, -0.5f);
-		addVertex(0f, 0f, 1f);
-	}
+    private float scaleExtrude;
 
-	private void addVertex(float x, float y, float z) {
-		mesh.addVertex(x, y, z);
-	}
+    private Mesh3D mesh;
 
-	private void createFaces() {
-		mesh.add(new Face3D(0, 2, 1));
-	}
+    public TriangleSegmentCreator() {
+        size = 1f;
+        height = 0.125f;
+        scaleExtrude = 0.9f;
+    }
 
-	private void scale() {
-		mesh.scale(size);
-	}
+    private void createVertices() {
+        addVertex(-0.866f, 0f, -0.5f);
+        addVertex(0.866f, 0f, -0.5f);
+        addVertex(0f, 0f, 1f);
+    }
 
-	private void extrude() {
-		new PlanarMidEdgeCenterModifier().modify(mesh);
-		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
-		for (Face3D face : faces) {
-			Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0f);
-		}
-		mesh.faces.removeAll(faces);
-	}
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
+    }
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVertices();
-		createFaces();
-		extrude();
-		scale();
-		solidify();
-		centerOnAxisY();
-		return mesh;
-	}
+    private void createFaces() {
+        mesh.add(new Face3D(0, 2, 1));
+    }
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private void scale() {
+        mesh.scale(size);
+    }
 
-	private void solidify() {
-		new SolidifyModifier(height).modify(mesh);
-	}
+    private void extrude() {
+        new PlanarMidEdgeCenterModifier().modify(mesh);
+        List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
+        for (Face3D face : faces) {
+            Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0f);
+        }
+        mesh.faces.removeAll(faces);
+    }
 
-	private void centerOnAxisY() {
-		mesh.translateY(height / 2f);
-	}
+    @Override
+    public Mesh3D create() {
+        initializeMesh();
+        createVertices();
+        createFaces();
+        extrude();
+        scale();
+        solidify();
+        centerOnAxisY();
+        return mesh;
+    }
 
-	public float getSize() {
-		return size;
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	public void setSize(float size) {
-		this.size = size;
-	}
+    private void solidify() {
+        new SolidifyModifier(height).modify(mesh);
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    private void centerOnAxisY() {
+        mesh.translateY(height / 2f);
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    public float getSize() {
+        return size;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
 
 }

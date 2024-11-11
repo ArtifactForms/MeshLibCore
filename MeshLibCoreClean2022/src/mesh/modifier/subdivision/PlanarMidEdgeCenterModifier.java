@@ -41,95 +41,95 @@ import mesh.modifier.IMeshModifier;
  */
 public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 
-	private int nextIndex;
-	
-	private int iterations;
-	
-	private Mesh3D mesh;
-	
-	private ArrayList<Face3D> newFaces = new ArrayList<>();
+    private int nextIndex;
 
-	public PlanarMidEdgeCenterModifier() {
-		this(1);
-	}
+    private int iterations;
 
-	public PlanarMidEdgeCenterModifier(int iterations) {
-		this.iterations = iterations;
-	}
+    private Mesh3D mesh;
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		setMesh(mesh);
-		subdivide();
-		return mesh;
-	}
+    private ArrayList<Face3D> newFaces = new ArrayList<>();
 
-	private void subdivide() {
-		for (int i = 0; i < iterations; i++)
-			oneIteration();
-	}
+    public PlanarMidEdgeCenterModifier() {
+        this(1);
+    }
 
-	private void subdivideFaces() {
-		for (Face3D f : mesh.faces) {
-			int n = f.indices.length;
-			int[] idxs = new int[f.indices.length + 1];
-			Vector3f center = mesh.calculateFaceCenter(f);
-			mesh.vertices.add(center);
-			idxs[0] = nextIndex;
-			nextIndex++;
+    public PlanarMidEdgeCenterModifier(int iterations) {
+        this.iterations = iterations;
+    }
 
-			// Create edge points
-			for (int i = 0; i < f.indices.length; i++) {
-				Vector3f from = mesh.vertices.get(f.indices[i % n]);
-				Vector3f to = mesh.vertices.get(f.indices[(i + 1) % n]);
-				Vector3f edgePoint = from.add(to).mult(0.5f);
-				int idx = mesh.vertices.indexOf(edgePoint);
-				if (idx > -1) {
-					idxs[i + 1] = idx;
-				} else {
-					mesh.vertices.add(edgePoint);
-					idxs[i + 1] = nextIndex;
-					nextIndex++;
-				}
-			}
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+        setMesh(mesh);
+        subdivide();
+        return mesh;
+    }
 
-			createNewFaces(f, idxs);
-		}
-	}
+    private void subdivide() {
+        for (int i = 0; i < iterations; i++)
+            oneIteration();
+    }
 
-	private void createNewFaces(Face3D f, int[] idxs) {
-		for (int i = 0; i < f.indices.length; i++) {
-			Face3D f0 = new Face3D(f.indices[i], idxs[i + 1], idxs[0], idxs[i == 0 ? f.indices.length : i]);
-			newFaces.add(f0);
-		}
-	}
+    private void subdivideFaces() {
+        for (Face3D f : mesh.faces) {
+            int n = f.indices.length;
+            int[] idxs = new int[f.indices.length + 1];
+            Vector3f center = mesh.calculateFaceCenter(f);
+            mesh.vertices.add(center);
+            idxs[0] = nextIndex;
+            nextIndex++;
 
-	private void oneIteration() {
-		initializeNextIndex();
-		subdivideFaces();
-		removeOldFaces();
-		addNewFaces();
-		clear();
-	}
+            // Create edge points
+            for (int i = 0; i < f.indices.length; i++) {
+                Vector3f from = mesh.vertices.get(f.indices[i % n]);
+                Vector3f to = mesh.vertices.get(f.indices[(i + 1) % n]);
+                Vector3f edgePoint = from.add(to).mult(0.5f);
+                int idx = mesh.vertices.indexOf(edgePoint);
+                if (idx > -1) {
+                    idxs[i + 1] = idx;
+                } else {
+                    mesh.vertices.add(edgePoint);
+                    idxs[i + 1] = nextIndex;
+                    nextIndex++;
+                }
+            }
 
-	private void initializeNextIndex() {
-		nextIndex = mesh.vertices.size();
-	}
+            createNewFaces(f, idxs);
+        }
+    }
 
-	private void clear() {
-		newFaces.clear();
-	}
+    private void createNewFaces(Face3D f, int[] idxs) {
+        for (int i = 0; i < f.indices.length; i++) {
+            Face3D f0 = new Face3D(f.indices[i], idxs[i + 1], idxs[0], idxs[i == 0 ? f.indices.length : i]);
+            newFaces.add(f0);
+        }
+    }
 
-	private void addNewFaces() {
-		mesh.faces.addAll(newFaces);
-	}
+    private void oneIteration() {
+        initializeNextIndex();
+        subdivideFaces();
+        removeOldFaces();
+        addNewFaces();
+        clear();
+    }
 
-	private void removeOldFaces() {
-		mesh.faces.clear();
-	}
+    private void initializeNextIndex() {
+        nextIndex = mesh.vertices.size();
+    }
 
-	private void setMesh(Mesh3D mesh) {
-		this.mesh = mesh;
-	}
+    private void clear() {
+        newFaces.clear();
+    }
+
+    private void addNewFaces() {
+        mesh.faces.addAll(newFaces);
+    }
+
+    private void removeOldFaces() {
+        mesh.faces.clear();
+    }
+
+    private void setMesh(Mesh3D mesh) {
+        this.mesh = mesh;
+    }
 
 }

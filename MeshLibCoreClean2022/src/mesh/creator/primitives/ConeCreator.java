@@ -8,178 +8,178 @@ import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 
 public class ConeCreator implements IMeshCreator {
 
-	private int rotationSegments;
-	
-	private int heightSegments;
-	
-	private float topRadius;
-	
-	private float bottomRadius;
-	
-	private float height;
-	
-	private Mesh3D mesh;
+    private int rotationSegments;
 
-	public ConeCreator() {
-		rotationSegments = 32;
-		heightSegments = 10;
-		topRadius = 0;
-		bottomRadius = 1;
-		height = 2;
-	}
+    private int heightSegments;
 
-	private float getSegmentHeight() {
-		return height / heightSegments;
-	}
+    private float topRadius;
 
-	private float getRadius(int i) {
-		float radius = Mathf.map(i, 0, heightSegments, topRadius, bottomRadius);
-		return radius;
-	}
+    private float bottomRadius;
 
-	private void createVertices() {
-		int start = topRadius > 0 ? 0 : 1;
-		int end = bottomRadius > 0 ? 0 : 1;
-		float angle = Mathf.TWO_PI / rotationSegments;
-		for (int i = start; i <= heightSegments - end; i++) {
-			for (int j = 0; j < rotationSegments; j++) {
-				float x = getRadius(i) * Mathf.cos(angle * j);
-				float y = getSegmentHeight() * i - (height * 0.5f);
-				float z = getRadius(i) * Mathf.sin(angle * j);
-				mesh.addVertex(x, y, z);
-			}
-		}
-	}
+    private float height;
 
-	private void addFace(int i, int j) {
-		int idx0 = toOneDimensionalIndex(i, j);
-		int idx1 = toOneDimensionalIndex(i + 1, j);
-		int idx2 = toOneDimensionalIndex(i + 1, j + 1);
-		int idx3 = toOneDimensionalIndex(i, j + 1);
-		mesh.addFace(idx0, idx1, idx2, idx3);
-	}
+    private Mesh3D mesh;
 
-	private int toOneDimensionalIndex(int i, int j) {
-		j %= rotationSegments;
-		return Mathf.toOneDimensionalIndex(i, j, rotationSegments);
-	}
+    public ConeCreator() {
+        rotationSegments = 32;
+        heightSegments = 10;
+        topRadius = 0;
+        bottomRadius = 1;
+        height = 2;
+    }
 
-	private void createQuadFaces() {
-		int end = topRadius > 0 ? 0 : 1;
-		end += bottomRadius > 0 ? 0 : 1;
-		for (int i = 0; i < heightSegments - end; i++) {
-			for (int j = 0; j < rotationSegments; j++) {
-				addFace(i, j);
-			}
-		}
-	}
+    private float getSegmentHeight() {
+        return height / heightSegments;
+    }
 
-	private void createTopCap() {
-		int[] indices = new int[rotationSegments];
+    private float getRadius(int i) {
+        float radius = Mathf.map(i, 0, heightSegments, topRadius, bottomRadius);
+        return radius;
+    }
 
-		for (int i = 0; i < indices.length; i++)
-			indices[i] = i;
+    private void createVertices() {
+        int start = topRadius > 0 ? 0 : 1;
+        int end = bottomRadius > 0 ? 0 : 1;
+        float angle = Mathf.TWO_PI / rotationSegments;
+        for (int i = start; i <= heightSegments - end; i++) {
+            for (int j = 0; j < rotationSegments; j++) {
+                float x = getRadius(i) * Mathf.cos(angle * j);
+                float y = getSegmentHeight() * i - (height * 0.5f);
+                float z = getRadius(i) * Mathf.sin(angle * j);
+                mesh.addVertex(x, y, z);
+            }
+        }
+    }
 
-		mesh.addFace(indices);
-	}
+    private void addFace(int i, int j) {
+        int idx0 = toOneDimensionalIndex(i, j);
+        int idx1 = toOneDimensionalIndex(i + 1, j);
+        int idx2 = toOneDimensionalIndex(i + 1, j + 1);
+        int idx3 = toOneDimensionalIndex(i, j + 1);
+        mesh.addFace(idx0, idx1, idx2, idx3);
+    }
 
-	private void createBottomCap() {
-		int index = mesh.getVertexCount() - 1;
-		int[] indices = new int[rotationSegments];
+    private int toOneDimensionalIndex(int i, int j) {
+        j %= rotationSegments;
+        return Mathf.toOneDimensionalIndex(i, j, rotationSegments);
+    }
 
-		for (int i = 0; i < indices.length; i++)
-			indices[i] = index - i;
+    private void createQuadFaces() {
+        int end = topRadius > 0 ? 0 : 1;
+        end += bottomRadius > 0 ? 0 : 1;
+        for (int i = 0; i < heightSegments - end; i++) {
+            for (int j = 0; j < rotationSegments; j++) {
+                addFace(i, j);
+            }
+        }
+    }
 
-		mesh.addFace(indices);
-	}
+    private void createTopCap() {
+        int[] indices = new int[rotationSegments];
 
-	private void splitTop() {
-		if (topRadius > 0)
-			return;
+        for (int i = 0; i < indices.length; i++)
+            indices[i] = i;
 
-		splitFace(mesh.getFaceCount() - 2, -getSegmentHeight());
-	}
+        mesh.addFace(indices);
+    }
 
-	private void splitBottom() {
-		if (bottomRadius > 0)
-			return;
+    private void createBottomCap() {
+        int index = mesh.getVertexCount() - 1;
+        int[] indices = new int[rotationSegments];
 
-		splitFace(mesh.getFaceCount() - 1, getSegmentHeight());
-	}
+        for (int i = 0; i < indices.length; i++)
+            indices[i] = index - i;
 
-	private void splitFace(int faceIndex, float offsetY) {
-		int index = mesh.vertices.size();
-		Face3D face = mesh.getFaceAt(faceIndex);
-		new PlanarVertexCenterModifier().modify(mesh, face);
-		mesh.getVertexAt(index).addLocal(0, offsetY, 0);
-	}
+        mesh.addFace(indices);
+    }
 
-	@Override
-	public Mesh3D create() {
-		if (shouldNotCreate())
-			return new Mesh3D();
+    private void splitTop() {
+        if (topRadius > 0)
+            return;
 
-		initializeMesh();
-		createVertices();
-		createQuadFaces();
-		createTopCap();
-		createBottomCap();
-		splitTop();
-		splitBottom();
+        splitFace(mesh.getFaceCount() - 2, -getSegmentHeight());
+    }
 
-		return mesh;
-	}
+    private void splitBottom() {
+        if (bottomRadius > 0)
+            return;
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+        splitFace(mesh.getFaceCount() - 1, getSegmentHeight());
+    }
 
-	private boolean shouldNotCreate() {
-		return radiiAreZero() || height == 0 || rotationSegments == 0 || heightSegments == 0;
-	}
+    private void splitFace(int faceIndex, float offsetY) {
+        int index = mesh.vertices.size();
+        Face3D face = mesh.getFaceAt(faceIndex);
+        new PlanarVertexCenterModifier().modify(mesh, face);
+        mesh.getVertexAt(index).addLocal(0, offsetY, 0);
+    }
 
-	private boolean radiiAreZero() {
-		return topRadius == 0 && bottomRadius == 0;
-	}
+    @Override
+    public Mesh3D create() {
+        if (shouldNotCreate())
+            return new Mesh3D();
 
-	public int getRotationSegments() {
-		return rotationSegments;
-	}
+        initializeMesh();
+        createVertices();
+        createQuadFaces();
+        createTopCap();
+        createBottomCap();
+        splitTop();
+        splitBottom();
 
-	public void setRotationSegments(int rotationSegments) {
-		this.rotationSegments = rotationSegments;
-	}
+        return mesh;
+    }
 
-	public int getHeightSegments() {
-		return heightSegments;
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	public void setHeightSegments(int heightSegments) {
-		this.heightSegments = heightSegments;
-	}
+    private boolean shouldNotCreate() {
+        return radiiAreZero() || height == 0 || rotationSegments == 0 || heightSegments == 0;
+    }
 
-	public float getTopRadius() {
-		return topRadius;
-	}
+    private boolean radiiAreZero() {
+        return topRadius == 0 && bottomRadius == 0;
+    }
 
-	public void setTopRadius(float topRadius) {
-		this.topRadius = topRadius;
-	}
+    public int getRotationSegments() {
+        return rotationSegments;
+    }
 
-	public float getBottomRadius() {
-		return bottomRadius;
-	}
+    public void setRotationSegments(int rotationSegments) {
+        this.rotationSegments = rotationSegments;
+    }
 
-	public void setBottomRadius(float bottomRadius) {
-		this.bottomRadius = bottomRadius;
-	}
+    public int getHeightSegments() {
+        return heightSegments;
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    public void setHeightSegments(int heightSegments) {
+        this.heightSegments = heightSegments;
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    public float getTopRadius() {
+        return topRadius;
+    }
+
+    public void setTopRadius(float topRadius) {
+        this.topRadius = topRadius;
+    }
+
+    public float getBottomRadius() {
+        return bottomRadius;
+    }
+
+    public void setBottomRadius(float bottomRadius) {
+        this.bottomRadius = bottomRadius;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
 
 }

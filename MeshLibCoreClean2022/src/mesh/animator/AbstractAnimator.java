@@ -2,39 +2,39 @@ package mesh.animator;
 
 public abstract class AbstractAnimator implements IAnimator {
 
-	private boolean enabled;
-	
-	private boolean finished;
+    private boolean enabled;
 
-	public AbstractAnimator() {
-		enabled = true;
-	}
+    private boolean finished;
 
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public AbstractAnimator() {
+        enabled = true;
+    }
 
-	@Override
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	@Override
-	public boolean isFinished() {
-		return finished;
-	}
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	@Override
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
+    @Override
+    public boolean isFinished() {
+        return finished;
+    }
 
-	@Override
-	public void update(float tpf) {
-		if (!enabled || finished)
-			return;
-		onUpdate(tpf);
-	}
+    @Override
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    @Override
+    public void update(float tpf) {
+        if (!enabled || finished)
+            return;
+        onUpdate(tpf);
+    }
 
 }

@@ -8,70 +8,70 @@ import mesh.modifier.FitToAABBModifier;
 
 public class RandomConwayCreator implements IMeshCreator {
 
-	private int expressionLength;
-	
-	private boolean fitToBounds;
-	
-	private String lastExpression;
+    private int expressionLength;
 
-	public RandomConwayCreator() {
-		fitToBounds = true;
-		expressionLength = 5;
-	}
+    private boolean fitToBounds;
 
-	@Override
-	public Mesh3D create() {
-		String expression = createExpression();
-		setLastExpression(expression);
+    private String lastExpression;
 
-		Mesh3D seed = new CubeCreator().create();
-		Conway conway = new Conway();
-		conway.create(seed, expression);
+    public RandomConwayCreator() {
+        fitToBounds = true;
+        expressionLength = 5;
+    }
 
-		if (fitToBounds)
-			new FitToAABBModifier(2, 2, 2).modify(seed);
+    @Override
+    public Mesh3D create() {
+        String expression = createExpression();
+        setLastExpression(expression);
 
-		return seed;
-	}
+        Mesh3D seed = new CubeCreator().create();
+        Conway conway = new Conway();
+        conway.create(seed, expression);
 
-	private String createExpression() {
-		String expression = "";
+        if (fitToBounds)
+            new FitToAABBModifier(2, 2, 2).modify(seed);
 
-		for (int i = 0; i < expressionLength; i++) {
-			int random = Mathf.random(0, 3);
+        return seed;
+    }
 
-			switch (random) {
-			case 0:
-				expression += "k";
-				break;
-			case 1:
-				expression += "a";
-				break;
-			case 2:
-				expression += "d";
-				break;
-			default:
-				break;
-			}
-		}
+    private String createExpression() {
+        String expression = "";
 
-		return expression;
-	}
+        for (int i = 0; i < expressionLength; i++) {
+            int random = Mathf.random(0, 3);
 
-	private void setLastExpression(String lastExpression) {
-		this.lastExpression = lastExpression;
-	}
+            switch (random) {
+            case 0:
+                expression += "k";
+                break;
+            case 1:
+                expression += "a";
+                break;
+            case 2:
+                expression += "d";
+                break;
+            default:
+                break;
+            }
+        }
 
-	public String getLastExpression() {
-		return lastExpression;
-	}
+        return expression;
+    }
 
-	public int getN() {
-		return expressionLength;
-	}
+    private void setLastExpression(String lastExpression) {
+        this.lastExpression = lastExpression;
+    }
 
-	public void setN(int n) {
-		this.expressionLength = n;
-	}
+    public String getLastExpression() {
+        return lastExpression;
+    }
+
+    public int getN() {
+        return expressionLength;
+    }
+
+    public void setN(int n) {
+        this.expressionLength = n;
+    }
 
 }

@@ -9,120 +9,120 @@ import mesh.modifier.subdivision.CatmullClarkModifier;
 
 public class TorusCageCreator implements IMeshCreator {
 
-	private int subdivisions;
-	
-	private int majorSegments;
-	
-	private int minorSegments;
-	
-	private float thickness;
-	
-	private float majorRadius;
-	
-	private float minorRadius;
-	
-	private float extrude;
-	
-	private Mesh3D mesh;
+    private int subdivisions;
 
-	public TorusCageCreator() {
-		subdivisions = 1;
-		majorSegments = 24;
-		minorSegments = 12;
-		thickness = 0.05f;
-		majorRadius = 1.0f;
-		minorRadius = 0.5f;
-		extrude = 0.8f;
-	}
+    private int majorSegments;
 
-	@Override
-	public Mesh3D create() {
-		createTorus();
-		createHoles();
-		solidify();
-		subdivide();
-		return mesh;
-	}
+    private int minorSegments;
 
-	private void createTorus() {
-		TorusCreator creator = new TorusCreator();
-		creator.setMajorRadius(majorRadius);
-		creator.setMinorRadius(minorRadius);
-		creator.setMajorSegments(majorSegments);
-		creator.setMinorSegments(minorSegments);
-		mesh = creator.create();
-	}
+    private float thickness;
 
-	private void createHoles() {
-		ExtrudeModifier modifier = new ExtrudeModifier();
-		modifier.setScale(extrude);
-		modifier.setAmount(0);
-		modifier.setRemoveFaces(true);
-		modifier.modify(mesh);
-	}
+    private float majorRadius;
 
-	private void solidify() {
-		new SolidifyModifier(thickness).modify(mesh);
-	}
+    private float minorRadius;
 
-	private void subdivide() {
-		new CatmullClarkModifier(subdivisions).modify(mesh);
-	}
+    private float extrude;
 
-	public int getSubdivisions() {
-		return subdivisions;
-	}
+    private Mesh3D mesh;
 
-	public void setSubdivisions(int subdivisions) {
-		this.subdivisions = subdivisions;
-	}
+    public TorusCageCreator() {
+        subdivisions = 1;
+        majorSegments = 24;
+        minorSegments = 12;
+        thickness = 0.05f;
+        majorRadius = 1.0f;
+        minorRadius = 0.5f;
+        extrude = 0.8f;
+    }
 
-	public int getMajorSegments() {
-		return majorSegments;
-	}
+    @Override
+    public Mesh3D create() {
+        createTorus();
+        createHoles();
+        solidify();
+        subdivide();
+        return mesh;
+    }
 
-	public void setMajorSegments(int majorSegments) {
-		this.majorSegments = majorSegments;
-	}
+    private void createTorus() {
+        TorusCreator creator = new TorusCreator();
+        creator.setMajorRadius(majorRadius);
+        creator.setMinorRadius(minorRadius);
+        creator.setMajorSegments(majorSegments);
+        creator.setMinorSegments(minorSegments);
+        mesh = creator.create();
+    }
 
-	public int getMinorSegments() {
-		return minorSegments;
-	}
+    private void createHoles() {
+        ExtrudeModifier modifier = new ExtrudeModifier();
+        modifier.setScale(extrude);
+        modifier.setAmount(0);
+        modifier.setRemoveFaces(true);
+        modifier.modify(mesh);
+    }
 
-	public void setMinorSegments(int minorSegments) {
-		this.minorSegments = minorSegments;
-	}
+    private void solidify() {
+        new SolidifyModifier(thickness).modify(mesh);
+    }
 
-	public float getThickness() {
-		return thickness;
-	}
+    private void subdivide() {
+        new CatmullClarkModifier(subdivisions).modify(mesh);
+    }
 
-	public void setThickness(float thickness) {
-		this.thickness = thickness;
-	}
+    public int getSubdivisions() {
+        return subdivisions;
+    }
 
-	public float getMajorRadius() {
-		return majorRadius;
-	}
+    public void setSubdivisions(int subdivisions) {
+        this.subdivisions = subdivisions;
+    }
 
-	public void setMajorRadius(float majorRadius) {
-		this.majorRadius = majorRadius;
-	}
+    public int getMajorSegments() {
+        return majorSegments;
+    }
 
-	public float getMinorRadius() {
-		return minorRadius;
-	}
+    public void setMajorSegments(int majorSegments) {
+        this.majorSegments = majorSegments;
+    }
 
-	public void setMinorRadius(float minorRadius) {
-		this.minorRadius = minorRadius;
-	}
+    public int getMinorSegments() {
+        return minorSegments;
+    }
 
-	public float getExtrude() {
-		return extrude;
-	}
+    public void setMinorSegments(int minorSegments) {
+        this.minorSegments = minorSegments;
+    }
 
-	public void setExtrude(float extrude) {
-		this.extrude = extrude;
-	}
+    public float getThickness() {
+        return thickness;
+    }
+
+    public void setThickness(float thickness) {
+        this.thickness = thickness;
+    }
+
+    public float getMajorRadius() {
+        return majorRadius;
+    }
+
+    public void setMajorRadius(float majorRadius) {
+        this.majorRadius = majorRadius;
+    }
+
+    public float getMinorRadius() {
+        return minorRadius;
+    }
+
+    public void setMinorRadius(float minorRadius) {
+        this.minorRadius = minorRadius;
+    }
+
+    public float getExtrude() {
+        return extrude;
+    }
+
+    public void setExtrude(float extrude) {
+        this.extrude = extrude;
+    }
 
 }

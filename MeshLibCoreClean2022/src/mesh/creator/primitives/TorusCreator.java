@@ -8,106 +8,106 @@ import mesh.creator.IMeshCreator;
 
 public class TorusCreator implements IMeshCreator {
 
-	private float majorRadius;
-	
-	private float minorRadius;
-	
-	private int majorSegments;
-	
-	private int minorSegments;
-	
-	private Mesh3D mesh;
+    private float majorRadius;
 
-	public TorusCreator() {
-		majorRadius = 1f;
-		minorRadius = 0.25f;
-		majorSegments = 48;
-		minorSegments = 12;
-	}
+    private float minorRadius;
 
-	private void createVertices() {
-		float stepU = Mathf.TWO_PI / minorSegments;
-		float stepV = Mathf.TWO_PI / majorSegments;
-		for (int i = 0; i < majorSegments; i++) {
-			float v = i * stepV;
-			for (int j = 0; j < minorSegments; j++) {
-				float u = j * stepU;
-				float x = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
-				float y = minorRadius * Mathf.sin(u);
-				float z = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
-				addVertex(x, y, z);
-			}
-		}
-	}
+    private int majorSegments;
 
-	private void createFaces() {
-		for (int i = 0; i < minorSegments; i++)
-			for (int j = 0; j < majorSegments; j++)
-				createFaceAt(i, j);
-	}
+    private int minorSegments;
 
-	private void createFaceAt(int i, int j) {
-		int index0 = toOneDimensionalIndex(i, j + 1);
-		int index1 = toOneDimensionalIndex(i, j);
-		int index2 = toOneDimensionalIndex(i + 1, j);
-		int index3 = toOneDimensionalIndex(i + 1, j + 1);
-		addFace(index0, index1, index2, index3);
-	}
+    private Mesh3D mesh;
 
-	private int toOneDimensionalIndex(int i, int j) {
-		return (j % majorSegments) * minorSegments + (i % minorSegments);
-	}
+    public TorusCreator() {
+        majorRadius = 1f;
+        minorRadius = 0.25f;
+        majorSegments = 48;
+        minorSegments = 12;
+    }
 
-	private void addVertex(float x, float y, float z) {
-		mesh.add(new Vector3f(x, y, z));
-	}
+    private void createVertices() {
+        float stepU = Mathf.TWO_PI / minorSegments;
+        float stepV = Mathf.TWO_PI / majorSegments;
+        for (int i = 0; i < majorSegments; i++) {
+            float v = i * stepV;
+            for (int j = 0; j < minorSegments; j++) {
+                float u = j * stepU;
+                float x = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
+                float y = minorRadius * Mathf.sin(u);
+                float z = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
+                addVertex(x, y, z);
+            }
+        }
+    }
 
-	private void addFace(int... indices) {
-		mesh.add(new Face3D(indices));
-	}
+    private void createFaces() {
+        for (int i = 0; i < minorSegments; i++)
+            for (int j = 0; j < majorSegments; j++)
+                createFaceAt(i, j);
+    }
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVertices();
-		createFaces();
-		return mesh;
-	}
+    private void createFaceAt(int i, int j) {
+        int index0 = toOneDimensionalIndex(i, j + 1);
+        int index1 = toOneDimensionalIndex(i, j);
+        int index2 = toOneDimensionalIndex(i + 1, j);
+        int index3 = toOneDimensionalIndex(i + 1, j + 1);
+        addFace(index0, index1, index2, index3);
+    }
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private int toOneDimensionalIndex(int i, int j) {
+        return (j % majorSegments) * minorSegments + (i % minorSegments);
+    }
 
-	public float getMajorRadius() {
-		return majorRadius;
-	}
+    private void addVertex(float x, float y, float z) {
+        mesh.add(new Vector3f(x, y, z));
+    }
 
-	public void setMajorRadius(float majorRadius) {
-		this.majorRadius = majorRadius;
-	}
+    private void addFace(int... indices) {
+        mesh.add(new Face3D(indices));
+    }
 
-	public float getMinorRadius() {
-		return minorRadius;
-	}
+    @Override
+    public Mesh3D create() {
+        initializeMesh();
+        createVertices();
+        createFaces();
+        return mesh;
+    }
 
-	public void setMinorRadius(float minorRadius) {
-		this.minorRadius = minorRadius;
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	public int getMajorSegments() {
-		return majorSegments;
-	}
+    public float getMajorRadius() {
+        return majorRadius;
+    }
 
-	public void setMajorSegments(int majorSegments) {
-		this.majorSegments = majorSegments;
-	}
+    public void setMajorRadius(float majorRadius) {
+        this.majorRadius = majorRadius;
+    }
 
-	public int getMinorSegments() {
-		return minorSegments;
-	}
+    public float getMinorRadius() {
+        return minorRadius;
+    }
 
-	public void setMinorSegments(int minorSegments) {
-		this.minorSegments = minorSegments;
-	}
+    public void setMinorRadius(float minorRadius) {
+        this.minorRadius = minorRadius;
+    }
+
+    public int getMajorSegments() {
+        return majorSegments;
+    }
+
+    public void setMajorSegments(int majorSegments) {
+        this.majorSegments = majorSegments;
+    }
+
+    public int getMinorSegments() {
+        return minorSegments;
+    }
+
+    public void setMinorSegments(int minorSegments) {
+        this.minorSegments = minorSegments;
+    }
 
 }

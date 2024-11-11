@@ -13,135 +13,135 @@ import mesh.util.Mesh3DUtil;
 
 public class HoneyCombCreator implements IMeshCreator {
 
-	private int rowCount;
-	
-	private int colCount;
-	
-	private float cellRadius;
-	
-	private float height;
-	
-	private float innerScale;
-	
-	private Mesh3D mesh;
+    private int rowCount;
 
-	public HoneyCombCreator() {
-		rowCount = 2;
-		colCount = 2;
-		cellRadius = 0.5f;
-		height = 0.2f;
-		innerScale = 0.9f;
-	}
+    private int colCount;
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createSegments();
-		removeDoubleVertices();
-		createInsets();
-		solidify();
-		center();
-		return mesh;
-	}
+    private float cellRadius;
 
-	private void solidify() {
-		if (height == 0)
-			return;
-		new SolidifyModifier(height).modify(mesh);
-	}
+    private float height;
 
-	private void center() {
-		Bounds3 bounds = mesh.calculateBounds();
-		mesh.translateX(-bounds.getCenterX());
-		mesh.translateZ(-bounds.getCenterZ());
-		mesh.translateY(-height / 2f);
-	}
+    private float innerScale;
 
-	private void createInsets() {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectAll();
-		for (Face3D face : selection.getFaces()) {
-			Mesh3DUtil.extrudeFace(mesh, face, innerScale, 0);
-		}
-		mesh.removeFaces(selection.getFaces());
-	}
+    private Mesh3D mesh;
 
-	private void removeDoubleVertices() {
-		mesh.removeDoubles(4);
-	}
+    public HoneyCombCreator() {
+        rowCount = 2;
+        colCount = 2;
+        cellRadius = 0.5f;
+        height = 0.2f;
+        innerScale = 0.9f;
+    }
 
-	private void createSegments() {
-		for (int i = 0; i < colCount; i++) {
-			for (int j = 0; j < rowCount; j++) {
-				Mesh3D segment = createHexSegment();
-				Bounds3 bounds = segment.calculateBounds();
-				float width = bounds.getWidth();
-				float depth = bounds.getDepth();
-				segment.translateX(i * width);
-				segment.translateZ(j * (depth - cellRadius / 2f));
-				if (j % 2 == 1)
-					segment.translateX(width / 2.0f);
-				mesh.append(segment);
-			}
-		}
-	}
+    @Override
+    public Mesh3D create() {
+        initializeMesh();
+        createSegments();
+        removeDoubleVertices();
+        createInsets();
+        solidify();
+        center();
+        return mesh;
+    }
 
-	private CircleCreator createCircleCreator() {
-		CircleCreator creator = new CircleCreator();
-		creator.setFillType(FillType.N_GON);
-		creator.setRadius(cellRadius);
-		creator.setVertices(6);
-		return creator;
-	}
+    private void solidify() {
+        if (height == 0)
+            return;
+        new SolidifyModifier(height).modify(mesh);
+    }
 
-	private Mesh3D createHexSegment() {
-		Mesh3D segment = createCircleCreator().create();
-		segment.rotateY(Mathf.HALF_PI);
-		return segment;
-	}
+    private void center() {
+        Bounds3 bounds = mesh.calculateBounds();
+        mesh.translateX(-bounds.getCenterX());
+        mesh.translateZ(-bounds.getCenterZ());
+        mesh.translateY(-height / 2f);
+    }
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private void createInsets() {
+        FaceSelection selection = new FaceSelection(mesh);
+        selection.selectAll();
+        for (Face3D face : selection.getFaces()) {
+            Mesh3DUtil.extrudeFace(mesh, face, innerScale, 0);
+        }
+        mesh.removeFaces(selection.getFaces());
+    }
 
-	public int getRowCount() {
-		return rowCount;
-	}
+    private void removeDoubleVertices() {
+        mesh.removeDoubles(4);
+    }
 
-	public void setRowCount(int rowCount) {
-		this.rowCount = rowCount;
-	}
+    private void createSegments() {
+        for (int i = 0; i < colCount; i++) {
+            for (int j = 0; j < rowCount; j++) {
+                Mesh3D segment = createHexSegment();
+                Bounds3 bounds = segment.calculateBounds();
+                float width = bounds.getWidth();
+                float depth = bounds.getDepth();
+                segment.translateX(i * width);
+                segment.translateZ(j * (depth - cellRadius / 2f));
+                if (j % 2 == 1)
+                    segment.translateX(width / 2.0f);
+                mesh.append(segment);
+            }
+        }
+    }
 
-	public int getColCount() {
-		return colCount;
-	}
+    private CircleCreator createCircleCreator() {
+        CircleCreator creator = new CircleCreator();
+        creator.setFillType(FillType.N_GON);
+        creator.setRadius(cellRadius);
+        creator.setVertices(6);
+        return creator;
+    }
 
-	public void setColCount(int colCount) {
-		this.colCount = colCount;
-	}
+    private Mesh3D createHexSegment() {
+        Mesh3D segment = createCircleCreator().create();
+        segment.rotateY(Mathf.HALF_PI);
+        return segment;
+    }
 
-	public float getCellRadius() {
-		return cellRadius;
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	public void setCellRadius(float cellRadius) {
-		this.cellRadius = cellRadius;
-	}
+    public int getRowCount() {
+        return rowCount;
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    public int getColCount() {
+        return colCount;
+    }
 
-	public float getInnerScale() {
-		return innerScale;
-	}
+    public void setColCount(int colCount) {
+        this.colCount = colCount;
+    }
 
-	public void setInnerScale(float innerScale) {
-		this.innerScale = innerScale;
-	}
+    public float getCellRadius() {
+        return cellRadius;
+    }
+
+    public void setCellRadius(float cellRadius) {
+        this.cellRadius = cellRadius;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getInnerScale() {
+        return innerScale;
+    }
+
+    public void setInnerScale(float innerScale) {
+        this.innerScale = innerScale;
+    }
 
 }

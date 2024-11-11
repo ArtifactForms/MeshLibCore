@@ -15,78 +15,78 @@ import mesh.modifier.IMeshModifier;
  */
 public class PlanarVertexCenterModifier implements IMeshModifier {
 
-	private Mesh3D mesh;
-	
-	private List<Face3D> newFaces;
+    private Mesh3D mesh;
 
-	public PlanarVertexCenterModifier() {
-		newFaces = new ArrayList<>();
-	}
-	
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		return modify(mesh, mesh.getFaces());
-	}
+    private List<Face3D> newFaces;
 
-	public Mesh3D modify(Mesh3D mesh, Face3D face) {
-		List<Face3D> facesToSubdivide = new ArrayList<>();
-		facesToSubdivide.add(face);
-		return modify(mesh, facesToSubdivide);
-	}
+    public PlanarVertexCenterModifier() {
+        newFaces = new ArrayList<>();
+    }
 
-	public Mesh3D modify(Mesh3D mesh, Collection<Face3D> facesToSubdivide) {
-		clear();
-		setMesh(mesh);
-		subdivideFaces(facesToSubdivide);
-		addNewFaces();
-		return mesh;
-	}
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+        return modify(mesh, mesh.getFaces());
+    }
 
-	private void subdivideFaces(Collection<Face3D> faces) {
-		for (Face3D face : faces) {
-			subdivideFace(face);
-			removeFaceFromMesh(face);
-		}
-	}
+    public Mesh3D modify(Mesh3D mesh, Face3D face) {
+        List<Face3D> facesToSubdivide = new ArrayList<>();
+        facesToSubdivide.add(face);
+        return modify(mesh, facesToSubdivide);
+    }
 
-	private void subdivideFace(Face3D face) {
-		int vertexCount = face.getVertexCount();
-		int newVertexIndex = addVertexToMesh(calculateFaceCenter(face));
+    public Mesh3D modify(Mesh3D mesh, Collection<Face3D> facesToSubdivide) {
+        clear();
+        setMesh(mesh);
+        subdivideFaces(facesToSubdivide);
+        addNewFaces();
+        return mesh;
+    }
 
-		for (int i = 0; i < vertexCount; i++) {
-			int vertexIndexA = face.getIndexAt(i);
-			int vertexIndexB = face.getIndexAt((i + 1) % vertexCount);
-			addNewTriangularFace(vertexIndexA, vertexIndexB, newVertexIndex);
-		}
-	}
-	
-	private void clear() {
-		newFaces.clear();
-	}
-	
-	private void addNewTriangularFace(int index0, int index1, int index2) {
-		newFaces.add(new Face3D(index0, index1, index2));
-	}
+    private void subdivideFaces(Collection<Face3D> faces) {
+        for (Face3D face : faces) {
+            subdivideFace(face);
+            removeFaceFromMesh(face);
+        }
+    }
 
-	private void addNewFaces() {
-		mesh.faces.addAll(newFaces);
-	}
+    private void subdivideFace(Face3D face) {
+        int vertexCount = face.getVertexCount();
+        int newVertexIndex = addVertexToMesh(calculateFaceCenter(face));
 
-	private int addVertexToMesh(Vector3f vertex) {
-		mesh.add(vertex);
-		return mesh.getVertexCount() - 1;
-	}
+        for (int i = 0; i < vertexCount; i++) {
+            int vertexIndexA = face.getIndexAt(i);
+            int vertexIndexB = face.getIndexAt((i + 1) % vertexCount);
+            addNewTriangularFace(vertexIndexA, vertexIndexB, newVertexIndex);
+        }
+    }
 
-	private void removeFaceFromMesh(Face3D face) {
-		mesh.removeFace(face);
-	}
+    private void clear() {
+        newFaces.clear();
+    }
 
-	private Vector3f calculateFaceCenter(Face3D face) {
-		return mesh.calculateFaceCenter(face);
-	}
+    private void addNewTriangularFace(int index0, int index1, int index2) {
+        newFaces.add(new Face3D(index0, index1, index2));
+    }
 
-	private void setMesh(Mesh3D mesh) {
-		this.mesh = mesh;
-	}
+    private void addNewFaces() {
+        mesh.faces.addAll(newFaces);
+    }
+
+    private int addVertexToMesh(Vector3f vertex) {
+        mesh.add(vertex);
+        return mesh.getVertexCount() - 1;
+    }
+
+    private void removeFaceFromMesh(Face3D face) {
+        mesh.removeFace(face);
+    }
+
+    private Vector3f calculateFaceCenter(Face3D face) {
+        return mesh.calculateFaceCenter(face);
+    }
+
+    private void setMesh(Mesh3D mesh) {
+        this.mesh = mesh;
+    }
 
 }

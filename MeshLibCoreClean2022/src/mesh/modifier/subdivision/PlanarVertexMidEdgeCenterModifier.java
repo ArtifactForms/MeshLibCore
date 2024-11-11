@@ -12,133 +12,133 @@ import mesh.modifier.IMeshModifier;
 
 public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
 
-	private int fromIndex;
-	
-	private int toIndex;
-	
-	private int edgePointIndex;
-	
-	private int centerIndex;
-	
-	private int nextIndex;
-	
-	private Mesh3D mesh;
-	
-	private List<Face3D> newlyCreatedFaces;
-	
-	private HashMap<Edge3D, Integer> edgeToEdgePointIndexMap;
+    private int fromIndex;
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		setMesh(mesh);
-		initializeNextIndex();
-		initializeEdgePointMap();
-		initializeFaceList();
-		createNewFaces();
-		clearOldFaces();
-		addNewFaces();
-		return mesh;
-	}
+    private int toIndex;
 
-	private void createNewFaces() {
-		for (Face3D face : mesh.getFaces()) {
-			addCenterVertexOfFace(face);
-			processFace(face);
-		}
-	}
+    private int edgePointIndex;
 
-	private void processFace(Face3D face) {
-		for (int i = 0; i < face.indices.length; i++) {
-			fromIndex = getIndexAt(i, face);
-			toIndex = getIndexAt(i + 1, face);
-			edgePointIndex = getEdgePointIndex();
-			if (edgePointIndex < 0)
-				edgePointIndex = processEdgePoint();
-			addTriangles();
-		}
-	}
+    private int centerIndex;
 
-	private int getIndexAt(int i, Face3D face) {
-		return face.indices[i % face.indices.length];
-	}
+    private int nextIndex;
 
-	private void addTriangles() {
-		addTriangle(centerIndex, fromIndex, edgePointIndex);
-		addTriangle(centerIndex, edgePointIndex, toIndex);
-	}
+    private Mesh3D mesh;
 
-	private void addTriangle(int indexA, int indexB, int indexC) {
-		newlyCreatedFaces.add(new Face3D(indexA, indexB, indexC));
-	}
+    private List<Face3D> newlyCreatedFaces;
 
-	private void addCenterVertexOfFace(Face3D face) {
-		centerIndex = nextIndex;
-		mesh.add(calculateFaceCenter(face));
-		nextIndex++;
-	}
+    private HashMap<Edge3D, Integer> edgeToEdgePointIndexMap;
 
-	private int processEdgePoint() {
-		int edgePointIndex = nextIndex;
-		Vector3f edgePoint = calculateMidPoint();
-		mesh.add(edgePoint);
-		map(fromIndex, toIndex, nextIndex);
-		nextIndex++;
-		return edgePointIndex;
-	}
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+        setMesh(mesh);
+        initializeNextIndex();
+        initializeEdgePointMap();
+        initializeFaceList();
+        createNewFaces();
+        clearOldFaces();
+        addNewFaces();
+        return mesh;
+    }
 
-	private int getEdgePointIndex() {
-		Edge3D edge = getCurrentEdge();
-		Integer index = getIndexOfEdgePoint(edge);
-		if (index < 0)
-			index = getIndexOfEdgePoint(edge.createPair());
-		return index;
-	}
+    private void createNewFaces() {
+        for (Face3D face : mesh.getFaces()) {
+            addCenterVertexOfFace(face);
+            processFace(face);
+        }
+    }
 
-	private Edge3D getCurrentEdge() {
-		return new Edge3D(fromIndex, toIndex);
-	}
+    private void processFace(Face3D face) {
+        for (int i = 0; i < face.indices.length; i++) {
+            fromIndex = getIndexAt(i, face);
+            toIndex = getIndexAt(i + 1, face);
+            edgePointIndex = getEdgePointIndex();
+            if (edgePointIndex < 0)
+                edgePointIndex = processEdgePoint();
+            addTriangles();
+        }
+    }
 
-	private int getIndexOfEdgePoint(Edge3D edge) {
-		Integer index = edgeToEdgePointIndexMap.get(edge);
-		return index == null ? -1 : index;
-	}
+    private int getIndexAt(int i, Face3D face) {
+        return face.indices[i % face.indices.length];
+    }
 
-	private Vector3f calculateMidPoint() {
-		Vector3f from = mesh.vertices.get(fromIndex);
-		Vector3f to = mesh.vertices.get(toIndex);
-		return from.add(to).mult(0.5f);
-	}
+    private void addTriangles() {
+        addTriangle(centerIndex, fromIndex, edgePointIndex);
+        addTriangle(centerIndex, edgePointIndex, toIndex);
+    }
 
-	private Vector3f calculateFaceCenter(Face3D face) {
-		return mesh.calculateFaceCenter(face);
-	}
+    private void addTriangle(int indexA, int indexB, int indexC) {
+        newlyCreatedFaces.add(new Face3D(indexA, indexB, indexC));
+    }
 
-	private void clearOldFaces() {
-		mesh.faces.clear();
-	}
+    private void addCenterVertexOfFace(Face3D face) {
+        centerIndex = nextIndex;
+        mesh.add(calculateFaceCenter(face));
+        nextIndex++;
+    }
 
-	private void addNewFaces() {
-		mesh.faces.addAll(newlyCreatedFaces);
-	}
+    private int processEdgePoint() {
+        int edgePointIndex = nextIndex;
+        Vector3f edgePoint = calculateMidPoint();
+        mesh.add(edgePoint);
+        map(fromIndex, toIndex, nextIndex);
+        nextIndex++;
+        return edgePointIndex;
+    }
 
-	private void map(int fromIndex, int toIndex, int index) {
-		edgeToEdgePointIndexMap.put(new Edge3D(fromIndex, toIndex), index);
-	}
+    private int getEdgePointIndex() {
+        Edge3D edge = getCurrentEdge();
+        Integer index = getIndexOfEdgePoint(edge);
+        if (index < 0)
+            index = getIndexOfEdgePoint(edge.createPair());
+        return index;
+    }
 
-	private void initializeEdgePointMap() {
-		edgeToEdgePointIndexMap = new HashMap<Edge3D, Integer>();
-	}
+    private Edge3D getCurrentEdge() {
+        return new Edge3D(fromIndex, toIndex);
+    }
 
-	private void initializeFaceList() {
-		newlyCreatedFaces = new ArrayList<Face3D>();
-	}
+    private int getIndexOfEdgePoint(Edge3D edge) {
+        Integer index = edgeToEdgePointIndexMap.get(edge);
+        return index == null ? -1 : index;
+    }
 
-	private void initializeNextIndex() {
-		nextIndex = mesh.getVertexCount();
-	}
+    private Vector3f calculateMidPoint() {
+        Vector3f from = mesh.vertices.get(fromIndex);
+        Vector3f to = mesh.vertices.get(toIndex);
+        return from.add(to).mult(0.5f);
+    }
 
-	private void setMesh(Mesh3D mesh) {
-		this.mesh = mesh;
-	}
+    private Vector3f calculateFaceCenter(Face3D face) {
+        return mesh.calculateFaceCenter(face);
+    }
+
+    private void clearOldFaces() {
+        mesh.faces.clear();
+    }
+
+    private void addNewFaces() {
+        mesh.faces.addAll(newlyCreatedFaces);
+    }
+
+    private void map(int fromIndex, int toIndex, int index) {
+        edgeToEdgePointIndexMap.put(new Edge3D(fromIndex, toIndex), index);
+    }
+
+    private void initializeEdgePointMap() {
+        edgeToEdgePointIndexMap = new HashMap<Edge3D, Integer>();
+    }
+
+    private void initializeFaceList() {
+        newlyCreatedFaces = new ArrayList<Face3D>();
+    }
+
+    private void initializeNextIndex() {
+        nextIndex = mesh.getVertexCount();
+    }
+
+    private void setMesh(Mesh3D mesh) {
+        this.mesh = mesh;
+    }
 
 }

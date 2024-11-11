@@ -16,87 +16,87 @@ import mesh.modifier.IMeshModifier;
  */
 public class PokeFacesModifier implements IMeshModifier {
 
-	private float pokeOffset;
-	
-	private Mesh3D mesh;
-	
-	private List<Face3D> originalFaces;
+    private float pokeOffset;
 
-	public PokeFacesModifier() {
-		this(0.1f);
-	}
+    private Mesh3D mesh;
 
-	public PokeFacesModifier(float pokeOffset) {
-		this.pokeOffset = pokeOffset;
-	}
+    private List<Face3D> originalFaces;
 
-	private void createPointedFaces(Face3D face) {
-		int centerVertexIndex = mesh.getVertexCount() - 1;
-		for (int i = 0; i < face.getVertexCount(); i++) {
-			int index0 = centerVertexIndex;
-			int index1 = face.getIndexAt(i);
-			int index2 = face.getIndexAt(i + 1);
-			addFace(index0, index1, index2);
-		}
-	}
+    public PokeFacesModifier() {
+        this(0.1f);
+    }
 
-	private void createPointedCenterVertex(Face3D face) {
-		Vector3f center = calculateFaceCenter(face);
-		Vector3f normal = calculateFaceNormal(face);
-		center.addLocal(normal.mult(getPokeOffset()));
-		addVertex(center);
-	}
+    public PokeFacesModifier(float pokeOffset) {
+        this.pokeOffset = pokeOffset;
+    }
 
-	private void pokeFaces() {
-		for (Face3D face : originalFaces) {
-			createPointedCenterVertex(face);
-			createPointedFaces(face);
-		}
-	}
+    private void createPointedFaces(Face3D face) {
+        int centerVertexIndex = mesh.getVertexCount() - 1;
+        for (int i = 0; i < face.getVertexCount(); i++) {
+            int index0 = centerVertexIndex;
+            int index1 = face.getIndexAt(i);
+            int index2 = face.getIndexAt(i + 1);
+            addFace(index0, index1, index2);
+        }
+    }
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		setMesh(mesh);
-		setOriginalFaces();
-		pokeFaces();
-		removeOriginalFaces();
-		return mesh;
-	}
+    private void createPointedCenterVertex(Face3D face) {
+        Vector3f center = calculateFaceCenter(face);
+        Vector3f normal = calculateFaceNormal(face);
+        center.addLocal(normal.mult(getPokeOffset()));
+        addVertex(center);
+    }
 
-	private void setOriginalFaces() {
-		originalFaces = mesh.getFaces(0, mesh.getFaceCount());
-	}
+    private void pokeFaces() {
+        for (Face3D face : originalFaces) {
+            createPointedCenterVertex(face);
+            createPointedFaces(face);
+        }
+    }
 
-	private void removeOriginalFaces() {
-		mesh.faces.removeAll(originalFaces);
-	}
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+        setMesh(mesh);
+        setOriginalFaces();
+        pokeFaces();
+        removeOriginalFaces();
+        return mesh;
+    }
 
-	private void addFace(int... indices) {
-		mesh.add(new Face3D(indices));
-	}
+    private void setOriginalFaces() {
+        originalFaces = mesh.getFaces(0, mesh.getFaceCount());
+    }
 
-	private void addVertex(Vector3f v) {
-		mesh.add(v);
-	}
+    private void removeOriginalFaces() {
+        mesh.faces.removeAll(originalFaces);
+    }
 
-	private Vector3f calculateFaceCenter(Face3D face) {
-		return mesh.calculateFaceCenter(face);
-	}
+    private void addFace(int... indices) {
+        mesh.add(new Face3D(indices));
+    }
 
-	private Vector3f calculateFaceNormal(Face3D face) {
-		return mesh.calculateFaceNormal(face);
-	}
+    private void addVertex(Vector3f v) {
+        mesh.add(v);
+    }
 
-	private void setMesh(Mesh3D mesh) {
-		this.mesh = mesh;
-	}
+    private Vector3f calculateFaceCenter(Face3D face) {
+        return mesh.calculateFaceCenter(face);
+    }
 
-	public float getPokeOffset() {
-		return pokeOffset;
-	}
+    private Vector3f calculateFaceNormal(Face3D face) {
+        return mesh.calculateFaceNormal(face);
+    }
 
-	public void setPokeOffset(float pokeOffset) {
-		this.pokeOffset = pokeOffset;
-	}
+    private void setMesh(Mesh3D mesh) {
+        this.mesh = mesh;
+    }
+
+    public float getPokeOffset() {
+        return pokeOffset;
+    }
+
+    public void setPokeOffset(float pokeOffset) {
+        this.pokeOffset = pokeOffset;
+    }
 
 }

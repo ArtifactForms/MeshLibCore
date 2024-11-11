@@ -9,123 +9,123 @@ import mesh.util.Mesh3DUtil;
 
 public class CylinderCreator implements IMeshCreator {
 
-	private int vertices;
-	
-	private float topRadius;
-	
-	private float bottomRadius;
-	
-	private float height;
-	
-	private FillType topCapFillType;
-	
-	private FillType bottomCapFillType;
-	
-	private Mesh3D mesh;
+    private int vertices;
 
-	public CylinderCreator() {
-		vertices = 32;
-		topRadius = 1;
-		bottomRadius = 1;
-		height = 2;
-		topCapFillType = FillType.N_GON;
-		bottomCapFillType = FillType.N_GON;
-	}
+    private float topRadius;
 
-	private void bridge(Mesh3D m0, Mesh3D m1) {
-		for (int i = 0; i < vertices; i++) {
-			Vector3f v0 = m1.getVertexAt(i);
-			Vector3f v1 = m1.getVertexAt((i + 1) % vertices);
-			Vector3f v2 = m0.getVertexAt(i);
-			Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
-			Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
-		}
-	}
+    private float bottomRadius;
 
-	private Mesh3D createTopCap() {
-		CircleCreator creator = new CircleCreator();
-		creator.setVertices(vertices);
-		creator.setRadius(topRadius);
-		creator.setFillType(topCapFillType);
-		creator.setCenterY(-height / 2f);
-		return creator.create();
-	}
+    private float height;
 
-	private Mesh3D createBottomCap() {
-		Mesh3D mesh;
-		CircleCreator creator = new CircleCreator();
-		creator.setVertices(vertices);
-		creator.setRadius(bottomRadius);
-		creator.setCenterY(height / 2f);
-		creator.setFillType(bottomCapFillType);
-		mesh = creator.create();
-		return new FlipFacesModifier().modify(mesh);
-	}
+    private FillType topCapFillType;
 
-	@Override
-	public Mesh3D create() {
-		Mesh3D topCap = createTopCap();
-		Mesh3D bottomCap = createBottomCap();
-		initializeMesh();
-		append(topCap, bottomCap);
-		bridge(topCap, bottomCap);
-		return mesh;
-	}
-	
-	private void append(Mesh3D... meshes) {
-		mesh.append(meshes);
-	}
-	
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private FillType bottomCapFillType;
 
-	public int getVertices() {
-		return vertices;
-	}
+    private Mesh3D mesh;
 
-	public void setVertices(int vertices) {
-		this.vertices = vertices;
-	}
+    public CylinderCreator() {
+        vertices = 32;
+        topRadius = 1;
+        bottomRadius = 1;
+        height = 2;
+        topCapFillType = FillType.N_GON;
+        bottomCapFillType = FillType.N_GON;
+    }
 
-	public float getTopRadius() {
-		return topRadius;
-	}
+    private void bridge(Mesh3D m0, Mesh3D m1) {
+        for (int i = 0; i < vertices; i++) {
+            Vector3f v0 = m1.getVertexAt(i);
+            Vector3f v1 = m1.getVertexAt((i + 1) % vertices);
+            Vector3f v2 = m0.getVertexAt(i);
+            Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
+            Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
+        }
+    }
 
-	public void setTopRadius(float topRadius) {
-		this.topRadius = topRadius;
-	}
+    private Mesh3D createTopCap() {
+        CircleCreator creator = new CircleCreator();
+        creator.setVertices(vertices);
+        creator.setRadius(topRadius);
+        creator.setFillType(topCapFillType);
+        creator.setCenterY(-height / 2f);
+        return creator.create();
+    }
 
-	public float getBottomRadius() {
-		return bottomRadius;
-	}
+    private Mesh3D createBottomCap() {
+        Mesh3D mesh;
+        CircleCreator creator = new CircleCreator();
+        creator.setVertices(vertices);
+        creator.setRadius(bottomRadius);
+        creator.setCenterY(height / 2f);
+        creator.setFillType(bottomCapFillType);
+        mesh = creator.create();
+        return new FlipFacesModifier().modify(mesh);
+    }
 
-	public void setBottomRadius(float bottomRadius) {
-		this.bottomRadius = bottomRadius;
-	}
+    @Override
+    public Mesh3D create() {
+        Mesh3D topCap = createTopCap();
+        Mesh3D bottomCap = createBottomCap();
+        initializeMesh();
+        append(topCap, bottomCap);
+        bridge(topCap, bottomCap);
+        return mesh;
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    private void append(Mesh3D... meshes) {
+        mesh.append(meshes);
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	public FillType getTopCapFillType() {
-		return topCapFillType;
-	}
+    public int getVertices() {
+        return vertices;
+    }
 
-	public void setTopCapFillType(FillType topCapFillType) {
-		this.topCapFillType = topCapFillType;
-	}
+    public void setVertices(int vertices) {
+        this.vertices = vertices;
+    }
 
-	public FillType getBottomCapFillType() {
-		return bottomCapFillType;
-	}
+    public float getTopRadius() {
+        return topRadius;
+    }
 
-	public void setBottomCapFillType(FillType bottomCapFillType) {
-		this.bottomCapFillType = bottomCapFillType;
-	}
+    public void setTopRadius(float topRadius) {
+        this.topRadius = topRadius;
+    }
+
+    public float getBottomRadius() {
+        return bottomRadius;
+    }
+
+    public void setBottomRadius(float bottomRadius) {
+        this.bottomRadius = bottomRadius;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public FillType getTopCapFillType() {
+        return topCapFillType;
+    }
+
+    public void setTopCapFillType(FillType topCapFillType) {
+        this.topCapFillType = topCapFillType;
+    }
+
+    public FillType getBottomCapFillType() {
+        return bottomCapFillType;
+    }
+
+    public void setBottomCapFillType(FillType bottomCapFillType) {
+        this.bottomCapFillType = bottomCapFillType;
+    }
 
 }

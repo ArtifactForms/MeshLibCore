@@ -4,112 +4,112 @@ import mesh.Mesh3D;
 
 public class BeamCreator implements IBeamCreator {
 
-	private float width;
-	
-	private float height;
-	
-	private float depth;
-	
-	private float thickness;
-	
-	private float taper;
-	
-	private ProfileType type;
-	
-	private IBeamCreator creator;
+    private float width;
 
-	public BeamCreator() {
-		height = 0.85f;
-		width = 0.5f;
-		depth = 2.0f;
-		thickness = 0.1f;
-		taper = 0.0f;
-		type = ProfileType.T_PROFILE;
-	}
+    private float height;
 
-	private void initializeCreator() {
-		creator = getCreatorByType();
-	}
+    private float depth;
 
-	private IBeamCreator getCreatorByType() {
-		switch (type) {
-		case O_PROFILE:
-			return new BeamOProfileCreator();
-		case U_PROFILE:
-			return new BeamUProfileCreator();
-		case C_PROFILE:
-			return new BeamCProfileCreator();
-		case L_PROFILE:
-			return new BeamLProfileCreator();
-		case I_PROFILE:
-			return new BeamIProfileCreator();
-		case T_PROFILE:
-			return new BeamTProfileCreator();
-		default:
-			return new BeamTProfileCreator();
-		}
-	}
+    private float thickness;
 
-	private void setupCreator() {
-		creator.setWidth(width);
-		creator.setHeight(height);
-		creator.setDepth(depth);
-		creator.setThickness(thickness);
-		creator.setTaper(taper);
-	}
+    private float taper;
 
-	public Mesh3D create() {
-		initializeCreator();
-		setupCreator();
-		return creator.create();
-	}
+    private ProfileType type;
 
-	public float getWidth() {
-		return width;
-	}
+    private IBeamCreator creator;
 
-	public void setWidth(float width) {
-		this.width = width;
-	}
+    public BeamCreator() {
+        height = 0.85f;
+        width = 0.5f;
+        depth = 2.0f;
+        thickness = 0.1f;
+        taper = 0.0f;
+        type = ProfileType.T_PROFILE;
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    private void initializeCreator() {
+        creator = getCreatorByType();
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    private IBeamCreator getCreatorByType() {
+        switch (type) {
+        case O_PROFILE:
+            return new BeamOProfileCreator();
+        case U_PROFILE:
+            return new BeamUProfileCreator();
+        case C_PROFILE:
+            return new BeamCProfileCreator();
+        case L_PROFILE:
+            return new BeamLProfileCreator();
+        case I_PROFILE:
+            return new BeamIProfileCreator();
+        case T_PROFILE:
+            return new BeamTProfileCreator();
+        default:
+            return new BeamTProfileCreator();
+        }
+    }
 
-	public float getDepth() {
-		return depth;
-	}
+    private void setupCreator() {
+        creator.setWidth(width);
+        creator.setHeight(height);
+        creator.setDepth(depth);
+        creator.setThickness(thickness);
+        creator.setTaper(taper);
+    }
 
-	public void setDepth(float depth) {
-		this.depth = depth;
-	}
+    public Mesh3D create() {
+        initializeCreator();
+        setupCreator();
+        return creator.create();
+    }
 
-	public float getThickness() {
-		return thickness;
-	}
+    public float getWidth() {
+        return width;
+    }
 
-	public void setThickness(float thickness) {
-		this.thickness = thickness;
-	}
+    public void setWidth(float width) {
+        this.width = width;
+    }
 
-	public float getTaper() {
-		return taper;
-	}
+    public float getHeight() {
+        return height;
+    }
 
-	public void setTaper(float taper) {
-		this.taper = taper;
-	}
+    public void setHeight(float height) {
+        this.height = height;
+    }
 
-	public ProfileType getType() {
-		return type;
-	}
+    public float getDepth() {
+        return depth;
+    }
 
-	public void setType(ProfileType type) {
-		this.type = type;
-	}
+    public void setDepth(float depth) {
+        this.depth = depth;
+    }
+
+    public float getThickness() {
+        return thickness;
+    }
+
+    public void setThickness(float thickness) {
+        this.thickness = thickness;
+    }
+
+    public float getTaper() {
+        return taper;
+    }
+
+    public void setTaper(float taper) {
+        this.taper = taper;
+    }
+
+    public ProfileType getType() {
+        return type;
+    }
+
+    public void setType(ProfileType type) {
+        this.type = type;
+    }
 
 }

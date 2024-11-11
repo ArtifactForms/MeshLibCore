@@ -5,86 +5,86 @@ import java.util.List;
 
 public class Animation {
 
-	private boolean finished;
-	
-	private float tpf;
-	
-	private long lastTime;
-	
-	private boolean running;
-	
-	private List<IAnimator> animators;
+    private boolean finished;
 
-	public Animation() {
-		animators = new ArrayList<IAnimator>();
-	}
+    private float tpf;
 
-	public void start() {
-		if (running)
-			return;
-		running = true;
-		lastTime = System.currentTimeMillis();
-	}
+    private long lastTime;
 
-	public void stop() {
-		if (!running)
-			return;
-		running = false;
-	}
+    private boolean running;
 
-	public void update() {
-		if (!running)
-			return;
-		updateTime();
-		updateAnimators(tpf);
-	}
+    private List<IAnimator> animators;
 
-	public void restore() {
-		finished = false;
-		for (IAnimator animator : animators) {
-			animator.restore();
-		}
-	}
+    public Animation() {
+        animators = new ArrayList<IAnimator>();
+    }
 
-	private void updateTime() {
-		long time = System.currentTimeMillis();
-		long delta = time - lastTime;
-		lastTime = time;
-		tpf = delta / 1000f;
-	}
+    public void start() {
+        if (running)
+            return;
+        running = true;
+        lastTime = System.currentTimeMillis();
+    }
 
-	private void updateAnimators(float tpf) {
-		if (finished)
-			return;
-		int finishedAnimatorsCount = 0;
-		for (IAnimator animator : animators) {
-			if (!animator.isFinished()) {
-				animator.update(tpf);
-			} else {
-				finishedAnimatorsCount++;
-			}
-		}
-		this.finished = finishedAnimatorsCount == animators.size();
-	}
+    public void stop() {
+        if (!running)
+            return;
+        running = false;
+    }
 
-	public void addAnimator(IAnimator animator) {
-		animators.add(animator);
-	}
+    public void update() {
+        if (!running)
+            return;
+        updateTime();
+        updateAnimators(tpf);
+    }
 
-	public void removeAnimator(IAnimator animator) {
-		animators.add(animator);
-	}
+    public void restore() {
+        finished = false;
+        for (IAnimator animator : animators) {
+            animator.restore();
+        }
+    }
 
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
+    private void updateTime() {
+        long time = System.currentTimeMillis();
+        long delta = time - lastTime;
+        lastTime = time;
+        tpf = delta / 1000f;
+    }
 
-	public boolean isFinished() {
-		return finished;
-	}
+    private void updateAnimators(float tpf) {
+        if (finished)
+            return;
+        int finishedAnimatorsCount = 0;
+        for (IAnimator animator : animators) {
+            if (!animator.isFinished()) {
+                animator.update(tpf);
+            } else {
+                finishedAnimatorsCount++;
+            }
+        }
+        this.finished = finishedAnimatorsCount == animators.size();
+    }
 
-	public void clear() {
-		animators.clear();
-	}
+    public void addAnimator(IAnimator animator) {
+        animators.add(animator);
+    }
+
+    public void removeAnimator(IAnimator animator) {
+        animators.add(animator);
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void clear() {
+        animators.clear();
+    }
 
 }

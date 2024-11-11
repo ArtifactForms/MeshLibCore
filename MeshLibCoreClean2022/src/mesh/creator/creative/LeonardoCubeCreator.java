@@ -10,151 +10,151 @@ import mesh.util.Mesh3DUtil;
 
 public class LeonardoCubeCreator implements IMeshCreator {
 
-	private float innerRadius;
-	
-	private float outerRadius;
-	
-	private float connectorRadius;
-	
-	private Mesh3D mesh;
+    private float innerRadius;
 
-	public LeonardoCubeCreator() {
-		innerRadius = 0.9f;
-		outerRadius = 1.0f;
-	}
+    private float outerRadius;
 
-	@Override
-	public Mesh3D create() {
-		initializeConnectorRadius();
-		initializeMesh();
-		createConnectors();
-		removeDoubles();
-		return mesh;
-	}
+    private float connectorRadius;
 
-	private void initializeConnectorRadius() {
-		connectorRadius = calculateConnectorRadius();
-	}
+    private Mesh3D mesh;
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    public LeonardoCubeCreator() {
+        innerRadius = 0.9f;
+        outerRadius = 1.0f;
+    }
 
-	private void removeDoubles() {
-		removeDoubleVertices();
-		removeDoubleFaces();
-	}
+    @Override
+    public Mesh3D create() {
+        initializeConnectorRadius();
+        initializeMesh();
+        createConnectors();
+        removeDoubles();
+        return mesh;
+    }
 
-	private void removeDoubleVertices() {
-		mesh.removeDoubles(2);
-	}
+    private void initializeConnectorRadius() {
+        connectorRadius = calculateConnectorRadius();
+    }
 
-	private void removeDoubleFaces() {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectDoubles();
-		mesh.faces.removeAll(selection.getFaces());
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	private void createTopConnector() {
-		Mesh3D top = createConnector(true, false);
-		top.translateY(-outerRadius + connectorRadius);
-		mesh.append(top);
-	}
+    private void removeDoubles() {
+        removeDoubleVertices();
+        removeDoubleFaces();
+    }
 
-	private void createBottomConnector() {
-		Mesh3D bottom = createConnector(true, false);
-		bottom.translateY(outerRadius - connectorRadius);
-		mesh.append(bottom);
-	}
+    private void removeDoubleVertices() {
+        mesh.removeDoubles(2);
+    }
 
-	private void createLeftConnector() {
-		Mesh3D left = createConnector(false, false);
-		left.rotateZ(-Mathf.HALF_PI);
-		left.translateX(-outerRadius + connectorRadius);
-		mesh.append(left);
-	}
+    private void removeDoubleFaces() {
+        FaceSelection selection = new FaceSelection(mesh);
+        selection.selectDoubles();
+        mesh.faces.removeAll(selection.getFaces());
+    }
 
-	private void createRightConnector() {
-		Mesh3D right = createConnector(false, false);
-		right.rotateZ(Mathf.HALF_PI);
-		right.translateX(outerRadius - connectorRadius);
-		mesh.append(right);
-	}
+    private void createTopConnector() {
+        Mesh3D top = createConnector(true, false);
+        top.translateY(-outerRadius + connectorRadius);
+        mesh.append(top);
+    }
 
-	private void createBackConnector() {
-		Mesh3D back = createConnector(true, true);
-		back.rotateX(-Mathf.HALF_PI);
-		back.translateZ(-outerRadius + connectorRadius);
-		mesh.append(back);
-	}
+    private void createBottomConnector() {
+        Mesh3D bottom = createConnector(true, false);
+        bottom.translateY(outerRadius - connectorRadius);
+        mesh.append(bottom);
+    }
 
-	private void createFrontConnector() {
-		Mesh3D front = createConnector(true, true);
-		front.rotateX(-Mathf.HALF_PI);
-		front.translateZ(outerRadius - connectorRadius);
-		mesh.append(front);
-	}
+    private void createLeftConnector() {
+        Mesh3D left = createConnector(false, false);
+        left.rotateZ(-Mathf.HALF_PI);
+        left.translateX(-outerRadius + connectorRadius);
+        mesh.append(left);
+    }
 
-	private void createConnectors() {
-		createTopConnector();
-		createBottomConnector();
-		createLeftConnector();
-		createRightConnector();
-		createBackConnector();
-		createFrontConnector();
-	}
+    private void createRightConnector() {
+        Mesh3D right = createConnector(false, false);
+        right.rotateZ(Mathf.HALF_PI);
+        right.translateX(outerRadius - connectorRadius);
+        mesh.append(right);
+    }
 
-	private Mesh3D createConnector(boolean extrudeEnds0, boolean extrudeEnds1) {
-		CubeCreator creator = new CubeCreator(connectorRadius);
-		Mesh3D mesh = creator.create();
-		FaceSelection selection0 = selectLeftRight(mesh);
-		FaceSelection selection1 = selectBackFront(mesh);
-		extrudeSelection(selection0, extrudeEnds0);
-		extrudeSelection(selection1, extrudeEnds1);
-		return mesh;
-	}
-	
-	private FaceSelection selectLeftRight(Mesh3D mesh) {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectLeftFaces();
-		selection.selectRightFaces();
-		return selection;
-	}
-	
-	private FaceSelection selectBackFront(Mesh3D mesh) {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectBackFaces();
-		selection.selectFrontFaces();
-		return selection;
-	}
+    private void createBackConnector() {
+        Mesh3D back = createConnector(true, true);
+        back.rotateX(-Mathf.HALF_PI);
+        back.translateZ(-outerRadius + connectorRadius);
+        mesh.append(back);
+    }
 
-	private void extrudeSelection(FaceSelection selection, boolean extrudeEnds) {
-		Mesh3D mesh = selection.getMesh();
-		for (Face3D face : selection.getFaces()) {
-			Mesh3DUtil.extrudeFace(mesh, face, 1, outerRadius - (3 * connectorRadius));
-			if (extrudeEnds)
-				Mesh3DUtil.extrudeFace(mesh, face, 1, (2 * connectorRadius));
-		}
-	}
+    private void createFrontConnector() {
+        Mesh3D front = createConnector(true, true);
+        front.rotateX(-Mathf.HALF_PI);
+        front.translateZ(outerRadius - connectorRadius);
+        mesh.append(front);
+    }
 
-	private float calculateConnectorRadius() {
-		return (outerRadius - innerRadius) * 0.5f;
-	}
+    private void createConnectors() {
+        createTopConnector();
+        createBottomConnector();
+        createLeftConnector();
+        createRightConnector();
+        createBackConnector();
+        createFrontConnector();
+    }
 
-	public float getInnerRadius() {
-		return innerRadius;
-	}
+    private Mesh3D createConnector(boolean extrudeEnds0, boolean extrudeEnds1) {
+        CubeCreator creator = new CubeCreator(connectorRadius);
+        Mesh3D mesh = creator.create();
+        FaceSelection selection0 = selectLeftRight(mesh);
+        FaceSelection selection1 = selectBackFront(mesh);
+        extrudeSelection(selection0, extrudeEnds0);
+        extrudeSelection(selection1, extrudeEnds1);
+        return mesh;
+    }
 
-	public void setInnerRadius(float innerRadius) {
-		this.innerRadius = innerRadius;
-	}
+    private FaceSelection selectLeftRight(Mesh3D mesh) {
+        FaceSelection selection = new FaceSelection(mesh);
+        selection.selectLeftFaces();
+        selection.selectRightFaces();
+        return selection;
+    }
 
-	public float getOuterRadius() {
-		return outerRadius;
-	}
+    private FaceSelection selectBackFront(Mesh3D mesh) {
+        FaceSelection selection = new FaceSelection(mesh);
+        selection.selectBackFaces();
+        selection.selectFrontFaces();
+        return selection;
+    }
 
-	public void setOuterRadius(float outerRadius) {
-		this.outerRadius = outerRadius;
-	}
+    private void extrudeSelection(FaceSelection selection, boolean extrudeEnds) {
+        Mesh3D mesh = selection.getMesh();
+        for (Face3D face : selection.getFaces()) {
+            Mesh3DUtil.extrudeFace(mesh, face, 1, outerRadius - (3 * connectorRadius));
+            if (extrudeEnds)
+                Mesh3DUtil.extrudeFace(mesh, face, 1, (2 * connectorRadius));
+        }
+    }
+
+    private float calculateConnectorRadius() {
+        return (outerRadius - innerRadius) * 0.5f;
+    }
+
+    public float getInnerRadius() {
+        return innerRadius;
+    }
+
+    public void setInnerRadius(float innerRadius) {
+        this.innerRadius = innerRadius;
+    }
+
+    public float getOuterRadius() {
+        return outerRadius;
+    }
+
+    public void setOuterRadius(float outerRadius) {
+        this.outerRadius = outerRadius;
+    }
 
 }

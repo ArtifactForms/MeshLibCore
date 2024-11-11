@@ -5,54 +5,54 @@ import mesh.creator.IMeshCreator;
 
 public class TetrahedronCreator implements IMeshCreator {
 
-	private float radius;
-	
-	private Mesh3D mesh;
+    private float radius;
 
-	public TetrahedronCreator() {
-		radius = 1;
-	}
+    private Mesh3D mesh;
 
-	private void createVertices() {
-		addVertex(-radius, +radius, +radius);
-		addVertex(+radius, +radius, -radius);
-		addVertex(+radius, -radius, +radius);
-		addVertex(-radius, -radius, -radius);
-	}
+    public TetrahedronCreator() {
+        radius = 1;
+    }
 
-	private void createFaces() {
-		addFace(0, 3, 2);
-		addFace(2, 3, 1);
-		addFace(0, 2, 1);
-		addFace(1, 3, 0);
-	}
+    private void createVertices() {
+        addVertex(-radius, +radius, +radius);
+        addVertex(+radius, +radius, -radius);
+        addVertex(+radius, -radius, +radius);
+        addVertex(-radius, -radius, -radius);
+    }
 
-	private void addVertex(float x, float y, float z) {
-		mesh.addVertex(x, y, z);
-	}
+    private void createFaces() {
+        addFace(0, 3, 2);
+        addFace(2, 3, 1);
+        addFace(0, 2, 1);
+        addFace(1, 3, 0);
+    }
 
-	private void addFace(int... indices) {
-		mesh.addFace(indices);
-	}
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
+    }
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVertices();
-		createFaces();
-		return mesh;
-	}
+    private void addFace(int... indices) {
+        mesh.addFace(indices);
+    }
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    @Override
+    public Mesh3D create() {
+        initializeMesh();
+        createVertices();
+        createFaces();
+        return mesh;
+    }
 
-	public float getRadius() {
-		return radius;
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
 
 }

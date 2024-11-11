@@ -7,55 +7,55 @@ import mesh.modifier.SolidifyModifier;
 
 public class ModularKitFloorSegmentCreator implements IMeshCreator {
 
-	private float floorWidth;
-	
-	private float floorDepth;
-	
-	private float floorHeight;
+    private float floorWidth;
 
-	public ModularKitFloorSegmentCreator() {
-		this(4, 4, 0);
-	}
+    private float floorDepth;
 
-	public ModularKitFloorSegmentCreator(float floorWidth, float floorDepth, float floorHeight) {
-		this.floorWidth = floorWidth;
-		this.floorDepth = floorDepth;
-		this.floorHeight = floorHeight;
-	}
+    private float floorHeight;
 
-	@Override
-	public Mesh3D create() {
-		Mesh3D mesh = new PlaneCreator(0.5f).create();
-		mesh.scale(floorWidth, 1, floorDepth);
-		if (floorHeight > 0) {
-			new SolidifyModifier(floorHeight).modify(mesh);
-			mesh.translateY(-floorHeight);
-		}
-		return mesh;
-	}
+    public ModularKitFloorSegmentCreator() {
+        this(4, 4, 0);
+    }
 
-	public float getFloorWidth() {
-		return floorWidth;
-	}
+    public ModularKitFloorSegmentCreator(float floorWidth, float floorDepth, float floorHeight) {
+        this.floorWidth = floorWidth;
+        this.floorDepth = floorDepth;
+        this.floorHeight = floorHeight;
+    }
 
-	public void setFloorWidth(float floorWidth) {
-		this.floorWidth = floorWidth;
-	}
+    @Override
+    public Mesh3D create() {
+        Mesh3D mesh = new PlaneCreator(0.5f).create();
+        mesh.scale(floorWidth, 1, floorDepth);
+        if (floorHeight > 0) {
+            new SolidifyModifier(floorHeight).modify(mesh);
+            mesh.translateY(-floorHeight);
+        }
+        return mesh;
+    }
 
-	public float getFloorDepth() {
-		return floorDepth;
-	}
+    public float getFloorWidth() {
+        return floorWidth;
+    }
 
-	public void setFloorDepth(float floorDepth) {
-		this.floorDepth = floorDepth;
-	}
+    public void setFloorWidth(float floorWidth) {
+        this.floorWidth = floorWidth;
+    }
 
-	public float getFloorHeight() {
-		return floorHeight;
-	}
+    public float getFloorDepth() {
+        return floorDepth;
+    }
 
-	public void setFloorHeight(float floorHeight) {
-		this.floorHeight = floorHeight;
-	}
+    public void setFloorDepth(float floorDepth) {
+        this.floorDepth = floorDepth;
+    }
+
+    public float getFloorHeight() {
+        return floorHeight;
+    }
+
+    public void setFloorHeight(float floorHeight) {
+        this.floorHeight = floorHeight;
+    }
 
 }

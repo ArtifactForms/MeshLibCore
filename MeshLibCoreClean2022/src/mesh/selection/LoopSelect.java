@@ -7,37 +7,37 @@ import mesh.util.TraverseHelper;
 
 public class LoopSelect {
 
-	private FaceSelection selection;
-	
-	private HashSet<Face3D> loopSelectedFaces;
-	
-	private TraverseHelper helper;
+    private FaceSelection selection;
 
-	public LoopSelect(FaceSelection selection) {
-		this.selection = selection;
-		this.loopSelectedFaces = new HashSet<Face3D>();
-		this.helper = new TraverseHelper(selection.getMesh());
-	}
+    private HashSet<Face3D> loopSelectedFaces;
 
-	public void select(int index) {
-		if (selection.getMesh().faces.isEmpty())
-			return;
-		Face3D start = selection.getMesh().getFaceAt(index);
-		loop(start);
-		selection.addAll(loopSelectedFaces);
-		loopSelectedFaces.clear();
-	}
+    private TraverseHelper helper;
 
-	private void loop(Face3D face) {
-		if (loopSelectedFaces.contains(face))
-			return;
+    public LoopSelect(FaceSelection selection) {
+        this.selection = selection;
+        this.loopSelectedFaces = new HashSet<Face3D>();
+        this.helper = new TraverseHelper(selection.getMesh());
+    }
 
-		loopSelectedFaces.add(face);
+    public void select(int index) {
+        if (selection.getMesh().faces.isEmpty())
+            return;
+        Face3D start = selection.getMesh().getFaceAt(index);
+        loop(start);
+        selection.addAll(loopSelectedFaces);
+        loopSelectedFaces.clear();
+    }
 
-		int from = face.indices[0];
-		int to = face.indices[1];
-		Face3D pairFace = helper.getFaceByEdge(to, from);
-		loop(pairFace);
-	}
+    private void loop(Face3D face) {
+        if (loopSelectedFaces.contains(face))
+            return;
+
+        loopSelectedFaces.add(face);
+
+        int from = face.indices[0];
+        int to = face.indices[1];
+        Face3D pairFace = helper.getFaceByEdge(to, from);
+        loop(pairFace);
+    }
 
 }

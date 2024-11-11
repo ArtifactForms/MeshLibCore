@@ -6,63 +6,63 @@ import mesh.creator.IMeshCreator;
 
 public class TruncatedConeCreator implements IMeshCreator {
 
-	private int vertices;
-	
-	private float topRadius;
-	
-	private float bottomRadius;
-	
-	private float height;
+    private int vertices;
 
-	public TruncatedConeCreator() {
-		vertices = 32;
-		topRadius = 0.5f;
-		bottomRadius = 1f;
-		height = 2f;
-	}
+    private float topRadius;
 
-	@Override
-	public Mesh3D create() {
-		CylinderCreator creator = new CylinderCreator();
-		creator.setVertices(vertices);
-		creator.setTopRadius(topRadius);
-		creator.setBottomRadius(bottomRadius);
-		creator.setHeight(height);
-		creator.setTopCapFillType(FillType.N_GON);
-		creator.setBottomCapFillType(FillType.N_GON);
-		return creator.create();
-	}
+    private float bottomRadius;
 
-	public int getVertices() {
-		return vertices;
-	}
+    private float height;
 
-	public void setVertices(int vertices) {
-		this.vertices = vertices;
-	}
+    public TruncatedConeCreator() {
+        vertices = 32;
+        topRadius = 0.5f;
+        bottomRadius = 1f;
+        height = 2f;
+    }
 
-	public float getTopRadius() {
-		return topRadius;
-	}
+    @Override
+    public Mesh3D create() {
+        CylinderCreator creator = new CylinderCreator();
+        creator.setVertices(vertices);
+        creator.setTopRadius(topRadius);
+        creator.setBottomRadius(bottomRadius);
+        creator.setHeight(height);
+        creator.setTopCapFillType(FillType.N_GON);
+        creator.setBottomCapFillType(FillType.N_GON);
+        return creator.create();
+    }
 
-	public void setTopRadius(float topRadius) {
-		this.topRadius = topRadius;
-	}
+    public int getVertices() {
+        return vertices;
+    }
 
-	public float getBottomRadius() {
-		return bottomRadius;
-	}
+    public void setVertices(int vertices) {
+        this.vertices = vertices;
+    }
 
-	public void setBottomRadius(float bottomRadius) {
-		this.bottomRadius = bottomRadius;
-	}
+    public float getTopRadius() {
+        return topRadius;
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    public void setTopRadius(float topRadius) {
+        this.topRadius = topRadius;
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    public float getBottomRadius() {
+        return bottomRadius;
+    }
+
+    public void setBottomRadius(float bottomRadius) {
+        this.bottomRadius = bottomRadius;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
 
 }

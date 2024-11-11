@@ -5,55 +5,55 @@ import mesh.Mesh3D;
 
 public class TranslateModifier implements IMeshModifier {
 
-	private float deltaX;
-	
-	private float deltaY;
-	
-	private float deltaZ;
+    private float deltaX;
 
-	public TranslateModifier() {
-		this(0, 0, 0);
-	}
+    private float deltaY;
 
-	public TranslateModifier(Vector3f delta) {
-		this(delta.getX(), delta.getY(), delta.getZ());
-	}
+    private float deltaZ;
 
-	public TranslateModifier(float deltaX, float deltaY, float deltaZ) {
-		this.deltaX = deltaX;
-		this.deltaY = deltaY;
-		this.deltaZ = deltaZ;
-	}
+    public TranslateModifier() {
+        this(0, 0, 0);
+    }
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		for (Vector3f v : mesh.vertices)
-			v.addLocal(deltaX, deltaY, deltaZ);
-		return mesh;
-	}
+    public TranslateModifier(Vector3f delta) {
+        this(delta.getX(), delta.getY(), delta.getZ());
+    }
 
-	public float getDeltaX() {
-		return deltaX;
-	}
+    public TranslateModifier(float deltaX, float deltaY, float deltaZ) {
+        this.deltaX = deltaX;
+        this.deltaY = deltaY;
+        this.deltaZ = deltaZ;
+    }
 
-	public void setDeltaX(float deltaX) {
-		this.deltaX = deltaX;
-	}
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+        for (Vector3f v : mesh.vertices)
+            v.addLocal(deltaX, deltaY, deltaZ);
+        return mesh;
+    }
 
-	public float getDeltaY() {
-		return deltaY;
-	}
+    public float getDeltaX() {
+        return deltaX;
+    }
 
-	public void setDeltaY(float deltaY) {
-		this.deltaY = deltaY;
-	}
+    public void setDeltaX(float deltaX) {
+        this.deltaX = deltaX;
+    }
 
-	public float getDeltaZ() {
-		return deltaZ;
-	}
+    public float getDeltaY() {
+        return deltaY;
+    }
 
-	public void setDeltaZ(float deltaZ) {
-		this.deltaZ = deltaZ;
-	}
+    public void setDeltaY(float deltaY) {
+        this.deltaY = deltaY;
+    }
+
+    public float getDeltaZ() {
+        return deltaZ;
+    }
+
+    public void setDeltaZ(float deltaZ) {
+        this.deltaZ = deltaZ;
+    }
 
 }

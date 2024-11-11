@@ -31,113 +31,113 @@ import mesh.modifier.IMeshModifier;
  */
 public class LinearSubdivisionModifier implements IMeshModifier {
 
-	private int iterations;
-	
-	private int[] indices;
-	
-	private Face3D face;
-	
-	private Mesh3D mesh;
-	
-	private ArrayList<Face3D> newFaces;
+    private int iterations;
 
-	public LinearSubdivisionModifier() {
-		this(1);
-	}
+    private int[] indices;
 
-	public LinearSubdivisionModifier(int iterations) {
-		this.iterations = iterations;
-		newFaces = new ArrayList<Face3D>();
-	}
+    private Face3D face;
 
-	private void createFaceCenter() {
-		if (face.indices.length <= 3)
-			return;
-		Vector3f center = mesh.calculateFaceCenter(face);
-		indices[0] = getNextIndex();
-		mesh.add(center);
-	}
+    private Mesh3D mesh;
 
-	private void createEdgePoints() {
-		int n = face.indices.length;
-		for (int i = 0; i < n; i++) {
-			Vector3f from = mesh.getVertexAt(face.indices[i % n]);
-			Vector3f to = mesh.getVertexAt(face.indices[(i + 1) % n]);
-			Vector3f edgePoint = from.add(to).mult(0.5f);
-			int idx = mesh.vertices.indexOf(edgePoint);
-			if (idx > -1) {
-				indices[i + 1] = idx;
-			} else {
-				indices[i + 1] = getNextIndex();
-				mesh.add(edgePoint);
-			}
-		}
-	}
+    private ArrayList<Face3D> newFaces;
 
-	private void oneToFourTriangleSplit() {
-		addFace(indices[1], indices[2], indices[3]);
-		addFace(face.indices[0], indices[1], indices[3]);
-		addFace(face.indices[1], indices[2], indices[1]);
-		addFace(face.indices[2], indices[3], indices[2]);
-	}
-	
-	private void addFace(int... indices) {
-		newFaces.add(new Face3D(indices));
-	}
+    public LinearSubdivisionModifier() {
+        this(1);
+    }
 
-	private void centerSplit() {
-		for (int i = 0; i < face.indices.length; i++) {
-			int index0 = face.indices[i];
-			int index1 = indices[i + 1];
-			int index2 = indices[0];
-			int index3 = indices[i == 0 ? face.indices.length : i];
-			addFace(index0, index1, index2, index3);
-		}
-	}
+    public LinearSubdivisionModifier(int iterations) {
+        this.iterations = iterations;
+        newFaces = new ArrayList<Face3D>();
+    }
 
-	private void createFaces() {
-		if (face.indices.length == 3) {
-			oneToFourTriangleSplit();
-		} else {
-			centerSplit();
-		}
-	}
+    private void createFaceCenter() {
+        if (face.indices.length <= 3)
+            return;
+        Vector3f center = mesh.calculateFaceCenter(face);
+        indices[0] = getNextIndex();
+        mesh.add(center);
+    }
 
-	private void applyFaces() {
-		mesh.faces.clear();
-		mesh.addFaces(newFaces);
-		newFaces.clear();
-	}
+    private void createEdgePoints() {
+        int n = face.indices.length;
+        for (int i = 0; i < n; i++) {
+            Vector3f from = mesh.getVertexAt(face.indices[i % n]);
+            Vector3f to = mesh.getVertexAt(face.indices[(i + 1) % n]);
+            Vector3f edgePoint = from.add(to).mult(0.5f);
+            int idx = mesh.vertices.indexOf(edgePoint);
+            if (idx > -1) {
+                indices[i + 1] = idx;
+            } else {
+                indices[i + 1] = getNextIndex();
+                mesh.add(edgePoint);
+            }
+        }
+    }
 
-	private void oneIteration() {
-		for (Face3D face : mesh.getFaces()) {
-			this.face = face;
-			indices = new int[face.indices.length + 1];
-			createFaceCenter();
-			createEdgePoints();
-			createFaces();
-		}
-		applyFaces();
-	}
-	
-	private void subdivide() {
-		for (int i = 0; i < iterations; i++)
-			oneIteration();
-	}
-	
-	private int getNextIndex() {
-		return mesh.getVertexCount();
-	}
+    private void oneToFourTriangleSplit() {
+        addFace(indices[1], indices[2], indices[3]);
+        addFace(face.indices[0], indices[1], indices[3]);
+        addFace(face.indices[1], indices[2], indices[1]);
+        addFace(face.indices[2], indices[3], indices[2]);
+    }
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		setMesh(mesh);
-		subdivide();
-		return mesh;
-	}
-	
-	private void setMesh(Mesh3D mesh) {
-		this.mesh = mesh;
-	}
+    private void addFace(int... indices) {
+        newFaces.add(new Face3D(indices));
+    }
+
+    private void centerSplit() {
+        for (int i = 0; i < face.indices.length; i++) {
+            int index0 = face.indices[i];
+            int index1 = indices[i + 1];
+            int index2 = indices[0];
+            int index3 = indices[i == 0 ? face.indices.length : i];
+            addFace(index0, index1, index2, index3);
+        }
+    }
+
+    private void createFaces() {
+        if (face.indices.length == 3) {
+            oneToFourTriangleSplit();
+        } else {
+            centerSplit();
+        }
+    }
+
+    private void applyFaces() {
+        mesh.faces.clear();
+        mesh.addFaces(newFaces);
+        newFaces.clear();
+    }
+
+    private void oneIteration() {
+        for (Face3D face : mesh.getFaces()) {
+            this.face = face;
+            indices = new int[face.indices.length + 1];
+            createFaceCenter();
+            createEdgePoints();
+            createFaces();
+        }
+        applyFaces();
+    }
+
+    private void subdivide() {
+        for (int i = 0; i < iterations; i++)
+            oneIteration();
+    }
+
+    private int getNextIndex() {
+        return mesh.getVertexCount();
+    }
+
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+        setMesh(mesh);
+        subdivide();
+        return mesh;
+    }
+
+    private void setMesh(Mesh3D mesh) {
+        this.mesh = mesh;
+    }
 
 }

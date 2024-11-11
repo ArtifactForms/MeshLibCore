@@ -2,18 +2,18 @@ package mesh.animator;
 
 public interface IAnimator {
 
-	void update(float tpf);
+    void update(float tpf);
 
-	void onUpdate(float tpf);
+    void onUpdate(float tpf);
 
-	void restore();
+    void restore();
 
-	boolean isEnabled();
+    boolean isEnabled();
 
-	void setEnabled(boolean enabled);
+    void setEnabled(boolean enabled);
 
-	boolean isFinished();
+    boolean isFinished();
 
-	void setFinished(boolean finished);
+    void setFinished(boolean finished);
 
 }

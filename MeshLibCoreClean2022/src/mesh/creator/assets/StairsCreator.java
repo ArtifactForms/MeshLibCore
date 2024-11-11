@@ -7,182 +7,182 @@ import mesh.creator.primitives.BoxCreator;
 
 public class StairsCreator implements IMeshCreator {
 
-	private int nextIndex;
-	
-	private Mesh3D mesh;
-	
-	private int numSteps;
-	
-	private float width;
-	
-	private float stepDepth;
-	
-	private float stepHeight;
-	
-	private boolean floating;
+    private int nextIndex;
 
-	public StairsCreator() {
-		setNumSteps(20);
-		setWidth(4);
-		setStepDepth(0.5f);
-		setStepHeight(0.5f);
-		setFloating(false);
-	}
+    private Mesh3D mesh;
 
-	@Override
-	public Mesh3D create() {
-		mesh = new Mesh3D();
+    private int numSteps;
 
-		if (floating)
-			createFloatingStairs();
-		else
-			createStairs();
+    private float width;
 
-		return mesh;
-	}
+    private float stepDepth;
 
-	private void createFloatingStairs() {
-		BoxCreator creator = new BoxCreator();
-		creator.setDepth(stepDepth);
-		creator.setHeight(stepHeight);
-		creator.setWidth(width);
+    private float stepHeight;
 
-		for (int i = 0; i < numSteps; i++) {
-			Mesh3D step = creator.create();
-			step.translateZ(-stepDepth / 2.0f);
-			step.translateZ(-i * stepDepth);
-			step.translateY(-stepHeight / 2.0f);
-			step.translateY(-i * stepHeight);
-			mesh.append(step);
-		}
+    private boolean floating;
 
-		mesh.removeDoubles();
-	}
+    public StairsCreator() {
+        setNumSteps(20);
+        setWidth(4);
+        setStepDepth(0.5f);
+        setStepHeight(0.5f);
+        setFloating(false);
+    }
 
-	private void createStairs() {
-		for (int i = 0; i < numSteps + 1; i++) {
-			nextIndex = mesh.getVertexCount();
-			createVerticesAt(i);
-			createFacesAt(i);
-		}
-		addBottomFace();
-		addBackFace();
-		snapLastVerticesToGround();
-	}
+    @Override
+    public Mesh3D create() {
+        mesh = new Mesh3D();
 
-	private void snapLastVerticesToGround() {
-		mesh.getVertexAt(getLastIndex()).setY(0);
-		mesh.getVertexAt(getLastIndex() - 1).setY(0);
-	}
+        if (floating)
+            createFloatingStairs();
+        else
+            createStairs();
 
-	private void createFacesAt(int i) {
-		if (i == numSteps)
-			return;
-		addVerticalQuad();
-		addHorizontalQuad();
-		addLeftTriangle();
-		addRightTriangle();
-		addLargeTriangleLeft();
-		addLargeTriangleRight();
-	}
+        return mesh;
+    }
 
-	private void createVerticesAt(int i) {
-		float halfWidth = width / 2.0f;
+    private void createFloatingStairs() {
+        BoxCreator creator = new BoxCreator();
+        creator.setDepth(stepDepth);
+        creator.setHeight(stepHeight);
+        creator.setWidth(width);
 
-		Vector3f bottomRight = new Vector3f(halfWidth, -i * stepHeight, -i * stepDepth);
-		Vector3f bottomLeft = new Vector3f(-halfWidth, -i * stepHeight, -i * stepDepth);
-		Vector3f topLeft = new Vector3f(-halfWidth, -(i + 1) * stepHeight, -i * stepDepth);
-		Vector3f topRight = new Vector3f(halfWidth, -(i + 1) * stepHeight, -i * stepDepth);
+        for (int i = 0; i < numSteps; i++) {
+            Mesh3D step = creator.create();
+            step.translateZ(-stepDepth / 2.0f);
+            step.translateZ(-i * stepDepth);
+            step.translateY(-stepHeight / 2.0f);
+            step.translateY(-i * stepHeight);
+            mesh.append(step);
+        }
 
-		mesh.add(bottomRight);
-		mesh.add(bottomLeft);
-		mesh.add(topLeft);
-		mesh.add(topRight);
-	}
+        mesh.removeDoubles();
+    }
 
-	private void addTriangle(int a, int b, int c) {
-		mesh.addFace(nextIndex + a, nextIndex + b, nextIndex + c);
-	}
+    private void createStairs() {
+        for (int i = 0; i < numSteps + 1; i++) {
+            nextIndex = mesh.getVertexCount();
+            createVerticesAt(i);
+            createFacesAt(i);
+        }
+        addBottomFace();
+        addBackFace();
+        snapLastVerticesToGround();
+    }
 
-	private void addQuad(int a, int b, int c, int d) {
-		mesh.addFace(nextIndex + a, nextIndex + b, nextIndex + c, nextIndex + d);
-	}
+    private void snapLastVerticesToGround() {
+        mesh.getVertexAt(getLastIndex()).setY(0);
+        mesh.getVertexAt(getLastIndex() - 1).setY(0);
+    }
 
-	private void addBottomFace() {
-		mesh.addFace(1, 0, getLastIndex(), getLastIndex() - 1);
-	}
+    private void createFacesAt(int i) {
+        if (i == numSteps)
+            return;
+        addVerticalQuad();
+        addHorizontalQuad();
+        addLeftTriangle();
+        addRightTriangle();
+        addLargeTriangleLeft();
+        addLargeTriangleRight();
+    }
 
-	private void addBackFace() {
-		int index = getLastIndex();
-		mesh.addFace(index - 1, index, index - 3, index - 2);
-	}
+    private void createVerticesAt(int i) {
+        float halfWidth = width / 2.0f;
 
-	private void addVerticalQuad() {
-		addQuad(0, 1, 2, 3);
-	}
+        Vector3f bottomRight = new Vector3f(halfWidth, -i * stepHeight, -i * stepDepth);
+        Vector3f bottomLeft = new Vector3f(-halfWidth, -i * stepHeight, -i * stepDepth);
+        Vector3f topLeft = new Vector3f(-halfWidth, -(i + 1) * stepHeight, -i * stepDepth);
+        Vector3f topRight = new Vector3f(halfWidth, -(i + 1) * stepHeight, -i * stepDepth);
 
-	private void addHorizontalQuad() {
-		addQuad(3, 2, 5, 4);
-	}
+        mesh.add(bottomRight);
+        mesh.add(bottomLeft);
+        mesh.add(topLeft);
+        mesh.add(topRight);
+    }
 
-	private void addLeftTriangle() {
-		addTriangle(1, 5, 2);
-	}
+    private void addTriangle(int a, int b, int c) {
+        mesh.addFace(nextIndex + a, nextIndex + b, nextIndex + c);
+    }
 
-	private void addRightTriangle() {
-		addTriangle(0, 3, 4);
-	}
+    private void addQuad(int a, int b, int c, int d) {
+        mesh.addFace(nextIndex + a, nextIndex + b, nextIndex + c, nextIndex + d);
+    }
 
-	private void addLargeTriangleLeft() {
-		mesh.addFace(nextIndex + 1, getLastIndex() - 1, nextIndex + 5);
-	}
+    private void addBottomFace() {
+        mesh.addFace(1, 0, getLastIndex(), getLastIndex() - 1);
+    }
 
-	private void addLargeTriangleRight() {
-		mesh.addFace(nextIndex + 4, getLastIndex(), nextIndex + 0);
-	}
+    private void addBackFace() {
+        int index = getLastIndex();
+        mesh.addFace(index - 1, index, index - 3, index - 2);
+    }
 
-	private int getLastIndex() {
-		return ((numSteps + 1) * 4) - 1;
-	}
+    private void addVerticalQuad() {
+        addQuad(0, 1, 2, 3);
+    }
 
-	public int getNumSteps() {
-		return numSteps;
-	}
+    private void addHorizontalQuad() {
+        addQuad(3, 2, 5, 4);
+    }
 
-	public void setNumSteps(int numSteps) {
-		this.numSteps = numSteps;
-	}
+    private void addLeftTriangle() {
+        addTriangle(1, 5, 2);
+    }
 
-	public float getWidth() {
-		return width;
-	}
+    private void addRightTriangle() {
+        addTriangle(0, 3, 4);
+    }
 
-	public void setWidth(float width) {
-		this.width = width;
-	}
+    private void addLargeTriangleLeft() {
+        mesh.addFace(nextIndex + 1, getLastIndex() - 1, nextIndex + 5);
+    }
 
-	public boolean isFloating() {
-		return floating;
-	}
+    private void addLargeTriangleRight() {
+        mesh.addFace(nextIndex + 4, getLastIndex(), nextIndex + 0);
+    }
 
-	public void setFloating(boolean floating) {
-		this.floating = floating;
-	}
+    private int getLastIndex() {
+        return ((numSteps + 1) * 4) - 1;
+    }
 
-	public float getStepDepth() {
-		return stepDepth;
-	}
+    public int getNumSteps() {
+        return numSteps;
+    }
 
-	public void setStepDepth(float stepDepth) {
-		this.stepDepth = stepDepth;
-	}
+    public void setNumSteps(int numSteps) {
+        this.numSteps = numSteps;
+    }
 
-	public float getStepHeight() {
-		return stepHeight;
-	}
+    public float getWidth() {
+        return width;
+    }
 
-	public void setStepHeight(float stepHeight) {
-		this.stepHeight = stepHeight;
-	}
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public boolean isFloating() {
+        return floating;
+    }
+
+    public void setFloating(boolean floating) {
+        this.floating = floating;
+    }
+
+    public float getStepDepth() {
+        return stepDepth;
+    }
+
+    public void setStepDepth(float stepDepth) {
+        this.stepDepth = stepDepth;
+    }
+
+    public float getStepHeight() {
+        return stepHeight;
+    }
+
+    public void setStepHeight(float stepHeight) {
+        this.stepHeight = stepHeight;
+    }
 
 }

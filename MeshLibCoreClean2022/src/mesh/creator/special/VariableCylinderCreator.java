@@ -12,150 +12,150 @@ import mesh.creator.primitives.CircleCreator;
 
 public class VariableCylinderCreator implements IMeshCreator {
 
-	private Mesh3D mesh;
-	
-	private float lastY;
-	
-	private int rotationSegments;
-	
-	private FillType capBottomFillType;
-	
-	private FillType capTopFillType;
-	
-	private List<Float> radii;
-	
-	private List<Float> yCoordinates;
+    private Mesh3D mesh;
 
-	public VariableCylinderCreator() {
-		radii = new ArrayList<Float>();
-		rotationSegments = 16;
-		yCoordinates = new ArrayList<Float>();
-		capBottomFillType = FillType.N_GON;
-		capTopFillType = FillType.N_GON;
-	}
+    private float lastY;
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVertices();
-		createFaces();
-		capEnds();
-		removeDoubles();
-		return mesh;
-	}
+    private int rotationSegments;
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private FillType capBottomFillType;
 
-	private void capEnds() {
-		capBottom();
-		capTop();
-	}
+    private FillType capTopFillType;
 
-	private void removeDoubles() {
-		for (Vector3f v : mesh.vertices)
-			v.roundLocalDecimalPlaces(4);
-		mesh.removeDoubles();
-	}
+    private List<Float> radii;
 
-	private void capBottom() {
-		if (capBottomFillType == FillType.NOTHING)
-			return;
-		CircleCreator creator = new CircleCreator();
-		creator.setFillType(capBottomFillType);
-		creator.setRadius(radii.get(0));
-		creator.setVertices(rotationSegments);
-		Mesh3D bottom = creator.create();
-		bottom.rotateZ(Mathf.PI);
-		bottom.translateY(yCoordinates.get(0));
-		mesh.append(bottom);
-	}
+    private List<Float> yCoordinates;
 
-	private void capTop() {
-		if (capTopFillType == FillType.NOTHING)
-			return;
-		CircleCreator creator = new CircleCreator();
-		creator.setFillType(capTopFillType);
-		creator.setRadius(radii.get(radii.size() - 1));
-		creator.setVertices(rotationSegments);
-		Mesh3D top = creator.create();
-		top.translateY(yCoordinates.get(yCoordinates.size() - 1));
-		mesh.append(top);
-	}
+    public VariableCylinderCreator() {
+        radii = new ArrayList<Float>();
+        rotationSegments = 16;
+        yCoordinates = new ArrayList<Float>();
+        capBottomFillType = FillType.N_GON;
+        capTopFillType = FillType.N_GON;
+    }
 
-	private void createVertices() {
-		for (int i = 0; i < radii.size(); i++) {
-			float y = yCoordinates.get(i);
-			float radius = radii.get(i);
-			Mesh3D circle;
-			CircleCreator circleCreator = new CircleCreator();
-			circleCreator.setVertices(rotationSegments);
-			circleCreator.setRadius(radius);
-			circle = circleCreator.create();
-			circle.translateY(y);
-			mesh.append(circle);
-		}
-	}
+    @Override
+    public Mesh3D create() {
+        initializeMesh();
+        createVertices();
+        createFaces();
+        capEnds();
+        removeDoubles();
+        return mesh;
+    }
 
-	private void createFaces() {
-		createQuadFaces();
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	private void createQuadFaces() {
-		for (int i = 0; i < yCoordinates.size() - 1; i++) {
-			for (int j = 0; j < rotationSegments; j++) {
-				addFace(i, j);
-			}
-		}
-	}
+    private void capEnds() {
+        capBottom();
+        capTop();
+    }
 
-	private void addFace(int i, int j) {
-		int idx0 = toOneDimensionalIndex(i, j);
-		int idx1 = toOneDimensionalIndex(i + 1, j);
-		int idx2 = toOneDimensionalIndex(i + 1, j + 1);
-		int idx3 = toOneDimensionalIndex(i, j + 1);
-		mesh.addFace(idx3, idx2, idx1, idx0);
-	}
+    private void removeDoubles() {
+        for (Vector3f v : mesh.vertices)
+            v.roundLocalDecimalPlaces(4);
+        mesh.removeDoubles();
+    }
 
-	private int toOneDimensionalIndex(int i, int j) {
-		return Mathf.toOneDimensionalIndex(i, j % rotationSegments, rotationSegments);
-	}
+    private void capBottom() {
+        if (capBottomFillType == FillType.NOTHING)
+            return;
+        CircleCreator creator = new CircleCreator();
+        creator.setFillType(capBottomFillType);
+        creator.setRadius(radii.get(0));
+        creator.setVertices(rotationSegments);
+        Mesh3D bottom = creator.create();
+        bottom.rotateZ(Mathf.PI);
+        bottom.translateY(yCoordinates.get(0));
+        mesh.append(bottom);
+    }
 
-	public void add(float radius, float height) {
-		float y1 = -Mathf.abs(height);
-		radii.add(radius);
-		yCoordinates.add(y1 + lastY);
-		lastY = y1 + lastY;
-	}
+    private void capTop() {
+        if (capTopFillType == FillType.NOTHING)
+            return;
+        CircleCreator creator = new CircleCreator();
+        creator.setFillType(capTopFillType);
+        creator.setRadius(radii.get(radii.size() - 1));
+        creator.setVertices(rotationSegments);
+        Mesh3D top = creator.create();
+        top.translateY(yCoordinates.get(yCoordinates.size() - 1));
+        mesh.append(top);
+    }
 
-	public void clear() {
-		radii.clear();
-		yCoordinates.clear();
-	}
+    private void createVertices() {
+        for (int i = 0; i < radii.size(); i++) {
+            float y = yCoordinates.get(i);
+            float radius = radii.get(i);
+            Mesh3D circle;
+            CircleCreator circleCreator = new CircleCreator();
+            circleCreator.setVertices(rotationSegments);
+            circleCreator.setRadius(radius);
+            circle = circleCreator.create();
+            circle.translateY(y);
+            mesh.append(circle);
+        }
+    }
 
-	public int getRotationSegments() {
-		return rotationSegments;
-	}
+    private void createFaces() {
+        createQuadFaces();
+    }
 
-	public void setRotationSegments(int rotationSegments) {
-		this.rotationSegments = rotationSegments;
-	}
+    private void createQuadFaces() {
+        for (int i = 0; i < yCoordinates.size() - 1; i++) {
+            for (int j = 0; j < rotationSegments; j++) {
+                addFace(i, j);
+            }
+        }
+    }
 
-	public FillType getCapBottomFillType() {
-		return capBottomFillType;
-	}
+    private void addFace(int i, int j) {
+        int idx0 = toOneDimensionalIndex(i, j);
+        int idx1 = toOneDimensionalIndex(i + 1, j);
+        int idx2 = toOneDimensionalIndex(i + 1, j + 1);
+        int idx3 = toOneDimensionalIndex(i, j + 1);
+        mesh.addFace(idx3, idx2, idx1, idx0);
+    }
 
-	public void setCapBottomFillType(FillType capBottomFillType) {
-		this.capBottomFillType = capBottomFillType;
-	}
+    private int toOneDimensionalIndex(int i, int j) {
+        return Mathf.toOneDimensionalIndex(i, j % rotationSegments, rotationSegments);
+    }
 
-	public FillType getCapTopFillType() {
-		return capTopFillType;
-	}
+    public void add(float radius, float height) {
+        float y1 = -Mathf.abs(height);
+        radii.add(radius);
+        yCoordinates.add(y1 + lastY);
+        lastY = y1 + lastY;
+    }
 
-	public void setCapTopFillType(FillType capTopFillType) {
-		this.capTopFillType = capTopFillType;
-	}
+    public void clear() {
+        radii.clear();
+        yCoordinates.clear();
+    }
+
+    public int getRotationSegments() {
+        return rotationSegments;
+    }
+
+    public void setRotationSegments(int rotationSegments) {
+        this.rotationSegments = rotationSegments;
+    }
+
+    public FillType getCapBottomFillType() {
+        return capBottomFillType;
+    }
+
+    public void setCapBottomFillType(FillType capBottomFillType) {
+        this.capBottomFillType = capBottomFillType;
+    }
+
+    public FillType getCapTopFillType() {
+        return capTopFillType;
+    }
+
+    public void setCapTopFillType(FillType capTopFillType) {
+        this.capTopFillType = capTopFillType;
+    }
 
 }

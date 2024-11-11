@@ -5,90 +5,90 @@ import mesh.creator.IMeshCreator;
 
 public class DoubleConeCreator implements IMeshCreator {
 
-	private int vertices;
-	
-	private float radius;
-	
-	private float height;
-	
-	private Mesh3D mesh;
+    private int vertices;
 
-	public DoubleConeCreator() {
-		vertices = 32;
-		radius = 1f;
-		height = 2f;
-	}
+    private float radius;
 
-	@Override
-	public Mesh3D create() {
-		createVertices();
-		createFaces();
-		return mesh;
-	}
+    private float height;
 
-	private void createVertices() {
-		createVerticesAroundOrigin();
-		createTopCenterVertex();
-		createBottomCenterVertex();
-	}
+    private Mesh3D mesh;
 
-	private void createFaces() {
-		for (int i = 0; i < vertices; i++) {
-			createTopFaceAt(i);
-			createBottomFaceAt(i);
-		}
-	}
+    public DoubleConeCreator() {
+        vertices = 32;
+        radius = 1f;
+        height = 2f;
+    }
 
-	private void createVerticesAroundOrigin() {
-		mesh = new CircleCreator(vertices, radius).create();
-	}
+    @Override
+    public Mesh3D create() {
+        createVertices();
+        createFaces();
+        return mesh;
+    }
 
-	private void createBottomCenterVertex() {
-		addVertex(0, height / 2f, 0);
-	}
+    private void createVertices() {
+        createVerticesAroundOrigin();
+        createTopCenterVertex();
+        createBottomCenterVertex();
+    }
 
-	private void createTopCenterVertex() {
-		addVertex(0, -height / 2f, 0);
-	}
+    private void createFaces() {
+        for (int i = 0; i < vertices; i++) {
+            createTopFaceAt(i);
+            createBottomFaceAt(i);
+        }
+    }
 
-	private void createTopFaceAt(int i) {
-		addFace(vertices, i, (i + 1) % vertices);
-	}
+    private void createVerticesAroundOrigin() {
+        mesh = new CircleCreator(vertices, radius).create();
+    }
 
-	private void createBottomFaceAt(int i) {
-		addFace(vertices + 1, (i + 1) % vertices, i);
-	}
+    private void createBottomCenterVertex() {
+        addVertex(0, height / 2f, 0);
+    }
 
-	private void addVertex(float x, float y, float z) {
-		mesh.addVertex(x, y, z);
-	}
+    private void createTopCenterVertex() {
+        addVertex(0, -height / 2f, 0);
+    }
 
-	private void addFace(int... indices) {
-		mesh.addFace(indices);
-	}
+    private void createTopFaceAt(int i) {
+        addFace(vertices, i, (i + 1) % vertices);
+    }
 
-	public int getVertices() {
-		return vertices;
-	}
+    private void createBottomFaceAt(int i) {
+        addFace(vertices + 1, (i + 1) % vertices, i);
+    }
 
-	public void setVertices(int vertices) {
-		this.vertices = vertices;
-	}
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
+    }
 
-	public float getRadius() {
-		return radius;
-	}
+    private void addFace(int... indices) {
+        mesh.addFace(indices);
+    }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+    public int getVertices() {
+        return vertices;
+    }
 
-	public float getHeight() {
-		return height;
-	}
+    public void setVertices(int vertices) {
+        this.vertices = vertices;
+    }
 
-	public void setHeight(float height) {
-		this.height = height;
-	}
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
 
 }

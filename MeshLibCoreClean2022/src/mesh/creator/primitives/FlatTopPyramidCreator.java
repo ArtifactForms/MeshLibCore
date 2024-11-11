@@ -6,41 +6,41 @@ import mesh.util.Mesh3DUtil;
 
 public class FlatTopPyramidCreator implements IMeshCreator {
 
-	private float size;
-	
-	private float topScale;
+    private float size;
 
-	public FlatTopPyramidCreator() {
-		size = 1f;
-		topScale = 0.5f;
-	}
+    private float topScale;
 
-	public FlatTopPyramidCreator(float size, float topScale) {
-		this.size = size;
-		this.topScale = topScale;
-	}
+    public FlatTopPyramidCreator() {
+        size = 1f;
+        topScale = 0.5f;
+    }
 
-	@Override
-	public Mesh3D create() {
-		Mesh3D mesh = new CubeCreator(size).create();
-		Mesh3DUtil.scaleFaceAt(mesh, 0, topScale);
-		return mesh;
-	}
+    public FlatTopPyramidCreator(float size, float topScale) {
+        this.size = size;
+        this.topScale = topScale;
+    }
 
-	public float getSize() {
-		return size;
-	}
+    @Override
+    public Mesh3D create() {
+        Mesh3D mesh = new CubeCreator(size).create();
+        Mesh3DUtil.scaleFaceAt(mesh, 0, topScale);
+        return mesh;
+    }
 
-	public void setSize(float size) {
-		this.size = size;
-	}
+    public float getSize() {
+        return size;
+    }
 
-	public float getTopScale() {
-		return topScale;
-	}
+    public void setSize(float size) {
+        this.size = size;
+    }
 
-	public void setTopScale(float topScale) {
-		this.topScale = topScale;
-	}
+    public float getTopScale() {
+        return topScale;
+    }
+
+    public void setTopScale(float topScale) {
+        this.topScale = topScale;
+    }
 
 }

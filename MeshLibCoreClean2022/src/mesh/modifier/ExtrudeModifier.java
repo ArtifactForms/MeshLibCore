@@ -8,63 +8,63 @@ import mesh.util.Mesh3DUtil;
 
 public class ExtrudeModifier implements IMeshModifier {
 
-	private boolean removeFaces;
-	
-	private float scale;
-	
-	private float amount;
-	
-	private Collection<Face3D> faces;
+    private boolean removeFaces;
 
-	public ExtrudeModifier() {
+    private float scale;
 
-	}
+    private float amount;
 
-	public ExtrudeModifier(float scale, float amount) {
-		this.scale = scale;
-		this.amount = amount;
-	}
+    private Collection<Face3D> faces;
 
-	public Mesh3D modify(Mesh3D mesh) {
-		if (faces == null)
-			faces = mesh.getFaces();
-		modify(mesh, faces);
-		return mesh;
-	}
+    public ExtrudeModifier() {
 
-	public void modify(Mesh3D mesh, Collection<Face3D> faces) {
-		for (Face3D face : faces)
-			Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
-		if (removeFaces)
-			mesh.faces.removeAll(faces);
-	}
+    }
 
-	public float getScale() {
-		return scale;
-	}
+    public ExtrudeModifier(float scale, float amount) {
+        this.scale = scale;
+        this.amount = amount;
+    }
 
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
+    public Mesh3D modify(Mesh3D mesh) {
+        if (faces == null)
+            faces = mesh.getFaces();
+        modify(mesh, faces);
+        return mesh;
+    }
 
-	public float getAmount() {
-		return amount;
-	}
+    public void modify(Mesh3D mesh, Collection<Face3D> faces) {
+        for (Face3D face : faces)
+            Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
+        if (removeFaces)
+            mesh.faces.removeAll(faces);
+    }
 
-	public void setAmount(float amount) {
-		this.amount = amount;
-	}
+    public float getScale() {
+        return scale;
+    }
 
-	public void setFacesToExtrude(Collection<Face3D> faces) {
-		this.faces = faces;
-	}
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
 
-	public boolean isRemoveFaces() {
-		return removeFaces;
-	}
+    public float getAmount() {
+        return amount;
+    }
 
-	public void setRemoveFaces(boolean removeFaces) {
-		this.removeFaces = removeFaces;
-	}
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
+
+    public void setFacesToExtrude(Collection<Face3D> faces) {
+        this.faces = faces;
+    }
+
+    public boolean isRemoveFaces() {
+        return removeFaces;
+    }
+
+    public void setRemoveFaces(boolean removeFaces) {
+        this.removeFaces = removeFaces;
+    }
 
 }

@@ -8,132 +8,132 @@ import mesh.creator.IMeshCreator;
 
 public class ChainLinkCreator implements IMeshCreator {
 
-	private float centerPieceSize;
-	
-	private float majorRadius;
-	
-	private float minorRadius;
-	
-	private int majorSegments;
-	
-	private int minorSegments;
-	
-	private Mesh3D partOne;
-	
-	private Mesh3D partTwo;
-	
-	private Mesh3D mesh;
+    private float centerPieceSize;
 
-	public ChainLinkCreator() {
-		centerPieceSize = 1.5f;
-		majorRadius = 1f;
-		minorRadius = 0.25f;
-		majorSegments = 12;
-		minorSegments = 12;
-	}
+    private float majorRadius;
 
-	private void createVertices() {
-		float u = 0;
-		float v = 0;
-		float stepU = Mathf.TWO_PI / minorSegments;
-		float stepV = Mathf.TWO_PI / (majorSegments * 2);
+    private float minorRadius;
 
-		for (int i = 0; i <= majorSegments; i++) {
-			for (int j = 0; j < minorSegments; j++) {
-				float x = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
-				float y = minorRadius * Mathf.sin(u);
-				float z = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
-				mesh.add(new Vector3f(x, y, z));
-				u += stepU;
-			}
-			u = 0;
-			v += stepV;
-		}
-	}
+    private int majorSegments;
 
-	private void createFaces() {
-		for (int j = 0; j < (majorSegments * 2) + 2; j++) {
-			for (int i = 0; i < minorSegments; i++) {
-				int[] k = new int[] { j % (majorSegments * 2 + 2), (j + 1) % (majorSegments * 2 + 2), i % minorSegments,
-						(i + 1) % minorSegments };
-				int index0 = k[1] * minorSegments + k[2];
-				int index1 = k[0] * minorSegments + k[2];
-				int index2 = k[1] * minorSegments + k[3];
-				int index3 = k[0] * minorSegments + k[3];
-				Face3D f = new Face3D(index0, index1, index3, index2);
-				mesh.add(f);
-			}
-		}
-	}
+    private int minorSegments;
 
-	private void createPartOne() {
-		partOne = new Mesh3D();
-		mesh = partOne;
-	}
+    private Mesh3D partOne;
 
-	private void createPartTwo() {
-		partTwo = partOne.copy();
-		partTwo.rotateY(Mathf.PI);
-	}
+    private Mesh3D partTwo;
 
-	private void translateParts() {
-		partOne.translateZ(centerPieceSize * 0.5f);
-		partTwo.translateZ(-centerPieceSize * 0.5f);
-	}
+    private Mesh3D mesh;
 
-	private void appendParts() {
-		mesh.append(partTwo);
-	}
+    public ChainLinkCreator() {
+        centerPieceSize = 1.5f;
+        majorRadius = 1f;
+        minorRadius = 0.25f;
+        majorSegments = 12;
+        minorSegments = 12;
+    }
 
-	@Override
-	public Mesh3D create() {
-		createPartOne();
-		createVertices();
-		createPartTwo();
-		translateParts();
-		appendParts();
-		createFaces();
-		return mesh;
-	}
+    private void createVertices() {
+        float u = 0;
+        float v = 0;
+        float stepU = Mathf.TWO_PI / minorSegments;
+        float stepV = Mathf.TWO_PI / (majorSegments * 2);
 
-	public float getCenterPieceSize() {
-		return centerPieceSize;
-	}
+        for (int i = 0; i <= majorSegments; i++) {
+            for (int j = 0; j < minorSegments; j++) {
+                float x = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
+                float y = minorRadius * Mathf.sin(u);
+                float z = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
+                mesh.add(new Vector3f(x, y, z));
+                u += stepU;
+            }
+            u = 0;
+            v += stepV;
+        }
+    }
 
-	public void setCenterPieceSize(float centerPieceSize) {
-		this.centerPieceSize = centerPieceSize;
-	}
+    private void createFaces() {
+        for (int j = 0; j < (majorSegments * 2) + 2; j++) {
+            for (int i = 0; i < minorSegments; i++) {
+                int[] k = new int[] { j % (majorSegments * 2 + 2), (j + 1) % (majorSegments * 2 + 2), i % minorSegments,
+                        (i + 1) % minorSegments };
+                int index0 = k[1] * minorSegments + k[2];
+                int index1 = k[0] * minorSegments + k[2];
+                int index2 = k[1] * minorSegments + k[3];
+                int index3 = k[0] * minorSegments + k[3];
+                Face3D f = new Face3D(index0, index1, index3, index2);
+                mesh.add(f);
+            }
+        }
+    }
 
-	public float getMajorRadius() {
-		return majorRadius;
-	}
+    private void createPartOne() {
+        partOne = new Mesh3D();
+        mesh = partOne;
+    }
 
-	public void setMajorRadius(float majorRadius) {
-		this.majorRadius = majorRadius;
-	}
+    private void createPartTwo() {
+        partTwo = partOne.copy();
+        partTwo.rotateY(Mathf.PI);
+    }
 
-	public float getMinorRadius() {
-		return minorRadius;
-	}
+    private void translateParts() {
+        partOne.translateZ(centerPieceSize * 0.5f);
+        partTwo.translateZ(-centerPieceSize * 0.5f);
+    }
 
-	public void setMinorRadius(float minorRadius) {
-		this.minorRadius = minorRadius;
-	}
+    private void appendParts() {
+        mesh.append(partTwo);
+    }
 
-	public int getMajorSegments() {
-		return majorSegments;
-	}
+    @Override
+    public Mesh3D create() {
+        createPartOne();
+        createVertices();
+        createPartTwo();
+        translateParts();
+        appendParts();
+        createFaces();
+        return mesh;
+    }
 
-	public void setMajorSegments(int majorSegments) {
-		this.majorSegments = majorSegments;
-	}
+    public float getCenterPieceSize() {
+        return centerPieceSize;
+    }
 
-	public int getMinorSegments() {
-		return minorSegments;
-	}
+    public void setCenterPieceSize(float centerPieceSize) {
+        this.centerPieceSize = centerPieceSize;
+    }
 
-	public void setMinorSegments(int minorSegments) {
-		this.minorSegments = minorSegments;
-	}
+    public float getMajorRadius() {
+        return majorRadius;
+    }
+
+    public void setMajorRadius(float majorRadius) {
+        this.majorRadius = majorRadius;
+    }
+
+    public float getMinorRadius() {
+        return minorRadius;
+    }
+
+    public void setMinorRadius(float minorRadius) {
+        this.minorRadius = minorRadius;
+    }
+
+    public int getMajorSegments() {
+        return majorSegments;
+    }
+
+    public void setMajorSegments(int majorSegments) {
+        this.majorSegments = majorSegments;
+    }
+
+    public int getMinorSegments() {
+        return minorSegments;
+    }
+
+    public void setMinorSegments(int minorSegments) {
+        this.minorSegments = minorSegments;
+    }
 
 }

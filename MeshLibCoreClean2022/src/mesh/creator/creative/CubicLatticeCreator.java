@@ -15,113 +15,113 @@ import mesh.util.Mesh3DUtil;
 
 public class CubicLatticeCreator implements IMeshCreator {
 
-	private int segmentsX;
-	
-	private int segmentsY;
-	
-	private int segmentsZ;
-	
-	private int subdivisions;
+    private int segmentsX;
 
-	private Mesh3D mesh;
+    private int segmentsY;
 
-	public CubicLatticeCreator() {
-		segmentsX = 3;
-		segmentsY = 3;
-		segmentsZ = 3;
-		subdivisions = 1;
-	}
+    private int segmentsZ;
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createSegments();
-		removeDoubleFaces();
-		removeDoubleVertices();
-		centerAtOrigin();
-		solidify();
-		subdivide();
-		return mesh;
-	}
+    private int subdivisions;
 
-	private Mesh3D createSegment() {
-		Mesh3D mesh = new CubeCreator().create();
-		List<Face3D> faces = mesh.getFaces();
-		for (Face3D face : faces)
-			Mesh3DUtil.extrudeFace(mesh, face, 1.0f, 0.5f);
-		mesh.faces.removeAll(faces);
-		return mesh;
-	}
+    private Mesh3D mesh;
 
-	private void createSegments() {
-		for (int z = 0; z < segmentsZ; z++)
-			for (int y = 0; y < segmentsY; y++)
-				for (int x = 0; x < segmentsX; x++)
-					createSegmentAt(x, y, z);
-	}
+    public CubicLatticeCreator() {
+        segmentsX = 3;
+        segmentsY = 3;
+        segmentsZ = 3;
+        subdivisions = 1;
+    }
 
-	private void createSegmentAt(int x, int y, int z) {
-		Mesh3D segment = createSegment();
-		segment.translate(x * 3, y * 3, z * 3);
-		this.mesh.append(segment);
-	}
+    @Override
+    public Mesh3D create() {
+        initializeMesh();
+        createSegments();
+        removeDoubleFaces();
+        removeDoubleVertices();
+        centerAtOrigin();
+        solidify();
+        subdivide();
+        return mesh;
+    }
 
-	private void removeDoubleFaces() {
-		FaceSelection selection = new FaceSelection(mesh);
-		selection.selectDoubles();
-		mesh.removeFaces(selection.getFaces());
-	}
+    private Mesh3D createSegment() {
+        Mesh3D mesh = new CubeCreator().create();
+        List<Face3D> faces = mesh.getFaces();
+        for (Face3D face : faces)
+            Mesh3DUtil.extrudeFace(mesh, face, 1.0f, 0.5f);
+        mesh.faces.removeAll(faces);
+        return mesh;
+    }
 
-	private void removeDoubleVertices() {
-		mesh.removeDoubles();
-	}
+    private void createSegments() {
+        for (int z = 0; z < segmentsZ; z++)
+            for (int y = 0; y < segmentsY; y++)
+                for (int x = 0; x < segmentsX; x++)
+                    createSegmentAt(x, y, z);
+    }
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private void createSegmentAt(int x, int y, int z) {
+        Mesh3D segment = createSegment();
+        segment.translate(x * 3, y * 3, z * 3);
+        this.mesh.append(segment);
+    }
 
-	private void centerAtOrigin() {
-		new CenterAtModifier(Vector3f.ZERO).modify(mesh);
-	}
+    private void removeDoubleFaces() {
+        FaceSelection selection = new FaceSelection(mesh);
+        selection.selectDoubles();
+        mesh.removeFaces(selection.getFaces());
+    }
 
-	private void subdivide() {
-		new CatmullClarkModifier(subdivisions).modify(mesh);
-	}
+    private void removeDoubleVertices() {
+        mesh.removeDoubles();
+    }
 
-	private void solidify() {
-		new SolidifyModifier(0.3f).modify(mesh);
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	public int getSegmentsX() {
-		return segmentsX;
-	}
+    private void centerAtOrigin() {
+        new CenterAtModifier(Vector3f.ZERO).modify(mesh);
+    }
 
-	public void setSegmentsX(int segmentsX) {
-		this.segmentsX = segmentsX;
-	}
+    private void subdivide() {
+        new CatmullClarkModifier(subdivisions).modify(mesh);
+    }
 
-	public int getSegmentsY() {
-		return segmentsY;
-	}
+    private void solidify() {
+        new SolidifyModifier(0.3f).modify(mesh);
+    }
 
-	public void setSegmentsY(int segmentsY) {
-		this.segmentsY = segmentsY;
-	}
+    public int getSegmentsX() {
+        return segmentsX;
+    }
 
-	public int getSegmentsZ() {
-		return segmentsZ;
-	}
+    public void setSegmentsX(int segmentsX) {
+        this.segmentsX = segmentsX;
+    }
 
-	public void setSegmentsZ(int segmentsZ) {
-		this.segmentsZ = segmentsZ;
-	}
+    public int getSegmentsY() {
+        return segmentsY;
+    }
 
-	public int getSubdivisions() {
-		return subdivisions;
-	}
+    public void setSegmentsY(int segmentsY) {
+        this.segmentsY = segmentsY;
+    }
 
-	public void setSubdivisions(int subdivisions) {
-		this.subdivisions = subdivisions;
-	}
+    public int getSegmentsZ() {
+        return segmentsZ;
+    }
+
+    public void setSegmentsZ(int segmentsZ) {
+        this.segmentsZ = segmentsZ;
+    }
+
+    public int getSubdivisions() {
+        return subdivisions;
+    }
+
+    public void setSubdivisions(int subdivisions) {
+        this.subdivisions = subdivisions;
+    }
 
 }

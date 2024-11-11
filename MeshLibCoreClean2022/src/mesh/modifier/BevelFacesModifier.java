@@ -9,38 +9,38 @@ import mesh.util.Mesh3DUtil;
 
 public class BevelFacesModifier implements IMeshModifier {
 
-	private float size;
+    private float size;
 
-	public BevelFacesModifier() {
-		setSize(0.1f);
-	}
+    public BevelFacesModifier() {
+        setSize(0.1f);
+    }
 
-	public BevelFacesModifier(float size) {
-		this.size = Mathf.clamp(size, 0f, 1f);
-	}
+    public BevelFacesModifier(float size) {
+        this.size = Mathf.clamp(size, 0f, 1f);
+    }
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		float scale = 1f - size;
-		float amount = size;
+    @Override
+    public Mesh3D modify(Mesh3D mesh) {
+        float scale = 1f - size;
+        float amount = size;
 
-		ArrayList<Face3D> faces = new ArrayList<Face3D>(mesh.faces);
+        ArrayList<Face3D> faces = new ArrayList<Face3D>(mesh.faces);
 
-		for (Face3D face : faces) {
-			Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
-		}
+        for (Face3D face : faces) {
+            Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
+        }
 
-		mesh.faces.removeAll(faces);
+        mesh.faces.removeAll(faces);
 
-		return mesh;
-	}
+        return mesh;
+    }
 
-	public float getSize() {
-		return size;
-	}
+    public float getSize() {
+        return size;
+    }
 
-	public void setSize(float size) {
-		this.size = Mathf.clamp(size, 0f, 1f);
-	}
+    public void setSize(float size) {
+        this.size = Mathf.clamp(size, 0f, 1f);
+    }
 
 }

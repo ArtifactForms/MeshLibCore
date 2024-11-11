@@ -6,82 +6,82 @@ import mesh.creator.IMeshCreator;
 
 public class ArcCreator implements IMeshCreator {
 
-	private float startAngle;
-	
-	private float endAngle;
-	
-	private float radius;
-	
-	private int vertices;
-	
-	private Mesh3D mesh;
+    private float startAngle;
 
-	public ArcCreator() {
-		startAngle = 0;
-		endAngle = Mathf.TWO_PI;
-		radius = 1;
-		vertices = 32;
-	}
+    private float endAngle;
 
-	@Override
-	public Mesh3D create() {
-		initializeMesh();
-		createVertices();
-		return mesh;
-	}
+    private float radius;
 
-	private void initializeMesh() {
-		mesh = new Mesh3D();
-	}
+    private int vertices;
 
-	private void createVertices() {
-		float angleBetweenPoints = calculateAngleBetweenPoints();
-		for (int i = 0; i < vertices; i++) {
-			float currentAngle = angleBetweenPoints * i;
-			float x = radius * Mathf.cos(currentAngle);
-			float z = radius * Mathf.sin(currentAngle);
-			addVertex(x, 0, z);
-		}
-	}
+    private Mesh3D mesh;
 
-	private void addVertex(float x, float y, float z) {
-		mesh.addVertex(x, y, z);
-	}
+    public ArcCreator() {
+        startAngle = 0;
+        endAngle = Mathf.TWO_PI;
+        radius = 1;
+        vertices = 32;
+    }
 
-	private float calculateAngleBetweenPoints() {
-		return startAngle + ((endAngle - startAngle) / ((float) vertices - 1));
-	}
+    @Override
+    public Mesh3D create() {
+        initializeMesh();
+        createVertices();
+        return mesh;
+    }
 
-	public float getStartAngle() {
-		return startAngle;
-	}
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-	public void setStartAngle(float startAngle) {
-		this.startAngle = startAngle;
-	}
+    private void createVertices() {
+        float angleBetweenPoints = calculateAngleBetweenPoints();
+        for (int i = 0; i < vertices; i++) {
+            float currentAngle = angleBetweenPoints * i;
+            float x = radius * Mathf.cos(currentAngle);
+            float z = radius * Mathf.sin(currentAngle);
+            addVertex(x, 0, z);
+        }
+    }
 
-	public float getEndAngle() {
-		return endAngle;
-	}
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
+    }
 
-	public void setEndAngle(float endAngle) {
-		this.endAngle = endAngle;
-	}
+    private float calculateAngleBetweenPoints() {
+        return startAngle + ((endAngle - startAngle) / ((float) vertices - 1));
+    }
 
-	public float getRadius() {
-		return radius;
-	}
+    public float getStartAngle() {
+        return startAngle;
+    }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+    public void setStartAngle(float startAngle) {
+        this.startAngle = startAngle;
+    }
 
-	public int getVertices() {
-		return vertices;
-	}
+    public float getEndAngle() {
+        return endAngle;
+    }
 
-	public void setVertices(int vertices) {
-		this.vertices = vertices;
-	}
+    public void setEndAngle(float endAngle) {
+        this.endAngle = endAngle;
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
+    public int getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(int vertices) {
+        this.vertices = vertices;
+    }
 
 }

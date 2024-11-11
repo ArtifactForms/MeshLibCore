@@ -8,62 +8,62 @@ import mesh.util.Mesh3DUtil;
 
 public class EggCreator implements IMeshCreator {
 
-	private float size;
-	
-	private float topScale;
-	
-	private int subdivisions;
-	
-	private Mesh3D mesh;
+    private float size;
 
-	public EggCreator() {
-		size = 1f;
-		topScale = 0.5f;
-		subdivisions = 3;
-	}
+    private float topScale;
 
-	private void createCube() {
-		mesh = new CubeCreator(size).create();
-	}
+    private int subdivisions;
 
-	private void scaleCubeTopFace() {
-		Mesh3DUtil.scaleFaceAt(mesh, 0, topScale);
-	}
+    private Mesh3D mesh;
 
-	private void subdivideCube() {
-		new CatmullClarkModifier(subdivisions).modify(mesh);
-	}
+    public EggCreator() {
+        size = 1f;
+        topScale = 0.5f;
+        subdivisions = 3;
+    }
 
-	@Override
-	public Mesh3D create() {
-		createCube();
-		scaleCubeTopFace();
-		subdivideCube();
-		return mesh;
-	}
+    private void createCube() {
+        mesh = new CubeCreator(size).create();
+    }
 
-	public float getSize() {
-		return size;
-	}
+    private void scaleCubeTopFace() {
+        Mesh3DUtil.scaleFaceAt(mesh, 0, topScale);
+    }
 
-	public void setSize(float size) {
-		this.size = size;
-	}
+    private void subdivideCube() {
+        new CatmullClarkModifier(subdivisions).modify(mesh);
+    }
 
-	public float getTopScale() {
-		return topScale;
-	}
+    @Override
+    public Mesh3D create() {
+        createCube();
+        scaleCubeTopFace();
+        subdivideCube();
+        return mesh;
+    }
 
-	public void setTopScale(float topScale) {
-		this.topScale = topScale;
-	}
+    public float getSize() {
+        return size;
+    }
 
-	public int getSubdivisions() {
-		return subdivisions;
-	}
+    public void setSize(float size) {
+        this.size = size;
+    }
 
-	public void setSubdivisions(int subdivisions) {
-		this.subdivisions = subdivisions;
-	}
+    public float getTopScale() {
+        return topScale;
+    }
+
+    public void setTopScale(float topScale) {
+        this.topScale = topScale;
+    }
+
+    public int getSubdivisions() {
+        return subdivisions;
+    }
+
+    public void setSubdivisions(int subdivisions) {
+        this.subdivisions = subdivisions;
+    }
 
 }

@@ -9,78 +9,78 @@ import mesh.modifier.FitToAABBModifier;
 
 public class ConwayVariationSystem {
 
-	private boolean fitToBounds = true;
-	
-	private int currentIndex;
-	
-	private int k;
-	
-	private String[] operations = { "a", "k", "d" };
-	
-	private List<String> expressions;
+    private boolean fitToBounds = true;
 
-	public ConwayVariationSystem(int k) {
-		this.k = k;
-		expressions = createExpressions();
-	}
+    private int currentIndex;
 
-	public String getCurrentExpression() {
-		return expressions.get(currentIndex);
-	}
+    private int k;
 
-	public boolean hasNext() {
-		return currentIndex < expressions.size() - 1;
-	}
+    private String[] operations = { "a", "k", "d" };
 
-	public int getExpressionCount() {
-		return expressions.size();
-	}
+    private List<String> expressions;
 
-	public int getCurrentIndex() {
-		return currentIndex;
-	}
+    public ConwayVariationSystem(int k) {
+        this.k = k;
+        expressions = createExpressions();
+    }
 
-	public Mesh3D getNext() {
-		Mesh3D seed = new CubeCreator().create();
-		Conway conway = new Conway();
-		conway.create(seed, expressions.get(currentIndex));
+    public String getCurrentExpression() {
+        return expressions.get(currentIndex);
+    }
 
-		if (fitToBounds)
-			new FitToAABBModifier(2, 2, 2).modify(seed);
+    public boolean hasNext() {
+        return currentIndex < expressions.size() - 1;
+    }
 
-		currentIndex++;
-		return seed;
-	}
+    public int getExpressionCount() {
+        return expressions.size();
+    }
 
-	private List<String> createExpressions() {
-		List<String> result = new ArrayList<String>();
-		List<String> toAdd = new ArrayList<String>();
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
 
-		for (String s : operations) {
-			result.add(s);
-		}
+    public Mesh3D getNext() {
+        Mesh3D seed = new CubeCreator().create();
+        Conway conway = new Conway();
+        conway.create(seed, expressions.get(currentIndex));
 
-		for (int j = 0; j < k - 1; j++) {
-			for (String s : result) {
-				for (int i = 0; i < operations.length; i++) {
-					String r = new String(s + operations[i]);
-					toAdd.add(r);
-				}
-			}
-			result.clear();
-			result.addAll(toAdd);
-			toAdd.clear();
-		}
+        if (fitToBounds)
+            new FitToAABBModifier(2, 2, 2).modify(seed);
 
-		return result;
-	}
+        currentIndex++;
+        return seed;
+    }
 
-	public boolean isFitToBounds() {
-		return fitToBounds;
-	}
+    private List<String> createExpressions() {
+        List<String> result = new ArrayList<String>();
+        List<String> toAdd = new ArrayList<String>();
 
-	public void setFitToBounds(boolean fitToBounds) {
-		this.fitToBounds = fitToBounds;
-	}
+        for (String s : operations) {
+            result.add(s);
+        }
+
+        for (int j = 0; j < k - 1; j++) {
+            for (String s : result) {
+                for (int i = 0; i < operations.length; i++) {
+                    String r = new String(s + operations[i]);
+                    toAdd.add(r);
+                }
+            }
+            result.clear();
+            result.addAll(toAdd);
+            toAdd.clear();
+        }
+
+        return result;
+    }
+
+    public boolean isFitToBounds() {
+        return fitToBounds;
+    }
+
+    public void setFitToBounds(boolean fitToBounds) {
+        this.fitToBounds = fitToBounds;
+    }
 
 }

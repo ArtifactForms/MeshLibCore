@@ -8,55 +8,55 @@ import mesh.util.Mesh3DUtil;
 
 public class IcoSphereCreator implements IMeshCreator {
 
-	private float radius;
-	
-	private int subdivisions;
-	
-	private Mesh3D mesh;
+    private float radius;
 
-	public IcoSphereCreator() {
-		this(1, 0);
-	}
+    private int subdivisions;
 
-	public IcoSphereCreator(float radius, int subdivisions) {
-		this.radius = radius;
-		this.subdivisions = subdivisions;
-	}
+    private Mesh3D mesh;
 
-	@Override
-	public Mesh3D create() {
-		createBaseIcosahedron();
-		subdivideIcosahedron();
-		spherifyIcosahedron();
-		return mesh;
-	}
+    public IcoSphereCreator() {
+        this(1, 0);
+    }
 
-	private void createBaseIcosahedron() {
-		mesh = new IcosahedronCreator().create();
-	}
+    public IcoSphereCreator(float radius, int subdivisions) {
+        this.radius = radius;
+        this.subdivisions = subdivisions;
+    }
 
-	private void subdivideIcosahedron() {
-		new PlanarMidEdgeModifier(subdivisions).modify(mesh);
-	}
+    @Override
+    public Mesh3D create() {
+        createBaseIcosahedron();
+        subdivideIcosahedron();
+        spherifyIcosahedron();
+        return mesh;
+    }
 
-	private void spherifyIcosahedron() {
-		Mesh3DUtil.pushToSphere(mesh, radius);
-	}
+    private void createBaseIcosahedron() {
+        mesh = new IcosahedronCreator().create();
+    }
 
-	public float getRadius() {
-		return radius;
-	}
+    private void subdivideIcosahedron() {
+        new PlanarMidEdgeModifier(subdivisions).modify(mesh);
+    }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+    private void spherifyIcosahedron() {
+        Mesh3DUtil.pushToSphere(mesh, radius);
+    }
 
-	public int getSubdivisions() {
-		return subdivisions;
-	}
+    public float getRadius() {
+        return radius;
+    }
 
-	public void setSubdivisions(int subdivisions) {
-		this.subdivisions = subdivisions;
-	}
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
+    public int getSubdivisions() {
+        return subdivisions;
+    }
+
+    public void setSubdivisions(int subdivisions) {
+        this.subdivisions = subdivisions;
+    }
 
 }
