@@ -213,6 +213,7 @@ public class DooSabinModifier implements IMeshModifier {
 	private class VertexFacePair {
 
 		private Vector3f vertex;
+		
 		private Face3D face;
 
 		private VertexFacePair(Vector3f vertex, Face3D face) {
