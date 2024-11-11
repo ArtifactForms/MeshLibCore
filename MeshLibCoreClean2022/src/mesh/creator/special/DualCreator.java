@@ -13,7 +13,9 @@ import mesh.util.TraverseHelper;
 public class DualCreator implements IMeshCreator {
 
 	private Mesh3D source;
+	
 	private Mesh3D mesh;
+	
 	private HashMap<Face3D, Integer> faceVertexMap;
 
 	public DualCreator(Mesh3D source) {

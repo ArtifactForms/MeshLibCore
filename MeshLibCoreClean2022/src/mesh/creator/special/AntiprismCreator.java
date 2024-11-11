@@ -8,6 +8,7 @@ import mesh.creator.IMeshCreator;
 public class AntiprismCreator implements IMeshCreator {
 
 	private int n;
+	
 	private Mesh3D mesh;
 
 	public AntiprismCreator() {

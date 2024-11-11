@@ -13,9 +13,13 @@ import mesh.creator.IMeshCreator;
 public class SpinCreator implements IMeshCreator {
 
 	private int steps;
+	
 	private float angle;
+	
 	private boolean close;
+	
 	private Mesh3D mesh;
+	
 	private List<Vector3f> vertices;
 
 	public SpinCreator() {

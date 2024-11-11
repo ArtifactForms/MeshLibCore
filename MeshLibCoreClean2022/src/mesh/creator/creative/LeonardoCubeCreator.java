@@ -11,8 +11,11 @@ import mesh.util.Mesh3DUtil;
 public class LeonardoCubeCreator implements IMeshCreator {
 
 	private float innerRadius;
+	
 	private float outerRadius;
+	
 	private float connectorRadius;
+	
 	private Mesh3D mesh;
 
 	public LeonardoCubeCreator() {

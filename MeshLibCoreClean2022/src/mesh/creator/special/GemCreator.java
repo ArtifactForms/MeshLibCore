@@ -9,10 +9,15 @@ import mesh.creator.primitives.CircleCreator;
 public class GemCreator implements IMeshCreator {
 
 	private int segments;
+	
 	private float pavillionRadius;
+	
 	private float tableRadius;
+	
 	private float tableHeight;
+	
 	private float pavillionHeight;
+	
 	private Mesh3D mesh;
 
 	public GemCreator() {

@@ -16,8 +16,11 @@ import mesh.util.Mesh3DUtil;
 public class CubicLatticeCreator implements IMeshCreator {
 
 	private int segmentsX;
+	
 	private int segmentsY;
+	
 	private int segmentsZ;
+	
 	private int subdivisions;
 
 	private Mesh3D mesh;

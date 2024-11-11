@@ -9,10 +9,13 @@ import mesh.creator.IMeshCreator;
 public class DodecahedronCreator implements IMeshCreator {
 
 	private static final float SCALAR = 3.2945564f;
+	
 	private static final float GOLDEN_RATIO = 1.618034f;
+	
 	private static final float TWO_FIFTHS_PI = (float) Mathf.PI * 0.4f;
 
 	private float radius;
+	
 	private Mesh3D mesh;
 
 	public DodecahedronCreator() {
