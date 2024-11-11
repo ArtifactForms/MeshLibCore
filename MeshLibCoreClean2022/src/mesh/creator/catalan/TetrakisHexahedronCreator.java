@@ -23,23 +23,23 @@ public class TetrakisHexahedronCreator implements IMeshCreator {
 	}
 
 	private void createInnerVertices() {
-		addVertex(0.0f, 0.0f, a);
-		addVertex(0.0f, 0.0f, -a);
-		addVertex(0.0f, a, 0.0f);
-		addVertex(0.0f, -a, 0.0f);
-		addVertex(a, 0.0f, 0.0f);
-		addVertex(-a, 0.0f, 0.0f);
+		addVertex(0, 0, a);
+		addVertex(0, 0, -a);
+		addVertex(0, a, 0);
+		addVertex(0, -a, 0);
+		addVertex(a, 0, 0);
+		addVertex(-a, 0, 0);
 	}
 
 	private void createOuterVertices() {
-		addVertex(-1.0f, 1.0f, 1.0f);
-		addVertex(1.0f, 1.0f, 1.0f);
-		addVertex(1.0f, 1.0f, -1.0f);
-		addVertex(-1.0f, 1.0f, -1.0f);
-		addVertex(1.0f, -1.0f, 1.0f);
-		addVertex(-1.0f, -1.0f, 1.0f);
-		addVertex(-1.0f, -1.0f, -1.0f);
-		addVertex(1.0f, -1.0f, -1.0f);
+		addVertex(-1, 1, 1);
+		addVertex(1, 1, 1);
+		addVertex(1, 1, -1);
+		addVertex(-1, 1, -1);
+		addVertex(1, -1, 1);
+		addVertex(-1, -1, 1);
+		addVertex(-1, -1, -1);
+		addVertex(1, -1, -1);
 	}
 
 	public void createFaces() {
