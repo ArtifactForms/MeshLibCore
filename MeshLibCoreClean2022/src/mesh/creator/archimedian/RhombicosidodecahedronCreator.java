@@ -6,18 +6,35 @@ import mesh.creator.IMeshCreator;
 
 public class RhombicosidodecahedronCreator implements IMeshCreator {
 
+    private float a = 0.0f;
+
+    private float b = 1.0f;
+
+    private float c = (1.0f + Mathf.sqrt(5.0f)) / 2.0f;
+
+    private float d = Mathf.pow(c, 2.0f);
+
+    private float e = Mathf.pow(c, 3.0f);
+
+    private float f = 2.0f * c;
+
+    private float g = 2.0f + c;
+
+    private Mesh3D mesh;
+
     @Override
     public Mesh3D create() {
-        Mesh3D mesh = new Mesh3D();
+        initializeMesh();
+        addFaces();
+        createVertices();
+        return mesh;
+    }
+    
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-        float a = 0.0f;
-        float b = 1.0f;
-        float c = (1.0f + Mathf.sqrt(5.0f)) / 2.0f;
-        float d = Mathf.pow(c, 2.0f);
-        float e = Mathf.pow(c, 3.0f);
-        float f = 2.0f * c;
-        float g = 2.0f + c;
-
+    private void createVertices() {
         mesh.addVertex(+b, +b, +e);
         mesh.addVertex(+b, +b, -e);
         mesh.addVertex(+b, -b, +e);
@@ -86,7 +103,9 @@ public class RhombicosidodecahedronCreator implements IMeshCreator {
         mesh.addVertex(+a, -d, +g);
         mesh.addVertex(+a, +d, -g);
         mesh.addVertex(+a, -d, -g);
+    }
 
+    private void addFaces() {
         mesh.addFace(0, 56, 3);
         mesh.addFace(1, 5, 58);
         mesh.addFace(2, 6, 57);
@@ -151,8 +170,6 @@ public class RhombicosidodecahedronCreator implements IMeshCreator {
         mesh.addFace(17, 41, 58, 45, 21);
         mesh.addFace(18, 42, 57, 46, 22);
         mesh.addFace(20, 23, 47, 59, 44);
-
-        return mesh;
     }
 
 }
