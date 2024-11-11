@@ -94,6 +94,12 @@ public class TriakisOctahedronCreatorTest {
 	}
 	
 	@Test
+	public void testEdgeCount() {
+		int expectedEdgeCount = 36;
+		MeshTest.assertEdgeCountEquals(mesh, expectedEdgeCount);
+	}
+	
+	@Test
 	public void testMeshIsManifold() {
 		MeshTest.assertIsManifold(mesh);
 	}
