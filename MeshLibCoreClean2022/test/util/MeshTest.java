@@ -1,7 +1,5 @@
 package util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.HashSet;
 import java.util.List;
 
@@ -30,7 +28,10 @@ public class MeshTest {
                 actualEdgeCount++;
         }
 
-        assertEquals(expectedEdgeCount, actualEdgeCount);
+        if (expectedEdgeCount != actualEdgeCount) {
+            throw new AssertionError("Expected " + expectedEdgeCount + " edges with length " + expectedLength
+                    + ", but found " + actualEdgeCount);
+        }
     }
 
     public static void assertNormalsPointOutwards(Mesh3D mesh) {
@@ -40,7 +41,10 @@ public class MeshTest {
             Vector3f faceCenter = mesh.calculateFaceCenter(face);
             Vector3f a = faceCenter.subtract(center);
             float dotProduct = faceNormal.dot(a);
-            Assert.assertTrue(dotProduct >= 0);
+            if (dotProduct < 0) {
+                throw new AssertionError(
+                        "Face normal for a face does not point outwards. Mesh data might be corrupt or normals need recalculation.");
+            }
         }
     }
 
