@@ -11,8 +11,11 @@ import mesh.Mesh3D;
 public class VertexNormals {
 
 	private Mesh3D mesh;
+	
 	private List<Vector3f> vertexNormals;
+	
 	private HashMap<Face3D, Vector3f> faceNormals;
+	
 	private HashMap<Vector3f, List<Face3D>> vectorToFace;
 
 	public VertexNormals(Mesh3D mesh) {

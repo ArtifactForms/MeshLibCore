@@ -5,6 +5,7 @@ import math.Vector3f;
 public class Bounds3 {
 
 	private Vector3f min;
+	
 	private Vector3f max;
 
 	public Bounds3() {
