@@ -6,6 +6,7 @@ import mesh.creator.IMeshCreator;
 public class CuboctahedronCreator implements IMeshCreator {
 
     private float a;
+
     private Mesh3D mesh;
 
     public CuboctahedronCreator() {

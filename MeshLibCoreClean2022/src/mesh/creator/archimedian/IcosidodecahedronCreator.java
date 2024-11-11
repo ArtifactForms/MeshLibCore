@@ -7,10 +7,15 @@ import mesh.creator.IMeshCreator;
 public class IcosidodecahedronCreator implements IMeshCreator {
 
     private float a = 0.0f;
+
     private float b = (1.0f + Mathf.sqrt(5.0f)) / 2.0f;
+
     private float c = 1.0f / 2.0f;
+
     private float d = b / 2.0f;
+
     private float e = (1.0f + b) / 2.0f;
+
     private Mesh3D mesh;
 
     @Override
