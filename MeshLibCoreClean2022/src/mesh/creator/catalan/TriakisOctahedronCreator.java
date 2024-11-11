@@ -8,6 +8,7 @@ import mesh.creator.IMeshCreator;
 public class TriakisOctahedronCreator implements IMeshCreator {
 
 	private float a = Mathf.sqrt(2) - 1;
+	
 	private Mesh3D mesh;
 	
 	@Override

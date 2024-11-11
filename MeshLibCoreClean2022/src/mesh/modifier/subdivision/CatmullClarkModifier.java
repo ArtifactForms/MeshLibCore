@@ -146,7 +146,9 @@ public class CatmullClarkModifier implements IMeshModifier {
 	private class FaceSplit {
 
 		private int[] indices;
+		
 		private Face3D face;
+		
 		private Vector3f facePoint;
 
 		public FaceSplit(Face3D face) {

@@ -15,6 +15,7 @@ import util.MeshTest;
 public class ConeTest {
 
 	private ConeCreator creator;
+	
 	private Mesh3D cone;
 
 	@Before
