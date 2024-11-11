@@ -12,9 +12,13 @@ import mesh.Mesh3D;
 public class SimpleObjectWriter {
 
 	private int vertexOffset;
+	
 	private StringBuffer buffer;
+	
 	private String objectName;
+	
 	private File file;
+	
 	private Mesh3D mesh;
 
 	public SimpleObjectWriter(File file) {

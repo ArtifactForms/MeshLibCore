@@ -13,7 +13,9 @@ import mesh.Mesh3D;
 public class SimpleObjectsReader {
 
 	private List<Vector3f> vertices;
+	
 	private Mesh3D mesh;
+	
 	private List<Mesh3D> meshes;
 
 	protected void addVertex(String[] sArray) {
