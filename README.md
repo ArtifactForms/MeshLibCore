@@ -1,3 +1,4 @@
+<a href="https://codeclimate.com/github/ArtifactForms/MeshLibCore/maintainability"><img src="https://api.codeclimate.com/v1/badges/c860a89479fdedd6be77/maintainability" /></a>
 # Artifact Forms
 A *JAVA* library to construct and manipulate geometry in Three-dimensional space.
 
