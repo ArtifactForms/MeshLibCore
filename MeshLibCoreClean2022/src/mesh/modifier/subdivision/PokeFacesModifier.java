@@ -17,7 +17,9 @@ import mesh.modifier.IMeshModifier;
 public class PokeFacesModifier implements IMeshModifier {
 
 	private float pokeOffset;
+	
 	private Mesh3D mesh;
+	
 	private List<Face3D> originalFaces;
 
 	public PokeFacesModifier() {

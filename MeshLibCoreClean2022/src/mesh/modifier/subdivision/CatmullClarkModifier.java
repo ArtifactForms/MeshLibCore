@@ -13,10 +13,15 @@ import mesh.modifier.IMeshModifier;
 public class CatmullClarkModifier implements IMeshModifier {
 
 	private int subdivisions;
+	
 	private int originalVertexCount;
+	
 	private Mesh3D mesh;
+	
 	private List<Face3D> facesToProcess;
+	
 	private HashMap<Edge3D, Integer> edgeToEdgePointIndex;
+	
 	private HashMap<Integer, VertexData> vertexDataMap;
 
 	public CatmullClarkModifier() {

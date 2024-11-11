@@ -16,6 +16,7 @@ import mesh.modifier.IMeshModifier;
 public class PlanarVertexCenterModifier implements IMeshModifier {
 
 	private Mesh3D mesh;
+	
 	private List<Face3D> newFaces;
 
 	public PlanarVertexCenterModifier() {

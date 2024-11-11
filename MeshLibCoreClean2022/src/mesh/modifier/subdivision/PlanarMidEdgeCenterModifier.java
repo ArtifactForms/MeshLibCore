@@ -42,8 +42,11 @@ import mesh.modifier.IMeshModifier;
 public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 
 	private int nextIndex;
+	
 	private int iterations;
+	
 	private Mesh3D mesh;
+	
 	private ArrayList<Face3D> newFaces = new ArrayList<>();
 
 	public PlanarMidEdgeCenterModifier() {
