@@ -49,15 +49,15 @@ public class TriakisTetrahedronCreatorTest {
 	}
 	
 	@Test
-	public void testFaceCount() {
-		int expectedFaceCount = 12;
-		assertEquals(expectedFaceCount, mesh.getFaceCount());
-	}
-
-	@Test
 	public void testVertexCount() {
 		int expectedVertexCount = 8;
 		assertEquals(expectedVertexCount, mesh.getVertexCount());
+	}
+	
+	@Test
+	public void testFaceCount() {
+		int expectedFaceCount = 12;
+		assertEquals(expectedFaceCount, mesh.getFaceCount());
 	}
 	
 	@Test

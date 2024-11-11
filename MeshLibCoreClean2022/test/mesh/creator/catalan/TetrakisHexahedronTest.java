@@ -1,7 +1,10 @@
 package mesh.creator.catalan;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +29,31 @@ public class TetrakisHexahedronTest {
 	@Test
 	public void testCreatedMeshIsNotNull() {
 		assertNotNull(mesh);
+	}
+	
+	@Test
+	public void containsOuterVertices() {
+		List<Vector3f> vertices = mesh.vertices;
+		assertTrue(vertices.contains(new Vector3f(-1, 1, 1)));
+		assertTrue(vertices.contains(new Vector3f(1, 1, 1)));
+		assertTrue(vertices.contains(new Vector3f(1, 1, -1)));
+		assertTrue(vertices.contains(new Vector3f(-1, 1, -1)));
+		assertTrue(vertices.contains(new Vector3f(1, -1, 1)));
+		assertTrue(vertices.contains(new Vector3f(-1, -1, 1)));
+		assertTrue(vertices.contains(new Vector3f(-1, -1, -1)));
+		assertTrue(vertices.contains(new Vector3f(1, -1, -1)));
+	}
+	
+	@Test
+	public void containsInnerVertices() {
+		float a = 3f / 2f;
+		List<Vector3f> vertices = mesh.vertices;
+		assertTrue(vertices.contains(new Vector3f(0, 0, a)));
+		assertTrue(vertices.contains(new Vector3f(0, 0, -a)));
+		assertTrue(vertices.contains(new Vector3f(0, a, 0)));
+		assertTrue(vertices.contains(new Vector3f(0, -a, 0)));
+		assertTrue(vertices.contains(new Vector3f(a, 0, 0)));
+		assertTrue(vertices.contains(new Vector3f(-a, 0, 0)));
 	}
 
 	/**
