@@ -14,16 +14,16 @@ public class CompareTest {
 			Compare.compare(null, 10, 20);
 		});
 	}
-	
-    @Test
-    public void testInvalidCompareTypeEnumValue() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Compare.compare(CompareType.INVALID_TYPE, 10, 20);
-        });
-    }
-	
+
+	@Test
+	public void testInvalidCompareTypeEnumValue() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			Compare.compare(CompareType.INVALID_TYPE, 10, 20);
+		});
+	}
+
 	// Integer Tests
-	
+
 	@Test
 	public void testEqualsInteger() {
 		assertTrue(Compare.compare(CompareType.EQUALS, 10, 10));
@@ -72,92 +72,92 @@ public class CompareTest {
 
 	@Test
 	public void testEqualsFloat() {
-	    assertTrue(Compare.compare(CompareType.EQUALS, 10.2f, 10.2f));
-	    assertFalse(Compare.compare(CompareType.EQUALS, 10.2f, 20.2f));
+		assertTrue(Compare.compare(CompareType.EQUALS, 10.2f, 10.2f));
+		assertFalse(Compare.compare(CompareType.EQUALS, 10.2f, 20.2f));
 	}
 
 	@Test
 	public void testLessFloat() {
-	    assertTrue(Compare.compare(CompareType.LESS, Float.MIN_VALUE, 10.0f));
-	    assertFalse(Compare.compare(CompareType.LESS, 10.0f, Float.MIN_VALUE));
-	    assertTrue(Compare.compare(CompareType.LESS, 10.0f, 20.0f));
-	    assertFalse(Compare.compare(CompareType.LESS, 20.0f, 10.0f));
+		assertTrue(Compare.compare(CompareType.LESS, Float.MIN_VALUE, 10.0f));
+		assertFalse(Compare.compare(CompareType.LESS, 10.0f, Float.MIN_VALUE));
+		assertTrue(Compare.compare(CompareType.LESS, 10.0f, 20.0f));
+		assertFalse(Compare.compare(CompareType.LESS, 20.0f, 10.0f));
 	}
 
 	@Test
 	public void testGreaterFloat() {
-	    assertTrue(Compare.compare(CompareType.GREATER, Float.MAX_VALUE, -10.0f));
-	    assertFalse(Compare.compare(CompareType.GREATER, -10.0f, Float.MAX_VALUE));
-	    assertTrue(Compare.compare(CompareType.GREATER, 20.0f, 10.0f));
-	    assertFalse(Compare.compare(CompareType.GREATER, 10.0f, 20.0f));
+		assertTrue(Compare.compare(CompareType.GREATER, Float.MAX_VALUE, -10.0f));
+		assertFalse(Compare.compare(CompareType.GREATER, -10.0f, Float.MAX_VALUE));
+		assertTrue(Compare.compare(CompareType.GREATER, 20.0f, 10.0f));
+		assertFalse(Compare.compare(CompareType.GREATER, 10.0f, 20.0f));
 	}
 
 	@Test
 	public void testLessOrEqualFloat() {
-	    assertTrue(Compare.compare(CompareType.LESS_OR_EQUALS, Float.MIN_VALUE, 10.0f));
-	    assertTrue(Compare.compare(CompareType.LESS_OR_EQUALS, 10.0f, 10.0f));
-	    assertFalse(Compare.compare(CompareType.LESS_OR_EQUALS, 20.0f, Float.MIN_VALUE));
-	    assertFalse(Compare.compare(CompareType.LESS_OR_EQUALS, 20.0f, 10.0f));
+		assertTrue(Compare.compare(CompareType.LESS_OR_EQUALS, Float.MIN_VALUE, 10.0f));
+		assertTrue(Compare.compare(CompareType.LESS_OR_EQUALS, 10.0f, 10.0f));
+		assertFalse(Compare.compare(CompareType.LESS_OR_EQUALS, 20.0f, Float.MIN_VALUE));
+		assertFalse(Compare.compare(CompareType.LESS_OR_EQUALS, 20.0f, 10.0f));
 	}
 
 	@Test
 	public void testGreaterOrEqualFloat() {
-	    assertTrue(Compare.compare(CompareType.GREATER_OR_EQUALS, Float.MAX_VALUE, -10.0f));
-	    assertTrue(Compare.compare(CompareType.GREATER_OR_EQUALS, 10.0f, 10.0f));
-	    assertFalse(Compare.compare(CompareType.GREATER_OR_EQUALS, Float.MIN_VALUE, 20.0f));
-	    assertFalse(Compare.compare(CompareType.GREATER_OR_EQUALS, 10.0f, 20.0f));
+		assertTrue(Compare.compare(CompareType.GREATER_OR_EQUALS, Float.MAX_VALUE, -10.0f));
+		assertTrue(Compare.compare(CompareType.GREATER_OR_EQUALS, 10.0f, 10.0f));
+		assertFalse(Compare.compare(CompareType.GREATER_OR_EQUALS, Float.MIN_VALUE, 20.0f));
+		assertFalse(Compare.compare(CompareType.GREATER_OR_EQUALS, 10.0f, 20.0f));
 	}
 
 	@Test
 	public void testNotEqualsFloat() {
-	    assertTrue(Compare.compare(CompareType.NOT_EQUALS, 10.0f, 20.0f));
-	    assertFalse(Compare.compare(CompareType.NOT_EQUALS, 10.0f, 10.0f));
+		assertTrue(Compare.compare(CompareType.NOT_EQUALS, 10.0f, 20.0f));
+		assertFalse(Compare.compare(CompareType.NOT_EQUALS, 10.0f, 10.0f));
 	}
 
 	// Double Tests
 
 	@Test
 	public void testEqualsDouble() {
-	    assertTrue(Compare.compare(CompareType.EQUALS, 10.2, 10.2));
-	    assertFalse(Compare.compare(CompareType.EQUALS, 10.2, 20.2));
+		assertTrue(Compare.compare(CompareType.EQUALS, 10.2, 10.2));
+		assertFalse(Compare.compare(CompareType.EQUALS, 10.2, 20.2));
 	}
 
 	@Test
 	public void testLessDouble() {
-	    assertTrue(Compare.compare(CompareType.LESS, Double.MIN_VALUE, 10.0));
-	    assertFalse(Compare.compare(CompareType.LESS, 10.0, Double.MIN_VALUE));
-	    assertTrue(Compare.compare(CompareType.LESS, 10.0, 20.0));
-	    assertFalse(Compare.compare(CompareType.LESS, 20.0, 10.0));
+		assertTrue(Compare.compare(CompareType.LESS, Double.MIN_VALUE, 10.0));
+		assertFalse(Compare.compare(CompareType.LESS, 10.0, Double.MIN_VALUE));
+		assertTrue(Compare.compare(CompareType.LESS, 10.0, 20.0));
+		assertFalse(Compare.compare(CompareType.LESS, 20.0, 10.0));
 	}
 
 	@Test
 	public void testGreaterDouble() {
-	    assertTrue(Compare.compare(CompareType.GREATER, Double.MAX_VALUE, -10.0));
-	    assertFalse(Compare.compare(CompareType.GREATER, -10.0, Double.MAX_VALUE));
-	    assertTrue(Compare.compare(CompareType.GREATER, 20.0, 10.0));
-	    assertFalse(Compare.compare(CompareType.GREATER, 10.0, 20.0));
+		assertTrue(Compare.compare(CompareType.GREATER, Double.MAX_VALUE, -10.0));
+		assertFalse(Compare.compare(CompareType.GREATER, -10.0, Double.MAX_VALUE));
+		assertTrue(Compare.compare(CompareType.GREATER, 20.0, 10.0));
+		assertFalse(Compare.compare(CompareType.GREATER, 10.0, 20.0));
 	}
 
 	@Test
 	public void testLessOrEqualDouble() {
-	    assertTrue(Compare.compare(CompareType.LESS_OR_EQUALS, Double.MIN_VALUE, 10.0));
-	    assertTrue(Compare.compare(CompareType.LESS_OR_EQUALS, 10.0, 10.0));
-	    assertFalse(Compare.compare(CompareType.LESS_OR_EQUALS, 20.0, Double.MIN_VALUE));
-	    assertFalse(Compare.compare(CompareType.LESS_OR_EQUALS, 20.0, 10.0));
+		assertTrue(Compare.compare(CompareType.LESS_OR_EQUALS, Double.MIN_VALUE, 10.0));
+		assertTrue(Compare.compare(CompareType.LESS_OR_EQUALS, 10.0, 10.0));
+		assertFalse(Compare.compare(CompareType.LESS_OR_EQUALS, 20.0, Double.MIN_VALUE));
+		assertFalse(Compare.compare(CompareType.LESS_OR_EQUALS, 20.0, 10.0));
 	}
 
 	@Test
 	public void testGreaterOrEqualDouble() {
-	    assertTrue(Compare.compare(CompareType.GREATER_OR_EQUALS, Double.MAX_VALUE, -10.0));
-	    assertTrue(Compare.compare(CompareType.GREATER_OR_EQUALS, 10.0, 10.0));
-	    assertFalse(Compare.compare(CompareType.GREATER_OR_EQUALS, Double.MIN_VALUE, 20.0));
-	    assertFalse(Compare.compare(CompareType.GREATER_OR_EQUALS, 10.0, 20.0));
+		assertTrue(Compare.compare(CompareType.GREATER_OR_EQUALS, Double.MAX_VALUE, -10.0));
+		assertTrue(Compare.compare(CompareType.GREATER_OR_EQUALS, 10.0, 10.0));
+		assertFalse(Compare.compare(CompareType.GREATER_OR_EQUALS, Double.MIN_VALUE, 20.0));
+		assertFalse(Compare.compare(CompareType.GREATER_OR_EQUALS, 10.0, 20.0));
 	}
 
 	@Test
 	public void testNotEqualsDouble() {
-	    assertTrue(Compare.compare(CompareType.NOT_EQUALS, 10.0, 20.0));
-	    assertFalse(Compare.compare(CompareType.NOT_EQUALS, 10.0, 10.0));
+		assertTrue(Compare.compare(CompareType.NOT_EQUALS, 10.0, 20.0));
+		assertFalse(Compare.compare(CompareType.NOT_EQUALS, 10.0, 10.0));
 	}
 
 }
