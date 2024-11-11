@@ -1556,7 +1556,7 @@ NONE
 
 ```java
 import mesh.Mesh3D
-import mesh.creator.catalan.RhombicDodecahedronCreator;
+import mesh.creator.catalan.test.RhombicDodecahedronCreator;
 
 RhombicDodecahedronCreator creator = new RhombicDodecahedronCreator();
 Mesh3D mesh = creator.create();
@@ -1582,7 +1582,7 @@ NONE
 
 ```java
 import mesh.Mesh3D
-import mesh.creator.catalan.TriakisTetrahedronCreator;
+import mesh.creator.catalan.test.TriakisTetrahedronCreator;
 
 TriakisTetrahedronCreator creator = new TriakisTetrahedronCreator();
 Mesh3D mesh = creator.create();

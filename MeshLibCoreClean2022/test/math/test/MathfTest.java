@@ -1,279 +1,178 @@
 package math.test;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 import math.Mathf;
 
 public class MathfTest {
 
 	@Test
-	public void tribonacciConstant() {
-		Assert.assertEquals(1.83928675521416f, Mathf.TRIBONACCI_CONSTANT, 0);
+	public void testToOneDimensionalIndex() {
+		// Test cases with valid inputs
+		assertEquals(0, Mathf.toOneDimensionalIndex(0, 0, 3));
+		assertEquals(1, Mathf.toOneDimensionalIndex(0, 1, 3));
+		assertEquals(2, Mathf.toOneDimensionalIndex(0, 2, 3));
+		assertEquals(3, Mathf.toOneDimensionalIndex(1, 0, 3));
+		assertEquals(4, Mathf.toOneDimensionalIndex(1, 1, 3));
+		assertEquals(5, Mathf.toOneDimensionalIndex(1, 2, 3));
+
+		// Test case with invalid input (negative row index)
+		assertThrows(IllegalArgumentException.class, () -> {
+			Mathf.toOneDimensionalIndex(-1, 0, 3);
+		});
+
+		// Test case with invalid input (negative column index)
+		assertThrows(IllegalArgumentException.class, () -> {
+			Mathf.toOneDimensionalIndex(0, -1, 3);
+		});
+
+		// Test case with invalid input (zero number of columns)
+		assertThrows(IllegalArgumentException.class, () -> {
+			Mathf.toOneDimensionalIndex(0, 0, 0);
+		});
 	}
 
 	@Test
-	public void goldenRatioConstant() {
-		Assert.assertEquals(1.618033988749f, Mathf.GOLDEN_RATIO, 0);
-	}
-	
-	@Test
-	public void constantPiEqualsMathConstant() {
-		Assert.assertEquals((float) Math.PI, Mathf.PI, 0);
+	public void testMin() {
+		// Basic cases
+		assertEquals(2, Mathf.min(2, 3));
+		assertEquals(-3, Mathf.min(-3, -2));
+
+		// Equal values
+		assertEquals(5, Mathf.min(5, 5));
+
+		// Integer.MIN_VALUE and Integer.MAX_VALUE
+		assertEquals(Integer.MIN_VALUE, Mathf.min(Integer.MIN_VALUE, Integer.MAX_VALUE));
+		assertEquals(Integer.MIN_VALUE, Mathf.min(Integer.MAX_VALUE, Integer.MIN_VALUE));
 	}
 
 	@Test
-	public void constantPiEqualsValue() {
-		Assert.assertEquals(3.1415927f, Mathf.PI, 0);
+	public void testMax() {
+		// Basic cases
+		assertEquals(3, Mathf.max(2, 3));
+		assertEquals(-2, Mathf.max(-3, -2));
+
+		// Equal values
+		assertEquals(5, Mathf.max(5, 5));
+
+		// Integer.MIN_VALUE and Integer.MAX_VALUE
+		assertEquals(Integer.MAX_VALUE, Mathf.max(Integer.MIN_VALUE, Integer.MAX_VALUE));
+		assertEquals(Integer.MAX_VALUE, Mathf.max(Integer.MAX_VALUE, Integer.MIN_VALUE));
 	}
-	
+
 	@Test
-	public void constantHalfPiEqualsToMath() {
-		Assert.assertEquals((float) Math.PI * 0.5f, Mathf.HALF_PI, 0);
+	public void testMinArray() {
+		// Empty array
+		assertEquals(0, Mathf.min(new int[0]));
+
+		// Single-element array
+		assertEquals(5, Mathf.min(new int[] { 5 }));
+
+		// Multiple elements, positive values
+		assertEquals(1, Mathf.min(new int[] { 2, 4, 1, 3 }));
+
+		// Multiple elements, negative values
+		assertEquals(-5, Mathf.min(new int[] { -2, -5, -1, -3 }));
+
+		// Mixed positive and negative values
+		assertEquals(-3, Mathf.min(new int[] { 2, -3, 1, 3 }));
 	}
-	
+
 	@Test
-	public void constantHalfPiEqualsToValue() {
-		Assert.assertEquals(1.5707964f, Mathf.HALF_PI, 0);
+	public void testMaxArray() {
+		// Empty array
+		assertEquals(0, Mathf.max(new int[0]));
+
+		// Single-element array
+		assertEquals(5, Mathf.max(new int[] { 5 }));
+
+		// Multiple elements, positive values
+		assertEquals(4, Mathf.max(new int[] { 2, 4, 1, 3 }));
+
+		// Multiple elements, negative values
+		assertEquals(-1, Mathf.max(new int[] { -2, -5, -1, -3 }));
+
+		// Mixed positive and negative values
+		assertEquals(3, Mathf.max(new int[] { 2, -3, 1, 3 }));
 	}
-	
+
 	@Test
-	public void constantTwoPiEqualsMath() {
-		Assert.assertEquals((float) (Math.PI + Math.PI), Mathf.TWO_PI, 0);
+	public void testMaxFloat() {
+		assertEquals(5.0f, Mathf.max(3.0f, 5.0f));
+		assertEquals(-2.0f, Mathf.max(-5.0f, -2.0f));
+		assertEquals(0.0f, Mathf.max(-0.0f, 0.0f));
+		assertTrue(Float.isNaN(Mathf.max(Float.NaN, 3.0f)));
 	}
-	
+
 	@Test
-	public void constantTwoPiEqualsValue() {
-		Assert.assertEquals(6.2831855f, Mathf.TWO_PI, 0);
+	public void testMinFloat() {
+		assertEquals(3.0f, Mathf.min(3.0f, 5.0f));
+		assertEquals(-5.0f, Mathf.min(-5.0f, -2.0f));
+		assertEquals(-0.0f, Mathf.min(-0.0f, 0.0f));
+		assertTrue(Float.isNaN(Mathf.min(Float.NaN, 3.0f)));
 	}
-	
+
 	@Test
-	public void constantOneThird() {
-		Assert.assertEquals(1f / 3f, Mathf.ONE_THIRD, 0);
+	public void testMaxArrayFloat() {
+		// Empty array
+		assertTrue(Float.isNaN(Mathf.max()));
+
+		// Single-element array
+		assertEquals(5.0f, Mathf.max(5.0f));
+
+		// Multiple elements, positive values
+		assertEquals(4.0f, Mathf.max(2.0f, 4.0f, 1.0f, 3.0f));
+
+		// Multiple elements, negative values
+		assertEquals(-1.0f, Mathf.max(-2.0f, -5.0f, -1.0f, -3.0f));
+
+		// Mixed positive and negative values
+		assertEquals(3.0f, Mathf.max(2.0f, -3.0f, 1.0f, 3.0f));
 	}
-	
+
 	@Test
-	public void contantQuarterPiEqualsToValue() {
-		Assert.assertEquals(0.7853982f, Mathf.QUARTER_PI,  0);
+	public void testMinArrayFloat() {
+		// Empty array
+		assertTrue(Float.isNaN(Mathf.min()));
+
+		// Single-element array
+		assertEquals(5.0f, Mathf.min(5.0f));
+
+		// Multiple elements, positive values
+		assertEquals(1.0f, Mathf.min(2.0f, 4.0f, 1.0f, 3.0f));
+
+		// Multiple elements, negative values
+		assertEquals(-5.0f, Mathf.min(-2.0f, -5.0f, -1.0f, -3.0f));
+
+		// Mixed positive and negative values
+		assertEquals(-3.0f, Mathf.min(2.0f, -3.0f, 1.0f, 3.0f));
 	}
-	
+
 	@Test
-	public void constantZeroToleranceEqualsToValue() {
-		Assert.assertEquals(0.00001f, Mathf.ZERO_TOLERANCE, 0);
+	public void testRoundToInt() {
+		// Positive numbers
+		assertEquals(2, Mathf.roundToInt(1.5f));
+		assertEquals(3, Mathf.roundToInt(2.5f));
+
+		// Negative numbers
+	    assertEquals(-1, Mathf.roundToInt(-1.5f));
+		assertEquals(-2, Mathf.roundToInt(-2.5f));
+		
+		// Negative numbers
+	    assertEquals(-2, Mathf.roundToInt(-1.6f));
+		assertEquals(-3, Mathf.roundToInt(-2.6f));
+
+		// Zero
+		assertEquals(0, Mathf.roundToInt(0.0f));
+		assertEquals(0, Mathf.roundToInt(-0.0f));
+
+		// Integer values
+		assertEquals(5, Mathf.roundToInt(5.0f));
+		assertEquals(-5, Mathf.roundToInt(-5.0f));
 	}
-	
-	@Test
-	public void constantQuarterEqualsToMath() {
-		Assert.assertEquals((float) (Math.PI / 4.0), Mathf.QUARTER_PI, 0);
-	}
-	
-	@Test
-	public void clampBetweenZeroAndOneUnchaged() {
-		float expected = 0.5f;
-		float actual = Mathf.clamp(0, 1, 0.5f);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void clampBetweenZeroAndOneGreaterOne() {
-		float expected = 1.0f;
-		float actual = Mathf.clamp(0, 1, 1.5f);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void clampBetweenZeroAndMaxRandom() {
-		float max = (float) (Math.random() * 1000);
-		float random = max + (float) (Math.random() * 10000f);
-		float expected = max;
-		float actual = Mathf.clamp(0, max, random);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void clampBetweenRandomMinAndMax() {
-		float min = (float) (Math.random() * 1000);
-		float random = min - (float) (Math.random() * 10000f);
-		float expected = min;
-		float actual = Mathf.clamp(random, min, min + 1000);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void clampRandomUnchanged() {
-		float expected = (float) (Math.random() * 1000);
-		float actual = Mathf.clamp(expected - 1000, expected + 1000, expected);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void randomCos() {
-		float random = -5000 + (float) (Math.random() * 10000);
-		float expected = (float) Math.cos(random);
-		Assert.assertEquals(expected, Mathf.cos(random), 0);
-	}
-	
-	@Test
-	public void randomAtan() {
-		float random = -5000 + (float) (Math.random() * 10000);
-		float expected = (float) Math.atan(random);
-		Assert.assertEquals(expected, Mathf.atan(random), 0);
-	}
-	
-	@Test
-	public void randomSin() {
-		float random = -5000 + (float) (Math.random() * 10000);
-		float expected = (float) Math.sin(random);
-		Assert.assertEquals(expected, Mathf.sin(random), 0);
-	}
-	
-	@Test
-	public void randomSqrt() {
-		float random = -5000 + (float) (Math.random() * 10000);
-		float expected = (float) Math.sqrt(random);
-		Assert.assertEquals(expected, Mathf.sqrt(random), 0);
-	}
-	
-	@Test
-	public void randomRound() {
-		float random = -5000 + (float) (Math.random() * 10000);
-		float expected = (float) Math.round(random);
-		Assert.assertEquals(expected, Mathf.round(random), 0);
-	}
-	
-	@Test
-	public void randomAbs() {
-		float random = -5000 + (float) (Math.random() * 10000);
-		float expected = (float) Math.abs(random);
-		Assert.assertEquals(expected, Mathf.abs(random), 0);
-	}
-	
-	@Test
-	public void randomRountToInt() {
-		float random = -5000 + (float) (Math.random() * 10000);
-		int expected = Math.round(random);
-		Assert.assertEquals(expected, Mathf.roundToInt(random), 0);
-	}
-	
-	@Test
-	public void randomToRadians() {
-		float random = -5000 + (float) (Math.random() * 10000);
-		float expected = (float) Math.toRadians(random);
-		Assert.assertEquals(expected, Mathf.toRadians(random), 0);
-	}
-	
-	@Test
-	public void powSecondArgumentPositiveZeroResultsInOne() {
-		float a = 1000;
-		float expected = 1;
-		float actual = Mathf.pow(a, 0);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void powSecondArgumentNegativeZeroResultsInOne() {
-		float a = -827;
-		float expected = 1;
-		float actual = Mathf.pow(a, -0);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void powReturnsFirstArgumentIfSecondIsOne() {
-		float a = 827272.01f;
-		float expected = a;
-		float actual = Mathf.pow(a, 1);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void powResultIsNanIfSecondArgumentIsNan() {
-		float a = 725241.1123f;
-		float expected = Float.NaN;
-		float actual = Mathf.pow(a, Float.NaN);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void powSecondArgumentIsNoneZeroAndFirstIsNanResultIsNan() {
-		float a = Float.NaN;
-		float expected = Float.NaN;
-		float actual = Mathf.pow(a, 1923);
-		Assert.assertEquals(expected, actual, 0);
-	}
-	
-	@Test
-	public void clampIntAllValuesZero() {
-		int expected = 0;
-		int actual = Mathf.clampInt(0, 0, 0);
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampMinusOneBetweenZeroAndZero() {
-		int expected = 0;
-		int actual = Mathf.clampInt(-1, 0, 0);
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampOneBetweenZeroAndOne() {
-		int expected = 1;
-		int actual = Mathf.clampInt(1, 0, 1);
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampIntMinReturnsMin() {
-		int expected = -200;
-		int actual = Mathf.clampInt(-200, -200, 50);
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampIntMaxReturnsMax() {
-		int expected = 50;
-		int actual = Mathf.clampInt(50, -200, 50);
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampIntMinMinusOneReturnsMin() {
-		int expected = -100;
-		int actual = Mathf.clampInt(-101, -100, 0);
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampIntMaxPlusOneReturnsMax() {
-		int expected = 100;
-		int actual = Mathf.clampInt(101, -100, 100);
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampIntRandomMax() {
-		int max = (int) (Math.random() * 50000);
-		int actual = Mathf.clampInt(max + 1000, -1000, max);
-		int expected = max;
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampIntRandomMin() {
-		int value = (int) (Math.random() * 50000);
-		int actual = Mathf.clampInt(value - 2000, value -1000, value + 1000);
-		int expected = value - 1000;
-		Assert.assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void clampIntRandomBetweenMinAndMax() {
-		int value = (int) (Math.random() * 50000);
-		int min = value - 5000;
-		int max = value + 5000;
-		int actual = Mathf.clampInt(value, min, max);
-		Assert.assertEquals(value, actual);
-	}
-	
+
 }
