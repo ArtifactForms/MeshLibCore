@@ -30,10 +30,10 @@ public class TriakisTetrahedronCreator implements IMeshCreator {
 	}
 
 	private void createMidEdgeVertices() {
-	    addVertex(1.0f, -1.0f, 1.0f);
-	    addVertex(-1.0f, 1.0f, 1.0f);
-	    addVertex(1.0f, 1.0f, -1.0f);
-	    addVertex(-1.0f, -1.0f, -1.0f);
+	    addVertex(1, -1, 1);
+	    addVertex(-1, 1, 1);
+	    addVertex(1, 1, -1);
+	    addVertex(-1, -1, -1);
 	}
 	
 	public void createFaces() {
