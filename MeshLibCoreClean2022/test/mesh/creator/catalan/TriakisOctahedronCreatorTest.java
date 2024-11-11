@@ -39,6 +39,16 @@ public class TriakisOctahedronCreatorTest {
 	}
 	
 	@Test
+	public void createsNewMeshEveryTime() {
+		TriakisOctahedronCreator creator = new TriakisOctahedronCreator();
+		Mesh3D mesh0 = creator.create();
+		Mesh3D mesh1 = creator.create();
+		Mesh3D mesh2 = creator.create();
+		assertTrue(mesh0 != mesh1);
+		assertTrue(mesh1 != mesh2);
+	}
+	
+	@Test
 	public void testVertexCount() {
 		int expectedVertexCount = 14;
 		int actualVertexCount = mesh.getVertexCount();
@@ -57,19 +67,9 @@ public class TriakisOctahedronCreatorTest {
 		int expectedTriangleCount = 24;
 		MeshTest.assertTriangleCountEquals(mesh, expectedTriangleCount);
 	}
-	
+		
 	@Test
-	public void createsNewMeshEveryTime() {
-		TriakisOctahedronCreator creator = new TriakisOctahedronCreator();
-		Mesh3D mesh0 = creator.create();
-		Mesh3D mesh1 = creator.create();
-		Mesh3D mesh2 = creator.create();
-		assertTrue(mesh0 != mesh1);
-		assertTrue(mesh1 != mesh2);
-	}
-	
-	@Test
-	public void conatains() {
+	public void conatainsMidEdgeVertices() {
 		List<Vector3f> vertices = mesh.vertices;
 		assertTrue(vertices.contains(new Vector3f(1, 0, 0)));
 		assertTrue(vertices.contains(new Vector3f(-1, 0, 0)));
@@ -80,7 +80,7 @@ public class TriakisOctahedronCreatorTest {
 	}
 	
 	@Test
-	public void containsA() {
+	public void containsCornerVertices() {
 		float a = Mathf.sqrt(2) - 1;
 		List<Vector3f> vertices = mesh.vertices;
 		assertTrue(vertices.contains(new Vector3f(a, a, a)));
