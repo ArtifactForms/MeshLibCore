@@ -41,7 +41,7 @@ public class TriakisOctahedronCreatorTest {
 	}
 	
 	@Test
-	public void createsNewMeshEveryTime() {
+	public void testCreatesNewMeshEveryTime() {
 		TriakisOctahedronCreator creator = new TriakisOctahedronCreator();
 		Mesh3D mesh0 = creator.create();
 		Mesh3D mesh1 = creator.create();
