@@ -7,7 +7,7 @@ public class Animation {
 
     private boolean finished;
 
-    private float tpf;
+    private float timePerFrame;
 
     private long lastTime;
 
@@ -36,7 +36,7 @@ public class Animation {
         if (!running)
             return;
         updateTime();
-        updateAnimators(tpf);
+        updateAnimators(timePerFrame);
     }
 
     public void restore() {
@@ -50,7 +50,7 @@ public class Animation {
         long time = System.currentTimeMillis();
         long delta = time - lastTime;
         lastTime = time;
-        tpf = delta / 1000f;
+        timePerFrame = delta / 1000f;
     }
 
     private void updateAnimators(float tpf) {
@@ -81,6 +81,10 @@ public class Animation {
 
     public boolean isFinished() {
         return finished;
+    }
+    
+    public boolean isRunning() {
+        return running;
     }
 
     public void clear() {
