@@ -9,12 +9,19 @@ import mesh.creator.IMeshCreator;
 public class ChainLinkCreator implements IMeshCreator {
 
 	private float centerPieceSize;
+	
 	private float majorRadius;
+	
 	private float minorRadius;
+	
 	private int majorSegments;
+	
 	private int minorSegments;
+	
 	private Mesh3D partOne;
+	
 	private Mesh3D partTwo;
+	
 	private Mesh3D mesh;
 
 	public ChainLinkCreator() {

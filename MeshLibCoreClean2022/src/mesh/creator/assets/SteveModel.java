@@ -8,14 +8,23 @@ import mesh.creator.primitives.CubeCreator;
 public class SteveModel {
 
 	private float unit = 1.0f / 16.0f;
+	
 	private Vector3f rotationHead;
+	
 	private Vector3f rotationLeftArm;
+	
 	private Vector3f rotationRightArm;
+	
 	private Mesh3D head;
+	
 	private Mesh3D torso;
+	
 	private Mesh3D leftArm;
+	
 	private Mesh3D rightArm;
+	
 	private Mesh3D leftLeg;
+	
 	private Mesh3D rightLeg;
 
 	Mesh3D mesh;

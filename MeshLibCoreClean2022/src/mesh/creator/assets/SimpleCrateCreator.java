@@ -10,8 +10,11 @@ import mesh.selection.FaceSelection;
 public class SimpleCrateCreator implements IMeshCreator {
 
 	private float inset;
+	
 	private float extrudeAmount;
+	
 	private Mesh3D mesh;
+	
 	private FaceSelection faceSelection;
 
 	public SimpleCrateCreator() {

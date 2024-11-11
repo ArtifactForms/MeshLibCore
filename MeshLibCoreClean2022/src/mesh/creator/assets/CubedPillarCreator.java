@@ -9,9 +9,13 @@ import mesh.selection.FaceSelection;
 public class CubedPillarCreator implements IMeshCreator {
 
 	private int segmentCount;
+	
 	private float segmentRadius;
+	
 	private float extrude;
+	
 	private Mesh3D mesh;
+	
 	private FaceSelection selection;
 
 	public CubedPillarCreator() {

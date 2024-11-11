@@ -8,7 +8,9 @@ import mesh.modifier.SolidifyModifier;
 public class ModularKitFloorSegmentCreator implements IMeshCreator {
 
 	private float floorWidth;
+	
 	private float floorDepth;
+	
 	private float floorHeight;
 
 	public ModularKitFloorSegmentCreator() {
