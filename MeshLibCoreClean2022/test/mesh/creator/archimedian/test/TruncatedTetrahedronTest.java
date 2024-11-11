@@ -1,11 +1,14 @@
 package mesh.creator.archimedian.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import math.Mathf;
 import mesh.Mesh3D;
+import mesh.creator.IMeshCreator;
 import mesh.creator.archimedian.TruncatedTetrahedronCreator;
 import util.MeshTest;
 
@@ -19,45 +22,66 @@ public class TruncatedTetrahedronTest {
 	}
 
 	@Test
-	public void hasTwelveVertices() {
+	public void testImplementsMeshCreatorInterface() {
+		TruncatedTetrahedronCreator creator = new TruncatedTetrahedronCreator();
+		assertTrue(creator instanceof IMeshCreator);
+	}
+
+	@Test
+	public void testCreatesNewInstances() {
+		TruncatedTetrahedronCreator creator = new TruncatedTetrahedronCreator();
+		Mesh3D mesh0 = creator.create();
+		Mesh3D mesh1 = creator.create();
+		Mesh3D mesh2 = creator.create();
+		assertTrue(mesh0 != mesh1);
+		assertTrue(mesh1 != mesh2);
+	}
+
+	@Test
+	public void testVertexCount() {
 		Assert.assertEquals(12, mesh.getVertexCount());
 	}
 
 	@Test
-	public void hasEightFaces() {
+	public void testFaceCount() {
 		Assert.assertEquals(8, mesh.getFaceCount());
 	}
 
 	@Test
-	public void hasFourTriangularFaces() {
+	public void testTriangularFacesCount() {
 		MeshTest.assertTriangleCountEquals(mesh, 4);
 	}
 
 	@Test
-	public void hasFourHexagonFaces() {
+	public void testHexagonalFacesCount() {
 		MeshTest.assertHexagonCountEquals(mesh, 4);
 	}
 
 	@Test
-	public void hasEighteenEdges() {
+	public void testEdgeCount() {
 		MeshTest.assertEdgeCountEquals(mesh, 18);
 	}
 
 	@Test
-	public void isManifold() {
+	public void testIsManifold() {
 		MeshTest.assertIsManifold(mesh);
 	}
 
 	@Test
-	public void fulfillsEulerCharacteristic() {
+	public void testFulfillsEulerCharacteristic() {
 		MeshTest.assertFulfillsEulerCharacteristic(mesh);
+	}
+	
+	@Test
+	public void testNormalsPointOutwards() {
+		MeshTest.assertNormalsPointOutwards(mesh);
 	}
 
 	@Test
-	public void everyEdgeHasLengthOfSqrtOfEight() {
+	public void testEdgeLengths() {
 		float delta = 0;
-		float expcted = Mathf.sqrt(8);
-		MeshTest.assertEveryEdgeHasALengthOf(mesh, expcted, delta);
+		float expected = Mathf.sqrt(8);
+		MeshTest.assertEveryEdgeHasALengthOf(mesh, expected, delta);
 	}
 
 }
