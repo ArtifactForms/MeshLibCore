@@ -4,7 +4,7 @@ public class Compare {
 
 	public static <T extends Number> boolean compare(CompareType compare, T a, T b) {
 		if (compare == null)
-			throw new IllegalArgumentException("Compare type cannot be null");
+			throw new IllegalArgumentException("Compare type cannot be null.");
 		switch (compare) {
 		case EQUALS:
 			return a.doubleValue() == b.doubleValue();
@@ -19,7 +19,7 @@ public class Compare {
 		case NOT_EQUALS:
 			return a.doubleValue() != b.doubleValue();
 		default:
-			throw new IllegalArgumentException(compare.toString());
+			throw new IllegalArgumentException("Invalid compare type.");
 		}
 	}
 	
