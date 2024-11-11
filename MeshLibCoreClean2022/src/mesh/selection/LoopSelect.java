@@ -8,7 +8,9 @@ import mesh.util.TraverseHelper;
 public class LoopSelect {
 
 	private FaceSelection selection;
+	
 	private HashSet<Face3D> loopSelectedFaces;
+	
 	private TraverseHelper helper;
 
 	public LoopSelect(FaceSelection selection) {

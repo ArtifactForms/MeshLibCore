@@ -14,6 +14,7 @@ import mesh.util.TraverseHelper;
 public class FaceSelection {
 
 	private Mesh3D mesh;
+	
 	private HashSet<Face3D> faceSet;
 
 	public FaceSelection(Mesh3D mesh) {

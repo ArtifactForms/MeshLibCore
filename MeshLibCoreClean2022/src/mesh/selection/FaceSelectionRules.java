@@ -14,7 +14,9 @@ public class FaceSelectionRules implements IFaceSelectionRule {
 	}
 
 	private Mode mode = Mode.AND;
+	
 	private boolean valid;
+	
 	private List<IFaceSelectionRule> rules;
 
 	public FaceSelectionRules() {

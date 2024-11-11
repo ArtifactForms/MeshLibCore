@@ -6,6 +6,7 @@ import mesh.Mesh3D;
 public class SelectFaceRuleCenterZ implements IFaceSelectionRule {
 
 	private float z;
+	
 	private CompareType compare;
 
 	public SelectFaceRuleCenterZ(CompareType compare, float z) {

@@ -9,8 +9,11 @@ import mesh.util.TraverseHelper;
 public class CheckerDeselect {
 
 	private FaceSelection selection;
+	
 	private ArrayList<Face3D> faces;
+	
 	private TraverseHelper helper;
+	
 	private HashSet<Face3D> processed;
 
 	public CheckerDeselect(FaceSelection selection) {
