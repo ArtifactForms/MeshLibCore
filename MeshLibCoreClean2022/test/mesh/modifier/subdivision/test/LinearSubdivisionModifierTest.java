@@ -23,6 +23,7 @@ import util.MeshTest;
 public class LinearSubdivisionModifierTest {
 
 	private LinearSubdivisionModifier modifier;
+	
 	private Mesh3D cubeMesh;
 
 	@Before

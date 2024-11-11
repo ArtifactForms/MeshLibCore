@@ -15,6 +15,7 @@ import util.MeshTest;
 public class PlanarVertexCenterCubeTest {
 
 	private Mesh3D cube;
+	
 	private PlanarVertexCenterModifier modifier;
 
 	@Before
