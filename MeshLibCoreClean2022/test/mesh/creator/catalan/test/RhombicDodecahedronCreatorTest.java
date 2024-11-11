@@ -1,4 +1,4 @@
-package mesh.creator.catalan;
+package mesh.creator.catalan.test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,6 +10,7 @@ import math.Mathf;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.creator.catalan.RhombicDodecahedronCreator;
 import util.MeshTest;
 
 public class RhombicDodecahedronCreatorTest {

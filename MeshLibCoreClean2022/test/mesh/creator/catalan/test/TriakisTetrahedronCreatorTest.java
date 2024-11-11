@@ -1,4 +1,4 @@
-package mesh.creator.catalan;
+package mesh.creator.catalan.test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -15,6 +15,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.creator.catalan.TriakisTetrahedronCreator;
 import util.MeshTest;
 
 public class TriakisTetrahedronCreatorTest {
