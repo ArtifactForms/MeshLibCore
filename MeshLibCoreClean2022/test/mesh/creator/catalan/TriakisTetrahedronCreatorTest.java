@@ -1,7 +1,10 @@
 package mesh.creator.catalan;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,7 @@ import math.Mathf;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.creator.IMeshCreator;
 import util.MeshTest;
 
 public class TriakisTetrahedronCreatorTest {
@@ -24,8 +28,82 @@ public class TriakisTetrahedronCreatorTest {
 	}
 	
 	@Test
+	public void testImplementsMeshCreatorInterface() {
+		TriakisTetrahedronCreator creator = new TriakisTetrahedronCreator();
+		assertTrue(creator instanceof IMeshCreator);
+	}
+	
+	@Test
 	public void testCreatedMeshIsNotNull() {
 		assertNotNull(mesh);
+	}
+	
+	@Test
+	public void createsNewMeshEveryTime() {
+		TriakisTetrahedronCreator creator = new TriakisTetrahedronCreator();
+		Mesh3D mesh0 = creator.create();
+		Mesh3D mesh1 = creator.create();
+		Mesh3D mesh2 = creator.create();
+		assertTrue(mesh0 != mesh1);
+		assertTrue(mesh1 != mesh2);
+	}
+	
+	@Test
+	public void testFaceCount() {
+		int expectedFaceCount = 12;
+		assertEquals(expectedFaceCount, mesh.getFaceCount());
+	}
+
+	@Test
+	public void testVertexCount() {
+		int expectedVertexCount = 8;
+		assertEquals(expectedVertexCount, mesh.getVertexCount());
+	}
+	
+	@Test
+	public void testTriangleCount() {
+		int expectedTriangleCount = 12;
+		MeshTest.assertTriangleCountEquals(mesh, expectedTriangleCount);
+	}
+
+	@Test
+	public void conatainsMidEdgeVertices() {
+		List<Vector3f> vertices = mesh.vertices;
+		assertTrue(vertices.contains(new Vector3f(1, -1, 1)));
+		assertTrue(vertices.contains(new Vector3f(-1, 1, 1)));
+		assertTrue(vertices.contains(new Vector3f(1, 1, -1)));
+		assertTrue(vertices.contains(new Vector3f(-1, -1, -1)));
+	}
+
+	@Test
+	public void testEdgeCount() {
+		int expectedEdgeCount = 18;
+		MeshTest.assertEdgeCountEquals(mesh, expectedEdgeCount);
+	}
+	
+	@Test
+	public void testMeshIsManifold() {
+		MeshTest.assertIsManifold(mesh);
+	}
+
+	@Test
+	public void testFulfillsEulerCharacteristic() {
+		MeshTest.assertFulfillsEulerCharacteristic(mesh);
+	}
+
+	@Test
+	public void testNoDuplicatedFaces() {
+		MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
+	}
+
+	@Test
+	public void testMeshHasNoLooseVertices() {
+		MeshTest.assertMeshHasNoLooseVertices(mesh);
+	}
+
+	@Test
+	public void testNormalsPointOutwards() {
+		MeshTest.assertNormalsPointOutwards(mesh);
 	}
 	
 	/**
@@ -82,53 +160,4 @@ public class TriakisTetrahedronCreatorTest {
 		}
 	}
 	
-	@Test
-	public void testTriangleCount() {
-		int expectedTriangleCount = 12;
-		MeshTest.assertTriangleCountEquals(mesh, expectedTriangleCount);
-	}
-
-	@Test
-	public void testFaceCount() {
-		int expectedFaceCount = 12;
-		assertEquals(expectedFaceCount, mesh.getFaceCount());
-	}
-
-	@Test
-	public void testVertexCount() {
-		int expectedVertexCount = 8;
-		assertEquals(expectedVertexCount, mesh.getVertexCount());
-	}
-
-	@Test
-	public void testEdgeCount() {
-		int expectedEdgeCount = 18;
-		MeshTest.assertEdgeCountEquals(mesh, expectedEdgeCount);
-	}
-
-	@Test
-	public void testMeshIsManifold() {
-		MeshTest.assertIsManifold(mesh);
-	}
-
-	@Test
-	public void testFulfillsEulerCharacteristic() {
-		MeshTest.assertFulfillsEulerCharacteristic(mesh);
-	}
-
-	@Test
-	public void testNoDuplicatedFaces() {
-		MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
-	}
-
-	@Test
-	public void testMeshHasNoLooseVertices() {
-		MeshTest.assertMeshHasNoLooseVertices(mesh);
-	}
-
-	@Test
-	public void testNormalsPointOutwards() {
-		MeshTest.assertNormalsPointOutwards(mesh);
-	}
-
 }
