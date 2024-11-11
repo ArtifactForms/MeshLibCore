@@ -12,7 +12,7 @@ public class TriakisOctahedronCreator implements IMeshCreator {
 	
 	@Override
 	public Mesh3D create() {
-		mesh = new Mesh3D();
+		initializeMesh();
 		createVertices();
 		createFaces();
 		return mesh;
@@ -68,6 +68,10 @@ public class TriakisOctahedronCreator implements IMeshCreator {
 		addFace(5,8,13);
 		addFace(6,10,12);
 		addFace(10,7,13);
+	}
+	
+	private void initializeMesh() {
+		mesh = new Mesh3D();
 	}
 	
 	private void addVertex(float x, float y, float z) {
