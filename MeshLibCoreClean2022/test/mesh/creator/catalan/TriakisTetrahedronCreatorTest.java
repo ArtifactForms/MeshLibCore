@@ -74,6 +74,16 @@ public class TriakisTetrahedronCreatorTest {
 		assertTrue(vertices.contains(new Vector3f(1, 1, -1)));
 		assertTrue(vertices.contains(new Vector3f(-1, -1, -1)));
 	}
+	
+	@Test
+	public void containsTetrahedronVertices() {
+		float a = 5f / 3f;
+		List<Vector3f> vertices = mesh.vertices;
+		assertTrue(vertices.contains(new Vector3f(a, a, a)));
+		assertTrue(vertices.contains(new Vector3f(a, -a, -a)));
+		assertTrue(vertices.contains(new Vector3f(-a, -a, a)));
+		assertTrue(vertices.contains(new Vector3f(-a, a, -a)));
+	}
 
 	@Test
 	public void testEdgeCount() {
