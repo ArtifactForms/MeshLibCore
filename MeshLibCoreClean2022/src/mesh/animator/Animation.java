@@ -6,9 +6,13 @@ import java.util.List;
 public class Animation {
 
 	private boolean finished;
+	
 	private float tpf;
+	
 	private long lastTime;
+	
 	private boolean running;
+	
 	private List<IAnimator> animators;
 
 	public Animation() {
