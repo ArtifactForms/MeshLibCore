@@ -190,8 +190,11 @@ public class CatmullClarkModifier implements IMeshModifier {
 	private class VertexData {
 
 		private int index;
+		
 		private int numberOfOutgoingEdges;
+		
 		private List<Vector3f> facePoints;
+		
 		private List<Vector3f> edgePoints;
 
 		public VertexData() {
