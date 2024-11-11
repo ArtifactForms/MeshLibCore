@@ -9,7 +9,9 @@ import mesh.io.SimpleObjectReader;
 public class FromObjectCreator implements IMeshCreator {
 
 	private float scale;
+	
 	private String path;
+	
 	private Mesh3D mesh;
 
 	public FromObjectCreator() {
@@ -27,7 +29,7 @@ public class FromObjectCreator implements IMeshCreator {
 	}
 
 	private boolean noNeedToLoadFile() {
-		return path == null || path.isEmpty() || path.isBlank();
+		return path == null || path.isEmpty();
 	}
 
 	private void readMeshFromFile() {

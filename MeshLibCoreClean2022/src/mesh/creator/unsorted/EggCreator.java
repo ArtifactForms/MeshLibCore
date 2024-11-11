@@ -9,8 +9,11 @@ import mesh.util.Mesh3DUtil;
 public class EggCreator implements IMeshCreator {
 
 	private float size;
+	
 	private float topScale;
+	
 	private int subdivisions;
+	
 	private Mesh3D mesh;
 
 	public EggCreator() {

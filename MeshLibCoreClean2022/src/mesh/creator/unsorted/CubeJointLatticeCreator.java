@@ -9,13 +9,21 @@ import mesh.util.Mesh3DUtil;
 public class CubeJointLatticeCreator implements IMeshCreator {
 
 	private int subdivisionsX;
+	
 	private int subdivisionsY;
+	
 	private float tileSizeX;
+	
 	private float tileSizeY;
+	
 	private float jointSize;
+	
 	private float scaleX;
+	
 	private float scaleY;
+	
 	private Mesh3D mesh;
+	
 	private Mesh3D[][] cubes;
 
 	public CubeJointLatticeCreator() {

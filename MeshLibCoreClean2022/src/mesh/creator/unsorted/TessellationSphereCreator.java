@@ -13,9 +13,13 @@ import mesh.util.Mesh3DUtil;
 public class TessellationSphereCreator implements IMeshCreator {
 
 	private float radius;
+	
 	private float thickness;
+	
 	private float scaleExtrude;
+	
 	private int subdivisions;
+	
 	private Mesh3D mesh;
 
 	public TessellationSphereCreator() {

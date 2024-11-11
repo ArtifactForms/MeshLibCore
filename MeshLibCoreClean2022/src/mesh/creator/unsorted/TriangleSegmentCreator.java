@@ -12,8 +12,11 @@ import mesh.util.Mesh3DUtil;
 public class TriangleSegmentCreator implements IMeshCreator {
 
 	private float size;
+	
 	private float height;
+	
 	private float scaleExtrude;
+	
 	private Mesh3D mesh;
 
 	public TriangleSegmentCreator() {
