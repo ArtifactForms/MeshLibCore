@@ -13,10 +13,14 @@ import mesh.util.Bounds3;
 
 public class Mesh3D {
 
+	public Vector3f translation;
+	
 	public ArrayList<Vector3f> vertices;
+	
 	public ArrayList<Face3D> faces;
 
 	public Mesh3D() {
+		translation = new Vector3f();
 		vertices = new ArrayList<Vector3f>();
 		faces = new ArrayList<Face3D>();
 	}
