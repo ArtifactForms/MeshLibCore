@@ -1,6 +1,8 @@
 <a href="https://codeclimate.com/github/ArtifactForms/MeshLibCore/maintainability"><img src="https://api.codeclimate.com/v1/badges/c860a89479fdedd6be77/maintainability" /></a>
-# Artifact Forms
-A *JAVA* library to construct and manipulate geometry in Three-dimensional space.
+
+# ArtifactForms: A Java Library for 3D Geometry Manipulation
+
+ArtifactForms is a Java library that simplifies the creation and manipulation of 3D geometry. It provides a user-friendly API for building meshes, applying modifiers, and working with common 3D shapes. Whether you're a beginner or an experienced developer, MeshLibCore can help you streamline your 3D development workflow.
 
 ## Background / Intension
 This library is a hobby project started around 2015/2016 with the intension to learn more about
