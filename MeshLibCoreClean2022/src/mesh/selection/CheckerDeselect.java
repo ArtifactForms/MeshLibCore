@@ -8,52 +8,52 @@ import mesh.util.TraverseHelper;
 
 public class CheckerDeselect {
 
-	private FaceSelection selection;
-	
-	private ArrayList<Face3D> faces;
-	
-	private TraverseHelper helper;
-	
-	private HashSet<Face3D> processed;
+    private FaceSelection selection;
 
-	public CheckerDeselect(FaceSelection selection) {
-		this.selection = selection;
-		this.faces = new ArrayList<Face3D>();
-		this.helper = new TraverseHelper(selection.getMesh());
-		this.processed = new HashSet<Face3D>();
-	}
+    private ArrayList<Face3D> faces;
 
-	public void deselect() {
-		this.faces.addAll(selection.getFaces());
-		processed.clear();
+    private TraverseHelper helper;
 
-		if (faces.isEmpty())
-			return;
-		Face3D start = faces.get(0);
-		select(start, false);
-		selection.clear();
-		selection.addAll(faces);
-	}
+    private HashSet<Face3D> processed;
 
-	public void select(Face3D face, boolean select) {
-		if (face == null)
-			return;
+    public CheckerDeselect(FaceSelection selection) {
+        this.selection = selection;
+        this.faces = new ArrayList<Face3D>();
+        this.helper = new TraverseHelper(selection.getMesh());
+        this.processed = new HashSet<Face3D>();
+    }
 
-		if (processed.contains(face))
-			return;
+    public void deselect() {
+        this.faces.addAll(selection.getFaces());
+        processed.clear();
 
-		processed.add(face);
+        if (faces.isEmpty())
+            return;
+        Face3D start = faces.get(0);
+        select(start, false);
+        selection.clear();
+        selection.addAll(faces);
+    }
 
-		if (select) {
-			faces.remove(face);
-		}
+    public void select(Face3D face, boolean select) {
+        if (face == null)
+            return;
 
-		for (int i = 0; i < face.indices.length; i++) {
-			int from = face.indices[i];
-			int to = face.indices[(i + 1) % face.indices.length];
-			Face3D pair = helper.getFaceByEdge(to, from);
-			select(pair, !select);
-		}
-	}
+        if (processed.contains(face))
+            return;
+
+        processed.add(face);
+
+        if (select) {
+            faces.remove(face);
+        }
+
+        for (int i = 0; i < face.indices.length; i++) {
+            int from = face.indices[i];
+            int to = face.indices[(i + 1) % face.indices.length];
+            Face3D pair = helper.getFaceByEdge(to, from);
+            select(pair, !select);
+        }
+    }
 
 }
