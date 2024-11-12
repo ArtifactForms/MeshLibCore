@@ -1,5 +1,7 @@
 package mesh.modifier.subdivision.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +63,7 @@ public class QuadsToTrianglesTest {
     public void subdividedCubeHasNoLooseVertices() {
         Mesh3D mesh = new CubeCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertMeshHasNoLooseVertices(mesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test
@@ -92,7 +94,7 @@ public class QuadsToTrianglesTest {
     public void subdividedSnubCubeHasNoLooseVertices() {
         Mesh3D mesh = new SnubCubeCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertMeshHasNoLooseVertices(mesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test

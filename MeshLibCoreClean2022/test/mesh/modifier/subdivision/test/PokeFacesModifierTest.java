@@ -1,5 +1,7 @@
 package mesh.modifier.subdivision.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.junit.Assert;
@@ -81,7 +83,7 @@ public class PokeFacesModifierTest {
     public void modifiedMeshDoesNotContainAnyLooseVertices() {
         Mesh3D mesh = new CapsuleCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertMeshHasNoLooseVertices(mesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test

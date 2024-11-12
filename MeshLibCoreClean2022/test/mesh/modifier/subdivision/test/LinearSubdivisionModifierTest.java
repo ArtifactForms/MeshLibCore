@@ -1,5 +1,7 @@
 package mesh.modifier.subdivision.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -78,14 +80,14 @@ public class LinearSubdivisionModifierTest {
     @Test
     public void subdividedCubeHasNoLooseVertices() {
         modifier.modify(cubeMesh);
-        MeshTest.assertMeshHasNoLooseVertices(cubeMesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(cubeMesh));
     }
 
     @Test
     public void twiceSubdividedCubeHasNoLooseVertices() {
         modifier.modify(cubeMesh);
         modifier.modify(cubeMesh);
-        MeshTest.assertMeshHasNoLooseVertices(cubeMesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(cubeMesh));
     }
 
     @Test
@@ -118,7 +120,7 @@ public class LinearSubdivisionModifierTest {
     @Test
     public void subdividedCuveHasNoDuplicatedFaces() {
         modifier.modify(cubeMesh);
-        MeshTest.assertMeshHasNoDuplicatedFaces(cubeMesh);
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(cubeMesh));
     }
 
     @Test
@@ -161,7 +163,7 @@ public class LinearSubdivisionModifierTest {
     public void subdividedIcosahedronHasNoLooseVertices() {
         Mesh3D mesh = new IcosahedronCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertMeshHasNoLooseVertices(mesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test
@@ -254,7 +256,7 @@ public class LinearSubdivisionModifierTest {
         CuboctahedronCreator creator = new CuboctahedronCreator();
         Mesh3D mesh = creator.create();
         modifier.modify(mesh);
-        MeshTest.assertMeshHasNoLooseVertices(mesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test
@@ -262,7 +264,7 @@ public class LinearSubdivisionModifierTest {
         CuboctahedronCreator creator = new CuboctahedronCreator();
         Mesh3D mesh = creator.create();
         modifier.modify(mesh);
-        MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(mesh));
     }
 
     @Test

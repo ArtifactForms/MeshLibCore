@@ -1,5 +1,7 @@
 package mesh.modifier.subdivision.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,12 +48,12 @@ public class PlanarVertexCenterPlaneTest {
 
     @Test
     public void resultMeshHasNoLooseVertices() {
-        MeshTest.assertMeshHasNoLooseVertices(plane);
+        assertTrue(MeshTest.meshHasNoLooseVertices(plane));
     }
 
     @Test
     public void resultMeshHasNoDuplicatedFaces() {
-        MeshTest.assertMeshHasNoDuplicatedFaces(plane);
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(plane));
     }
 
     @Test
