@@ -32,9 +32,11 @@ public class TorusCreator implements IMeshCreator {
             float v = i * stepV;
             for (int j = 0; j < minorSegments; j++) {
                 float u = j * stepU;
-                float x = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
+                float x = (majorRadius + minorRadius * Mathf.cos(u))
+                        * Mathf.cos(v);
                 float y = minorRadius * Mathf.sin(u);
-                float z = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
+                float z = (majorRadius + minorRadius * Mathf.cos(u))
+                        * Mathf.sin(v);
                 addVertex(x, y, z);
             }
         }

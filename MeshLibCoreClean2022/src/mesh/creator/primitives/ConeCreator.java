@@ -135,7 +135,8 @@ public class ConeCreator implements IMeshCreator {
     }
 
     private boolean shouldNotCreate() {
-        return radiiAreZero() || height == 0 || rotationSegments == 0 || heightSegments == 0;
+        return radiiAreZero() || height == 0 || rotationSegments == 0
+                || heightSegments == 0;
     }
 
     private boolean radiiAreZero() {

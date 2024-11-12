@@ -34,7 +34,8 @@ public class GridCreator implements IMeshCreator {
         this.tileSizeZ = (radius + radius) / subdivisionsZ;
     }
 
-    public GridCreator(int subdivisionsX, int subdivisionsZ, float tileSizeX, float tileSizeZ) {
+    public GridCreator(int subdivisionsX, int subdivisionsZ, float tileSizeX,
+            float tileSizeZ) {
         this.subdivisionsX = subdivisionsX;
         this.subdivisionsZ = subdivisionsZ;
         this.tileSizeX = tileSizeX;

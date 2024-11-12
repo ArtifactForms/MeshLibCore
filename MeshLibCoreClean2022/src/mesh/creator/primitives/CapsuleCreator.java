@@ -61,7 +61,8 @@ public class CapsuleCreator implements IMeshCreator {
         mesh = new Mesh3D();
     }
 
-    private void createCapVertices(int a, float radius, float height, int segments) {
+    private void createCapVertices(int a, float radius, float height,
+            int segments) {
         float yOffset = cylinderHeight / 2.0f * a;
         float stepTheta = Mathf.HALF_PI / segments;
         float stepPhi = Mathf.TWO_PI / rotationSegments;
@@ -84,9 +85,11 @@ public class CapsuleCreator implements IMeshCreator {
         float angle = Mathf.TWO_PI / rotationSegments;
         for (int i = 0; i <= cylinderSegments; i++) {
             for (int j = 0; j < rotationSegments; j++) {
-                float x = (topRadius - (i * radiusStep)) * (Mathf.cos(j * angle));
+                float x = (topRadius - (i * radiusStep))
+                        * (Mathf.cos(j * angle));
                 float y = i * segmentHeight - (cylinderHeight / 2f);
-                float z = (topRadius - (i * radiusStep)) * (Mathf.sin(j * angle));
+                float z = (topRadius - (i * radiusStep))
+                        * (Mathf.sin(j * angle));
                 mesh.addVertex(x, y, z);
             }
         }

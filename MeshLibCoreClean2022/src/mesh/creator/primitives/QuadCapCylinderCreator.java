@@ -41,9 +41,11 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 
     private void validateParameters() {
         if (vertices % 2 == 1)
-            throw new IllegalArgumentException("The number of vertices must be even.");
+            throw new IllegalArgumentException(
+                    "The number of vertices must be even.");
         if (vertices < 4)
-            throw new IllegalArgumentException("The number of vertices must be greater or equal to 4.");
+            throw new IllegalArgumentException(
+                    "The number of vertices must be greater or equal to 4.");
     }
 
     private List<Vector3f> getBorderVerticesFromGrid(Mesh3D grid) {
@@ -95,7 +97,8 @@ public class QuadCapCylinderCreator implements IMeshCreator {
     private Mesh3D createCap() {
         float a = Mathf.TWO_PI / vertices;
         Mesh3D mesh = new CircleCreator(vertices, radius, -height / 2).create();
-        Mesh3D grid = new GridCreator(capCols, capRows, 1).create().translateY(-1);
+        Mesh3D grid = new GridCreator(capCols, capRows, 1).create()
+                .translateY(-1);
 
         mesh.rotateY(Mathf.HALF_PI + (capCols % 2 == 1 ? -a / 2f : 0));
 
@@ -110,8 +113,10 @@ public class QuadCapCylinderCreator implements IMeshCreator {
         for (int i = 0; i < gridTopBorderVertices.size(); i++) {
             Vector3f v0 = mesh.getVertexAt(i);
             Vector3f v1 = mesh.getVertexAt((i + 1) % vertices);
-            Vector3f v3 = gridTopBorderVertices.get((idx + i + 1) % gridTopBorderVertices.size());
-            Vector3f v2 = gridTopBorderVertices.get((idx + i) % gridTopBorderVertices.size());
+            Vector3f v3 = gridTopBorderVertices
+                    .get((idx + i + 1) % gridTopBorderVertices.size());
+            Vector3f v2 = gridTopBorderVertices
+                    .get((idx + i) % gridTopBorderVertices.size());
             Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
         }
 

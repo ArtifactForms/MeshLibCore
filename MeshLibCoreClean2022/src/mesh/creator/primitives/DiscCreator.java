@@ -34,7 +34,8 @@ public class DiscCreator implements IMeshCreator {
     }
 
     private int toOneDimensionalIndex(int i, int j) {
-        return Mathf.toOneDimensionalIndex(i, j % rotationSegments, rotationSegments);
+        return Mathf.toOneDimensionalIndex(i, j % rotationSegments,
+                rotationSegments);
     }
 
     private void createDisc(int segments, float startRadius) {

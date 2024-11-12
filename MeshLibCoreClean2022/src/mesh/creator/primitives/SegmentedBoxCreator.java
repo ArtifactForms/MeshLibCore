@@ -64,27 +64,32 @@ public class SegmentedBoxCreator implements IMeshCreator {
         mesh = new Mesh3D();
     }
 
-    private Mesh3D createGrid(int subdivisionsX, int subdivisionsZ, float tileSizeX, float tileSizeZ) {
-        GridCreator creator = new GridCreator(subdivisionsX, subdivisionsZ, tileSizeX, tileSizeZ);
+    private Mesh3D createGrid(int subdivisionsX, int subdivisionsZ,
+            float tileSizeX, float tileSizeZ) {
+        GridCreator creator = new GridCreator(subdivisionsX, subdivisionsZ,
+                tileSizeX, tileSizeZ);
         return creator.create();
     }
 
     private void createFront() {
-        Mesh3D front = createGrid(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
+        Mesh3D front = createGrid(segmentsX, segmentsY, segmentSizeX,
+                segmentSizeY);
         front.rotateX(-Mathf.HALF_PI);
         front.translateZ(depth / 2f);
         mesh.append(front);
     }
 
     private void createBack() {
-        Mesh3D back = createGrid(segmentsX, segmentsY, segmentSizeX, segmentSizeY);
+        Mesh3D back = createGrid(segmentsX, segmentsY, segmentSizeX,
+                segmentSizeY);
         back.rotateX(Mathf.HALF_PI);
         back.translateZ(-depth / 2f);
         mesh.append(back);
     }
 
     private void createLeft() {
-        Mesh3D left = createGrid(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
+        Mesh3D left = createGrid(segmentsZ, segmentsY, segmentSizeZ,
+                segmentSizeY);
         left.rotateX(Mathf.HALF_PI);
         left.rotateY(Mathf.HALF_PI);
         left.translateX(-width / 2f);
@@ -92,7 +97,8 @@ public class SegmentedBoxCreator implements IMeshCreator {
     }
 
     private void createRight() {
-        Mesh3D right = createGrid(segmentsZ, segmentsY, segmentSizeZ, segmentSizeY);
+        Mesh3D right = createGrid(segmentsZ, segmentsY, segmentSizeZ,
+                segmentSizeY);
         right.rotateX(Mathf.HALF_PI);
         right.rotateY(-Mathf.HALF_PI);
         right.translateX(width / 2f);
@@ -100,13 +106,15 @@ public class SegmentedBoxCreator implements IMeshCreator {
     }
 
     private void createTop() {
-        Mesh3D top = createGrid(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
+        Mesh3D top = createGrid(segmentsX, segmentsZ, segmentSizeX,
+                segmentSizeZ);
         top.translateY(-height / 2f);
         mesh.append(top);
     }
 
     private void createBottom() {
-        Mesh3D bottom = createGrid(segmentsX, segmentsZ, segmentSizeX, segmentSizeZ);
+        Mesh3D bottom = createGrid(segmentsX, segmentsZ, segmentSizeX,
+                segmentSizeZ);
         bottom.rotateX(-Mathf.PI);
         bottom.translateY(height / 2f);
         mesh.append(bottom);
