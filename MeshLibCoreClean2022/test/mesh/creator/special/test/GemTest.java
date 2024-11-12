@@ -335,10 +335,10 @@ public class GemTest {
     }
 
     @Test
-    public void normalsPointOutward() {
+    public void testNormalsPointOutwards() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
-        MeshTest.assertNormalsPointOutwards(gem);
+        assertTrue(MeshTest.normalsPointOutwards(gem));
     }
 
 }

@@ -11,6 +11,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 import mesh.creator.special.DiamondCreator;
+import mesh.creator.special.GemCreator;
 import mesh.selection.FaceSelection;
 import util.MeshTest;
 
@@ -389,6 +390,11 @@ public class DiamondTest {
     @Test
     public void meshHasNoDuplicatedFaces() {
         assertTrue(MeshTest.meshHasNoDuplicatedFaces(new DiamondCreator().create()));
+    }
+    
+    @Test
+    public void testNormalsPointOutwards() {
+        assertTrue(MeshTest.normalsPointOutwards(new GemCreator().create()));
     }
 
 }
