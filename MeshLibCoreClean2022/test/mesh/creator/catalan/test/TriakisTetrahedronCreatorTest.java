@@ -104,12 +104,12 @@ public class TriakisTetrahedronCreatorTest {
 
     @Test
     public void testNoDuplicatedFaces() {
-        MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(mesh));
     }
 
     @Test
     public void testMeshHasNoLooseVertices() {
-        MeshTest.assertMeshHasNoLooseVertices(mesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test

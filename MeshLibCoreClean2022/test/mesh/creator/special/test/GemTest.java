@@ -1,5 +1,7 @@
 package mesh.creator.special.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -322,14 +324,14 @@ public class GemTest {
     public void createdMeshHasNoLooseVertices() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
-        MeshTest.assertMeshHasNoLooseVertices(gem);
+        assertTrue(MeshTest.meshHasNoLooseVertices(gem));
     }
 
     @Test
     public void createdMeshHasNoDuplicatedFaces() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
-        MeshTest.assertMeshHasNoDuplicatedFaces(gem);
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(gem));
     }
 
     @Test

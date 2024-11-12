@@ -1,5 +1,7 @@
 package mesh.creator.special.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -381,12 +383,12 @@ public class DiamondTest {
 
     @Test
     public void meshHasNoLooseVertices() {
-        MeshTest.assertMeshHasNoLooseVertices(new DiamondCreator().create());
+        assertTrue(MeshTest.meshHasNoLooseVertices(new DiamondCreator().create()));
     }
 
     @Test
     public void meshHasNoDuplicatedFaces() {
-        MeshTest.assertMeshHasNoDuplicatedFaces(new DiamondCreator().create());
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(new DiamondCreator().create()));
     }
 
 }

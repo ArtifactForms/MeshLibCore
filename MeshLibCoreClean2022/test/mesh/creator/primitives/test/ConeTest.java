@@ -1,5 +1,7 @@
 package mesh.creator.primitives.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +81,7 @@ public class ConeTest {
 
     @Test
     public void createdMeshHasNoLooseVertices() {
-        MeshTest.assertMeshHasNoLooseVertices(cone);
+        assertTrue(MeshTest.meshHasNoLooseVertices(cone));
     }
 
     @Test
@@ -89,7 +91,7 @@ public class ConeTest {
 
     @Test
     public void createdMeshHasNoDuplicatedFaces() {
-        MeshTest.assertMeshHasNoDuplicatedFaces(cone);
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(cone));
     }
 
     @Test

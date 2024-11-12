@@ -1,6 +1,7 @@
 package mesh.creator.catalan.test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -94,12 +95,12 @@ public class RhombicDodecahedronCreatorTest {
 
     @Test
     public void testNoDuplicatedFaces() {
-        MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(mesh));
     }
 
     @Test
     public void testMeshHasNoLooseVertices() {
-        MeshTest.assertMeshHasNoLooseVertices(mesh);
+        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test
