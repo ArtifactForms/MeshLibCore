@@ -44,13 +44,13 @@ public class ProfileWallCreatorBaseTest {
 
     @Test
     public void createdMeshHasNoLooseVertices() {
-        MeshTest.assertMeshHasNoLooseVertices(mesh);
+        Assert.assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test
     public void createdMeshHasNoDuplicatedFaces() {
         // Running this test is very time expensive
-        MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
+        Assert.assertTrue(MeshTest.meshHasNoDuplicatedFaces(mesh));
     }
 
     @Test

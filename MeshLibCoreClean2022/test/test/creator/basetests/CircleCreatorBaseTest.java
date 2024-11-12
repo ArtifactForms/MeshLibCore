@@ -50,7 +50,7 @@ public class CircleCreatorBaseTest {
     @Test
     public void createdMeshHasNoDuplicatedFaces() {
         // Running this test is very time expensive
-        MeshTest.assertMeshHasNoDuplicatedFaces(mesh);
+        Assert.assertTrue(MeshTest.meshHasNoDuplicatedFaces(mesh));
     }
 
     @Test

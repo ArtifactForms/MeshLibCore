@@ -15,6 +15,32 @@ import mesh.util.TraverseHelper;
 
 public class MeshTest {
 
+    public static boolean meshHasNoDuplicatedFaces(Mesh3D mesh) {
+        int duplicatedFaces = 0;
+
+        for (Face3D face0 : mesh.getFaces()) {
+            for (Face3D face1 : mesh.getFaces()) {
+                if (face0 != face1 && face0.sharesSameIndices(face1))
+                    duplicatedFaces++;
+            }
+        }
+
+        return duplicatedFaces == 0;
+    }
+
+    public static boolean meshHasNoLooseVertices(Mesh3D mesh) {
+        List<Vector3f> vertices = mesh.getVertices();
+
+        for (Face3D face : mesh.getFaces()) {
+            for (int i = 0; i < face.indices.length; i++) {
+                Vector3f v = mesh.getVertexAt(face.indices[i]);
+                vertices.remove(v);
+            }
+        }
+
+        return vertices.isEmpty();
+    }
+
     public static void assertMeshHasEdgesWithLengthOf(Mesh3D mesh, int expectedEdgeCount, float expectedLength) {
         int actualEdgeCount = 0;
 
@@ -46,32 +72,6 @@ public class MeshTest {
                         "Face normal for a face does not point outwards. Mesh data might be corrupt or normals need recalculation.");
             }
         }
-    }
-
-    public static void assertMeshHasNoDuplicatedFaces(Mesh3D mesh) {
-        int duplicatedFaces = 0;
-
-        for (Face3D face0 : mesh.getFaces()) {
-            for (Face3D face1 : mesh.getFaces()) {
-                if (face0 != face1 && face0.sharesSameIndices(face1))
-                    duplicatedFaces++;
-            }
-        }
-
-        Assert.assertEquals(0, duplicatedFaces);
-    }
-
-    public static void assertMeshHasNoLooseVertices(Mesh3D mesh) {
-        List<Vector3f> vertices = mesh.getVertices();
-
-        for (Face3D face : mesh.getFaces()) {
-            for (int i = 0; i < face.indices.length; i++) {
-                Vector3f v = mesh.getVertexAt(face.indices[i]);
-                vertices.remove(v);
-            }
-        }
-
-        Assert.assertTrue(vertices.isEmpty());
     }
 
     private static int calculateEdgeCount(Mesh3D mesh) {
