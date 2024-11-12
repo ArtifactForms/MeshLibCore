@@ -100,7 +100,9 @@ public class MeshTest {
         int faceCount = mesh.getFaceCount();
         int vertexCount = mesh.getVertexCount();
         int actual = vertexCount - edgeCount + faceCount;
-        Assert.assertEquals(2, actual);
+        if (actual != 2) {
+            Assert.fail("Euler characteristic not fulfilled: " + actual);
+        }
     }
 
     public static void assertEveryEdgeHasALengthOf(Mesh3D mesh, float expectedEdgeLength, float delta) {
