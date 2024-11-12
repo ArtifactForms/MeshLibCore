@@ -1,5 +1,7 @@
 package mesh.creator.platonic.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +45,7 @@ public class DodecahedronTest {
 
     @Test
     public void fulfillsEulerCharacteristic() {
-        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
 
     @Test
