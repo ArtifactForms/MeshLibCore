@@ -13,18 +13,23 @@ public class MeshCompare {
             Face3D expectedFace = expected.getFaceAt(j);
             Face3D actualFace = actual.getFaceAt(j);
             for (int index = 0; index < expectedFace.indices.length; index++) {
-                Assert.assertEquals(expectedFace.indices[index], actualFace.indices[index]);
+                Assert.assertEquals(expectedFace.indices[index],
+                        actualFace.indices[index]);
             }
         }
     }
 
-    public static void assertVerticesAreEqual(Mesh3D expected, Mesh3D actual, float delta) {
+    public static void assertVerticesAreEqual(Mesh3D expected, Mesh3D actual,
+            float delta) {
         for (int j = 0; j < expected.getVertexCount(); j++) {
             Vector3f expectedVertex = expected.getVertexAt(j);
             Vector3f actualVertex = actual.getVertexAt(j);
-            Assert.assertEquals(expectedVertex.getX(), actualVertex.getX(), delta);
-            Assert.assertEquals(expectedVertex.getY(), actualVertex.getY(), delta);
-            Assert.assertEquals(expectedVertex.getZ(), actualVertex.getZ(), delta);
+            Assert.assertEquals(expectedVertex.getX(), actualVertex.getX(),
+                    delta);
+            Assert.assertEquals(expectedVertex.getY(), actualVertex.getY(),
+                    delta);
+            Assert.assertEquals(expectedVertex.getZ(), actualVertex.getZ(),
+                    delta);
         }
     }
 

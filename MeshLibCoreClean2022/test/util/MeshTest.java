@@ -40,7 +40,7 @@ public class MeshTest {
 
         return vertices.isEmpty();
     }
-    
+
     public static boolean normalsPointOutwards(Mesh3D mesh) {
         Vector3f center = new Vector3f();
         for (Face3D face : mesh.getFaces()) {
@@ -54,7 +54,7 @@ public class MeshTest {
         }
         return true;
     }
-    
+
     private static int calculateEdgeCount(Mesh3D mesh) {
         HashSet<Edge3D> edges = new HashSet<Edge3D>();
 
@@ -71,7 +71,7 @@ public class MeshTest {
 
         return edges.size();
     }
-    
+
     public static boolean fulfillsEulerCharacteristic(Mesh3D mesh) {
         int edgeCount = MeshTest.calculateEdgeCount(mesh);
         int faceCount = mesh.getFaceCount();
@@ -80,7 +80,8 @@ public class MeshTest {
         return actual == 2;
     }
 
-    public static void assertMeshHasEdgesWithLengthOf(Mesh3D mesh, int expectedEdgeCount, float expectedLength) {
+    public static void assertMeshHasEdgesWithLengthOf(Mesh3D mesh,
+            int expectedEdgeCount, float expectedLength) {
         int actualEdgeCount = 0;
 
         TraverseHelper helper = new TraverseHelper(mesh);
@@ -94,68 +95,81 @@ public class MeshTest {
         }
 
         if (expectedEdgeCount != actualEdgeCount) {
-            throw new AssertionError("Expected " + expectedEdgeCount + " edges with length " + expectedLength
-                    + ", but found " + actualEdgeCount);
+            throw new AssertionError("Expected " + expectedEdgeCount
+                    + " edges with length " + expectedLength + ", but found "
+                    + actualEdgeCount);
         }
     }
 
-
-
-    public static void assertEdgeCountEquals(Mesh3D mesh, int expectedEdgeCount) {
+    public static void assertEdgeCountEquals(Mesh3D mesh,
+            int expectedEdgeCount) {
         Assert.assertEquals(calculateEdgeCount(mesh), expectedEdgeCount);
     }
 
-    public static void assertEveryEdgeHasALengthOf(Mesh3D mesh, float expectedEdgeLength, float delta) {
+    public static void assertEveryEdgeHasALengthOf(Mesh3D mesh,
+            float expectedEdgeLength, float delta) {
         for (Face3D face : mesh.faces) {
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v0 = mesh.vertices.get(face.indices[i]);
-                Vector3f v1 = mesh.vertices.get(face.indices[(i + 1) % face.indices.length]);
+                Vector3f v1 = mesh.vertices
+                        .get(face.indices[(i + 1) % face.indices.length]);
                 Assert.assertEquals(expectedEdgeLength, v0.distance(v1), delta);
             }
         }
     }
 
-    public static void assertFaceCountEquals(Mesh3D mesh, int expectedFaceCount) {
+    public static void assertFaceCountEquals(Mesh3D mesh,
+            int expectedFaceCount) {
         Assert.assertEquals(expectedFaceCount, mesh.getFaceCount());
         Assert.assertEquals(expectedFaceCount, mesh.faces.size());
         Assert.assertEquals(expectedFaceCount, mesh.getFaces().size());
-        Assert.assertEquals(expectedFaceCount, mesh.getFaces(0, mesh.getFaceCount()).size());
+        Assert.assertEquals(expectedFaceCount,
+                mesh.getFaces(0, mesh.getFaceCount()).size());
     }
 
-    public static void assertVertexCountEquals(Mesh3D mesh, int expectedVertexCount) {
+    public static void assertVertexCountEquals(Mesh3D mesh,
+            int expectedVertexCount) {
         Assert.assertEquals(expectedVertexCount, mesh.getVertexCount());
         Assert.assertEquals(expectedVertexCount, mesh.vertices.size());
         Assert.assertEquals(expectedVertexCount, mesh.getVertices().size());
-        Assert.assertEquals(expectedVertexCount, mesh.getVertices(0, mesh.getVertexCount()).size());
+        Assert.assertEquals(expectedVertexCount,
+                mesh.getVertices(0, mesh.getVertexCount()).size());
     }
 
-    private static void assertFaceByVertexCount(Mesh3D mesh, int vertices, int expected) {
+    private static void assertFaceByVertexCount(Mesh3D mesh, int vertices,
+            int expected) {
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectByVertexCount(vertices);
         Assert.assertEquals(expected, selection.size());
     }
 
-    public static void assertTriangleCountEquals(Mesh3D mesh, int expectedTriangleCount) {
+    public static void assertTriangleCountEquals(Mesh3D mesh,
+            int expectedTriangleCount) {
         assertFaceByVertexCount(mesh, 3, expectedTriangleCount);
     }
 
-    public static void assertQuadCountEquals(Mesh3D mesh, int expectedQuadCount) {
+    public static void assertQuadCountEquals(Mesh3D mesh,
+            int expectedQuadCount) {
         assertFaceByVertexCount(mesh, 4, expectedQuadCount);
     }
 
-    public static void assertHexagonCountEquals(Mesh3D mesh, int expectedHexagonCount) {
+    public static void assertHexagonCountEquals(Mesh3D mesh,
+            int expectedHexagonCount) {
         assertFaceByVertexCount(mesh, 6, expectedHexagonCount);
     }
 
-    public static void assertPentagonCountEquals(Mesh3D mesh, int expectedPentagonCount) {
+    public static void assertPentagonCountEquals(Mesh3D mesh,
+            int expectedPentagonCount) {
         assertFaceByVertexCount(mesh, 5, expectedPentagonCount);
     }
 
-    public static void assertOctagonCountEquals(Mesh3D mesh, int expectedOctagonCount) {
+    public static void assertOctagonCountEquals(Mesh3D mesh,
+            int expectedOctagonCount) {
         assertFaceByVertexCount(mesh, 8, expectedOctagonCount);
     }
 
-    public static void assertDecagonCountEquals(Mesh3D mesh, int expectedDecagonCount) {
+    public static void assertDecagonCountEquals(Mesh3D mesh,
+            int expectedDecagonCount) {
         assertFaceByVertexCount(mesh, 10, expectedDecagonCount);
     }
 
@@ -163,7 +177,8 @@ public class MeshTest {
         new ManifoldTest(mesh).assertIsManifold();
     }
 
-    public static void assertFaceContainsVertexIndex(Face3D face, int expectedVertexIndex) {
+    public static void assertFaceContainsVertexIndex(Face3D face,
+            int expectedVertexIndex) {
         int count = 0;
         for (int i = 0; i < face.indices.length; i++)
             count += face.indices[i] == expectedVertexIndex ? 1 : 0;
