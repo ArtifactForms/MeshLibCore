@@ -76,7 +76,7 @@ public class ConeTest {
 
     @Test
     public void createdMeshFulfillsEulerCharacteristic() {
-        MeshTest.assertFulfillsEulerCharacteristic(cone);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(cone));
     }
 
     @Test

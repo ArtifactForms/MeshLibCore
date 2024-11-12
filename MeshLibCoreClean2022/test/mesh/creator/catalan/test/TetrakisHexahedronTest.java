@@ -157,7 +157,7 @@ public class TetrakisHexahedronTest {
 
     @Test
     public void testFulfillsEulerCharacteristic() {
-        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
 
     @Test

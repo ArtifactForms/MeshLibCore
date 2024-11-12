@@ -108,7 +108,7 @@ public class TriakisOctahedronCreatorTest {
 
     @Test
     public void testFulfillsEulerCharacteristic() {
-        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
 
     @Test

@@ -54,6 +54,31 @@ public class MeshTest {
         }
         return true;
     }
+    
+    private static int calculateEdgeCount(Mesh3D mesh) {
+        HashSet<Edge3D> edges = new HashSet<Edge3D>();
+
+        for (Face3D face : mesh.faces) {
+            for (int i = 0; i < face.indices.length; i++) {
+                int fromIndex = face.indices[i];
+                int toIndex = face.indices[(i + 1) % face.indices.length];
+                Edge3D edge = new Edge3D(fromIndex, toIndex);
+                Edge3D pair = edge.createPair();
+                if (!edges.contains(pair))
+                    edges.add(edge);
+            }
+        }
+
+        return edges.size();
+    }
+    
+    public static boolean fulfillsEulerCharacteristic(Mesh3D mesh) {
+        int edgeCount = MeshTest.calculateEdgeCount(mesh);
+        int faceCount = mesh.getFaceCount();
+        int vertexCount = mesh.getVertexCount();
+        int actual = vertexCount - edgeCount + faceCount;
+        return actual == 2;
+    }
 
     public static void assertMeshHasEdgesWithLengthOf(Mesh3D mesh, int expectedEdgeCount, float expectedLength) {
         int actualEdgeCount = 0;
@@ -74,35 +99,10 @@ public class MeshTest {
         }
     }
 
-    private static int calculateEdgeCount(Mesh3D mesh) {
-        HashSet<Edge3D> edges = new HashSet<Edge3D>();
 
-        for (Face3D face : mesh.faces) {
-            for (int i = 0; i < face.indices.length; i++) {
-                int fromIndex = face.indices[i];
-                int toIndex = face.indices[(i + 1) % face.indices.length];
-                Edge3D edge = new Edge3D(fromIndex, toIndex);
-                Edge3D pair = edge.createPair();
-                if (!edges.contains(pair))
-                    edges.add(edge);
-            }
-        }
-
-        return edges.size();
-    }
 
     public static void assertEdgeCountEquals(Mesh3D mesh, int expectedEdgeCount) {
         Assert.assertEquals(calculateEdgeCount(mesh), expectedEdgeCount);
-    }
-
-    public static void assertFulfillsEulerCharacteristic(Mesh3D mesh) {
-        int edgeCount = MeshTest.calculateEdgeCount(mesh);
-        int faceCount = mesh.getFaceCount();
-        int vertexCount = mesh.getVertexCount();
-        int actual = vertexCount - edgeCount + faceCount;
-        if (actual != 2) {
-            Assert.fail("Euler characteristic not fulfilled: " + actual);
-        }
     }
 
     public static void assertEveryEdgeHasALengthOf(Mesh3D mesh, float expectedEdgeLength, float delta) {

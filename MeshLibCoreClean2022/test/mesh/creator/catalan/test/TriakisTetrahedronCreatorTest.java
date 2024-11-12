@@ -99,7 +99,7 @@ public class TriakisTetrahedronCreatorTest {
 
     @Test
     public void testFulfillsEulerCharacteristic() {
-        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
 
     @Test

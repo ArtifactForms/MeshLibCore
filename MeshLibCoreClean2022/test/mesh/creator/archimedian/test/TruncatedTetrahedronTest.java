@@ -69,7 +69,7 @@ public class TruncatedTetrahedronTest {
 
     @Test
     public void testFulfillsEulerCharacteristic() {
-        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
 
     @Test

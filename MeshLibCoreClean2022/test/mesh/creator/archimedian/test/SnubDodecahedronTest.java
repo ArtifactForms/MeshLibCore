@@ -51,7 +51,7 @@ public class SnubDodecahedronTest {
 
     @Test
     public void fulfillsEulerCharacteristic() {
-        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
     
     @Test

@@ -1,5 +1,7 @@
 package mesh.creator.primitives.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,7 +40,7 @@ public class BoxCreatorTest {
     @Test
     public void fulfillsEulerCharacteristic() {
         Mesh3D mesh = new BoxCreator().create();
-        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
 
     @Test

@@ -52,7 +52,7 @@ public class SnubCubeTest {
 
     @Test
     public void fulfillsEulerCharacteristic() {
-        MeshTest.assertFulfillsEulerCharacteristic(mesh);
+        assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
 
     @Test
