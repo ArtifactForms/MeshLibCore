@@ -144,7 +144,7 @@ public class QuadsToTrianglesTest {
     public void normalsPointOutwards() {
         Mesh3D cube = new CubeCreator().create();
         modifier.modify(cube);
-        MeshTest.assertNormalsPointOutwards(cube);
+        assertTrue(MeshTest.normalsPointOutwards(cube));
     }
 
 }

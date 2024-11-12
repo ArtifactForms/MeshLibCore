@@ -17,6 +17,7 @@ import mesh.creator.archimedian.CuboctahedronCreator;
 import mesh.creator.platonic.IcosahedronCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
+import mesh.creator.special.GemCreator;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.subdivision.LinearSubdivisionModifier;
 import mesh.util.Bounds3;
@@ -93,9 +94,9 @@ public class LinearSubdivisionModifierTest {
     @Test
     public void subdividedCubeHasFaceNormalPointOutward() {
         modifier.modify(cubeMesh);
-        MeshTest.assertNormalsPointOutwards(cubeMesh);
+        assertTrue(MeshTest.normalsPointOutwards(cubeMesh));
     }
-
+    
     @Test
     public void subdividedCubeContainsVerticesAtOriginalCubePositions() {
         Mesh3D originalCube = new CubeCreator().create();

@@ -90,7 +90,7 @@ public class PokeFacesModifierTest {
     public void normalsPointOutwardsCubeCase() {
         Mesh3D mesh = new CubeCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertNormalsPointOutwards(mesh);
+        assertTrue(MeshTest.normalsPointOutwards(mesh));
     }
 
     @Test
