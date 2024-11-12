@@ -62,7 +62,7 @@ public class RhombicDodecahedronCreatorTest {
     @Test
     public void testQuadCount() {
         int expectedQuadCount = 12;
-        MeshTest.assertQuadCountEquals(mesh, expectedQuadCount);
+        assertTrue(MeshTest.isQuadCountEquals(mesh, expectedQuadCount));
     }
 
     @Test

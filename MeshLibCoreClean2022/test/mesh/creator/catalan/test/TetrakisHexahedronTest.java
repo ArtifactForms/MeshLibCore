@@ -129,7 +129,7 @@ public class TetrakisHexahedronTest {
     @Test
     public void testTriangleCount() {
         int expectedTriangleCount = 24;
-        MeshTest.assertTriangleCountEquals(mesh, expectedTriangleCount);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, expectedTriangleCount));
     }
 
     @Test

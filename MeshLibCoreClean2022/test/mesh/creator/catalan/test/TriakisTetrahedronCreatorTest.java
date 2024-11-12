@@ -64,7 +64,7 @@ public class TriakisTetrahedronCreatorTest {
     @Test
     public void testTriangleCount() {
         int expectedTriangleCount = 12;
-        MeshTest.assertTriangleCountEquals(mesh, expectedTriangleCount);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, expectedTriangleCount));
     }
 
     @Test
