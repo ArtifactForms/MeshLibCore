@@ -31,12 +31,12 @@ public class SnubDodecahedronTest {
 
     @Test
     public void hasEightyTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(mesh, 80);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 80));
     }
 
     @Test
     public void hasTwelvePentagonFaces() {
-        MeshTest.assertPentagonCountEquals(mesh, 12);
+        assertTrue(MeshTest.isPentagonCountEquals(mesh, 12));
     }
 
     @Test

@@ -32,12 +32,12 @@ public class TruncatedDodecahedronTest {
 
     @Test
     public void hasTwentyTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(mesh, 20);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 20));
     }
 
     @Test
     public void hasTwelveDecagons() {
-        MeshTest.assertDecagonCountEquals(mesh, 12);
+        assertTrue(MeshTest.isDecagonCountEquals(mesh, 12));
     }
 
     @Test

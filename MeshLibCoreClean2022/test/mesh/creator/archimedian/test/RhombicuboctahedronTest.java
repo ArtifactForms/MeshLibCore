@@ -31,12 +31,12 @@ public class RhombicuboctahedronTest {
 
     @Test
     public void hasEightTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(mesh, 8);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 8));
     }
 
     @Test
     public void hasEighteenQuadFaces() {
-        MeshTest.assertQuadCountEquals(mesh, 18);
+        assertTrue(MeshTest.isQuadCountEquals(mesh, 18));
     }
 
     @Test

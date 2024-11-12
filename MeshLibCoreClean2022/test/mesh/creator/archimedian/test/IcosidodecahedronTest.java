@@ -31,12 +31,12 @@ public class IcosidodecahedronTest {
 
     @Test
     public void hasTwentyTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(mesh, 20);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 20));
     }
 
     @Test
     public void hasTwelvePentagonFaces() {
-        MeshTest.assertPentagonCountEquals(mesh, 12);
+        assertTrue(MeshTest.isPentagonCountEquals(mesh, 12));
     }
 
     @Test

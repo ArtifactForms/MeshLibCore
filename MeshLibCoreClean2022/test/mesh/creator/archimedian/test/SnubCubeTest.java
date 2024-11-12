@@ -32,12 +32,12 @@ public class SnubCubeTest {
 
     @Test
     public void hasThirtyTwoTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(mesh, 32);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 32));
     }
 
     @Test
     public void hasSixQuadFaces() {
-        MeshTest.assertQuadCountEquals(mesh, 6);
+        assertTrue(MeshTest.isQuadCountEquals(mesh, 6));
     }
 
     @Test

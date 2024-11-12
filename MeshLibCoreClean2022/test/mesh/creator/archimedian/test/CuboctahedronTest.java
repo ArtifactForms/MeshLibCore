@@ -32,12 +32,12 @@ public class CuboctahedronTest {
 
     @Test
     public void hasEightTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(mesh, 8);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 8));
     }
 
     @Test
     public void hasSixQuadFaces() {
-        MeshTest.assertQuadCountEquals(mesh, 6);
+        assertTrue(MeshTest.isQuadCountEquals(mesh, 6));
     }
 
     @Test

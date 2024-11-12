@@ -31,12 +31,12 @@ public class TruncatedCubeTest {
 
     @Test
     public void hasEightTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(mesh, 8);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 8));
     }
 
     @Test
     public void hasSixOctagonFaces() {
-        MeshTest.assertOctagonCountEquals(mesh, 6);
+        assertTrue(MeshTest.isOctagonCountEquals(mesh, 6));
     }
 
     @Test

@@ -32,17 +32,17 @@ public class TruncatedIcosidodecahedronTest {
 
     @Test
     public void hasThirtyQuadFaces() {
-        MeshTest.assertQuadCountEquals(mesh, 30);
+        assertTrue(MeshTest.isQuadCountEquals(mesh, 30));
     }
 
     @Test
     public void hasTwentyHexagonFaces() {
-        MeshTest.assertHexagonCountEquals(mesh, 20);
+        assertTrue(MeshTest.isHexagonCountEquals(mesh, 20));
     }
 
     @Test
     public void hasTwelveDacagonFaces() {
-        MeshTest.assertDecagonCountEquals(mesh, 12);
+        assertTrue(MeshTest.isDecagonCountEquals(mesh, 12));
     }
 
     @Test

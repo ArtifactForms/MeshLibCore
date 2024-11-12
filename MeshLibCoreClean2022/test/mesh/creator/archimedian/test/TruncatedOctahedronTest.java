@@ -32,12 +32,12 @@ public class TruncatedOctahedronTest {
 
     @Test
     public void hasSixQuadFaces() {
-        MeshTest.assertQuadCountEquals(mesh, 6);
+        assertTrue(MeshTest.isQuadCountEquals(mesh, 6));
     }
 
     @Test
     public void hasEightHexagonFaces() {
-        MeshTest.assertHexagonCountEquals(mesh, 8);
+        assertTrue(MeshTest.isHexagonCountEquals(mesh, 8));
     }
 
     @Test

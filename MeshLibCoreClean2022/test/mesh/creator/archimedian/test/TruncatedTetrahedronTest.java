@@ -49,12 +49,12 @@ public class TruncatedTetrahedronTest {
 
     @Test
     public void testTriangularFacesCount() {
-        MeshTest.assertTriangleCountEquals(mesh, 4);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 4));
     }
 
     @Test
     public void testHexagonalFacesCount() {
-        MeshTest.assertHexagonCountEquals(mesh, 4);
+        assertTrue(MeshTest.isHexagonCountEquals(mesh, 4));
     }
 
     @Test

@@ -31,12 +31,12 @@ public class TruncatedIcosahedronTest {
 
     @Test
     public void hasTwelvePentagonFaces() {
-        MeshTest.assertPentagonCountEquals(mesh, 12);
+        assertTrue(MeshTest.isPentagonCountEquals(mesh, 12));
     }
 
     @Test
     public void hasTwentyHexagonFaces() {
-        MeshTest.assertHexagonCountEquals(mesh, 20);
+        assertTrue(MeshTest.isHexagonCountEquals(mesh, 20));
     }
 
     @Test

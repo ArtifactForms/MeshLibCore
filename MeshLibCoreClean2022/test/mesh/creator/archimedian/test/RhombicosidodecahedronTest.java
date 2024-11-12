@@ -31,17 +31,17 @@ public class RhombicosidodecahedronTest {
 
     @Test
     public void hasTwentyTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(mesh, 20);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 20));
     }
 
     @Test
     public void hasThirtyQuadFaces() {
-        MeshTest.assertQuadCountEquals(mesh, 30);
+        assertTrue(MeshTest.isQuadCountEquals(mesh, 30));
     }
 
     @Test
     public void hasTwelvePentagonFaces() {
-        MeshTest.assertPentagonCountEquals(mesh, 12);
+        assertTrue(MeshTest.isPentagonCountEquals(mesh, 12));
     }
 
     @Test
