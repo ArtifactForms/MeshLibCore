@@ -33,24 +33,28 @@ public class Vector3f {
      * Shorthand for writing Vector3f(Float.MAX_VALUE, Float.MAX_VALUE,
      * Float.MAX_VALUE).
      */
-    public static final Vector3f MAX = new Vector3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
+    public static final Vector3f MAX = new Vector3f(Float.MAX_VALUE,
+            Float.MAX_VALUE, Float.MAX_VALUE);
 
     /**
      * Shorthand for writing Vector3f(Float.MIN_VALUE, Float.MIN_VALUE,
      * FLoat.MIN_VALUE).
      */
-    public static final Vector3f MIN = new Vector3f(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
+    public static final Vector3f MIN = new Vector3f(Float.MIN_VALUE,
+            Float.MIN_VALUE, Float.MIN_VALUE);
 
     /**
      * Shorthand for writing Vector3f(Float.NaN, Float.NaN, FLoat.NaN).
      */
-    public static final Vector3f NAN = new Vector3f(Float.NaN, Float.NaN, Float.NaN);
+    public static final Vector3f NAN = new Vector3f(Float.NaN, Float.NaN,
+            Float.NaN);
 
     /**
      * Shorthand for writing Vector3f(Float.NEGATIVE_INFINITY,
      * Float.NEGATIVE_INFINITY, FLoat.NEGATIVE_INFINITY).
      */
-    public static final Vector3f NEGATIVE_INFINITY = new Vector3f(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY,
+    public static final Vector3f NEGATIVE_INFINITY = new Vector3f(
+            Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY,
             Float.NEGATIVE_INFINITY);
 
     /**
@@ -62,7 +66,8 @@ public class Vector3f {
      * Shorthand for writing Vector3f(Float.POSITIVE_INFINITY,
      * Float.POSITIVE_INFINITY, FLoat.POSITIVE_INFINITY).
      */
-    public static final Vector3f POSITIVE_INFINITY = new Vector3f(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY,
+    public static final Vector3f POSITIVE_INFINITY = new Vector3f(
+            Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY,
             Float.POSITIVE_INFINITY);
 
     /**
@@ -115,8 +120,8 @@ public class Vector3f {
     }
 
     /**
-     * Rounds the x, y, and z components of this vector to the specified number of
-     * decimal places.
+     * Rounds the x, y, and z components of this vector to the specified number
+     * of decimal places.
      *
      * @param decimalPlaces The number of decimal places to round to.
      */
@@ -129,7 +134,8 @@ public class Vector3f {
 
     public boolean approximatelyEquals(Vector3f v, float threshold) {
         if (threshold < 0.0f)
-            throw new IllegalArgumentException("Threshold must be greater or equal to 0.0f.");
+            throw new IllegalArgumentException(
+                    "Threshold must be greater or equal to 0.0f.");
 
         float diffX = Math.abs(x - v.x);
         float diffY = Math.abs(y - v.y);
@@ -229,7 +235,8 @@ public class Vector3f {
     }
 
     public Vector3f cross(float x, float y, float z) {
-        return new Vector3f((this.y * z) - (this.z * y), (this.z * x) - (this.x * z), (this.x * y) - (this.y * x));
+        return new Vector3f((this.y * z) - (this.z * y),
+                (this.z * x) - (this.x * z), (this.x * y) - (this.y * x));
     }
 
     public Vector3f crossLocal(float x, float y, float z) {
@@ -240,7 +247,8 @@ public class Vector3f {
     }
 
     public Vector3f cross(Vector3f v) {
-        return new Vector3f((y * v.z) - (z * v.y), (z * v.x) - (x * v.z), (x * v.y) - (y * v.x));
+        return new Vector3f((y * v.z) - (z * v.y), (z * v.x) - (x * v.z),
+                (x * v.y) - (y * v.x));
     }
 
     public Vector3f crossLocal(Vector3f v) {
@@ -428,7 +436,8 @@ public class Vector3f {
     }
 
     public Vector3f min(Vector3f v) {
-        return new Vector3f(Math.min(x, v.x), Math.min(y, v.y), Math.min(z, v.z));
+        return new Vector3f(Math.min(x, v.x), Math.min(y, v.y),
+                Math.min(z, v.z));
     }
 
     public Vector3f minLocal(Vector3f v) {
@@ -446,7 +455,8 @@ public class Vector3f {
     }
 
     public Vector3f max(Vector3f v) {
-        return new Vector3f(Math.max(x, v.x), Math.max(y, v.y), Math.max(z, v.z));
+        return new Vector3f(Math.max(x, v.x), Math.max(y, v.y),
+                Math.max(z, v.z));
     }
 
     public Vector3f maxLocal(Vector3f v) {
@@ -470,7 +480,8 @@ public class Vector3f {
         return this;
     }
 
-    public Vector3f lerpLocal(Vector3f beginVec, Vector3f finalVec, float changeAmnt) {
+    public Vector3f lerpLocal(Vector3f beginVec, Vector3f finalVec,
+            float changeAmnt) {
         this.x = (1 - changeAmnt) * beginVec.x + changeAmnt * finalVec.x;
         this.y = (1 - changeAmnt) * beginVec.y + changeAmnt * finalVec.y;
         this.z = (1 - changeAmnt) * beginVec.z + changeAmnt * finalVec.z;
@@ -505,7 +516,8 @@ public class Vector3f {
             return false;
         if (Float.isNaN(v.x) || Float.isNaN(v.y) || Float.isNaN(v.z))
             return false;
-        if (Float.isInfinite(v.x) || Float.isInfinite(v.y) || Float.isInfinite(v.z))
+        if (Float.isInfinite(v.x) || Float.isInfinite(v.y)
+                || Float.isInfinite(v.z))
             return false;
         return true;
     }
