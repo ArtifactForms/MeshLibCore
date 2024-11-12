@@ -123,7 +123,7 @@ public class TriakisOctahedronCreatorTest {
 
     @Test
     public void testNormalsPointOutwards() {
-        MeshTest.assertNormalsPointOutwards(mesh);
+        assertTrue(MeshTest.normalsPointOutwards(mesh));
     }
 
     /**
