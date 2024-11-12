@@ -1,5 +1,7 @@
 package mesh.creator.archimedian.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +57,11 @@ public class RhombicuboctahedronTest {
     @Test
     public void everyEdgeHasLengthOfTwo() {
         MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, 0);
+    }
+    
+    @Test
+    public void testNormalsPointOutwards() {
+        assertTrue(MeshTest.normalsPointOutwards(mesh));
     }
 
 }

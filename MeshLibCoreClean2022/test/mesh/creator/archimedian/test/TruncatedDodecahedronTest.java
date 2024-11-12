@@ -1,5 +1,7 @@
 package mesh.creator.archimedian.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +60,11 @@ public class TruncatedDodecahedronTest {
         float delta = 0.000001f;
         float expcted = 2 * Mathf.GOLDEN_RATIO - 2;
         MeshTest.assertEveryEdgeHasALengthOf(mesh, expcted, delta);
+    }
+    
+    @Test
+    public void testNormalsPointOutwards() {
+        assertTrue(MeshTest.normalsPointOutwards(mesh));
     }
 
 }

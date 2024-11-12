@@ -74,7 +74,7 @@ public class TruncatedTetrahedronTest {
 
     @Test
     public void testNormalsPointOutwards() {
-        MeshTest.assertNormalsPointOutwards(mesh);
+        assertTrue(MeshTest.normalsPointOutwards(mesh));
     }
 
     @Test

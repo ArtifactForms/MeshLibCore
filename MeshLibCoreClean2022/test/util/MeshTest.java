@@ -40,6 +40,20 @@ public class MeshTest {
 
         return vertices.isEmpty();
     }
+    
+    public static boolean normalsPointOutwards(Mesh3D mesh) {
+        Vector3f center = new Vector3f();
+        for (Face3D face : mesh.getFaces()) {
+            Vector3f faceNormal = mesh.calculateFaceNormal(face);
+            Vector3f faceCenter = mesh.calculateFaceCenter(face);
+            Vector3f a = faceCenter.subtract(center);
+            float dotProduct = faceNormal.dot(a);
+            if (dotProduct < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static void assertMeshHasEdgesWithLengthOf(Mesh3D mesh, int expectedEdgeCount, float expectedLength) {
         int actualEdgeCount = 0;
@@ -57,20 +71,6 @@ public class MeshTest {
         if (expectedEdgeCount != actualEdgeCount) {
             throw new AssertionError("Expected " + expectedEdgeCount + " edges with length " + expectedLength
                     + ", but found " + actualEdgeCount);
-        }
-    }
-
-    public static void assertNormalsPointOutwards(Mesh3D mesh) {
-        Vector3f center = new Vector3f();
-        for (Face3D face : mesh.getFaces()) {
-            Vector3f faceNormal = mesh.calculateFaceNormal(face);
-            Vector3f faceCenter = mesh.calculateFaceCenter(face);
-            Vector3f a = faceCenter.subtract(center);
-            float dotProduct = faceNormal.dot(a);
-            if (dotProduct < 0) {
-                throw new AssertionError(
-                        "Face normal for a face does not point outwards. Mesh data might be corrupt or normals need recalculation.");
-            }
         }
     }
 

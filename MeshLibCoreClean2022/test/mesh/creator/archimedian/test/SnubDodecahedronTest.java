@@ -1,5 +1,7 @@
 package mesh.creator.archimedian.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +52,11 @@ public class SnubDodecahedronTest {
     @Test
     public void fulfillsEulerCharacteristic() {
         MeshTest.assertFulfillsEulerCharacteristic(mesh);
+    }
+    
+    @Test
+    public void testNormalsPointOutwards() {
+        assertTrue(MeshTest.normalsPointOutwards(mesh));
     }
 
 }
