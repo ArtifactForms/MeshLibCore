@@ -1,5 +1,7 @@
 package mesh.test.catmullclark;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
 import org.junit.Assert;
@@ -146,7 +148,7 @@ public class CatmullClarkTest {
     public void resultConsistsOfQuadsOnly() {
         Mesh3D cube = new CubeCreator().create();
         int faceCount = cube.getFaceCount();
-        MeshTest.assertQuadCountEquals(cube, faceCount);
+        assertTrue(MeshTest.isQuadCountEquals(cube, faceCount));
     }
 
 }
