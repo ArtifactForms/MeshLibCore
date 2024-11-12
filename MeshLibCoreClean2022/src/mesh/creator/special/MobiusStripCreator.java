@@ -1,7 +1,6 @@
 package mesh.creator.special;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
@@ -22,53 +21,94 @@ public class MobiusStripCreator implements IMeshCreator {
         radius = 1;
     }
 
-    private void createVertices() {
-        for (int i = 0; i <= rings; i++) {
-            for (int j = 0; j < segments; j++) {
-                float s = Mathf.map(i, 0, rings, -1, 1);
-                float t = Mathf.map(j, 0, segments, 0, Mathf.TWO_PI);
-                float x = (radius + (s * 0.5f) * Mathf.cos(t * 0.5f)) * Mathf.cos(t);
-                float z = (radius + (s * 0.5f) * Mathf.cos(t * 0.5f)) * Mathf.sin(t);
-                float y = (s * 0.5f) * Mathf.sin(t * 0.5f);
-                mesh.add(new Vector3f(x, y, z));
-            }
-        }
-    }
-
-    private int getIndex(int row, int col) {
-        int idx = segments * row + col;
-        return idx % mesh.vertices.size();
-    }
-
-    private void createFaces() {
-        for (int row = 0; row < rings; row++) {
-            for (int col = 0; col < segments - 1; col++) {
-                int a = getIndex(row, (col + 1) % segments);
-                int b = getIndex(row + 1, (col + 1) % segments);
-                int c = getIndex(row + 1, col);
-                int d = getIndex(row, col);
-                mesh.add(new Face3D(a, b, c, d));
-            }
-        }
-        for (int i = 0; i < rings; i++) {
-            int a = getIndex(i, segments - 1);
-            int b = getIndex(i + 1, segments - 1);
-            int c = getIndex(rings - i - 1, 0);
-            int d = getIndex(rings - i, 0);
-            mesh.add(new Face3D(a, b, c, d));
-        }
-    }
-
-    private void initializeMesh() {
-        mesh = new Mesh3D();
-    }
-
     @Override
     public Mesh3D create() {
         initializeMesh();
         createVertices();
         createFaces();
         return mesh;
+    }
+
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
+
+    private void createVertices() {
+        for (int i = 0; i <= rings; i++) {
+            for (int j = 0; j < segments; j++) {
+                createVertexAt(i, j);
+            }
+        }
+    }
+
+    private void createVertexAt(int ring, int segment) {
+        float r = mapToValueBetweenNegativeOneAndOne(ring);
+        float a = mapToValueBetweenZeroAndTwoPi(segment);
+        float x = x(r, a);
+        float z = z(r, a);
+        float y = y(r, a);
+        addVertex(x, y, z);
+    }
+
+    private float mapToValueBetweenZeroAndTwoPi(int segment) {
+        return Mathf.map(segment, 0, segments, 0, Mathf.TWO_PI);
+    }
+
+    private float mapToValueBetweenNegativeOneAndOne(int ring) {
+        return Mathf.map(ring, 0, rings, -1, 1);
+    }
+
+    private float x(float r, float a) {
+        return Mathf.cos(a) * calc(r, a);
+    }
+
+    private float z(float r, float a) {
+        return Mathf.sin(a) * calc(r, a);
+    }
+
+    private float y(float r, float a) {
+        return (r * 0.5f) * Mathf.sin(a * 0.5f);
+    }
+
+    private float calc(float r, float a) {
+        return (radius + (r * 0.5f) * Mathf.cos(a * 0.5f));
+    }
+
+    private void createFaces() {
+        for (int row = 0; row < rings; row++) {
+            for (int col = 0; col < segments - 1; col++) {
+                createFaceAt(row, col);
+            }
+            createLastFaceAt(row);
+        }
+    }
+
+    private void createLastFaceAt(int row) {
+        int a = getIndex(row, segments - 1);
+        int b = getIndex(row + 1, segments - 1);
+        int c = getIndex(rings - row - 1, 0);
+        int d = getIndex(rings - row, 0);
+        addFace(a, b, c, d);
+    }
+
+    private void createFaceAt(int row, int col) {
+        int a = getIndex(row, col + 1);
+        int b = getIndex(row + 1, col + 1);
+        int c = getIndex(row + 1, col);
+        int d = getIndex(row, col);
+        addFace(a, b, c, d);
+    }
+
+    private int getIndex(int row, int col) {
+        return Mathf.toOneDimensionalIndex(row, col % segments, segments);
+    }
+
+    private void addFace(int... indices) {
+        mesh.add(new Face3D(indices));
+    }
+
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
     }
 
     public int getRings() {
