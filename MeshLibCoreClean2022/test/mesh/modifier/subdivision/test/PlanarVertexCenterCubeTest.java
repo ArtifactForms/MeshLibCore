@@ -39,7 +39,7 @@ public class PlanarVertexCenterCubeTest {
 
     @Test
     public void resultMeshHasTwentyFourTriangularFaces() {
-        MeshTest.assertTriangleCountEquals(cube, 24);
+        assertTrue(MeshTest.isTriangleCountEquals(cube, 24));
     }
 
     @Test

@@ -49,14 +49,14 @@ public class QuadsToTrianglesTest {
     public void subdividedPlaneHasTwoTriangularFaces() {
         Mesh3D mesh = new PlaneCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertTriangleCountEquals(mesh, 2);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 2));
     }
 
     @Test
     public void subdividedCubeHasTwelveTriangularFaces() {
         Mesh3D mesh = new CubeCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertTriangleCountEquals(mesh, 12);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 12));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class QuadsToTrianglesTest {
         Mesh3D mesh = new SnubCubeCreator().create();
         int expected = 44;
         modifier.modify(mesh);
-        MeshTest.assertTriangleCountEquals(mesh, expected);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, expected));
     }
 
     @Test

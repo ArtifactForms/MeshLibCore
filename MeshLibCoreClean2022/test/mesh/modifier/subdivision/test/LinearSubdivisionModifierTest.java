@@ -17,7 +17,6 @@ import mesh.creator.archimedian.CuboctahedronCreator;
 import mesh.creator.platonic.IcosahedronCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
-import mesh.creator.special.GemCreator;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.subdivision.LinearSubdivisionModifier;
 import mesh.util.Bounds3;
@@ -128,7 +127,7 @@ public class LinearSubdivisionModifierTest {
     public void subdividedCubeConsistsOfQuadsOnly() {
         modifier.modify(cubeMesh);
         int faceCount = cubeMesh.getFaceCount();
-        MeshTest.assertQuadCountEquals(cubeMesh, faceCount);
+        assertTrue(MeshTest.isQuadCountEquals(cubeMesh, faceCount));
     }
 
     @Test
@@ -136,7 +135,7 @@ public class LinearSubdivisionModifierTest {
         Mesh3D mesh = new IcosahedronCreator().create();
         modifier.modify(mesh);
         int faceCount = mesh.getFaceCount();
-        MeshTest.assertTriangleCountEquals(mesh, faceCount);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, faceCount));
     }
 
     @Test
@@ -241,7 +240,7 @@ public class LinearSubdivisionModifierTest {
         CuboctahedronCreator creator = new CuboctahedronCreator();
         Mesh3D mesh = creator.create();
         modifier.modify(mesh);
-        MeshTest.assertTriangleCountEquals(mesh, 32);
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, 32));
     }
 
     @Test
@@ -249,7 +248,7 @@ public class LinearSubdivisionModifierTest {
         CuboctahedronCreator creator = new CuboctahedronCreator();
         Mesh3D mesh = creator.create();
         modifier.modify(mesh);
-        MeshTest.assertQuadCountEquals(mesh, 24);
+        assertTrue(MeshTest.isQuadCountEquals(mesh, 24));
     }
 
     @Test

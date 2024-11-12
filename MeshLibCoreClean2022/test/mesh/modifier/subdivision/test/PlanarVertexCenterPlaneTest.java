@@ -33,7 +33,7 @@ public class PlanarVertexCenterPlaneTest {
 
     @Test
     public void resultMeshConsistsOfTrianglesOnly() {
-        MeshTest.assertTriangleCountEquals(plane, 4);
+        assertTrue(MeshTest.isTriangleCountEquals(plane, 4));
     }
 
     @Test

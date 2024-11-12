@@ -40,7 +40,7 @@ public class DodecahedronTest {
 
     @Test
     public void hasTwelvePentagonFaces() {
-        MeshTest.assertPentagonCountEquals(mesh, 12);
+        assertTrue(MeshTest.isPentagonCountEquals(mesh, 12));
     }
 
     @Test

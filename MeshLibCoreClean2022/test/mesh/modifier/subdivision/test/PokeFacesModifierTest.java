@@ -69,14 +69,14 @@ public class PokeFacesModifierTest {
     public void modifiedMeshConsistsOfTrianglesOnlyCubeCase() {
         Mesh3D mesh = new CubeCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertTriangleCountEquals(mesh, mesh.getFaceCount());
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, mesh.getFaceCount()));
     }
 
     @Test
     public void modifiedMeshConsistsOfTrianglesOnlyCapsuleCase() {
         Mesh3D mesh = new CapsuleCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertTriangleCountEquals(mesh, mesh.getFaceCount());
+        assertTrue(MeshTest.isTriangleCountEquals(mesh, mesh.getFaceCount()));
     }
 
     @Test

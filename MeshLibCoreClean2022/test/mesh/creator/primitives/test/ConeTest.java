@@ -86,7 +86,7 @@ public class ConeTest {
 
     @Test
     public void createdMeshHasExpectedTriangleCount() {
-        MeshTest.assertTriangleCountEquals(cone, 32);
+        assertTrue(MeshTest.isTriangleCountEquals(cone, 32));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ConeTest {
         int heightSegments = 10;
         int rotationSegments = 32;
         int expectedQuadCount = (heightSegments - 1) * rotationSegments;
-        MeshTest.assertQuadCountEquals(cone, expectedQuadCount);
+        assertTrue(MeshTest.isQuadCountEquals(cone, expectedQuadCount));
     }
 
     @Test
