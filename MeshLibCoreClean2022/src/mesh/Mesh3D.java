@@ -32,8 +32,8 @@ public class Mesh3D {
     }
 
     public Mesh3D rotateX(float angle) {
-        Matrix3f m = new Matrix3f(1, 0, 0, 0, Mathf.cos(angle), -Mathf.sin(angle), 0, Mathf.sin(angle),
-                Mathf.cos(angle));
+        Matrix3f m = new Matrix3f(1, 0, 0, 0, Mathf.cos(angle),
+                -Mathf.sin(angle), 0, Mathf.sin(angle), Mathf.cos(angle));
 
         for (Vector3f v : vertices) {
             Vector3f v0 = v.mult(m);
@@ -44,8 +44,8 @@ public class Mesh3D {
     }
 
     public Mesh3D rotateY(float angle) {
-        Matrix3f m = new Matrix3f(Mathf.cos(angle), 0, Mathf.sin(angle), 0, 1, 0, -Mathf.sin(angle), 0,
-                Mathf.cos(angle));
+        Matrix3f m = new Matrix3f(Mathf.cos(angle), 0, Mathf.sin(angle), 0, 1,
+                0, -Mathf.sin(angle), 0, Mathf.cos(angle));
 
         for (Vector3f v : vertices) {
             Vector3f v0 = v.mult(m);
@@ -56,8 +56,8 @@ public class Mesh3D {
     }
 
     public Mesh3D rotateZ(float angle) {
-        Matrix3f m = new Matrix3f(Mathf.cos(angle), -Mathf.sin(angle), 0, Mathf.sin(angle), Mathf.cos(angle), 0, 0, 0,
-                1);
+        Matrix3f m = new Matrix3f(Mathf.cos(angle), -Mathf.sin(angle), 0,
+                Mathf.sin(angle), Mathf.cos(angle), 0, 0, 0, 1);
 
         for (Vector3f v : vertices) {
             Vector3f v0 = v.mult(m);
@@ -125,10 +125,14 @@ public class Mesh3D {
         Vector3f faceNormal = new Vector3f();
         for (int i = 0; i < face.indices.length; i++) {
             Vector3f currentVertex = vertices.get(face.indices[i]);
-            Vector3f nextVertex = vertices.get(face.indices[(i + 1) % face.indices.length]);
-            float x = (currentVertex.getY() - nextVertex.getY()) * (currentVertex.getZ() + nextVertex.getZ());
-            float y = (currentVertex.getZ() - nextVertex.getZ()) * (currentVertex.getX() + nextVertex.getX());
-            float z = (currentVertex.getX() - nextVertex.getX()) * (currentVertex.getY() + nextVertex.getY());
+            Vector3f nextVertex = vertices
+                    .get(face.indices[(i + 1) % face.indices.length]);
+            float x = (currentVertex.getY() - nextVertex.getY())
+                    * (currentVertex.getZ() + nextVertex.getZ());
+            float y = (currentVertex.getZ() - nextVertex.getZ())
+                    * (currentVertex.getX() + nextVertex.getX());
+            float z = (currentVertex.getX() - nextVertex.getX())
+                    * (currentVertex.getY() + nextVertex.getY());
             faceNormal.addLocal(x, y, z);
         }
         return faceNormal.normalize();
