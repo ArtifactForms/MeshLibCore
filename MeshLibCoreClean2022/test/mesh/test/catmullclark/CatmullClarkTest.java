@@ -140,7 +140,7 @@ public class CatmullClarkTest {
         Mesh3D cube = new CubeCreator().create();
         for (int i = 0; i < ITERATIONS_TO_TEST; i++) {
             new CatmullClarkModifier().modify(cube);
-            MeshTest.assertIsManifold(cube);
+            assertTrue(MeshTest.isManifold(cube));
         }
     }
 

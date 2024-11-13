@@ -134,14 +134,14 @@ public class PokeFacesModifierTest {
     public void modifiedMeshIsManifoldCubeCase() {
         Mesh3D cube = new CubeCreator().create();
         modifier.modify(cube);
-        MeshTest.assertIsManifold(cube);
+        assertTrue(MeshTest.isManifold(cube));
     }
 
     @Test
     public void modifiedMeshIsManifoldCapsuleCase() {
         Mesh3D capsule = new CapsuleCreator().create();
         modifier.modify(capsule);
-        MeshTest.assertIsManifold(capsule);
+        assertTrue(MeshTest.isManifold(capsule));
     }
 
     @Test

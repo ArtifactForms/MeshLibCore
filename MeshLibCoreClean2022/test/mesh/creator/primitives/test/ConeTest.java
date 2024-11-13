@@ -71,7 +71,7 @@ public class ConeTest {
 
     @Test
     public void createdMeshIsManifold() {
-        MeshTest.assertIsManifold(cone);
+        assertTrue(MeshTest.isManifold(cone));
     }
 
     @Test

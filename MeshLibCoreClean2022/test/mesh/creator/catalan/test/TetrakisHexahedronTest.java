@@ -152,7 +152,7 @@ public class TetrakisHexahedronTest {
 
     @Test
     public void testMeshIsManifold() {
-        MeshTest.assertIsManifold(mesh);
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test

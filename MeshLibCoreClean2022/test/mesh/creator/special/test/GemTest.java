@@ -317,7 +317,7 @@ public class GemTest {
     public void createdMeshIsManifold() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
-        MeshTest.assertIsManifold(gem);
+        assertTrue(MeshTest.isManifold(gem));
     }
 
     @Test

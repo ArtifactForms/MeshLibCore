@@ -353,7 +353,7 @@ public class DiamondTest {
 
     @Test
     public void meshIsManifold() {
-        MeshTest.assertIsManifold(new DiamondCreator().create());
+        assertTrue(MeshTest.isManifold(new DiamondCreator().create()));
     }
 
     @Test

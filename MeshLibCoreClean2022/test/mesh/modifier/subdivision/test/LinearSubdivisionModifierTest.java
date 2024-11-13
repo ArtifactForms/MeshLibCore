@@ -74,7 +74,7 @@ public class LinearSubdivisionModifierTest {
     @Test
     public void subdividedCubeIsManifold() {
         modifier.modify(cubeMesh);
-        MeshTest.assertIsManifold(cubeMesh);
+        assertTrue(MeshTest.isManifold(cubeMesh));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class LinearSubdivisionModifierTest {
     public void subdividedIcosahedronIsManifold() {
         Mesh3D mesh = new IcosahedronCreator().create();
         modifier.modify(mesh);
-        MeshTest.assertIsManifold(mesh);
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
@@ -272,7 +272,7 @@ public class LinearSubdivisionModifierTest {
         CuboctahedronCreator creator = new CuboctahedronCreator();
         Mesh3D mesh = creator.create();
         modifier.modify(mesh);
-        MeshTest.assertIsManifold(mesh);
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test

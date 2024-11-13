@@ -59,7 +59,7 @@ public class PlanarVertexCenterCubeTest {
 
     @Test
     public void resultMeshIsManifold() {
-        MeshTest.assertIsManifold(cube);
+        assertTrue(MeshTest.isManifold(cube));
     }
 
     @Test

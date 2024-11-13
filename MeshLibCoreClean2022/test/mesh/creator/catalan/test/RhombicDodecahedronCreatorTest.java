@@ -85,7 +85,7 @@ public class RhombicDodecahedronCreatorTest {
 
     @Test
     public void testMeshIsManifold() {
-        MeshTest.assertIsManifold(mesh);
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
