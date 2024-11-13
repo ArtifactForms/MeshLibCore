@@ -15,15 +15,6 @@ public class MoveAlongNormalAnimator extends AbstractAnimator {
     private Face3D face;
     private ArrayList<Vector3f> originals;
 
-    public MoveAlongNormalAnimator(Mesh3D mesh, Face3D face, float speed, float lifeTime) {
-        this.mesh = mesh;
-        this.face = face;
-        this.speed = speed;
-        this.originals = new ArrayList<Vector3f>();
-        this.lifeTime = lifeTime;
-        storeOriginals();
-    }
-
     public MoveAlongNormalAnimator(Mesh3D mesh, Face3D face) {
         this.mesh = mesh;
         this.face = face;
