@@ -64,7 +64,7 @@ public class TruncatedTetrahedronTest {
 
     @Test
     public void testIsManifold() {
-        MeshTest.assertIsManifold(mesh);
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test

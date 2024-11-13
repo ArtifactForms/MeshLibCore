@@ -46,7 +46,7 @@ public class SnubDodecahedronTest {
 
     @Test
     public void isManifold() {
-        MeshTest.assertIsManifold(mesh);
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
