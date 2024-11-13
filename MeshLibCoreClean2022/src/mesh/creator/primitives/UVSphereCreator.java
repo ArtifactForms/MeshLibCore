@@ -16,7 +16,9 @@ public class UVSphereCreator implements IMeshCreator {
     private Mesh3D mesh;
 
     public UVSphereCreator() {
-        this(16, 32, 1);
+        rings = 16;
+        segments = 32;
+        radius = 1;
     }
 
     public UVSphereCreator(int rings, int segments, float radius) {
@@ -38,27 +40,41 @@ public class UVSphereCreator implements IMeshCreator {
     }
 
     private void createVertices() {
-        float stepTheta = Mathf.PI / (float) rings;
-        float stepPhi = Mathf.TWO_PI / (float) segments;
         for (int row = 1; row < rings; row++) {
-            float theta = row * stepTheta;
             for (int col = 0; col < segments; col++) {
-                float phi = col * stepPhi;
-                float x = radius * Mathf.cos(phi) * Mathf.sin(theta);
-                float y = radius * Mathf.cos(theta);
-                float z = radius * Mathf.sin(phi) * Mathf.sin(theta);
-                addVertex(x, y, z);
+                float theta = row * Mathf.PI / rings;
+                float phi = col * Mathf.TWO_PI / segments;
+                createVertexAt(theta, phi);
             }
         }
-        addTopCenterVertex();
-        addBottomCenterVertex();
+        createTopCenterVertex();
+        createBottomCenterVertex();
     }
 
-    private void addTopCenterVertex() {
+    private void createVertexAt(float theta, float phi) {
+        float x = x(theta, phi);
+        float y = y(theta, phi);
+        float z = z(theta, phi);
+        addVertex(x, y, z);
+    }
+
+    private float x(float theta, float phi) {
+        return radius * Mathf.cos(phi) * Mathf.sin(theta);
+    }
+
+    private float y(float theta, float phi) {
+        return radius * Mathf.cos(theta);
+    }
+
+    private float z(float theta, float phi) {
+        return radius * Mathf.sin(phi) * Mathf.sin(theta);
+    }
+
+    private void createTopCenterVertex() {
         addVertex(0, -radius, 0);
     }
 
-    private void addBottomCenterVertex() {
+    private void createBottomCenterVertex() {
         addVertex(0, radius, 0);
     }
 
@@ -73,11 +89,11 @@ public class UVSphereCreator implements IMeshCreator {
         int b = getIndex(row + 1, (col + 1) % segments);
         int c = getIndex(row + 1, col);
         int d = getIndex(row, col);
-        mesh.add(new Face3D(a, b, c, d));
+        addFace(a, b, c, d);
         if (row == 0)
-            mesh.add(new Face3D(d, mesh.vertices.size() - 1, a));
+            addFace(d, mesh.vertices.size() - 1, a);
         if (row == rings - 3)
-            mesh.add(new Face3D(c, b, mesh.vertices.size() - 2));
+            addFace(c, b, mesh.vertices.size() - 2);
     }
 
     private int getIndex(int row, int col) {
@@ -87,6 +103,10 @@ public class UVSphereCreator implements IMeshCreator {
 
     private void addVertex(float x, float y, float z) {
         mesh.addVertex(x, y, z);
+    }
+
+    private void addFace(int... indices) {
+        mesh.add(new Face3D(indices));
     }
 
     private void initializeMesh() {
