@@ -10,7 +10,6 @@ import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.test.manifold.ManifoldTest;
-import mesh.selection.FaceSelection;
 import mesh.util.TraverseHelper;
 
 public class MeshTest {
@@ -24,7 +23,6 @@ public class MeshTest {
                     duplicatedFaces++;
             }
         }
-
         return duplicatedFaces == 0;
     }
 
@@ -37,7 +35,6 @@ public class MeshTest {
                 vertices.remove(v);
             }
         }
-
         return vertices.isEmpty();
     }
 
@@ -68,7 +65,6 @@ public class MeshTest {
                     edges.add(edge);
             }
         }
-
         return edges.size();
     }
 
@@ -136,41 +132,50 @@ public class MeshTest {
                 mesh.getVertices(0, mesh.getVertexCount()).size());
     }
 
-    private static void assertFaceByVertexCount(Mesh3D mesh, int vertices,
-            int expected) {
-        FaceSelection selection = new FaceSelection(mesh);
-        selection.selectByVertexCount(vertices);
-        Assert.assertEquals(expected, selection.size());
+    private static boolean hasCorrectNumberOfFacesWithVertexCount(Mesh3D mesh,
+            int vertices, int expected) {
+        int count = 0;
+        for (Face3D face : mesh.faces) {
+            if (face.getVertexCount() == vertices)
+                count++;
+        }
+        return count == expected;
     }
 
-    public static void assertTriangleCountEquals(Mesh3D mesh,
+    public static boolean isTriangleCountEquals(Mesh3D mesh,
             int expectedTriangleCount) {
-        assertFaceByVertexCount(mesh, 3, expectedTriangleCount);
+        return hasCorrectNumberOfFacesWithVertexCount(mesh, 3,
+                expectedTriangleCount);
     }
 
-    public static void assertQuadCountEquals(Mesh3D mesh,
+    public static boolean isQuadCountEquals(Mesh3D mesh,
             int expectedQuadCount) {
-        assertFaceByVertexCount(mesh, 4, expectedQuadCount);
+        return hasCorrectNumberOfFacesWithVertexCount(mesh, 4,
+                expectedQuadCount);
     }
 
-    public static void assertHexagonCountEquals(Mesh3D mesh,
+    public static boolean isHexagonCountEquals(Mesh3D mesh,
             int expectedHexagonCount) {
-        assertFaceByVertexCount(mesh, 6, expectedHexagonCount);
+        return hasCorrectNumberOfFacesWithVertexCount(mesh, 6,
+                expectedHexagonCount);
     }
 
-    public static void assertPentagonCountEquals(Mesh3D mesh,
+    public static boolean isPentagonCountEquals(Mesh3D mesh,
             int expectedPentagonCount) {
-        assertFaceByVertexCount(mesh, 5, expectedPentagonCount);
+        return hasCorrectNumberOfFacesWithVertexCount(mesh, 5,
+                expectedPentagonCount);
     }
 
-    public static void assertOctagonCountEquals(Mesh3D mesh,
+    public static boolean isOctagonCountEquals(Mesh3D mesh,
             int expectedOctagonCount) {
-        assertFaceByVertexCount(mesh, 8, expectedOctagonCount);
+        return hasCorrectNumberOfFacesWithVertexCount(mesh, 8,
+                expectedOctagonCount);
     }
 
-    public static void assertDecagonCountEquals(Mesh3D mesh,
+    public static boolean isDecagonCountEquals(Mesh3D mesh,
             int expectedDecagonCount) {
-        assertFaceByVertexCount(mesh, 10, expectedDecagonCount);
+        return hasCorrectNumberOfFacesWithVertexCount(mesh, 10,
+                expectedDecagonCount);
     }
 
     public static void assertIsManifold(Mesh3D mesh) {
