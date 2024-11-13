@@ -1,7 +1,6 @@
 package mesh.creator.assets;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
@@ -33,37 +32,46 @@ public class ChainLinkCreator implements IMeshCreator {
     }
 
     private void createVertices() {
-        float u = 0;
-        float v = 0;
-        float stepU = Mathf.TWO_PI / minorSegments;
-        float stepV = Mathf.TWO_PI / (majorSegments * 2);
+        for (int i = 0; i <= majorSegments; i++)
+            for (int j = 0; j < minorSegments; j++)
+                createVertexAt(i, j);
+    }
 
-        for (int i = 0; i <= majorSegments; i++) {
-            for (int j = 0; j < minorSegments; j++) {
-                float x = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
-                float y = minorRadius * Mathf.sin(u);
-                float z = (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
-                mesh.add(new Vector3f(x, y, z));
-                u += stepU;
-            }
-            u = 0;
-            v += stepV;
-        }
+    private void createVertexAt(int i, int j) {
+        float u = j * Mathf.TWO_PI / minorSegments;
+        float v = i * Mathf.TWO_PI / (majorSegments * 2);
+        float x = x(u, v);
+        float y = y(u);
+        float z = z(u, v);
+        addVertex(x, y, z);
+    }
+
+    private float x(float u, float v) {
+        return (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.cos(v);
+    }
+
+    private float y(float u) {
+        return minorRadius * Mathf.sin(u);
+    }
+
+    private float z(float u, float v) {
+        return (majorRadius + minorRadius * Mathf.cos(u)) * Mathf.sin(v);
     }
 
     private void createFaces() {
-        for (int j = 0; j < (majorSegments * 2) + 2; j++) {
-            for (int i = 0; i < minorSegments; i++) {
-                int[] k = new int[] { j % (majorSegments * 2 + 2), (j + 1) % (majorSegments * 2 + 2), i % minorSegments,
-                        (i + 1) % minorSegments };
-                int index0 = k[1] * minorSegments + k[2];
-                int index1 = k[0] * minorSegments + k[2];
-                int index2 = k[1] * minorSegments + k[3];
-                int index3 = k[0] * minorSegments + k[3];
-                Face3D f = new Face3D(index0, index1, index3, index2);
-                mesh.add(f);
-            }
-        }
+        for (int j = 0; j < (majorSegments * 2) + 2; j++)
+            for (int i = 0; i < minorSegments; i++)
+                createFaceAt(i, j);
+    }
+
+    private void createFaceAt(int i, int j) {
+        int maj = majorSegments * 2 + 2;
+        int min = minorSegments;
+        int index0 = (j + 1) % maj * min + (i + 0) % min;
+        int index1 = (j + 0) % maj * min + (i + 0) % min;
+        int index2 = (j + 1) % maj * min + (i + 1) % min;
+        int index3 = (j + 0) % maj * min + (i + 1) % min;
+        addFace(index0, index1, index3, index2);
     }
 
     private void createPartOne() {
@@ -94,6 +102,14 @@ public class ChainLinkCreator implements IMeshCreator {
         appendParts();
         createFaces();
         return mesh;
+    }
+
+    private void addFace(int... indices) {
+        mesh.add(new Face3D(indices));
+    }
+
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
     }
 
     public float getCenterPieceSize() {
