@@ -1,8 +1,9 @@
 package mesh.creator.primitives.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import math.Mathf;
@@ -11,7 +12,6 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.creator.test.manifold.ManifoldTest;
 import mesh.selection.FaceSelection;
 import mesh.util.Bounds3;
 import util.MeshTest;
@@ -20,13 +20,14 @@ public class BoxCreatorTest {
 
     @Test
     public void createdMeshIsManifold() {
-        new ManifoldTest(new BoxCreator().create()).assertIsManifold();
+        Mesh3D mesh = new BoxCreator().create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void createdMeshIsNotNullByDefault() {
         Mesh3D mesh = new BoxCreator().create();
-        Assert.assertNotNull(mesh);
+        assertNotNull(mesh);
     }
 
     @Test
@@ -46,13 +47,13 @@ public class BoxCreatorTest {
     @Test
     public void faceCountIsSix() {
         Mesh3D mesh = new BoxCreator().create();
-        Assert.assertEquals(6, mesh.getFaceCount());
+        assertEquals(6, mesh.getFaceCount());
     }
 
     @Test
     public void vertexCountIsEight() {
         Mesh3D mesh = new BoxCreator().create();
-        Assert.assertEquals(8, mesh.getVertexCount());
+        assertEquals(8, mesh.getVertexCount());
     }
 
     @Test
@@ -60,7 +61,7 @@ public class BoxCreatorTest {
         Mesh3D mesh = new BoxCreator().create();
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectQuads();
-        Assert.assertEquals(6, selection.size());
+        assertEquals(6, selection.size());
     }
 
     @Test
@@ -73,42 +74,42 @@ public class BoxCreatorTest {
     public void absValueOfEveryXCoordinateIsOPointFiveByDefault() {
         Mesh3D mesh = new BoxCreator().create();
         for (Vector3f v : mesh.vertices)
-            Assert.assertEquals(0.5f, Mathf.abs(v.getX()), 0);
+            assertEquals(0.5f, Mathf.abs(v.getX()), 0);
     }
 
     @Test
     public void absValueOfEveryYCoordinateIsOPointFiveByDefault() {
         Mesh3D mesh = new BoxCreator().create();
         for (Vector3f v : mesh.vertices)
-            Assert.assertEquals(0.5f, Mathf.abs(v.getY()), 0);
+            assertEquals(0.5f, Mathf.abs(v.getY()), 0);
     }
 
     @Test
     public void absValueOfEveryZCoordinateIsOPointFiveByDefault() {
         Mesh3D mesh = new BoxCreator().create();
         for (Vector3f v : mesh.vertices)
-            Assert.assertEquals(0.5f, Mathf.abs(v.getZ()), 0);
+            assertEquals(0.5f, Mathf.abs(v.getZ()), 0);
     }
 
     @Test
     public void widthIsOneByDefault() {
         Mesh3D mesh = new BoxCreator().create();
         Bounds3 bounds = mesh.calculateBounds();
-        Assert.assertEquals(1, bounds.getWidth(), 0);
+        assertEquals(1, bounds.getWidth(), 0);
     }
 
     @Test
     public void heightIsOneByDefault() {
         Mesh3D mesh = new BoxCreator().create();
         Bounds3 bounds = mesh.calculateBounds();
-        Assert.assertEquals(1, bounds.getHeight(), 0);
+        assertEquals(1, bounds.getHeight(), 0);
     }
 
     @Test
     public void depthIsOneByDefault() {
         Mesh3D mesh = new BoxCreator().create();
         Bounds3 bounds = mesh.calculateBounds();
-        Assert.assertEquals(1, bounds.getDepth(), 0);
+        assertEquals(1, bounds.getDepth(), 0);
     }
 
     @Test
@@ -116,7 +117,7 @@ public class BoxCreatorTest {
         float depth = Mathf.random(Float.MIN_VALUE, Float.MAX_VALUE);
         BoxCreator creator = new BoxCreator();
         creator.setDepth(depth);
-        Assert.assertEquals(depth, creator.getDepth(), 0);
+        assertEquals(depth, creator.getDepth(), 0);
     }
 
     @Test
@@ -128,7 +129,7 @@ public class BoxCreatorTest {
             Vector3f faceCenter = mesh.calculateFaceCenter(face);
             Vector3f a = faceCenter.subtract(center);
             float dotProduct = faceNormal.dot(a);
-            Assert.assertTrue(dotProduct >= 0);
+            assertTrue(dotProduct >= 0);
         }
     }
 
@@ -137,7 +138,7 @@ public class BoxCreatorTest {
         Mesh3D cube = new CubeCreator(0.5f).create();
         Mesh3D box = new BoxCreator().create();
         for (Vector3f v : cube.vertices)
-            Assert.assertTrue(box.vertices.contains(v));
+            assertTrue(box.vertices.contains(v));
     }
 
     @Test
@@ -147,7 +148,7 @@ public class BoxCreatorTest {
         creator.setWidth(expectedWidth);
         Mesh3D box = creator.create();
         Bounds3 bounds = box.calculateBounds();
-        Assert.assertEquals(expectedWidth, bounds.getWidth(), 0);
+        assertEquals(expectedWidth, bounds.getWidth(), 0);
     }
 
     @Test
@@ -157,7 +158,7 @@ public class BoxCreatorTest {
         creator.setHeight(expectedHeight);
         Mesh3D box = creator.create();
         Bounds3 bounds = box.calculateBounds();
-        Assert.assertEquals(expectedHeight, bounds.getHeight(), 0);
+        assertEquals(expectedHeight, bounds.getHeight(), 0);
     }
 
     @Test
@@ -167,7 +168,7 @@ public class BoxCreatorTest {
         creator.setDepth(expectedDepth);
         Mesh3D box = creator.create();
         Bounds3 bounds = box.calculateBounds();
-        Assert.assertEquals(expectedDepth, bounds.getDepth(), 0);
+        assertEquals(expectedDepth, bounds.getDepth(), 0);
     }
 
 }
