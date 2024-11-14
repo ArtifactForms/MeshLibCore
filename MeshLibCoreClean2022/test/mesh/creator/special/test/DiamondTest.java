@@ -1,8 +1,8 @@
 package mesh.creator.special.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import math.Vector3f;
@@ -20,13 +20,13 @@ public class DiamondTest {
     @Test
     public void creatorImplementsCreatorInterface() {
         DiamondCreator creator = new DiamondCreator();
-        Assert.assertTrue(creator instanceof IMeshCreator);
+        assertTrue(creator instanceof IMeshCreator);
     }
 
     @Test
     public void getSegmentsReturnsDefaultValue() {
         int expected = 32;
-        Assert.assertEquals(expected, new DiamondCreator().getSegments());
+        assertEquals(expected, new DiamondCreator().getSegments());
     }
 
     @Test
@@ -34,14 +34,14 @@ public class DiamondTest {
         int expected = 145;
         DiamondCreator creator = new DiamondCreator();
         creator.setSegments(expected);
-        Assert.assertEquals(expected, creator.getSegments());
+        assertEquals(expected, creator.getSegments());
     }
 
     @Test
     public void getGirdleRadiusReturnsDefaultValue() {
         float expected = 1;
         float actual = new DiamondCreator().getGirdleRadius();
-        Assert.assertEquals(expected, actual, 0);
+        assertEquals(expected, actual, 0);
     }
 
     @Test
@@ -49,14 +49,14 @@ public class DiamondTest {
         float expected = 0.9562f;
         DiamondCreator creator = new DiamondCreator();
         creator.setGirdleRadius(expected);
-        Assert.assertEquals(expected, creator.getGirdleRadius(), 0);
+        assertEquals(expected, creator.getGirdleRadius(), 0);
     }
 
     @Test
     public void getTableRadiusReturnsDefaultValue() {
         float expected = 0.6f;
         DiamondCreator creator = new DiamondCreator();
-        Assert.assertEquals(expected, creator.getTableRadius(), 0);
+        assertEquals(expected, creator.getTableRadius(), 0);
     }
 
     @Test
@@ -64,14 +64,14 @@ public class DiamondTest {
         float expected = 0.65416f;
         DiamondCreator creator = new DiamondCreator();
         creator.setTableRadius(expected);
-        Assert.assertEquals(expected, creator.getTableRadius(), 0);
+        assertEquals(expected, creator.getTableRadius(), 0);
     }
 
     @Test
     public void getCrownHeightReturnsDefaulValue() {
         float expected = 0.35f;
         DiamondCreator creator = new DiamondCreator();
-        Assert.assertEquals(expected, creator.getCrownHeight(), 0);
+        assertEquals(expected, creator.getCrownHeight(), 0);
     }
 
     @Test
@@ -79,14 +79,14 @@ public class DiamondTest {
         float expected = 67.45f;
         DiamondCreator creator = new DiamondCreator();
         creator.setCrownHeight(expected);
-        Assert.assertEquals(expected, creator.getCrownHeight(), 0);
+        assertEquals(expected, creator.getCrownHeight(), 0);
     }
 
     @Test
     public void getPavillionReturnsDefaultValue() {
         float expected = 0.8f;
         DiamondCreator creator = new DiamondCreator();
-        Assert.assertEquals(expected, creator.getPavillionHeight(), 0);
+        assertEquals(expected, creator.getPavillionHeight(), 0);
     }
 
     @Test
@@ -94,21 +94,21 @@ public class DiamondTest {
         float expected = 9.2536f;
         DiamondCreator creator = new DiamondCreator();
         creator.setPavillionHeight(expected);
-        Assert.assertEquals(expected, creator.getPavillionHeight(), 0);
+        assertEquals(expected, creator.getPavillionHeight(), 0);
     }
 
     @Test
     public void vertexCountIsSixtyFiveByDefault() {
         int expected = 65;
         Mesh3D mesh = new DiamondCreator().create();
-        Assert.assertEquals(expected, mesh.getVertexCount());
+        assertEquals(expected, mesh.getVertexCount());
     }
 
     @Test
     public void createdMeshContainsVertexAtCenterPavillionHeight() {
         Vector3f expected = new Vector3f(0, 0.8f, 0);
         Mesh3D mesh = new DiamondCreator().create();
-        Assert.assertTrue(mesh.vertices.contains(expected));
+        assertTrue(mesh.vertices.contains(expected));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class DiamondTest {
         DiamondCreator creator = new DiamondCreator();
         creator.setPavillionHeight(pavillionHeight);
         Mesh3D mesh = creator.create();
-        Assert.assertTrue(mesh.vertices.contains(expected));
+        assertTrue(mesh.vertices.contains(expected));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class DiamondTest {
         Mesh3D circle = creator.create();
         Mesh3D mesh = new DiamondCreator().create();
         for (Vector3f v : circle.vertices) {
-            Assert.assertTrue(mesh.vertices.contains(v));
+            assertTrue(mesh.vertices.contains(v));
         }
     }
 
@@ -148,7 +148,7 @@ public class DiamondTest {
         creator2.setSegments(vertices);
         Mesh3D mesh = creator2.create();
         for (Vector3f v : circle.vertices) {
-            Assert.assertTrue(mesh.vertices.contains(v));
+            assertTrue(mesh.vertices.contains(v));
         }
     }
 
@@ -157,14 +157,14 @@ public class DiamondTest {
         DiamondCreator creator = new DiamondCreator();
         creator.setSegments(6);
         Mesh3D mesh = creator.create();
-        Assert.assertEquals(13, mesh.getVertexCount());
+        assertEquals(13, mesh.getVertexCount());
     }
 
     @Test
     public void defaultFaceCountIsSixtyFive() {
         int expected = 65;
         Mesh3D mesh = new DiamondCreator().create();
-        Assert.assertEquals(expected, mesh.getFaceCount());
+        assertEquals(expected, mesh.getFaceCount());
     }
 
     @Test
@@ -173,7 +173,7 @@ public class DiamondTest {
         DiamondCreator creator = new DiamondCreator();
         creator.setSegments(11);
         Mesh3D mesh = creator.create();
-        Assert.assertEquals(expected, mesh.getFaceCount());
+        assertEquals(expected, mesh.getFaceCount());
     }
 
     @Test
@@ -182,7 +182,7 @@ public class DiamondTest {
         Mesh3D mesh = creator.create();
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectByVertexCount(32);
-        Assert.assertEquals(1, selection.size());
+        assertEquals(1, selection.size());
     }
 
     @Test
@@ -193,7 +193,7 @@ public class DiamondTest {
         Mesh3D mesh = creator.create();
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectByVertexCount(segments);
-        Assert.assertEquals(1, selection.size());
+        assertEquals(1, selection.size());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class DiamondTest {
         Mesh3D diamond = new DiamondCreator().create();
 
         for (Vector3f v : circle.getVertices()) {
-            Assert.assertTrue(diamond.getVertices().contains(v));
+            assertTrue(diamond.getVertices().contains(v));
         }
     }
 
@@ -234,7 +234,7 @@ public class DiamondTest {
         Mesh3D diamond = creator2.create();
 
         for (Vector3f v : circle.getVertices()) {
-            Assert.assertTrue(diamond.getVertices().contains(v));
+            assertTrue(diamond.getVertices().contains(v));
         }
     }
 
@@ -243,7 +243,7 @@ public class DiamondTest {
         Mesh3D mesh = new DiamondCreator().create();
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectQuads();
-        Assert.assertEquals(32, selection.size());
+        assertEquals(32, selection.size());
     }
 
     @Test
@@ -251,7 +251,7 @@ public class DiamondTest {
         Mesh3D mesh = new DiamondCreator().create();
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectTriangles();
-        Assert.assertEquals(32, selection.size());
+        assertEquals(32, selection.size());
     }
 
     @Test
@@ -282,7 +282,7 @@ public class DiamondTest {
                 circle.vertices.remove(v);
             }
         }
-        Assert.assertEquals(0, circle.getVertexCount());
+        assertEquals(0, circle.getVertexCount());
     }
 
     @Test
@@ -301,7 +301,7 @@ public class DiamondTest {
                 circle.vertices.remove(v);
             }
         }
-        Assert.assertEquals(0, circle.getVertexCount());
+        assertEquals(0, circle.getVertexCount());
     }
 
     @Test
@@ -312,7 +312,7 @@ public class DiamondTest {
         selection.selectTriangles();
         for (Face3D face : selection.getFaces()) {
             int actual = face.indices[1];
-            Assert.assertEquals(pavillionIndex, actual);
+            assertEquals(pavillionIndex, actual);
         }
     }
 
@@ -330,7 +330,7 @@ public class DiamondTest {
             Vector3f v = mesh.getVertexAt(index);
             circle.vertices.remove(v);
         }
-        Assert.assertEquals(0, circle.vertices.size());
+        assertEquals(0, circle.vertices.size());
     }
 
     @Test
@@ -348,7 +348,7 @@ public class DiamondTest {
             Vector3f v = mesh.getVertexAt(index);
             circle.vertices.remove(v);
         }
-        Assert.assertEquals(0, circle.vertices.size());
+        assertEquals(0, circle.vertices.size());
     }
 
     @Test
@@ -365,7 +365,7 @@ public class DiamondTest {
             Vector3f faceCenter = mesh.calculateFaceCenter(face);
             Vector3f a = faceCenter.subtract(center);
             float dotProduct = faceNormal.dot(a);
-            Assert.assertTrue(dotProduct >= 0);
+            assertTrue(dotProduct >= 0);
         }
     }
 
@@ -378,23 +378,26 @@ public class DiamondTest {
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectTriangles();
         for (Face3D face : selection.getFaces()) {
-            Assert.assertTrue(face.indices[2] < segments);
+            assertTrue(face.indices[2] < segments);
         }
     }
 
     @Test
     public void meshHasNoLooseVertices() {
-        assertTrue(MeshTest.meshHasNoLooseVertices(new DiamondCreator().create()));
+        Mesh3D mesh = new DiamondCreator().create();
+        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
     }
 
     @Test
     public void meshHasNoDuplicatedFaces() {
-        assertTrue(MeshTest.meshHasNoDuplicatedFaces(new DiamondCreator().create()));
+        Mesh3D mesh = new DiamondCreator().create();
+        assertTrue(MeshTest.meshHasNoDuplicatedFaces(mesh));
     }
-    
+
     @Test
     public void testNormalsPointOutwards() {
-        assertTrue(MeshTest.normalsPointOutwards(new GemCreator().create()));
+        Mesh3D mesh = new DiamondCreator().create();
+        assertTrue(MeshTest.normalsPointOutwards(mesh));
     }
 
 }
