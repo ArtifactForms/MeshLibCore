@@ -1,10 +1,10 @@
 package mesh.modifier.subdivision.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,31 +30,31 @@ public class PokeFacesModifierTest {
     public void constructWithRandomOffsetGet() {
         float randomPokeOffset = (float) (Math.random() * 304);
         modifier = new PokeFacesModifier(randomPokeOffset);
-        Assert.assertEquals(randomPokeOffset, modifier.getPokeOffset(), 0);
+        assertEquals(randomPokeOffset, modifier.getPokeOffset(), 0);
     }
 
     @Test
     public void modifierImplementsModifierInterface() {
-        Assert.assertTrue(modifier instanceof IMeshModifier);
+        assertTrue(modifier instanceof IMeshModifier);
     }
 
     @Test
     public void pokeOffsetIsZeroPointOneByDefault() {
-        Assert.assertEquals(0.1f, modifier.getPokeOffset(), 0);
+        assertEquals(0.1f, modifier.getPokeOffset(), 0);
     }
 
     @Test
     public void getSetRandomPokeOffset() {
         float expected = (float) (Math.random() * 1000);
         modifier.setPokeOffset(expected);
-        Assert.assertEquals(expected, modifier.getPokeOffset(), 0);
+        assertEquals(expected, modifier.getPokeOffset(), 0);
     }
 
     @Test
     public void modifyReturnsReferenceToOriginalMesh() {
         Mesh3D mesh = new Mesh3D();
         Mesh3D result = modifier.modify(mesh);
-        Assert.assertTrue(mesh == result);
+        assertTrue(mesh == result);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class PokeFacesModifierTest {
         Mesh3D mesh = new CapsuleCreator().create();
         int expected = mesh.getVertexCount() + mesh.getFaceCount();
         modifier.modify(mesh);
-        Assert.assertEquals(expected, mesh.getVertexCount());
+        assertEquals(expected, mesh.getVertexCount());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class PokeFacesModifierTest {
         modifier.modify(modifiedCube);
         List<Vector3f> originalVertices = originalCube.getVertices();
         for (Vector3f v : originalVertices) {
-            Assert.assertTrue(modifiedCube.getVertices().contains(v));
+            assertTrue(modifiedCube.getVertices().contains(v));
         }
     }
 
@@ -111,7 +111,7 @@ public class PokeFacesModifierTest {
         modifier.modify(modifiedCapsule);
         List<Vector3f> originalVertices = originalCapsule.getVertices();
         for (Vector3f v : originalVertices) {
-            Assert.assertTrue(modifiedCapsule.getVertices().contains(v));
+            assertTrue(modifiedCapsule.getVertices().contains(v));
         }
     }
 
@@ -126,7 +126,7 @@ public class PokeFacesModifierTest {
             Vector3f normal = cube.calculateFaceNormal(face);
             Vector3f center = cube.calculateFaceCenter(face);
             Vector3f expected = center.add(normal.mult(randomPokeOffset));
-            Assert.assertTrue(modifiedCube.getVertices().contains(expected));
+            assertTrue(modifiedCube.getVertices().contains(expected));
         }
     }
 
@@ -156,7 +156,7 @@ public class PokeFacesModifierTest {
         modifiedMesh.vertices.removeAll(mesh.getVertices());
         for (Vector3f v : modifiedMesh.getVertices()) {
             float distance = v.distance(Vector3f.ZERO);
-            Assert.assertEquals(expectedDistance, distance, 0);
+            assertEquals(expectedDistance, distance, 0);
         }
     }
 
