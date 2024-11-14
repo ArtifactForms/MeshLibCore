@@ -1,8 +1,9 @@
 package mesh.creator.special.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import math.Mathf;
@@ -20,48 +21,48 @@ public class GemTest {
     @Test
     public void implementsCreatorInterface() {
         GemCreator creator = new GemCreator();
-        Assert.assertTrue(creator instanceof IMeshCreator);
+        assertTrue(creator instanceof IMeshCreator);
     }
 
     @Test
     public void createdMeshIsNotNullByDefault() {
         GemCreator creator = new GemCreator();
-        Assert.assertNotNull(creator.create());
+        assertNotNull(creator.create());
     }
 
     @Test
     public void getSegmentsReturnsDefaultValue() {
         int expected = 8;
         GemCreator creator = new GemCreator();
-        Assert.assertEquals(expected, creator.getSegments());
+        assertEquals(expected, creator.getSegments());
     }
 
     @Test
     public void getRadiusReturnsDefaultValue() {
         float expected = 1;
         GemCreator creator = new GemCreator();
-        Assert.assertEquals(expected, creator.getPavillionRadius(), 0);
+        assertEquals(expected, creator.getPavillionRadius(), 0);
     }
 
     @Test
     public void getTableRadiusReturnsDefaultValue() {
         float expected = 0.6f;
         GemCreator creator = new GemCreator();
-        Assert.assertEquals(expected, creator.getTableRadius(), 0);
+        assertEquals(expected, creator.getTableRadius(), 0);
     }
 
     @Test
     public void getTableHeightReturnsDefaultValue() {
         float expected = 0.35f;
         GemCreator creator = new GemCreator();
-        Assert.assertEquals(expected, creator.getTableHeight(), 0);
+        assertEquals(expected, creator.getTableHeight(), 0);
     }
 
     @Test
     public void getPavillionHeightReturnsDefaultValue() {
         float expected = 0.8f;
         GemCreator creator = new GemCreator();
-        Assert.assertEquals(expected, creator.getPavillionHeight(), 0);
+        assertEquals(expected, creator.getPavillionHeight(), 0);
     }
 
     @Test
@@ -69,7 +70,7 @@ public class GemTest {
         int expected = 76;
         GemCreator creator = new GemCreator();
         creator.setSegments(expected);
-        Assert.assertEquals(expected, creator.getSegments());
+        assertEquals(expected, creator.getSegments());
     }
 
     @Test
@@ -77,7 +78,7 @@ public class GemTest {
         float expected = 0.8253f;
         GemCreator creator = new GemCreator();
         creator.setPavillionRadius(expected);
-        Assert.assertEquals(expected, creator.getPavillionRadius(), 0);
+        assertEquals(expected, creator.getPavillionRadius(), 0);
     }
 
     @Test
@@ -85,7 +86,7 @@ public class GemTest {
         float expected = 542.21f;
         GemCreator creator = new GemCreator();
         creator.setTableRadius(expected);
-        Assert.assertEquals(expected, creator.getTableRadius(), 0);
+        assertEquals(expected, creator.getTableRadius(), 0);
     }
 
     @Test
@@ -93,7 +94,7 @@ public class GemTest {
         float expected = 762.1234f;
         GemCreator creator = new GemCreator();
         creator.setTableHeight(expected);
-        Assert.assertEquals(expected, creator.getTableHeight(), 0);
+        assertEquals(expected, creator.getTableHeight(), 0);
     }
 
     @Test
@@ -101,21 +102,21 @@ public class GemTest {
         float expected = 62.1209f;
         GemCreator creator = new GemCreator();
         creator.setPavillionHeight(expected);
-        Assert.assertEquals(expected, creator.getPavillionHeight(), 0);
+        assertEquals(expected, creator.getPavillionHeight(), 0);
     }
 
     @Test
     public void createdMeshHasFourtyEightFacesByDefault() {
         int expected = 48;
         Mesh3D gem = new GemCreator().create();
-        Assert.assertEquals(expected, gem.getFaceCount());
+        assertEquals(expected, gem.getFaceCount());
     }
 
     @Test
     public void createdMeshThirtyFourVerticesByDefault() {
         int expected = 34;
         Mesh3D gem = new GemCreator().create();
-        Assert.assertEquals(expected, gem.getVertexCount());
+        assertEquals(expected, gem.getVertexCount());
     }
 
     @Test
@@ -123,7 +124,7 @@ public class GemTest {
         Mesh3D gem = new GemCreator().create();
         FaceSelection selection = new FaceSelection(gem);
         selection.selectTriangles();
-        Assert.assertEquals(32, selection.size());
+        assertEquals(32, selection.size());
     }
 
     @Test
@@ -131,7 +132,7 @@ public class GemTest {
         Mesh3D gem = new GemCreator().create();
         FaceSelection selection = new FaceSelection(gem);
         selection.selectQuads();
-        Assert.assertEquals(16, selection.size());
+        assertEquals(16, selection.size());
     }
 
     @Test
@@ -142,7 +143,7 @@ public class GemTest {
         Mesh3D gem = creator.create();
         FaceSelection selection = new FaceSelection(gem);
         selection.selectTriangles();
-        Assert.assertEquals(expected, selection.size());
+        assertEquals(expected, selection.size());
     }
 
     @Test
@@ -153,7 +154,7 @@ public class GemTest {
         Mesh3D gem = creator.create();
         FaceSelection selection = new FaceSelection(gem);
         selection.selectQuads();
-        Assert.assertEquals(expected, selection.size());
+        assertEquals(expected, selection.size());
     }
 
     @Test
@@ -165,7 +166,7 @@ public class GemTest {
         circle.rotateY(-Mathf.TWO_PI / 8.0f);
         Mesh3D gem = new GemCreator().create();
         for (Vector3f v : circle.vertices) {
-            Assert.assertTrue(gem.vertices.contains(v));
+            assertTrue(gem.vertices.contains(v));
         }
     }
 
@@ -178,7 +179,7 @@ public class GemTest {
         Mesh3D circle = circleCreator.create();
         Mesh3D gem = new GemCreator().create();
         for (Vector3f v : circle.vertices) {
-            Assert.assertTrue(gem.vertices.contains(v));
+            assertTrue(gem.vertices.contains(v));
         }
     }
 
@@ -187,7 +188,7 @@ public class GemTest {
         float pavillionHeight = 0.8f;
         Vector3f v = new Vector3f(0, pavillionHeight, 0);
         Mesh3D gem = new GemCreator().create();
-        Assert.assertTrue(gem.vertices.contains(v));
+        assertTrue(gem.vertices.contains(v));
     }
 
     @Test
@@ -195,7 +196,7 @@ public class GemTest {
         float tableHeight = 0.35f;
         Vector3f v = new Vector3f(0, -tableHeight, 0);
         Mesh3D gem = new GemCreator().create();
-        Assert.assertTrue(gem.vertices.contains(v));
+        assertTrue(gem.vertices.contains(v));
     }
 
     @Test
@@ -218,7 +219,7 @@ public class GemTest {
         Mesh3D circle = circleCreator.create();
 
         for (Vector3f v : circle.vertices) {
-            Assert.assertTrue(gem.vertices.contains(v));
+            assertTrue(gem.vertices.contains(v));
         }
     }
 
@@ -236,7 +237,7 @@ public class GemTest {
         Mesh3D circle = circleCreator.create();
         circle.rotateY(-Mathf.TWO_PI / segments);
         for (Vector3f v : circle.vertices) {
-            Assert.assertTrue(gem.vertices.contains(v));
+            assertTrue(gem.vertices.contains(v));
         }
     }
 
@@ -248,7 +249,8 @@ public class GemTest {
         float angleStep = Mathf.TWO_PI / segments;
         float offset = angleStep / 2.0f;
         float tableHeight = 0.35f;
-        float radius = ((gemCenterRadius + tableRadius) / 2.0f) / Mathf.cos(offset);
+        float radius = ((gemCenterRadius + tableRadius) / 2.0f)
+                / Mathf.cos(offset);
 
         CircleCreator circleCreator = new CircleCreator();
         circleCreator.setCenterY(-tableHeight / 2.0f);
@@ -260,7 +262,7 @@ public class GemTest {
         Mesh3D gem = new GemCreator().create();
 
         for (Vector3f v : circle.vertices) {
-            Assert.assertTrue(gem.vertices.contains(v));
+            assertTrue(gem.vertices.contains(v));
         }
     }
 
@@ -272,7 +274,8 @@ public class GemTest {
         float angleStep = Mathf.TWO_PI / segments;
         float offset = -angleStep / 2.0f;
         float tableHeight = 0.2412f;
-        float radius = ((gemCenterRadius + tableRadius) / 2.0f) / Mathf.cos(offset);
+        float radius = ((gemCenterRadius + tableRadius) / 2.0f)
+                / Mathf.cos(offset);
 
         CircleCreator circleCreator = new CircleCreator();
         circleCreator.setCenterY(-tableHeight / 2.0f);
@@ -289,7 +292,7 @@ public class GemTest {
         Mesh3D gem = creator.create();
 
         for (Vector3f v : circle.vertices) {
-            Assert.assertTrue(gem.vertices.contains(v));
+            assertTrue(gem.vertices.contains(v));
         }
     }
 
@@ -299,7 +302,7 @@ public class GemTest {
         Mesh3D gem = creator.create();
         FaceSelection selection = new FaceSelection(gem);
         selection.selectSimilarNormal(new Vector3f(0, -1, 0), 0.00001f);
-        Assert.assertEquals(8, selection.size());
+        assertEquals(8, selection.size());
     }
 
     @Test
@@ -309,7 +312,7 @@ public class GemTest {
         FaceSelection selection = new FaceSelection(gem);
         selection.selectSimilarNormal(new Vector3f(0, -1, 0), 0.00001f);
         for (Face3D face : selection.getFaces()) {
-            Assert.assertEquals(3, face.indices.length);
+            assertEquals(3, face.indices.length);
         }
     }
 
