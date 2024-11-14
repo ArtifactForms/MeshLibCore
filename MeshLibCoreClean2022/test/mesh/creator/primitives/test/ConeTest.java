@@ -1,8 +1,8 @@
 package mesh.creator.primitives.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,35 +30,35 @@ public class ConeTest {
     public void getRotationSegmentsReturnsThirtyTwoByDefault() {
         int expected = 32;
         int actual = creator.getRotationSegments();
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void getHeightSegmentsReturnsTenByDefault() {
         int expected = 10;
         int actual = creator.getHeightSegments();
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void getTopRadiusReturnsZeroByDefault() {
         float expected = 0;
         float actual = creator.getTopRadius();
-        Assert.assertEquals(expected, actual, 0);
+        assertEquals(expected, actual, 0);
     }
 
     @Test
     public void getBottomRadiusReturnsOneByDefault() {
         float expected = 1;
         float actual = creator.getBottomRadius();
-        Assert.assertEquals(expected, actual, 0);
+        assertEquals(expected, actual, 0);
     }
 
     @Test
     public void getHeightReturnsTwoByDefault() {
         float expected = 2;
         float actual = creator.getHeight();
-        Assert.assertEquals(expected, actual, 0);
+        assertEquals(expected, actual, 0);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ConeTest {
     public void createdMeshHasOneNgon() {
         FaceSelection selection = new FaceSelection(cone);
         selection.selectByVertexCount(32);
-        Assert.assertEquals(1, selection.getFaces().size());
+        assertEquals(1, selection.getFaces().size());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class ConeTest {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v = cone.getVertexAt(face.indices[i]);
-                Assert.assertEquals(1, v.getY(), 0);
+                assertEquals(1, v.getY(), 0);
             }
         }
     }
@@ -129,7 +129,7 @@ public class ConeTest {
             Vector3f faceCenter = cone.calculateFaceCenter(face);
             Vector3f a = faceCenter.subtract(center);
             float dotProduct = faceNormal.dot(a);
-            Assert.assertTrue(dotProduct >= 0);
+            assertTrue(dotProduct >= 0);
         }
     }
 
@@ -139,7 +139,7 @@ public class ConeTest {
         Mesh3D cone = creator.create();
         FaceSelection selection = new FaceSelection(cone);
         selection.selectByVertexCount(32);
-        Assert.assertEquals(2, selection.size());
+        assertEquals(2, selection.size());
     }
 
     @Test
@@ -147,14 +147,14 @@ public class ConeTest {
         float delta = Mathf.ZERO_TOLERANCE;
         FaceSelection selection = new FaceSelection(cone);
         selection.selectSimilarNormal(new Vector3f(0, 1, 0), delta);
-        Assert.assertEquals(1, selection.size());
+        assertEquals(1, selection.size());
     }
 
     @Test
     public void onlyOneBottomFace() {
         FaceSelection selection = new FaceSelection(cone);
         selection.selectBottomFaces();
-        Assert.assertEquals(1, selection.size());
+        assertEquals(1, selection.size());
     }
 
     @Test
@@ -163,7 +163,7 @@ public class ConeTest {
         creator.setTopRadius(0);
         creator.setBottomRadius(0);
         Mesh3D cone = creator.create();
-        Assert.assertEquals(0, cone.getVertexCount());
+        assertEquals(0, cone.getVertexCount());
     }
 
     @Test
@@ -172,7 +172,7 @@ public class ConeTest {
         creator.setTopRadius(0);
         creator.setBottomRadius(0);
         Mesh3D cone = creator.create();
-        Assert.assertEquals(0, cone.getFaceCount());
+        assertEquals(0, cone.getFaceCount());
     }
 
     @Test
@@ -180,7 +180,7 @@ public class ConeTest {
         ConeCreator creator = new ConeCreator();
         creator.setHeight(0);
         Mesh3D cone = creator.create();
-        Assert.assertEquals(0, cone.getVertexCount());
+        assertEquals(0, cone.getVertexCount());
     }
 
     @Test
@@ -188,7 +188,7 @@ public class ConeTest {
         ConeCreator creator = new ConeCreator();
         creator.setHeight(0);
         Mesh3D cone = creator.create();
-        Assert.assertEquals(0, cone.getFaceCount());
+        assertEquals(0, cone.getFaceCount());
     }
 
     @Test
@@ -196,7 +196,7 @@ public class ConeTest {
         ConeCreator creator = new ConeCreator();
         creator.setHeightSegments(0);
         Mesh3D cone = creator.create();
-        Assert.assertEquals(0, cone.getVertexCount());
+        assertEquals(0, cone.getVertexCount());
     }
 
     @Test
@@ -204,7 +204,7 @@ public class ConeTest {
         ConeCreator creator = new ConeCreator();
         creator.setHeightSegments(0);
         Mesh3D cone = creator.create();
-        Assert.assertEquals(0, cone.getFaceCount());
+        assertEquals(0, cone.getFaceCount());
     }
 
     @Test
@@ -212,7 +212,7 @@ public class ConeTest {
         ConeCreator creator = new ConeCreator();
         creator.setRotationSegments(0);
         Mesh3D cone = creator.create();
-        Assert.assertEquals(0, cone.getVertexCount());
+        assertEquals(0, cone.getVertexCount());
     }
 
     @Test
@@ -220,7 +220,7 @@ public class ConeTest {
         ConeCreator creator = new ConeCreator();
         creator.setRotationSegments(0);
         Mesh3D cone = creator.create();
-        Assert.assertEquals(0, cone.getFaceCount());
+        assertEquals(0, cone.getFaceCount());
     }
 
 }
