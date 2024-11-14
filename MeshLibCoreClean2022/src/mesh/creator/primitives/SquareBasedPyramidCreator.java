@@ -25,7 +25,15 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
     }
 
     private void createFaces() {
+        createQuadFace();
+        createTriangularFaces();
+    }
+
+    private void createQuadFace() {
         addFace(0, 1, 2, 3);
+    }
+
+    private void createTriangularFaces() {
         addFace(1, 0, 4);
         addFace(2, 1, 4);
         addFace(3, 2, 4);
