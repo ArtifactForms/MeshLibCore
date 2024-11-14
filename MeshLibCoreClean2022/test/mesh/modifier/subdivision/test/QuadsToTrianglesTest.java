@@ -1,8 +1,9 @@
 package mesh.modifier.subdivision.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,21 +29,21 @@ public class QuadsToTrianglesTest {
 
     @Test
     public void implementsModifierInterface() {
-        Assert.assertTrue(modifier instanceof IMeshModifier);
+        assertTrue(modifier instanceof IMeshModifier);
     }
 
     @Test
     public void returnsMeshReference() {
         Mesh3D mesh = new Mesh3D();
         Mesh3D result = modifier.modify(mesh);
-        Assert.assertTrue(mesh == result);
+        assertTrue(mesh == result);
     }
 
     @Test
     public void subdividedPlaneHasTwoFaces() {
         Mesh3D mesh = new PlaneCreator().create();
         modifier.modify(mesh);
-        Assert.assertEquals(2, mesh.getFaceCount());
+        assertEquals(2, mesh.getFaceCount());
     }
 
     @Test
@@ -74,7 +75,7 @@ public class QuadsToTrianglesTest {
         for (int i = 0; i < expected.getVertexCount(); i++) {
             Vector3f expectedVertex = expected.getVertexAt(i);
             Vector3f actualVertex = actual.getVertexAt(i);
-            Assert.assertEquals(expectedVertex, actualVertex);
+            assertEquals(expectedVertex, actualVertex);
         }
     }
 
@@ -86,7 +87,7 @@ public class QuadsToTrianglesTest {
         for (int i = 0; i < expected.getFaceCount(); i++) {
             int[] expectedIndices = expected.getFaceAt(i).indices;
             int[] actualIndices = actual.getFaceAt(i).indices;
-            Assert.assertArrayEquals(expectedIndices, actualIndices);
+            assertArrayEquals(expectedIndices, actualIndices);
         }
     }
 
@@ -111,7 +112,7 @@ public class QuadsToTrianglesTest {
         modifier.modify(mesh);
         int[] expected = new int[] { 0, 1, 2 };
         int[] actual = mesh.getFaceAt(0).indices;
-        Assert.assertArrayEquals(expected, actual);
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -120,7 +121,7 @@ public class QuadsToTrianglesTest {
         modifier.modify(mesh);
         int[] expected = new int[] { 2, 3, 0 };
         int[] actual = mesh.getFaceAt(1).indices;
-        Assert.assertArrayEquals(expected, actual);
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -136,7 +137,7 @@ public class QuadsToTrianglesTest {
             int index1 = originalIndices[1];
             int index2 = originalIndices[2];
             int[] expectedIndices = new int[] { index0, index1, index2 };
-            Assert.assertArrayEquals(expectedIndices, modifiedFace.indices);
+            assertArrayEquals(expectedIndices, modifiedFace.indices);
         }
     }
 
