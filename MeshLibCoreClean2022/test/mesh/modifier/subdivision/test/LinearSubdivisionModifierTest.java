@@ -1,12 +1,12 @@
 package mesh.modifier.subdivision.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,39 +36,39 @@ public class LinearSubdivisionModifierTest {
 
     @Test
     public void modifierImplementsModifierInterface() {
-        Assert.assertTrue(modifier instanceof IMeshModifier);
+        assertTrue(modifier instanceof IMeshModifier);
     }
 
     @Test
     public void returnsReferenceToOriginalMeshInstance() {
         Mesh3D result = modifier.modify(cubeMesh);
-        Assert.assertTrue(cubeMesh == result);
+        assertTrue(cubeMesh == result);
     }
 
     @Test
     public void subdividedCubeHasTwentyFourFaces() {
         modifier.modify(cubeMesh);
-        Assert.assertEquals(24, cubeMesh.getFaceCount());
+        assertEquals(24, cubeMesh.getFaceCount());
     }
 
     @Test
     public void twiceSubdividedCubeHasNintySixFaces() {
         modifier.modify(cubeMesh);
         modifier.modify(cubeMesh);
-        Assert.assertEquals(96, cubeMesh.getFaceCount());
+        assertEquals(96, cubeMesh.getFaceCount());
     }
 
     @Test
     public void subdividedCubeHasTwentySixVertices() {
         modifier.modify(cubeMesh);
-        Assert.assertEquals(26, cubeMesh.getVertexCount());
+        assertEquals(26, cubeMesh.getVertexCount());
     }
 
     @Test
     public void twiceSubdividedCubeHasNintyEightVertices() {
         modifier.modify(cubeMesh);
         modifier.modify(cubeMesh);
-        Assert.assertEquals(98, cubeMesh.getVertexCount());
+        assertEquals(98, cubeMesh.getVertexCount());
     }
 
     @Test
@@ -95,14 +95,14 @@ public class LinearSubdivisionModifierTest {
         modifier.modify(cubeMesh);
         assertTrue(MeshTest.normalsPointOutwards(cubeMesh));
     }
-    
+
     @Test
     public void subdividedCubeContainsVerticesAtOriginalCubePositions() {
         Mesh3D originalCube = new CubeCreator().create();
         Mesh3D subdividedCube = new CubeCreator().create();
         modifier.modify(subdividedCube);
         for (Vector3f v : originalCube.getVertices()) {
-            Assert.assertTrue(subdividedCube.getVertices().contains(v));
+            assertTrue(subdividedCube.getVertices().contains(v));
         }
     }
 
@@ -113,7 +113,7 @@ public class LinearSubdivisionModifierTest {
         modifier.modify(subdividedCube);
         for (Face3D face : originalCube.getFaces()) {
             Vector3f center = originalCube.calculateFaceCenter(face);
-            Assert.assertTrue(subdividedCube.getVertices().contains(center));
+            assertTrue(subdividedCube.getVertices().contains(center));
         }
     }
 
@@ -142,14 +142,14 @@ public class LinearSubdivisionModifierTest {
     public void subdividedIcosahedronHasEightyFaces() {
         Mesh3D mesh = new IcosahedronCreator().create();
         modifier.modify(mesh);
-        Assert.assertEquals(80, mesh.getFaceCount());
+        assertEquals(80, mesh.getFaceCount());
     }
 
     @Test
     public void subdividedIcosahedronHasFourtyTwoVertices() {
         Mesh3D mesh = new IcosahedronCreator().create();
         modifier.modify(mesh);
-        Assert.assertEquals(42, mesh.getVertexCount());
+        assertEquals(42, mesh.getVertexCount());
     }
 
     @Test
@@ -170,9 +170,9 @@ public class LinearSubdivisionModifierTest {
     public void subdividedCubeIsWithinBounds() {
         modifier.modify(cubeMesh);
         Bounds3 bounds = cubeMesh.calculateBounds();
-        Assert.assertEquals(2, bounds.getWidth(), 0);
-        Assert.assertEquals(2, bounds.getHeight(), 0);
-        Assert.assertEquals(2, bounds.getDepth(), 0);
+        assertEquals(2, bounds.getWidth(), 0);
+        assertEquals(2, bounds.getHeight(), 0);
+        assertEquals(2, bounds.getDepth(), 0);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class LinearSubdivisionModifierTest {
                 Vector3f v = plane.getVertexAt(f.indices[i]);
                 containsCenter |= v.equals(center);
             }
-            Assert.assertTrue(containsCenter);
+            assertTrue(containsCenter);
         }
     }
 
@@ -201,9 +201,9 @@ public class LinearSubdivisionModifierTest {
             Vector3f center = originalCube.calculateFaceCenter(face);
             vertices.remove(center);
         }
-        Assert.assertEquals(8, vertices.size());
+        assertEquals(8, vertices.size());
         for (Vector3f v : originalCube.getVertices()) {
-            Assert.assertTrue(vertices.contains(v));
+            assertTrue(vertices.contains(v));
         }
     }
 
@@ -215,9 +215,9 @@ public class LinearSubdivisionModifierTest {
         modifier.modify(mesh);
         List<Vector3f> vertices = mesh.getVertices();
         vertices.removeAll(calculateEdgePoints(original));
-        Assert.assertEquals(expectedVertexCount, vertices.size());
+        assertEquals(expectedVertexCount, vertices.size());
         for (Vector3f v : original.getVertices()) {
-            Assert.assertTrue(vertices.contains(v));
+            assertTrue(vertices.contains(v));
         }
     }
 
@@ -280,7 +280,7 @@ public class LinearSubdivisionModifierTest {
         CuboctahedronCreator creator = new CuboctahedronCreator();
         Mesh3D mesh = creator.create();
         modifier.modify(mesh);
-        Assert.assertEquals(42, mesh.getVertexCount());
+        assertEquals(42, mesh.getVertexCount());
     }
 
     @Test
@@ -290,7 +290,7 @@ public class LinearSubdivisionModifierTest {
         modifier.modify(mesh);
         HashSet<Vector3f> vertices = new HashSet<>();
         vertices.addAll(mesh.getVertices());
-        Assert.assertEquals(42, mesh.getVertexCount());
+        assertEquals(42, mesh.getVertexCount());
     }
 
     @Test
@@ -302,7 +302,7 @@ public class LinearSubdivisionModifierTest {
             v.roundLocalDecimalPlaces(2);
         HashSet<Vector3f> vertices = new HashSet<>();
         vertices.addAll(mesh.getVertices());
-        Assert.assertEquals(42, mesh.getVertexCount());
+        assertEquals(42, mesh.getVertexCount());
     }
 
 }
