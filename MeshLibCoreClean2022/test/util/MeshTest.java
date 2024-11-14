@@ -14,6 +14,22 @@ import mesh.util.TraverseHelper;
 
 public class MeshTest {
 
+    /**
+     * Running this test is very time expensive!
+     * 
+     * Checks if the given mesh has any duplicated faces.
+     * 
+     * This method iterates over all pairs of faces in the mesh and compares
+     * their indices. If two faces share the same indices, they are considered
+     * duplicates.
+     * 
+     * **Time Complexity:** O(N^2), where N is the number of faces in the mesh.
+     * This quadratic time complexity arises from the nested loop structure,
+     * which can become inefficient for large meshes.
+     * 
+     * @param mesh The 3D mesh to check.
+     * @return `true` if the mesh has no duplicated faces, `false` otherwise.
+     */
     public static boolean meshHasNoDuplicatedFaces(Mesh3D mesh) {
         int duplicatedFaces = 0;
 
@@ -52,13 +68,17 @@ public class MeshTest {
         return true;
     }
 
-    private static int calculateEdgeCount(Mesh3D mesh) {
+    public static int calculateEdgeCount(Mesh3D mesh) {
         HashSet<Edge3D> edges = new HashSet<Edge3D>();
 
         for (Face3D face : mesh.faces) {
             for (int i = 0; i < face.indices.length; i++) {
                 int fromIndex = face.indices[i];
                 int toIndex = face.indices[(i + 1) % face.indices.length];
+                if (fromIndex == toIndex)
+                    continue;
+                if (fromIndex < 0 || toIndex < 0)
+                    continue;
                 Edge3D edge = new Edge3D(fromIndex, toIndex);
                 Edge3D pair = edge.createPair();
                 if (!edges.contains(pair))
@@ -178,8 +198,8 @@ public class MeshTest {
                 expectedDecagonCount);
     }
 
-    public static void assertIsManifold(Mesh3D mesh) {
-        new ManifoldTest(mesh).assertIsManifold();
+    public static boolean isManifold(Mesh3D mesh) {
+        return new ManifoldTest(mesh).isManifold();
     }
 
     public static void assertFaceContainsVertexIndex(Face3D face,

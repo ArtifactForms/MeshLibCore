@@ -2,14 +2,15 @@ package mesh.creator.test.manifold;
 
 import java.util.HashMap;
 
-import org.junit.Assert;
-
 import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
 
 /**
- * For a mesh to be manifold, every edge must have exactly two adjacent faces.
+ * A manifold mesh is a 3D mesh that has a well-defined interior and exterior.
+ * It's essentially a "watertight" mesh, free from holes or gaps that would
+ * allow the interior to leak. A key characteristic of a manifold mesh is that
+ * every edge is shared by exactly two faces.
  */
 public class ManifoldTest {
 
@@ -19,11 +20,24 @@ public class ManifoldTest {
         this.meshUnderTest = meshUnderTest;
     }
 
-    public void assertIsManifold() {
-        assertEachEdgeHasExactlyTwoAdjacentFaces();
+    public boolean isManifold() {
+        if (meshUnderTest.faces.isEmpty())
+            return false;
+        
+        if (meshUnderTest.vertices.size() < 3) {
+            return false;
+        }
+        
+        return eachEdgeHasExactlyTwoAdjacentFaces();
     }
 
-    private void assertEachEdgeHasExactlyTwoAdjacentFaces() {
+    /**
+     * For a mesh to be manifold, every edge must have exactly two adjacent
+     * faces.
+     * 
+     * @return
+     */
+    private boolean eachEdgeHasExactlyTwoAdjacentFaces() {
         HashMap<Edge3D, Integer> edges = new HashMap<Edge3D, Integer>();
 
         for (Face3D face : meshUnderTest.getFaces()) {
@@ -44,8 +58,11 @@ public class ManifoldTest {
 
         for (Edge3D edge : edges.keySet()) {
             Integer adjacentFacesCount = edges.get(edge);
-            Assert.assertEquals(2, (int) adjacentFacesCount);
+            if (adjacentFacesCount != 2)
+                return false;
         }
+
+        return true;
     }
 
 }
