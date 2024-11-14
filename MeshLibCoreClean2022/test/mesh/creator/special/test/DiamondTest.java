@@ -11,7 +11,6 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 import mesh.creator.special.DiamondCreator;
-import mesh.creator.special.GemCreator;
 import mesh.selection.FaceSelection;
 import util.MeshTest;
 
