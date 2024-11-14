@@ -1,8 +1,8 @@
 package mesh.modifier.subdivision.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,7 +67,7 @@ public class PlanarVertexCenterCubeTest {
         Mesh3D original = new CubeCreator().create();
         for (Face3D face : original.getFaces()) {
             Vector3f faceCenter = original.calculateFaceCenter(face);
-            Assert.assertTrue(cube.getVertices().contains(faceCenter));
+            assertTrue(cube.getVertices().contains(faceCenter));
         }
     }
 
@@ -75,7 +75,7 @@ public class PlanarVertexCenterCubeTest {
     public void resultMeshContainsOriginalCubeCoordinates() {
         Mesh3D original = new CubeCreator().create();
         for (Vector3f v : original.getVertices())
-            Assert.assertTrue(cube.getVertices().contains(v));
+            assertTrue(cube.getVertices().contains(v));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class PlanarVertexCenterCubeTest {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v = cube.getVertexAt(face.indices[i]);
-                Assert.assertEquals(-1, v.getY(), 0);
+                assertEquals(-1, v.getY(), 0);
             }
         }
     }
@@ -97,7 +97,7 @@ public class PlanarVertexCenterCubeTest {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v = cube.getVertexAt(face.indices[i]);
-                Assert.assertEquals(1, v.getY(), 0);
+                assertEquals(1, v.getY(), 0);
             }
         }
     }
@@ -109,7 +109,7 @@ public class PlanarVertexCenterCubeTest {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v = cube.getVertexAt(face.indices[i]);
-                Assert.assertEquals(-1, v.getX(), 0);
+                assertEquals(-1, v.getX(), 0);
             }
         }
     }
@@ -121,7 +121,7 @@ public class PlanarVertexCenterCubeTest {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v = cube.getVertexAt(face.indices[i]);
-                Assert.assertEquals(1, v.getX(), 0);
+                assertEquals(1, v.getX(), 0);
             }
         }
     }
@@ -133,7 +133,7 @@ public class PlanarVertexCenterCubeTest {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v = cube.getVertexAt(face.indices[i]);
-                Assert.assertEquals(-1, v.getZ(), 0);
+                assertEquals(-1, v.getZ(), 0);
             }
         }
     }
@@ -145,7 +145,7 @@ public class PlanarVertexCenterCubeTest {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v = cube.getVertexAt(face.indices[i]);
-                Assert.assertEquals(1, v.getZ(), 0);
+                assertEquals(1, v.getZ(), 0);
             }
         }
     }
@@ -154,42 +154,42 @@ public class PlanarVertexCenterCubeTest {
     public void resultMeshHasFourTopFaces() {
         FaceSelection selection = new FaceSelection(cube);
         selection.selectTopFaces();
-        Assert.assertEquals(4, selection.getFaces().size());
+        assertEquals(4, selection.getFaces().size());
     }
 
     @Test
     public void resultMeshHasFourBottomFaces() {
         FaceSelection selection = new FaceSelection(cube);
         selection.selectBottomFaces();
-        Assert.assertEquals(4, selection.getFaces().size());
+        assertEquals(4, selection.getFaces().size());
     }
 
     @Test
     public void resultMeshHasFourLeftFaces() {
         FaceSelection selection = new FaceSelection(cube);
         selection.selectLeftFaces();
-        Assert.assertEquals(4, selection.getFaces().size());
+        assertEquals(4, selection.getFaces().size());
     }
 
     @Test
     public void resultMeshHasFourRightFaces() {
         FaceSelection selection = new FaceSelection(cube);
         selection.selectRightFaces();
-        Assert.assertEquals(4, selection.getFaces().size());
+        assertEquals(4, selection.getFaces().size());
     }
 
     @Test
     public void resultMeshHasFourFrontFaces() {
         FaceSelection selection = new FaceSelection(cube);
         selection.selectFrontFaces();
-        Assert.assertEquals(4, selection.getFaces().size());
+        assertEquals(4, selection.getFaces().size());
     }
 
     @Test
     public void resultMeshHasFourBackFaces() {
         FaceSelection selection = new FaceSelection(cube);
         selection.selectBackFaces();
-        Assert.assertEquals(4, selection.getFaces().size());
+        assertEquals(4, selection.getFaces().size());
     }
 
 }
