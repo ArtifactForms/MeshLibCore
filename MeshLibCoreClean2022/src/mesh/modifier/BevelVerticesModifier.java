@@ -66,7 +66,8 @@ public class BevelVerticesModifier implements IMeshModifier {
             indices.add(edgePointToIndex);
             indices.add(edgePointFromIndex);
 
-            Edge3D edge = new Edge3D(getIndexAt(face, i), getIndexAt(face, i + 1));
+            Edge3D edge = new Edge3D(getIndexAt(face, i),
+                    getIndexAt(face, i + 1));
             edgeToEdgePointIndex.put(edge, edgePointToIndex);
         }
 

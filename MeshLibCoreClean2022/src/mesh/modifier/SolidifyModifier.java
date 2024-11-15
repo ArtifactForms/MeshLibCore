@@ -68,8 +68,10 @@ public class SolidifyModifier implements IMeshModifier {
         for (Face3D f : faces) {
             int size = f.indices.length;
             for (int i = 0; i < f.indices.length; i++) {
-                Edge3D edge0 = new Edge3D(f.indices[i], f.indices[(i + 1) % size]);
-                Edge3D edge1 = new Edge3D(f.indices[(i + 1) % size], f.indices[i]);
+                Edge3D edge0 = new Edge3D(f.indices[i],
+                        f.indices[(i + 1) % size]);
+                Edge3D edge1 = new Edge3D(f.indices[(i + 1) % size],
+                        f.indices[i]);
                 if (!edges.contains(edge1)) {
                     Vector3f v0 = innerMesh.getVertexAt(edge0.fromIndex);
                     Vector3f v1 = innerMesh.getVertexAt(edge0.toIndex);
@@ -91,7 +93,8 @@ public class SolidifyModifier implements IMeshModifier {
     private void mapEdges() {
         for (Face3D face : mesh.faces) {
             for (int i = 0; i < face.indices.length; i++) {
-                Edge3D edge = new Edge3D(face.indices[i], face.indices[(i + 1) % face.indices.length]);
+                Edge3D edge = new Edge3D(face.indices[i],
+                        face.indices[(i + 1) % face.indices.length]);
                 edges.add(edge);
             }
         }

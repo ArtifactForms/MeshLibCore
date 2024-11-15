@@ -29,7 +29,8 @@ public class SpherifyModifier implements IMeshModifier {
     public Mesh3D modify(Mesh3D mesh) {
         Vector3f origin = new Vector3f(center);
         for (Vector3f v0 : mesh.vertices) {
-            Vector3f v1 = new Vector3f(v0.subtract(origin)).normalizeLocal().mult(radius).add(origin);
+            Vector3f v1 = new Vector3f(v0.subtract(origin)).normalizeLocal()
+                    .mult(radius).add(origin);
             v0.lerpLocal(v1, factor);
         }
         return mesh;

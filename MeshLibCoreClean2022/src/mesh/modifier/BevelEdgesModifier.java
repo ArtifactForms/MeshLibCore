@@ -151,7 +151,8 @@ public class BevelEdgesModifier implements IMeshModifier {
         if (isProcessed(edge) || isProcessed(pair))
             return;
 
-        addNewFace(new int[] { edge.toIndex, edge.fromIndex, pair.toIndex, pair.fromIndex });
+        addNewFace(new int[] { edge.toIndex, edge.fromIndex, pair.toIndex,
+                pair.fromIndex });
 
         markAsProcessed(edge);
         markAsProcessed(pair);
@@ -181,7 +182,8 @@ public class BevelEdgesModifier implements IMeshModifier {
     }
 
     private int[] toReverseArray(List<Integer> values) {
-        return values.stream().sorted(Collections.reverseOrder()).mapToInt(x -> x).toArray();
+        return values.stream().sorted(Collections.reverseOrder())
+                .mapToInt(x -> x).toArray();
     }
 
     private void clearAll() {

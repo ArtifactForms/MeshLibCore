@@ -30,8 +30,8 @@ public class RotateXModifier implements IMeshModifier {
     }
 
     private void createRotationMatrix() {
-        rotationMatrix = new Matrix3f(1, 0, 0, 0, Mathf.cos(angle), -Mathf.sin(angle), 0, Mathf.sin(angle),
-                Mathf.cos(angle));
+        rotationMatrix = new Matrix3f(1, 0, 0, 0, Mathf.cos(angle),
+                -Mathf.sin(angle), 0, Mathf.sin(angle), Mathf.cos(angle));
     }
 
     private void rotateMesh() {
