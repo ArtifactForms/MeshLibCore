@@ -22,7 +22,8 @@ public class CubedPillarCreator implements IMeshCreator {
         this(5, 0.5f, 0.05f);
     }
 
-    public CubedPillarCreator(int segmentCount, float segmentRadius, float extrude) {
+    public CubedPillarCreator(int segmentCount, float segmentRadius,
+            float extrude) {
         this.segmentCount = segmentCount;
         this.segmentRadius = segmentRadius;
         this.extrude = extrude;
@@ -39,10 +40,14 @@ public class CubedPillarCreator implements IMeshCreator {
 
     private void extrude() {
         for (int i = 0; i < segmentCount - 1; i++) {
-            new ExtrudeModifier(0.9f, extrude).modify(mesh, selection.getFaces());
-            new ExtrudeModifier(1.1f, extrude).modify(mesh, selection.getFaces());
-            new ExtrudeModifier(1, getExtrudeHeight()).modify(mesh, selection.getFaces());
+            extrude(0.9f, extrude);
+            extrude(1.1f, extrude);
+            extrude(1, getExtrudeHeight());
         }
+    }
+
+    private void extrude(float scale, float amount) {
+        new ExtrudeModifier(scale, amount).modify(mesh, selection.getFaces());
     }
 
     private void select() {
