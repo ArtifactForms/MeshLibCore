@@ -67,8 +67,8 @@ public class ConwayAmboModifier implements IMeshModifier {
     }
 
     /**
-     * For each vertex of the original mesh, connect the new points that have been
-     * generated for the faces that are adjacent to this vertex.
+     * For each vertex of the original mesh, connect the new points that have
+     * been generated for the faces that are adjacent to this vertex.
      */
     private void createFacesFromAdjacentVertices() {
         TraverseHelper helper = new TraverseHelper(mesh);
@@ -158,8 +158,10 @@ public class ConwayAmboModifier implements IMeshModifier {
         facesToAdd.add(new Face3D(indices));
     }
 
-    private Vector3f calculateEdgePoint(int startVertexIndex, int endVertexIndex) {
-        return calculateEdgePoint(getOriginalVertexAt(startVertexIndex), getOriginalVertexAt(endVertexIndex));
+    private Vector3f calculateEdgePoint(int startVertexIndex,
+            int endVertexIndex) {
+        return calculateEdgePoint(getOriginalVertexAt(startVertexIndex),
+                getOriginalVertexAt(endVertexIndex));
     }
 
     private Vector3f calculateEdgePoint(Vector3f start, Vector3f end) {
