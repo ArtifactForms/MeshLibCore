@@ -71,7 +71,7 @@ public class PlanarVertexCenterPlaneTest {
     public void resultMeshContainsPlanerVertices() {
         Mesh3D original = new PlaneCreator().create();
         for (Vector3f v : original.getVertices())
-            Assert.assertTrue(plane.vertices.contains(v));
+            assertTrue(plane.vertices.contains(v));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class PlanarVertexCenterPlaneTest {
         Mesh3D original = new PlaneCreator().create();
         Face3D face = original.getFaceAt(0);
         Vector3f faceCenter = original.calculateFaceCenter(face);
-        Assert.assertTrue(plane.vertices.contains(faceCenter));
+        assertTrue(plane.vertices.contains(faceCenter));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class PlanarVertexCenterPlaneTest {
         plane.updateFaceNormals();
         for (int i = 0; i < plane.getFaceCount(); i++) {
             Face3D face = plane.getFaceAt(i);
-            Assert.assertEquals(expectedNormal, face.normal);
+            assertEquals(expectedNormal, face.normal);
         }
     }
 
