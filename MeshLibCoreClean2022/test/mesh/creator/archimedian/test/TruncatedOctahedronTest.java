@@ -1,8 +1,8 @@
 package mesh.creator.archimedian.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,12 +22,12 @@ public class TruncatedOctahedronTest {
 
     @Test
     public void hasTwentyFourVertices() {
-        Assert.assertEquals(24, mesh.getVertexCount());
+        assertEquals(24, mesh.getVertexCount());
     }
 
     @Test
     public void hasFourteenFaces() {
-        Assert.assertEquals(14, mesh.getFaceCount());
+        assertEquals(14, mesh.getFaceCount());
     }
 
     @Test

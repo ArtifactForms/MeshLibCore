@@ -1,8 +1,8 @@
 package mesh.creator.archimedian.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,12 +21,12 @@ public class TruncatedCubeTest {
 
     @Test
     public void hasTwentyFourVertices() {
-        Assert.assertEquals(24, mesh.getVertexCount());
+        assertEquals(24, mesh.getVertexCount());
     }
 
     @Test
     public void hasFourteenFaces() {
-        Assert.assertEquals(14, mesh.getFaceCount());
+        assertEquals(14, mesh.getFaceCount());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class TruncatedCubeTest {
     public void fulfillsEulerCharacteristic() {
         assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
-    
+
     @Test
     public void testNormalsPointOutwards() {
         assertTrue(MeshTest.normalsPointOutwards(mesh));

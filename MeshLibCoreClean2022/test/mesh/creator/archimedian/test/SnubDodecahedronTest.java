@@ -1,8 +1,8 @@
 package mesh.creator.archimedian.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,12 +21,12 @@ public class SnubDodecahedronTest {
 
     @Test
     public void hasSixtyVertices() {
-        Assert.assertEquals(60, mesh.getVertexCount());
+        assertEquals(60, mesh.getVertexCount());
     }
 
     @Test
     public void hasNintyTwoFaces() {
-        Assert.assertEquals(92, mesh.getFaceCount());
+        assertEquals(92, mesh.getFaceCount());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class SnubDodecahedronTest {
     public void fulfillsEulerCharacteristic() {
         assertTrue(MeshTest.fulfillsEulerCharacteristic(mesh));
     }
-    
+
     @Test
     public void testNormalsPointOutwards() {
         assertTrue(MeshTest.normalsPointOutwards(mesh));

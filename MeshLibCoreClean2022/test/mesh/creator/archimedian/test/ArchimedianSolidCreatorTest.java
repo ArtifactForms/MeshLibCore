@@ -1,6 +1,9 @@
 package mesh.creator.archimedian.test;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.Test;
 
 import mesh.Mesh3D;
@@ -26,7 +29,7 @@ public class ArchimedianSolidCreatorTest {
 
     @Test
     public void implementsMeshCreatorInterface() {
-        Assert.assertTrue(new ArchimedianSolidCreator(null) instanceof IMeshCreator);
+        assertTrue(new ArchimedianSolidCreator(null) instanceof IMeshCreator);
     }
 
     @Test
@@ -35,7 +38,7 @@ public class ArchimedianSolidCreatorTest {
         for (ArchimedianSolid type : types) {
             ArchimedianSolidCreator creator = new ArchimedianSolidCreator(type);
             Mesh3D mesh = creator.create();
-            Assert.assertNotNull(mesh);
+            assertNotNull(mesh);
         }
     }
 
@@ -45,98 +48,111 @@ public class ArchimedianSolidCreatorTest {
         ArchimedianSolid[] types = ArchimedianSolid.values();
         for (ArchimedianSolid type : types) {
             creator.setType(type);
-            Assert.assertEquals(type, creator.getType());
+            assertEquals(type, creator.getType());
         }
     }
 
     @Test
     public void verticesEqualIcosidodecahedronCase() {
         Mesh3D expected = new IcosidodecahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.ICOSIDODECAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.ICOSIDODECAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualTruncatedCuboctahedronCase() {
         Mesh3D expected = new TruncatedCuboctahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.TRUNCATED_CUBOCTAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.TRUNCATED_CUBOCTAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualTruncatedIcosidodecahedronCase() {
         Mesh3D expected = new TruncatedIcosidodecahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.TRUNCATED_ICOSIDODECAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.TRUNCATED_ICOSIDODECAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualCubocahedronCase() {
         Mesh3D expected = new CuboctahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.CUBOCTAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.CUBOCTAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualRhombicuboctahedronCase() {
         Mesh3D expected = new RhombicuboctahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.RHOMBICUBOCTAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.RHOMBICUBOCTAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualSnubCubeCase() {
         Mesh3D expected = new SnubCubeCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.SNUB_CUBE).create();
+        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.SNUB_CUBE)
+                .create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualRhombicosadodecahedronCase() {
         Mesh3D expected = new RhombicosidodecahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.RHOMBISOSIDODECAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.RHOMBISOSIDODECAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualSnubDodecahedronCase() {
         Mesh3D expected = new SnubDodecahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.SNUB_DODECAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.SNUB_DODECAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualTruncatedTetrahedronCase() {
         Mesh3D expected = new TruncatedTetrahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.TRUNCATED_TETRAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.TRUNCATED_TETRAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualTruncatedOctahedronCase() {
         Mesh3D expected = new TruncatedOctahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.TRUNCATED_OCTAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.TRUNCATED_OCTAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualTruncatedCubeCase() {
         Mesh3D expected = new TruncatedCubeCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.TRUNCATED_CUBE).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.TRUNCATED_CUBE).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualTruncatedIcosahedronCase() {
         Mesh3D expected = new TruncatedIcosahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.TRUNCATED_ICOSAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.TRUNCATED_ICOSAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 
     @Test
     public void verticesEqualTruncatedDodecahedronCase() {
         Mesh3D expected = new TruncatedDodecahedronCreator().create();
-        Mesh3D actual = new ArchimedianSolidCreator(ArchimedianSolid.TRUNCATED_DODECAHEDRON).create();
+        Mesh3D actual = new ArchimedianSolidCreator(
+                ArchimedianSolid.TRUNCATED_DODECAHEDRON).create();
         MeshCompare.assertVerticesAreEqual(expected, actual, 0.000001f);
     }
 

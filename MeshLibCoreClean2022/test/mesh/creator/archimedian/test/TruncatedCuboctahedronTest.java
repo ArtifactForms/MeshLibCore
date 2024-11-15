@@ -1,8 +1,8 @@
 package mesh.creator.archimedian.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,12 +21,12 @@ public class TruncatedCuboctahedronTest {
 
     @Test
     public void hasFourtyEightVertices() {
-        Assert.assertEquals(48, mesh.getVertexCount());
+        assertEquals(48, mesh.getVertexCount());
     }
 
     @Test
     public void hasTwentySixFaces() {
-        Assert.assertEquals(26, mesh.getFaceCount());
+        assertEquals(26, mesh.getFaceCount());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class TruncatedCuboctahedronTest {
         float delta = 0.000001f;
         MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, delta);
     }
-    
+
     @Test
     public void testNormalsPointOutwards() {
         assertTrue(MeshTest.normalsPointOutwards(mesh));

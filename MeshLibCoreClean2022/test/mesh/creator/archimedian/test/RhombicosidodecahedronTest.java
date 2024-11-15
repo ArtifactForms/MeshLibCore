@@ -1,8 +1,8 @@
 package mesh.creator.archimedian.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,12 +21,12 @@ public class RhombicosidodecahedronTest {
 
     @Test
     public void hasSixtyVertices() {
-        Assert.assertEquals(60, mesh.getVertexCount());
+        assertEquals(60, mesh.getVertexCount());
     }
 
     @Test
     public void hasSixtyTwoFaces() {
-        Assert.assertEquals(62, mesh.getFaceCount());
+        assertEquals(62, mesh.getFaceCount());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class RhombicosidodecahedronTest {
         float delta = 0.00001f;
         MeshTest.assertEveryEdgeHasALengthOf(mesh, 2, delta);
     }
-    
+
     @Test
     public void testNormalsPointOutwards() {
         assertTrue(MeshTest.normalsPointOutwards(mesh));
