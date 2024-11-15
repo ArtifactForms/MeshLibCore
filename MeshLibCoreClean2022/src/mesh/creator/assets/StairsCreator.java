@@ -87,17 +87,22 @@ public class StairsCreator implements IMeshCreator {
     }
 
     private void createVerticesAt(int i) {
-        float halfWidth = width / 2.0f;
+        float halfW = width / 2.0f;
+        float depth = -i * stepDepth;
 
-        Vector3f bottomRight = new Vector3f(halfWidth, -i * stepHeight, -i * stepDepth);
-        Vector3f bottomLeft = new Vector3f(-halfWidth, -i * stepHeight, -i * stepDepth);
-        Vector3f topLeft = new Vector3f(-halfWidth, -(i + 1) * stepHeight, -i * stepDepth);
-        Vector3f topRight = new Vector3f(halfWidth, -(i + 1) * stepHeight, -i * stepDepth);
+        Vector3f bottomRight = new Vector3f(halfW, -i * stepHeight, depth);
+        Vector3f bottomLeft = new Vector3f(-halfW, -i * stepHeight, depth);
+        Vector3f topLeft = new Vector3f(-halfW, -(i + 1) * stepHeight, depth);
+        Vector3f topRight = new Vector3f(halfW, -(i + 1) * stepHeight, depth);
 
-        mesh.add(bottomRight);
-        mesh.add(bottomLeft);
-        mesh.add(topLeft);
-        mesh.add(topRight);
+        addVertex(bottomRight);
+        addVertex(bottomLeft);
+        addVertex(topLeft);
+        addVertex(topRight);
+    }
+
+    private void addVertex(Vector3f v) {
+        mesh.add(v);
     }
 
     private void addTriangle(int a, int b, int c) {
@@ -105,7 +110,8 @@ public class StairsCreator implements IMeshCreator {
     }
 
     private void addQuad(int a, int b, int c, int d) {
-        mesh.addFace(nextIndex + a, nextIndex + b, nextIndex + c, nextIndex + d);
+        mesh.addFace(nextIndex + a, nextIndex + b, nextIndex + c,
+                nextIndex + d);
     }
 
     private void addBottomFace() {
