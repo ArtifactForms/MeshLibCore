@@ -130,7 +130,8 @@ public class TraverseHelper {
     }
 
     /**
-     * Collects a unique edge, ensuring it's not already present in the `edges` set.
+     * Collects a unique edge, ensuring it's not already present in the `edges`
+     * set.
      *
      * @param edge The edge to be collected.
      */
