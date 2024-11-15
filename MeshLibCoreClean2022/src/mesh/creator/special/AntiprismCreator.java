@@ -9,6 +9,10 @@ public class AntiprismCreator implements IMeshCreator {
 
     private int n;
 
+    private int n2;
+
+    private float height;
+
     private Mesh3D mesh;
 
     public AntiprismCreator() {
@@ -21,7 +25,9 @@ public class AntiprismCreator implements IMeshCreator {
 
     @Override
     public Mesh3D create() {
+        n2 = n + n;
         initializeMesh();
+        initializeHeight();
         createVertices();
         createFaces();
         return mesh;
@@ -32,35 +38,70 @@ public class AntiprismCreator implements IMeshCreator {
     }
 
     private void createVertices() {
+        for (int k = 0; k < 2 * n; k++)
+            addVertex(x(k), y(k), z(k));
+    }
+
+    private void initializeHeight() {
         float a = Mathf.cos(Mathf.PI / n);
         float b = Mathf.cos(Mathf.TWO_PI / n);
-        float h = Mathf.sqrt((a - b) / 2.0f);
-        for (int k = 0; k < 2 * n; k++) {
-            float x = Mathf.cos(k * Mathf.PI / n);
-            float z = Mathf.sin(k * Mathf.PI / n);
-            float y = Mathf.pow(-1, k) * h;
-            mesh.addVertex(x, y, z);
-        }
+        height = Mathf.sqrt((a - b) / 2.0f);
+    }
+
+    private float x(int k) {
+        return Mathf.cos(k * Mathf.PI / n);
+    }
+
+    private float z(int k) {
+        return Mathf.sin(k * Mathf.PI / n);
+    }
+
+    private float y(int k) {
+        return Mathf.pow(-1, k) * height;
     }
 
     private void createFaces() {
-        int n2 = n + n;
-        int[] indicesTop = new int[n];
-        int[] indicesBottom = new int[n];
-        for (int i = 0; i < n2; i++) {
-            int index0 = i % n2;
-            int index1 = (i + 1) % n2;
-            int index2 = (i + 2) % n2;
-            if (i % 2 == 1) {
-                mesh.addFace(index0, index1, index2);
-                indicesTop[i / 2] = i;
-            } else {
-                mesh.addFace(index0, index2, index1);
-                indicesBottom[(n - 1) - (i / 2)] = i;
-            }
+        createSideFaces();
+        createTopFace();
+        createBottomFace();
+    }
+
+    private void createSideFaces() {
+        for (int i = 0; i < n2; i++)
+            createSideFaceAt(i);
+    }
+
+    private void createSideFaceAt(int i) {
+        int a = i % n2;
+        int b = (i + 1) % n2;
+        int c = (i + 2) % n2;
+        if (i % 2 == 1) {
+            addFace(a, b, c);
+        } else {
+            addFace(a, c, b);
         }
-        mesh.add(new Face3D(indicesTop));
-        mesh.add(new Face3D(indicesBottom));
+    }
+
+    private void createBottomFace() {
+        int[] indices = new int[n];
+        for (int i = 0; i < n; i++)
+            indices[n - 1 - i] = i * 2;
+        addFace(indices);
+    }
+
+    private void createTopFace() {
+        int[] indices = new int[n];
+        for (int i = 0; i < n; i++)
+            indices[i] = i + i + 1;
+        addFace(indices);
+    }
+
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
+    }
+
+    private void addFace(int... indices) {
+        mesh.add(new Face3D(indices));
     }
 
     public int getN() {
