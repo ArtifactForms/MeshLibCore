@@ -56,7 +56,8 @@ public class PillarCreator implements IMeshCreator {
             mesh.removeFaces(selection.getFaces());
             break;
         default:
-            throw new IllegalArgumentException("Unexpected value: " + capFillType);
+            throw new IllegalArgumentException(
+                    "Unexpected value: " + capFillType);
         }
     }
 
@@ -88,26 +89,30 @@ public class PillarCreator implements IMeshCreator {
     private void createBottom() {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < bottomSegments - 1; i++) {
-                Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
-                Mesh3DUtil.extrudeFace(mesh, face, 1.0f, getBottomSegmentHeight());
+                extrudeFace(face, 0.9f, 0.0f);
+                extrudeFace(face, 1.0f, getBottomSegmentHeight());
             }
         }
     }
 
     private void createCenter() {
         for (Face3D face : selection.getFaces()) {
-            Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0.0f);
-            Mesh3DUtil.extrudeFace(mesh, face, 1.0f, centerHeight);
+            extrudeFace(face, 0.9f, 0.0f);
+            extrudeFace(face, 1.0f, centerHeight);
         }
     }
 
     private void createTop() {
         for (Face3D face : selection.getFaces()) {
             for (int i = 0; i < topSegments; i++) {
-                Mesh3DUtil.extrudeFace(mesh, face, 1.1f, 0.0f);
-                Mesh3DUtil.extrudeFace(mesh, face, 1.0f, getTopSegmentHeight());
+                extrudeFace(face, 1.1f, 0.0f);
+                extrudeFace(face, 1.0f, getTopSegmentHeight());
             }
         }
+    }
+
+    private void extrudeFace(Face3D face, float scale, float amount) {
+        Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
     }
 
     @Override
