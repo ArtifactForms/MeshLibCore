@@ -1,6 +1,10 @@
 package mesh.util.test;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,12 +23,12 @@ public class Bounds3Test {
 
     @Test
     public void notEqualsToNull() {
-        Assert.assertFalse(bounds.equals(null));
+        assertFalse(bounds.equals(null));
     }
 
     @Test
     public void equalsToItself() {
-        Assert.assertTrue(bounds.equals(bounds));
+        assertTrue(bounds.equals(bounds));
     }
 
     @Test
@@ -32,7 +36,7 @@ public class Bounds3Test {
         Vector3f size = createRandomVector();
         Bounds3 bounds0 = new Bounds3(size);
         Bounds3 bounds1 = new Bounds3(size);
-        Assert.assertTrue(bounds0.equals(bounds1));
+        assertTrue(bounds0.equals(bounds1));
     }
 
     @Test
@@ -41,47 +45,47 @@ public class Bounds3Test {
         Vector3f size = createRandomVector();
         Bounds3 bounds0 = new Bounds3(center, size);
         Bounds3 bounds1 = new Bounds3(center, size);
-        Assert.assertTrue(bounds0.equals(bounds1));
+        assertTrue(bounds0.equals(bounds1));
     }
 
     @Test
     public void centerIsNotNullByDefault() {
-        Assert.assertNotNull(bounds.getCenter());
+        assertNotNull(bounds.getCenter());
     }
 
     @Test
     public void centerIsAtOriginByDefault() {
         Vector3f origin = new Vector3f();
-        Assert.assertEquals(origin, bounds.getCenter());
+        assertEquals(origin, bounds.getCenter());
     }
 
     @Test
     public void returnsNewCenter() {
         Vector3f center0 = bounds.getCenter();
         Vector3f center1 = bounds.getCenter();
-        Assert.assertTrue(center0 != center1);
+        assertTrue(center0 != center1);
     }
 
     @Test
     public void doesNotChangeCenterInternally() {
         Vector3f center0 = bounds.getCenter();
         center0.set(1, 2, 3);
-        Assert.assertEquals(new Vector3f(), bounds.getCenter());
+        assertEquals(new Vector3f(), bounds.getCenter());
     }
 
     @Test
     public void getCenterXisZeroByDefault() {
-        Assert.assertEquals(0, bounds.getCenterX(), 0);
+        assertEquals(0, bounds.getCenterX(), 0);
     }
 
     @Test
     public void getCenterYisZeroByDefault() {
-        Assert.assertEquals(0, bounds.getCenterY(), 0);
+        assertEquals(0, bounds.getCenterY(), 0);
     }
 
     @Test
     public void getCenterZisZeroByDefault() {
-        Assert.assertEquals(0, bounds.getCenterZ(), 0);
+        assertEquals(0, bounds.getCenterZ(), 0);
     }
 
     @Test
@@ -89,68 +93,68 @@ public class Bounds3Test {
         Vector3f center = new Vector3f(1, 2, 3);
         Bounds3 bounds = new Bounds3(center, new Vector3f());
         Vector3f center0 = bounds.getCenter();
-        Assert.assertTrue(center != center0);
+        assertTrue(center != center0);
     }
 
     @Test
     public void getSetRandomMin() {
         Vector3f randomMin = createRandomVector();
         bounds.setMin(randomMin.getX(), randomMin.getY(), randomMin.getZ());
-        Assert.assertEquals(randomMin, bounds.getMin());
+        assertEquals(randomMin, bounds.getMin());
     }
 
     @Test
     public void getSetRandomMax() {
         Vector3f randomMax = createRandomVector();
         bounds.setMax(randomMax.getX(), randomMax.getY(), randomMax.getZ());
-        Assert.assertEquals(randomMax, bounds.getMax());
+        assertEquals(randomMax, bounds.getMax());
     }
 
     @Test
     public void getRandomMinX() {
         Vector3f randomMin = createRandomVector();
         bounds.setMin(randomMin.getX(), randomMin.getY(), randomMin.getZ());
-        Assert.assertEquals(randomMin.getX(), bounds.getMinX(), 0);
+        assertEquals(randomMin.getX(), bounds.getMinX(), 0);
     }
 
     @Test
     public void getRandomMinY() {
         Vector3f randomMin = createRandomVector();
         bounds.setMin(randomMin.getX(), randomMin.getY(), randomMin.getZ());
-        Assert.assertEquals(randomMin.getY(), bounds.getMinY(), 0);
+        assertEquals(randomMin.getY(), bounds.getMinY(), 0);
     }
 
     @Test
     public void getRandomMinZ() {
         Vector3f randomMin = createRandomVector();
         bounds.setMin(randomMin.getX(), randomMin.getY(), randomMin.getZ());
-        Assert.assertEquals(randomMin.getZ(), bounds.getMinZ(), 0);
+        assertEquals(randomMin.getZ(), bounds.getMinZ(), 0);
     }
 
     @Test
     public void getRandomMaxX() {
         Vector3f randomMax = createRandomVector();
         bounds.setMax(randomMax.getX(), randomMax.getY(), randomMax.getZ());
-        Assert.assertEquals(randomMax.getX(), bounds.getMaxX(), 0);
+        assertEquals(randomMax.getX(), bounds.getMaxX(), 0);
     }
 
     @Test
     public void getRandomMaxY() {
         Vector3f randomMax = createRandomVector();
         bounds.setMax(randomMax.getX(), randomMax.getY(), randomMax.getZ());
-        Assert.assertEquals(randomMax.getY(), bounds.getMaxY(), 0);
+        assertEquals(randomMax.getY(), bounds.getMaxY(), 0);
     }
 
     @Test
     public void getRandomMaxZ() {
         Vector3f randomMax = createRandomVector();
         bounds.setMax(randomMax.getX(), randomMax.getY(), randomMax.getZ());
-        Assert.assertEquals(randomMax.getZ(), bounds.getMaxZ(), 0);
+        assertEquals(randomMax.getZ(), bounds.getMaxZ(), 0);
     }
 
     @Test
     public void volumeIsZeroByDefault() {
-        Assert.assertEquals(0, bounds.volume(), 0);
+        assertEquals(0, bounds.volume(), 0);
     }
 
     @Test
@@ -158,7 +162,7 @@ public class Bounds3Test {
         Vector3f size = createRandomVector();
         Bounds3 bounds = new Bounds3(size);
         float expected = size.getX() * size.getY() * size.getZ();
-        Assert.assertEquals(expected, bounds.volume(), Mathf.ZERO_TOLERANCE);
+        assertEquals(expected, bounds.volume(), Mathf.ZERO_TOLERANCE);
     }
 
     @Test
@@ -166,7 +170,7 @@ public class Bounds3Test {
         Vector3f center = new Vector3f();
         Vector3f size = createRandomPositiveVector();
         Bounds3 bounds = new Bounds3(center, size);
-        Assert.assertEquals(size, bounds.getSize());
+        assertEquals(size, bounds.getSize());
     }
 
     @Test
@@ -174,7 +178,7 @@ public class Bounds3Test {
         Vector3f center = new Vector3f();
         Vector3f size = createRandomPositiveVector();
         Bounds3 bounds = new Bounds3(center, size);
-        Assert.assertTrue(size != bounds.getSize());
+        assertTrue(size != bounds.getSize());
     }
 
     @Test
@@ -182,7 +186,7 @@ public class Bounds3Test {
         Bounds3 bounds = new Bounds3();
         Vector3f center = createRandomVector();
         bounds.setCenter(center);
-        Assert.assertEquals(center, bounds.getCenter());
+        assertEquals(center, bounds.getCenter());
     }
 
     @Test
@@ -190,7 +194,7 @@ public class Bounds3Test {
         Bounds3 bounds = new Bounds3();
         Vector3f center = createRandomVector();
         bounds.setCenter(center);
-        Assert.assertTrue(bounds.getCenter() != center);
+        assertTrue(bounds.getCenter() != center);
     }
 
     @Test
@@ -198,7 +202,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getWidth(), expand, 0);
+        assertEquals(bounds.getWidth(), expand, 0);
     }
 
     @Test
@@ -206,7 +210,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getHeight(), expand, 0);
+        assertEquals(bounds.getHeight(), expand, 0);
     }
 
     @Test
@@ -214,7 +218,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getHeight(), expand, 0);
+        assertEquals(bounds.getHeight(), expand, 0);
     }
 
     @Test
@@ -222,7 +226,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getMinX(), -expand * 0.5f, 0);
+        assertEquals(bounds.getMinX(), -expand * 0.5f, 0);
     }
 
     @Test
@@ -230,7 +234,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getMinY(), -expand * 0.5f, 0);
+        assertEquals(bounds.getMinY(), -expand * 0.5f, 0);
     }
 
     @Test
@@ -238,7 +242,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getMinZ(), -expand * 0.5f, 0);
+        assertEquals(bounds.getMinZ(), -expand * 0.5f, 0);
     }
 
     @Test
@@ -246,7 +250,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getMaxX(), expand * 0.5f, 0);
+        assertEquals(bounds.getMaxX(), expand * 0.5f, 0);
     }
 
     @Test
@@ -254,7 +258,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getMaxY(), expand * 0.5f, 0);
+        assertEquals(bounds.getMaxY(), expand * 0.5f, 0);
     }
 
     @Test
@@ -262,7 +266,7 @@ public class Bounds3Test {
         float expand = Mathf.random(0, 100000f);
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
-        Assert.assertEquals(bounds.getMaxZ(), expand * 0.5f, 0);
+        assertEquals(bounds.getMaxZ(), expand * 0.5f, 0);
     }
 
     @Test
@@ -271,7 +275,7 @@ public class Bounds3Test {
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
         float expectedVolume = expand * expand * expand;
-        Assert.assertEquals(expectedVolume, bounds.volume(), 0);
+        assertEquals(expectedVolume, bounds.volume(), 0);
     }
 
     @Test
@@ -280,7 +284,7 @@ public class Bounds3Test {
         Bounds3 bounds = new Bounds3();
         bounds.expand(expand);
         Vector3f expected = new Vector3f(expand, expand, expand);
-        Assert.assertEquals(expected, bounds.getSize());
+        assertEquals(expected, bounds.getSize());
     }
 
     private static Vector3f createRandomPositiveVector() {
