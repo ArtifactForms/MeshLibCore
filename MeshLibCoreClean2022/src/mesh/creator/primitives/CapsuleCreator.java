@@ -1,6 +1,7 @@
 package mesh.creator.primitives;
 
 import math.Mathf;
+import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -72,9 +73,9 @@ public class CapsuleCreator implements IMeshCreator {
             for (int j = 0; j < rotationSegments; j++) {
                 float phi = j * stepPhi;
                 float x = radius * Mathf.cos(phi) * Mathf.sin(theta);
-                float y = height * a * Mathf.cos(theta) + yOffset;
                 float z = radius * Mathf.sin(phi) * Mathf.sin(theta);
-                mesh.addVertex(x, y, z);
+                float y = height * a * Mathf.cos(theta) + yOffset;
+                addVertex(x, y, z);
             }
         }
     }
@@ -90,27 +91,28 @@ public class CapsuleCreator implements IMeshCreator {
                 float y = i * segmentHeight - (cylinderHeight / 2f);
                 float z = (topRadius - (i * radiusStep))
                         * (Mathf.sin(j * angle));
-                mesh.addVertex(x, y, z);
+                addVertex(x, y, z);
             }
         }
     }
-
+    
     private void createQuadFaces() {
         for (int i = 0; i < getSegmentsCount() - 2; i++)
             for (int j = 0; j < rotationSegments; j++)
-                addFace(i, j);
+                createQuadAt(i, j);
     }
 
-    private void addFace(int i, int j) {
-        int idx0 = toOneDimensionalIndex(i, j);
-        int idx1 = toOneDimensionalIndex(i + 1, j);
-        int idx2 = toOneDimensionalIndex(i + 1, (j + 1) % rotationSegments);
-        int idx3 = toOneDimensionalIndex(i, (j + 1) % rotationSegments);
-        mesh.addFace(idx0, idx1, idx2, idx3);
+    private void createQuadAt(int i, int j) {
+        int idx0 = getIndex(i, j);
+        int idx1 = getIndex(i + 1, j);
+        int idx2 = getIndex(i + 1, j + 1);
+        int idx3 = getIndex(i, j + 1);
+        addFace(idx0, idx1, idx2, idx3);
     }
 
-    private int toOneDimensionalIndex(int i, int j) {
-        return Mathf.toOneDimensionalIndex(i, j, rotationSegments);
+    private int getIndex(int i, int j) {
+        return Mathf.toOneDimensionalIndex(i, j % rotationSegments,
+                rotationSegments);
     }
 
     private void createTriangleFaces() {
@@ -129,16 +131,24 @@ public class CapsuleCreator implements IMeshCreator {
 
     private void triangleFan(int indexOffset, float centerY) {
         int centerIndex = mesh.vertices.size();
-        mesh.addVertex(0, centerY, 0);
+        addVertex(0, centerY, 0);
         for (int i = 0; i < rotationSegments; i++) {
             int idx0 = i + indexOffset;
             int idx1 = (i + 1) % rotationSegments + indexOffset;
             if (indexOffset == 0) {
-                mesh.addFace(idx0, idx1, centerIndex);
+                addFace(idx0, idx1, centerIndex);
             } else {
-                mesh.addFace(idx1, idx0, centerIndex);
+                addFace(idx1, idx0, centerIndex);
             }
         }
+    }
+
+    private void addFace(int... indices) {
+        mesh.add(new Face3D(indices));
+    }
+
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
     }
 
     private int getSegmentsCount() {
