@@ -99,7 +99,8 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
 
     private void createNewFaces(Face3D f, int[] idxs) {
         for (int i = 0; i < f.indices.length; i++) {
-            Face3D f0 = new Face3D(f.indices[i], idxs[i + 1], idxs[0], idxs[i == 0 ? f.indices.length : i]);
+            Face3D f0 = new Face3D(f.indices[i], idxs[i + 1], idxs[0],
+                    idxs[i == 0 ? f.indices.length : i]);
             newFaces.add(f0);
         }
     }

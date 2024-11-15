@@ -71,7 +71,8 @@ public class CatmullClarkModifier implements IMeshModifier {
         FaceSplit faceSplit = new FaceSplit(face);
 
         for (int i = 0; i < face.indices.length; i++) {
-            Integer edgePointIndex = getMappedEdgePointIndex(createEdgeAt(face, i));
+            Integer edgePointIndex = getMappedEdgePointIndex(
+                    createEdgeAt(face, i));
             faceSplit.setIndexAt(i + 1, edgePointIndex);
             setVertexDataAt(faceSplit, i);
             addFacePointToEdgePointAt(faceSplit.getFacePoint(), edgePointIndex);
@@ -88,7 +89,8 @@ public class CatmullClarkModifier implements IMeshModifier {
         vertexData.addEdgePoint(calculateMidPoint(createEdgeAt(face, i)));
     }
 
-    private void addFacePointToEdgePointAt(Vector3f facePoint, int edgePointIndex) {
+    private void addFacePointToEdgePointAt(Vector3f facePoint,
+            int edgePointIndex) {
         Vector3f edgePoint = mesh.getVertexAt(edgePointIndex);
         edgePoint.addLocal(facePoint.mult(0.25f));
     }
@@ -172,7 +174,8 @@ public class CatmullClarkModifier implements IMeshModifier {
             int edgePointIndex0 = indices[i + 1];
             int facePointIndex = indices[0];
             int edgePointIndex1 = indices[i == 0 ? face.indices.length : i];
-            addFace(originalVertexIndex, edgePointIndex0, facePointIndex, edgePointIndex1);
+            addFace(originalVertexIndex, edgePointIndex0, facePointIndex,
+                    edgePointIndex1);
         }
 
         private void addFace(int... indices) {
@@ -209,7 +212,8 @@ public class CatmullClarkModifier implements IMeshModifier {
             Vector3f originalVertex = mesh.getVertexAt(index);
             Vector3f f = calculateFacePointsAverage();
             Vector3f r = calculateEdgePointsAverage();
-            originalVertex.set(originalVertex.mult(n - 3).add(f.add(r.mult(2))).divide(n));
+            originalVertex.set(
+                    originalVertex.mult(n - 3).add(f.add(r.mult(2))).divide(n));
         }
 
         private Vector3f calculateAverage(List<Vector3f> vertices) {

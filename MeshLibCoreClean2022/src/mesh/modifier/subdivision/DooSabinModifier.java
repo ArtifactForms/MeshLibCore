@@ -60,8 +60,8 @@ public class DooSabinModifier implements IMeshModifier {
     }
 
     /**
-     * For each original face, create new vertices and connect the new vertices that
-     * have been generated for each original vertex of the face.
+     * For each original face, create new vertices and connect the new vertices
+     * that have been generated for each original vertex of the face.
      */
     private void createAndConnectNewVertices() {
         List<Face3D> faces = source.getFaces(0, source.getFaceCount());
@@ -83,8 +83,8 @@ public class DooSabinModifier implements IMeshModifier {
     }
 
     /**
-     * For each vertex of the original mesh, connect the new points that have been
-     * generated for the faces that are adjacent to this vertex.
+     * For each vertex of the original mesh, connect the new points that have
+     * been generated for the faces that are adjacent to this vertex.
      */
     private void createFacesFromAdjacentVertices() {
         TraverseHelper helper = new TraverseHelper(source);
@@ -93,8 +93,10 @@ public class DooSabinModifier implements IMeshModifier {
             Edge3D edge = outgoingEdge;
             Vector<Integer> indices = new Vector<Integer>();
             do {
-                Face3D face = helper.getFaceByEdge(edge.fromIndex, edge.toIndex);
-                int index = vertexFaceMap.get(new VertexFacePair(source.getVertexAt(i), face));
+                Face3D face = helper.getFaceByEdge(edge.fromIndex,
+                        edge.toIndex);
+                int index = vertexFaceMap
+                        .get(new VertexFacePair(source.getVertexAt(i), face));
                 indices.add(index);
                 edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
             } while (!outgoingEdge.equals(edge));
@@ -125,8 +127,8 @@ public class DooSabinModifier implements IMeshModifier {
      * 
      * <ul>
      * <li>the vertex for which the new point is being defined</li>
-     * <li>the two edge points (the midpoints of the edges that are adjacent to this
-     * vertex in the polygon)</li>
+     * <li>the two edge points (the midpoints of the edges that are adjacent to
+     * this vertex in the polygon)</li>
      * <li>and the face point (average of the vertices of the polygon)</li>
      * </ul>
      * 
@@ -227,7 +229,8 @@ public class DooSabinModifier implements IMeshModifier {
             int result = 1;
             result = prime * result + getOuterType().hashCode();
             result = prime * result + ((face == null) ? 0 : face.hashCode());
-            result = prime * result + ((vertex == null) ? 0 : vertex.hashCode());
+            result = prime * result
+                    + ((vertex == null) ? 0 : vertex.hashCode());
             return result;
         }
 

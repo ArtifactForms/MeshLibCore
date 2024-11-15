@@ -85,7 +85,8 @@ public class PlanarMidEdgeModifier implements IMeshModifier {
     }
 
     private Edge3D createEdgeAt(Face3D face, int index) {
-        return new Edge3D(face.indices[index % face.indices.length], face.indices[(index + 1) % face.indices.length]);
+        return new Edge3D(face.indices[index % face.indices.length],
+                face.indices[(index + 1) % face.indices.length]);
     }
 
     private void addNGon(int[] indices) {
