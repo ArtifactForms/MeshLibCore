@@ -1,9 +1,10 @@
 package mesh.creator.test.manifold;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.Test;
 
 import mesh.Mesh3D;
-import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.BoxCreator;
 import mesh.creator.primitives.CapsuleCreator;
 import mesh.creator.primitives.ConeCreator;
@@ -26,87 +27,113 @@ import mesh.creator.primitives.TruncatedConeCreator;
 import mesh.creator.primitives.TubeCreator;
 import mesh.creator.primitives.UVSphereCreator;
 import mesh.creator.primitives.WedgeCreator;
+import util.MeshTest;
 
 public class PrimitivesCreatorsManifoldTest {
 
-    private void test(IMeshCreator creator) {
-        Mesh3D mesh = creator.create();
-        new ManifoldTest(mesh).assertIsManifold();
-    }
-
     @Test
     public void manifoldBox() {
-        test(new BoxCreator());
+        BoxCreator creator = new BoxCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldCapsule() {
-        test(new CapsuleCreator());
+        CapsuleCreator creator = new CapsuleCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldCone() {
-        test(new ConeCreator());
+        ConeCreator creator = new ConeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldCube() {
-        test(new CubeCreator());
+        CubeCreator creator = new CubeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldCylinder() {
-        test(new CylinderCreator());
+        CylinderCreator creator = new CylinderCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldDoubleCone() {
-        test(new DoubleConeCreator());
+        DoubleConeCreator creator = new DoubleConeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldFlatTopPyramidCreator() {
-        test(new FlatTopPyramidCreator());
+        FlatTopPyramidCreator creator = new FlatTopPyramidCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldHalfUVSphere() {
-        test(new HalfUVSphere());
+        HalfUVSphere creator = new HalfUVSphere();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldHelix() {
-        test(new HelixCreator());
+        HelixCreator creator = new HelixCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldIcoSphere() {
-        test(new IcoSphereCreator());
+        IcoSphereCreator creator = new IcoSphereCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldQuadCapCylinder() {
-        test(new QuadCapCylinderCreator());
+        QuadCapCylinderCreator creator = new QuadCapCylinderCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldQuadSphere() {
-        test(new QuadSphereCreator());
+        QuadSphereCreator creator = new QuadSphereCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldSegmentedBox() {
-        test(new SegmentedBoxCreator());
+        SegmentedBoxCreator creator = new SegmentedBoxCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldSegmentedCylinder() {
-        test(new SegmentedCylinderCreator());
+        SegmentedCylinderCreator creator = new SegmentedCylinderCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldSegmentedTube() {
-        test(new SegmentedTubeCreator());
+        SegmentedTubeCreator creator = new SegmentedTubeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
@@ -114,37 +141,50 @@ public class PrimitivesCreatorsManifoldTest {
         SolidArcCreator creator = new SolidArcCreator();
         creator.setCapEnd(true);
         creator.setCapStart(true);
-        test(creator);
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldSquareBasedPyramid() {
-        test(new SquareBasedPyramidCreator());
+        SquareBasedPyramidCreator creator = new SquareBasedPyramidCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldTorus() {
-        test(new TorusCreator());
+        TorusCreator creator = new TorusCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldTruncatedCone() {
-        test(new TruncatedConeCreator());
+        TruncatedConeCreator creator = new TruncatedConeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldTube() {
-        test(new TubeCreator());
+        TubeCreator creator = new TubeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldUVSphere() {
-        test(new UVSphereCreator());
+        UVSphereCreator creator = new UVSphereCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldWedge() {
-        test(new WedgeCreator());
+        WedgeCreator creator = new WedgeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
 }
