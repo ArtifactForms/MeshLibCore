@@ -9,10 +9,15 @@ import mesh.Mesh3D;
 public class MoveAlongNormalAnimator extends AbstractAnimator {
 
     private float lifeTime;
+
     private float time;
+
     private float speed;
+
     private Mesh3D mesh;
+
     private Face3D face;
+
     private ArrayList<Vector3f> originals;
 
     public MoveAlongNormalAnimator(Mesh3D mesh, Face3D face) {
