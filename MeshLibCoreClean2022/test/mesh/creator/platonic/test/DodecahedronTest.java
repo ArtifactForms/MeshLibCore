@@ -1,6 +1,7 @@
 package mesh.creator.platonic.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,17 +21,17 @@ public class DodecahedronTest {
 
     @Test
     public void hasTwentyVertices() {
-        MeshTest.assertVertexCountEquals(mesh, 20);
+        assertEquals(20, mesh.vertices.size());
     }
 
     @Test
     public void hasTwelveFaces() {
-        MeshTest.assertFaceCountEquals(mesh, 12);
+        assertEquals(12, mesh.faces.size());
     }
 
     @Test
     public void hasThirtyEdges() {
-        MeshTest.assertEdgeCountEquals(mesh, 30);
+        assertEquals(30, MeshTest.calculateEdgeCount(mesh));
     }
 
     @Test

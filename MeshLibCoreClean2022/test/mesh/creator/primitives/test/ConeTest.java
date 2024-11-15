@@ -66,7 +66,7 @@ public class ConeTest {
         int heightSegments = 10;
         int rotationSegments = 32;
         int expectedVertexCount = heightSegments * rotationSegments + 1;
-        MeshTest.assertVertexCountEquals(cone, expectedVertexCount);
+        assertEquals(expectedVertexCount, cone.vertices.size());
     }
 
     @Test
