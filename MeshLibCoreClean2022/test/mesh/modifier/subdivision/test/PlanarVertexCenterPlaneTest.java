@@ -1,6 +1,7 @@
 package mesh.modifier.subdivision.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,7 +29,12 @@ public class PlanarVertexCenterPlaneTest {
 
     @Test
     public void resultMeshHasFourFaces() {
-        MeshTest.assertFaceCountEquals(plane, 4);
+        int expectedFaceCount = 4;
+        assertEquals(expectedFaceCount, plane.getFaceCount());
+        assertEquals(expectedFaceCount, plane.faces.size());
+        assertEquals(expectedFaceCount, plane.getFaces().size());
+        assertEquals(expectedFaceCount,
+                plane.getFaces(0, plane.getFaceCount()).size());
     }
 
     @Test
@@ -43,7 +49,12 @@ public class PlanarVertexCenterPlaneTest {
 
     @Test
     public void resultMeshHasFiveVertices() {
-        MeshTest.assertVertexCountEquals(plane, 5);
+        int expectedVertexCount = 5;
+        assertEquals(expectedVertexCount, plane.getVertexCount());
+        assertEquals(expectedVertexCount, plane.vertices.size());
+        assertEquals(expectedVertexCount, plane.getVertices().size());
+        assertEquals(expectedVertexCount,
+                plane.getVertices(0, plane.getVertexCount()).size());
     }
 
     @Test

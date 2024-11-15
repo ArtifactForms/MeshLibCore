@@ -29,12 +29,22 @@ public class PlanarVertexCenterCubeTest {
 
     @Test
     public void resultMeshHasFourteenVertices() {
-        MeshTest.assertVertexCountEquals(cube, 14);
+        int expectedVertexCount = 14;
+        assertEquals(expectedVertexCount, cube.getVertexCount());
+        assertEquals(expectedVertexCount, cube.vertices.size());
+        assertEquals(expectedVertexCount, cube.getVertices().size());
+        assertEquals(expectedVertexCount,
+                cube.getVertices(0, cube.getVertexCount()).size());
     }
 
     @Test
     public void resultMeshHasTwentyFourFaces() {
-        MeshTest.assertFaceCountEquals(cube, 24);
+        int expectedFaceCount = 24;
+        assertEquals(expectedFaceCount, cube.getFaceCount());
+        assertEquals(expectedFaceCount, cube.faces.size());
+        assertEquals(expectedFaceCount, cube.getFaces().size());
+        assertEquals(expectedFaceCount,
+                cube.getFaces(0, cube.getFaceCount()).size());
     }
 
     @Test
