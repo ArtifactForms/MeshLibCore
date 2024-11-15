@@ -1,51 +1,60 @@
 package mesh.creator.test.manifold;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import mesh.Mesh3D;
-import mesh.creator.IMeshCreator;
 import mesh.creator.creative.CubicLatticeCreator;
 import mesh.creator.creative.LeonardoCubeCreator;
 import mesh.creator.creative.PortedCubeCreator;
 import mesh.creator.creative.RingCageCreator;
 import mesh.creator.creative.TessellationRingCreator;
 import mesh.creator.creative.TorusCageCreator;
+import util.MeshTest;
 
 public class CreativeCreatorsManifoldTest {
 
-    private void test(IMeshCreator creator) {
-        Mesh3D mesh = creator.create();
-        new ManifoldTest(mesh).assertIsManifold();
-    }
-
     @Test
     public void manifoldCubicLattice() {
-        test(new CubicLatticeCreator());
+        CubicLatticeCreator creator = new CubicLatticeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldLeonardoCube() {
-        test(new LeonardoCubeCreator());
+        LeonardoCubeCreator creator = new LeonardoCubeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldPortedCube() {
-        test(new PortedCubeCreator());
+        PortedCubeCreator creator = new PortedCubeCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldRingCageCreator() {
-        test(new RingCageCreator());
+        RingCageCreator creator = new RingCageCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldTessellationRing() {
-        test(new TessellationRingCreator());
+        TessellationRingCreator creator = new TessellationRingCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
     @Test
     public void manifoldTorusCage() {
-        test(new TorusCageCreator());
+        TorusCageCreator creator = new TorusCageCreator();
+        Mesh3D mesh = creator.create();
+        assertTrue(MeshTest.isManifold(mesh));
     }
 
 }
