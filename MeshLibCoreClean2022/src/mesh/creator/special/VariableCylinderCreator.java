@@ -119,7 +119,8 @@ public class VariableCylinderCreator implements IMeshCreator {
     }
 
     private int toOneDimensionalIndex(int i, int j) {
-        return Mathf.toOneDimensionalIndex(i, j % rotationSegments, rotationSegments);
+        int n = rotationSegments;
+        return Mathf.toOneDimensionalIndex(i, j % n, n);
     }
 
     public void add(float radius, float height) {
