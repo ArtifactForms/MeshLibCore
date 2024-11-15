@@ -1,10 +1,10 @@
 package mesh.test.catmullclark;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import math.Vector3f;
@@ -32,18 +32,19 @@ public class CatmullClarkTest {
             Face3D expectedFace = expected.getFaceAt(j);
             Face3D actualFace = actual.getFaceAt(j);
             for (int index = 0; index < expectedFace.indices.length; index++) {
-                Assert.assertEquals(expectedFace.indices[index], actualFace.indices[index]);
+                assertEquals(expectedFace.indices[index],
+                        actualFace.indices[index]);
             }
         }
     }
 
-    private void verticesAreEqual(Mesh3D expected, Mesh3D actual) {
-        for (int j = 0; j < expected.getVertexCount(); j++) {
-            Vector3f expectedVertex = expected.getVertexAt(j);
-            Vector3f actualVertex = actual.getVertexAt(j);
-            Assert.assertEquals(expectedVertex.getX(), actualVertex.getX(), 0.000001f);
-            Assert.assertEquals(expectedVertex.getY(), actualVertex.getY(), 0.000001f);
-            Assert.assertEquals(expectedVertex.getZ(), actualVertex.getZ(), 0.000001f);
+    private void verticesAreEqual(Mesh3D expectedMesh, Mesh3D actualMesh) {
+        for (int j = 0; j < expectedMesh.getVertexCount(); j++) {
+            Vector3f expected = expectedMesh.getVertexAt(j);
+            Vector3f actual = actualMesh.getVertexAt(j);
+            assertEquals(expected.getX(), actual.getX(), 0.000001f);
+            assertEquals(expected.getY(), actual.getY(), 0.000001f);
+            assertEquals(expected.getZ(), actual.getZ(), 0.000001f);
         }
     }
 
@@ -132,7 +133,7 @@ public class CatmullClarkTest {
         int iterations = (int) (Math.random() * Integer.MAX_VALUE);
         CatmullClarkModifier modifier = new CatmullClarkModifier();
         modifier.setSubdivisions(iterations);
-        Assert.assertEquals(iterations, modifier.getSubdivisions());
+        assertEquals(iterations, modifier.getSubdivisions());
     }
 
     @Test
