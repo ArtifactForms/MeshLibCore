@@ -27,18 +27,22 @@ public class Bounds3 {
     }
 
     public boolean containsPoint(Vector3f v) {
-        return min.getX() <= v.getX() && min.getY() <= v.getY() && min.getZ() <= v.getZ() && v.getX() <= max.getX()
+        return min.getX() <= v.getX() && min.getY() <= v.getY()
+                && min.getZ() <= v.getZ() && v.getX() <= max.getX()
                 && v.getY() <= max.getY() && v.getZ() <= max.getZ();
     }
 
     public boolean containsPoint(float x, float y, float z) {
-        return min.getX() <= x && min.getY() <= y && min.getZ() <= z && x <= max.getX() && y <= max.getY()
-                && z <= max.getZ();
+        return min.getX() <= x && min.getY() <= y && min.getZ() <= z
+                && x <= max.getX() && y <= max.getY() && z <= max.getZ();
     }
 
     public boolean contains(Bounds3 other) {
-        return min.getX() <= other.min.getX() && min.getY() <= other.min.getY() && min.getZ() <= other.min.getZ()
-                && other.max.getX() <= max.getX() && other.max.getY() <= max.getY() && other.max.getZ() <= max.getZ();
+        return min.getX() <= other.min.getX() && min.getY() <= other.min.getY()
+                && min.getZ() <= other.min.getZ()
+                && other.max.getX() <= max.getX()
+                && other.max.getY() <= max.getY()
+                && other.max.getZ() <= max.getZ();
     }
 
     public void encapsulate(Vector3f v) {
@@ -52,13 +56,13 @@ public class Bounds3 {
         max.set(maxX, maxY, maxZ);
     }
 
-    public void encapsulate(Bounds3 bounds) {
-        float minX = bounds.min.getX() < min.getX() ? bounds.min.getX() : min.getX();
-        float minY = bounds.min.getY() < min.getY() ? bounds.min.getY() : min.getY();
-        float minZ = bounds.min.getZ() < min.getZ() ? bounds.min.getZ() : min.getZ();
-        float maxX = bounds.max.getX() > max.getX() ? bounds.max.getX() : max.getX();
-        float maxY = bounds.max.getY() > max.getY() ? bounds.max.getY() : max.getY();
-        float maxZ = bounds.max.getZ() > max.getZ() ? bounds.max.getZ() : max.getZ();
+    public void encapsulate(Bounds3 b) {
+        float minX = b.min.getX() < min.getX() ? b.min.getX() : min.getX();
+        float minY = b.min.getY() < min.getY() ? b.min.getY() : min.getY();
+        float minZ = b.min.getZ() < min.getZ() ? b.min.getZ() : min.getZ();
+        float maxX = b.max.getX() > max.getX() ? b.max.getX() : max.getX();
+        float maxY = b.max.getY() > max.getY() ? b.max.getY() : max.getY();
+        float maxZ = b.max.getZ() > max.getZ() ? b.max.getZ() : max.getZ();
         min.set(minX, minY, minZ);
         max.set(maxX, maxY, maxZ);
     }
@@ -76,10 +80,12 @@ public class Bounds3 {
     }
 
     public boolean intersects(Bounds3 other) {
-        if (min.getX() - other.max.getX() > 0.0f || min.getY() - other.max.getY() > 0.0f
+        if (min.getX() - other.max.getX() > 0.0f
+                || min.getY() - other.max.getY() > 0.0f
                 || min.getZ() - other.max.getZ() > 0.0f)
             return false;
-        if (other.min.getX() - max.getX() > 0.0f || other.min.getY() - max.getY() > 0.0f
+        if (other.min.getX() - max.getX() > 0.0f
+                || other.min.getY() - max.getY() > 0.0f
                 || other.min.getZ() - max.getZ() > 0.0f)
             return false;
         return true;
