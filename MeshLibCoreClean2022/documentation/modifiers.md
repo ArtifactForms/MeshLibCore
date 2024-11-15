@@ -4,7 +4,10 @@
 
 **Purpose:**
 
-The `PlanarVertexCenterModifier` is a mesh modification tool that subdivides each face of a 3D mesh into multiple triangles. It does this by adding a new vertex at the center of each face and connecting it to the existing vertices.
+The `PlanarVertexCenterModifier` is a mesh modification tool that
+subdivides each face of a 3D mesh into multiple triangles. It does this by
+adding a new vertex at the center of each face and connecting it to the
+existing vertices.
 
 **How to Use**
 
@@ -32,15 +35,21 @@ Mesh3D modifiedMesh = modifier.modify(mesh, facesToSubdivide);
 
 **How it works:**
 
-1. Face Center Calculation: For each selected face, the modifier calculates its center point. Vertex Addition: A new vertex is added to the mesh at the calculated center point.
-2. Face Subdivision: The original face is subdivided into triangles by connecting the new center vertex to each of its original vertices.
+1. Face Center Calculation: For each selected face, the modifier calculates its 
+center point. Vertex Addition: A new vertex is added to the mesh at the
+calculated center point.
+2. Face Subdivision: The original face is subdivided into triangles by
+connecting the new center vertex to each of its original vertices.
 3. Face Removal: The original face is removed from the mesh.
 
 **Key Points:**
 
-- Subdivision Level: The level of subdivision can be controlled by applying the modifier multiple times.
-- Mesh Complexity: Each subdivision step increases the number of vertices and faces in the mesh.
-- Geometric Accuracy: The subdivision process preserves the overall shape of the mesh.
+- Subdivision Level: The level of subdivision can be controlled by applying
+the modifier multiple times.
+- Mesh Complexity: Each subdivision step increases the number of vertices
+and faces in the mesh.
+- Geometric Accuracy: The subdivision process preserves the
+overall shape of the mesh.
 
 **Potential Use Cases:**
 - Creating smoother surfaces for 3D models.
@@ -51,13 +60,18 @@ Mesh3D modifiedMesh = modifier.modify(mesh, facesToSubdivide);
 
 **Purpose:**
 
-The `NoiseModifier` class is designed to add random noise to a 3D mesh. This is a common technique used to introduce surface irregularities and a more organic appearance to 3D models.
+The `NoiseModifier` class is designed to add random noise to a 3D mesh.
+This is a common technique used to introduce surface irregularities and a more
+organic appearance to 3D models.
 
 **How it works:**
 
-1. **Calculates Vertex Normals:** Determines the normal vector for each vertex in the mesh.
-2. **Generates Random Noise:** Generates a random value within a specified range.
-3. **Displaces Vertices:** Displaces each vertex along its normal vector by the generated random value.
+1. **Calculates Vertex Normals:** Determines the normal vector for each vertex
+in the mesh.
+2. **Generates Random Noise:** Generates a random value within a
+specified range.
+3. **Displaces Vertices:** Displaces each vertex along its normal vector by
+the generated random value.
 
 **Parameters:**
 
