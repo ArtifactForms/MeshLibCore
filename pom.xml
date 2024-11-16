@@ -18,6 +18,13 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+       <repository>
+         <id>github</id>
+         <name>GitHub ArtifactForms Apache Maven Packages</name>
+         <url>https://maven.pkg.github.com/ArtifactForms/MeshLibCore/master</url>
+       </repository>
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
