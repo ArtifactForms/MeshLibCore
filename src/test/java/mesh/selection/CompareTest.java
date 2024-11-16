@@ -35,7 +35,7 @@ public class CompareTest {
         assertTrue(Compare.compare(CompareType.LESS, Integer.MIN_VALUE, 10));
         assertFalse(Compare.compare(CompareType.LESS, 10, Integer.MIN_VALUE));
         assertTrue(Compare.compare(CompareType.LESS, 10, 20));
-        assertFalse(Compare.compare(CompareType.LESS, 20, 10))
+        assertFalse(Compare.compare(CompareType.LESS, 20, 10));
     }
 
     @Test
