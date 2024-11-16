@@ -6,6 +6,7 @@ import mesh.creator.IMeshCreator;
 public class TruncatedTetrahedronCreator implements IMeshCreator {
 
     private float a = 1.0f;
+    
     private float b = 3.0f;
 
     private Mesh3D mesh;
