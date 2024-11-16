@@ -10,15 +10,9 @@ A _JAVA_ library to construct and manipulate geometry in Three-dimensional space
 
 ## Background / Intension
 
-This library is a hobby project started around 2015/2016 with the intension to learn more about
-creating and manipulating geometry in Three-dimensional space.
-I could build up on some small knowledge I gathered through my internship several years before.
-At this time I worked together with university students from the field of product design.
-This was also the time I got in touch with a programming language called 'Processing' for the first time. And I was hooked from day one.
-Processing is a language created with the intension to help people to learn programming in a visual context.
-If you are interested to find out more went to
-[processing.org](https://processing.org). But processing is not absolutely necessary, cause the core of the library is decoupled from the processing
-environment. Nevertheless processing provides a convenient way to display constructed meshes through it's rendering pipeline. Under the hood processing makes use of _JAVA_, _JAVA2D_ and _OPENGL_.
+This Java library began as a hobby project in 2015/2016.  I started it to deepen my understanding of creating and manipulating 3D geometry. This built upon knowledge I gained from an earlier internship with product design students. During that time, I was introduced to the programming language Processing.
+
+Processing captivated me from the start. Designed for visual learners, Processing is a great tool to get started with programming. You can learn more at processing.org. While Processing isn't strictly necessary, the library's core functionality is independent of the Processing environment. However, Processing offers a convenient way to visualize constructed meshes through its rendering pipeline, which leverages JAVA, JAVA2D, and OPENGL.
 
 ## Status Quo
 
