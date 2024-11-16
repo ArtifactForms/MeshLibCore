@@ -2,11 +2,6 @@ package math;
 
 import java.util.Arrays;
 
-/**
- * https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix
- * 
- * @author -
- */
 public class Matrix4f {
 
     public static final Matrix4f ZERO = new Matrix4f(0, 0, 0, 0, 0, 0, 0, 0, 0,
