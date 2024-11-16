@@ -12,7 +12,7 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 import mesh.creator.special.DiamondCreator;
 import mesh.selection.FaceSelection;
-import util.MeshTest;
+import util.MeshTestUtil;
 
 public class DiamondCreatorTest {
 
@@ -262,7 +262,7 @@ public class DiamondCreatorTest {
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectTriangles();
         for (Face3D face : selection.getFaces()) {
-            MeshTest.assertFaceContainsVertexIndex(face, pavillionVertexIndex);
+            MeshTestUtil.assertFaceContainsVertexIndex(face, pavillionVertexIndex);
         }
     }
 
@@ -352,7 +352,7 @@ public class DiamondCreatorTest {
 
     @Test
     public void meshIsManifold() {
-        assertTrue(MeshTest.isManifold(new DiamondCreator().create()));
+        assertTrue(MeshTestUtil.isManifold(new DiamondCreator().create()));
     }
 
     @Test
@@ -384,19 +384,19 @@ public class DiamondCreatorTest {
     @Test
     public void meshHasNoLooseVertices() {
         Mesh3D mesh = new DiamondCreator().create();
-        assertTrue(MeshTest.meshHasNoLooseVertices(mesh));
+        assertTrue(MeshTestUtil.meshHasNoLooseVertices(mesh));
     }
 
     @Test
     public void meshHasNoDuplicatedFaces() {
         Mesh3D mesh = new DiamondCreator().create();
-        assertTrue(MeshTest.meshHasNoDuplicatedFaces(mesh));
+        assertTrue(MeshTestUtil.meshHasNoDuplicatedFaces(mesh));
     }
 
     @Test
     public void testNormalsPointOutwards() {
         Mesh3D mesh = new DiamondCreator().create();
-        assertTrue(MeshTest.normalsPointOutwards(mesh));
+        assertTrue(MeshTestUtil.normalsPointOutwards(mesh));
     }
 
 }
