@@ -46,7 +46,7 @@ public class Face3D {
 
     public Face3D(Face3D f) {
         this(f.indices);
-        this.tag = String.copyValueOf(f.tag);
+        this.tag = new String(f.tag);
     }
 
     @Override
