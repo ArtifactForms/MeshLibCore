@@ -17,7 +17,8 @@ public class ModularKitFloorSegmentCreator implements IMeshCreator {
         this(4, 4, 0);
     }
 
-    public ModularKitFloorSegmentCreator(float floorWidth, float floorDepth, float floorHeight) {
+    public ModularKitFloorSegmentCreator(float floorWidth, float floorDepth,
+            float floorHeight) {
         this.floorWidth = floorWidth;
         this.floorDepth = floorDepth;
         this.floorHeight = floorHeight;

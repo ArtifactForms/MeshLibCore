@@ -38,7 +38,8 @@ public class SimpleCrateCreator implements IMeshCreator {
     }
 
     private void extrudeSelectedFaces() {
-        new ExtrudeModifier(1, -extrudeAmount).modify(mesh, faceSelection.getFaces());
+        new ExtrudeModifier(1, -extrudeAmount).modify(mesh,
+                faceSelection.getFaces());
     }
 
     private void selectAllFaces() {

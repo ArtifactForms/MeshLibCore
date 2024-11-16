@@ -143,7 +143,8 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
     }
 
     private float getTotalWidth() {
-        return (getSupportCount() * getWidth()) + ((getSupportCount() - 1) * getGap());
+        return (getSupportCount() * getWidth())
+                + ((getSupportCount() - 1) * getGap());
     }
 
     private float getSupportDepth() {
