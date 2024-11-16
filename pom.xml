@@ -5,10 +5,10 @@
   <version>0.0.1-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <testSourceDirectory>test</testSourceDirectory>
+    <testSourceDirectory>test2</testSourceDirectory>
     <testResources>
       <testResource>
-        <directory>test</directory>
+        <directory>test2</directory>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>
@@ -29,7 +29,7 @@
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
         <version>5.9.1</version>
-        <scope>test</scope>
+        <scope>test2</scope>
     </dependency>
   </dependencies>
 </project>
