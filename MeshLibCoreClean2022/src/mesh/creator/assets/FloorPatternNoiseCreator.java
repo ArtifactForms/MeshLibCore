@@ -56,7 +56,7 @@ public class FloorPatternNoiseCreator implements IMeshCreator {
     }
 
     private float randomAngle() {
-        return Mathf.toRadians(Mathf.random(0, 2);
+        return Mathf.toRadians(Mathf.random(0, 2));
     }
 
     private void snapToGround() {
