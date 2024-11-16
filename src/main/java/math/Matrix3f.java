@@ -172,7 +172,15 @@ public class Matrix3f {
     }
 
     public Matrix3f zero() {
-        values[M00] = values[M01] = values[M02] = values[M10] = values[M11] = values[M12] = values[M20] = values[M21] = values[M22] = 0;
+        values[M00] = 0;
+        values[M01] = 0;
+        values[M02] = 0;
+        values[M10] = 0;
+        values[M11] = 0;
+        values[M12] = 0;
+        values[M20] = 0;
+        values[M21] = 0;
+        values[M22] = 0;
         return this;
     }
 
