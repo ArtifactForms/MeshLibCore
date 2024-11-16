@@ -23,8 +23,7 @@ In essence, this codebase serves as a platform for learning and working with leg
 
 ## Future
 
-There are a lot of corresponding topics out there. So my wishlist of things to learn and implement is unspeakably large.
-Some are already listed under 'Planed features'.
+The scope of related topics is vast, and my list of potential features is accordingly expansive. Some of these are outlined under 'Planned Features'.
 
 ## Showcase
 
