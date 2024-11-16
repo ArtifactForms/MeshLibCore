@@ -60,8 +60,8 @@ public class ConeCreator implements IMeshCreator {
     }
 
     private int toOneDimensionalIndex(int i, int j) {
-        j %= rotationSegments;
-        return Mathf.toOneDimensionalIndex(i, j, rotationSegments);
+        int cols = rotationSegments;
+        return Mathf.toOneDimensionalIndex(i, j % cols, cols);
     }
 
     private void createQuadFaces() {
