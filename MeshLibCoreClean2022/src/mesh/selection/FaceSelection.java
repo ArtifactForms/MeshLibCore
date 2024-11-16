@@ -59,8 +59,8 @@ public class FaceSelection {
     }
 
     /**
-     * Selects all faces that have a similar normal as the provided one. This is a
-     * way to select faces that have the same orientation (angle).
+     * Selects all faces that have a similar normal as the provided one. This is
+     * a way to select faces that have the same orientation (angle).
      * 
      * @param normal
      * @param threshold
@@ -84,7 +84,8 @@ public class FaceSelection {
     public void selectSimilarPerimeter(Face3D face, float threshold) {
         float perimeter0 = Mesh3DUtil.perimeter(mesh, face);
         for (Face3D f : mesh.faces) {
-            if (Mathf.abs(Mesh3DUtil.perimeter(mesh, f) - perimeter0) <= threshold) {
+            if (Mathf.abs(
+                    Mesh3DUtil.perimeter(mesh, f) - perimeter0) <= threshold) {
                 faceSet.add(f);
             }
         }
@@ -235,13 +236,15 @@ public class FaceSelection {
         }
     }
 
-    public void selectRegion(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
+    public void selectRegion(float minX, float maxX, float minY, float maxY,
+            float minZ, float maxZ) {
         for (Face3D f : mesh.faces) {
             int n = f.indices.length;
             boolean add = true;
             for (int i = 0; i < n; i++) {
                 Vector3f v = mesh.getVertexAt(i);
-                add &= (v.getX() >= minX && v.getX() <= maxX && v.getY() >= minY && v.getY() <= maxY && v.getZ() >= minZ
+                add &= (v.getX() >= minX && v.getX() <= maxX && v.getY() >= minY
+                        && v.getY() <= maxY && v.getZ() >= minZ
                         && v.getZ() <= maxZ);
             }
             if (add) {
@@ -250,13 +253,15 @@ public class FaceSelection {
         }
     }
 
-    public void removeRegion(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
+    public void removeRegion(float minX, float maxX, float minY, float maxY,
+            float minZ, float maxZ) {
         for (Face3D f : mesh.faces) {
             int n = f.indices.length;
             boolean remove = true;
             for (int i = 0; i < n; i++) {
                 Vector3f v = mesh.getVertexAt(i);
-                remove &= (v.getX() >= minX && v.getX() <= maxX && v.getY() >= minY && v.getY() <= maxY
+                remove &= (v.getX() >= minX && v.getX() <= maxX
+                        && v.getY() >= minY && v.getY() <= maxY
                         && v.getZ() >= minZ && v.getZ() <= maxZ);
             }
             if (remove) {
@@ -268,7 +273,8 @@ public class FaceSelection {
     public void selectLeftFaces() {
         for (Face3D f : mesh.faces) {
             Vector3f v = mesh.calculateFaceNormal(f);
-            Vector3f v0 = new Vector3f(Mathf.round(v.getX()), Mathf.round(v.getY()), Mathf.round(v.getZ()));
+            Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
+                    Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getX() == -1) {
                 faceSet.add(f);
             }
@@ -278,7 +284,8 @@ public class FaceSelection {
     public void selectRightFaces() {
         for (Face3D f : mesh.faces) {
             Vector3f v = mesh.calculateFaceNormal(f);
-            Vector3f v0 = new Vector3f(Mathf.round(v.getX()), Mathf.round(v.getY()), Mathf.round(v.getZ()));
+            Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
+                    Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getX() == 1) {
                 faceSet.add(f);
             }
@@ -288,7 +295,8 @@ public class FaceSelection {
     public void selectTopFaces() {
         for (Face3D f : mesh.faces) {
             Vector3f v = mesh.calculateFaceNormal(f);
-            Vector3f v0 = new Vector3f(Mathf.round(v.getX()), Mathf.round(v.getY()), Mathf.round(v.getZ()));
+            Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
+                    Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getY() == -1) {
                 faceSet.add(f);
             }
@@ -298,7 +306,8 @@ public class FaceSelection {
     public void selectBottomFaces() {
         for (Face3D f : mesh.faces) {
             Vector3f v = mesh.calculateFaceNormal(f);
-            Vector3f v0 = new Vector3f(Mathf.round(v.getX()), Mathf.round(v.getY()), Mathf.round(v.getZ()));
+            Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
+                    Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getY() == 1) {
                 faceSet.add(f);
             }
@@ -308,7 +317,8 @@ public class FaceSelection {
     public void selectFrontFaces() {
         for (Face3D f : mesh.faces) {
             Vector3f v = mesh.calculateFaceNormal(f);
-            Vector3f v0 = new Vector3f(Mathf.round(v.getX()), Mathf.round(v.getY()), Mathf.round(v.getZ()));
+            Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
+                    Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getZ() == 1) {
                 faceSet.add(f);
             }
@@ -318,7 +328,8 @@ public class FaceSelection {
     public void selectBackFaces() {
         for (Face3D f : mesh.faces) {
             Vector3f v = mesh.calculateFaceNormal(f);
-            Vector3f v0 = new Vector3f(Mathf.round(v.getX()), Mathf.round(v.getY()), Mathf.round(v.getZ()));
+            Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
+                    Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getZ() == -1) {
                 faceSet.add(f);
             }

@@ -111,14 +111,16 @@ public class FlangePipeCreator implements IMeshCreator {
 
     private void createBottomBoltHeads() {
         Mesh3D bottom = createBoltHeads();
-        bottom.translateY(-flangeDepth - flangeGrooveWidth - (boltHeadHeight / 2f));
+        bottom.translateY(
+                -flangeDepth - flangeGrooveWidth - (boltHeadHeight / 2f));
         segment.append(bottom);
     }
 
     private void createTopBoltHeads() {
         Mesh3D bottom = createBoltHeads();
         bottom.rotateX(Mathf.PI);
-        bottom.translateY(-flangeDepth - flangeGrooveWidth - pipeSegmentLength + (boltHeadHeight / 2f));
+        bottom.translateY(-flangeDepth - flangeGrooveWidth - pipeSegmentLength
+                + (boltHeadHeight / 2f));
         segment.append(bottom);
     }
 
@@ -182,7 +184,8 @@ public class FlangePipeCreator implements IMeshCreator {
     }
 
     private float calculateSegmentHeight() {
-        return pipeSegmentLength + flangeDepth + flangeDepth + flangeGrooveWidth;
+        return pipeSegmentLength + flangeDepth + flangeDepth
+                + flangeGrooveWidth;
     }
 
     private float calculateTotalHeight() {

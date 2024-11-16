@@ -12,7 +12,8 @@ public class SelectFaceRuleCenterDistance implements IFaceSelectionRule {
 
     private CompareType compare;
 
-    public SelectFaceRuleCenterDistance(Vector3f origin, CompareType compare, float distance) {
+    public SelectFaceRuleCenterDistance(Vector3f origin, CompareType compare,
+            float distance) {
         this.distance = distance;
         this.origin = origin;
         this.compare = compare;
@@ -20,7 +21,8 @@ public class SelectFaceRuleCenterDistance implements IFaceSelectionRule {
 
     @Override
     public boolean isValid(Mesh3D mesh, Face3D face) {
-        return Compare.compare(compare, origin.distance(mesh.calculateFaceCenter(face)), distance);
+        return Compare.compare(compare,
+                origin.distance(mesh.calculateFaceCenter(face)), distance);
     }
 
 }

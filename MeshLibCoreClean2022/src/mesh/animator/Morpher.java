@@ -55,7 +55,8 @@ public class Morpher extends AbstractAnimator {
             Vector3f tmp = new Vector3f(position);
             Vector3f velocity = new Vector3f();
 
-            velocity = this.target.getVertexAt(i).subtract(this.mesh.getVertexAt(i)).normalize().mult(speed);
+            velocity = this.target.getVertexAt(i)
+                    .subtract(this.mesh.getVertexAt(i)).normalize().mult(speed);
 
             tmp.addLocal(velocity);
 

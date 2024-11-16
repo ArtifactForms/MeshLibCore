@@ -64,7 +64,8 @@ public class FaceSelectionRules implements IFaceSelectionRule {
         add(new SelectFaceRuleVertexCount(n, CompareType.EQUALS));
     }
 
-    public void centerDistanceToOrigin(Vector3f origin, CompareType compare, float distance) {
+    public void centerDistanceToOrigin(Vector3f origin, CompareType compare,
+            float distance) {
         add(new SelectFaceRuleCenterDistance(origin, compare, distance));
     }
 

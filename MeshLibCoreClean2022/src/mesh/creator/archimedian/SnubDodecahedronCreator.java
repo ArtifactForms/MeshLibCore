@@ -12,8 +12,12 @@ public class SnubDodecahedronCreator implements IMeshCreator {
 
         float a = 2.0f;
         float b = (1.0f + Mathf.sqrt(5.0f)) / 2.0f;
-        float c = Mathf.pow(b / 2.0f + (1.0f / 2.0f) * Mathf.sqrt(b - (5.0f / 27.0f)), 1.0f / 3.0f)
-                + Mathf.pow(b / 2.0f - (1.0f / 2.0f) * Mathf.sqrt(b - (5.0f / 27.0f)), 1.0f / 3.0f);
+        float c = Mathf.pow(
+                b / 2.0f + (1.0f / 2.0f) * Mathf.sqrt(b - (5.0f / 27.0f)),
+                1.0f / 3.0f)
+                + Mathf.pow(b / 2.0f
+                        - (1.0f / 2.0f) * Mathf.sqrt(b - (5.0f / 27.0f)),
+                        1.0f / 3.0f);
         float d = c - (1.0f / c);
         float e = c * b + Mathf.pow(b, 2.0f) + b / c;
         float f = 2.0f * d;

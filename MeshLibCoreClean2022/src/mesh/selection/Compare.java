@@ -2,7 +2,8 @@ package mesh.selection;
 
 public class Compare {
 
-    public static <T extends Number> boolean compare(CompareType compare, T a, T b) {
+    public static <T extends Number> boolean compare(CompareType compare, T a,
+            T b) {
         if (compare == null)
             throw new IllegalArgumentException("Compare type cannot be null.");
         switch (compare) {

@@ -1,5 +1,6 @@
 package mesh.creator.assets;
 
+import java.awt.Insets;
 import java.util.List;
 
 import math.Mathf;
@@ -151,10 +152,11 @@ public class CrateCreator implements IMeshCreator {
 
         if (crossBeamType == CrossBeamType.CROSS) {
             float a = radius;
+            float b = a + (inset / 2);
             Mesh3D mesh1 = mesh.copy();
 
             mesh1.getVertexAt(2).subtractLocal(a, 0, a);
-            mesh1.getVertexAt(3).subtractLocal(a + (inset / 2), 0, a + (inset / 2));
+            mesh1.getVertexAt(3).subtractLocal(b, 0, b);
             mesh1.getVertexAt(4).subtractLocal(a, 0, a);
             mesh1.getVertexAt(7).subtractLocal(a, 0, a);
             mesh1.getVertexAt(8).subtractLocal(a, 0, a);

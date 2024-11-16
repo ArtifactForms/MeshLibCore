@@ -16,7 +16,8 @@ public class SelectFaceRuleCenterZ implements IFaceSelectionRule {
 
     @Override
     public boolean isValid(Mesh3D mesh, Face3D face) {
-        return Compare.compare(compare, mesh.calculateFaceCenter(face).getZ(), z);
+        return Compare.compare(compare, mesh.calculateFaceCenter(face).getZ(),
+                z);
     }
 
 }

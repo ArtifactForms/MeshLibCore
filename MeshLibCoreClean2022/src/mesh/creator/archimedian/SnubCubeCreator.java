@@ -18,8 +18,10 @@ public class SnubCubeCreator implements IMeshCreator {
 
     private void createVertices() {
         float a = 1.0f;
-        float b = (1.0f / 3.0f) * (Mathf.pow(17 + 3.0f * Mathf.sqrt(33.0f), 1.0f / 3.0f)
-                - Mathf.pow(-17 + 3.0f * Mathf.sqrt(33.0f), 1.0f / 3.0f) - 1.0f);
+        float b = (1.0f / 3.0f)
+                * (Mathf.pow(17 + 3.0f * Mathf.sqrt(33.0f), 1.0f / 3.0f)
+                        - Mathf.pow(-17 + 3.0f * Mathf.sqrt(33.0f), 1.0f / 3.0f)
+                        - 1.0f);
         float c = 1.0f / b;
 
         addVertex(+a, +b, -c);
