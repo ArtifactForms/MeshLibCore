@@ -168,12 +168,20 @@ modifier.modify(mesh);
 
 ## Creators
 
-The library provides a variety of so called mesh 'Creators' to construct various shapes the convenient way.
-More precisely the 'Factory Method' / 'Builder' pattern was applied for this purpose. A mesh creator works like a classis builder.
-The creator differs mainly in two points from a classic builder. We also provide getters and chaining was left out.
-In the meantime the library contains 100+ different mesh creators divided in various categories.
-Get a first impression and overview here: [Mesh Creators](documentation/documentation.md).
-Each creator derives from the 'IMeshCreator' interface. The following code example shows the mentioned root interface for all mesh creators.
+Effortless Shape Creation with Mesh Creators
+
+The library provides a variety of Mesh Creators to simplify the construction of various shapes. These creators employ the Factory Method or Builder design pattern, allowing for a flexible and streamlined approach.
+
+While similar to a classic builder, Mesh Creators offer a unique combination of features:
+
+* **Getters and Setters:** Access and modify the creator's internal state using getters and setters, providing fine-grained control over the mesh creation process.
+* **Chaining is not supported:**
+
+With over 100 Mesh Creators categorized for easy access, you can quickly and efficiently build a wide range of 3D shapes. For a comprehensive overview, refer to our documentation: [Mesh Creators](documentation/documentation.md)
+
+Core of Mesh Creators: The IMeshCreator Interface
+
+Every Mesh Creator in the library adheres to the IMeshCreator interface. The following code snippet illustrates this foundational interface:
 
 ```java
 package mesh.creator;
