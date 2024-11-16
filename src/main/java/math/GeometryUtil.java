@@ -91,64 +91,6 @@ public class GeometryUtil {
     }
 
     /**
-     * Calculates the intersection of a ray and circle.
-     * 
-     * @param r      the ray to test
-     * @param circle the circle to test
-     * @return the nearest intersection to the ray origin in positive direction
-     *         of the ray, or null if there is no intersection
-     */
-    public static Vector2f calculateIntersection(Ray2D ray, Circle2D circle) {
-        return calculateIntersection(ray, circle.getCenter(),
-                circle.getRadius());
-    }
-
-    /**
-     * Calculates the intersection of a ray and circle.
-     * 
-     * @param ray    the ray to test
-     * @param center the center of the circle to test
-     * @param radius the radius of the circle to test
-     * @return the nearest intersection to the ray origin in positive direction
-     *         of the ray, or null if there is no intersection
-     */
-    public static Vector2f calculateIntersection(Ray2D ray, Vector2f center,
-            float radius) {
-        // Taken from:
-        // https://www.uninformativ.de/bin/RaytracingSchnitttests-76a577a-CC-BY.pdf
-        // Which point on the ray is the most nearest to the circle
-        float radius2 = radius * radius;
-        float alpha = -ray.direction.dot(ray.origin.subtract(center));
-        Vector2f q = ray.getPoint(alpha);
-
-        // Distance to the circle center
-        q.subtractLocal(center);
-        float distToCenter2 = q.lengthSquared();
-
-        if (distToCenter2 > radius2) {
-            return null;
-        }
-
-        // Using pythagorean theorem to get intersections
-        float x = Mathf.sqrt(radius2 - distToCenter2);
-
-        // Which of the intersections is nearer to the ray origin in positive
-        // direction
-        float dist = 0.0f;
-        if (alpha >= x) {
-            dist = alpha - x;
-        } else if (alpha + x > 0) {
-            dist = alpha + x;
-        } else {
-            return null;
-        }
-
-        // The final intersection
-        q = ray.getPoint(dist);
-        return q;
-    }
-
-    /**
      * Calculates the point on a circle.
      * 
      * @param center the center of the circle
