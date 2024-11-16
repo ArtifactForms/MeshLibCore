@@ -9,7 +9,6 @@ import math.Vector3f;
 import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.creator.test.manifold.ManifoldTest;
 import mesh.util.TraverseHelper;
 
 public class MeshTestUtil {
