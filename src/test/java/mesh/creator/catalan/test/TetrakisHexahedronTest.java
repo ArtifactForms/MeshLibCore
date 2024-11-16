@@ -115,10 +115,6 @@ public class TetrakisHexahedronTest {
         }
     }
 
-    private double angleBetween(Vector3f a, Vector3f b) {
-        return GeometryUtil.angleBetweenVectors(a, b);
-    }
-
     @Test
     public void testLongerEdgeLengths() {
         int expectedEdgeCount = 12;
