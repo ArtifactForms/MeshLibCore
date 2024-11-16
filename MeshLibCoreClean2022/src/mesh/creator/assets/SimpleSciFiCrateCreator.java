@@ -1,5 +1,8 @@
 package mesh.creator.assets;
 
+import java.util.Collection;
+
+import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
@@ -27,7 +30,7 @@ public class SimpleSciFiCrateCreator implements IMeshCreator {
         createCube();
         initializeFaceSelection();
         selectAllFaces();
-        splitFaces();
+        splitSelectedFaces();
         clearSelection();
         selectTriangles();
         extrudeSelectedFaces();
@@ -43,13 +46,17 @@ public class SimpleSciFiCrateCreator implements IMeshCreator {
         faceSelection.selectTriangles();
     }
 
-    private void splitFaces() {
-        new PlanarVertexCenterModifier().modify(mesh, faceSelection.getFaces());
+    private void splitSelectedFaces() {
+        new PlanarVertexCenterModifier().modify(mesh, getSelectedFaces());
     }
 
     private void extrudeSelectedFaces() {
         new ExtrudeModifier(extrudeScale, extrudeAmount).modify(mesh,
-                faceSelection.getFaces());
+                getSelectedFaces());
+    }
+
+    private Collection<Face3D> getSelectedFaces() {
+        return faceSelection.getFaces();
     }
 
     private void selectAllFaces() {
