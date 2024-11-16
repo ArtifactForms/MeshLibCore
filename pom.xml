@@ -19,6 +19,7 @@
         </plugins>
     </build>
     <distributionManagement>
+        <repositories>
        <repository>
          <id>github</id>
          <name>GitHub ArtifactForms Apache Maven Packages</name>
@@ -30,8 +31,8 @@
             <enabled>true</enabled>
         </snapshots>
        </repository>
+        </repositories>
     </distributionManagement>
-</repositories>
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
