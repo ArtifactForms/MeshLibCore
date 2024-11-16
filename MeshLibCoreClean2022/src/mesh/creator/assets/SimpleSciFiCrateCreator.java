@@ -48,8 +48,8 @@ public class SimpleSciFiCrateCreator implements IMeshCreator {
     }
 
     private void extrudeSelectedFaces() {
-        new ExtrudeModifier(extrudeScale, extrudeAmount).modify(mesh, faceSelection.getFaces());
-        ;
+        new ExtrudeModifier(extrudeScale, extrudeAmount).modify(mesh,
+                faceSelection.getFaces());
     }
 
     private void selectAllFaces() {
