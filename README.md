@@ -136,7 +136,7 @@ mesh.addFace(0, 1, 3);
 mesh.addFace(1, 2, 3);
 ```
 
-![](MeshLibCoreClean2022/documentation/images/quad_example.png)
+![](documentation/images/quad_example.png)
 
 ### Modify the mesh
 
