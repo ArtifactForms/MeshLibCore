@@ -36,13 +36,13 @@ Some are already listed under 'Planed features'.
 
 The following images are showing the library in action.
 
-![](MeshLibCoreClean2022/documentation/images/lib_showcase_1.png)
+![](documentation/images/lib_showcase_1.png)
 Subdivision is so beautiful and satisfying too look at.
 
-![](MeshLibCoreClean2022/documentation/images/lib_showcase_2.png)
+![](/documentation/images/lib_showcase_2.png)
 bend bend bend mesh...
 
-![](MeshLibCoreClean2022/documentation/images/lib_showcase_3.png)
+![](documentation/images/lib_showcase_3.png)
 Throwing some conway operations on a cube seed.
 
 ## Features
