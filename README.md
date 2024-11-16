@@ -25,6 +25,13 @@ In essence, this codebase serves as a platform for learning and working with leg
 
 The scope of related topics is vast, and my list of potential features is accordingly expansive. Some of these are outlined under 'Planned Features'.
 
+## Core Features
+
+* **3D Geometry Creation and Manipulation** Build a wide range of 3D shapes and modify them using various operations.
+* **Customizable Mesh Creation:** Create custom shapes using a variety of mesh creation tools and modifiers.
+* **Extensible Framework:** Easily add new features and functionalities to the library.
+* **OBJ File Import and Export:** Import and export 3D models in the OBJ file format.
+
 ## Showcase
 
 The following images are showing the library in action.
@@ -37,10 +44,6 @@ bend bend bend mesh...
 
 ![](documentation/images/lib_showcase_3.png)
 Throwing some conway operations on a cube seed.
-
-## Features
-
-Will be added soon...
 
 ## Core elements
 
