@@ -126,7 +126,8 @@ public class GemCreator implements IMeshCreator {
     private void createMidTableVertices() {
         float angleStep = Mathf.TWO_PI / segments;
         float offset = -angleStep / 2.0f;
-        float radius = ((this.pavillionRadius + tableRadius) / 2.0f) / Mathf.cos(offset);
+        float radius = ((this.pavillionRadius + tableRadius) / 2.0f)
+                / Mathf.cos(offset);
         CircleCreator creator = new CircleCreator();
         creator.setCenterY(-tableHeight / 2.0f);
         creator.setVertices(segments);

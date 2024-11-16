@@ -18,7 +18,8 @@ import mesh.util.TraverseHelper;
  * subdivision surface is based on a generalization of bi-quadratic uniform
  * B-splines and was developed in 1978 by Daniel Doo and Malcolm Sabin.
  * 
- * @see http://graphics.cs.ucdavis.edu/education/CAGDNotes/Doo-Sabin/Doo-Sabin.html
+ * @see http://graphics.cs.ucdavis.edu/education/
+ *      CAGDNotes/Doo-Sabin/Doo-Sabin.html
  * 
  * @version 0.1, 4 December 2017
  */

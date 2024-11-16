@@ -5,7 +5,8 @@ import math.Vector3f;
 import mesh.Mesh3D;
 
 /**
- * https://www.reddit.com/r/blender/comments/1x10ba/help_with_understanding_the_simple_deform_bend/
+ * https://www.reddit.com/r/blender/comments/1x10ba/
+ * help_with_understanding_the_simple_deform_bend/
  */
 public class BendModifier implements IMeshModifier {
 

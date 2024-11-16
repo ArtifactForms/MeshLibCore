@@ -44,7 +44,8 @@ public class DodecahedronCreator implements IMeshCreator {
         float sinA2 = Mathf.sin(a) * 2;
         float cosA2 = Mathf.cos(a) * 2;
         Vector3f v0 = new Vector3f(cosA2, sinA2, GOLDEN_RATIO + 1);
-        Vector3f v1 = new Vector3f(cosA2 * GOLDEN_RATIO, sinA2 * GOLDEN_RATIO, GOLDEN_RATIO - 1);
+        Vector3f v1 = new Vector3f(cosA2 * GOLDEN_RATIO, sinA2 * GOLDEN_RATIO,
+                GOLDEN_RATIO - 1);
         addVertices(v0, v1);
     }
 

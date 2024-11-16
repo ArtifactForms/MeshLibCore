@@ -149,7 +149,8 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
     }
 
     private void initializeCubes() {
-        cubes = new Mesh3D[subdivisionsY + 1][subdivisionsX + 1][subdivisionsZ + 1];
+        cubes = new Mesh3D[subdivisionsY + 1][subdivisionsX + 1][subdivisionsZ
+                + 1];
     }
 
     private void initializeMesh() {

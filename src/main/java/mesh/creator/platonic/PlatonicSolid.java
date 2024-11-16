@@ -20,7 +20,8 @@ public enum PlatonicSolid {
 
     private String name;
 
-    private PlatonicSolid(int faceCount, int vertexCount, int edgeCount, String name) {
+    private PlatonicSolid(int faceCount, int vertexCount, int edgeCount,
+            String name) {
         this.faceCount = faceCount;
         this.vertexCount = vertexCount;
         this.edgeCount = edgeCount;

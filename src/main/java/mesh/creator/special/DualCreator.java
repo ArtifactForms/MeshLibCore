@@ -38,7 +38,8 @@ public class DualCreator implements IMeshCreator {
             Edge3D edge = outgoingEdge;
             Vector<Integer> indices = new Vector<Integer>();
             do {
-                Face3D face = helper.getFaceByEdge(edge.fromIndex, edge.toIndex);
+                Face3D face = helper.getFaceByEdge(edge.fromIndex,
+                        edge.toIndex);
                 indices.add(faceVertexMap.get(face));
                 edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
             } while (!outgoingEdge.equals(edge));

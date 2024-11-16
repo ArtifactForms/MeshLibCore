@@ -93,7 +93,8 @@ public class NubCreator implements IMeshCreator {
     }
 
     private int toOneDimensionalIndex(int i, int j) {
-        return Mathf.toOneDimensionalIndex(i, j % rotationSegments, rotationSegments);
+        return Mathf.toOneDimensionalIndex(i, j % rotationSegments,
+                rotationSegments);
     }
 
     private void capTop() {
