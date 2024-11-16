@@ -261,19 +261,6 @@ public class Matrix4f {
         return store;
     }
 
-    public Quaternion mult(Quaternion q) {
-        Quaternion result = new Quaternion();
-        result.x = q.x * values[M00] + q.y * values[M01] + q.z * values[M02]
-                + q.w * values[M03];
-        result.y = q.x * values[M10] + q.y * values[M11] + q.z * values[M12]
-                + q.w * values[M13];
-        result.z = q.x * values[M20] + q.y * values[M21] + q.z * values[M22]
-                + q.w * values[M23];
-        result.w = q.x * values[M30] + q.y * values[M31] + q.z * values[M32]
-                + q.w * values[M33];
-        return result;
-    }
-
     public Vector3f mult(Vector3f v) {
         Vector3f result = new Vector3f();
         float vx = v.x, vy = v.y, vz = v.z;
