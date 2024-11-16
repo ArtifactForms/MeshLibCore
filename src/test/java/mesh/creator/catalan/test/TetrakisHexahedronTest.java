@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
-import java.util.Vector;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -116,7 +115,7 @@ public class TetrakisHexahedronTest {
         }
     }
 
-    private float angleBetween(Vector3f a, Vector3f b) {
+    private double angleBetween(Vector3f a, Vector3f b) {
         return GeometryUtil.angleBetweenVectors(a, b);
     }
 
