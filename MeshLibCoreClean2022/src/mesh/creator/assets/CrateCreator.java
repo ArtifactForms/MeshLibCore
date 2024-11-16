@@ -1,6 +1,5 @@
 package mesh.creator.assets;
 
-import java.awt.Insets;
 import java.util.List;
 
 import math.Mathf;
