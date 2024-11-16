@@ -62,8 +62,8 @@ public class TetrakisHexahedronTest {
      * Explanation:
      * 
      * Equilateral Triangles: For each face, we extract the three vertices. We
-     * calculate the distances between these vertices to represent the side lengths.
-     * We assert that all side lengths are approximately equal.
+     * calculate the distances between these vertices to represent the side
+     * lengths. We assert that all side lengths are approximately equal.
      */
     @Test
     public void testFaceEquilateralTriangles() {
@@ -101,9 +101,12 @@ public class TetrakisHexahedronTest {
             Vector3f v2 = mesh.getVertexAt(face.getIndexAt(1));
             Vector3f v3 = mesh.getVertexAt(face.getIndexAt(2));
 
-            double angle1 = GeometryUtil.angleBetweenVectors(v1.subtract(v2), v1.subtract(v3));
-            double angle2 = GeometryUtil.angleBetweenVectors(v2.subtract(v1), v2.subtract(v3));
-            double angle3 = GeometryUtil.angleBetweenVectors(v3.subtract(v1), v3.subtract(v2));
+            double angle1 = GeometryUtil.angleBetweenVectors(v1.subtract(v2),
+                    v1.subtract(v3));
+            double angle2 = GeometryUtil.angleBetweenVectors(v2.subtract(v1),
+                    v2.subtract(v3));
+            double angle3 = GeometryUtil.angleBetweenVectors(v3.subtract(v1),
+                    v3.subtract(v2));
 
             // Assert that all angles are approximately 60 degrees
             assertEquals(angle1, Math.PI / 3, Mathf.ZERO_TOLERANCE);
@@ -116,14 +119,16 @@ public class TetrakisHexahedronTest {
     public void testLongerEdgeLengths() {
         int expectedEdgeCount = 12;
         float expectedEdgeLength = 2f;
-        MeshTest.assertMeshHasEdgesWithLengthOf(mesh, expectedEdgeCount, expectedEdgeLength);
+        MeshTest.assertMeshHasEdgesWithLengthOf(mesh, expectedEdgeCount,
+                expectedEdgeLength);
     }
 
     @Test
     public void testShorterEdgeLengths() {
         int expectedEdgeCount = 24;
         float expectedEdgeLength = 1.5f;
-        MeshTest.assertMeshHasEdgesWithLengthOf(mesh, expectedEdgeCount, expectedEdgeLength);
+        MeshTest.assertMeshHasEdgesWithLengthOf(mesh, expectedEdgeCount,
+                expectedEdgeLength);
     }
 
     @Test
