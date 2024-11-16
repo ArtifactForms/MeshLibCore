@@ -29,7 +29,8 @@ public class FloorPatternNoiseCreator implements IMeshCreator {
         this(0.2f, 2, 4);
     }
 
-    public FloorPatternNoiseCreator(float height, float radius, int subdivisions) {
+    public FloorPatternNoiseCreator(float height, float radius,
+            int subdivisions) {
         this.height = height;
         this.radius = radius;
         this.subdivisions = subdivisions;
@@ -49,9 +50,13 @@ public class FloorPatternNoiseCreator implements IMeshCreator {
 
     private void rotateFaces() {
         for (Face3D face : faceSelection.getFaces()) {
-            Mesh3DUtil.rotateFaceZ(mesh, face, Mathf.toRadians(Mathf.random(0, 2)));
-            Mesh3DUtil.rotateFaceX(mesh, face, Mathf.toRadians(Mathf.random(0, 2)));
+            Mesh3DUtil.rotateFaceZ(mesh, face, randomAngle());
+            Mesh3DUtil.rotateFaceX(mesh, face, randomAngle());
         }
+    }
+
+    private float randomAngle() {
+        return Mathf.toRadians(Mathf.random(0, 2);
     }
 
     private void snapToGround() {
@@ -59,7 +64,8 @@ public class FloorPatternNoiseCreator implements IMeshCreator {
     }
 
     private void extrude() {
-        new ExtrudeModifier(0.9f, height * 0.5f).modify(mesh, faceSelection.getFaces());
+        new ExtrudeModifier(0.9f, height * 0.5f).modify(mesh,
+                faceSelection.getFaces());
     }
 
     private void solidify() {
