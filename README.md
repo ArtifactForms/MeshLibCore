@@ -15,11 +15,11 @@ This Java library began as a hobby project in 2015/2016.  I started it to deepen
 Processing captivated me from the start. Designed for visual learners, Processing is a great tool to get started with programming. You can learn more at processing.org. While Processing isn't strictly necessary, the library's core functionality is independent of the Processing environment. However, Processing offers a convenient way to visualize constructed meshes through its rendering pipeline, which leverages JAVA, JAVA2D, and OPENGL.
 
 ## Status Quo
+Currently, my primary focus is on refining the user documentation. As my understanding of code structure and architecture has evolved, I've been actively refactoring the codebase to maintain its cleanliness and organization. Smaller additions are made periodically.
 
-At the current stage I mainly work on the user documentation. Over the years I learned new things about code structure and architecture, so codewise a lot of refactoring is going on to keep the project clean. And from time to time small additions are made. Meanwhile all the processing specific and rendering stuff lives in it's own repository. So this is another project to went on with.
+The Processing-specific rendering components are housed in a separate repository, representing another ongoing project.
 
-Overall the code base is more a playground for working with _legacy code_. I try to love, work and live with legacy code.
-It offers the possibility to learn and try new testing approaches. Building tests around existing code for refactroing purposes is quite an interesting and useful field. And in my opinion indispensable.
+In essence, this codebase serves as a platform for learning and working with legacy code. I've embraced the challenge of working with existing code, viewing it as an opportunity to explore new testing approaches. Constructing tests around legacy code for refactoring purposes is a fascinating and valuable endeavor, in my opinion, an essential practice.
 
 ## Future
 
