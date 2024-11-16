@@ -262,7 +262,8 @@ public class DiamondCreatorTest {
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectTriangles();
         for (Face3D face : selection.getFaces()) {
-            MeshTestUtil.assertFaceContainsVertexIndex(face, pavillionVertexIndex);
+            MeshTestUtil.assertFaceContainsVertexIndex(face,
+                    pavillionVertexIndex);
         }
     }
 
