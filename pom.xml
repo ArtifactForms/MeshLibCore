@@ -4,16 +4,8 @@
   <artifactId>MeshLibCoreClean2022</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <testSourceDirectory>test2</testSourceDirectory>
-    <testResources>
-      <testResource>
-        <directory>test2</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </testResource>
-    </testResources>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -29,7 +21,6 @@
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
         <version>5.9.1</version>
-        <scope>test2</scope>
     </dependency>
   </dependencies>
 </project>
