@@ -16,7 +16,7 @@ import mesh.creator.special.GemCreator;
 import mesh.selection.FaceSelection;
 import util.MeshTestUtil;
 
-public class GemTest {
+public class GemCreatorTest {
 
     @Test
     public void implementsCreatorInterface() {
