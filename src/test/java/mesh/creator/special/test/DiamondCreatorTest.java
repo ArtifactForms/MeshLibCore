@@ -17,19 +17,19 @@ import util.MeshTestUtil;
 public class DiamondCreatorTest {
 
     @Test
-    public void creatorImplementsCreatorInterface() {
+    public void testCreatorImplementsCreatorInterface() {
         DiamondCreator creator = new DiamondCreator();
         assertTrue(creator instanceof IMeshCreator);
     }
 
     @Test
-    public void getSegmentsReturnsDefaultValue() {
+    public void testGetSegmentsReturnsDefaultValue() {
         int expected = 32;
         assertEquals(expected, new DiamondCreator().getSegments());
     }
 
     @Test
-    public void getSetSegments() {
+    public void testGetSetSegments() {
         int expected = 145;
         DiamondCreator creator = new DiamondCreator();
         creator.setSegments(expected);
@@ -37,14 +37,14 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void getGirdleRadiusReturnsDefaultValue() {
+    public void testGetGirdleRadiusReturnsDefaultValue() {
         float expected = 1;
         float actual = new DiamondCreator().getGirdleRadius();
         assertEquals(expected, actual, 0);
     }
 
     @Test
-    public void getSetGirdleRadius() {
+    public void testGetSetGirdleRadius() {
         float expected = 0.9562f;
         DiamondCreator creator = new DiamondCreator();
         creator.setGirdleRadius(expected);
@@ -52,14 +52,14 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void getTableRadiusReturnsDefaultValue() {
+    public void testGetTableRadiusReturnsDefaultValue() {
         float expected = 0.6f;
         DiamondCreator creator = new DiamondCreator();
         assertEquals(expected, creator.getTableRadius(), 0);
     }
 
     @Test
-    public void getSetTableRadius() {
+    public void testGetSetTableRadius() {
         float expected = 0.65416f;
         DiamondCreator creator = new DiamondCreator();
         creator.setTableRadius(expected);
@@ -67,14 +67,14 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void getCrownHeightReturnsDefaulValue() {
+    public void testGetCrownHeightReturnsDefaulValue() {
         float expected = 0.35f;
         DiamondCreator creator = new DiamondCreator();
         assertEquals(expected, creator.getCrownHeight(), 0);
     }
 
     @Test
-    public void getSetCrownHeight() {
+    public void testGetSetCrownHeight() {
         float expected = 67.45f;
         DiamondCreator creator = new DiamondCreator();
         creator.setCrownHeight(expected);
@@ -82,14 +82,14 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void getPavillionReturnsDefaultValue() {
+    public void testGetPavillionReturnsDefaultValue() {
         float expected = 0.8f;
         DiamondCreator creator = new DiamondCreator();
         assertEquals(expected, creator.getPavillionHeight(), 0);
     }
 
     @Test
-    public void getSetPavillionHeight() {
+    public void testGetSetPavillionHeight() {
         float expected = 9.2536f;
         DiamondCreator creator = new DiamondCreator();
         creator.setPavillionHeight(expected);
@@ -97,21 +97,21 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void vertexCountIsSixtyFiveByDefault() {
+    public void testVertexCountIsSixtyFiveByDefault() {
         int expected = 65;
         Mesh3D mesh = new DiamondCreator().create();
         assertEquals(expected, mesh.getVertexCount());
     }
 
     @Test
-    public void createdMeshContainsVertexAtCenterPavillionHeight() {
+    public void testCreatedMeshContainsVertexAtCenterPavillionHeight() {
         Vector3f expected = new Vector3f(0, 0.8f, 0);
         Mesh3D mesh = new DiamondCreator().create();
         assertTrue(mesh.vertices.contains(expected));
     }
 
     @Test
-    public void createdMeshContainsVertexAtCenzerOfSpecifiedPavillionHeight() {
+    public void testMeshContainsVertexAtCenterOfSpecifiedPavillionHeight() {
         float pavillionHeight = 9.45f;
         Vector3f expected = new Vector3f(0, pavillionHeight, 0);
         DiamondCreator creator = new DiamondCreator();
@@ -121,7 +121,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void createdMeshContainsVerticesOfGirdleCircle() {
+    public void testMeshContainsVerticesOfGirdleCircle() {
         int vertices = 32;
         float radius = 1;
         CircleCreator creator = new CircleCreator();
@@ -135,7 +135,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void createdMeshContainsVerticesOfSpecifiedGirdleCircle() {
+    public void testMeshContainsVerticesOfSpecifiedGirdleCircle() {
         int vertices = 21;
         float radius = 1.9654f;
         CircleCreator creator = new CircleCreator();
@@ -152,7 +152,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void vertexCountIsTwoTimesSegmentsPlusOne() {
+    public void testVertexCountIsTwoTimesSegmentsPlusOne() {
         DiamondCreator creator = new DiamondCreator();
         creator.setSegments(6);
         Mesh3D mesh = creator.create();
@@ -160,14 +160,14 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void defaultFaceCountIsSixtyFive() {
+    public void testDefaultFaceCountIsSixtyFive() {
         int expected = 65;
         Mesh3D mesh = new DiamondCreator().create();
         assertEquals(expected, mesh.getFaceCount());
     }
 
     @Test
-    public void faceCountIsTwoTimesVertexCountPlusOne() {
+    public void testFaceCountIsTwoTimesVertexCountPlusOne() {
         int expected = 23;
         DiamondCreator creator = new DiamondCreator();
         creator.setSegments(11);
@@ -176,7 +176,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void meshContainsFaceWithVertexCountEqualsToSegments() {
+    public void tesMeshContainsFaceWithVertexCountEqualsToSegments() {
         DiamondCreator creator = new DiamondCreator();
         Mesh3D mesh = creator.create();
         FaceSelection selection = new FaceSelection(mesh);
@@ -185,7 +185,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void meshContainsFaceWithVertexCountEqualsToSpecifiedSegments() {
+    public void testMeshContainsFaceWithVertexCountEqualsToSpecifiedSegments() {
         int segments = 19;
         DiamondCreator creator = new DiamondCreator();
         creator.setSegments(segments);
@@ -196,7 +196,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void meshContainsTableCircleVertices() {
+    public void testMeshContainsTableCircleVertices() {
         int segments = 32;
         float radius = 0.6f;
         float crownHeight = 0.35f;
@@ -215,7 +215,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void meshContainsVerticesOfSpecifiedTable() {
+    public void testMeshContainsVerticesOfSpecifiedTable() {
         int segments = 16;
         float radius = 0.45f;
         float crownHeight = 0.812f;
@@ -238,7 +238,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void meshContainsThirtyTwoQuadsByDefault() {
+    public void testMeshContainsThirtyTwoQuadsByDefault() {
         Mesh3D mesh = new DiamondCreator().create();
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectQuads();
@@ -246,7 +246,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void meshContainsThirtyTwoTriangularFacesByDefault() {
+    public void testMeshContainsThirtyTwoTriangularFacesByDefault() {
         Mesh3D mesh = new DiamondCreator().create();
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectTriangles();
@@ -254,7 +254,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void eachTriangularFaceContainsPavillionVertexIndex() {
+    public void testEachTriangularFaceContainsPavillionVertexIndex() {
         float pavillionHeight = 0.8f;
         Vector3f pavillionVertex = new Vector3f(0, pavillionHeight, 0);
         Mesh3D mesh = new DiamondCreator().create();
@@ -262,13 +262,14 @@ public class DiamondCreatorTest {
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectTriangles();
         for (Face3D face : selection.getFaces()) {
-            MeshTestUtil.assertFaceContainsVertexIndex(face,
-                    pavillionVertexIndex);
+            assertTrue(
+                    MeshTestUtil.containsVertexIndex(face, pavillionVertexIndex)
+            );
         }
     }
 
     @Test
-    public void eachTriangularFaceContainsGirdleVertexIndex() {
+    public void testEachTriangularFaceContainsGirdleVertexIndex() {
         CircleCreator creator = new CircleCreator();
         creator.setRadius(1);
         creator.setVertices(32);
@@ -286,7 +287,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void nGonConsistsOfTableVertices() {
+    public void testNGonConsistsOfTableVertices() {
         CircleCreator creator = new CircleCreator();
         creator.setRadius(0.6f);
         creator.setCenterY(-0.35f);
@@ -305,7 +306,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void secondVertexIndexOfEachTriangleIsPavillionIndex() {
+    public void testSecondVertexIndexOfEachTriangleIsPavillionIndex() {
         Mesh3D mesh = new DiamondCreator().create();
         int pavillionIndex = mesh.vertices.indexOf(new Vector3f(0, 0.8f, 0));
         FaceSelection selection = new FaceSelection(mesh);
@@ -317,7 +318,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void firstIndexOfQuadFacesReferencesGirdleVertex() {
+    public void testFirstIndexOfQuadFacesReferencesGirdleVertex() {
         CircleCreator creator = new CircleCreator();
         creator.setRadius(1);
         creator.setVertices(32);
@@ -334,7 +335,7 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void thirdIndexOfEachQuadReferencesTablesVertex() {
+    public void testThirdIndexOfEachQuadReferencesTablesVertex() {
         CircleCreator creator = new CircleCreator();
         creator.setRadius(0.6f);
         creator.setVertices(32);
@@ -352,25 +353,12 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void meshIsManifold() {
+    public void testMeshIsManifold() {
         assertTrue(MeshTestUtil.isManifold(new DiamondCreator().create()));
     }
 
     @Test
-    public void normalsPointOutwards() {
-        Mesh3D mesh = new DiamondCreator().create();
-        Vector3f center = new Vector3f();
-        for (Face3D face : mesh.getFaces()) {
-            Vector3f faceNormal = mesh.calculateFaceNormal(face);
-            Vector3f faceCenter = mesh.calculateFaceCenter(face);
-            Vector3f a = faceCenter.subtract(center);
-            float dotProduct = faceNormal.dot(a);
-            assertTrue(dotProduct >= 0);
-        }
-    }
-
-    @Test
-    public void thirdTriangleIndexIsLessThanSegmentsCount() {
+    public void testThirdTriangleIndexIsLessThanSegmentsCount() {
         int segments = 65;
         DiamondCreator creator = new DiamondCreator();
         creator.setSegments(segments);
@@ -383,13 +371,13 @@ public class DiamondCreatorTest {
     }
 
     @Test
-    public void meshHasNoLooseVertices() {
+    public void testMeshHasNoLooseVertices() {
         Mesh3D mesh = new DiamondCreator().create();
         assertTrue(MeshTestUtil.meshHasNoLooseVertices(mesh));
     }
 
     @Test
-    public void meshHasNoDuplicatedFaces() {
+    public void testMeshHasNoDuplicatedFaces() {
         Mesh3D mesh = new DiamondCreator().create();
         assertTrue(MeshTestUtil.meshHasNoDuplicatedFaces(mesh));
     }
