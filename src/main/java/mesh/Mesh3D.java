@@ -8,6 +8,7 @@ import java.util.List;
 import math.Mathf;
 import math.Matrix3f;
 import math.Vector3f;
+import mesh.modifier.IMeshModifier;
 import mesh.modifier.RemoveDoubleVerticesModifier;
 import mesh.util.Bounds3;
 
@@ -23,6 +24,10 @@ public class Mesh3D {
         translation = new Vector3f();
         vertices = new ArrayList<Vector3f>();
         faces = new ArrayList<Face3D>();
+    }
+    
+    public void apply(IMeshModifier modifier) {
+        modifier.modify(this);
     }
 
     public void updateFaceNormals() {
