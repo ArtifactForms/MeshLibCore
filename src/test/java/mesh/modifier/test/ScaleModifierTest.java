@@ -1,5 +1,6 @@
 package mesh.modifier.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.platonic.IcosahedronCreator;
+import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.QuadSphereCreator;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.ScaleModifier;
@@ -21,6 +23,17 @@ public class ScaleModifierTest {
     public void testImplementsModifierInterface() {
         ScaleModifier modifier = new ScaleModifier();
         assertTrue(modifier instanceof IMeshModifier);
+    }
+    
+    @Test
+    public void returnedReferenceIsNotNull() {
+        assertNotNull(new ScaleModifier().modify(new Mesh3D()));
+    }
+    
+    @Test
+    public void testReturnsReference() {
+        Mesh3D mesh0 = new CubeCreator().create();
+        Mesh3D mesh1 = new ScaleModifier().modify(mesh0);
     }
 
     @Test
