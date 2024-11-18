@@ -37,37 +37,45 @@ public class ArchCreator implements IMeshCreator {
     @Override
     public Mesh3D create() {
         initializeMesh();
-        createLeftVertices();
-        createRightVertices();
-        createLeftFace();
-        createRightFace();
+        createVertices();
+        createFaces();
         createArc();
         solidify();
         snapToGround();
         return mesh;
     }
 
+    private void createVertices() {
+        createLeftVertices();
+        createRightVertices();
+    }
+
+    private void createFaces() {
+        createLeftFace();
+        createRightFace();
+    }
+
     private void createArc() {
         float extendStep = calculateWidth() / segments;
         float offsetLeft = -radius - extendLeft;
-        float angle = Mathf.PI;
-        float angleStep = Mathf.PI / segments;
 
         for (int i = 0; i <= segments; i++) {
             float x = offsetLeft + (i * extendStep);
-            float y = -radius - extendTop;
-            Vector3f v1 = new Vector3f(x, y, 0);
-            Vector3f v0 = pointOnCircle(angle);
+            Vector3f v1 = new Vector3f(x, -radius - extendTop, 0);
+            Vector3f v0 = createPointOnCircleAt(i);
+
             if (i > 0 && i < segments)
                 v1.setX(v0.getX());
 
-            if (i < segments)
-                addFaceAt(i);
-
+            addFaceAt(i);
             mesh.add(v0);
             mesh.add(v1);
-            angle += angleStep;
         }
+    }
+
+    private Vector3f createPointOnCircleAt(int i) {
+        float angle = Mathf.PI + (i * (Mathf.PI / segments));
+        return pointOnCircle(angle);
     }
 
     private Vector3f pointOnCircle(float angrad) {
@@ -98,27 +106,37 @@ public class ArchCreator implements IMeshCreator {
     }
 
     private void createRightFace() {
-        int a = 2 * ((segments + 1)) + 4;
-        mesh.addFace(3, 2, a - 2, a - 1);
+        int a = 2 * (segments + 1) + 4;
+        addFace(3, 2, a - 2, a - 1);
+    }
+
+    private void addFace(int... indices) {
+        mesh.addFace(indices);
     }
 
     private void createLeftVertices() {
-        mesh.addVertex(-radius, extendBottom, 0);
-        mesh.addVertex(-radius - extendLeft, extendBottom, 0);
+        addVertex(-radius, extendBottom, 0);
+        addVertex(-radius - extendLeft, extendBottom, 0);
     }
 
     private void createRightVertices() {
-        mesh.addVertex(radius, extendBottom, 0);
-        mesh.addVertex(radius + extendRight, extendBottom, 0);
+        addVertex(radius, extendBottom, 0);
+        addVertex(radius + extendRight, extendBottom, 0);
     }
 
     private void addFaceAt(int i) {
+        if (i >= segments)
+            return;
         int index = (i * 2) + 4;
         int index0 = index;
         int index1 = index + 1;
         int index2 = index + 3;
         int index3 = index + 2;
         mesh.addFace(index0, index1, index2, index3);
+    }
+
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
     }
 
     public int getSegments() {
