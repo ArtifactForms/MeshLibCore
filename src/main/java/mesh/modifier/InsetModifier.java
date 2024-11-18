@@ -38,7 +38,7 @@ public class InsetModifier implements IMeshModifier {
             Vector3f v1 = mesh.vertices
                     .get(face.indices[(i + 1) % face.indices.length]);
 
-            float distance = v1.subtract(v0).length();
+            float distance = v0.distance(v1);
             float a = (1f / distance) * thickness;
 
             Vector3f v4 = v1.subtract(v0).mult(a).add(v0);
