@@ -1,8 +1,6 @@
 package mesh.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import math.Mathf;
 import math.Matrix3f;
@@ -168,48 +166,6 @@ public class Mesh3DUtil {
         extrudeFace(mesh, face, scale, amount);
         if (remove)
             mesh.removeFace(face);
-    }
-
-    public static void insetFace(Mesh3D mesh, Face3D f, float thickness) {
-        int n = f.indices.length;
-        int idx = mesh.vertices.size();
-
-        List<Vector3f> verts = new ArrayList<Vector3f>();
-
-        for (int i = 0; i < n; i++) {
-            Vector3f v0 = mesh.vertices.get(f.indices[i]);
-            Vector3f v1 = mesh.vertices
-                    .get(f.indices[(i + 1) % f.indices.length]);
-
-            float distance = v1.subtract(v0).length();
-            float a = (1f / distance) * thickness;
-
-            Vector3f v4 = v1.subtract(v0).mult(a).add(v0);
-            Vector3f v5 = v1.add(v1.subtract(v0).mult(-a));
-
-            verts.add(v4);
-            verts.add(v5);
-        }
-
-        for (int i = 1; i < verts.size(); i += 2) {
-            int a = verts.size() - 2 + i;
-            Vector3f v0 = verts.get(a % verts.size());
-            Vector3f v1 = verts.get((a + 1) % verts.size());
-            Vector3f v = v1.add(v0).mult(0.5f);
-            mesh.add(v);
-        }
-
-        for (int i = 0; i < n; i++) {
-            int index0 = f.indices[i];
-            int index1 = f.indices[(i + 1) % n];
-            int index2 = idx + ((i + 1) % n);
-            int index3 = idx + i;
-            mesh.addFace(index0, index1, index2, index3);
-        }
-
-        for (int i = 0; i < n; i++) {
-            f.indices[i] = idx + i;
-        }
     }
 
 }
