@@ -1,5 +1,6 @@
 package mesh.modifier;
 
+import math.Vector3f;
 import mesh.Mesh3D;
 
 public class ScaleModifier implements IMeshModifier {
@@ -9,6 +10,8 @@ public class ScaleModifier implements IMeshModifier {
     private float scaleY;
 
     private float scaleZ;
+    
+    private Mesh3D mesh;
 
     public ScaleModifier() {
         this(1, 1, 1);
@@ -26,8 +29,18 @@ public class ScaleModifier implements IMeshModifier {
 
     @Override
     public Mesh3D modify(Mesh3D mesh) {
-        mesh.scale(scaleX, scaleY, scaleZ);
+        setMesh(mesh);
+        scaleMesh();
         return mesh;
+    }
+    
+    private void scaleMesh() {
+        for (Vector3f v : mesh.vertices)
+            v.multLocal(scaleX, scaleY, scaleZ);
+    }
+    
+    private void setMesh(Mesh3D mesh) {
+        this.mesh = mesh;
     }
 
     public float getScaleX() {
