@@ -16,57 +16,57 @@ import mesh.creator.special.GemCreator;
 import mesh.selection.FaceSelection;
 import util.MeshTestUtil;
 
-public class GemTest {
+public class GemCreatorTest {
 
     @Test
-    public void implementsCreatorInterface() {
+    public void testImplementsCreatorInterface() {
         GemCreator creator = new GemCreator();
         assertTrue(creator instanceof IMeshCreator);
     }
 
     @Test
-    public void createdMeshIsNotNullByDefault() {
+    public void testCreatedMeshIsNotNullByDefault() {
         GemCreator creator = new GemCreator();
         assertNotNull(creator.create());
     }
 
     @Test
-    public void getSegmentsReturnsDefaultValue() {
+    public void testGetSegmentsReturnsDefaultValue() {
         int expected = 8;
         GemCreator creator = new GemCreator();
         assertEquals(expected, creator.getSegments());
     }
 
     @Test
-    public void getRadiusReturnsDefaultValue() {
+    public void testGetRadiusReturnsDefaultValue() {
         float expected = 1;
         GemCreator creator = new GemCreator();
         assertEquals(expected, creator.getPavillionRadius(), 0);
     }
 
     @Test
-    public void getTableRadiusReturnsDefaultValue() {
+    public void testGetTableRadiusReturnsDefaultValue() {
         float expected = 0.6f;
         GemCreator creator = new GemCreator();
         assertEquals(expected, creator.getTableRadius(), 0);
     }
 
     @Test
-    public void getTableHeightReturnsDefaultValue() {
+    public void testGetTableHeightReturnsDefaultValue() {
         float expected = 0.35f;
         GemCreator creator = new GemCreator();
         assertEquals(expected, creator.getTableHeight(), 0);
     }
 
     @Test
-    public void getPavillionHeightReturnsDefaultValue() {
+    public void testGetPavillionHeightReturnsDefaultValue() {
         float expected = 0.8f;
         GemCreator creator = new GemCreator();
         assertEquals(expected, creator.getPavillionHeight(), 0);
     }
 
     @Test
-    public void getSetSegments() {
+    public void testGetSetSegments() {
         int expected = 76;
         GemCreator creator = new GemCreator();
         creator.setSegments(expected);
@@ -74,7 +74,7 @@ public class GemTest {
     }
 
     @Test
-    public void getSetRadius() {
+    public void getGetSetRadius() {
         float expected = 0.8253f;
         GemCreator creator = new GemCreator();
         creator.setPavillionRadius(expected);
@@ -82,7 +82,7 @@ public class GemTest {
     }
 
     @Test
-    public void getSetTableRadius() {
+    public void testGetSetTableRadius() {
         float expected = 542.21f;
         GemCreator creator = new GemCreator();
         creator.setTableRadius(expected);
@@ -90,7 +90,7 @@ public class GemTest {
     }
 
     @Test
-    public void getSetTableHeight() {
+    public void testGetSetTableHeight() {
         float expected = 762.1234f;
         GemCreator creator = new GemCreator();
         creator.setTableHeight(expected);
@@ -98,7 +98,7 @@ public class GemTest {
     }
 
     @Test
-    public void getSetPavillionHeight() {
+    public void testGetSetPavillionHeight() {
         float expected = 62.1209f;
         GemCreator creator = new GemCreator();
         creator.setPavillionHeight(expected);
@@ -106,21 +106,21 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshHasFourtyEightFacesByDefault() {
+    public void testCreatedMeshHasFourtyEightFacesByDefault() {
         int expected = 48;
         Mesh3D gem = new GemCreator().create();
         assertEquals(expected, gem.getFaceCount());
     }
 
     @Test
-    public void createdMeshThirtyFourVerticesByDefault() {
+    public void testCreatedMeshThirtyFourVerticesByDefault() {
         int expected = 34;
         Mesh3D gem = new GemCreator().create();
         assertEquals(expected, gem.getVertexCount());
     }
 
     @Test
-    public void createdMeshHasThirtyTwoTriangularFaces() {
+    public void testCreatedMeshHasThirtyTwoTriangularFaces() {
         Mesh3D gem = new GemCreator().create();
         FaceSelection selection = new FaceSelection(gem);
         selection.selectTriangles();
@@ -128,7 +128,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshHasSixteenQuadFaces() {
+    public void testCreatedMeshHasSixteenQuadFaces() {
         Mesh3D gem = new GemCreator().create();
         FaceSelection selection = new FaceSelection(gem);
         selection.selectQuads();
@@ -136,7 +136,7 @@ public class GemTest {
     }
 
     @Test
-    public void trianglesCountDependsOnSegments() {
+    public void testTrianglesCountDependsOnSegments() {
         int expected = 44;
         GemCreator creator = new GemCreator();
         creator.setSegments(11);
@@ -147,7 +147,7 @@ public class GemTest {
     }
 
     @Test
-    public void quadCountDependsOnSegments() {
+    public void testQuadCountDependsOnSegments() {
         int expected = 54;
         GemCreator creator = new GemCreator();
         creator.setSegments(27);
@@ -158,7 +158,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshContainsCenterCircleVertices() {
+    public void testCreatedMeshContainsCenterCircleVertices() {
         CircleCreator circleCreator = new CircleCreator();
         circleCreator.setRadius(1);
         circleCreator.setVertices(8);
@@ -171,7 +171,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshContainsTableCircleVertices() {
+    public void testCreatedMeshContainsTableCircleVertices() {
         CircleCreator circleCreator = new CircleCreator();
         circleCreator.setRadius(0.6f);
         circleCreator.setVertices(8);
@@ -184,7 +184,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshContainsPavillionVertex() {
+    public void testCreatedMeshContainsPavillionVertex() {
         float pavillionHeight = 0.8f;
         Vector3f v = new Vector3f(0, pavillionHeight, 0);
         Mesh3D gem = new GemCreator().create();
@@ -192,7 +192,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshContainsTableVertex() {
+    public void testCreatedMeshContainsTableVertex() {
         float tableHeight = 0.35f;
         Vector3f v = new Vector3f(0, -tableHeight, 0);
         Mesh3D gem = new GemCreator().create();
@@ -200,7 +200,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshContainsVerticesAtTableHeight() {
+    public void testCreatedMeshContainsVerticesAtTableHeight() {
         int segments = 26;
         float tableRadius = 0.22f;
         float tableHeight = 12.2114f;
@@ -224,7 +224,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshContainsVerticesAtCenterHeight() {
+    public void testCreatedMeshContainsVerticesAtCenterHeight() {
         int segments = 56;
         float radius = 2.34f;
         GemCreator creator = new GemCreator();
@@ -242,7 +242,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshContainsTableMidVertices() {
+    public void testCreatedMeshContainsTableMidVertices() {
         float gemCenterRadius = 1;
         float tableRadius = 0.6f;
         int segments = 8;
@@ -267,7 +267,7 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshContainsTableMidVerticesWithParameters() {
+    public void testCreatedMeshContainsTableMidVerticesWithParameters() {
         float gemCenterRadius = 65.45f;
         float tableRadius = 0.232f;
         int segments = 11;
@@ -297,7 +297,7 @@ public class GemTest {
     }
 
     @Test
-    public void hasEightTopFaces() {
+    public void testHasEightTopFaces() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
         FaceSelection selection = new FaceSelection(gem);
@@ -306,7 +306,7 @@ public class GemTest {
     }
 
     @Test
-    public void hasEightTriangularTopFaces() {
+    public void testHasEightTriangularTopFaces() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
         FaceSelection selection = new FaceSelection(gem);
@@ -317,21 +317,21 @@ public class GemTest {
     }
 
     @Test
-    public void createdMeshIsManifold() {
+    public void testCreatedMeshIsManifold() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
         assertTrue(MeshTestUtil.isManifold(gem));
     }
 
     @Test
-    public void createdMeshHasNoLooseVertices() {
+    public void testCreatedMeshHasNoLooseVertices() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
         assertTrue(MeshTestUtil.meshHasNoLooseVertices(gem));
     }
 
     @Test
-    public void createdMeshHasNoDuplicatedFaces() {
+    public void testCreatedMeshHasNoDuplicatedFaces() {
         GemCreator creator = new GemCreator();
         Mesh3D gem = creator.create();
         assertTrue(MeshTestUtil.meshHasNoDuplicatedFaces(gem));

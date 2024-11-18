@@ -23,6 +23,12 @@
          <id>github</id>
          <name>GitHub ArtifactForms Apache Maven Packages</name>
          <url>https://maven.pkg.github.com/ArtifactForms/MeshLibCore/master</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
        </repository>
     </distributionManagement>
     <dependencies>

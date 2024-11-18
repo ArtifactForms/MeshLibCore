@@ -26,8 +26,9 @@ public class MeshTestUtil {
      * This quadratic time complexity arises from the nested loop structure,
      * which can become inefficient for large meshes.
      * 
-     * @param mesh The 3D mesh to check.
-     * @return `true` if the mesh has no duplicated faces, `false` otherwise.
+     * @param  mesh The 3D mesh to check.
+     * @return      `true` if the mesh has no duplicated faces, `false`
+     *              otherwise.
      */
     public static boolean meshHasNoDuplicatedFaces(Mesh3D mesh) {
         int duplicatedFaces = 0;
@@ -110,9 +111,10 @@ public class MeshTestUtil {
         }
 
         if (expectedEdgeCount != actualEdgeCount) {
-            throw new AssertionError("Expected " + expectedEdgeCount
-                    + " edges with length " + expectedLength + ", but found "
-                    + actualEdgeCount);
+            throw new AssertionError(
+                    "Expected " + expectedEdgeCount + " edges with length "
+                            + expectedLength + ", but found " + actualEdgeCount
+            );
         }
     }
 
@@ -132,7 +134,7 @@ public class MeshTestUtil {
             }
         }
     }
-    
+
     private static boolean hasCorrectNumberOfFacesWithVertexCount(Mesh3D mesh,
             int vertices, int expected) {
         int count = 0;
@@ -145,50 +147,56 @@ public class MeshTestUtil {
 
     public static boolean isTriangleCountEquals(Mesh3D mesh,
             int expectedTriangleCount) {
-        return hasCorrectNumberOfFacesWithVertexCount(mesh, 3,
-                expectedTriangleCount);
+        return hasCorrectNumberOfFacesWithVertexCount(
+                mesh, 3, expectedTriangleCount
+        );
     }
 
     public static boolean isQuadCountEquals(Mesh3D mesh,
             int expectedQuadCount) {
-        return hasCorrectNumberOfFacesWithVertexCount(mesh, 4,
-                expectedQuadCount);
+        return hasCorrectNumberOfFacesWithVertexCount(
+                mesh, 4, expectedQuadCount
+        );
     }
 
     public static boolean isHexagonCountEquals(Mesh3D mesh,
             int expectedHexagonCount) {
-        return hasCorrectNumberOfFacesWithVertexCount(mesh, 6,
-                expectedHexagonCount);
+        return hasCorrectNumberOfFacesWithVertexCount(
+                mesh, 6, expectedHexagonCount
+        );
     }
 
     public static boolean isPentagonCountEquals(Mesh3D mesh,
             int expectedPentagonCount) {
-        return hasCorrectNumberOfFacesWithVertexCount(mesh, 5,
-                expectedPentagonCount);
+        return hasCorrectNumberOfFacesWithVertexCount(
+                mesh, 5, expectedPentagonCount
+        );
     }
 
     public static boolean isOctagonCountEquals(Mesh3D mesh,
             int expectedOctagonCount) {
-        return hasCorrectNumberOfFacesWithVertexCount(mesh, 8,
-                expectedOctagonCount);
+        return hasCorrectNumberOfFacesWithVertexCount(
+                mesh, 8, expectedOctagonCount
+        );
     }
 
     public static boolean isDecagonCountEquals(Mesh3D mesh,
             int expectedDecagonCount) {
-        return hasCorrectNumberOfFacesWithVertexCount(mesh, 10,
-                expectedDecagonCount);
+        return hasCorrectNumberOfFacesWithVertexCount(
+                mesh, 10, expectedDecagonCount
+        );
     }
 
     public static boolean isManifold(Mesh3D mesh) {
         return new ManifoldTest(mesh).isManifold();
     }
 
-    public static void assertFaceContainsVertexIndex(Face3D face,
+    public static boolean containsVertexIndex(Face3D face,
             int expectedVertexIndex) {
         int count = 0;
         for (int i = 0; i < face.indices.length; i++)
             count += face.indices[i] == expectedVertexIndex ? 1 : 0;
-        Assert.assertEquals(1, count);
+        return count == 1;
     }
 
 }
