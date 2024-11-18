@@ -34,6 +34,7 @@ public class ScaleModifierTest {
     public void testReturnsReference() {
         Mesh3D mesh0 = new CubeCreator().create();
         Mesh3D mesh1 = new ScaleModifier().modify(mesh0);
+        assertTrue(mesh0 == mesh1);
     }
 
     @Test
