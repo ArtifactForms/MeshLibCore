@@ -34,13 +34,11 @@ public class CircleCreator implements IMeshCreator {
     }
 
     private void createVertices() {
-        float angle = 0;
-        float step = Mathf.TWO_PI / (float) vertices;
         for (int i = 0; i < vertices; i++) {
+            float angle = i * (Mathf.TWO_PI / vertices);
             float x = radius * Mathf.cos(angle);
             float z = radius * Mathf.sin(angle);
             mesh.add(new Vector3f(x, centerY, z));
-            angle += step;
         }
     }
 
