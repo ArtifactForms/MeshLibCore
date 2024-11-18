@@ -9,6 +9,7 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CylinderCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.FitToAABBModifier;
+import mesh.modifier.ScaleModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 
@@ -68,7 +69,7 @@ public class SciFiFloorCreator implements IMeshCreator {
 
     private void createFloor() {
         Mesh3D plane = new PlaneCreator(0.5f).create();
-        plane.scale(width, 1, depth);
+        mesh.apply(new ScaleModifier(width, 1, depth));
         plane.translateY(wallHeight / 2f);
         mesh.append(plane);
     }

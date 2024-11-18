@@ -2,6 +2,7 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.ScaleModifier;
 
 public class BoxCreator implements IMeshCreator {
 
@@ -24,7 +25,7 @@ public class BoxCreator implements IMeshCreator {
     @Override
     public Mesh3D create() {
         Mesh3D mesh = new CubeCreator(0.5f).create();
-        mesh.scale(width, height, depth);
+        mesh.apply(new ScaleModifier(width, height, depth));
         return mesh;
     }
 

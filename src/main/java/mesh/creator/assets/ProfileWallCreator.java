@@ -6,6 +6,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.special.QuadStripCreator;
+import mesh.modifier.ScaleModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
@@ -106,7 +107,7 @@ public class ProfileWallCreator implements IMeshCreator {
     private void createSecondSegment() {
         Mesh3D mesh2 = createSegment();
         mesh2.rotateY(-Mathf.HALF_PI);
-        mesh2.scale(1, 1, -1);
+        mesh2.apply(new ScaleModifier(1, 1, -1));
         Mesh3DUtil.flipDirection(mesh2);
         mesh.append(mesh2);
     }

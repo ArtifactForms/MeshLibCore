@@ -28,7 +28,7 @@ public class FitToAABBModifier implements IMeshModifier {
     }
 
     private void scale(float scale) {
-        mesh.scale(scale, scale, scale);
+        mesh.apply(new ScaleModifier(scale));
     }
 
     private float calculateScale() {

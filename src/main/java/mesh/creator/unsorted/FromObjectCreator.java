@@ -5,6 +5,7 @@ import java.io.File;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.io.SimpleObjectReader;
+import mesh.modifier.ScaleModifier;
 
 public class FromObjectCreator implements IMeshCreator {
 
@@ -39,7 +40,7 @@ public class FromObjectCreator implements IMeshCreator {
     }
 
     private void scaleMesh() {
-        mesh.scale(scale);
+        mesh.apply(new ScaleModifier(scale));
     }
 
     public float getScale() {

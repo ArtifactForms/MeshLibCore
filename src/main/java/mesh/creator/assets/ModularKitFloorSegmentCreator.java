@@ -3,6 +3,7 @@ package mesh.creator.assets;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.PlaneCreator;
+import mesh.modifier.ScaleModifier;
 import mesh.modifier.SolidifyModifier;
 
 public class ModularKitFloorSegmentCreator implements IMeshCreator {
@@ -27,7 +28,7 @@ public class ModularKitFloorSegmentCreator implements IMeshCreator {
     @Override
     public Mesh3D create() {
         Mesh3D mesh = new PlaneCreator(0.5f).create();
-        mesh.scale(floorWidth, 1, floorDepth);
+        mesh.apply(new ScaleModifier(floorWidth, 1, floorDepth));
         if (floorHeight > 0) {
             new SolidifyModifier(floorHeight).modify(mesh);
             mesh.translateY(-floorHeight);

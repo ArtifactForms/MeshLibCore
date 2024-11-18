@@ -10,6 +10,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.SegmentedCubeCreator;
+import mesh.modifier.ScaleModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
 import mesh.selection.FaceSelection;
@@ -60,8 +61,8 @@ public class PortedCubeCreator implements IMeshCreator {
     }
 
     private void scale() {
-        mesh.scale(Mathf.ONE_THIRD);
-        mesh.scale(radius * 2);
+        mesh.apply(new ScaleModifier(Mathf.ONE_THIRD));
+        mesh.apply(new ScaleModifier(radius * 2));
     }
 
     private void removeCornerFaces() {

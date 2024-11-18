@@ -3,6 +3,7 @@ package mesh.creator.platonic;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.ScaleModifier;
 
 public class IcosahedronCreator implements IMeshCreator {
 
@@ -106,7 +107,7 @@ public class IcosahedronCreator implements IMeshCreator {
     }
 
     private void scaleMesh() {
-        mesh.scale(size);
+        mesh.apply(new ScaleModifier(size));
     }
 
     public float getSize() {

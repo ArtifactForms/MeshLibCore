@@ -7,6 +7,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.ScaleModifier;
 import mesh.util.Mesh3DUtil;
 
 public class CrateCreator implements IMeshCreator {
@@ -61,7 +62,7 @@ public class CrateCreator implements IMeshCreator {
     }
 
     private void scaleBaseCube() {
-        mesh.scale(radius);
+        mesh.apply(new ScaleModifier(radius));
     }
 
     private void extrudeFaces() {

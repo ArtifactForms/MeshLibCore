@@ -2,6 +2,7 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.ScaleModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.util.Mesh3DUtil;
 
@@ -40,7 +41,7 @@ public class QuadSphereCreator implements IMeshCreator {
     }
 
     private void scale() {
-        mesh.scale(radius);
+        mesh.apply(new ScaleModifier(radius));
     }
 
     private void pushToSphere() {

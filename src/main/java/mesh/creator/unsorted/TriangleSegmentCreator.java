@@ -5,6 +5,7 @@ import java.util.List;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.ScaleModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.util.Mesh3DUtil;
@@ -40,7 +41,7 @@ public class TriangleSegmentCreator implements IMeshCreator {
     }
 
     private void scale() {
-        mesh.scale(size);
+        mesh.apply(new ScaleModifier(size));
     }
 
     private void extrude() {

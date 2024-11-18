@@ -72,25 +72,6 @@ public class Mesh3D {
         return this;
     }
 
-    public Mesh3D scale(float scale) {
-        for (Vector3f v : vertices) {
-            v.multLocal(scale);
-        }
-        return this;
-    }
-
-    public Mesh3D scale(float sx, float sy, float sz) {
-        Vector3f scale = new Vector3f(sx, sy, sz);
-        return scale(scale);
-    }
-
-    public Mesh3D scale(Vector3f scale) {
-        for (Vector3f v : vertices) {
-            v.multLocal(scale);
-        }
-        return this;
-    }
-
     public Mesh3D translateX(float tx) {
         for (Vector3f v : vertices) {
             v.addLocal(tx, 0, 0);

@@ -3,6 +3,7 @@ package mesh.creator.primitives;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.ScaleModifier;
 
 public class SegmentedCubeCreator implements IMeshCreator {
 
@@ -79,8 +80,8 @@ public class SegmentedCubeCreator implements IMeshCreator {
 
     private void scale() {
         float scale = 1.0f / creationSize;
-        mesh.scale(scale, scale, scale);
-        mesh.scale(size);
+        mesh.apply(new ScaleModifier(scale));
+        mesh.apply(new ScaleModifier(size));
     }
 
     private void initializeMesh() {

@@ -2,6 +2,7 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.ScaleModifier;
 
 public class SquareBasedPyramidCreator implements IMeshCreator {
 
@@ -41,7 +42,7 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
     }
 
     private void scale() {
-        mesh.scale(size, height, size);
+        mesh.apply(new ScaleModifier(size, height, size));
     }
 
     private void centerAlongAxisY() {
