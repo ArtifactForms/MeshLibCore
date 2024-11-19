@@ -41,6 +41,11 @@ public class MeshTestUtil {
         }
         return duplicatedFaces == 0;
     }
+    
+    public static boolean meshHasNoDuplicatedVertices(Mesh3D mesh) {
+        HashSet<Vector3f> map = new HashSet<Vector3f>(mesh.vertices);
+        return map.size() == mesh.vertices.size();
+    }
 
     public static boolean meshHasNoLooseVertices(Mesh3D mesh) {
         List<Vector3f> vertices = mesh.getVertices();

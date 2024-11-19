@@ -8,6 +8,7 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.special.QuadStripCreator;
 import mesh.modifier.ScaleModifier;
 import mesh.modifier.SolidifyModifier;
+import mesh.modifier.TranslateModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 
@@ -115,7 +116,7 @@ public class ProfileWallCreator implements IMeshCreator {
     private Mesh3D createSegment() {
         Mesh3D mesh = creator.create();
         new SolidifyModifier(calculateWidth()).modify(mesh);
-        mesh.translateX(width / 2f);
+        mesh.apply(new TranslateModifier(width / 2, 0, 0));
 
         if (corner) {
             FaceSelection selection = new FaceSelection(mesh);

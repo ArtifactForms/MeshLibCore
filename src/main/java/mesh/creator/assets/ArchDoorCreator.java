@@ -6,6 +6,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.ArcCreator;
 import mesh.modifier.SolidifyModifier;
+import mesh.modifier.TranslateModifier;
 
 public class ArchDoorCreator implements IMeshCreator {
 
@@ -54,8 +55,7 @@ public class ArchDoorCreator implements IMeshCreator {
     }
 
     private void translate() {
-        mesh.translateX(radius / 2f);
-        mesh.translateZ(depth / 2f);
+        mesh.apply(new TranslateModifier(radius / 2, 0, depth / 2));
     }
 
     private void createFaces() {

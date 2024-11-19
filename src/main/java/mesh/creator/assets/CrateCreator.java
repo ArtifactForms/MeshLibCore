@@ -8,6 +8,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.ScaleModifier;
+import mesh.modifier.TranslateModifier;
 import mesh.util.Mesh3DUtil;
 
 public class CrateCreator implements IMeshCreator {
@@ -115,7 +116,7 @@ public class CrateCreator implements IMeshCreator {
         Mesh3D mesh = createCrossBeam();
         mesh.rotateX(-Mathf.HALF_PI);
         mesh.rotateY(-Mathf.HALF_PI);
-        mesh.translateX(-this.radius);
+        mesh.apply(new TranslateModifier(radius / 2, 0, 0));
         this.mesh.append(mesh);
     }
 
@@ -123,7 +124,7 @@ public class CrateCreator implements IMeshCreator {
         Mesh3D mesh = createCrossBeam();
         mesh.rotateX(-Mathf.HALF_PI);
         mesh.rotateY(Mathf.HALF_PI);
-        mesh.translateX(this.radius);
+        mesh.apply(new TranslateModifier(radius / 2, 0, 0));
         this.mesh.append(mesh);
     }
 

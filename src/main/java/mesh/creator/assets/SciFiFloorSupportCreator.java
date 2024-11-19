@@ -3,6 +3,7 @@ package mesh.creator.assets;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.TranslateModifier;
 import mesh.selection.CompareType;
 import mesh.selection.FaceSelection;
 import mesh.selection.FaceSelectionRules;
@@ -78,7 +79,8 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
     }
 
     private void centerOnAxisX() {
-        mesh.translateX(-(getTotalWidth() / 2f) + (getWidth() / 2f));
+        float deltaX = -(getTotalWidth() / 2f) + (getWidth() / 2f);
+        mesh.apply(new TranslateModifier(deltaX, 0, 0));
     }
 
     private void processCapBack() {
@@ -114,12 +116,15 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
     private void createSupports() {
         for (int i = 0; i < supportCount; i++) {
             Mesh3D support = this.support.copy();
-            support.translateX(i * (width + gap));
+            float deltaX = i * (width + gap);
+            support.apply(new TranslateModifier(deltaX, 0, 0));
             mesh.append(support);
         }
     }
 
     private void createSupport() {
+        float deltaX = getSupportDepth() / 2f;
+        float deltaY = -radius - extendBottom;
         ArchCreator creator = new ArchCreator();
         creator.setRadius(radius);
         creator.setExtendLeft(extendBottom);
@@ -130,8 +135,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
         creator.setSegments(segments);
         support = creator.create();
         support.rotateZ(-Mathf.HALF_PI);
-        support.translateY(-radius - extendBottom);
-        support.translateX(getSupportDepth() / 2f);
+        support.apply(new TranslateModifier(deltaX, deltaY, 0));
         support.rotateY(-Mathf.HALF_PI);
         processCapBack();
         processCapTop();
