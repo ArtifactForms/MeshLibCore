@@ -29,8 +29,11 @@ public class Color {
     public static final Color PINK = new Color(255, 175, 175, 255);
 
     private int red;
+
     private int green;
+
     private int blue;
+
     private int alpha;
 
     public Color(int red, int green, int blue) {
