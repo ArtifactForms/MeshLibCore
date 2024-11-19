@@ -4,48 +4,48 @@ import mesh.Mesh3D;
 
 public interface Graphics {
 
-	int getWidth();
+    int getWidth();
 
-	int getHeight();
+    int getHeight();
 
-	void pushMatrix();
+    void pushMatrix();
 
-	void popMatrix();
+    void popMatrix();
 
-	void translate(float x, float y);
+    void translate(float x, float y);
 
-	void strokeWeight(float weight);
+    void strokeWeight(float weight);
 
-	void setColor(Color color);
+    void setColor(Color color);
 
-	void setColor(int red, int green, int blue);
+    void setColor(int red, int green, int blue);
 
-	void drawRect(float x, float y, float width, float height);
+    void drawRect(float x, float y, float width, float height);
 
-	void fillRect(float x, float y, float width, float height);
+    void fillRect(float x, float y, float width, float height);
 
-	void fillFaces(Mesh3D mesh);
+    void fillFaces(Mesh3D mesh);
 
-	void textSize(float size);
+    void textSize(float size);
 
-	float getTextSize();
+    float getTextSize();
 
-	float textWidth(String text);
+    float textWidth(String text);
 
-	float textAscent();
+    float textAscent();
 
-	float textDescent();
+    float textDescent();
 
-	void text(String text, float x, float y);
+    void text(String text, float x, float y);
 
-	void enableDepthTest();
+    void enableDepthTest();
 
-	void disableDepthTest();
+    void disableDepthTest();
 
-	void rotateX(float angle);
+    void rotateX(float angle);
 
-	void rotateY(float angle);
+    void rotateY(float angle);
 
-	void rotateZ(float angle);
+    void rotateZ(float angle);
 
 }

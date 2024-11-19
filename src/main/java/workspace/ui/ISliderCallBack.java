@@ -2,6 +2,6 @@ package workspace.ui;
 
 public interface ISliderCallBack {
 
-	void valueChanged(float value);
+    void valueChanged(float value);
 
 }

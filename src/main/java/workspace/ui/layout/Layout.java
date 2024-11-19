@@ -4,6 +4,6 @@ import workspace.ui.UiComponent;
 
 public interface Layout {
 
-	void layout(UiComponent component);
+    void layout(UiComponent component);
 
 }

@@ -2,6 +2,6 @@ package workspace.ui;
 
 public interface IActionListener {
 
-	void onActionPerformed();
+    void onActionPerformed();
 
 }
