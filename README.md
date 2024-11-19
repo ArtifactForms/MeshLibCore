@@ -17,8 +17,6 @@ Processing captivated me from the start. Designed for visual learners, Processin
 ## Status Quo
 Currently, my primary focus is on refining the user documentation. As my understanding of code structure and architecture has evolved, I've been actively refactoring the codebase to maintain its cleanliness and organization. Smaller additions are made periodically.
 
-The Processing-specific rendering components are housed in a separate repository, representing another ongoing project.
-
 In essence, this codebase serves as a platform for learning and working with legacy code. I've embraced the challenge of working with existing code, viewing it as an opportunity to explore new testing approaches. Constructing tests around legacy code for refactoring purposes is a fascinating and valuable endeavor, in my opinion, an essential practice.
 
 ## Future
