@@ -12,105 +12,112 @@ import workspace.SceneObject;
 
 public class ObjectSelectionRender {
 
-	private ColorGenerator generator;
-	private int width;
-	private int height;
-	private PApplet p;
-	private PGraphics3D g3d;
-	private HashMap<Integer, String> colorToObjectName;
-	private HashMap<String, Integer> nameToColor;
+    private ColorGenerator generator;
 
-	public ObjectSelectionRender(PApplet p) {
-		colorToObjectName = new HashMap<Integer, String>();
-		nameToColor = new HashMap<String, Integer>();
-		generator = new ColorGenerator();
-		this.p = p;
-		g3d = (PGraphics3D) p.createGraphics(p.width, p.height, PApplet.P3D);
-		p.registerMethod("pre", this);
-	}
+    private int width;
 
-	public void pre() {
-		if (p.width != this.width || p.height != this.height) {
-			this.width = p.width;
-			this.height = p.height;
-			g3d = (PGraphics3D) p.createGraphics(p.width, p.height, PApplet.P3D);
-		}
-	}
+    private int height;
 
-	public String getObject(int x, int y) {
-		int color = getColor(x, y);
-		return colorToObjectName.get(color);
-	}
+    private PApplet p;
 
-	public int getColor(int x, int y) {
-		int color = g3d.get(x, y);
-		return color;
-	}
+    private PGraphics3D g3d;
 
-	public void draw(List<SceneObject> sceneObjects) {
-		g3d.beginDraw();
-		g3d.setMatrix(p.getMatrix());
-		g3d.noLights();
-		g3d.background(0, 0, 0, 0);
-		g3d.noStroke();
-		for (SceneObject sceneObject : sceneObjects)
-			drawBuffer(sceneObject);
-		g3d.endDraw();
-	}
+    private HashMap<Integer, String> colorToObjectName;
 
-	public void drawColorBuffer() {
-		if (g3d == null)
-			return;
-		p.image(g3d, 0, 0, p.width, p.height);
-	}
+    private HashMap<String, Integer> nameToColor;
 
-	private void drawBuffer(SceneObject sceneObject) {
-		PGraphics3D context = g3d;
-		Mesh3D mesh = sceneObject.getMesh();
+    public ObjectSelectionRender(PApplet p) {
+        colorToObjectName = new HashMap<Integer, String>();
+        nameToColor = new HashMap<String, Integer>();
+        generator = new ColorGenerator();
+        this.p = p;
+        g3d = (PGraphics3D) p.createGraphics(p.width, p.height, PApplet.P3D);
+        p.registerMethod("pre", this);
+    }
 
-		int c = -1;
-		if (nameToColor.containsKey(sceneObject.getName())) {
-			c = nameToColor.get(sceneObject.getName());
-		} else {
-			c = generator.next().getRGBA();
-			nameToColor.put(sceneObject.getName(), c);
-		}
+    public void pre() {
+        if (p.width != this.width || p.height != this.height) {
+            this.width = p.width;
+            this.height = p.height;
+            g3d = (PGraphics3D) p
+                    .createGraphics(p.width, p.height, PApplet.P3D);
+        }
+    }
 
-		this.colorToObjectName.put(c, sceneObject.getName());
+    public String getObject(int x, int y) {
+        int color = getColor(x, y);
+        return colorToObjectName.get(color);
+    }
 
-		context.fill(c);
+    public int getColor(int x, int y) {
+        int color = g3d.get(x, y);
+        return color;
+    }
 
-		context.pushMatrix();
+    public void draw(List<SceneObject> sceneObjects) {
+        g3d.beginDraw();
+        g3d.setMatrix(p.getMatrix());
+        g3d.noLights();
+        g3d.background(0, 0, 0, 0);
+        g3d.noStroke();
+        for (SceneObject sceneObject : sceneObjects)
+            drawBuffer(sceneObject);
+        g3d.endDraw();
+    }
 
-		for (int i = 0; i < mesh.faces.size(); i++) {
-			Face3D f = mesh.getFaceAt(i);
-			Vector3f v;
+    public void drawColorBuffer() {
+        if (g3d == null)
+            return;
+        p.image(g3d, 0, 0, p.width, p.height);
+    }
 
-			if (f.indices.length == 3) {
-				context.beginShape(PApplet.TRIANGLES);
-			}
+    private void drawBuffer(SceneObject sceneObject) {
+        PGraphics3D context = g3d;
+        Mesh3D mesh = sceneObject.getMesh();
 
-			if (f.indices.length == 4) {
-				context.beginShape(PApplet.QUADS);
-			}
+        int c = -1;
+        if (nameToColor.containsKey(sceneObject.getName())) {
+            c = nameToColor.get(sceneObject.getName());
+        } else {
+            c = generator.next().getRGBA();
+            nameToColor.put(sceneObject.getName(), c);
+        }
 
-			if (f.indices.length > 4) {
-				context.beginShape();
-			}
+        this.colorToObjectName.put(c, sceneObject.getName());
 
-			for (int j = 0; j < f.indices.length; j++) {
-				v = mesh.vertices.get(f.indices[j]);
-				context.vertex(v.getX(), v.getY(), v.getZ());
-			}
+        context.fill(c);
 
-			if (f.indices.length > 4) {
-				context.endShape(PApplet.CLOSE);
-			} else {
-				context.endShape();
-			}
-		}
+        context.pushMatrix();
 
-		context.popMatrix();
-	}
+        for (int i = 0; i < mesh.faces.size(); i++) {
+            Face3D f = mesh.getFaceAt(i);
+            Vector3f v;
+
+            if (f.indices.length == 3) {
+                context.beginShape(PApplet.TRIANGLES);
+            }
+
+            if (f.indices.length == 4) {
+                context.beginShape(PApplet.QUADS);
+            }
+
+            if (f.indices.length > 4) {
+                context.beginShape();
+            }
+
+            for (int j = 0; j < f.indices.length; j++) {
+                v = mesh.vertices.get(f.indices[j]);
+                context.vertex(v.getX(), v.getY(), v.getZ());
+            }
+
+            if (f.indices.length > 4) {
+                context.endShape(PApplet.CLOSE);
+            } else {
+                context.endShape();
+            }
+        }
+
+        context.popMatrix();
+    }
 
 }
