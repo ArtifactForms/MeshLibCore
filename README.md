@@ -241,6 +241,7 @@ import mesh.Mesh3D;
 public class MyQuadCreator implements IMeshCreator {
 
 	private float halfSize;
+
 	private Mesh3D mesh;
 
 	public Mesh3D create() {
