@@ -6,6 +6,7 @@ import java.util.List;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.modifier.UpdateFaceNormalsModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.VertexNormals;
 import processing.core.PApplet;
@@ -90,7 +91,7 @@ public class Mesh3DRenderer {
 	private void drawFacesSmooth(Mesh3D mesh, Collection<Face3D> faces) {
 		context.pushMatrix();
 
-		mesh.updateFaceNormals();
+		mesh.apply(new UpdateFaceNormalsModifier());
 
 		VertexNormals normals = new VertexNormals(mesh);
 

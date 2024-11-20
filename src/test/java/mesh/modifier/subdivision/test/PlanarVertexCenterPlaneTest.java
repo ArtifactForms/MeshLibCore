@@ -10,6 +10,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreator;
+import mesh.modifier.UpdateFaceNormalsModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import util.MeshTestUtil;
 
@@ -88,7 +89,7 @@ public class PlanarVertexCenterPlaneTest {
     @Test
     public void faceNormalsPointingTowardsNegativeY() {
         Vector3f expectedNormal = new Vector3f(0, -1, 0);
-        plane.updateFaceNormals();
+        plane.apply(new UpdateFaceNormalsModifier());
         for (int i = 0; i < plane.getFaceCount(); i++) {
             Face3D face = plane.getFaceAt(i);
             assertEquals(expectedNormal, face.normal);
