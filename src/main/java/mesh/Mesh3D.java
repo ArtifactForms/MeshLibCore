@@ -25,20 +25,33 @@ public class Mesh3D {
         vertices = new ArrayList<Vector3f>();
         faces = new ArrayList<Face3D>();
     }
-    
+
     public void apply(IMeshModifier modifier) {
         modifier.modify(this);
     }
 
-    public void updateFaceNormals() {
-        for (Face3D face : faces) {
-            face.normal = calculateFaceNormal(face);
+    public Vector3f calculateFaceNormal(Face3D face) {
+        Vector3f faceNormal = new Vector3f();
+        for (int i = 0; i < face.indices.length; i++) {
+            Vector3f currentVertex = vertices.get(face.indices[i]);
+            Vector3f nextVertex = vertices
+                    .get(face.indices[(i + 1) % face.indices.length]);
+            float x = (currentVertex.getY() - nextVertex.getY())
+                    * (currentVertex.getZ() + nextVertex.getZ());
+            float y = (currentVertex.getZ() - nextVertex.getZ())
+                    * (currentVertex.getX() + nextVertex.getX());
+            float z = (currentVertex.getX() - nextVertex.getX())
+                    * (currentVertex.getY() + nextVertex.getY());
+            faceNormal.addLocal(x, y, z);
         }
+        return faceNormal.normalize();
     }
 
     public Mesh3D rotateX(float angle) {
-        Matrix3f m = new Matrix3f(1, 0, 0, 0, Mathf.cos(angle),
-                -Mathf.sin(angle), 0, Mathf.sin(angle), Mathf.cos(angle));
+        Matrix3f m = new Matrix3f(
+                1, 0, 0, 0, Mathf.cos(angle), -Mathf.sin(angle), 0,
+                Mathf.sin(angle), Mathf.cos(angle)
+        );
 
         for (Vector3f v : vertices) {
             Vector3f v0 = v.mult(m);
@@ -49,8 +62,10 @@ public class Mesh3D {
     }
 
     public Mesh3D rotateY(float angle) {
-        Matrix3f m = new Matrix3f(Mathf.cos(angle), 0, Mathf.sin(angle), 0, 1,
-                0, -Mathf.sin(angle), 0, Mathf.cos(angle));
+        Matrix3f m = new Matrix3f(
+                Mathf.cos(angle), 0, Mathf.sin(angle), 0, 1, 0,
+                -Mathf.sin(angle), 0, Mathf.cos(angle)
+        );
 
         for (Vector3f v : vertices) {
             Vector3f v0 = v.mult(m);
@@ -61,8 +76,10 @@ public class Mesh3D {
     }
 
     public Mesh3D rotateZ(float angle) {
-        Matrix3f m = new Matrix3f(Mathf.cos(angle), -Mathf.sin(angle), 0,
-                Mathf.sin(angle), Mathf.cos(angle), 0, 0, 0, 1);
+        Matrix3f m = new Matrix3f(
+                Mathf.cos(angle), -Mathf.sin(angle), 0, Mathf.sin(angle),
+                Mathf.cos(angle), 0, 0, 0, 1
+        );
 
         for (Vector3f v : vertices) {
             Vector3f v0 = v.mult(m);
@@ -107,31 +124,6 @@ public class Mesh3D {
         return this;
     }
 
-    public Vector3f calculateFaceNormal(Face3D face) {
-        Vector3f faceNormal = new Vector3f();
-        for (int i = 0; i < face.indices.length; i++) {
-            Vector3f currentVertex = vertices.get(face.indices[i]);
-            Vector3f nextVertex = vertices
-                    .get(face.indices[(i + 1) % face.indices.length]);
-            float x = (currentVertex.getY() - nextVertex.getY())
-                    * (currentVertex.getZ() + nextVertex.getZ());
-            float y = (currentVertex.getZ() - nextVertex.getZ())
-                    * (currentVertex.getX() + nextVertex.getX());
-            float z = (currentVertex.getX() - nextVertex.getX())
-                    * (currentVertex.getY() + nextVertex.getY());
-            faceNormal.addLocal(x, y, z);
-        }
-        return faceNormal.normalize();
-    }
-
-    public Vector3f calculateFaceCenter(Face3D face) {
-        Vector3f center = new Vector3f();
-        for (int i = 0; i < face.indices.length; i++) {
-            center.addLocal(vertices.get(face.indices[i]));
-        }
-        return center.divideLocal(face.indices.length);
-    }
-
     public Bounds3 calculateBounds() {
         if (vertices.isEmpty())
             return new Bounds3();
@@ -167,35 +159,6 @@ public class Mesh3D {
         return copy;
     }
 
-    public Mesh3D scaledCopy(Vector3f scale) {
-        Mesh3D copy = new Mesh3D();
-        List<Vector3f> vertices = copy.vertices;
-        List<Face3D> faces = copy.faces;
-
-        for (Vector3f v : this.vertices)
-            vertices.add(new Vector3f(v).multLocal(scale));
-
-        for (Face3D f : this.faces)
-            faces.add(new Face3D(f));
-
-        return copy;
-    }
-
-    public Mesh3D append(Mesh3D... meshes) {
-        Mesh3D result = new Mesh3D();
-
-        result = appendUtil(meshes);
-        result = appendUtil(this, result);
-
-        vertices.clear();
-        vertices.addAll(result.vertices);
-
-        faces.clear();
-        faces.addAll(result.faces);
-
-        return this;
-    }
-
     private Mesh3D appendUtil(Mesh3D... meshes) {
         // FIXME copy vertices and faces
         int n = 0;
@@ -228,13 +191,27 @@ public class Mesh3D {
         new RemoveDoubleVerticesModifier().modify(this);
     }
 
-    public Collection<Face3D> getSelection(String tag) {
-        ArrayList<Face3D> result = new ArrayList<Face3D>();
-        for (Face3D face : faces) {
-            if (face.tag.equals(tag))
-                result.add(face);
+    public Vector3f calculateFaceCenter(Face3D face) {
+        Vector3f center = new Vector3f();
+        for (int i = 0; i < face.indices.length; i++) {
+            center.addLocal(vertices.get(face.indices[i]));
         }
-        return result;
+        return center.divideLocal(face.indices.length);
+    }
+
+    public Mesh3D append(Mesh3D... meshes) {
+        Mesh3D result = new Mesh3D();
+
+        result = appendUtil(meshes);
+        result = appendUtil(this, result);
+
+        vertices.clear();
+        vertices.addAll(result.vertices);
+
+        faces.clear();
+        faces.addAll(result.faces);
+
+        return this;
     }
 
     public void clearFaces() {
