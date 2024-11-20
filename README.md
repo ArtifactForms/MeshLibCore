@@ -351,6 +351,8 @@ In its current version, the viewer is tightly coupled to the Processing environm
 which is used as the rendering pipeline. The workspace exists within a PApplet and
 requires a reference to this PApplet to function.
 
+![workspace-screenshot](documentation/images/workspace-example.png)
+
 A simple template could look like this:
 
 ```java
