@@ -367,9 +367,9 @@ public class WorkspaceTemplate extends PApplet {
         PApplet.main(WorkspaceTemplate .class.getName());
     }
 
-    Mesh3D mesh;
+    private Mesh3D mesh;
 
-    Workspace workspace;
+    private Workspace workspace;
 
     @Override
     public void settings() {
