@@ -124,7 +124,7 @@ public class VariableCylinderCreator implements IMeshCreator {
     }
 
     public void add(float radius, float height) {
-        float y1 = -Mathf.abs(height);
+        float y1 = -height;
         radii.add(radius);
         yCoordinates.add(y1 + lastY);
         lastY = y1 + lastY;
