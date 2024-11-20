@@ -33,7 +33,6 @@ public class ViewGizmo extends UiComponent {
     }
 
     public void draw(Graphics g) {
-//		g.enableDepthTest();
         g.pushMatrix();
         g.translate(x, y);
         g.rotateX(rotationX);
@@ -48,7 +47,6 @@ public class ViewGizmo extends UiComponent {
         g.setColor(UiValues.getColor(UiConstants.KEY_GIZMO_AXIS_Z_COLOR));
         g.fillFaces(coneZ);
         g.popMatrix();
-//		g.disableDepthTest();
     }
 
     private void createMeshes() {
