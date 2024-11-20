@@ -340,6 +340,84 @@ have an idea how to use existing creators and implement your own custom ones.
 
 See also: [Mesh Creators](documentation/documentation.md)
 
+## Workspace
+
+The workspace serves as a simple mesh viewer, providing a convenient way to 
+visualize and inspect 3D models. It offers basic functionalities without aiming to be 
+a full-fledged modeling software. Currently, its sole purpose is to support the work 
+with the mesh library.
+
+In its current version, the viewer is tightly coupled to the Processing environment,
+which is used as the rendering pipeline. The workspace exists within a PApplet and
+requires a reference to this PApplet to function.
+
+A simple template could look like this:
+
+```java
+import mesh.Mesh3D;
+import mesh.creator.primitives.CubeCreator;
+import processing.core.PApplet;
+import workspace.Workspace;
+
+public class WorkspaceTemplate extends PApplet {
+
+    public static void main(String[] args) {
+        PApplet.main(WorkspaceTemplate .class.getName());
+    }
+
+    Mesh3D mesh;
+
+    Workspace workspace;
+
+    @Override
+    public void settings() {
+        size(1000, 1000, P3D);
+        smooth(8);
+    }
+
+    @Override
+    public void setup() {
+        workspace = new Workspace(this);
+        workspace.setGridVisible(true);
+        workspace.setUiVisible(true);
+        createMesh();
+    }
+
+    @Override
+    public void draw() {
+        workspace.draw(mesh);
+    }
+
+    public void createMesh() {
+        CubeCreator creator = new CubeCreator();
+        mesh = creator.create();
+    }
+
+}
+```
+
+The workspace provides the following features:
+
+**Camera movement:** 
+
+* Zoom with the mouse wheel,
+* rotate by dragging with the middle mouse button,
+* pan by dragging with the middle mouse button and holding down the Shift key,
+* navigate in first-person mode using WASD keys.
+
+**Scene manipulation:** 
+
+* Reset camera position (C),
+* toggle UI visibility (Y),
+* toggle grid visibility (G),
+* show/hide face and vertex normals (N, V),
+* switch between wireframe and solid view (Z),
+* show/hide axes (1, 2, 3),
+* show/hide edges (E),
+* toggle smooth and flat shading (S),
+* switch to first-person mode and back (4),
+* toggle the rendering loop via the UI.
+
 ## Planed features
 
 - Convex Hull
