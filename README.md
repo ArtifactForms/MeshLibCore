@@ -402,8 +402,8 @@ The workspace provides the following features:
 
 * Zoom with the mouse wheel,
 * rotate by dragging with the middle mouse button,
-* pan by dragging with the middle mouse button and holding down the Shift key.
-* Navigate in first-person mode using WASD keys.
+* pan by dragging with the middle mouse button and holding down the Shift key,
+* navigate in first-person mode using WASD keys.
 
 **Scene manipulation:** 
 
