@@ -9,6 +9,7 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CylinderCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.FitToAABBModifier;
+import mesh.modifier.RotateXModifier;
 import mesh.modifier.ScaleModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
@@ -84,7 +85,7 @@ public class SciFiFloorCreator implements IMeshCreator {
         creator.setVertices(8);
         Mesh3D cylinder = creator.create();
         cylinder.rotateY(Mathf.TWO_PI / 16f);
-        cylinder.rotateX(Mathf.HALF_PI);
+        cylinder.apply(new RotateXModifier(Mathf.HALF_PI));
         new FitToAABBModifier(width, height, depth).modify(cylinder);
         Mesh3DUtil.flipDirection(cylinder);
         mesh.append(cylinder);

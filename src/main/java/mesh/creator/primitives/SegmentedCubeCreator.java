@@ -3,6 +3,7 @@ package mesh.creator.primitives;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.RotateXModifier;
 import mesh.modifier.ScaleModifier;
 
 public class SegmentedCubeCreator implements IMeshCreator {
@@ -41,21 +42,21 @@ public class SegmentedCubeCreator implements IMeshCreator {
 
     private void createBottom() {
         Mesh3D bottom = createSide();
-        bottom.rotateX(Mathf.PI);
+        bottom.apply(new RotateXModifier(Mathf.PI));
         bottom.translateY(creationSize);
         append(bottom);
     }
 
     private void createFront() {
         Mesh3D front = createSide();
-        front.rotateX(Mathf.HALF_PI);
+        front.apply(new RotateXModifier(Mathf.HALF_PI));
         front.translateZ(-creationSize);
         append(front);
     }
 
     private void createBack() {
         Mesh3D back = createSide();
-        back.rotateX(-Mathf.HALF_PI);
+        back.apply(new RotateXModifier(-Mathf.HALF_PI));
         back.translateZ(creationSize);
         append(back);
     }

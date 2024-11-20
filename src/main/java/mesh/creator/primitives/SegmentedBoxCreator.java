@@ -3,6 +3,7 @@ package mesh.creator.primitives;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.RotateXModifier;
 
 public class SegmentedBoxCreator implements IMeshCreator {
 
@@ -74,7 +75,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createFront() {
         Mesh3D front = createGrid(segmentsX, segmentsY, segmentSizeX,
                 segmentSizeY);
-        front.rotateX(-Mathf.HALF_PI);
+        front.apply(new RotateXModifier(-Mathf.HALF_PI));
         front.translateZ(depth / 2f);
         mesh.append(front);
     }
@@ -82,7 +83,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createBack() {
         Mesh3D back = createGrid(segmentsX, segmentsY, segmentSizeX,
                 segmentSizeY);
-        back.rotateX(Mathf.HALF_PI);
+        back.apply(new RotateXModifier(Mathf.HALF_PI));
         back.translateZ(-depth / 2f);
         mesh.append(back);
     }
@@ -90,7 +91,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createLeft() {
         Mesh3D left = createGrid(segmentsZ, segmentsY, segmentSizeZ,
                 segmentSizeY);
-        left.rotateX(Mathf.HALF_PI);
+        left.apply(new RotateXModifier(Mathf.HALF_PI));
         left.rotateY(Mathf.HALF_PI);
         left.translateX(-width / 2f);
         mesh.append(left);
@@ -99,7 +100,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createRight() {
         Mesh3D right = createGrid(segmentsZ, segmentsY, segmentSizeZ,
                 segmentSizeY);
-        right.rotateX(Mathf.HALF_PI);
+        right.apply(new RotateXModifier(Mathf.HALF_PI));
         right.rotateY(-Mathf.HALF_PI);
         right.translateX(width / 2f);
         mesh.append(right);
@@ -115,7 +116,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createBottom() {
         Mesh3D bottom = createGrid(segmentsX, segmentsZ, segmentSizeX,
                 segmentSizeZ);
-        bottom.rotateX(-Mathf.PI);
+        bottom.apply(new RotateXModifier(-Mathf.PI));
         bottom.translateY(height / 2f);
         mesh.append(bottom);
     }

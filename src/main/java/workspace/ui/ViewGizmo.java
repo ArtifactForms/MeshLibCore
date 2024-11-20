@@ -4,6 +4,7 @@ import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.primitives.ConeCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.RotateXModifier;
 import mesh.modifier.ScaleModifier;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
@@ -72,7 +73,7 @@ public class ViewGizmo extends UiComponent {
     private void createConeZ() {
         coneZ = new ConeCreator().create();
         coneZ.apply(new ScaleModifier(size));
-        coneZ.rotateX(Mathf.HALF_PI);
+        coneZ.apply(new RotateXModifier(Mathf.HALF_PI));
         coneZ.translateZ(height * size);
     }
 

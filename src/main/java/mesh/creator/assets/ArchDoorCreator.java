@@ -5,6 +5,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.ArcCreator;
+import mesh.modifier.RotateXModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.TranslateModifier;
 
@@ -44,7 +45,7 @@ public class ArchDoorCreator implements IMeshCreator {
 
     private void createBottomVertices() {
         Mesh3D bottom = createArcCreator().create();
-        bottom.rotateX(Mathf.HALF_PI);
+        bottom.apply(new RotateXModifier(Mathf.HALF_PI));
         for (Vector3f v : bottom.vertices)
             v.setY(0);
         mesh.append(bottom);
@@ -64,7 +65,7 @@ public class ArchDoorCreator implements IMeshCreator {
 
     private void createTopVertices() {
         Mesh3D top = createArcCreator().create();
-        top.rotateX(Mathf.HALF_PI);
+        top.apply(new RotateXModifier(Mathf.HALF_PI));
         top.translateY(-extendBottom);
         mesh.append(top);
     }

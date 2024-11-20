@@ -4,6 +4,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.RotateXModifier;
 
 public class SteveModel {
 
@@ -41,9 +42,10 @@ public class SteveModel {
 
         head.rotateZ(-rotationHead.getZ());
         head.rotateY(-rotationHead.getY());
-        head.rotateX(-rotationHead.getX());
+        head.apply(new RotateXModifier(-rotationHead.getX()));
+        
 
-        head.rotateX(x);
+        head.apply(new RotateXModifier(x));
         head.rotateY(y);
         head.rotateZ(z);
 
@@ -55,11 +57,11 @@ public class SteveModel {
     public void rotateLeftArm(float x, float y, float z) {
         leftArm.translateY(24 * unit);
 
-        leftArm.rotateX(-rotationLeftArm.getZ());
+        leftArm.apply(new RotateXModifier(-rotationLeftArm.getZ()));
         leftArm.rotateY(-rotationLeftArm.getY());
-        leftArm.rotateX(-rotationLeftArm.getX());
+        leftArm.apply(new RotateXModifier(-rotationLeftArm.getX()));
 
-        leftArm.rotateX(x);
+        rightArm.apply(new RotateXModifier(x));
         leftArm.rotateY(y);
         leftArm.rotateY(z);
 
@@ -71,11 +73,11 @@ public class SteveModel {
     public void rotateRightArm(float x, float y, float z) {
         rightArm.translateY(24 * unit);
 
-        rightArm.rotateX(-rotationRightArm.getZ());
+        rightArm.apply(new RotateXModifier(-rotationRightArm.getZ()));
         rightArm.rotateY(-rotationRightArm.getY());
-        rightArm.rotateX(-rotationRightArm.getX());
+        rightArm.apply(new RotateXModifier(-rotationRightArm.getX()));
 
-        rightArm.rotateX(x);
+        rightArm.apply(new RotateXModifier(x));
         rightArm.rotateY(y);
         rightArm.rotateY(z);
 

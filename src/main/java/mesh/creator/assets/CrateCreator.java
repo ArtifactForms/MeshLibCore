@@ -7,6 +7,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.RotateXModifier;
 import mesh.modifier.ScaleModifier;
 import mesh.modifier.TranslateModifier;
 import mesh.util.Mesh3DUtil;
@@ -93,28 +94,28 @@ public class CrateCreator implements IMeshCreator {
 
     private void createBottomCrossBeam() {
         Mesh3D mesh = createCrossBeam();
-        mesh.rotateX(Mathf.PI);
+        mesh.apply(new RotateXModifier(Mathf.PI));
         mesh.translateY(this.radius);
         this.mesh.append(mesh);
     }
 
     private void createFrontCrossBeam() {
         Mesh3D mesh = createCrossBeam();
-        mesh.rotateX(-Mathf.HALF_PI);
+        mesh.apply(new RotateXModifier(-Mathf.HALF_PI));
         mesh.translateZ(this.radius);
         this.mesh.append(mesh);
     }
 
     private void createBackCrossBeam() {
         Mesh3D mesh = createCrossBeam();
-        mesh.rotateX(Mathf.HALF_PI);
+        mesh.apply(new RotateXModifier(Mathf.HALF_PI));
         mesh.translateZ(-this.radius);
         this.mesh.append(mesh);
     }
 
     private void createLeftCrossBeam() {
         Mesh3D mesh = createCrossBeam();
-        mesh.rotateX(-Mathf.HALF_PI);
+        mesh.apply(new RotateXModifier(-Mathf.HALF_PI));
         mesh.rotateY(-Mathf.HALF_PI);
         mesh.apply(new TranslateModifier(radius / 2, 0, 0));
         this.mesh.append(mesh);
@@ -122,7 +123,7 @@ public class CrateCreator implements IMeshCreator {
 
     private void createRightCrossBeam() {
         Mesh3D mesh = createCrossBeam();
-        mesh.rotateX(-Mathf.HALF_PI);
+        mesh.apply(new RotateXModifier(-Mathf.HALF_PI));
         mesh.rotateY(Mathf.HALF_PI);
         mesh.apply(new TranslateModifier(radius / 2, 0, 0));
         this.mesh.append(mesh);
