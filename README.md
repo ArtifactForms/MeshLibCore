@@ -10,7 +10,7 @@ A _JAVA_ library to construct and manipulate geometry in Three-dimensional space
 
 ## Background / Intension
 
-This Java library began as a hobby project in 2015/2016.  I started it to
+This Java library began as a hobby project in 2015/2016. I started it to
 deepen my understanding of creating and manipulating 3D geometry. This built
 upon knowledge I gained from an earlier internship with product design students.
 During that time, I was introduced to the programming language Processing.
@@ -23,6 +23,7 @@ Processing offers a convenient way to visualize constructed meshes through its
 rendering pipeline, which leverages JAVA, JAVA2D, and OPENGL.
 
 ## Status Quo
+
 Currently, my primary focus is on refining the user documentation. As my
 understanding of code structure and architecture has evolved, I've been
 actively refactoring the codebase to maintain its cleanliness and organization.
@@ -36,30 +37,30 @@ endeavor, in my opinion, an essential practice.
 
 ## Future
 
-The scope of related topics is vast, and my list of potential features is 
+The scope of related topics is vast, and my list of potential features is
 accordingly expansive. Some of these are outlined under 'Planned Features'.
 
 ## What It Is:
 
-* **A Personal Playground for 3D Exploration:** Experiment with 3D shapes and coding techniques to create your own virtual worlds.
-* **Tool for Creative Programmers:** Build procedural meshes and generate simple game assets with ease.
-* **Customizable and Extensible:** Craft unique shapes using a variety of mesh creation tools and modifiers. Even add new functionalities to the library itself.
+- **A Personal Playground for 3D Exploration:** Experiment with 3D shapes and coding techniques to create your own virtual worlds.
+- **Tool for Creative Programmers:** Build procedural meshes and generate simple game assets with ease.
+- **Customizable and Extensible:** Craft unique shapes using a variety of mesh creation tools and modifiers. Even add new functionalities to the library itself.
 
 ## What It Is Not:
 
-* **A Full-Featured 3D Modeling Software:** This library is designed for exploration and learning, not professional-grade modeling. While it offers powerful features, it doesn't aim to replace industry-standard software.
-* **A High-Performance Rendering Engine:** The library primarily focuses on mesh creation and manipulation, and doesn't prioritize real-time rendering for large scenes.
+- **A Full-Featured 3D Modeling Software:** This library is designed for exploration and learning, not professional-grade modeling. While it offers powerful features, it doesn't aim to replace industry-standard software.
+- **A High-Performance Rendering Engine:** The library primarily focuses on mesh creation and manipulation, and doesn't prioritize real-time rendering for large scenes.
 
 ## Core Features
 
-* **3D Geometry Creation and Manipulation** Build a wide range of 3D shapes and
-modify them using various operations.
-* **Customizable Mesh Creation:** Create custom shapes using a variety of mesh
-creation tools and modifiers.
-* **Extensible Framework:** Easily add new features and functionalities to the
-library.
-* **OBJ File Import and Export:** Import and export 3D models in the OBJ file
-format.
+- **3D Geometry Creation and Manipulation** Build a wide range of 3D shapes and
+  modify them using various operations.
+- **Customizable Mesh Creation:** Create custom shapes using a variety of mesh
+  creation tools and modifiers.
+- **Extensible Framework:** Easily add new features and functionalities to the
+  library.
+- **OBJ File Import and Export:** Import and export 3D models in the OBJ file
+  format.
 
 ## Showcase
 
@@ -91,13 +92,13 @@ environment. So the library could be used independently.
 
 ## Mesh3D
 
-The following example shows how to work with the base mesh class. For this 
+The following example shows how to work with the base mesh class. For this
 purpose we want to create a simple quad. The quad has four vertices, one for
-each corner. To make things a bit more explanatory we compose the quad out of 
-two triangular faces. **Important:** This is just an example to illustrate the 
-base concepts. The library already provides a convenient way to construct 
-primitives and more complex shapes. But we dive into this at a later point. 
-For now let's keep things simple. But also keep in mind that it might be useful 
+each corner. To make things a bit more explanatory we compose the quad out of
+two triangular faces. **Important:** This is just an example to illustrate the
+base concepts. The library already provides a convenient way to construct
+primitives and more complex shapes. But we dive into this at a later point.
+For now let's keep things simple. But also keep in mind that it might be useful
 to construct shapes by yourself in some cases.
 
 ```
@@ -124,7 +125,7 @@ Mesh3D mesh = new Mesh3D();
 
 ### Vertex Coordinates
 
-Next we determine the shape's coordinates in Three-Dimensional space. 
+Next we determine the shape's coordinates in Three-Dimensional space.
 In this case the shape lies flat on the xz plane, so each y-coordinate is 0.0f.
 
 ```java
@@ -159,8 +160,8 @@ The added vertices are now at an indexed position within the mesh.
      2              1
 ```
 
-Knowing the index of each vertex makes adding faces a piece of cake. We only 
-have to take care of the winding order. In this case the winding order is 
+Knowing the index of each vertex makes adding faces a piece of cake. We only
+have to take care of the winding order. In this case the winding order is
 counter-clockwise with all face normals pointing up towards negative y.
 
 ```java
@@ -172,7 +173,7 @@ mesh.addFace(1, 2, 3);
 
 ### Modify the mesh
 
-Now we have a mesh constisting of four vertices and two triangular faces. 
+Now we have a mesh constisting of four vertices and two triangular faces.
 This could be retrieved by using:
 
 ```java
@@ -180,7 +181,7 @@ int vertexCount = mesh.getVertexCount();
 int faceCount = mesh.getFaceCount();
 ```
 
-We can modify the present mesh by using so called _Modifiers_. 
+We can modify the present mesh by using so called _Modifiers_.
 Each modifier derives from the root interface `IMeshModifier`.
 
 ```java
@@ -208,20 +209,20 @@ modifier.modify(mesh);
 
 Effortless Shape Creation with Mesh Creators
 
-The library provides a variety of Mesh Creators to simplify the construction of 
+The library provides a variety of Mesh Creators to simplify the construction of
 various shapes. These creators employ the Factory Method or Builder design
 pattern, allowing for a flexible and streamlined approach.
 
 While similar to a classic builder, Mesh Creators offer a unique combination of
 features:
 
-* **Getters and Setters:** Access and modify the creator's internal state using
-getters and setters, providing fine-grained control over the mesh creation
-process.
+- **Getters and Setters:** Access and modify the creator's internal state using
+  getters and setters, providing fine-grained control over the mesh creation
+  process.
 
-* **Chaining is not supported:**
+- **Chaining is not supported:**
 
-With over 100 Mesh Creators categorized for easy access, you can quickly and 
+With over 100 Mesh Creators categorized for easy access, you can quickly and
 efficiently build a wide range of 3D shapes. For a comprehensive overview,
 refer to our documentation: [Mesh Creators](documentation/documentation.md)
 
@@ -242,7 +243,7 @@ public interface IMeshCreator {
 }
 ```
 
-To get a little more specific we can plug the quad example code into a custom 
+To get a little more specific we can plug the quad example code into a custom
 creator to illustrate the overall concept.
 
 Let's have a look at our example code again.
@@ -260,7 +261,7 @@ mesh.addFace(0, 1, 3);
 mesh.addFace(1, 2, 3);
 ```
 
-First we move our example code into the factory method of a custom mesh 
+First we move our example code into the factory method of a custom mesh
 creator class and simply return the mesh.
 
 ```java
@@ -283,7 +284,7 @@ public class MyQuadCreator implements IMeshCreator {
 }
 ```
 
-Let's assume we want to generalize the code a bit further. We introduce a 
+Let's assume we want to generalize the code a bit further. We introduce a
 parameter for the vertex coordinates named _halfSize_.
 
 ```java
@@ -353,9 +354,9 @@ See also: [Mesh Creators](documentation/documentation.md)
 
 ## Workspace
 
-The workspace serves as a simple mesh viewer, providing a convenient way to 
-visualize and inspect 3D models. It offers basic functionalities without aiming to be 
-a full-fledged modeling software. Currently, its sole purpose is to support the work 
+The workspace serves as a simple mesh viewer, providing a convenient way to
+visualize and inspect 3D models. It offers basic functionalities without aiming to be
+a full-fledged modeling software. Currently, its sole purpose is to support the work
 with the mesh library.
 
 In its current version, the viewer is tightly coupled to the Processing environment,
@@ -411,25 +412,25 @@ public class WorkspaceTemplate extends PApplet {
 
 The workspace provides the following features:
 
-**Camera movement:** 
+**Camera movement:**
 
-* Zoom with the mouse wheel,
-* rotate by dragging with the middle mouse button,
-* pan by dragging with the middle mouse button and holding down the Shift key,
-* navigate in first-person mode using WASD keys.
+- Zoom with the mouse wheel,
+- rotate by dragging with the middle mouse button,
+- pan by dragging with the middle mouse button and holding down the Shift key,
+- navigate in first-person mode using WASD keys.
 
-**Scene manipulation:** 
+**Scene manipulation:**
 
-* Reset camera position (C),
-* toggle UI visibility (Y),
-* toggle grid visibility (G),
-* show/hide face and vertex normals (N, V),
-* switch between wireframe and solid view (Z),
-* show/hide axes (1, 2, 3),
-* show/hide edges (E),
-* toggle smooth and flat shading (S),
-* switch to first-person mode and back (4),
-* toggle the rendering loop via the UI.
+- Reset camera position (C),
+- toggle UI visibility (Y),
+- toggle grid visibility (G),
+- show/hide face and vertex normals (N, V),
+- switch between wireframe and solid view (Z),
+- show/hide axes (1, 2, 3),
+- show/hide edges (E),
+- toggle smooth and flat shading (S),
+- switch to first-person mode and back (4),
+- toggle the rendering loop via the UI.
 
 ## Planed features
 
@@ -437,8 +438,11 @@ The workspace provides the following features:
 - Poisson-Disc Sampling
 - Marching Cubes
 
+## Contributing
+
+Artifact Forms is actively under development, with a focus on improving documentation and adding new features. As an open-source project, we welcome contributions from the community.
+
 ## Licence
 
 [MIT](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE)
 License Copyright (c) 2022 Simon Dietz
-

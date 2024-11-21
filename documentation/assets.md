@@ -2,7 +2,7 @@
 
 ## ArchCreator
 
-<img src="images/arch_creator.png" alt="ArchCreator" width="960"/>
+![arch-creator-1](./images/arch_creator.png)
 
 **Example**
 
@@ -20,11 +20,11 @@ mesh = creator.create();
 
 ````
 
-<img src="images/arch_creator_2.png" alt="Arch Creator" width="960"/>
+![arch-creator-2](./images/arch_creator_2.png)
 
 ## ArchDoorCreator
 
-<img src="images/arch_door_creator.png" alt="ArchDoorCreator" width="960"/>
+![arch-door-creator](./images/arch_door_creator.png)
 
 **Example**
 
@@ -40,7 +40,7 @@ mesh = creator.create();
 
 ## FlangedPipeCreator
 
-<img src="images/flanged_pipe_creator_2.png" alt="FlangedPipeCreator" width="960"/>
+![flanged-pipe-creator-2](./images/flanged_pipe_creator_2.png)
 
 **Example**
 
@@ -60,5 +60,4 @@ creator.setBoltHeadHeight(0.08f);
 creator.setBoltCapFillType(FillType.N_GON);
 mesh = creator.create();
 ```
-
-<img src="images/flanged_pipe_creator.png" alt="FlangedPipeCreator" width="960"/>
+![flanged-pipe-creator-1](./images/flanged_pipe_creator.png)
