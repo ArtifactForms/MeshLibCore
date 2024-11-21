@@ -6,7 +6,6 @@ import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.FlipFacesModifier;
 import mesh.util.FaceBridging;
-import mesh.util.Mesh3DUtil;
 
 public class CylinderCreator implements IMeshCreator {
 
