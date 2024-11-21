@@ -4,6 +4,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
 
 public class CubeJointLatticeCreator implements IMeshCreator {
@@ -97,7 +98,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
     }
 
     private void bridge(Face3D face0, Face3D face1) {
-        Mesh3DUtil.bridge(mesh, face0, face1);
+        FaceBridging.bridge(mesh, face0, face1);
     }
 
     private void flipDirection(Face3D face) {

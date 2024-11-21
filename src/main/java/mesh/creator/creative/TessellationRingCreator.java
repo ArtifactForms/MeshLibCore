@@ -8,6 +8,7 @@ import mesh.modifier.HolesModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
+import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
 
 public class TessellationRingCreator implements IMeshCreator {
@@ -43,7 +44,7 @@ public class TessellationRingCreator implements IMeshCreator {
             Vector3f v1 = bottomCircle.getVertexAt((i + 1) % n);
             Vector3f v3 = topCircle.getVertexAt((i + 1) % n);
             Vector3f v2 = topCircle.getVertexAt(i % n);
-            Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
+            FaceBridging.bridge(mesh, v0, v1, v2, v3);
         }
     }
 

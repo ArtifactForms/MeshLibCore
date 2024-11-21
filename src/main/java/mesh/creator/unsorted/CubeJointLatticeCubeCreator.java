@@ -6,6 +6,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
 
 public class CubeJointLatticeCubeCreator implements IMeshCreator {
@@ -90,7 +91,7 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
         Mesh3DUtil.extrudeFace(mesh, a, extrude, 0.0f);
         Mesh3DUtil.extrudeFace(mesh, b, extrude, 0.0f);
         Mesh3DUtil.flipDirection(mesh, b);
-        Mesh3DUtil.bridge(mesh, a, b);
+        FaceBridging.bridge(mesh, a, b);
         mesh.faces.remove(a);
         mesh.faces.remove(b);
     }

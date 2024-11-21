@@ -7,6 +7,7 @@ import math.Vector3f;
 import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
 import mesh.util.VertexNormals;
 
@@ -77,7 +78,7 @@ public class SolidifyModifier implements IMeshModifier {
                     Vector3f v1 = innerMesh.getVertexAt(edge0.toIndex);
                     Vector3f v2 = mesh.getVertexAt(edge0.fromIndex);
                     Vector3f v3 = mesh.getVertexAt(edge0.toIndex);
-                    Mesh3DUtil.bridge(result, v0, v1, v2, v3);
+                    FaceBridging.bridge(result, v0, v1, v2, v3);
                 }
             }
         }
