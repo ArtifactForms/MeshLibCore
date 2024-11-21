@@ -9,6 +9,7 @@ import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
+import mesh.modifier.RotateXModifier;
 
 public class VariableCylinderCreator implements IMeshCreator {
 
@@ -67,7 +68,7 @@ public class VariableCylinderCreator implements IMeshCreator {
         creator.setRadius(radii.get(0));
         creator.setVertices(rotationSegments);
         Mesh3D bottom = creator.create();
-        bottom.rotateZ(Mathf.PI);
+        bottom.apply(new RotateXModifier(Mathf.PI));
         bottom.translateY(yCoordinates.get(0));
         mesh.append(bottom);
     }
