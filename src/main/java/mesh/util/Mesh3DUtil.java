@@ -23,6 +23,7 @@ public class Mesh3DUtil {
         }
     }
 
+    // Used by face selection only
     public static float perimeter(Mesh3D mesh, Face3D face) {
         float perimeter = 0;
         for (int i = 0; i < face.indices.length - 2; i++) {
@@ -34,7 +35,7 @@ public class Mesh3DUtil {
         return perimeter;
     }
 
-    public static void scaleFace(Mesh3D mesh, Face3D face, float scale) {
+    private static void scaleFace(Mesh3D mesh, Face3D face, float scale) {
         Vector3f center = mesh.calculateFaceCenter(face);
         for (int i = 0; i < face.indices.length; i++) {
             Vector3f v = mesh.vertices.get(face.indices[i]);
@@ -134,11 +135,12 @@ public class Mesh3DUtil {
         }
     }
 
-    public static void extrudeFace(Mesh3D mesh, Face3D face, float scale,
-            float amount, boolean remove) {
-        extrudeFace(mesh, face, scale, amount);
-        if (remove)
-            mesh.removeFace(face);
-    }
+    // To may parameters -> Should be easy to remove / Used by Ported cube only
+//    public static void extrudeFace(Mesh3D mesh, Face3D face, float scale,
+//            float amount, boolean remove) {
+//        extrudeFace(mesh, face, scale, amount);
+//        if (remove)
+//            mesh.removeFace(face);
+//    }
 
 }

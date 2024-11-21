@@ -10,11 +10,11 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.SegmentedCubeCreator;
+import mesh.modifier.ExtrudeModifier;
 import mesh.modifier.ScaleModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
 import mesh.selection.FaceSelection;
-import mesh.util.Mesh3DUtil;
 
 public class PortedCubeCreator implements IMeshCreator {
 
@@ -84,8 +84,11 @@ public class PortedCubeCreator implements IMeshCreator {
     }
 
     private void extrudeCenterFaces() {
-        for (Face3D face : centerFaces)
-            Mesh3DUtil.extrudeFace(mesh, face, 1, -1, true);
+        ExtrudeModifier modifier = new ExtrudeModifier();
+        modifier.setScale(1);
+        modifier.setAmount(-1);
+        modifier.modify(mesh, centerFaces);
+        mesh.faces.removeAll(centerFaces);
     }
 
     private void removeDoubles() {
