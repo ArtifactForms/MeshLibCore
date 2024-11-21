@@ -5,6 +5,7 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.HolesModifier;
 import mesh.modifier.SolidifyModifier;
+import mesh.modifier.SpherifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import mesh.util.Mesh3DUtil;
@@ -35,7 +36,7 @@ public class TriangulatedSphereLatticeCreator implements IMeshCreator {
     }
 
     private void pushToSphere() {
-        Mesh3DUtil.pushToSphere(mesh, radius);
+        mesh.apply(new SpherifyModifier(radius));
     }
 
     private void createHoles() {

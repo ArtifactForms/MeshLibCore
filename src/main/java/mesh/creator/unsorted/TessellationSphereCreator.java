@@ -7,6 +7,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.IcoSphereCreator;
 import mesh.modifier.SolidifyModifier;
+import mesh.modifier.SpherifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.util.Mesh3DUtil;
 
@@ -42,7 +43,7 @@ public class TessellationSphereCreator implements IMeshCreator {
     }
 
     private void pushToSphere() {
-        Mesh3DUtil.pushToSphere(mesh, radius);
+        mesh.apply(new SpherifyModifier(radius));
     }
 
     private void flipFaceNormals() {

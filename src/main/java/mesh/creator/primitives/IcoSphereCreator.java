@@ -3,8 +3,8 @@ package mesh.creator.primitives;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.platonic.IcosahedronCreator;
+import mesh.modifier.SpherifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeModifier;
-import mesh.util.Mesh3DUtil;
 
 public class IcoSphereCreator implements IMeshCreator {
 
@@ -40,7 +40,7 @@ public class IcoSphereCreator implements IMeshCreator {
     }
 
     private void spherifyIcosahedron() {
-        Mesh3DUtil.pushToSphere(mesh, radius);
+        mesh.apply(new SpherifyModifier(radius));
     }
 
     public float getRadius() {

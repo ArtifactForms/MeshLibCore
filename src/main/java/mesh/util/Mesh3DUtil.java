@@ -10,33 +10,6 @@ import mesh.Mesh3D;
 
 public class Mesh3DUtil {
 
-    // CLEAN UP -> Move to modifier class
-    public static Mesh3D pushToSphere(Mesh3D mesh, float radius) {
-        return pushToSphere(mesh, new Vector3f(), radius);
-    }
-
-    // CLEAN UP -> Move to modifier class
-    public static Mesh3D pushToSphere(Mesh3D mesh, Vector3f center,
-            float radius) {
-        Vector3f origin = new Vector3f(center);
-        for (Vector3f v : mesh.vertices) {
-            Vector3f v0 = new Vector3f(v.subtract(origin)).normalizeLocal();
-            v.set(v0.mult(radius).add(origin));
-        }
-        return mesh;
-    }
-
-    // CLEAN UP -> Move to modifier class
-    public static Mesh3D pushToSphere(Mesh3D mesh, Face3D face, float radius) {
-        Vector3f origin = mesh.calculateFaceCenter(face);
-        for (int i = 0; i < face.indices.length; i++) {
-            Vector3f v = mesh.getVertexAt(face.indices[i]);
-            Vector3f v0 = new Vector3f(v.subtract(origin)).normalizeLocal();
-            v.set(v0.mult(radius).add(origin));
-        }
-        return mesh;
-    }
-
     public static void flipDirection(Mesh3D mesh, Face3D face) {
         int[] copy = Arrays.copyOf(face.indices, face.indices.length);
         for (int i = 0; i < face.indices.length; i++) {

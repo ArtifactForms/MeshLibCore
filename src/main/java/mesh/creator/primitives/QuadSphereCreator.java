@@ -3,8 +3,8 @@ package mesh.creator.primitives;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.ScaleModifier;
+import mesh.modifier.SpherifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
-import mesh.util.Mesh3DUtil;
 
 public class QuadSphereCreator implements IMeshCreator {
 
@@ -45,7 +45,7 @@ public class QuadSphereCreator implements IMeshCreator {
     }
 
     private void pushToSphere() {
-        Mesh3DUtil.pushToSphere(mesh, radius);
+        mesh.apply(new SpherifyModifier(radius));
     }
 
     public float getRadius() {
