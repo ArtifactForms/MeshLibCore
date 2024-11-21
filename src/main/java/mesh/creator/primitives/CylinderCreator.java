@@ -5,6 +5,7 @@ import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.FlipFacesModifier;
+import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
 
 public class CylinderCreator implements IMeshCreator {
@@ -38,7 +39,7 @@ public class CylinderCreator implements IMeshCreator {
             Vector3f v1 = m1.getVertexAt((i + 1) % vertices);
             Vector3f v2 = m0.getVertexAt(i);
             Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
-            Mesh3DUtil.bridge(mesh, v0, v1, v2, v3);
+            FaceBridging.bridge(mesh, v0, v1, v2, v3);
         }
     }
 
