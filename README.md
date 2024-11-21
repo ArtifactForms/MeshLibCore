@@ -63,6 +63,17 @@ bend bend bend mesh...
 ![](documentation/images/lib_showcase_3.png)
 Throwing some conway operations on a cube seed.
 
+## What It Is:
+
+* **A Personal Playground for 3D Exploration:** Experiment with 3D shapes and coding techniques to create your own virtual worlds.
+* **Tool for Creative Programmers:** Build procedural meshes and generate simple game assets with ease.
+* **Customizable and Extensible:** Craft unique shapes using a variety of mesh creation tools and modifiers. Even add new functionalities to the library itself.
+
+## What It Is Not:
+
+* **A Full-Featured 3D Modeling Software:** This library is designed for exploration and learning, not professional-grade modeling. While it offers powerful features, it doesn't aim to replace industry-standard software.
+* **A High-Performance Rendering Engine:** The library primarily focuses on mesh creation and manipulation, and doesn't prioritize real-time rendering for large scenes.
+
 ## Core elements
 
 - Mesh3D
