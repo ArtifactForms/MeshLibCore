@@ -437,6 +437,10 @@ The workspace provides the following features:
 - Poisson-Disc Sampling
 - Marching Cubes
 
+## Contributing
+
+Contributions are always welcome. 
+
 ## Licence
 
 [MIT](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE)
