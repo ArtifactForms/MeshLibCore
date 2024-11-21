@@ -81,7 +81,7 @@ public class RemoveDoubleVerticesModifier implements IMeshModifier {
     }
 
     private void clearOldFaces() {
-        mesh.clearFaces();
+        mesh.faces.clear();
     }
 
 }

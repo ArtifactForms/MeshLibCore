@@ -193,10 +193,6 @@ public class Mesh3D {
         return this;
     }
 
-    public void clearFaces() {
-        faces.clear();
-    }
-
     public void clearVertices() {
         vertices.clear();
     }
