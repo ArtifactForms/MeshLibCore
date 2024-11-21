@@ -22,7 +22,7 @@ public class CenterAtModifier implements IMeshModifier {
         if (bounds.getCenter().equals(center))
             return mesh;
         Vector3f distance = center.subtract(bounds.getCenter());
-        mesh.translate(distance);
+        mesh.apply(new TranslateModifier(distance));
         return mesh;
     }
 

@@ -103,13 +103,6 @@ public class Mesh3D {
         return this;
     }
 
-    public Mesh3D translate(Vector3f t) {
-        for (Vector3f v : vertices) {
-            v.addLocal(t);
-        }
-        return this;
-    }
-
     public Bounds3 calculateBounds() {
         if (vertices.isEmpty())
             return new Bounds3();

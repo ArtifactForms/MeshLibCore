@@ -9,6 +9,7 @@ import mesh.creator.primitives.CircleCreator;
 import mesh.creator.primitives.CylinderCreator;
 import mesh.creator.special.VariableCylinderCreator;
 import mesh.modifier.RotateXModifier;
+import mesh.modifier.TranslateModifier;
 
 public class FlangePipeCreator implements IMeshCreator {
 
@@ -145,7 +146,7 @@ public class FlangePipeCreator implements IMeshCreator {
         for (int i = 0; i < boltCount; i++) {
             Mesh3D bolt = creator.create();
             Vector3f center = circle.getVertexAt(i);
-            bolt.translate(center);
+            bolt.apply(new TranslateModifier(center));
             bolts.append(bolt);
         }
 
@@ -172,7 +173,7 @@ public class FlangePipeCreator implements IMeshCreator {
         for (int i = 0; i < boltCount; i++) {
             Mesh3D bolt = creator.create();
             Vector3f center = circle.getVertexAt(i);
-            bolt.translate(center);
+            bolt.apply(new TranslateModifier(center));
             bolt.translateY(-flangeGrooveWidth / 2f);
             bolts.append(bolt);
         }
