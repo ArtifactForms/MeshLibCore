@@ -440,7 +440,7 @@ The workspace provides the following features:
 
 ## Contributing
 
-Contributions are always welcome.
+Artifact Forms is actively under development, with a focus on improving documentation and adding new features. As an open-source project, we welcome contributions from the community.
 
 ## Licence
 
