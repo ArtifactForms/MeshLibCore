@@ -353,7 +353,7 @@ requires a reference to this PApplet to function.
 
 ![workspace-screenshot](documentation/images/workspace-example.png)
 
-A simple template could look like this:
+A simple template can be found within the package src/main/java/workspace/examples, ready to fire up and give it a first try:
 
 ```java
 import mesh.Mesh3D;
@@ -367,9 +367,9 @@ public class WorkspaceTemplate extends PApplet {
         PApplet.main(WorkspaceTemplate .class.getName());
     }
 
-    Mesh3D mesh;
+    private Mesh3D mesh;
 
-    Workspace workspace;
+    private Workspace workspace;
 
     @Override
     public void settings() {
