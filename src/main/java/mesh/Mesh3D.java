@@ -47,20 +47,6 @@ public class Mesh3D {
         return faceNormal.normalize();
     }
 
-//    public Mesh3D rotateX(float angle) {
-//        Matrix3f m = new Matrix3f(
-//                1, 0, 0, 0, Mathf.cos(angle), -Mathf.sin(angle), 0,
-//                Mathf.sin(angle), Mathf.cos(angle)
-//        );
-//
-//        for (Vector3f v : vertices) {
-//            Vector3f v0 = v.mult(m);
-//            v.set(v.getX(), v0.getY(), v0.getZ());
-//        }
-//
-//        return this;
-//    }
-
     public Mesh3D rotateY(float angle) {
         Matrix3f m = new Matrix3f(
                 Mathf.cos(angle), 0, Mathf.sin(angle), 0, 1, 0,
