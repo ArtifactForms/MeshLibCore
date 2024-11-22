@@ -37,7 +37,7 @@ public class QuadSphereCreator implements IMeshCreator {
     }
 
     private void subdivide() {
-        new PlanarMidEdgeCenterModifier(subdivisions).modify(mesh);
+        mesh.apply(new PlanarMidEdgeCenterModifier(subdivisions));
     }
 
     private void scale() {
