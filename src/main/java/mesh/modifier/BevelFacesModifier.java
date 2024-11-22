@@ -1,11 +1,7 @@
 package mesh.modifier;
 
-import java.util.ArrayList;
-
 import math.Mathf;
-import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.util.Mesh3DUtil;
 
 public class BevelFacesModifier implements IMeshModifier {
 
@@ -23,15 +19,7 @@ public class BevelFacesModifier implements IMeshModifier {
     public Mesh3D modify(Mesh3D mesh) {
         float scale = 1f - size;
         float amount = size;
-
-        ArrayList<Face3D> faces = new ArrayList<Face3D>(mesh.faces);
-
-        for (Face3D face : faces) {
-            Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
-        }
-
-        mesh.faces.removeAll(faces);
-
+        mesh.apply(new ExtrudeModifier(scale, amount));
         return mesh;
     }
 
