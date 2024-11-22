@@ -1,88 +1,38 @@
 package math;
 
-/**
- * Representation of 3D vectors and points.
- * 
- * @author Simon
- * @version 0.5, 30 December 2017
- * 
- */
 public class Vector3f {
 
-    /**
-     * Shorthand for writing Vector3f(0, 0, -1).
-     */
     public static final Vector3f BACK = new Vector3f(0, 0, -1);
 
-    /**
-     * Shorthand for writing Vector3f(0, -1, -0).
-     */
     public static final Vector3f DOWN = new Vector3f(0, -1, 0);
 
-    /**
-     * Shorthand for writing Vector3f(0, 0, 1).
-     */
     public static final Vector3f FORWARD = new Vector3f(0, 0, 1);
 
-    /**
-     * Shorthand for writing Vector3f(-1, 0, 0).
-     */
     public static final Vector3f LEFT = new Vector3f(-1, 0, 0);
 
-    /**
-     * Shorthand for writing Vector3f(Float.MAX_VALUE, Float.MAX_VALUE,
-     * Float.MAX_VALUE).
-     */
     public static final Vector3f MAX = new Vector3f(Float.MAX_VALUE,
             Float.MAX_VALUE, Float.MAX_VALUE);
 
-    /**
-     * Shorthand for writing Vector3f(Float.MIN_VALUE, Float.MIN_VALUE,
-     * FLoat.MIN_VALUE).
-     */
     public static final Vector3f MIN = new Vector3f(Float.MIN_VALUE,
             Float.MIN_VALUE, Float.MIN_VALUE);
 
-    /**
-     * Shorthand for writing Vector3f(Float.NaN, Float.NaN, FLoat.NaN).
-     */
     public static final Vector3f NAN = new Vector3f(Float.NaN, Float.NaN,
             Float.NaN);
 
-    /**
-     * Shorthand for writing Vector3f(Float.NEGATIVE_INFINITY,
-     * Float.NEGATIVE_INFINITY, FLoat.NEGATIVE_INFINITY).
-     */
     public static final Vector3f NEGATIVE_INFINITY = new Vector3f(
             Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY,
             Float.NEGATIVE_INFINITY);
 
-    /**
-     * Shorthand for writing Vector3f(1, 1, 1).
-     */
     public static final Vector3f ONE = new Vector3f(1, 1, 1);
 
-    /**
-     * Shorthand for writing Vector3f(Float.POSITIVE_INFINITY,
-     * Float.POSITIVE_INFINITY, FLoat.POSITIVE_INFINITY).
-     */
     public static final Vector3f POSITIVE_INFINITY = new Vector3f(
             Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY,
             Float.POSITIVE_INFINITY);
 
-    /**
-     * Shorthand for writing Vector3f(1, 0, 0).
-     */
     public static final Vector3f RIGHT = new Vector3f(1, 0, 0);
 
-    /**
-     * Shorthand for writing Vector3f(0, 1, 0).
-     */
     public static final Vector3f UP = new Vector3f(0, 1, 0);
 
-    /**
-     * Shorthand for writing Vector3f(0, 0, 0).
-     */
     public static final Vector3f ZERO = new Vector3f(0, 0, 0);
 
     public float x;
@@ -488,29 +438,6 @@ public class Vector3f {
         return this;
     }
 
-    public Vector3f one() {
-        x = y = z = 1;
-        return this;
-    }
-
-    public Vector3f zero() {
-        x = y = z = 0;
-        return this;
-    }
-
-    public float[] toArray() {
-        return toArray(null);
-    }
-
-    public float[] toArray(float[] floats) {
-        if (floats == null)
-            floats = new float[3];
-        floats[0] = x;
-        floats[1] = y;
-        floats[2] = z;
-        return floats;
-    }
-
     public static boolean isValid(Vector3f v) {
         if (v == null)
             return false;
@@ -521,70 +448,7 @@ public class Vector3f {
             return false;
         return true;
     }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + Float.floatToIntBits(x);
-        result = prime * result + Float.floatToIntBits(y);
-        result = prime * result + Float.floatToIntBits(z);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Vector3f other = (Vector3f) obj;
-        if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x))
-            return false;
-        if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y))
-            return false;
-        if (Float.floatToIntBits(z) != Float.floatToIntBits(other.z))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Vector3f [x=" + x + ", y=" + y + ", z=" + z + "]";
-    }
-
-    public float get(int index) {
-        switch (index) {
-        case 0:
-            return x;
-        case 1:
-            return y;
-        case 2:
-            return z;
-        default:
-            throw new IndexOutOfBoundsException();
-        }
-    }
-
-    public Vector3f set(int index, float value) {
-        switch (index) {
-        case 0:
-            x = value;
-            break;
-        case 1:
-            y = value;
-            break;
-        case 2:
-            z = value;
-            break;
-        default:
-            throw new IndexOutOfBoundsException();
-        }
-        return this;
-    }
-
+    
     public Vector3f set(float x, float y, float z) {
         this.x = x;
         this.y = y;
@@ -631,6 +495,39 @@ public class Vector3f {
     public Vector3f setZ(float z) {
         this.z = z;
         return this;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Float.floatToIntBits(x);
+        result = prime * result + Float.floatToIntBits(y);
+        result = prime * result + Float.floatToIntBits(z);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Vector3f other = (Vector3f) obj;
+        if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x))
+            return false;
+        if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y))
+            return false;
+        if (Float.floatToIntBits(z) != Float.floatToIntBits(other.z))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Vector3f [x=" + x + ", y=" + y + ", z=" + z + "]";
     }
 
 }
