@@ -2,11 +2,12 @@
 [![CodeQL Advanced](https://github.com/ArtifactForms/MeshLibCore/actions/workflows/codeql.yml/badge.svg)](https://github.com/ArtifactForms/MeshLibCore/actions/workflows/codeql.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5d913b2c5d064bee83780eefee17f400)](https://app.codacy.com/gh/ArtifactForms/MeshLibCore/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c860a89479fdedd6be77/maintainability)](https://codeclimate.com/github/ArtifactForms/MeshLibCore/maintainability)
-[![Maven Package](https://github.com/ArtifactForms/MeshLibCore/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/ArtifactForms/MeshLibCore/actions/workflows/maven-publish.yml)
 
 # Artifact Forms
 
 A _JAVA_ library to construct and manipulate geometry in Three-dimensional space.
+
+![](documentation/images/banner-1.png)
 
 ## Background / Intension
 
@@ -92,14 +93,16 @@ environment. So the library could be used independently.
 
 ## Mesh3D
 
-The following example shows how to work with the base mesh class. For this
-purpose we want to create a simple quad. The quad has four vertices, one for
-each corner. To make things a bit more explanatory we compose the quad out of
-two triangular faces. **Important:** This is just an example to illustrate the
+**Important:** This is just an example to illustrate the
 base concepts. The library already provides a convenient way to construct
 primitives and more complex shapes. But we dive into this at a later point.
 For now let's keep things simple. But also keep in mind that it might be useful
 to construct shapes by yourself in some cases.
+
+The following example shows how to work with the base mesh class. For this
+purpose we want to create a simple quad. The quad has four vertices, one for
+each corner. To make things a bit more explanatory we compose the quad out of
+two triangular faces.
 
 ```
 (-1, 0, -1)     (1, 0, -1)
@@ -365,7 +368,7 @@ requires a reference to this PApplet to function.
 
 ![workspace-screenshot](documentation/images/workspace-example.png)
 
-A simple template can be found within the package src/main/java/workspace/examples, ready to fire up and give it a first try:
+A simple template can be found within the package **src/main/java/workspace/examples**, ready to fire up and give it a first try:
 
 ```java
 import mesh.Mesh3D;
@@ -444,5 +447,5 @@ Artifact Forms is actively under development, with a focus on improving document
 
 ## Licence
 
-[MIT](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE)
+[GNU General Public License](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE)
 License Copyright (c) 2022 Simon Dietz
