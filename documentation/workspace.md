@@ -4,6 +4,8 @@ The Workspace is a streamlined tool designed for visualizing and inspecting 3D m
 with the Processing environment, leveraging its powerful rendering capabilities. While it doesn't aspire
 to be a comprehensive 3D modeling suite, it provides essential features for working with mesh data.
 
+**Note:** All provided examples are located in the **src/main/java/workspace/examples** folder (package).
+
 ## Getting Started
 To use the Workspace, simply create an instance and provide a reference to your Processing
 sketch (PApplet). No immediate interaction with the Workspace is necessary in the draw() method.
