@@ -93,9 +93,9 @@ from a specified center point, creating a variety of effects like bulging, inden
 
 **How it works:**
 
-1. Center Point: The modifier uses a defined center point as a reference for the deformation.
-2. Distance: The ```distance``` parameter controls the magnitude of the push or pull. A positive value pushes vertices away from the center, while a negative value pulls them towards the center.
-3. Vertex Deformation: For each vertex in the mesh:
+1. **Center Point:** The modifier uses a defined center point as a reference for the deformation.
+2. **Distance:** The ```distance``` parameter controls the magnitude of the push or pull. A positive value pushes vertices away from the center, while a negative value pulls them towards the center.
+3. **Vertex Deformation:** For each vertex in the mesh:
 * The ```distance``` between the vertex and the center point is calculated.
 * The vertex is moved along the vector connecting it to the center point, by the specified distance.
 
