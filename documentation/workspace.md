@@ -62,3 +62,60 @@ public class WS_MinimalSetup extends PApplet {
 * **Smooth/Flat Shading:** Press S.
 * **First-Person Mode:** Press 4.
 * **Toggle Rendering Loop:** Use the UI control.
+
+## Displaying Your First Mesh
+
+A blank workspace can be a bit dull, don't you think? Let's add a simple mesh to our example and display it in the workspace.
+
+```java
+package workspace.examples;
+
+import mesh.Mesh3D;
+import mesh.creator.primitives.CubeCreator;
+import processing.core.PApplet;
+import workspace.Workspace;
+
+public class WS_FirstMesh extends PApplet {
+
+    public static void main(String[] args) {
+        PApplet.main(WS_FirstMesh.class.getName());
+    }
+
+    private Mesh3D mesh;
+    private Workspace workspace;
+
+    @Override
+    public void settings() {
+        size(1000, 1000, P3D);
+    }
+
+    @Override
+    public void setup() {
+        workspace = new Workspace(this);
+        mesh = new CubeCreator().create();
+    }
+
+    @Override
+    public void draw() {
+        workspace.draw(mesh);
+    }
+
+}
+```
+
+This provided code creates a simple cube and displays it in the workspace. 
+The workspace.draw(mesh) line is responsible for rendering the mesh.
+
+**Let's break down the code:**
+
+**Creating a Workspace:**
+
+```workspace = new Workspace(this);``` creates a new Workspace instance, linking it to the current PApplet.
+
+**Creating a Cube Mesh:**
+
+```mesh = new CubeCreator().create();``` creates a new Cube mesh using the CubeCreator class.
+
+**Drawing the Mesh:**
+
+```workspace.draw(mesh);``` renders the mesh object within the workspace.
