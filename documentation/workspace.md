@@ -43,6 +43,8 @@ public class WS_MinimalSetup extends PApplet {
 }
 ```
 
+![workspace-minimal-setup](images/workspace-documentation-minimal-setup.png)
+
 ### Key Features
 
 **Camera Control**
