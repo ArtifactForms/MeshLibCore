@@ -91,14 +91,17 @@ environment. So the library could be used independently.
 
 ## Mesh3D
 
-The following example shows how to work with the base mesh class. For this
-purpose we want to create a simple quad. The quad has four vertices, one for
-each corner. To make things a bit more explanatory we compose the quad out of
-two triangular faces. **Important:** This is just an example to illustrate the
-base concepts. The library already provides a convenient way to construct
+**Important:** This is just an example to illustrate the
+The library already provides a convenient way to construct
 primitives and more complex shapes. But we dive into this at a later point.
 For now let's keep things simple. But also keep in mind that it might be useful
 to construct shapes by yourself in some cases.
+
+The following example shows how to work with the base mesh class. For this
+purpose we want to create a simple quad. The quad has four vertices, one for
+each corner. To make things a bit more explanatory we compose the quad out of
+two triangular faces.
+base concepts.
 
 ```
 (-1, 0, -1)     (1, 0, -1)
