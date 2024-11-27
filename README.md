@@ -445,5 +445,5 @@ Artifact Forms is actively under development, with a focus on improving document
 
 ## Licence
 
-[MIT](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE)
+[GNU General Public License](https://github.com/ArtifactForms/MeshLibCore/blob/master/LICENSE)
 License Copyright (c) 2022 Simon Dietz
