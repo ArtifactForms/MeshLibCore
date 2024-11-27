@@ -83,3 +83,38 @@ mesh.apply(modifier); // Apply the modifier to the mesh
 * **Combining with Other Modifiers:** The Bend Modifier can be combined with other modifiers to create more complex deformations.
 
 By understanding the basic principles and parameters of the Bend Modifier, you can effectively use it to create a wide range of 3D shapes and effects.
+
+## Push-Pull Modifier
+
+**Purpose:**
+
+The Push-Pull Modifier is a versatile tool for deforming 3D meshes. It allows you to push or pull vertices towards or away 
+from a specified center point, creating a variety of effects like bulging, indenting, or extruding parts of the mesh.
+
+**How it works:**
+
+1. Center Point: The modifier uses a defined center point as a reference for the deformation.
+2. Distance: The ```distance``` parameter controls the magnitude of the push or pull. A positive value pushes vertices away from the center, while a negative value pulls them towards the center.
+3. Vertex Deformation: For each vertex in the mesh:
+* The ```distance``` between the vertex and the center point is calculated.
+* The vertex is moved along the vector connecting it to the center point, by the specified distance.
+
+**Using the Push-Pull Modifier:**
+
+1. **Create a Mesh:** Start with a basic 3D mesh, such as a plane, cube, or sphere.
+2. **Apply the Modifier:** Create an instance of the PushPullModifier class, specifying the desired distance and center point.
+3. **Modify the Mesh:** Apply the modify method of the PushPullModifier to the mesh.
+
+**Example:**
+
+```java
+// TODO
+```
+
+**Additional Considerations:**
+
+* **Mesh Topology:** The effectiveness of the modifier can be influenced by the mesh topology. For complex meshes, additional considerations may be necessary.
+* **Combining with Other Modifiers:** The Push-Pull Modifier can be combined with other modifiers to create more complex deformations.
+
+By understanding the basic principles and parameters of the Push-Pull Modifier, you can effectively use it to create a wide range of 3D shapes and effects.
+
