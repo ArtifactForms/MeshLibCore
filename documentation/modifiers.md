@@ -13,7 +13,7 @@
 * **HolesModifier:** Creates holes in the mesh.
 * **InsetModifier:** Insets the faces of the mesh inward.
 * **NoiseModifier:** Adds noise to the vertex positions of the mesh. **Normals!**
-* **PushPullModifier:** Pushes or pulls the faces of the mesh along their normals.
+* **PushPullModifier:** Pushes or pulls vertices towards or away from a specified center point.
 * **RemoveDoubleVerticesModifier:** Removes duplicate vertices from the mesh.
 * **RotateXModifier:** Rotates the mesh around the X-axis.
 * **RotateYModifier:** Rotates the mesh around the Y-axis.
