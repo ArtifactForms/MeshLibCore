@@ -170,7 +170,7 @@ public class WS_WorkspaceSettings extends PApplet {
 
 ## Let's create something more complex!
 
-To demonstrate the versatile capabilities of our library, let's expand on our simple cube example. 
+To demonstrate the versatile capabilities of the library, let's expand on our simple cube example. 
 By combining basic shapes and various modifiers, we can quickly create intricate geometries.
 
 **The basic concept:**
