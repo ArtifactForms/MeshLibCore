@@ -179,6 +179,7 @@ These modifiers perform operations such as bevel vertices, drilling holes, subdi
 
 **A concrete example:**
 
+```java
 package workspace.examples;
 
 import mesh.Mesh3D;
@@ -226,9 +227,12 @@ public class WS_FirstMeshModification extends PApplet {
         workspace.draw(mesh);
     }
 }
+```
 
 **What happens here:**
-By combining these modifiers, we transform a simple cube into a more complex shape with rounded edges, holes, and depth. This example showcases the library's flexibility and the ease of creating intricate geometries.
+By combining these modifiers, we transform a simple cube into a more complex shape with
+rounded edges, holes, and depth. This example showcases the library's flexibility and 
+the ease of creating intricate geometries.
 
-Experiment yourself!
+**Experiment yourself!**
 Try different combinations of modifiers and adjust the parameters to create your own unique shapes.
