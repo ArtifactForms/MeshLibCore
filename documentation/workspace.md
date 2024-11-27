@@ -139,10 +139,10 @@ import mesh.creator.primitives.CubeCreator;
 import processing.core.PApplet;
 import workspace.Workspace;
 
-public class WS_WorkspaceSettingsUI extends PApplet {
+public class WS_WorkspaceSettings extends PApplet {
 
     public static void main(String[] args) {
-        PApplet.main(WS_WorkspaceSettingsUI.class.getName());
+        PApplet.main(WS_WorkspaceSettings.class.getName());
     }
 
     private Mesh3D mesh;
