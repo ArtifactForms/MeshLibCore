@@ -71,6 +71,8 @@ public class WS_MinimalSetup extends PApplet {
 
 A blank workspace can be a bit dull, don't you think? Let's add a simple mesh to our example and display it in the workspace.
 
+![workspace-first-mesh](images/workspace-documentation-first-mesh.png)
+
 ```java
 package workspace.examples;
 
