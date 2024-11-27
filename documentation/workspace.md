@@ -176,7 +176,7 @@ By combining basic shapes and various modifiers, we can quickly create intricate
 **The basic concept:**
 
 We start with a fundamental shape, like a cube. Then, we sequentially apply different modifiers. 
-These modifiers perform operations such as bevel vertices, drilling holes, subdividing the mesh, or adding thickness.
+These modifiers perform operations such as bevel vertices, punching holes, subdividing the mesh, or adding thickness.
 
 **A concrete example:**
 
