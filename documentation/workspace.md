@@ -174,6 +174,7 @@ To demonstrate the versatile capabilities of our library, let's expand on our si
 By combining basic shapes and various modifiers, we can quickly create intricate geometries.
 
 **The basic concept:**
+
 We start with a fundamental shape, like a cube. Then, we sequentially apply different modifiers. 
 These modifiers perform operations such as bevel vertices, drilling holes, subdividing the mesh, or adding thickness.
 
@@ -230,9 +231,11 @@ public class WS_FirstMeshModification extends PApplet {
 ```
 
 **What happens here:**
+
 By combining these modifiers, we transform a simple cube into a more complex shape with
 rounded edges, holes, and depth. This example showcases the library's flexibility and 
 the ease of creating intricate geometries.
 
 **Experiment yourself!**
+
 Try different combinations of modifiers and adjust the parameters to create your own unique shapes.
