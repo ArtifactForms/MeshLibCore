@@ -121,3 +121,44 @@ The workspace.draw(mesh) line is responsible for rendering the mesh.
 **Drawing the Mesh:**
 
 ```workspace.draw(mesh);``` renders the mesh object within the workspace.
+
+## Workspace Settings
+
+By default, the Workspace UI with its control options is visible. However, you can toggle its visibility both
+during runtime (using the 'Y' key) and beforehand. To disable the UI from the start, use the ```setUiVisible(false)``` method:
+
+```java
+package workspace.examples;
+
+import mesh.Mesh3D;
+import mesh.creator.primitives.CubeCreator;
+import processing.core.PApplet;
+import workspace.Workspace;
+
+public class WS_WorkspaceSettingsUI extends PApplet {
+
+    public static void main(String[] args) {
+        PApplet.main(WS_WorkspaceSettingsUI.class.getName());
+    }
+
+    private Mesh3D mesh;
+    private Workspace workspace;
+
+    @Override
+    public void settings() {
+        size(1000, 1000, P3D);
+    }
+
+    @Override
+    public void setup() {
+        workspace = new Workspace(this);
+        workspace.setUiVisible(false); // Disable the UI
+        mesh = new CubeCreator().create();
+    }
+
+    @Override
+    public void draw() {
+        workspace.draw(mesh);
+    }
+}
+```
