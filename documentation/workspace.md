@@ -180,6 +180,8 @@ These modifiers perform operations such as bevel vertices, punching holes, subdi
 
 **A concrete example:**
 
+![workspace-mesh-modification](images/workspace-documentation-first-mesh-modification-steps.png)
+
 ```java
 package workspace.examples;
 
