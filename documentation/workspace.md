@@ -88,6 +88,7 @@ public class WS_FirstMesh extends PApplet {
     }
 
     private Mesh3D mesh;
+
     private Workspace workspace;
 
     @Override
@@ -146,6 +147,7 @@ public class WS_WorkspaceSettings extends PApplet {
     }
 
     private Mesh3D mesh;
+
     private Workspace workspace;
 
     @Override
@@ -202,6 +204,7 @@ public class WS_FirstMeshModification extends PApplet {
     }
 
     private Mesh3D mesh;
+
     private Workspace workspace;
 
     @Override
