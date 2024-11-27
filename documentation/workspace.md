@@ -156,7 +156,7 @@ public class WS_WorkspaceSettings extends PApplet {
     @Override
     public void setup() {
         workspace = new Workspace(this);
-        workspace.setUiVisible(false); // Disable the UI
+        workspace.setUiVisible(false); // Hide the UI
         mesh = new CubeCreator().create();
     }
 
