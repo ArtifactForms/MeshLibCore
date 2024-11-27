@@ -7,6 +7,8 @@
 
 A _JAVA_ library to construct and manipulate geometry in Three-dimensional space.
 
+![](documentation/images/banner-1.png)
+
 ## Background / Intension
 
 This Java library began as a hobby project in 2015/2016. I started it to
