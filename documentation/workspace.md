@@ -218,7 +218,7 @@ public class WS_FirstMeshModification extends PApplet {
         mesh = new CubeCreator().create();
 
         // Apply various modifiers
-        mesh.apply(new BevelVerticesModifier(0.2f)); // Bevel edges
+        mesh.apply(new BevelVerticesModifier(0.2f)); // Bevels vertices
         mesh.apply(new PlanarMidEdgeCenterModifier()); // Subdivides the mesh
         mesh.apply(new PlanarVertexCenterModifier()); // Adds more subdivisions
         mesh.apply(new HolesModifier(0.6f)); // Punches holes
