@@ -167,3 +167,68 @@ public class WS_WorkspaceSettings extends PApplet {
 
 }
 ```
+
+## Let's create something more complex!
+
+To demonstrate the versatile capabilities of our library, let's expand on our simple cube example. 
+By combining basic shapes and various modifiers, we can quickly create intricate geometries.
+
+**The basic concept:**
+We start with a fundamental shape, like a cube. Then, we sequentially apply different modifiers. 
+These modifiers perform operations such as bevel vertices, drilling holes, subdividing the mesh, or adding thickness.
+
+**A concrete example:**
+
+package workspace.examples;
+
+import mesh.Mesh3D;
+import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.BevelVerticesModifier;
+import mesh.modifier.HolesModifier;
+import mesh.modifier.SolidifyModifier;
+import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
+import mesh.modifier.subdivision.PlanarVertexCenterModifier;
+import processing.core.PApplet;
+import workspace.Workspace;
+
+public class WS_FirstMeshModification extends PApplet {
+
+    public static void main(String[] args) {
+        PApplet.main(WS_FirstMeshModification.class.getName());
+    }
+
+    private Mesh3D mesh;
+    private Workspace workspace;
+
+    @Override
+    public void settings() {
+        size(1000, 1000, P3D);
+        smooth(8);
+    }
+
+    @Override
+    public void setup() {
+        workspace = new Workspace(this);
+	
+        // Start with a simple cube
+        mesh = new CubeCreator().create();
+
+        // Apply various modifiers
+        mesh.apply(new BevelVerticesModifier(0.2f)); // Bevel edges
+        mesh.apply(new PlanarMidEdgeCenterModifier()); // Subdivides the mesh
+        mesh.apply(new PlanarVertexCenterModifier()); // Adds more subdivisions
+        mesh.apply(new HolesModifier(0.6f)); // Punches holes
+        mesh.apply(new SolidifyModifier(0.04f)); // Adds thickness
+    }
+
+    @Override
+    public void draw() {
+        workspace.draw(mesh);
+    }
+}
+
+**What happens here:**
+By combining these modifiers, we transform a simple cube into a more complex shape with rounded edges, holes, and depth. This example showcases the library's flexibility and the ease of creating intricate geometries.
+
+Experiment yourself!
+Try different combinations of modifiers and adjust the parameters to create your own unique shapes.
