@@ -231,3 +231,37 @@ This will shift the entire cube mesh 2 units along the X-axis, 1 unit along the 
 
 By understanding the basic principles and parameters of the Translate Modifier, you can effectively use it to position and manipulate 3D meshes in your projects.
 
+## RotateXModifier
+
+**Purpose:**
+
+The `RotateXModifier` is a mesh modification tool designed to rotate a 3D mesh around the X-axis by a specified angle. This is useful for various transformations and manipulations, such as aligning objects, creating rotations, or simulating object movement.
+
+**How it Works:**
+
+1. **Rotation Angle:** The `angle` parameter defines the angle of rotation in radians.
+2. **Rotation Matrix:** A 3x3 rotation matrix is created using the specified angle.
+3. **Vertex Rotation:** Each vertex of the mesh is multiplied by the rotation matrix to apply the rotation.
+
+**Using the RotateXModifier:**
+
+1. **Create a Mesh:** Start with a basic 3D mesh, such as a plane, cube, or sphere.
+2. **Create a Rotator:** Instantiate a `RotateXModifier` object, specifying the desired rotation angle in radians.
+3. **Apply the Modifier:** Apply the `modify` method of the `RotateXModifier` to the mesh.
+
+**Example:**
+
+```java
+Mesh3D mesh = new CubeCreator().create(); // Create a cube mesh
+RotateXModifier rotator = new RotateXModifier(Mathf.QUATER_PI); // Rotate 45 degrees
+mesh.apply(rotator); // Apply the modifier to the mesh
+```
+
+This will rotate the cube 45 degrees around the X-axis.
+
+**Additional Considerations:**
+
+* **Combining with Other Modifiers:** The RotateXModifier can be combined with other modifiers like Translate, Scale, or Bend to create more complex deformations.
+* **Order of Application:** The order in which modifiers are applied can affect the final result. Experiment with different sequences to achieve desired effects.
+
+By understanding the basic principles and parameters of the RotateXModifier, you can effectively use it to rotate 3D meshes around the X-axis in your projects.
