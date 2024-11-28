@@ -9,6 +9,8 @@ public class PushPullModifier implements IMeshModifier {
 
 	private Vector3f center;
 
+	private Mesh3D mesh;
+
 	public PushPullModifier() {
 		this(0, Vector3f.ZERO);
 	}
@@ -18,15 +20,27 @@ public class PushPullModifier implements IMeshModifier {
 		this.center = center;
 	}
 
+	private void pushPullVertices() {
+		for (Vector3f vertex : mesh.vertices)
+			pushPullVertex(vertex);
+	}
+
+	private void pushPullVertex(Vector3f vertex) {
+		float distanceToCenter = vertex.distance(center);
+		float displacement = distance - distanceToCenter;
+		Vector3f directionToCenter = vertex.subtract(center).normalize();
+		vertex.set(directionToCenter.mult(displacement).add(center));
+	}
+
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		for (Vector3f vertex : mesh.vertices) {
-			float distanceToCenter = vertex.distance(center);
-			float displacement = this.distance - distanceToCenter;
-			Vector3f directionToCenter = vertex.subtract(center).normalize();
-			vertex.set(directionToCenter.mult(displacement).add(center));
-		}
+		setMesh(mesh);
+		pushPullVertices();
 		return mesh;
+	}
+
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
 	}
 
 	public float getDistance() {
