@@ -1,5 +1,22 @@
 # Mesh Modifiers
 
+## Understanding Mesh Modifiers
+
+Mesh modifiers are powerful tools for transforming 3D meshes. They allow you to apply various
+geometric operations, such as translation, rotation, scaling, bending, and more. By understanding
+the core concepts and how to use these modifiers effectively, you can create a wide range of 3D
+shapes and effects.
+
+By following these guidelines and understanding the core concepts of mesh modifiers, you can create a wide range of 3D models and effects.
+
+## Best Practices for Using Mesh Modifiers
+
+* **Start with Simple Shapes:** Begin with basic shapes like cubes, spheres, and planes to understand the effects of different modifiers.
+* **Combine Modifiers:** Experiment with combining multiple modifiers to achieve complex deformations.
+* **Iterative Approach:** Apply modifiers iteratively to fine-tune the desired shape.
+* **Consider Mesh Topology:** The topology of the mesh can significantly influence the results of the modification process.
+* **Optimize Modifier Stacks:** For performance reasons, try to minimize the number of modifiers applied to a mesh.
+
 ## Basic Modifiers
 * **BendModifier:** Bends the mesh along a specified axis.
 * **BevelEdgesModifier:** Creates a bevel along the edges of the mesh.
