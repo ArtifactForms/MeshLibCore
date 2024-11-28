@@ -7,8 +7,6 @@ geometric operations, such as translation, rotation, scaling, bending, and more.
 the core concepts and how to use these modifiers effectively, you can create a wide range of 3D
 shapes and effects.
 
-By following these guidelines and understanding the core concepts of mesh modifiers, you can create a wide range of 3D models and effects.
-
 The library offers a versatile set of pre-built modifiers, each adhering to the ```IMeshModifier``` interface. 
 If you aim to extend the library with custom modifiers, ensuring adherence to this interface is crucial.
 
