@@ -26,19 +26,7 @@ High-level overview of the project structure.
 
 **Workspace Integration (Optional):**
 
-* **src.main.java.workspace:** This package seems to handle integrating meshes within a workspace environment (potentially a UI for visualization and editing). It includes classes for:
-    * **command:** Commands for manipulating the workspace view (e.g., panning, showing/hiding elements).
-    * **Editor:** Class for editing meshes within the workspace.
-    * **examples:** Example implementations of using meshes in a workspace.
-    * **FirstPersonView:** Class for a first-person view within the workspace (potentially for visualization).
-    * **GraphicsPImpl:** Implementation details related to graphics rendering.
-    * **laf:** Classes for the Look-and-Feel of the workspace UI.
-    * **ModelListener:** Listener for changes in the mesh model.
-    * **render:** Rendering-related classes for meshes and selections within the workspace.
-    * **SceneObject:** Class representing an object within the workspace scene.
-    * **ui:** Classes for various UI elements used in the workspace.
-        * **border:** Classes for borders around UI elements.
-        * **layout:** Classes for UI layout management.
+* **src.main.java.workspace:** This package handles integrating meshes within a workspace environment.
 
 **Testing:**
 
@@ -50,4 +38,4 @@ High-level overview of the project structure.
 
 **Resources:**
 
-* **src.main.resources:** This directory likely contains resource files used by the project (e.g., configuration files, icons).
+* **src.main.resources:** This directory contains resource files used by the project (e.g., configuration files, icons).
