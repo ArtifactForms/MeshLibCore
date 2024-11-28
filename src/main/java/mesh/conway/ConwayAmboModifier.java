@@ -26,7 +26,7 @@ public class ConwayAmboModifier implements IMeshModifier {
         processFaces();
         createFacesFromAdjacentVertices();
         clearOriginalGeometry();
-        addNewlyCreatedGeomentry();
+        addNewlyCreatedGeometry();
         return mesh;
     }
 
@@ -109,7 +109,7 @@ public class ConwayAmboModifier implements IMeshModifier {
         removeOriginalFaces();
     }
 
-    private void addNewlyCreatedGeomentry() {
+    private void addNewlyCreatedGeometry() {
         addNewlyVertices();
         addNewlyCreatedFaces();
     }
