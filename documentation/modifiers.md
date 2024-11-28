@@ -9,7 +9,20 @@ shapes and effects.
 
 By following these guidelines and understanding the core concepts of mesh modifiers, you can create a wide range of 3D models and effects.
 
-The library offers a versatile set of pre-built modifiers, each adhering to the IMeshModifier interface. If you aim to extend the library with custom modifiers, ensuring adherence to this interface is crucial.
+The library offers a versatile set of pre-built modifiers, each adhering to the ```IMeshModifier``` interface. 
+If you aim to extend the library with custom modifiers, ensuring adherence to this interface is crucial.
+
+```java
+package mesh.modifier;
+
+import mesh.Mesh3D;
+
+public interface IMeshModifier {
+
+    public Mesh3D modify(Mesh3D mesh);
+
+}
+```
 
 **Applying Modifications**
 
