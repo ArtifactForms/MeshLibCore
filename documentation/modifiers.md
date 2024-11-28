@@ -9,6 +9,55 @@ shapes and effects.
 
 By following these guidelines and understanding the core concepts of mesh modifiers, you can create a wide range of 3D models and effects.
 
+The library offers a versatile set of pre-built modifiers, each adhering to the IMeshModifier interface. If you aim to extend the library with custom modifiers, ensuring adherence to this interface is crucial.
+
+**Applying Modifications**
+
+You can apply modifications to a mesh in two primary ways:
+
+**1. Direct Modification:**
+
+```java
+Mesh3D cube = new CubeCreator().create();
+ScaleModifier scaleModifier = new ScaleModifier(10);
+scaleModifier.modify(cube);
+```
+
+**2. Mesh-Based Application:**
+
+```java
+Mesh3D cube = new CubeCreator().create();
+ScaleModifier scaleModifier = new ScaleModifier(10);
+cube.apply(scaleModifier);
+```
+
+The preferred approach depends on your specific use case and coding style. However,
+it's recommended to maintain consistency within your project to enhance code readability
+and maintainability.
+
+**A Practical Example: Creating a Complex Shape**
+
+To demonstrate the power of combining multiple modifiers, let's create a complex shape:
+
+```java
+Mesh3D mesh = new CubeCreator().create();
+mesh.apply(new ExtrudeModifier(0.4f, 2));
+mesh.apply(new HolesModifier());
+mesh.apply(new SolidifyModifier(0.2f));
+mesh.apply(new ScaleModifier(1, 5, 1));
+mesh.apply(new RotateZModifier(Mathf.HALF_PI));
+mesh.apply(new CatmullClarkModifier(3));
+mesh.apply(new BendModifier(0.2f));
+```
+
+By applying these modifiers sequentially, we can create a complex shape that
+starts as a simple cube and undergoes various transformations. This example
+highlights the flexibility and power of the mesh modifier framework.
+
+**Remember:** The order in which modifiers are applied can significantly
+impact the final result. Experiment with different sequences to achieve
+desired effects.
+
 ## Best Practices for Using Mesh Modifiers
 
 * **Start with Simple Shapes:** Begin with basic shapes like cubes, spheres, and planes to understand the effects of different modifiers.
