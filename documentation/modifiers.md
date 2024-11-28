@@ -39,6 +39,9 @@ and maintainability.
 
 To demonstrate the power of combining multiple modifiers, let's create a complex shape:
 
+
+![modfifiers-example](images/modifiers-example-001.png)
+
 ```java
 Mesh3D mesh = new CubeCreator().create();
 mesh.apply(new ExtrudeModifier(0.4f, 2));
