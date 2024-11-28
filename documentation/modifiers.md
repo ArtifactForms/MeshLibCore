@@ -35,10 +35,9 @@ The preferred approach depends on your specific use case and coding style. Howev
 it's recommended to maintain consistency within your project to enhance code readability
 and maintainability.
 
-**A Practical Example: Creating a Complex Shape**
+## A Practical Example: Creating a Complex Shape
 
 To demonstrate the power of combining multiple modifiers, let's create a complex shape:
-
 
 ![modfifiers-example](images/modifiers-example-001.png)
 
