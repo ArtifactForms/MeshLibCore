@@ -80,7 +80,7 @@ desired effects.
 * **Optimize Modifier Stacks:** For performance reasons, try to minimize the number of modifiers applied to a mesh.
 
 ## Basic Modifiers
-* **BendModifier:** Bends the mesh along a specified axis.
+* **BendModifier:** Bends the mesh along the X-axis.
 * **BevelEdgesModifier:** Creates a bevel along the edges of the mesh.
 * **BevelFacesModifier:** Creates a bevel around the faces of the mesh.
 * **BevelVerticesModifier:** Creates a bevel around the vertices of the mesh.
@@ -98,12 +98,12 @@ desired effects.
 * **RotateYModifier:** Rotates the mesh around the Y-axis.
 * **RotateZModifier:** Rotates the mesh around the Z-axis.
 * **ScaleModifier:** Scales the mesh uniformly or non-uniformly.
-* **SmoothModifier:** Smoothes the mesh by averaging vertex positions. **???**
+* **SmoothModifier:** Smoothes the mesh by averaging vertex positions.
 * **SolidifyModifier:** Adds thickness to the faces of the mesh.
 * **SpherifyModifier:** Spherifies the mesh.
 * **TranslateModifier:** Translates the mesh.
 * **UpdateFaceNormalsModifier** Updates the face normals of the mesh.
-* **WireframeModifier:** Converts the mesh to a wireframe representation. **???**
+* **WireframeModifier:** Converts the mesh to a wireframe representation.
 
 ## Subdivision Modifiers
 * **CatmullClarkModifier:** Subdivides the mesh using the Catmull-Clark subdivision scheme.
