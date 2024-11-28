@@ -24,7 +24,7 @@ public interface IMeshModifier {
 
 **Key Point:** Returning a Modified Reference
 
-An aspect of the IMeshModifier interface is that the modify method returns a reference to the modified mesh.
+An aspect of the ```IMeshModifier``` interface is that the modify method returns a reference to the modified mesh.
 This allows for chaining multiple modifiers in a single operation.
 
 **Applying Modifications**
