@@ -26,18 +26,26 @@ public class BendModifier implements IMeshModifier {
 		float sinTheta = Mathf.sin(theta);
 		float cosTheta = Mathf.cos(theta);
 
-		if (Mathf.abs(factor) > EPSILON) {
-			float bx = -(v.y - 1.0f / factor) * sinTheta;
-			float by = (v.y - 1.0f / factor) * cosTheta + 1.0f / factor;
-			float bz = v.z;
-			v.set(bx, by, bz);
-		}
+		float bx = -(v.y - 1.0f / factor) * sinTheta;
+		float by = (v.y - 1.0f / factor) * cosTheta + 1.0f / factor;
+		float bz = v.z;
+		
+		v.set(bx, by, bz);
+	}
+	
+	private void bend(Mesh3D mesh) {
+		for (Vector3f v : mesh.vertices)
+			simpleDeformBend(v);
+	}
+	
+	private boolean isFactorValid() {
+		return Mathf.abs(factor) > EPSILON;
 	}
 
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		for (Vector3f v : mesh.vertices)
-			simpleDeformBend(v);
+		if (isFactorValid())
+			bend(mesh);
 		return mesh;
 	}
 
