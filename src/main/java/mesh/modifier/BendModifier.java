@@ -21,7 +21,7 @@ public class BendModifier implements IMeshModifier {
 		this.factor = factor;
 	}
 
-	private void simpleDeformBend(float factor, Vector3f v) {
+	private void simpleDeformBend(Vector3f v) {
 		float theta = v.x * factor;
 		float sinTheta = Mathf.sin(theta);
 		float cosTheta = Mathf.cos(theta);
@@ -37,7 +37,7 @@ public class BendModifier implements IMeshModifier {
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
 		for (Vector3f v : mesh.vertices)
-			simpleDeformBend(factor, v);
+			simpleDeformBend(v);
 		return mesh;
 	}
 
