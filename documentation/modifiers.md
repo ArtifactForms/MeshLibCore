@@ -1,7 +1,90 @@
 # Mesh Modifiers
 
+## Understanding Mesh Modifiers
+
+Mesh modifiers are powerful tools for transforming 3D meshes. They allow you to apply various
+geometric operations, such as translation, rotation, scaling, bending, and more. By understanding
+the core concepts and how to use these modifiers effectively, you can create a wide range of 3D
+shapes and effects.
+
+The library offers a versatile set of pre-built modifiers, each adhering to the ```IMeshModifier``` interface. 
+If you aim to extend the library with custom modifiers, ensuring adherence to this interface is crucial.
+
+```java
+package mesh.modifier;
+
+import mesh.Mesh3D;
+
+public interface IMeshModifier {
+
+    public Mesh3D modify(Mesh3D mesh);
+
+}
+```
+
+**Key Point:** Returning a Modified Reference
+
+An aspect of the ```IMeshModifier``` interface is that the modify method returns a reference to the modified mesh.
+
+**Applying Modifications**
+
+You can apply modifications to a mesh in two primary ways:
+
+**1. Direct Modification:**
+
+```java
+Mesh3D cube = new CubeCreator().create();
+ScaleModifier scaleModifier = new ScaleModifier(10);
+scaleModifier.modify(cube);
+```
+
+**2. Mesh-Based Application:**
+
+```java
+Mesh3D cube = new CubeCreator().create();
+ScaleModifier scaleModifier = new ScaleModifier(10);
+cube.apply(scaleModifier);
+```
+
+The preferred approach depends on your specific use case and coding style. However,
+it's recommended to maintain consistency within your project to enhance code readability
+and maintainability.
+
+## A Practical Example: Creating a Complex Shape
+
+To demonstrate the power of combining multiple modifiers, let's create a complex shape:
+
+![modfifiers-example](images/modifiers-example-001.png)
+
+```java
+Mesh3D mesh = new CubeCreator().create();
+mesh.apply(new ExtrudeModifier(0.4f, 2));
+mesh.apply(new HolesModifier());
+mesh.apply(new SolidifyModifier(0.2f));
+mesh.apply(new ScaleModifier(1, 5, 1));
+mesh.apply(new RotateZModifier(Mathf.HALF_PI));
+mesh.apply(new CatmullClarkModifier(3));
+mesh.apply(new BendModifier(0.2f));
+```
+
+By applying these modifiers sequentially, we can create a complex shape that
+starts as a simple cube and undergoes various transformations. This example
+highlights the flexibility and power of the mesh modifier framework.
+
+**Remember:** The order in which modifiers are applied can significantly
+impact the final result. Experiment with different sequences to achieve
+desired effects.
+
+## Best Practices for Using Mesh Modifiers
+
+* **Start with Simple Shapes:** Begin with basic shapes like cubes, spheres, and planes to understand the effects of different modifiers.
+* **Combine Modifiers:** Experiment with combining multiple modifiers to achieve complex deformations.
+* **Iterative Approach:** Apply modifiers iteratively to fine-tune the desired shape.
+* **Consider Mesh Topology:** The topology of the mesh can significantly influence the results of the modification process.
+* **Optimize Modifier Stacks:** For performance reasons, try to minimize the number of modifiers applied to a mesh.
+
 ## Basic Modifiers
-* **BendModifier:** Bends the mesh along a specified axis.
+* **BendModifier:** Bends the mesh along the X-axis.
 * **BevelEdgesModifier:** Creates a bevel along the edges of the mesh.
 * **BevelFacesModifier:** Creates a bevel around the faces of the mesh.
 * **BevelVerticesModifier:** Creates a bevel around the vertices of the mesh.
@@ -19,12 +102,12 @@
 * **RotateYModifier:** Rotates the mesh around the Y-axis.
 * **RotateZModifier:** Rotates the mesh around the Z-axis.
 * **ScaleModifier:** Scales the mesh uniformly or non-uniformly.
-* **SmoothModifier:** Smoothes the mesh by averaging vertex positions. **???**
+* **SmoothModifier:** Smoothes the mesh by averaging vertex positions.
 * **SolidifyModifier:** Adds thickness to the faces of the mesh.
 * **SpherifyModifier:** Spherifies the mesh.
 * **TranslateModifier:** Translates the mesh.
 * **UpdateFaceNormalsModifier** Updates the face normals of the mesh.
-* **WireframeModifier:** Converts the mesh to a wireframe representation. **???**
+* **WireframeModifier:** Converts the mesh to a wireframe representation.
 
 ## Subdivision Modifiers
 * **CatmullClarkModifier:** Subdivides the mesh using the Catmull-Clark subdivision scheme.
@@ -152,3 +235,37 @@ This will shift the entire cube mesh 2 units along the X-axis, 1 unit along the 
 
 By understanding the basic principles and parameters of the Translate Modifier, you can effectively use it to position and manipulate 3D meshes in your projects.
 
+## RotateXModifier
+
+**Purpose:**
+
+The `RotateXModifier` is a mesh modification tool designed to rotate a 3D mesh around the X-axis by a specified angle. This is useful for various transformations and manipulations, such as aligning objects, creating rotations, or simulating object movement.
+
+**How it Works:**
+
+1. **Rotation Angle:** The `angle` parameter defines the angle of rotation in radians.
+2. **Rotation Matrix:** A 3x3 rotation matrix is created using the specified angle.
+3. **Vertex Rotation:** Each vertex of the mesh is multiplied by the rotation matrix to apply the rotation.
+
+**Using the RotateXModifier:**
+
+1. **Create a Mesh:** Start with a basic 3D mesh, such as a plane, cube, or sphere.
+2. **Create a Rotator:** Instantiate a `RotateXModifier` object, specifying the desired rotation angle in radians.
+3. **Apply the Modifier:** Apply the `modify` method of the `RotateXModifier` to the mesh.
+
+**Example:**
+
+```java
+Mesh3D mesh = new CubeCreator().create(); // Create a cube mesh
+RotateXModifier rotator = new RotateXModifier(Mathf.QUATER_PI); // Rotate 45 degrees
+mesh.apply(rotator); // Apply the modifier to the mesh
+```
+
+This will rotate the cube 45 degrees around the X-axis.
+
+**Additional Considerations:**
+
+* **Combining with Other Modifiers:** The RotateXModifier can be combined with other modifiers like Translate, Scale, or Bend to create more complex deformations.
+* **Order of Application:** The order in which modifiers are applied can affect the final result. Experiment with different sequences to achieve desired effects.
+
+By understanding the basic principles and parameters of the RotateXModifier, you can effectively use it to rotate 3D meshes around the X-axis in your projects.
