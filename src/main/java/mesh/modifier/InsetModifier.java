@@ -24,10 +24,10 @@ public class InsetModifier implements IMeshModifier {
 
     public void modify(Mesh3D mesh, Collection<Face3D> faces) {
         for (Face3D face : faces)
-            insetFace(mesh, face, inset);
+            insetFace(mesh, face);
     }
 
-    private void insetFace(Mesh3D mesh, Face3D face, float thickness) {
+    private void insetFace(Mesh3D mesh, Face3D face) {
         int n = face.indices.length;
         int idx = mesh.vertices.size();
 
@@ -39,7 +39,7 @@ public class InsetModifier implements IMeshModifier {
                     .get(face.indices[(i + 1) % face.indices.length]);
 
             float distance = v0.distance(v1);
-            float a = (1f / distance) * thickness;
+            float a = (1f / distance) * inset;
 
             Vector3f v4 = v1.subtract(v0).mult(a).add(v0);
             Vector3f v5 = v1.add(v1.subtract(v0).mult(-a));
