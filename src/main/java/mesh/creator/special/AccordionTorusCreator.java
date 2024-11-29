@@ -5,6 +5,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
+import mesh.modifier.TranslateModifier;
 
 public class AccordionTorusCreator implements IMeshCreator {
 
@@ -50,7 +51,7 @@ public class AccordionTorusCreator implements IMeshCreator {
     private void translateToPointOnCircle(Mesh3D mesh, float majorAngle) {
         float x = majorRadius * Mathf.cos(majorAngle);
         float z = majorRadius * Mathf.sin(majorAngle);
-        mesh.translate(x, 0, z);
+        mesh.apply(new TranslateModifier(x, 0, z));
     }
 
     private void createFaces() {
