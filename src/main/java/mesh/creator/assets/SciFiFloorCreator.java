@@ -9,35 +9,35 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CylinderCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.FitToAABBModifier;
+import mesh.modifier.FlipFacesModifier;
 import mesh.modifier.RotateXModifier;
 import mesh.modifier.ScaleModifier;
 import mesh.selection.FaceSelection;
-import mesh.util.Mesh3DUtil;
 
 public class SciFiFloorCreator implements IMeshCreator {
 
-    private float latticeHeight;
+	private float latticeHeight;
 
-    private float width;
+	private float width;
 
-    private float height;
+	private float height;
 
-    private float depth;
+	private float depth;
 
-    private float wallHeight;
+	private float wallHeight;
 
-    private Mesh3D mesh;
+	private Mesh3D mesh;
 
-    public SciFiFloorCreator() {
-        latticeHeight = 0.1f;
-        width = 4;
-        depth = 4;
-        height = 4;
-    }
+	public SciFiFloorCreator() {
+		latticeHeight = 0.1f;
+		width = 4;
+		depth = 4;
+		height = 4;
+	}
 
-    @Override
-    public Mesh3D create() {
-        initializeMesh();
+	@Override
+	public Mesh3D create() {
+		initializeMesh();
 
 //		LatticeCreator creator = new LatticeCreator();
 //		creator.setHeight(latticeHeight);
@@ -57,58 +57,58 @@ public class SciFiFloorCreator implements IMeshCreator {
 //		pipe.rotateY(Mathf.HALF_PI);
 //		mesh.append(pipe);
 
-        createBaseCylinder();
-        createFloor();
+		createBaseCylinder();
+		createFloor();
 //		snapToGround();
 
-        return mesh;
-    }
+		return mesh;
+	}
 
-    private void snapToGround() {
-        mesh.translateY(-height / 2f);
-    }
+	private void snapToGround() {
+		mesh.translateY(-height / 2f);
+	}
 
-    private void createFloor() {
-        Mesh3D plane = new PlaneCreator(0.5f).create();
-        mesh.apply(new ScaleModifier(width, 1, depth));
-        plane.translateY(wallHeight / 2f);
-        mesh.append(plane);
-    }
+	private void createFloor() {
+		Mesh3D plane = new PlaneCreator(0.5f).create();
+		mesh.apply(new ScaleModifier(width, 1, depth));
+		plane.translateY(wallHeight / 2f);
+		mesh.append(plane);
+	}
 
-    private void createBaseCylinder() {
-        CylinderCreator creator = new CylinderCreator();
-        creator.setBottomCapFillType(FillType.NOTHING);
-        creator.setTopCapFillType(FillType.NOTHING);
-        creator.setBottomRadius(0.5f);
-        creator.setTopRadius(0.5f);
-        creator.setHeight(1);
-        creator.setVertices(8);
-        Mesh3D cylinder = creator.create();
-        cylinder.rotateY(Mathf.TWO_PI / 16f);
-        cylinder.apply(new RotateXModifier(Mathf.HALF_PI));
-        new FitToAABBModifier(width, height, depth).modify(cylinder);
-        Mesh3DUtil.flipDirection(cylinder);
-        mesh.append(cylinder);
-        calculateWallHeight();
-    }
+	private void createBaseCylinder() {
+		CylinderCreator creator = new CylinderCreator();
+		creator.setBottomCapFillType(FillType.NOTHING);
+		creator.setTopCapFillType(FillType.NOTHING);
+		creator.setBottomRadius(0.5f);
+		creator.setTopRadius(0.5f);
+		creator.setHeight(1);
+		creator.setVertices(8);
+		Mesh3D cylinder = creator.create();
+		cylinder.rotateY(Mathf.TWO_PI / 16f);
+		cylinder.apply(new RotateXModifier(Mathf.HALF_PI));
+		new FitToAABBModifier(width, height, depth).modify(cylinder);
+		cylinder.apply(new FlipFacesModifier());
+		mesh.append(cylinder);
+		calculateWallHeight();
+	}
 
-    private void calculateWallHeight() {
-        float minY = 0;
-        float maxY = 0;
-        FaceSelection selection = new FaceSelection(mesh);
-        selection.selectSimilarNormal(new Vector3f(-1, 0, 0), 0);
-        for (Face3D face : selection.getFaces()) {
-            for (int i = 0; i < face.indices.length; i++) {
-                Vector3f v = mesh.getVertexAt(face.indices[i]);
-                minY = v.getY() < minY ? v.getY() : minY;
-                maxY = v.getY() > maxY ? v.getY() : maxY;
-            }
-        }
-        wallHeight = Mathf.abs(maxY - minY);
-    }
+	private void calculateWallHeight() {
+		float minY = 0;
+		float maxY = 0;
+		FaceSelection selection = new FaceSelection(mesh);
+		selection.selectSimilarNormal(new Vector3f(-1, 0, 0), 0);
+		for (Face3D face : selection.getFaces()) {
+			for (int i = 0; i < face.indices.length; i++) {
+				Vector3f v = mesh.getVertexAt(face.indices[i]);
+				minY = v.getY() < minY ? v.getY() : minY;
+				maxY = v.getY() > maxY ? v.getY() : maxY;
+			}
+		}
+		wallHeight = Mathf.abs(maxY - minY);
+	}
 
-    private void initializeMesh() {
-        mesh = new Mesh3D();
-    }
+	private void initializeMesh() {
+		mesh = new Mesh3D();
+	}
 
 }

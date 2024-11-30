@@ -17,12 +17,6 @@ public class Mesh3DUtil {
         }
     }
 
-    public static void flipDirection(Mesh3D mesh) {
-        for (Face3D face : mesh.faces) {
-            flipDirection(mesh, face);
-        }
-    }
-
     public static float perimeter(Mesh3D mesh, Face3D face) {
         float perimeter = 0;
         for (int i = 0; i < face.indices.length - 2; i++) {
