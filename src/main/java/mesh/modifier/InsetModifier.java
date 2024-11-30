@@ -12,6 +12,10 @@ public class InsetModifier implements IMeshModifier {
 
 	private float inset;
 
+	public InsetModifier() {
+		
+	}
+	
 	public InsetModifier(float inset) {
 		this.inset = inset;
 	}
