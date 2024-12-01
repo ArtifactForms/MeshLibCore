@@ -222,9 +222,9 @@ The Random Holes Modifier is a tool designed to create holes of varying sizes in
 
 **Parameters:**
 
-* **minAmount:** The minimum scale factor for the faces.
-* **maxAmount:** The maximum scale factor for the faces.
-* **seed:** A seed value for the random number generator.
+* ```minAmount```: The minimum scale factor for the faces.
+* ```maxAmount```: The maximum scale factor for the faces.
+* ```seed```:** A seed value for the random number generator.
 
 **Example:**
 
