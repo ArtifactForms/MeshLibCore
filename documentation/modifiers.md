@@ -210,7 +210,7 @@ The Random Holes Modifier is a tool designed to create holes of varying sizes in
 
 **How it works:**
 
-1. **Random Scale Factor:** For each face in the mesh, a random scale factor is generated between the specified minAmount and maxAmount.
+1. **Random Scale Factor:** For each face in the mesh, a random scale factor is generated between the specified ```minAmount``` and ```maxAmount```.
 2. **Face Scaling:** The selected face is scaled inward using the ExtrudeModifier with the generated scale factor.
 3. **Hole Creation:** As the face is scaled inward, it creates a hole in the mesh.
 
@@ -224,7 +224,7 @@ The Random Holes Modifier is a tool designed to create holes of varying sizes in
 
 * ```minAmount```: The minimum scale factor for the faces.
 * ```maxAmount```: The maximum scale factor for the faces.
-* ```seed```:** A seed value for the random number generator.
+* ```seed```: A seed value for the random number generator.
 
 **Example:**
 
