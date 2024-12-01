@@ -5,38 +5,39 @@ import java.util.Collection;
 
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.util.Mesh3DUtil;
 
 public class HolesModifier implements IMeshModifier {
 
-    private float scaleExtrude;
+	private float scaleExtrude;
 
-    public HolesModifier() {
-        this.scaleExtrude = 0.5f;
-    }
+	public HolesModifier() {
+		this.scaleExtrude = 0.5f;
+	}
 
-    public HolesModifier(float scaleExtrude) {
-        this.scaleExtrude = scaleExtrude;
-    }
+	public HolesModifier(float scaleExtrude) {
+		this.scaleExtrude = scaleExtrude;
+	}
 
-    public Mesh3D modify(Mesh3D mesh, Collection<Face3D> faces) {
-        for (Face3D face : faces)
-            Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0.0f);
-        mesh.faces.removeAll(faces);
-        return mesh;
-    }
+	public Mesh3D modify(Mesh3D mesh, Collection<Face3D> faces) {
+		ExtrudeModifier modifier = new ExtrudeModifier();
+		modifier.setScale(scaleExtrude);
+		modifier.setAmount(0);
+		modifier.modify(mesh);
+		mesh.faces.removeAll(faces);
+		return mesh;
+	}
 
-    @Override
-    public Mesh3D modify(Mesh3D mesh) {
-        return modify(mesh, new ArrayList<Face3D>(mesh.faces));
-    }
+	@Override
+	public Mesh3D modify(Mesh3D mesh) {
+		return modify(mesh, new ArrayList<Face3D>(mesh.faces));
+	}
 
-    public float getScaleExtrude() {
-        return scaleExtrude;
-    }
+	public float getScaleExtrude() {
+		return scaleExtrude;
+	}
 
-    public void setScaleExtrude(float scaleExtrude) {
-        this.scaleExtrude = scaleExtrude;
-    }
+	public void setScaleExtrude(float scaleExtrude) {
+		this.scaleExtrude = scaleExtrude;
+	}
 
 }
