@@ -97,6 +97,7 @@ desired effects.
 * **InsetModifier:** Insets the faces of the mesh inward.
 * **NoiseModifier:** Adds noise to the vertex positions of the mesh. **Normals!**
 * **PushPullModifier:** Pushes or pulls vertices towards or away from a specified center point.
+* **RandomHolesModifier:**
 * **RemoveDoubleVerticesModifier:** Removes duplicate vertices from the mesh.
 * **RotateXModifier:** Rotates the mesh around the X-axis.
 * **RotateYModifier:** Rotates the mesh around the Y-axis.
@@ -200,6 +201,41 @@ from a specified center point, creating a variety of effects like bulging, inden
 * **Combining with Other Modifiers:** The Push-Pull Modifier can be combined with other modifiers to create more complex deformations.
 
 By understanding the basic principles and parameters of the Push-Pull Modifier, you can effectively use it to create a wide range of 3D shapes and effects.
+
+## Random Holes Modifier
+
+**Purpose:**
+
+The Random Holes Modifier is a tool designed to create holes of varying sizes in a 3D mesh. It applies a random scaling factor to each face of the mesh, effectively shrinking the face and creating a hole.
+
+**How it works:**
+
+1. **Random Scale Factor:** For each face in the mesh, a random scale factor is generated between the specified minAmount and maxAmount.
+2. **Face Scaling:** The selected face is scaled inward using the ExtrudeModifier with the generated scale factor.
+3. **Hole Creation:** As the face is scaled inward, it creates a hole in the mesh.
+
+**Using the Random Holes Modifier:**
+
+1. **Create a Mesh:** Start with a basic 3D mesh, such as a plane, cube, or sphere.
+2. **Apply the Modifier:** Create an instance of the `RandomHolesModifier` class, specifying the desired parameters.
+3. **Modify the Mesh:** Apply the `modify` method of the `RandomHolesModifier` to the mesh.
+
+**Parameters:**
+
+* **minAmount:** The minimum scale factor for the faces.
+* **maxAmount:** The maximum scale factor for the faces.
+* **seed:** A seed value for the random number generator.
+
+**Example:**
+
+```java
+Mesh3D mesh = new CubeCreator().create();
+RandomHolesModifier modifier = new RandomHolesModifier(0.2f, 0.8f);
+modifier.setSeed(1234); // Set a specific seed for reproducible results
+modifier.modify(mesh);
+```
+
+This code will create a cube and then randomly scale each face of the cube, creating holes of varying sizes. The holes will range in size from 20% to 80% of the original face size.
 
 ## Translate Modifier
 
