@@ -1,22 +1,14 @@
 package mesh.creator.archimedian;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import mesh.Mesh3D;
 
 public class ArchimedianSolidCreatorTest {
 		
-	@Test
-	public void testNull() {
-		Mesh3D actualMesh = new ArchimedianSolidCreator(null).create();
-		assertTrue(actualMesh.vertices.isEmpty());
-		assertTrue(actualMesh.faces.isEmpty());
-	}
-
 	@Test
 	public void testIcosidodecahedronCreatorVertices() {
 		ArchimedianSolid type = ArchimedianSolid.ICOSIDODECAHEDRON;

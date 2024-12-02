@@ -2,7 +2,7 @@ package bugs;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import mesh.Mesh3D;
 import mesh.creator.special.VariableCylinderCreator;
