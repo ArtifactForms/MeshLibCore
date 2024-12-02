@@ -1,7 +1,5 @@
 package mesh.util;
 
-import java.util.Arrays;
-
 import math.Mathf;
 import math.Matrix3f;
 import math.Vector3f;
@@ -9,13 +7,6 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 
 public class Mesh3DUtil {
-
-    public static void flipDirection(Mesh3D mesh, Face3D face) {
-        int[] copy = Arrays.copyOf(face.indices, face.indices.length);
-        for (int i = 0; i < face.indices.length; i++) {
-            face.indices[i] = copy[face.indices.length - 1 - i];
-        }
-    }
 
     public static float perimeter(Mesh3D mesh, Face3D face) {
         float perimeter = 0;

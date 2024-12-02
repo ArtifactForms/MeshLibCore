@@ -5,6 +5,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.FlipFacesModifier;
 import mesh.modifier.TranslateModifier;
 import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
@@ -29,6 +30,8 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 
 	private Mesh3D[][] cubes;
 
+	private FlipFacesModifier flipFacesModifier;
+
 	public CubeJointLatticeCylinderCreator() {
 		vertices = 32;
 		subdivisionsY = 3;
@@ -37,6 +40,7 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 		jointSize = 0.01f;
 		scale0 = 0.5f;
 		scale1 = 0.5f;
+		flipFacesModifier = new FlipFacesModifier();
 	}
 
 	@Override
@@ -81,7 +85,8 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 		Face3D f1 = cubes[i][(j + 1) % cubes[0].length].faces.get(5);
 		Mesh3DUtil.extrudeFace(mesh, f0, scale0, 0.0f);
 		Mesh3DUtil.extrudeFace(mesh, f1, scale0, 0.0f);
-		Mesh3DUtil.flipDirection(mesh, f1);
+		flipFacesModifier.modify(mesh, f1);
+
 		FaceBridging.bridge(mesh, f0, f1);
 		mesh.faces.remove(f0);
 		mesh.faces.remove(f1);
@@ -91,7 +96,7 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 			Face3D f3 = cubes[i + 1][j].faces.get(0);
 			Mesh3DUtil.extrudeFace(mesh, f2, scale1, 0.0f);
 			Mesh3DUtil.extrudeFace(mesh, f3, scale1, 0.0f);
-			Mesh3DUtil.flipDirection(mesh, f3);
+			flipFacesModifier.modify(mesh, f3);
 			FaceBridging.bridge(mesh, f2, f3);
 			mesh.faces.remove(f2);
 			mesh.faces.remove(f3);

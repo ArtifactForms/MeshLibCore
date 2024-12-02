@@ -4,6 +4,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.FlipFacesModifier;
 import mesh.modifier.TranslateModifier;
 import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
@@ -28,6 +29,8 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 
 	private Mesh3D[][] cubes;
 
+	private FlipFacesModifier flipFacesModifier;
+
 	public CubeJointLatticeCreator() {
 		subdivisionsX = 10;
 		subdivisionsY = 10;
@@ -36,6 +39,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		jointSize = 0.01f;
 		scaleX = 0.5f;
 		scaleY = 0.5f;
+		flipFacesModifier = new FlipFacesModifier();
 	}
 
 	@Override
@@ -103,7 +107,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 	}
 
 	private void flipDirection(Face3D face) {
-		Mesh3DUtil.flipDirection(mesh, face);
+		flipFacesModifier.modify(mesh, face);
 	}
 
 	private void extrude(Face3D face, float scale) {
