@@ -104,6 +104,7 @@ desired effects.
 * **RotateZModifier:** Rotates the mesh around the Z-axis.
 * **ScaleModifier:** Scales the mesh uniformly or non-uniformly.
 * **SmoothModifier:** Smoothes the mesh by averaging vertex positions.
+* **SnapToGroundModifier:**
 * **SolidifyModifier:** Adds thickness to the faces of the mesh.
 * **SpherifyModifier:** Spherifies the mesh.
 * **TranslateModifier:** Translates the mesh.
@@ -236,6 +237,46 @@ modifier.modify(mesh);
 ```
 
 This code will create a cube and then randomly scale each face of the cube, creating holes of varying sizes. The holes will range in size from 20% to 80% of the original face size.
+
+## Snap to Ground Modifier
+
+**Purpose:**
+
+The Snap to Ground Modifier is a tool designed to align the lowest point of a 3D mesh with a specified ground level. This is useful for various scenarios, such as terrain modeling, architectural visualization, and game development.
+
+**How it works:**
+
+1. **Find the Lowest Point:** The modifier identifies the vertex with the lowest Y-coordinate in the mesh.
+2. **Calculate the Distance:** The distance between the lowest point and the specified ground level is calculated.
+3. **Translate the Mesh:** The entire mesh is translated upwards by the calculated distance, effectively aligning the lowest point with the ground level.
+
+**Using the Snap to Ground Modifier:**
+
+1. **Create a Mesh:** Start with a 3D mesh, such as a cube, sphere, or custom-shaped mesh.
+2. **Create the Modifier:** Instantiate a `SnapToGroundModifier` object and optionally set the desired ground level.
+3. **Modify the Mesh:** Apply the `modify` method of the modifier to the mesh.
+
+**Example:**
+
+```java
+// Create a cube
+Mesh3D cube = new CubeCreator().create();
+
+// Move the cube upwards
+cube.apply(new TranslateModifier(0, 10, 0));
+
+// Create a SnapToGroundModifier with ground level 0
+SnapToGroundModifier modifier = new SnapToGroundModifier(0);
+
+// Apply the modifier to the cube
+modifier.modify(cube);
+```
+
+**Limitations:**
+
+* **Simple Ground Plane:** The modifier assumes a flat, horizontal ground plane. It may not work as expected with complex terrain or curved surfaces.
+* **Mesh Orientation:** The Y-axis is assumed to be the vertical axis. For meshes with different orientations, the modifier might not produce the desired results.
+* **Mesh Topology:** The modifier works best with simple, closed meshes. Complex meshes with holes or self-intersections may require additional processing.
 
 ## Translate Modifier
 
