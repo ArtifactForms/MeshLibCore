@@ -15,7 +15,7 @@ public class VariableCylinderBugTest {
      * instead of z Wrong rotation makes this test fail.
      */
     @Test
-    public void triggerBug() {
+    public void testTriggerBug() {
         float rotationSegments = 15.850006f;
         VariableCylinderCreator creator = new VariableCylinderCreator();
         creator.setRotationSegments((int) rotationSegments);
