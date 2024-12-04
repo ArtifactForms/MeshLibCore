@@ -169,6 +169,47 @@ mesh.apply(modifier); // Apply the modifier to the mesh
 
 By understanding the basic principles and parameters of the Bend Modifier, you can effectively use it to create a wide range of 3D shapes and effects.
 
+## Noise Modifier
+
+**Purpose:**
+
+The Noise Modifier is a versatile tool for adding random variations to the vertex positions of a 3D mesh. It can be used to create a variety of effects, such as adding wrinkles to a surface, creating organic shapes, or simulating natural phenomena like turbulence or wind.
+
+**How it Works:**
+
+1. **Random Noise Generation:**
+   * A random number generator is used to create a random value for each vertex.
+   * The range of the random values is determined by the `minimum` and `maximum` parameters.
+2. **Vertex Displacement:**
+   * The random value is multiplied by the vertex's normal vector.
+   * The resulting vector is added to the vertex's position, effectively displacing the vertex along its normal direction.
+3. **Seed Value:**
+   * The `seed` parameter allows you to control the randomness of the noise. By setting the same seed value, you can generate the same noise pattern multiple times.
+
+**Using the Noise Modifier:**
+
+1. **Create a Mesh:** Start with a basic 3D mesh, such as a plane, cube, or sphere.
+2. **Apply the Modifier:** Create an instance of the `NoiseModifier` class, specifying the desired `minimum`, `maximum`, and `seed` values.
+3. **Modify the Mesh:** Apply the `modify` method of the `NoiseModifier` to the mesh.
+
+**Example:**
+
+```java
+Mesh3D mesh = new CubeCreator().create();
+NoiseModifier noiseModifier = new NoiseModifier(-0.1f, 0.1f);
+noiseModifier.setSeed(1234);
+mesh.apply(noiseModifier);
+```
+
+**Additional Considerations:**
+
+* **Noise Intensity:** The ```minimum``` and ```maximum``` parameters control the intensity of the noise. Higher values will result in more pronounced deformations.
+* **Seed Value:** The ```seed``` value allows you to control the randomness of the noise. By setting the same seed value, you can generate the same noise pattern multiple times.
+* **Mesh Topology:** The effectiveness of the Noise Modifier can be influenced by the mesh topology. For complex meshes, additional considerations may be necessary.
+* **Combining with Other Modifiers:** The Noise Modifier can be combined with other modifiers to create more complex deformations.
+
+By understanding the basic principles and parameters of the Noise Modifier, you can effectively use it to add organic and natural-looking variations to your 3D models.
+
 ## Push-Pull Modifier
 
 **Purpose:**
