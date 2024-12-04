@@ -89,7 +89,7 @@ desired effects.
 * **BevelFacesModifier:** Creates a bevel around the faces of the mesh.
 * **BevelVerticesModifier:** Creates a bevel around the vertices of the mesh.
 * **CenterAtModifier:** Centers the mesh at a specific point.
-* **CrocodileModifier:**Aadds spikes to a mesh by applying the Ambo operation and creating triangular spikes on according faces.
+* **CrocodileModifier:** Adds spikes to a mesh by applying the Ambo operation and creating triangular spikes on according faces.
 * **ExtrudeModifier:** Extrudes the faces of the mesh along their normals.
 * **FitToAABBModifier:** Scales and **/translates???/** the mesh to fit within an axis-aligned bounding box.
 * **FlipFacesModifier:** Flips the orientation of the faces of the mesh.
