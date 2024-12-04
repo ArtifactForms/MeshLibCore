@@ -13,10 +13,10 @@ import util.MeshTestUtil;
 /**
  * Modifier removed faces.
  */
-public class BevelFacesModifierBug {
+public class BevelFacesModifierBugTest {
 
     @Test
-    public void test() {
+    public void testManifold() {
         IcosahedronCreator creator = new IcosahedronCreator();
         Mesh3D mesh = creator.create();
         mesh.apply(new BevelFacesModifier());
