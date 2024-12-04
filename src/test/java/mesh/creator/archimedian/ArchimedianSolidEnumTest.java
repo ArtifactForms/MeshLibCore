@@ -1,9 +1,9 @@
 package mesh.creator.archimedian;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -15,7 +15,7 @@ public class ArchimedianSolidEnumTest {
      * are represented.
      */
     @Test
-    public void verifiesExpectedNumberOfArchimedeanSolids() {
+    public void testExpectedNumberOfArchimedeanSolids() {
         assertEquals(13, ArchimedianSolid.values().length);
     }
 
