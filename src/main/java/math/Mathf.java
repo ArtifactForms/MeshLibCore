@@ -950,4 +950,29 @@ public class Mathf {
 		return (float) (a - b * Math.floor(a / b));
 	}
 
+	/**
+	 * Normalizes the input angle to the range [0, 2π] in radians.
+	 *
+	 * Small values close to zero (less than 1e-6) are snapped to zero to handle
+	 * floating-point precision issues.
+	 *
+	 * @param angle The input angle in radians.
+	 * @return The normalized angle in the range [0, 2π].
+	 */
+	public static float normalizeAngle(float angle) {
+		float smallAngleThreshold = 1e-6f;
+
+		angle = angle % (2 * Mathf.PI);
+
+		if (Mathf.abs(angle) < smallAngleThreshold) {
+			angle = 0;
+		}
+
+		if (angle < 0) {
+			angle += 2 * Mathf.PI;
+		}
+
+		return angle;
+	}
+
 }
