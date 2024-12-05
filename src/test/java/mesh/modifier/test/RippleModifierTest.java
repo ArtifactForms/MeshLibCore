@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import math.Mathf;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
@@ -93,18 +94,6 @@ public class RippleModifierTest {
 	}
 
 	@Test
-	public void testDefaultPhaseShift() {
-		assertEquals(0, modifier.getPhaseShift());
-	}
-
-	@ParameterizedTest
-	@ValueSource(floats = { 10.0f, 4.44f, 100.245f })
-	public void testGetSetPhase(float phaseShift) {
-		modifier.setPhaseShift(phaseShift);
-		assertEquals(phaseShift, modifier.getPhaseShift());
-	}
-
-	@Test
 	public void testDefaultDecayFactor() {
 		assertEquals(0.1f, modifier.getDecayFactor());
 	}
@@ -128,11 +117,8 @@ public class RippleModifierTest {
 
 	@Test
 	public void testGetSetCenter() {
-		Vector3f[] centers = new Vector3f[] { 
-				new Vector3f(-0.134f, 1, 10.4f), 
-				new Vector3f(102.34f, 332.431f, -0.4f),
-				new Vector3f(46.34f, -32.432f, 0.134f), 
-				new Vector3f(0.001f, 0.32f, -2.34f) };
+		Vector3f[] centers = new Vector3f[] { new Vector3f(-0.134f, 1, 10.4f), new Vector3f(102.34f, 332.431f, -0.4f),
+				new Vector3f(46.34f, -32.432f, 0.134f), new Vector3f(0.001f, 0.32f, -2.34f) };
 		for (int i = 0; i < centers.length; i++) {
 			modifier.setCenter(centers[i]);
 			assertEquals(centers[i], modifier.getCenter());
@@ -160,12 +146,127 @@ public class RippleModifierTest {
 			modifier.setWaveLength(waveLength);
 		});
 	}
-	
+
 	@Test
 	public void testModifyNullMeshThrowsIllegalArgumentException() {
 		assertThrows(IllegalArgumentException.class, () -> {
 			modifier.modify(null);
 		});
+	}
+
+	@Test
+	public void testNegativeAmplitude1ThrowsException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			modifier.setAmplitude1(-1);
+		});
+	}
+
+	@Test
+	public void testNegativeAmplitude2ThrowsException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			modifier.setAmplitude2(-1);
+		});
+	}
+
+	@Test
+	public void testDefaultDirection() {
+		Vector3f expected = new Vector3f(0, -1, 0);
+		assertEquals(expected, modifier.getDirection());
+	}
+
+	@Test
+	public void setNullDirectionThrowsException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			modifier.setDirection(null);
+		});
+	}
+
+	@Test
+	public void testDirectionIsNormalizedByDefault() {
+		float length = modifier.getDirection().length();
+		assertEquals(1, length);
+	}
+
+	@Test
+	public void testSetDirectionNormalizesDirection() {
+		Vector3f direction = new Vector3f(5, 43.45f, 1);
+		modifier.setDirection(direction);
+		float length = modifier.getDirection().length();
+		assertEquals(1, length, 0.0001f);
+	}
+
+	@Test
+	public void testDirectionIsNormalizedInternally() {
+		Vector3f expected = new Vector3f(1, 3.556f, 2.345f);
+		Vector3f direction = new Vector3f(expected);
+		modifier.setDirection(direction);
+		assertEquals(expected, direction);
+	}
+
+	@Test
+	public void testDefaultPhaseShift() {
+		assertEquals(0, modifier.getPhaseShift());
+	}
+
+	@Test
+	public void testPhaseShiftMultiplesOfTwoPi() {
+		float expected = Mathf.TWO_PI;
+		modifier.setPhaseShift(expected * 4);
+		assertEquals(0, modifier.getPhaseShift());
+	}
+
+	@ParameterizedTest
+	@ValueSource(floats = { 0, Mathf.HALF_PI, Mathf.QUARTER_PI })
+	public void testGetSetPhaseShift(float phaseShift) {
+		modifier.setPhaseShift(phaseShift);
+		assertEquals(phaseShift, modifier.getPhaseShift());
+	}
+
+	@Test
+	public void testSetPhaseShiftPositive() {
+		RippleModifier modifier = new RippleModifier();
+		modifier.setPhaseShift(1.5f);
+		assertEquals(1.5f, modifier.getPhaseShift(), 0.001);
+	}
+
+	@Test
+	public void testSetPhaseShiftNegative() {
+		RippleModifier modifier = new RippleModifier();
+		modifier.setPhaseShift(-2.0f);
+		assertEquals(Math.PI * 2 - 2.0f, modifier.getPhaseShift(), 0.001);
+	}
+
+	@Test
+	public void testSetPhaseShiftZero() {
+		RippleModifier modifier = new RippleModifier();
+		modifier.setPhaseShift(0.0f);
+		assertEquals(0.0f, modifier.getPhaseShift(), 0.001);
+	}
+
+	@Test
+	public void testSetPhaseShiftLargePositive() {
+		RippleModifier modifier = new RippleModifier();
+		modifier.setPhaseShift(Mathf.PI * 10);
+		assertEquals(0.0f, modifier.getPhaseShift(), 0.001);
+	}
+
+	@Test
+	public void testSetPhaseShiftLargeNegative() {
+		RippleModifier modifier = new RippleModifier();
+		modifier.setPhaseShift(-Mathf.PI * 10);
+		assertEquals(0.0f, modifier.getPhaseShift(), 0.001);
+	}
+
+	@Test
+	public void testSetPhaseShiftExactlyTwoPi() {
+		modifier.setPhaseShift(Mathf.TWO_PI);
+		assertEquals(0.0f, modifier.getPhaseShift(), 0.001);
+	}
+
+	@Test
+	public void testSetPhaseShiftVerySmallPositive() {
+		modifier.setPhaseShift(0.0001f);
+		assertEquals(0.0001f, modifier.getPhaseShift(), 0.001);
 	}
 
 }
