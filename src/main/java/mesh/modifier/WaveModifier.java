@@ -118,25 +118,6 @@ public class WaveModifier implements IMeshModifier {
 	 * Applies a wave deformation to a single vertex based on a sinusoidal wave
 	 * equation.
 	 * 
-	 * <pre>
-	 * The wave function is defined as:
-	 *  
-	 * y = A ⋅ sin((2π / λ) ⋅ (D ⋅ P) + ϕ)
-	 * 
-	 * where:
-	 * 
-	 * A: Amplitude - the height of the wave peaks.
-	 * λ: Wavelength - the distance between consecutive wave peaks.
-	 * D: Direction - a unit vector representing the direction of wave
-	 * propagation.
-	 * <P: Vertex position - the position of the vertex in 3D space.
-	 * ϕ: Phase - an offset used to animate or shift the wave over time.
-	 * 
-	 * The vertex's position is projected onto the wave's direction, and 
-	 * the wave offset is calculated and added to the y-coordinate,
-	 * simulating the effect of a wave.
-	 * </pre>
-	 * 
 	 * @param vertex The 3D vertex to which the wave deformation is applied. The
 	 *               vertex's position is directly modified in place.
 	 * @throws NullPointerException if the vertex is null.
