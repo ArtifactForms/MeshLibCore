@@ -65,8 +65,9 @@ public class ScaleModifier implements IMeshModifier {
 	 */
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		if (mesh == null)
+		if (mesh == null) {
 			throw new IllegalArgumentException("Mesh cannot be null.");
+		}
 		if (mesh.vertices.isEmpty()) {
 			return mesh;
 		}
