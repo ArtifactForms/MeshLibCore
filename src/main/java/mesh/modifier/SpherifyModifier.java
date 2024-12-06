@@ -52,7 +52,8 @@ public class SpherifyModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Modifies the given mesh by spherifying its vertices.
+	 * Modifies the given mesh by spherifying its vertices. If the provided mesh
+	 * contains no vertices, the method safely returns the mesh without changes.
 	 *
 	 * @param mesh the mesh to modify. Cannot be {@code null}.
 	 * @return the modified mesh.
@@ -60,8 +61,12 @@ public class SpherifyModifier implements IMeshModifier {
 	 */
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		if (mesh == null)
+		if (mesh == null) {
 			throw new IllegalArgumentException("Mesh cannot be null.");
+		}
+		if (mesh.vertices.isEmpty()) {
+			return mesh;
+		}
 		setMesh(mesh);
 		spherify();
 		return mesh;
