@@ -25,6 +25,9 @@ public class FlipFacesModifier implements IMeshModifier, FaceModifier {
 	 */
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
+		if (mesh == null) {
+			throw new IllegalArgumentException("Mesh cannot be null.");
+		}
 		return modify(mesh, mesh.faces);
 	}
 
