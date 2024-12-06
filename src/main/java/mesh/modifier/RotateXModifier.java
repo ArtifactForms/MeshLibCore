@@ -60,7 +60,7 @@ public class RotateXModifier implements IMeshModifier {
 	 * 
 	 * This method applies the rotation transformation to each vertex of the
 	 * provided mesh in parallel. It uses synchronization to ensure thread safety
-	 * during the transformation. If the provided mesh is null or contains no
+	 * during the transformation. If the provided mesh contains no
 	 * vertices, the method safely returns the mesh without changes.
 	 * 
 	 * @param mesh the 3D mesh to rotate (must not be null)
