@@ -18,7 +18,7 @@ public class BendModifier implements IMeshModifier {
 	 * A very small value used to determine if the bending factor is effectively
 	 * zero.
 	 */
-	public static final float EPSILON = 1e-7f;
+	private static final float EPSILON = 1e-7f;
 
 	/**
 	 * The bending factor determining the degree of bending along the X-axis.
