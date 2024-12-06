@@ -66,7 +66,7 @@ public class BendModifier implements IMeshModifier {
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
 		if (mesh == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Mesh cannot be null.");
 		}
 		if (mesh.vertices.isEmpty()) {
 			return mesh;
