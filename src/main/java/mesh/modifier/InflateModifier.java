@@ -99,7 +99,7 @@ public class InflateModifier implements IMeshModifier {
 	 */
 	private void inflate() {
 		for (int index = 0; index < mesh.getVertexCount(); index++) {
-			inflateVertexAtt(index);
+			inflateVertexAt(index);
 		}
 	}
 
@@ -109,7 +109,7 @@ public class InflateModifier implements IMeshModifier {
 	 * 
 	 * @param index the index of the vertex to inflate
 	 */
-	private void inflateVertexAtt(int index) {
+	private void inflateVertexAt(int index) {
 		Vector3f vertex = mesh.getVertexAt(index);
 		Vector3f normal = vertexNormals.get(index);
 		vertex.addLocal(normal.mult(inflationAmount));
