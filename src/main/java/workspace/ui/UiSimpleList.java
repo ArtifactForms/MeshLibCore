@@ -24,7 +24,7 @@ public class UiSimpleList extends UiComponent {
 
     @Override
     public void onDraw(Graphics g) {
-        int y = 300;
+        float y = 300;
         int padding = 5;
         int gap = 5;
 
