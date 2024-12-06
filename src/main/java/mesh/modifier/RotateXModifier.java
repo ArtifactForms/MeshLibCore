@@ -12,9 +12,6 @@ import mesh.Mesh3D;
  * transformation to a given mesh. The rotation is defined by an angle in
  * radians. It modifies the vertices of the mesh in place using a computed
  * rotation matrix.
- * 
- * This class ensures thread-safe vertex transformations using synchronized
- * blocks during parallel execution with `parallelStream`.
  */
 public class RotateXModifier implements IMeshModifier {
 
@@ -58,10 +55,8 @@ public class RotateXModifier implements IMeshModifier {
 	 * Modifies the provided mesh by applying a rotation transformation around the
 	 * X-axis.
 	 * 
-	 * This method applies the rotation transformation to each vertex of the
-	 * provided mesh in parallel. It uses synchronization to ensure thread safety
-	 * during the transformation. If the provided mesh contains no
-	 * vertices, the method safely returns the mesh without changes.
+	 * If the provided mesh contains no vertices, the method safely returns the mesh
+	 * without changes.
 	 * 
 	 * @param mesh the 3D mesh to rotate (must not be null)
 	 * @return the modified mesh after rotation
@@ -102,15 +97,10 @@ public class RotateXModifier implements IMeshModifier {
 
 	/**
 	 * Applies the rotation transformation to all vertices of the mesh using
-	 * parallel execution. Thread-safe transformations are ensured by synchronizing
-	 * on individual vertices.
+	 * parallel execution.
 	 */
 	private void rotateMesh() {
-		mesh.vertices.parallelStream().forEach(vertex -> {
-			synchronized (vertex) {
-				applyRotationToVertex(vertex);
-			}
-		});
+		mesh.vertices.parallelStream().forEach(this::applyRotationToVertex);
 	}
 
 	/**
