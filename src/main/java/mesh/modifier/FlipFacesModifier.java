@@ -58,9 +58,7 @@ public class FlipFacesModifier implements IMeshModifier, FaceModifier {
 		if (faces.isEmpty()) {
 			return mesh;
 		}
-		for (Face3D face : faces) {
-			invertFaceIndices(face);
-		}
+		faces.parallelStream().forEach(this::invertFaceIndices);
 		return mesh;
 	}
 
