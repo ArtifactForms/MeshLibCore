@@ -21,6 +21,23 @@ public class BendModifier implements IMeshModifier {
 		this.factor = factor;
 	}
 
+	@Override
+	public Mesh3D modify(Mesh3D mesh) {
+		if (mesh == null) {
+			throw new IllegalArgumentException();
+		}
+		if (mesh.vertices.isEmpty()) {
+			return mesh;
+		}
+		if (isFactorValid())
+			bend(mesh);
+		return mesh;
+	}
+
+	private void bend(Mesh3D mesh) {
+		mesh.vertices.parallelStream().forEach(this::simpleDeformBend);
+	}
+
 	private void simpleDeformBend(Vector3f v) {
 		float theta = v.x * factor;
 		float sinTheta = Mathf.sin(theta);
@@ -29,24 +46,12 @@ public class BendModifier implements IMeshModifier {
 		float bx = -(v.y - 1.0f / factor) * sinTheta;
 		float by = (v.y - 1.0f / factor) * cosTheta + 1.0f / factor;
 		float bz = v.z;
-		
+
 		v.set(bx, by, bz);
 	}
-	
-	private void bend(Mesh3D mesh) {
-		for (Vector3f v : mesh.vertices)
-			simpleDeformBend(v);
-	}
-	
+
 	private boolean isFactorValid() {
 		return Mathf.abs(factor) > EPSILON;
-	}
-
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		if (isFactorValid())
-			bend(mesh);
-		return mesh;
 	}
 
 	public float getFactor() {
