@@ -96,8 +96,8 @@ public class RotateZModifier implements IMeshModifier {
 	private void updateRotationMatrix() {
 		rotationMatrix.set(
 				Mathf.cos(angle), -Mathf.sin(angle), 0,
-                Mathf.sin(angle), Mathf.cos(angle), 0, 
-                0, 0, 1);
+				Mathf.sin(angle), Mathf.cos(angle), 0, 
+				0, 0, 1);
 	}
 
 	/**
