@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/" # This matches your new project structure
+    schedule:
+      interval: "daily"
