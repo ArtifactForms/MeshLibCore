@@ -45,8 +45,9 @@ public class TranslateModifier implements IMeshModifier {
 	 * @throws IllegalArgumentException if the provided delta is null.
 	 */
 	public TranslateModifier(Vector3f delta) {
-		if (delta == null)
+		if (delta == null) {
 			throw new IllegalArgumentException("Delta cannot be null.");
+		}
 		this.delta = new Vector3f(delta);
 	}
 
@@ -66,11 +67,9 @@ public class TranslateModifier implements IMeshModifier {
 		if (mesh == null) {
 			throw new IllegalArgumentException("Mesh cannot be null.");
 		}
-
 		if (!mesh.vertices.isEmpty()) {
 			mesh.vertices.parallelStream().forEach(vertex -> vertex.addLocal(delta));
 		}
-
 		return mesh;
 	}
 
@@ -82,8 +81,9 @@ public class TranslateModifier implements IMeshModifier {
 	 * @throws IllegalArgumentException if the provided delta is null.
 	 */
 	public void setDelta(Vector3f delta) {
-		if (delta == null)
+		if (delta == null) {
 			throw new IllegalArgumentException("Delta cannot be null.");
+		}
 		this.delta.set(delta);
 	}
 
