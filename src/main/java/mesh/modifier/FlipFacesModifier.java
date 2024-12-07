@@ -7,8 +7,15 @@ import mesh.Mesh3D;
 
 /**
  * A modifier responsible for inverting the indices of 3D mesh faces. This is
- * typically used to reverse the winding order of faces, which can change
+ * typically used to reverse the winding order of faces, which can impact
  * rendering order, normal direction, or surface orientation.
+ *
+ * <p>
+ * Note: This modifier only flips the indices of the faces. It does not account
+ * for ensuring the correct order of vertices relative to surface normals or
+ * other geometric properties. Additional adjustments may be needed for proper
+ * rendering or normal recalculations.
+ * </p>
  *
  * <p>
  * Implements both single-face and collection-based operations to handle
