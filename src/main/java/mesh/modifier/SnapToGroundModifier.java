@@ -118,6 +118,11 @@ public class SnapToGroundModifier implements IMeshModifier {
 		return groundLevel;
 	}
 
+	/**
+	 * Sets the ground level that the mesh should be snapped to.
+	 *
+	 * @param groundLevel the ground level to set
+	 */
 	public void setGroundLevel(float groundLevel) {
 		this.groundLevel = groundLevel;
 	}
