@@ -15,235 +15,243 @@ import mesh.util.TraverseHelper;
 
 public class BevelEdgesModifier implements IMeshModifier {
 
-    private float inset;
+	public enum WidthType {
 
-    private float amount;
+		OFFSET,
 
-    private WidthType widthType = WidthType.OFFSET;
+		WIDTH,
 
-    private Mesh3D mesh;
+		DEPTH,
 
-    private List<Face3D> facesToAdd;
+	}
 
-    private List<Vector3f> verticesToAdd;
+	private float inset;
 
-    private HashMap<Edge3D, Edge3D> oldEdgeToNewEdge;
+	private float amount;
 
-    private HashSet<Edge3D> processed;
+	private WidthType widthType = WidthType.OFFSET;
 
-    public BevelEdgesModifier(float amount) {
-        setAmount(amount);
-        processed = new HashSet<>();
-        oldEdgeToNewEdge = new HashMap<>();
-        verticesToAdd = new ArrayList<Vector3f>();
-        facesToAdd = new ArrayList<Face3D>();
-    }
+	private Mesh3D mesh;
 
-    public BevelEdgesModifier() {
-        this(0.1f);
-    }
+	private List<Face3D> facesToAdd;
 
-    @Override
-    public Mesh3D modify(Mesh3D mesh) {
-        if (amount == 0)
-            return mesh;
-        setMesh(mesh);
-        clearAll();
-        createInsetFaces();
-        createFacesForOldEdges();
-        createFacesVertex();
-        clearOriginalFaces();
-        clearOriginalVertices();
-        addNewVertices();
-        addNewFaces();
-        return mesh;
-    }
+	private List<Vector3f> verticesToAdd;
 
-    private void createInsetFaces() {
-        for (Face3D face : mesh.faces)
-            insetFace(mesh, face);
-    }
+	private HashMap<Edge3D, Edge3D> oldEdgeToNewEdge;
 
-    private void insetFace(Mesh3D mesh, Face3D face) {
-        int nextVertexIndex = verticesToAdd.size();
-        int[] indices = createIndices(face.indices.length, nextVertexIndex);
-        List<Vector3f> vertices = new ArrayList<Vector3f>();
-        extracted(face, vertices);
-        extracted(vertices);
-        mapOldEdgesToNewEdges(face, indices);
-        addNewFace(indices);
-    }
+	private HashSet<Edge3D> processed;
 
-    private void extracted(Face3D face, List<Vector3f> vertices) {
-        for (int i = 0; i < face.indices.length; i++) {
-            Vector3f from = getVertexAt(face, i);
-            Vector3f to = getVertexAt(face, i + 1);
+	public BevelEdgesModifier(float amount) {
+		setAmount(amount);
+		processed = new HashSet<>();
+		oldEdgeToNewEdge = new HashMap<>();
+		verticesToAdd = new ArrayList<Vector3f>();
+		facesToAdd = new ArrayList<Face3D>();
+	}
 
-            float distance = to.distance(from);
-            float a = 1 / distance * getAmountByWidthType();
+	public BevelEdgesModifier() {
+		this(0.1f);
+	}
 
-            Vector3f v4 = to.subtract(from).mult(a).add(from);
-            Vector3f v5 = to.add(to.subtract(from).mult(-a));
+	@Override
+	public Mesh3D modify(Mesh3D mesh) {
+		if (amount == 0)
+			return mesh;
+		setMesh(mesh);
+		clearAll();
+		createInsetFaces();
+		createFacesForOldEdges();
+		createFacesVertex();
+		clearOriginalFaces();
+		clearOriginalVertices();
+		addNewVertices();
+		addNewFaces();
+		return mesh;
+	}
 
-            vertices.add(v4);
-            vertices.add(v5);
-        }
-    }
+	private void createInsetFaces() {
+		for (Face3D face : mesh.faces)
+			insetFace(mesh, face);
+	}
 
-    private float getAmountByWidthType() {
-        float a;
-        switch (widthType) {
-        case OFFSET:
-            // amount is offset of new edges from original
-            a = amount * 2;
-            break;
-        case WIDTH:
-            // amount is width of new faces
-            a = inset;
-            break;
-        case DEPTH:
-            a = inset * 2;
-            break;
-        default:
-            // default width type offset
-            a = amount * 2;
-            break;
-        }
-        return a;
-    }
+	private void insetFace(Mesh3D mesh, Face3D face) {
+		int nextVertexIndex = verticesToAdd.size();
+		int[] indices = createIndices(face.indices.length, nextVertexIndex);
+		List<Vector3f> vertices = new ArrayList<Vector3f>();
+		extracted(face, vertices);
+		extracted(vertices);
+		mapOldEdgesToNewEdges(face, indices);
+		addNewFace(indices);
+	}
 
-    private void extracted(List<Vector3f> vertices) {
-        for (int i = 1; i < vertices.size(); i += 2) {
-            int a = vertices.size() - 2 + i;
-            Vector3f v0 = vertices.get(a % vertices.size());
-            Vector3f v1 = vertices.get((a + 1) % vertices.size());
-            Vector3f v = v1.add(v0).mult(0.5f);
-            verticesToAdd.add(v);
-        }
-    }
+	private void extracted(Face3D face, List<Vector3f> vertices) {
+		for (int i = 0; i < face.indices.length; i++) {
+			Vector3f from = getVertexAt(face, i);
+			Vector3f to = getVertexAt(face, i + 1);
 
-    private void createFacesVertex() {
-        TraverseHelper helper = new TraverseHelper(mesh);
-        for (int i = 0; i < mesh.getVertexCount(); i++) {
-            Edge3D outgoingEdge = helper.getOutgoing(i);
-            Edge3D edge = outgoingEdge;
-            List<Integer> indices = new ArrayList<Integer>();
-            do {
-                Edge3D newEdge = oldEdgeToNewEdge.get(edge);
-                int index = newEdge.fromIndex;
-                indices.add(index);
-                edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
-            } while (!outgoingEdge.equals(edge));
-            facesToAdd.add(new Face3D(toReverseArray(indices)));
-        }
-    }
+			float distance = to.distance(from);
+			float a = 1 / distance * getAmountByWidthType();
 
-    private void createFacesForOldEdges() {
-        for (Face3D face : mesh.faces)
-            for (int i = 0; i < face.indices.length; i++)
-                createFaceForOldEdgeAt(face, i);
-    }
+			Vector3f v4 = to.subtract(from).mult(a).add(from);
+			Vector3f v5 = to.add(to.subtract(from).mult(-a));
 
-    private void createFaceForOldEdgeAt(Face3D face, int i) {
-        Edge3D edge = getMappedEdge(createEdgeAt(face.indices, i));
-        Edge3D pair = getMappedEdge(createEdgeAt(face.indices, i).createPair());
+			vertices.add(v4);
+			vertices.add(v5);
+		}
+	}
 
-        if (isProcessed(edge) || isProcessed(pair))
-            return;
+	private float getAmountByWidthType() {
+		float a;
+		switch (widthType) {
+		case OFFSET:
+			// amount is offset of new edges from original
+			a = amount * 2;
+			break;
+		case WIDTH:
+			// amount is width of new faces
+			a = inset;
+			break;
+		case DEPTH:
+			a = inset * 2;
+			break;
+		default:
+			// default width type offset
+			a = amount * 2;
+			break;
+		}
+		return a;
+	}
 
-        addNewFace(new int[] { edge.toIndex, edge.fromIndex, pair.toIndex,
-                pair.fromIndex });
+	private void extracted(List<Vector3f> vertices) {
+		for (int i = 1; i < vertices.size(); i += 2) {
+			int a = vertices.size() - 2 + i;
+			Vector3f v0 = vertices.get(a % vertices.size());
+			Vector3f v1 = vertices.get((a + 1) % vertices.size());
+			Vector3f v = v1.add(v0).mult(0.5f);
+			verticesToAdd.add(v);
+		}
+	}
 
-        markAsProcessed(edge);
-        markAsProcessed(pair);
-    }
+	private void createFacesVertex() {
+		TraverseHelper helper = new TraverseHelper(mesh);
+		for (int i = 0; i < mesh.getVertexCount(); i++) {
+			Edge3D outgoingEdge = helper.getOutgoing(i);
+			Edge3D edge = outgoingEdge;
+			List<Integer> indices = new ArrayList<Integer>();
+			do {
+				Edge3D newEdge = oldEdgeToNewEdge.get(edge);
+				int index = newEdge.fromIndex;
+				indices.add(index);
+				edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
+			} while (!outgoingEdge.equals(edge));
+			facesToAdd.add(new Face3D(toReverseArray(indices)));
+		}
+	}
 
-    private void mapOldEdgesToNewEdges(Face3D face, int[] indices) {
-        for (int i = 0; i < indices.length; i++) {
-            Edge3D oldEdge = createEdgeAt(face.indices, i);
-            Edge3D newEdge = createEdgeAt(indices, i);
-            oldEdgeToNewEdge.put(oldEdge, newEdge);
-        }
-    }
+	private void createFacesForOldEdges() {
+		for (Face3D face : mesh.faces)
+			for (int i = 0; i < face.indices.length; i++)
+				createFaceForOldEdgeAt(face, i);
+	}
 
-    private Edge3D getMappedEdge(Edge3D edge) {
-        return oldEdgeToNewEdge.get(edge);
-    }
+	private void createFaceForOldEdgeAt(Face3D face, int i) {
+		Edge3D edge = getMappedEdge(createEdgeAt(face.indices, i));
+		Edge3D pair = getMappedEdge(createEdgeAt(face.indices, i).createPair());
 
-    private Edge3D createEdgeAt(int[] indices, int i) {
-        return new Edge3D(indices[i], indices[(i + 1) % indices.length]);
-    }
+		if (isProcessed(edge) || isProcessed(pair))
+			return;
 
-    private int[] createIndices(int size, int nextVertexIndex) {
-        int[] indices = new int[size];
-        for (int i = 0; i < indices.length; i++)
-            indices[i] = nextVertexIndex + i;
-        return indices;
-    }
+		addNewFace(new int[] { edge.toIndex, edge.fromIndex, pair.toIndex, pair.fromIndex });
 
-    private int[] toReverseArray(List<Integer> values) {
-        return values.stream().sorted(Collections.reverseOrder())
-                .mapToInt(x -> x).toArray();
-    }
+		markAsProcessed(edge);
+		markAsProcessed(pair);
+	}
 
-    private void clearAll() {
-        processed.clear();
-        oldEdgeToNewEdge.clear();
-        verticesToAdd.clear();
-        facesToAdd.clear();
-    }
+	private void mapOldEdgesToNewEdges(Face3D face, int[] indices) {
+		for (int i = 0; i < indices.length; i++) {
+			Edge3D oldEdge = createEdgeAt(face.indices, i);
+			Edge3D newEdge = createEdgeAt(indices, i);
+			oldEdgeToNewEdge.put(oldEdge, newEdge);
+		}
+	}
 
-    private void markAsProcessed(Edge3D edge) {
-        processed.add(edge);
-    }
+	private Edge3D getMappedEdge(Edge3D edge) {
+		return oldEdgeToNewEdge.get(edge);
+	}
 
-    private boolean isProcessed(Edge3D edge) {
-        return processed.contains(edge);
-    }
+	private Edge3D createEdgeAt(int[] indices, int i) {
+		return new Edge3D(indices[i], indices[(i + 1) % indices.length]);
+	}
 
-    private Vector3f getVertexAt(Face3D face, int index) {
-        return mesh.getVertexAt(face.indices[index % face.indices.length]);
-    }
+	private int[] createIndices(int size, int nextVertexIndex) {
+		int[] indices = new int[size];
+		for (int i = 0; i < indices.length; i++)
+			indices[i] = nextVertexIndex + i;
+		return indices;
+	}
 
-    private void addNewVertices() {
-        mesh.vertices.addAll(verticesToAdd);
-    }
+	private int[] toReverseArray(List<Integer> values) {
+		return values.stream().sorted(Collections.reverseOrder()).mapToInt(x -> x).toArray();
+	}
 
-    private void addNewFaces() {
-        mesh.faces.addAll(facesToAdd);
-    }
+	private void clearAll() {
+		processed.clear();
+		oldEdgeToNewEdge.clear();
+		verticesToAdd.clear();
+		facesToAdd.clear();
+	}
 
-    private void clearOriginalVertices() {
-        mesh.vertices.clear();
-    }
+	private void markAsProcessed(Edge3D edge) {
+		processed.add(edge);
+	}
 
-    private void clearOriginalFaces() {
-        mesh.faces.clear();
-    }
+	private boolean isProcessed(Edge3D edge) {
+		return processed.contains(edge);
+	}
 
-    private void addNewFace(int[] indices) {
-        facesToAdd.add(new Face3D(indices));
-    }
+	private Vector3f getVertexAt(Face3D face, int index) {
+		return mesh.getVertexAt(face.indices[index % face.indices.length]);
+	}
 
-    private void setMesh(Mesh3D mesh) {
-        this.mesh = mesh;
-    }
+	private void addNewVertices() {
+		mesh.vertices.addAll(verticesToAdd);
+	}
 
-    public void setAmount(float amount) {
-        this.amount = amount;
-        updateInset();
-    }
+	private void addNewFaces() {
+		mesh.faces.addAll(facesToAdd);
+	}
 
-    private void updateInset() {
-        inset = Mathf.sqrt((amount * amount) + (amount * amount));
-    }
+	private void clearOriginalVertices() {
+		mesh.vertices.clear();
+	}
 
-    public WidthType getWidthType() {
-        return widthType;
-    }
+	private void clearOriginalFaces() {
+		mesh.faces.clear();
+	}
 
-    public void setWidthType(WidthType widthType) {
-        this.widthType = widthType;
-    }
+	private void addNewFace(int[] indices) {
+		facesToAdd.add(new Face3D(indices));
+	}
+
+	private void setMesh(Mesh3D mesh) {
+		this.mesh = mesh;
+	}
+
+	public void setAmount(float amount) {
+		this.amount = amount;
+		updateInset();
+	}
+
+	private void updateInset() {
+		inset = Mathf.sqrt((amount * amount) + (amount * amount));
+	}
+
+	public WidthType getWidthType() {
+		return widthType;
+	}
+
+	public void setWidthType(WidthType widthType) {
+		this.widthType = widthType;
+	}
 
 }
