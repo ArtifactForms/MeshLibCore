@@ -1,18 +1,15 @@
 package mesh.creator.creative;
 
-import java.util.List;
-
 import math.Vector3f;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.CenterAtModifier;
+import mesh.modifier.ExtrudeModifier;
 import mesh.modifier.SolidifyModifier;
 import mesh.modifier.TranslateModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
 import mesh.selection.FaceSelection;
-import mesh.util.Mesh3DUtil;
 
 public class CubicLatticeCreator implements IMeshCreator {
 
@@ -47,10 +44,11 @@ public class CubicLatticeCreator implements IMeshCreator {
 
 	private Mesh3D createSegment() {
 		Mesh3D mesh = new CubeCreator().create();
-		List<Face3D> faces = mesh.getFaces();
-		for (Face3D face : faces)
-			Mesh3DUtil.extrudeFace(mesh, face, 1.0f, 0.5f);
-		mesh.faces.removeAll(faces);
+		ExtrudeModifier modifier = new ExtrudeModifier();
+		modifier.setScale(1.0f);
+		modifier.setAmount(0.5f);
+		modifier.setRemoveFaces(true);
+		modifier.modify(mesh);
 		return mesh;
 	}
 

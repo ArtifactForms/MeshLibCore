@@ -99,6 +99,7 @@ desired effects.
 * **PushPullModifier:** Pushes or pulls vertices towards or away from a specified center point.
 * **RandomHolesModifier:**
 * **RemoveDoubleVerticesModifier:** Removes duplicate vertices from the mesh.
+* **RippleModifier:** Applies a ripple effect based on sinusoidal wave functions.
 * **RotateXModifier:** Rotates the mesh around the X-axis.
 * **RotateYModifier:** Rotates the mesh around the Y-axis.
 * **RotateZModifier:** Rotates the mesh around the Z-axis.
@@ -109,6 +110,7 @@ desired effects.
 * **SpherifyModifier:** Spherifies the mesh.
 * **TranslateModifier:** Translates the mesh.
 * **UpdateFaceNormalsModifier** Updates the face normals of the mesh.
+* **WaveModifier:** Applies a wave-like deformation, simulating the appearance of sinusoidal wave.
 * **WireframeModifier:** Converts the mesh to a wireframe representation.
 
 ## Subdivision Modifiers

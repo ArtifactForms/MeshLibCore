@@ -5,29 +5,113 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import math.Mathf;
-import math.Matrix3f;
 import math.Vector3f;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.RemoveDoubleVerticesModifier;
+import mesh.modifier.RotateYModifier;
+import mesh.modifier.RotateZModifier;
+import mesh.modifier.TranslateModifier;
 import mesh.util.Bounds3;
 
 public class Mesh3D {
-
-	public Vector3f translation;
 
 	public ArrayList<Vector3f> vertices;
 
 	public ArrayList<Face3D> faces;
 
 	public Mesh3D() {
-		translation = new Vector3f();
 		vertices = new ArrayList<Vector3f>();
 		faces = new ArrayList<Face3D>();
 	}
 
-	public void apply(IMeshModifier modifier) {
-		modifier.modify(this);
+	/**
+	 * Applies the provided {@link IMeshModifier} to this mesh. This is congruent to
+	 * {@link IMeshModifier#modify(Mesh3D)}.
+	 * 
+	 * @param modifier The modifier to apply to this mesh.
+	 * @return this
+	 */
+	public Mesh3D apply(IMeshModifier modifier) {
+		return modifier.modify(this);
+	}
+
+	/**
+	 * Rotates the mesh around the Y-axis.
+	 *
+	 * @deprecated Use {@link RotateYModifier} instead.
+	 */
+	public Mesh3D rotateY(float angle) {
+		return new RotateYModifier(angle).modify(this);
+	}
+
+	/**
+	 * Rotates the mesh around the Z-axis.
+	 *
+	 * @deprecated Use {@link RotateZModifier} instead.
+	 */
+	public Mesh3D rotateZ(float angle) {
+		return new RotateZModifier(angle).modify(this);
+	}
+
+	/**
+	 * Translates the mesh along the X-axis.
+	 *
+	 * @deprecated Use {@link TranslateModifier} instead.
+	 */
+	@Deprecated
+	public Mesh3D translateX(float tx) {
+		return new TranslateModifier(tx, 0, 0).modify(this);
+	}
+
+	/**
+	 * Translates the mesh along the Y-axis.
+	 *
+	 * @deprecated Use {@link TranslateModifier} instead.
+	 */
+	public Mesh3D translateY(float ty) {
+		return new TranslateModifier(0, ty, 0).modify(this);
+	}
+
+	/**
+	 * Translates the mesh along the Z-axis.
+	 *
+	 * @deprecated Use {@link TranslateModifier} instead.
+	 */
+	public Mesh3D translateZ(float tz) {
+		return new TranslateModifier(0, 0, tz).modify(this);
+	}
+
+	/**
+	 * Calculates the axis-aligned bounding box (AABB) for the 3D mesh based on its
+	 * vertices.
+	 * <p>
+	 * The bounding box is defined by the minimum and maximum extents of the
+	 * vertices along the X, Y, and Z axes. If there are no vertices in the mesh, an
+	 * empty `Bounds3` is returned.
+	 * </p>
+	 *
+	 * @return A {@link Bounds3} object representing the calculated bounding box of
+	 *         the mesh. The bounding box extends from the minimum vertex coordinate
+	 *         to the maximum vertex coordinate.
+	 */
+	public Bounds3 calculateBounds() {
+		if (vertices.isEmpty())
+			return new Bounds3();
+
+		Vector3f min = new Vector3f(vertices.get(0));
+		Vector3f max = new Vector3f(vertices.get(0));
+
+		for (Vector3f v : vertices) {
+			min.setX(Math.min(min.getX(), v.getX()));
+			min.setY(Math.min(min.getY(), v.getY()));
+			min.setZ(Math.min(min.getZ(), v.getZ()));
+
+			max.setX(Math.max(max.getX(), v.getX()));
+			max.setY(Math.max(max.getY(), v.getY()));
+			max.setZ(Math.max(max.getZ(), v.getZ()));
+		}
+
+		return new Bounds3(min, max);
 	}
 
 	public Vector3f calculateFaceNormal(Face3D face) {
@@ -42,71 +126,20 @@ public class Mesh3D {
 		}
 		return faceNormal.normalize();
 	}
-
-	public Mesh3D rotateY(float angle) {
-		Matrix3f m = new Matrix3f(Mathf.cos(angle), 0, Mathf.sin(angle), 0, 1, 0, -Mathf.sin(angle), 0,
-				Mathf.cos(angle));
-
-		for (Vector3f v : vertices) {
-			Vector3f v0 = v.mult(m);
-			v.set(v0.getX(), v.getY(), v0.getZ());
-		}
-
-		return this;
+	
+	public void removeDoubles(int decimalPlaces) {
+		for (Vector3f v : vertices)
+			v.roundLocalDecimalPlaces(decimalPlaces);
+		removeDoubles();
 	}
 
-	public Mesh3D rotateZ(float angle) {
-		Matrix3f m = new Matrix3f(Mathf.cos(angle), -Mathf.sin(angle), 0, Mathf.sin(angle), Mathf.cos(angle), 0, 0, 0,
-				1);
-
-		for (Vector3f v : vertices) {
-			Vector3f v0 = v.mult(m);
-			v.set(v0.getX(), v0.getY(), v.getZ());
-		}
-
-		return this;
-	}
-
-	public Mesh3D translateX(float tx) {
-		for (Vector3f v : vertices) {
-			v.addLocal(tx, 0, 0);
-		}
-		return this;
-	}
-
-	public Mesh3D translateY(float ty) {
-		for (Vector3f v : vertices) {
-			v.addLocal(0, ty, 0);
-		}
-		return this;
-	}
-
-	public Mesh3D translateZ(float tz) {
-		for (Vector3f v : vertices) {
-			v.addLocal(0, 0, tz);
-		}
-		return this;
-	}
-
-	public Bounds3 calculateBounds() {
-		if (vertices.isEmpty())
-			return new Bounds3();
-
-		Vector3f min = new Vector3f(getVertexAt(0));
-		Vector3f max = new Vector3f(getVertexAt(0));
-		Bounds3 bounds = new Bounds3();
-		for (Vector3f v : vertices) {
-			float minX = v.getX() < min.getX() ? v.getX() : min.getX();
-			float minY = v.getY() < min.getY() ? v.getY() : min.getY();
-			float minZ = v.getZ() < min.getZ() ? v.getZ() : min.getZ();
-			float maxX = v.getX() > max.getX() ? v.getX() : max.getX();
-			float maxY = v.getY() > max.getY() ? v.getY() : max.getY();
-			float maxZ = v.getZ() > max.getZ() ? v.getZ() : max.getZ();
-			min.set(minX, minY, minZ);
-			max.set(maxX, maxY, maxZ);
-		}
-		bounds.setMinMax(min, max);
-		return bounds;
+	/**
+	 * Removes duplicated vertices.
+	 *
+	 * @deprecated Use {@link RemoveDoubleVerticesModifier} instead.
+	 */
+	public void removeDoubles() {
+		new RemoveDoubleVerticesModifier().modify(this);
 	}
 
 	public Mesh3D copy() {
@@ -121,38 +154,6 @@ public class Mesh3D {
 			faces.add(new Face3D(f));
 
 		return copy;
-	}
-
-	private Mesh3D appendUtil(Mesh3D... meshes) {
-		// FIXME copy vertices and faces
-		int n = 0;
-		Mesh3D mesh = new Mesh3D();
-		List<Vector3f> vertices = mesh.vertices;
-		List<Face3D> faces = mesh.faces;
-
-		for (int i = 0; i < meshes.length; i++) {
-			Mesh3D m = meshes[i];
-			vertices.addAll(m.vertices);
-			faces.addAll(meshes[i].faces);
-			for (Face3D f : meshes[i].faces) {
-				for (int j = 0; j < f.indices.length; j++) {
-					f.indices[j] += n;
-				}
-			}
-			n += m.getVertexCount();
-		}
-
-		return mesh;
-	}
-
-	public void removeDoubles(int decimalPlaces) {
-		for (Vector3f v : vertices)
-			v.roundLocalDecimalPlaces(decimalPlaces);
-		removeDoubles();
-	}
-
-	public void removeDoubles() {
-		new RemoveDoubleVerticesModifier().modify(this);
 	}
 
 	public Vector3f calculateFaceCenter(Face3D face) {
@@ -176,6 +177,28 @@ public class Mesh3D {
 		faces.addAll(result.faces);
 
 		return this;
+	}
+
+	private Mesh3D appendUtil(Mesh3D... meshes) {
+		// FIXME copy vertices and faces
+		int n = 0;
+		Mesh3D mesh = new Mesh3D();
+		List<Vector3f> vertices = mesh.vertices;
+		List<Face3D> faces = mesh.faces;
+
+		for (int i = 0; i < meshes.length; i++) {
+			Mesh3D m = meshes[i];
+			vertices.addAll(m.vertices);
+			faces.addAll(meshes[i].faces);
+			for (Face3D f : meshes[i].faces) {
+				for (int j = 0; j < f.indices.length; j++) {
+					f.indices[j] += n;
+				}
+			}
+			n += m.getVertexCount();
+		}
+
+		return mesh;
 	}
 
 	public void clearVertices() {

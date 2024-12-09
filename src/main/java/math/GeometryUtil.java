@@ -129,7 +129,7 @@ public class GeometryUtil {
      *               values between 0 and 1 will return points in between.
      * @return The point along the line segment.
      */
-    public Vector2f getDistributionPoint(Vector2f start, Vector2f end,
+    public static Vector2f getDistributionPoint(Vector2f start, Vector2f end,
             float lambda) {
         float scalar = 1f / (1f + lambda);
         return start.add(end.mult(lambda)).mult(scalar);

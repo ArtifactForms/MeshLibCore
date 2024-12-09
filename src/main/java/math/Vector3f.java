@@ -424,14 +424,34 @@ public class Vector3f {
     }
 
     public Vector3f lerpLocal(Vector3f finalVec, float changeAmnt) {
+        if (changeAmnt == 0) {
+            return this;
+        }
+        if (changeAmnt == 1) {
+            this.x = finalVec.x;
+            this.y = finalVec.y;
+            this.z = finalVec.z;
+            return this;
+        }
         this.x = (1 - changeAmnt) * this.x + changeAmnt * finalVec.x;
         this.y = (1 - changeAmnt) * this.y + changeAmnt * finalVec.y;
         this.z = (1 - changeAmnt) * this.z + changeAmnt * finalVec.z;
         return this;
     }
 
-    public Vector3f lerpLocal(Vector3f beginVec, Vector3f finalVec,
-            float changeAmnt) {
+    public Vector3f lerpLocal(Vector3f beginVec, Vector3f finalVec, float changeAmnt) {
+        if (changeAmnt == 0) {
+            this.x = beginVec.x;
+            this.y = beginVec.y;
+            this.z = beginVec.z;
+            return this;
+        }
+        if (changeAmnt == 1) {
+            this.x = finalVec.x;
+            this.y = finalVec.y;
+            this.z = finalVec.z;
+            return this;
+        }
         this.x = (1 - changeAmnt) * beginVec.x + changeAmnt * finalVec.x;
         this.y = (1 - changeAmnt) * beginVec.y + changeAmnt * finalVec.y;
         this.z = (1 - changeAmnt) * beginVec.z + changeAmnt * finalVec.z;
