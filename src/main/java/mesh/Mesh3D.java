@@ -94,25 +94,26 @@ public class Mesh3D {
 	 *         the mesh. The bounding box extends from the minimum vertex coordinate
 	 *         to the maximum vertex coordinate.
 	 */
-	public Bounds3 calculateBounds() {
-		if (vertices.isEmpty())
-			return new Bounds3();
+    public Bounds3 calculateBounds() {
+        if (vertices.isEmpty())
+            return new Bounds3();
 
-		Vector3f min = new Vector3f(vertices.get(0));
-		Vector3f max = new Vector3f(vertices.get(0));
-
-		for (Vector3f v : vertices) {
-			min.setX(Math.min(min.getX(), v.getX()));
-			min.setY(Math.min(min.getY(), v.getY()));
-			min.setZ(Math.min(min.getZ(), v.getZ()));
-
-			max.setX(Math.max(max.getX(), v.getX()));
-			max.setY(Math.max(max.getY(), v.getY()));
-			max.setZ(Math.max(max.getZ(), v.getZ()));
-		}
-
-		return new Bounds3(min, max);
-	}
+        Vector3f min = new Vector3f(getVertexAt(0));
+        Vector3f max = new Vector3f(getVertexAt(0));
+        Bounds3 bounds = new Bounds3();
+        for (Vector3f v : vertices) {
+            float minX = v.getX() < min.getX() ? v.getX() : min.getX();
+            float minY = v.getY() < min.getY() ? v.getY() : min.getY();
+            float minZ = v.getZ() < min.getZ() ? v.getZ() : min.getZ();
+            float maxX = v.getX() > max.getX() ? v.getX() : max.getX();
+            float maxY = v.getY() > max.getY() ? v.getY() : max.getY();
+            float maxZ = v.getZ() > max.getZ() ? v.getZ() : max.getZ();
+            min.set(minX, minY, minZ);
+            max.set(maxX, maxY, maxZ);
+        }
+        bounds.setMinMax(min, max);
+        return bounds;
+    }
 
 	public Vector3f calculateFaceNormal(Face3D face) {
 		Vector3f faceNormal = new Vector3f();
