@@ -325,10 +325,10 @@ public class Color {
 	 * @return this
 	 */
 	public Color divideLocal(float a) {
-		r /= a;
-		g /= a;
-		b /= a;
-		a /= a;
+		this.r /= a;
+		this.g /= a;
+		this.b /= a;
+		this.a /= a;
 		return this;
 	}
 
