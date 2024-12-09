@@ -13,16 +13,14 @@ import mesh.Mesh3D;
  * extrusion. This class implements {@code IMeshModifier} and
  * {@code FaceModifier} interfaces.
  * 
- * <p>
+ * <pre>
  * Key features:
- * <ul>
- * <li>Extrusion of a specified collection of faces, or individual faces.</li>
- * <li>Adjustable scaling and extrusion amount parameters.</li>
- * <li>Optionally remove faces after extrusion using the {@code removeFaces}
- * flag.</li>
- * <li>Validation to prevent invalid or edge-case inputs.</li>
- * </ul>
- * </p>
+ * 
+ * - Extrusion of a specified collection of faces, or individual faces.
+ * - Adjustable scaling and extrusion amount parameters.
+ * - Optionally remove faces after extrusion using the {@code removeFaces}
+ *   flag.
+ * </pre>
  */
 public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 
@@ -159,18 +157,19 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 		Vector3f normal = mesh.calculateFaceNormal(face);
 		Vector3f center = mesh.calculateFaceCenter(face);
 
-		normal.multLocal(amount);
-
 		for (int i = 0; i < n; i++) {
-			Vector3f v0 = mesh.vertices.get(face.indices[i]);
-			Vector3f v1 = new Vector3f(v0).subtract(center).mult(scale).add(center);
-			mesh.vertices.add(v1.addLocal(normal));
+			Vector3f vertex = mesh.vertices.get(face.indices[i])
+					.subtract(center)
+					.mult(scale)
+					.add(center)
+					.add(normal.mult(amount));
+			mesh.add(vertex);
 			mesh.addFace(face.indices[i], face.indices[(i + 1) % n], nextIndex + ((i + 1) % n), nextIndex + i);
 		}
 
 		updateFaceIndices(face, nextIndex);
 	}
-
+	
 	/**
 	 * Updates the indices of the given face after extrusion to point to the newly
 	 * created vertices in the mesh's vertex list. This is necessary because new
