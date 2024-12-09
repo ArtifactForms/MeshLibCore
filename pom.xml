@@ -1,20 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>MeshLibCore</groupId>
 	<artifactId>MeshLibCore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
-	<!-- Build Configuration -->
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.13.0</version>
+				<version>3.8.1</version>
 				<configuration>
 					<release>15</release>
 				</configuration>
@@ -22,16 +19,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M5</version> <!-- Updated to latest version
-				compatible with JUnit 5 -->
+				<version>2.22.2</version>
 				<configuration>
-					<useModulePath>false</useModulePath>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-	<!-- Repository Configuration -->
 	<repositories>
 		<repository>
 			<name>JoGL Distrib</name>
@@ -39,51 +32,63 @@
 			<url>https://www.jogamp.org/deployment/maven/</url>
 		</repository>
 	</repositories>
-
-	<!-- Dependencies -->
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub ArtifactForms Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/ArtifactForms/MeshLibCore/master</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</distributionManagement>
 	<dependencies>
-		<!-- Processing Core -->
 		<dependency>
 			<groupId>org.processing</groupId>
 			<artifactId>core</artifactId>
 			<version>4.3.1</version>
 		</dependency>
-
-		<!-- JoGL Gluegen -->
 		<dependency>
 			<groupId>org.jogamp.gluegen</groupId>
 			<artifactId>gluegen-rt-main</artifactId>
 			<version>2.5.0</version>
 		</dependency>
-
-		<!-- JoGL -->
 		<dependency>
 			<groupId>org.jogamp.jogl</groupId>
 			<artifactId>jogl-all-main</artifactId>
 			<version>2.5.0</version>
 		</dependency>
-
-		<!-- JUnit 5 Dependencies -->
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>5.11.3</version>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-runner</artifactId>
+			<version>1.2.0</version>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.4.0</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
-			<version>5.11.3</version>
+			<version>5.4.0</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- Jacoco for Code Coverage -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.4.0</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.8.10</version>
 		</dependency>
 	</dependencies>
-
 </project>
