@@ -64,6 +64,9 @@ public class SpherifyModifier implements IMeshModifier {
 		if (mesh == null) {
 			throw new IllegalArgumentException("Mesh cannot be null.");
 		}
+		if (factor == 0) {
+			return mesh;
+		}
 		if (mesh.vertices.isEmpty()) {
 			return mesh;
 		}
