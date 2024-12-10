@@ -132,12 +132,12 @@ public class RandomHolesModifier implements IMeshModifier, FaceModifier {
 	 */
 	@Override
 	public Mesh3D modify(Mesh3D mesh, Collection<Face3D> faces) {
+		validateMesh(mesh);
+		validateFaces(faces);
 		Collection<Face3D> facesToModify = faces;
 		if (faces == mesh.faces) {
 			facesToModify = new ArrayList<Face3D>(mesh.faces);
 		}
-		validateMesh(mesh);
-		validateFaces(facesToModify);
 		for (Face3D face : facesToModify) {
 			makeHole(mesh, face);
 		}
