@@ -49,18 +49,18 @@ public class BendModifier implements IMeshModifier {
 
 	/**
 	 * Modifies the provided mesh by applying bending to its vertices along the
-	 * X-axis. If the provided mesh contains no vertices, the method safely returns
-	 * the mesh without changes.
+	 * X-axis. If the provided mesh contains no vertices, the method safely
+	 * returns the mesh without changes.
 	 * <p>
 	 * The bending is only applied if the {@link #factor} value is valid (greater
-	 * than a small threshold, defined by {@link #EPSILON}). This prevents the mesh
-	 * from being unnecessarily modified when the bending factor is negligible and
-	 * would result in division by zero issues.
+	 * than a small threshold, defined by {@link #EPSILON}). This prevents the
+	 * mesh from being unnecessarily modified when the bending factor is
+	 * negligible and would result in division by zero issues.
 	 * </p>
 	 *
 	 * @param mesh the 3D mesh to bend. Cannot be {@code null}.
-	 * @return the modified mesh after applying bending, or the original mesh if no
-	 *         changes are applied.
+	 * @return the modified mesh after applying bending, or the original mesh if
+	 *         no changes are applied.
 	 * @throws IllegalArgumentException if {@code mesh} is null.
 	 */
 	@Override

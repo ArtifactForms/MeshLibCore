@@ -16,8 +16,8 @@ import mesh.Mesh3D;
 public class RotateYModifier implements IMeshModifier {
 
 	/**
-	 * The current angle of rotation in radians. Defines how much the mesh should be
-	 * rotated about the Y-axis.
+	 * The current angle of rotation in radians. Defines how much the mesh should
+	 * be rotated about the Y-axis.
 	 */
 	private float angle;
 
@@ -55,8 +55,8 @@ public class RotateYModifier implements IMeshModifier {
 	 * Modifies the provided mesh by applying a rotation transformation around the
 	 * Y-axis.
 	 * 
-	 * If the provided mesh contains no vertices, the method safely returns the mesh
-	 * without changes.
+	 * If the provided mesh contains no vertices, the method safely returns the
+	 * mesh without changes.
 	 * 
 	 * @param mesh the 3D mesh to rotate (must not be null)
 	 * @return the modified mesh after rotation
@@ -89,10 +89,8 @@ public class RotateYModifier implements IMeshModifier {
 	 * matrix represents a 3D rotation transformation around the Y-axis.
 	 */
 	private void updateRotationMatrix() {
-		rotationMatrix.set(
-				Mathf.cos(angle), 0, Mathf.sin(angle), 
-				0, 1, 0, 
-				-Mathf.sin(angle), 0, Mathf.cos(angle));
+		rotationMatrix.set(Mathf.cos(angle), 0, Mathf.sin(angle), 0, 1, 0,
+		    -Mathf.sin(angle), 0, Mathf.cos(angle));
 	}
 
 	/**

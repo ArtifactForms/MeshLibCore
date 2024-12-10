@@ -26,8 +26,8 @@ public class TranslateModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Constructs a TranslateModifier with specified translation offsets along each
-	 * axis.
+	 * Constructs a TranslateModifier with specified translation offsets along
+	 * each axis.
 	 *
 	 * @param deltaX Offset along the X-axis.
 	 * @param deltaY Offset along the Y-axis.
@@ -38,8 +38,8 @@ public class TranslateModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Constructs a TranslateModifier using a Vector3f for the specified translation
-	 * delta.
+	 * Constructs a TranslateModifier using a Vector3f for the specified
+	 * translation delta.
 	 *
 	 * @param delta The 3D translation vector to apply to the mesh's vertices.
 	 * @throws IllegalArgumentException if the provided delta is null.
@@ -55,8 +55,8 @@ public class TranslateModifier implements IMeshModifier {
 	 * Applies the translation to all vertices in the provided mesh by adding the
 	 * delta vector to each vertex. Uses parallel processing for efficiency.
 	 * 
-	 * If the provided mesh contains no vertices, the method safely returns the mesh
-	 * without changes.
+	 * If the provided mesh contains no vertices, the method safely returns the
+	 * mesh without changes.
 	 * 
 	 * @param mesh The 3D mesh whose vertices will be translated.
 	 * @return The modified 3D mesh after applying the translation.

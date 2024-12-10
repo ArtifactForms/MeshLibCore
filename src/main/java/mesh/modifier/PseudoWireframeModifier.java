@@ -54,8 +54,8 @@ public class PseudoWireframeModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Creates holes in the mesh by applying a custom extrusion modifier configured
-	 * to act as a "hole-creation" operation.
+	 * Creates holes in the mesh by applying a custom extrusion modifier
+	 * configured to act as a "hole-creation" operation.
 	 */
 	private void createHoles() {
 		mesh.apply(createExtrudeModifier());
@@ -77,8 +77,8 @@ public class PseudoWireframeModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Solidifies the remaining geometry after the hole-creation step by applying a
-	 * solidification modifier with the defined thickness.
+	 * Solidifies the remaining geometry after the hole-creation step by applying
+	 * a solidification modifier with the defined thickness.
 	 */
 	private void solidify() {
 		mesh.apply(new SolidifyModifier(thickness));
@@ -120,12 +120,13 @@ public class PseudoWireframeModifier implements IMeshModifier {
 	 * between 0 and 1.
 	 *
 	 * @param holePercentage The new hole percentage value.
-	 * @throws IllegalArgumentException If the value is less than 0 or greater than
-	 *                                  1.
+	 * @throws IllegalArgumentException If the value is less than 0 or greater
+	 *                                  than 1.
 	 */
 	public void setHolePercentage(float holePercentage) {
 		if (holePercentage < 0 || holePercentage > 1) {
-			throw new IllegalArgumentException("Hole percentage must be between 0 and 1.");
+			throw new IllegalArgumentException(
+			    "Hole percentage must be between 0 and 1.");
 		}
 		this.holePercentage = holePercentage;
 	}
@@ -140,15 +141,16 @@ public class PseudoWireframeModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Sets the solidify thickness value for the mesh transformation. Thickness must
-	 * be positive.
+	 * Sets the solidify thickness value for the mesh transformation. Thickness
+	 * must be positive.
 	 *
 	 * @param thickness The new thickness value.
 	 * @throws IllegalArgumentException If the value is less than or equal to 0.
 	 */
 	public void setThickness(float thickness) {
 		if (thickness <= 0) {
-			throw new IllegalArgumentException("Thickness must be greater than zero.");
+			throw new IllegalArgumentException(
+			    "Thickness must be greater than zero.");
 		}
 		this.thickness = thickness;
 	}

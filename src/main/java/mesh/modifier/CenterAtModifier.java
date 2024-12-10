@@ -57,8 +57,8 @@ public class CenterAtModifier implements IMeshModifier {
 	 * changes are made.
 	 *
 	 * @param mesh the 3D mesh to center. Cannot be {@code null}.
-	 * @return the modified mesh after centering, or the original mesh if no changes
-	 *         were applied.
+	 * @return the modified mesh after centering, or the original mesh if no
+	 *         changes were applied.
 	 * @throws IllegalArgumentException if {@code mesh} is null.
 	 */
 	@Override

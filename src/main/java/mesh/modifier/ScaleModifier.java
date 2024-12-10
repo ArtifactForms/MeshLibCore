@@ -25,7 +25,8 @@ public class ScaleModifier implements IMeshModifier {
 	private Mesh3D mesh;
 
 	/**
-	 * Default constructor that initializes uniform scaling with factors (1, 1, 1).
+	 * Default constructor that initializes uniform scaling with factors (1, 1,
+	 * 1).
 	 */
 	public ScaleModifier() {
 		this(1, 1, 1);
@@ -41,8 +42,8 @@ public class ScaleModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Custom scaling constructor allowing different scaling factors for X, Y, and Z
-	 * axes.
+	 * Custom scaling constructor allowing different scaling factors for X, Y, and
+	 * Z axes.
 	 * 
 	 * @param scaleX the scaling factor along the X-axis.
 	 * @param scaleY the scaling factor along the Y-axis.

@@ -67,8 +67,10 @@ public class FitToAABBModifier implements IMeshModifier {
 	 *                                  equal to zero.
 	 */
 	private void validateTargetDimension() {
-		if (targetDimension.x <= 0 || targetDimension.y <= 0 || targetDimension.z <= 0) {
-			throw new IllegalArgumentException("Target dimensions must be greater than zero.");
+		if (targetDimension.x <= 0 || targetDimension.y <= 0
+		    || targetDimension.z <= 0) {
+			throw new IllegalArgumentException(
+			    "Target dimensions must be greater than zero.");
 		}
 	}
 
@@ -82,8 +84,8 @@ public class FitToAABBModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Calculates the uniform scaling factor based on the target dimensions and the
-	 * current bounding box dimensions of the mesh.
+	 * Calculates the uniform scaling factor based on the target dimensions and
+	 * the current bounding box dimensions of the mesh.
 	 *
 	 * @return the calculated scale factor.
 	 */

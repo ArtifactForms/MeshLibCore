@@ -65,8 +65,8 @@ public class WaveModifier implements IMeshModifier {
 	private Mesh3D mesh;
 
 	/**
-	 * Constructs a new {@link WaveModifier} with default values for the wave effect
-	 * parameters. The default values are:
+	 * Constructs a new {@link WaveModifier} with default values for the wave
+	 * effect parameters. The default values are:
 	 * 
 	 * <pre>
 	 * Amplitude: 1
@@ -89,8 +89,8 @@ public class WaveModifier implements IMeshModifier {
 	 * Applies the wave effect to the provided mesh by modifying its vertices by
 	 * using the wave function defined in the {@link WaveModifier}.
 	 * 
-	 * @param mesh The {@link Mesh3D} instance to be modified. This mesh must not be
-	 *             null.
+	 * @param mesh The {@link Mesh3D} instance to be modified. This mesh must not
+	 *             be null.
 	 * @return The modified {@link Mesh3D} with the wave effect applied to its
 	 *         vertices.
 	 * @throws IllegalArgumentException If the provided mesh is null.
@@ -107,8 +107,8 @@ public class WaveModifier implements IMeshModifier {
 
 	/**
 	 * Applies the wave deformation to all vertices of the mesh. This method does
-	 * not return a value; it directly modifies the vertex positions of the mesh in
-	 * place.
+	 * not return a value; it directly modifies the vertex positions of the mesh
+	 * in place.
 	 */
 	private void applyWaveToVertices() {
 		mesh.vertices.parallelStream().forEach(this::applyWaveToVertex);
@@ -127,7 +127,8 @@ public class WaveModifier implements IMeshModifier {
 		float projection = vertex.dot(direction);
 
 		// Calculate the wave offset using the wave function
-		float waveOffset = amplitude * Mathf.sin((2 * Mathf.PI / wavelength) * projection + phase);
+		float waveOffset = amplitude
+		    * Mathf.sin((2 * Mathf.PI / wavelength) * projection + phase);
 
 		// Apply the offset to the y-coordinate (height)
 		vertex.y += waveOffset;

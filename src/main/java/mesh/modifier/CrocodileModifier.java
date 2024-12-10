@@ -92,8 +92,8 @@ public class CrocodileModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Generates the triangular spike faces connecting edges of a given face to the
-	 * spike tip.
+	 * Generates the triangular spike faces connecting edges of a given face to
+	 * the spike tip.
 	 * 
 	 * @param face      The target face to create spikes for.
 	 * @param nextIndex The index of the newly created spike tip vertex.

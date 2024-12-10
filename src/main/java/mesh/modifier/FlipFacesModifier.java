@@ -86,8 +86,8 @@ public class FlipFacesModifier implements IMeshModifier, FaceModifier {
 	}
 
 	/**
-	 * Validates that the provided mesh and a collection of faces are valid and not
-	 * null.
+	 * Validates that the provided mesh and a collection of faces are valid and
+	 * not null.
 	 *
 	 * @param mesh  The 3D mesh to validate.
 	 * @param faces The collection of faces to validate.
