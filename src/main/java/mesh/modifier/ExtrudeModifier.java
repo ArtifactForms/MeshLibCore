@@ -183,8 +183,12 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 		Vector3f center = mesh.calculateFaceCenter(face);
 
 		for (int i = 0; i < n; i++) {
-			Vector3f vertex = mesh.vertices.get(face.indices[i]).subtract(center)
-			    .mult(scale).add(center).add(normal.mult(amount));
+			Vector3f vertex = mesh.vertices.get(
+					face.indices[i])
+					.subtract(center)
+			    .mult(scale)
+			    .add(center)
+			    .add(normal.mult(amount));
 			mesh.add(vertex);
 			mesh.addFace(face.indices[i], face.indices[(i + 1) % n],
 			    nextIndex + ((i + 1) % n), nextIndex + i);
