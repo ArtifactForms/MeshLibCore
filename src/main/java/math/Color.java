@@ -171,9 +171,9 @@ public class Color {
 
 	/**
 	 * Adds the components of a given color to those of this color storing the
-	 * result in the given result color. Each component is added separately. If the
-	 * provided color c is null, an exception is thrown. If the provided result
-	 * color is null, a new color is created.
+	 * result in the given result color. Each component is added separately. If
+	 * the provided color c is null, an exception is thrown. If the provided
+	 * result color is null, a new color is created.
 	 * 
 	 * @param color  the color to add to this color
 	 * @param result the color to store the result in
@@ -190,8 +190,8 @@ public class Color {
 	}
 
 	/**
-	 * Adds the given r,g,b,a components to those of this color creating a new color
-	 * object. Each component is added separately.
+	 * Adds the given r,g,b,a components to those of this color creating a new
+	 * color object. Each component is added separately.
 	 * 
 	 * @param r the red component to add
 	 * @param g the green component to add
@@ -204,8 +204,8 @@ public class Color {
 	}
 
 	/**
-	 * Adds the color c to this color internally, and returns a handle to this color
-	 * for easy chaining of calls. Each component is added separately.
+	 * Adds the color c to this color internally, and returns a handle to this
+	 * color for easy chaining of calls. Each component is added separately.
 	 * 
 	 * @param color the color to add to this color
 	 * @return this
@@ -238,9 +238,9 @@ public class Color {
 	}
 
 	/**
-	 * Subtracts the components of a given color from those of this color creating a
-	 * new color object. Each component is subtracted separately. If the provided
-	 * color is null, an exception is thrown.
+	 * Subtracts the components of a given color from those of this color creating
+	 * a new color object. Each component is subtracted separately. If the
+	 * provided color is null, an exception is thrown.
 	 * 
 	 * @param color the color to subtract from this color
 	 * @return the resultant color
@@ -270,8 +270,8 @@ public class Color {
 	}
 
 	/**
-	 * * Subtracts the given r,g,b,a components from those of this color creating a
-	 * new color object. Each component is subtracted separately.
+	 * * Subtracts the given r,g,b,a components from those of this color creating
+	 * a new color object. Each component is subtracted separately.
 	 * 
 	 * @param r the red component to subtract
 	 * @param g the green component to subtract
@@ -347,8 +347,8 @@ public class Color {
 	}
 
 	/**
-	 * Sets all components of this color to 0.0f internally, and returns a handle to
-	 * this color for easy chaining of calls.
+	 * Sets all components of this color to 0.0f internally, and returns a handle
+	 * to this color for easy chaining of calls.
 	 * 
 	 * @return this
 	 */
@@ -368,8 +368,8 @@ public class Color {
 	}
 
 	/**
-	 * Returns a new float array containing the r,g,b,a components of this color in
-	 * that order.
+	 * Returns a new float array containing the r,g,b,a components of this color
+	 * in that order.
 	 * 
 	 * @return the components of this color as array
 	 */
@@ -378,8 +378,8 @@ public class Color {
 	}
 
 	/**
-	 * Stores the r,g,b,a components in the given array. If the provided store array
-	 * is null a new array is created to store the components in.
+	 * Stores the r,g,b,a components in the given array. If the provided store
+	 * array is null a new array is created to store the components in.
 	 * 
 	 * @param store the array to store the components into
 	 * @return store
@@ -508,12 +508,14 @@ public class Color {
 		int g = getGreenInt();
 		int b = getBlueInt();
 		int a = getAlphaInt();
-		return ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
+		return ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8)
+		    | ((b & 0xFF) << 0);
 	}
 
 	/**
-	 * Returns a unique hash code for this color object based on it's values. If two
-	 * colors are logically equivalent, they will return the same hash code value.
+	 * Returns a unique hash code for this color object based on it's values. If
+	 * two colors are logically equivalent, they will return the same hash code
+	 * value.
 	 * 
 	 * @return the hash code value of this color
 	 */
@@ -544,9 +546,9 @@ public class Color {
 			return false;
 		Color other = (Color) obj;
 		return Float.floatToIntBits(r) == Float.floatToIntBits(other.r)
-				&& Float.floatToIntBits(g) == Float.floatToIntBits(other.g)
-				&& Float.floatToIntBits(b) == Float.floatToIntBits(other.b)
-				&& Float.floatToIntBits(a) == Float.floatToIntBits(other.a);
+		    && Float.floatToIntBits(g) == Float.floatToIntBits(other.g)
+		    && Float.floatToIntBits(b) == Float.floatToIntBits(other.b)
+		    && Float.floatToIntBits(a) == Float.floatToIntBits(other.a);
 	}
 
 	/**
