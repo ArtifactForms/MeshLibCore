@@ -17,11 +17,7 @@ public class BevelEdgesModifier implements IMeshModifier {
 
 	public enum WidthType {
 
-		OFFSET,
-
-		WIDTH,
-
-		DEPTH,
+		OFFSET, WIDTH, DEPTH
 
 	}
 
@@ -37,14 +33,11 @@ public class BevelEdgesModifier implements IMeshModifier {
 
 	private List<Vector3f> verticesToAdd;
 
-	private HashMap<Edge3D, Edge3D> oldEdgeToNewEdge;
-
-	private HashSet<Edge3D> processed;
+	private EdgeProcessor edgeProcessor;
 
 	public BevelEdgesModifier(float amount) {
 		setAmount(amount);
-		processed = new HashSet<>();
-		oldEdgeToNewEdge = new HashMap<>();
+		edgeProcessor = new EdgeProcessor();
 		verticesToAdd = new ArrayList<Vector3f>();
 		facesToAdd = new ArrayList<Face3D>();
 	}
@@ -55,81 +48,26 @@ public class BevelEdgesModifier implements IMeshModifier {
 
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		if (amount == 0)
+		validateMesh(mesh);
+		if (canExitEarly(mesh)) {
 			return mesh;
+		}
+
 		setMesh(mesh);
 		clearAll();
+
 		createInsetFaces();
+
 		createFacesForOldEdges();
 		createFacesVertex();
+
 		clearOriginalFaces();
 		clearOriginalVertices();
+
 		addNewVertices();
 		addNewFaces();
+
 		return mesh;
-	}
-
-	private void createInsetFaces() {
-		for (Face3D face : mesh.faces)
-			insetFace(mesh, face);
-	}
-
-	private void insetFace(Mesh3D mesh, Face3D face) {
-		int nextVertexIndex = verticesToAdd.size();
-		int[] indices = createIndices(face.indices.length, nextVertexIndex);
-		List<Vector3f> vertices = new ArrayList<Vector3f>();
-		extracted(face, vertices);
-		extracted(vertices);
-		mapOldEdgesToNewEdges(face, indices);
-		addNewFace(indices);
-	}
-
-	private void extracted(Face3D face, List<Vector3f> vertices) {
-		for (int i = 0; i < face.indices.length; i++) {
-			Vector3f from = getVertexAt(face, i);
-			Vector3f to = getVertexAt(face, i + 1);
-
-			float distance = to.distance(from);
-			float a = 1 / distance * getAmountByWidthType();
-
-			Vector3f v4 = to.subtract(from).mult(a).add(from);
-			Vector3f v5 = to.add(to.subtract(from).mult(-a));
-
-			vertices.add(v4);
-			vertices.add(v5);
-		}
-	}
-
-	private float getAmountByWidthType() {
-		float a;
-		switch (widthType) {
-		case OFFSET:
-			// amount is offset of new edges from original
-			a = amount * 2;
-			break;
-		case WIDTH:
-			// amount is width of new faces
-			a = inset;
-			break;
-		case DEPTH:
-			a = inset * 2;
-			break;
-		default:
-			// default width type offset
-			a = amount * 2;
-			break;
-		}
-		return a;
-	}
-
-	private void extracted(List<Vector3f> vertices) {
-		for (int i = 1; i < vertices.size(); i += 2) {
-			int a = vertices.size() - 2 + i;
-			Vector3f v0 = vertices.get(a % vertices.size());
-			Vector3f v1 = vertices.get((a + 1) % vertices.size());
-			Vector3f v = v1.add(v0).mult(0.5f);
-			verticesToAdd.add(v);
-		}
 	}
 
 	private void createFacesVertex() {
@@ -139,7 +77,7 @@ public class BevelEdgesModifier implements IMeshModifier {
 			Edge3D edge = outgoingEdge;
 			List<Integer> indices = new ArrayList<Integer>();
 			do {
-				Edge3D newEdge = oldEdgeToNewEdge.get(edge);
+				Edge3D newEdge = edgeProcessor.getMappedEdge(edge);
 				int index = newEdge.fromIndex;
 				indices.add(index);
 				edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
@@ -155,33 +93,46 @@ public class BevelEdgesModifier implements IMeshModifier {
 	}
 
 	private void createFaceForOldEdgeAt(Face3D face, int i) {
-		Edge3D edge = getMappedEdge(createEdgeAt(face.indices, i));
-		Edge3D pair = getMappedEdge(createEdgeAt(face.indices, i).createPair());
+		Edge3D edge = edgeProcessor
+		    .getMappedEdge(edgeProcessor.createEdge(face.indices, i));
+		Edge3D pair = edgeProcessor
+		    .getMappedEdge(edgeProcessor.createEdge(face.indices, i).createPair());
 
-		if (isProcessed(edge) || isProcessed(pair))
+		if (edgeProcessor.isProcessed(edge) || edgeProcessor.isProcessed(pair))
 			return;
 
-		addNewFace(new int[] { edge.toIndex, edge.fromIndex, pair.toIndex,
-		    pair.fromIndex });
+		createFaceForEdge(edge, pair);
 
-		markAsProcessed(edge);
-		markAsProcessed(pair);
+		edgeProcessor.markProcessed(edge);
+		edgeProcessor.markProcessed(pair);
 	}
 
-	private void mapOldEdgesToNewEdges(Face3D face, int[] indices) {
-		for (int i = 0; i < indices.length; i++) {
-			Edge3D oldEdge = createEdgeAt(face.indices, i);
-			Edge3D newEdge = createEdgeAt(indices, i);
-			oldEdgeToNewEdge.put(oldEdge, newEdge);
-		}
+	private void createFaceForEdge(Edge3D edge, Edge3D pair) {
+		addNewFace(edge.toIndex, edge.fromIndex, pair.toIndex, pair.fromIndex);
 	}
 
-	private Edge3D getMappedEdge(Edge3D edge) {
-		return oldEdgeToNewEdge.get(edge);
+	private int[] toReverseArray(List<Integer> values) {
+		Collections.reverse(values);
+		return values.stream().mapToInt(x -> x).toArray();
 	}
 
-	private Edge3D createEdgeAt(int[] indices, int i) {
-		return new Edge3D(indices[i], indices[(i + 1) % indices.length]);
+	private void clearAll() {
+		edgeProcessor.clearAll();
+		verticesToAdd.clear();
+		facesToAdd.clear();
+	}
+
+	private void createInsetFaces() {
+		for (Face3D face : mesh.faces)
+			insetFace(mesh, face);
+	}
+
+	private void insetFace(Mesh3D mesh, Face3D face) {
+		int nextVertexIndex = verticesToAdd.size();
+		int[] indices = createIndices(face.indices.length, nextVertexIndex);
+		createInsetVertices(processFaceEdges(face));
+		edgeProcessor.mapOldEdgesToNewEdges(face, indices);
+		addNewFace(indices);
 	}
 
 	private int[] createIndices(int size, int nextVertexIndex) {
@@ -191,24 +142,75 @@ public class BevelEdgesModifier implements IMeshModifier {
 		return indices;
 	}
 
-	private int[] toReverseArray(List<Integer> values) {
-		return values.stream().sorted(Collections.reverseOrder()).mapToInt(x -> x)
-		    .toArray();
+	/**
+	 * Processes the edges of a face to calculate the new inset vertices.
+	 *
+	 * @param face the face to process.
+	 * @return a list of inset vertices.
+	 */
+	private List<Vector3f> processFaceEdges(Face3D face) {
+		List<Vector3f> vertices = new ArrayList<>();
+		for (int i = 0; i < face.indices.length; i++) {
+			Vector3f from = getVertexAt(face, i);
+			Vector3f to = getVertexAt(face, i + 1);
+
+			float edgeLength = to.distance(from);
+			float insetFactor = calculateInsetFactor(edgeLength);
+
+			Vector3f v4 = to.subtract(from).mult(insetFactor).add(from);
+			Vector3f v5 = to.add(to.subtract(from).mult(-insetFactor));
+
+			vertices.add(v4);
+			vertices.add(v5);
+		}
+		return vertices;
 	}
 
-	private void clearAll() {
-		processed.clear();
-		oldEdgeToNewEdge.clear();
-		verticesToAdd.clear();
-		facesToAdd.clear();
+	/**
+	 * Creates the inset vertices from the processed edge vertices.
+	 *
+	 * @param vertices the processed edge vertices.
+	 */
+	private void createInsetVertices(List<Vector3f> vertices) {
+		for (int i = 1; i < vertices.size(); i += 2) {
+			int a = vertices.size() - 2 + i;
+			Vector3f v0 = vertices.get(a % vertices.size());
+			Vector3f v1 = vertices.get((a + 1) % vertices.size());
+			Vector3f v = v1.add(v0).mult(0.5f);
+			verticesToAdd.add(v);
+		}
 	}
 
-	private void markAsProcessed(Edge3D edge) {
-		processed.add(edge);
+	/**
+	 * Calculates the inset factor based on the edge length and
+	 * #{@link WidthType}.
+	 *
+	 * @param edgeLength the length of the edge.
+	 * @return the inset factor.
+	 */
+	private float calculateInsetFactor(float edgeLength) {
+		return edgeLength > 0 ? (1f / edgeLength) * getAmountByWidthType() : 0f;
 	}
 
-	private boolean isProcessed(Edge3D edge) {
-		return processed.contains(edge);
+	private float getAmountByWidthType() {
+		float amount;
+		switch (widthType) {
+		case OFFSET -> amount = this.amount * 2;
+		case WIDTH -> amount = inset;
+		case DEPTH -> amount = inset * 2;
+		default -> amount = this.amount * 2;
+		}
+		return amount;
+	}
+
+	private boolean canExitEarly(Mesh3D mesh) {
+		return amount == 0 || mesh.faces.isEmpty();
+	}
+
+	private void validateMesh(Mesh3D mesh) {
+		if (mesh == null) {
+			throw new IllegalArgumentException("Mesh cannot be null.");
+		}
 	}
 
 	private Vector3f getVertexAt(Face3D face, int index) {
@@ -231,7 +233,7 @@ public class BevelEdgesModifier implements IMeshModifier {
 		mesh.faces.clear();
 	}
 
-	private void addNewFace(int[] indices) {
+	private void addNewFace(int... indices) {
 		facesToAdd.add(new Face3D(indices));
 	}
 
@@ -254,6 +256,48 @@ public class BevelEdgesModifier implements IMeshModifier {
 
 	public void setWidthType(WidthType widthType) {
 		this.widthType = widthType;
+	}
+
+	private class EdgeProcessor {
+
+		private HashSet<Edge3D> processed;
+
+		private HashMap<Edge3D, Edge3D> edgeMapping;
+
+		public EdgeProcessor() {
+			processed = new HashSet<Edge3D>();
+			edgeMapping = new HashMap<Edge3D, Edge3D>();
+		}
+
+		public void mapOldEdgesToNewEdges(Face3D face, int[] indices) {
+			for (int i = 0; i < indices.length; i++) {
+				Edge3D oldEdge = createEdge(face.indices, i);
+				Edge3D newEdge = createEdge(indices, i);
+				edgeMapping.put(oldEdge, newEdge);
+			}
+		}
+
+		public Edge3D getMappedEdge(Edge3D edge) {
+			return edgeMapping.get(edge);
+		}
+
+		public void markProcessed(Edge3D edge) {
+			processed.add(edge);
+		}
+
+		public boolean isProcessed(Edge3D edge) {
+			return processed.contains(edge);
+		}
+
+		public Edge3D createEdge(int[] indices, int i) {
+			return new Edge3D(indices[i], indices[(i + 1) % indices.length]);
+		}
+
+		public void clearAll() {
+			processed.clear();
+			edgeMapping.clear();
+		}
+
 	}
 
 }
