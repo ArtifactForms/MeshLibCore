@@ -13,7 +13,8 @@ import mesh.Mesh3D;
  * <pre>
  * Key Parameters:
  * - time: Controls the temporal evolution of the ripple.
- * - amplitude1, amplitude2: Determine the intensity of the primary and secondary waves.
+ * - amplitude1, amplitude2: Determine the intensity of the primary and 
+ *   secondary waves.
  * - wavelength: Sets the distance between wave peaks.
  * - phaseShift: Shifts the phase of the wave pattern.
  * - decayFactor: Controls the attenuation of waves over time.
@@ -42,7 +43,8 @@ public class RippleModifier implements IMeshModifier {
 	private float amplitude2;
 
 	/**
-	 * Distance between successive wave peaks. Smaller values create denser ripples.
+	 * Distance between successive wave peaks. Smaller values create denser
+	 * ripples.
 	 */
 	private float waveLength;
 
@@ -92,8 +94,8 @@ public class RippleModifier implements IMeshModifier {
 	 * Direction: (0, -1, 0)
 	 * </pre>
 	 * 
-	 * These defaults create a gentle ripple effect that propagates downward in the
-	 * Y-axis direction.
+	 * These defaults create a gentle ripple effect that propagates downward in
+	 * the Y-axis direction.
 	 */
 	public RippleModifier() {
 		amplitude1 = 1.0f;
@@ -105,9 +107,10 @@ public class RippleModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Modifies the given mesh by applying the ripple effect. This method displaces
-	 * vertices based on their distance from the center, the vertex normals, and the
-	 * configured parameters such as amplitude, wave length, and decay factor.
+	 * Modifies the given mesh by applying the ripple effect. This method
+	 * displaces vertices based on their distance from the center, the vertex
+	 * normals, and the configured parameters such as amplitude, wave length, and
+	 * decay factor.
 	 *
 	 * @param mesh the 3D mesh to modify (must not be null)
 	 * @return the modified mesh
@@ -146,23 +149,24 @@ public class RippleModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Computes the wave phase input based on the vertex's distance from the center
-	 * and the configured ripple parameters.
+	 * Computes the wave phase input based on the vertex's distance from the
+	 * center and the configured ripple parameters.
 	 *
 	 * @param vertex the vertex for which to calculate the wave phase input
-	 * @return the wave phase input, incorporating distance, phase shift, and decay
-	 *         factor
+	 * @return the wave phase input, incorporating distance, phase shift, and
+	 *         decay factor
 	 */
 	private float calculateWavePhaseInput(Vector3f vertex) {
 		float distanceToCenter = vertex.distance(center);
-		float wavePhaseInput = waveNumber * distanceToCenter - phaseShift - decayFactor * time;
+		float wavePhaseInput = waveNumber * distanceToCenter - phaseShift
+		    - decayFactor * time;
 		return wavePhaseInput;
 	}
 
 	/**
-	 * Calculates the wave number based on the provided wavelength. The wave number
-	 * is used to determine the frequency of the sinusoidal wave function that
-	 * drives the ripple effect.
+	 * Calculates the wave number based on the provided wavelength. The wave
+	 * number is used to determine the frequency of the sinusoidal wave function
+	 * that drives the ripple effect.
 	 */
 	private void calculateWaveNumber() {
 		waveNumber = Mathf.TWO_PI / waveLength;
@@ -201,8 +205,8 @@ public class RippleModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Retrieves the amplitude of the primary sine wave. The amplitude controls the
-	 * intensity of the primary wave's displacement effect.
+	 * Retrieves the amplitude of the primary sine wave. The amplitude controls
+	 * the intensity of the primary wave's displacement effect.
 	 *
 	 * @return the amplitude of the primary wave.
 	 */
@@ -214,20 +218,21 @@ public class RippleModifier implements IMeshModifier {
 	 * Sets the amplitude of the primary sine wave. The amplitude determines the
 	 * magnitude of the primary wave's effect on the mesh.
 	 *
-	 * @param amplitude1 the amplitude of the primary wave (must be greater or equal
-	 *                   to 0).
+	 * @param amplitude1 the amplitude of the primary wave (must be greater or
+	 *                   equal to 0).
 	 * @throws IllegalArgumentException if amplitude1 is less than 0
 	 */
 	public void setAmplitude1(float amplitude1) {
 		if (amplitude1 < 0) {
-			throw new IllegalArgumentException("Aplitude1 must be greater or equal to 0.");
+			throw new IllegalArgumentException(
+			    "Aplitude1 must be greater or equal to 0.");
 		}
 		this.amplitude1 = amplitude1;
 	}
 
 	/**
-	 * Retrieves the amplitude of the secondary cosine wave. The amplitude controls
-	 * the intensity of the secondary wave's displacement effect.
+	 * Retrieves the amplitude of the secondary cosine wave. The amplitude
+	 * controls the intensity of the secondary wave's displacement effect.
 	 *
 	 * @return the amplitude of the secondary wave.
 	 */
@@ -236,8 +241,8 @@ public class RippleModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Sets the amplitude of the secondary cosine wave. The amplitude determines the
-	 * magnitude of the secondary wave's effect on the mesh.
+	 * Sets the amplitude of the secondary cosine wave. The amplitude determines
+	 * the magnitude of the secondary wave's effect on the mesh.
 	 *
 	 * @param amplitude2 the amplitude of the secondary wave (must be greater or
 	 *                   equal to 0).
@@ -245,14 +250,15 @@ public class RippleModifier implements IMeshModifier {
 	 */
 	public void setAmplitude2(float amplitude2) {
 		if (amplitude2 < 0) {
-			throw new IllegalArgumentException("Aplitude2 must be greater or equal to 0.");
+			throw new IllegalArgumentException(
+			    "Aplitude2 must be greater or equal to 0.");
 		}
 		this.amplitude2 = amplitude2;
 	}
 
 	/**
-	 * Retrieves the wavelength of the ripple effect. The wavelength determines the
-	 * distance between successive wave peaks.
+	 * Retrieves the wavelength of the ripple effect. The wavelength determines
+	 * the distance between successive wave peaks.
 	 *
 	 * @return the current wavelength of the ripple effect.
 	 */
@@ -285,10 +291,10 @@ public class RippleModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Sets the phase shift of the ripple effect, wrapping it to the range [0, 2π].
-	 * This ensures that the phase shift stays within a valid range to avoid
-	 * unexpected behaviors. Adjusting this value changes the starting point of the
-	 * wave pattern, allowing you to offset the ripple phase.
+	 * Sets the phase shift of the ripple effect, wrapping it to the range [0,
+	 * 2π]. This ensures that the phase shift stays within a valid range to avoid
+	 * unexpected behaviors. Adjusting this value changes the starting point of
+	 * the wave pattern, allowing you to offset the ripple phase.
 	 * 
 	 * @param phaseShift the new phase shift value.
 	 */
@@ -301,7 +307,8 @@ public class RippleModifier implements IMeshModifier {
 			this.phaseShift += Mathf.TWO_PI;
 		}
 
-		// Step 3: Special case: if phaseShift is exactly TWO_PI (i.e., full cycle), set
+		// Step 3: Special case: if phaseShift is exactly TWO_PI (i.e., full cycle),
+		// set
 		// it to 0
 		if (Math.abs(this.phaseShift - Mathf.TWO_PI) < 0.001) {
 			this.phaseShift = 0.0f;
@@ -321,8 +328,8 @@ public class RippleModifier implements IMeshModifier {
 
 	/**
 	 * Sets the decay factor of the ripple effect. Higher values result in faster
-	 * attenuation of the ripple's amplitude over distance, while lower values allow
-	 * the ripple to sustain longer.
+	 * attenuation of the ripple's amplitude over distance, while lower values
+	 * allow the ripple to sustain longer.
 	 *
 	 * @param decayFactor the new decay factor value.
 	 */
@@ -355,9 +362,9 @@ public class RippleModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Retrieves the direction of the ripple displacement. The direction determines
-	 * the axis along which vertices are displaced when the ripple effect is
-	 * applied.
+	 * Retrieves the direction of the ripple displacement. The direction
+	 * determines the axis along which vertices are displaced when the ripple
+	 * effect is applied.
 	 * 
 	 * @return the current direction as a {@link Vector3f}.
 	 * @see #setDirection()

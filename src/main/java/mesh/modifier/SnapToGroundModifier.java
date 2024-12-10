@@ -46,9 +46,9 @@ public class SnapToGroundModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Modifies the given mesh by snapping its highest point to the ground level. If
-	 * the provided mesh contains no vertices, the method safely returns the mesh
-	 * without changes.
+	 * Modifies the given mesh by snapping its highest point to the ground level.
+	 * If the provided mesh contains no vertices, the method safely returns the
+	 * mesh without changes.
 	 * 
 	 * @param mesh the mesh to modify
 	 * @return the modified mesh

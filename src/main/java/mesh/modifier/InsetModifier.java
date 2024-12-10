@@ -9,6 +9,9 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 
+/**
+ * Renamed process face to inset face
+ */
 public class InsetModifier implements IMeshModifier, FaceModifier {
 
 	private static final float DEFAULT_INSET = 0.1f;
@@ -46,7 +49,7 @@ public class InsetModifier implements IMeshModifier, FaceModifier {
 		}
 		setMesh(mesh);
 		for (Face3D face : faces) {
-			processFace(face);
+			insetFace(face);
 		}
 		return mesh;
 	}
@@ -60,7 +63,7 @@ public class InsetModifier implements IMeshModifier, FaceModifier {
 			throw new IllegalArgumentException("Face cannot be null.");
 		}
 		setMesh(mesh);
-		processFace(face);
+		insetFace(face);
 		return mesh;
 	}
 
@@ -85,12 +88,16 @@ public class InsetModifier implements IMeshModifier, FaceModifier {
 		return verts;
 	}
 
-	private void processFace(Face3D face) {
+	private void insetFace(Face3D face) {
 		updateNextIndex();
 		createInsetVertices(processFaceEdges(face));
 		for (int i = 0; i < face.getVertexCount(); i++) {
 			createFaceAt(face, i);
 		}
+		replaceOriginalFaceWithInsetFace(face);
+	}
+
+	private void replaceOriginalFaceWithInsetFace(Face3D face) {
 		for (int i = 0; i < face.getVertexCount(); i++) {
 			face.indices[i] = nextIndex + i;
 		}

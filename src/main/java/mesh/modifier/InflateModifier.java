@@ -124,10 +124,12 @@ public class InflateModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Calculates the inflation amount based on the inflation factor and direction.
+	 * Calculates the inflation amount based on the inflation factor and
+	 * direction.
 	 */
 	private void calculateInflationAmount() {
-		inflationAmount = inflationFactor * (direction == Direction.OUTWARD ? 1 : -1);
+		inflationAmount = inflationFactor
+		    * (direction == Direction.OUTWARD ? 1 : -1);
 	}
 
 	/**
@@ -149,15 +151,16 @@ public class InflateModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Sets the inflation factor. A value of 0 means no inflation, while a positive
-	 * value inflates the mesh. Negative values are not allowed.
+	 * Sets the inflation factor. A value of 0 means no inflation, while a
+	 * positive value inflates the mesh. Negative values are not allowed.
 	 * 
 	 * @param inflationFactor the inflation factor to set
 	 * @throws IllegalArgumentException if the inflation factor is negative
 	 */
 	public void setInflationFactor(float inflationFactor) {
 		if (inflationFactor < 0) {
-			throw new IllegalArgumentException("Inflation factor cannot be negative.");
+			throw new IllegalArgumentException(
+			    "Inflation factor cannot be negative.");
 		}
 		this.inflationFactor = inflationFactor;
 		calculateInflationAmount();

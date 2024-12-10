@@ -18,7 +18,9 @@ import mesh.Mesh3D;
  * 
  * - Extrusion of a specified collection of faces, or individual faces.
  * - Adjustable scaling and extrusion amount parameters.
- * - Optionally remove faces after extrusion using the {@code removeFaces}
+ * - Optionally remove faces after extrusion using the {@code
+ * removeFaces
+ * }
  *   flag.
  * </pre>
  */
@@ -35,8 +37,8 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 	private float amount;
 
 	/**
-	 * Default constructor initializing with default scale and amount values. Scale
-	 * = 1.0, Amount = 0.0.
+	 * Default constructor initializing with default scale and amount values.
+	 * Scale = 1.0, Amount = 0.0.
 	 */
 	public ExtrudeModifier() {
 		this(DEFAULT_SCALE, DEFAULT_AMOUNT);
@@ -58,8 +60,8 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 	}
 
 	/**
-	 * Modifies the entire 3D mesh by extruding all faces in the mesh by the current
-	 * scale and amount.
+	 * Modifies the entire 3D mesh by extruding all faces in the mesh by the
+	 * current scale and amount.
 	 * 
 	 * @param mesh the 3D mesh to modify.
 	 * @return the modified mesh.
@@ -142,7 +144,8 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 	 */
 	private void validateScale(float scale) {
 		if (scale < 0)
-			throw new IllegalArgumentException("Scale must be greater than or equal to 0.");
+			throw new IllegalArgumentException(
+			    "Scale must be greater than or equal to 0.");
 	}
 
 	/**
@@ -158,18 +161,16 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 		Vector3f center = mesh.calculateFaceCenter(face);
 
 		for (int i = 0; i < n; i++) {
-			Vector3f vertex = mesh.vertices.get(face.indices[i])
-					.subtract(center)
-					.mult(scale)
-					.add(center)
-					.add(normal.mult(amount));
+			Vector3f vertex = mesh.vertices.get(face.indices[i]).subtract(center)
+			    .mult(scale).add(center).add(normal.mult(amount));
 			mesh.add(vertex);
-			mesh.addFace(face.indices[i], face.indices[(i + 1) % n], nextIndex + ((i + 1) % n), nextIndex + i);
+			mesh.addFace(face.indices[i], face.indices[(i + 1) % n],
+			    nextIndex + ((i + 1) % n), nextIndex + i);
 		}
 
 		updateFaceIndices(face, nextIndex);
 	}
-	
+
 	/**
 	 * Updates the indices of the given face after extrusion to point to the newly
 	 * created vertices in the mesh's vertex list. This is necessary because new
@@ -177,9 +178,10 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 	 * correctly reflected in the face indices to maintain the mesh's structural
 	 * integrity.
 	 * 
-	 * @param face      the {@link Face3D} object whose indices need to be updated.
-	 * @param nextIndex the starting index of the newly added vertices in the mesh's
-	 *                  vertex list.
+	 * @param face      the {@link Face3D} object whose indices need to be
+	 *                  updated.
+	 * @param nextIndex the starting index of the newly added vertices in the
+	 *                  mesh's vertex list.
 	 */
 	private void updateFaceIndices(Face3D face, int nextIndex) {
 		for (int i = 0; i < face.indices.length; i++) {

@@ -12,7 +12,8 @@ import mesh.Mesh3D;
 public class SpherifyModifier implements IMeshModifier {
 
 	/**
-	 * The interpolation factor for spherification (0 = no effect, 1 = full sphere).
+	 * The interpolation factor for spherification (0 = no effect, 1 = full
+	 * sphere).
 	 */
 	private float factor;
 
@@ -32,8 +33,8 @@ public class SpherifyModifier implements IMeshModifier {
 	private Mesh3D mesh;
 
 	/**
-	 * Default constructor. Creates a spherify modifier with a default radius of 1.0
-	 * and a factor of 1.0.
+	 * Default constructor. Creates a spherify modifier with a default radius of
+	 * 1.0 and a factor of 1.0.
 	 */
 	public SpherifyModifier() {
 		this(1.0f);
@@ -43,7 +44,8 @@ public class SpherifyModifier implements IMeshModifier {
 	 * Constructor with a specified radius.
 	 *
 	 * @param radius the radius of the sphere. Must be greater than zero.
-	 * @throws IllegalArgumentException if the radius is less than or equal to zero.
+	 * @throws IllegalArgumentException if the radius is less than or equal to
+	 *                                  zero.
 	 */
 	public SpherifyModifier(float radius) {
 		this.center = new Vector3f();
@@ -137,7 +139,8 @@ public class SpherifyModifier implements IMeshModifier {
 	 * Sets the radius of the sphere used in the spherification process.
 	 *
 	 * @param radius the radius. Must be greater than zero.
-	 * @throws IllegalArgumentException if the radius is less than or equal to zero.
+	 * @throws IllegalArgumentException if the radius is less than or equal to
+	 *                                  zero.
 	 */
 	public void setRadius(float radius) {
 		if (radius <= 0)

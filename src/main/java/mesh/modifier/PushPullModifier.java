@@ -26,16 +26,16 @@ public class PushPullModifier implements IMeshModifier {
 	private Mesh3D mesh;
 
 	/**
-	 * Default constructor. Initializes with zero displacement and origin (0, 0, 0)
-	 * as center.
+	 * Default constructor. Initializes with zero displacement and origin (0, 0,
+	 * 0) as center.
 	 */
 	public PushPullModifier() {
 		this(0, new Vector3f());
 	}
 
 	/**
-	 * Constructs a PushPullModifier with the specified radius and center point. The
-	 * center cannot be null.
+	 * Constructs a PushPullModifier with the specified radius and center point.
+	 * The center cannot be null.
 	 *
 	 * @param targetRadius the target radius for vertex displacement
 	 * @param center       the center point for radial displacement
@@ -47,8 +47,8 @@ public class PushPullModifier implements IMeshModifier {
 	}
 
 	/**
-	 * Modifies the mesh by displacing its vertices radially relative to the center
-	 * point.
+	 * Modifies the mesh by displacing its vertices radially relative to the
+	 * center point.
 	 * 
 	 * @param mesh the mesh to modify
 	 * @return the modified mesh

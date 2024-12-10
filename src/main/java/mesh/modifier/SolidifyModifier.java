@@ -2,6 +2,7 @@ package mesh.modifier;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import math.Vector3f;
 import mesh.Edge3D;
@@ -22,6 +23,8 @@ public class SolidifyModifier implements IMeshModifier {
 
 	private HashSet<Edge3D> edges;
 
+	private List<Face3D> originalFaces;
+
 	public SolidifyModifier() {
 		this(0.01f);
 	}
@@ -32,23 +35,97 @@ public class SolidifyModifier implements IMeshModifier {
 
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
-		if (thickness == 0)
-			return mesh;
-
-		Mesh3D result = new Mesh3D();
-
 		setMesh(mesh);
-		createVertexNormals();
-		initializeEdgeMap();
+		validateMesh();
+
+		if (canExitEarly()) {
+			return mesh;
+		}
+
+		initialize();
 		mapEdges();
-		initializeInnerMesh();
-		flipDirectionOfInnerMesh();
-		result.append(mesh, innerMesh);
-		moveInnerMeshAlongVertexNormals();
-		bridgeHoles(result, innerMesh);
-		applyResult(result);
+		createInnerMesh();
+		bridgeHoles();
 
 		return mesh;
+	}
+
+	private void createInnerMesh() {
+		initializeInnerMesh();
+		appendInnerMesh();
+		flipDirectionOfInnerMesh();
+		moveInnerMeshAlongVertexNormals();
+	}
+
+	private void appendInnerMesh() {
+		mesh.append(innerMesh);
+	}
+
+	private void initialize() {
+		initializeOriginalFaces();
+		initializeEdgeMap();
+		createVertexNormals();
+	}
+
+	private void bridgeHoles() {
+		for (Face3D face : originalFaces) {
+			int size = face.indices.length;
+			for (int i = 0; i < size; i++) {
+				Edge3D forwardEdge = createEdgeAt(face, i);
+				Edge3D reverseEdge = forwardEdge.createPair();
+				if (!edges.contains(reverseEdge)) {
+					bridgeHole(forwardEdge);
+				}
+			}
+		}
+	}
+
+	private void bridgeHole(Edge3D forwardEdge) {
+		Vector3f v0 = innerMesh.getVertexAt(forwardEdge.fromIndex);
+		Vector3f v1 = innerMesh.getVertexAt(forwardEdge.toIndex);
+		Vector3f v2 = mesh.getVertexAt(forwardEdge.fromIndex);
+		Vector3f v3 = mesh.getVertexAt(forwardEdge.toIndex);
+		FaceBridging.bridge(mesh, v0, v1, v2, v3);
+	}
+
+	private void mapEdges() {
+		for (Face3D face : mesh.faces) {
+			for (int i = 0; i < face.indices.length; i++) {
+				edges.add(createEdgeAt(face, i));
+			}
+		}
+	}
+
+	private Edge3D createEdgeAt(Face3D face, int i) {
+		int fromIndex = face.indices[i];
+		int toIndex = face.indices[(i + 1) % face.indices.length];
+		return new Edge3D(fromIndex, toIndex);
+	}
+
+	private void moveInnerMeshAlongVertexNormals() {
+		IntStream.range(0, innerMesh.vertices.size()).parallel().forEach(i -> {
+			Vector3f vertex = innerMesh.getVertexAt(i);
+			Vector3f normal = vertexNormals.get(i);
+			vertex.set(normal.mult(-thickness).add(vertex));
+		});
+	}
+
+	private void flipDirectionOfInnerMesh() {
+		innerMesh.apply(new FlipFacesModifier());
+	}
+
+	private void validateMesh() {
+		if (mesh == null) {
+			throw new IllegalArgumentException("Mesh cannot be null.");
+		}
+	}
+
+	/**
+	 * Determines if the modification process can be skipped due to zero thickness
+	 * or an empty mesh (no vertices or faces).
+	 */
+	private boolean canExitEarly() {
+		return (thickness == 0 || mesh.vertices.isEmpty() || mesh.faces.isEmpty());
 	}
 
 	private void initializeInnerMesh() {
@@ -59,50 +136,8 @@ public class SolidifyModifier implements IMeshModifier {
 		edges = new HashSet<>();
 	}
 
-	private void flipDirectionOfInnerMesh() {
-		innerMesh.apply(new FlipFacesModifier());
-	}
-
-	private void bridgeHoles(Mesh3D result, Mesh3D innerMesh) {
-		List<Face3D> faces = mesh.getFaces(0, mesh.getFaceCount());
-		for (Face3D f : faces) {
-			int size = f.indices.length;
-			for (int i = 0; i < f.indices.length; i++) {
-				Edge3D edge0 = new Edge3D(f.indices[i], f.indices[(i + 1) % size]);
-				Edge3D edge1 = new Edge3D(f.indices[(i + 1) % size], f.indices[i]);
-				if (!edges.contains(edge1)) {
-					Vector3f v0 = innerMesh.getVertexAt(edge0.fromIndex);
-					Vector3f v1 = innerMesh.getVertexAt(edge0.toIndex);
-					Vector3f v2 = mesh.getVertexAt(edge0.fromIndex);
-					Vector3f v3 = mesh.getVertexAt(edge0.toIndex);
-					FaceBridging.bridge(result, v0, v1, v2, v3);
-				}
-			}
-		}
-	}
-
-	private void applyResult(Mesh3D result) {
-		mesh.vertices.clear();
-		mesh.faces.clear();
-		mesh.addVertices(result.vertices);
-		mesh.addFaces(result.faces);
-	}
-
-	private void mapEdges() {
-		for (Face3D face : mesh.faces) {
-			for (int i = 0; i < face.indices.length; i++) {
-				Edge3D edge = new Edge3D(face.indices[i], face.indices[(i + 1) % face.indices.length]);
-				edges.add(edge);
-			}
-		}
-	}
-
-	private void moveInnerMeshAlongVertexNormals() {
-		for (int i = 0; i < innerMesh.vertices.size(); i++) {
-			Vector3f vertex = innerMesh.getVertexAt(i);
-			Vector3f normal = vertexNormals.get(i);
-			vertex.set(normal.mult(-thickness).add(vertex));
-		}
+	private void initializeOriginalFaces() {
+		originalFaces = mesh.getFaces(0, mesh.getFaceCount());
 	}
 
 	private void createVertexNormals() {
