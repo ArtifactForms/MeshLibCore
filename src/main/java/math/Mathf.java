@@ -113,7 +113,8 @@ public class Mathf {
 
 	/**
 	 * The Tribonacci constant, often denoted as t, is the real root of the cubic
-	 * equation x³ - x² - x - 1 = 0. It is approximately equal to 1.83928675521416.
+	 * equation x³ - x² - x - 1 = 0. It is approximately equal to
+	 * 1.83928675521416.
 	 */
 	public static final float TRIBONACCI_CONSTANT = 1.83928675521416f;
 
@@ -121,20 +122,21 @@ public class Mathf {
 	 * Converts a 2D index (row, column) into a 1D index for a matrix or array.
 	 *
 	 * <p>
-	 * This method is useful when working with matrices or arrays that are stored in
-	 * a 1D array. It calculates the 1D index corresponding to the specified row and
-	 * column in a matrix with the given number of columns.
+	 * This method is useful when working with matrices or arrays that are stored
+	 * in a 1D array. It calculates the 1D index corresponding to the specified
+	 * row and column in a matrix with the given number of columns.
 	 *
 	 * @param rowIndex        The zero-based index of the row.
 	 * @param colIndex        The zero-based index of the column.
 	 * @param numberOfColumns The total number of columns in the matrix.
 	 * @return The 1D index corresponding to the given row and column.
 	 *
-	 * @throws IllegalArgumentException if `rowIndex` or `colIndex` is negative, or
-	 *                                  if `numberOfColumns` is less than or equal
-	 *                                  to zero.
+	 * @throws IllegalArgumentException if `rowIndex` or `colIndex` is negative,
+	 *                                  or if `numberOfColumns` is less than or
+	 *                                  equal to zero.
 	 */
-	public static int toOneDimensionalIndex(int rowIndex, int colIndex, int numberOfColumns) {
+	public static int toOneDimensionalIndex(int rowIndex, int colIndex,
+	    int numberOfColumns) {
 		if (rowIndex < 0 || colIndex < 0)
 			throw new IllegalArgumentException();
 
@@ -228,8 +230,8 @@ public class Mathf {
 	 * Returns the maximum float value in the given array.
 	 *
 	 * @param values The array of float values.
-	 * @return The maximum value in the array, or {@link Float#NaN} if the array is
-	 *         empty.
+	 * @return The maximum value in the array, or {@link Float#NaN} if the array
+	 *         is empty.
 	 */
 	public static float max(float... values) {
 		if (values.length == 0)
@@ -245,8 +247,8 @@ public class Mathf {
 	 * Returns the minimum float value in the given array.
 	 *
 	 * @param values The array of float values.
-	 * @return The minimum value in the array, or {@link Float#NaN} if the array is
-	 *         empty.
+	 * @return The minimum value in the array, or {@link Float#NaN} if the array
+	 *         is empty.
 	 */
 	public static float min(float... values) {
 		if (values.length == 0)
@@ -274,8 +276,8 @@ public class Mathf {
 	 *
 	 * <p>
 	 * This method rounds the given float value to the nearest integer. If the
-	 * fractional part is 0.5 or greater, the value is rounded up. Otherwise, it is
-	 * rounded down.
+	 * fractional part is 0.5 or greater, the value is rounded up. Otherwise, it
+	 * is rounded down.
 	 *
 	 * @param a The float value to be rounded.
 	 * @return The rounded float value.
@@ -305,13 +307,12 @@ public class Mathf {
 	 * @return The clamped value.
 	 */
 	public static int clampInt(int a, int min, int max) {
-		a = a < min ? min : (a > max ? max : a);
-		return a;
+		return a < min ? min : (a > max ? max : a);
 	}
 
 	/**
-	 * Clamps the given float value to be between 0 and 1. This method is equivalent
-	 * to {@link #saturate(float)}.
+	 * Clamps the given float value to be between 0 and 1. This method is
+	 * equivalent to {@link #saturate(float)}.
 	 * 
 	 * @param a The value to clamp.
 	 * @return A clamped value between 0 and 1-
@@ -369,8 +370,8 @@ public class Mathf {
 	 * Returns the trigonometric tangent of an angle. Special cases:
 	 * <ul>
 	 * <li>If the argument is NaN or an infinity, then the result is NaN.</li>
-	 * <li>If the argument is zero, then the result is a zero with the same sign as
-	 * the argument.</li> The computed result must be within 1 ulp of the exact
+	 * <li>If the argument is zero, then the result is a zero with the same sign
+	 * as the argument.</li> The computed result must be within 1 ulp of the exact
 	 * result. Results must be semi-monotonic.
 	 * 
 	 * @param a An angle, in radians.
@@ -383,8 +384,8 @@ public class Mathf {
 	/**
 	 * Returns the trigonometric cosine of an angle.
 	 * <ul>
-	 * <li>Special cases: If the argument is NaN or an infinity, then the result is
-	 * NaN.</li>
+	 * <li>Special cases: If the argument is NaN or an infinity, then the result
+	 * is NaN.</li>
 	 * </ul>
 	 * 
 	 * @param a An angle, in radians.
@@ -398,11 +399,11 @@ public class Mathf {
 	 * Returns the trigonometric sine of an angle. Special cases:
 	 * <ul>
 	 * <li>If the argument is NaN or an infinity, then the result is NaN.</li>
-	 * <li>If the argument is zero, then the result is a zero with the same sign as
-	 * the argument.</li>
+	 * <li>If the argument is zero, then the result is a zero with the same sign
+	 * as the argument.</li>
 	 * </ul>
-	 * The computed result must be within 1 ulp of the exact result. Results must be
-	 * semi-monotonic.
+	 * The computed result must be within 1 ulp of the exact result. Results must
+	 * be semi-monotonic.
 	 * 
 	 * @param a An angle, in radians.
 	 * @return The sine of the argument.
@@ -425,12 +426,12 @@ public class Mathf {
 
 	/**
 	 * Returns the signum function of the argument; zero if the argument is zero,
-	 * 1.0f if the argument is greater than zero, -1.0f if the argument is less than
-	 * zero. Special Cases:
+	 * 1.0f if the argument is greater than zero, -1.0f if the argument is less
+	 * than zero. Special Cases:
 	 * <ul>
 	 * <li>If the argument is NaN, then the result is NaN.</li>
-	 * <li>If the argument is positive zero or negative zero, then the result is the
-	 * same as the argument.</li>
+	 * <li>If the argument is positive zero or negative zero, then the result is
+	 * the same as the argument.</li>
 	 * </ul>
 	 * 
 	 * @param a The floating-point value whose signum is to be returned.
@@ -441,14 +442,14 @@ public class Mathf {
 	}
 
 	/**
-	 * Returns the correctly rounded positive square root of a float value. Special
-	 * cases:
+	 * Returns the correctly rounded positive square root of a float value.
+	 * Special cases:
 	 * <ul>
 	 * <li>If the argument is NaN or less than zero, then the result is NaN.</li>
 	 * <li>If the argument is positive infinity, then the result is positive
 	 * infinity.</li>
-	 * <li>If the argument is positive zero or negative zero, then the result is the
-	 * same as the argument.</li> <br />
+	 * <li>If the argument is positive zero or negative zero, then the result is
+	 * the same as the argument.</li> <br />
 	 * Otherwise, the result is the double value closest to the true mathematical
 	 * square root of the argument value.
 	 * </ul>
@@ -463,26 +464,27 @@ public class Mathf {
 
 	/**
 	 * Returns the largest (closest to positive infinity) float value that is less
-	 * than or equal to the argument and is equal to a mathematical integer. Special
-	 * cases:
+	 * than or equal to the argument and is equal to a mathematical integer.
+	 * Special cases:
 	 * <ul>
 	 * <li>If the argument value is already equal to a mathematical integer, then
 	 * the result is the same as the argument.</li>
-	 * <li>If the argument is NaN or an infinity or positive zero or negative zero,
-	 * then the result is the same as the argument.</li>
+	 * <li>If the argument is NaN or an infinity or positive zero or negative
+	 * zero, then the result is the same as the argument.</li>
 	 * </ul>
 	 * 
 	 * @param a A value.
-	 * @return The largest (closest to positive infinity) floating-point value that
-	 *         less than or equal to the argument and is equal to a mathematical
-	 *         integer.
+	 * @return The largest (closest to positive infinity) floating-point value
+	 *         that less than or equal to the argument and is equal to a
+	 *         mathematical integer.
 	 */
 	public static float floor(float a) {
 		return (float) Math.floor((double) a);
 	}
 
 	/**
-	 * Returns Euler's number e raised to the power of a float value. Special cases:
+	 * Returns Euler's number e raised to the power of a float value. Special
+	 * cases:
 	 * <ul>
 	 * <li>If the argument is NaN, the result is NaN.</li>
 	 * <li>If the argument is positive infinity, then the result is positive
@@ -490,8 +492,8 @@ public class Mathf {
 	 * <li>If the argument is negative infinity, then the result is positive
 	 * zero.</li>
 	 * </ul>
-	 * The computed result must be within 1 ulp of the exact result. Results must be
-	 * semi-monotonic.
+	 * The computed result must be within 1 ulp of the exact result. Results must
+	 * be semi-monotonic.
 	 * 
 	 * @param a The exponent to raise e to.
 	 * @return The value e<sup>a</sup>, where e is the base of the natural
@@ -502,8 +504,8 @@ public class Mathf {
 	}
 
 	/**
-	 * Returns true if the argument is a finite floating-point value; returns false
-	 * otherwise (for NaN and infinity arguments).
+	 * Returns true if the argument is a finite floating-point value; returns
+	 * false otherwise (for NaN and infinity arguments).
 	 * 
 	 * @param f The float value to be tested.
 	 * @return true if the argument is a finite floating-point value, false
@@ -514,12 +516,12 @@ public class Mathf {
 	}
 
 	/**
-	 * Returns true if the specified number is infinitely large in magnitude, false
-	 * otherwise.
+	 * Returns true if the specified number is infinitely large in magnitude,
+	 * false otherwise.
 	 * 
 	 * @param v The value to be tested.
-	 * @return true if the argument is positive infinity or negative infinity; false
-	 *         otherwise.
+	 * @return true if the argument is positive infinity or negative infinity;
+	 *         false otherwise.
 	 */
 	public static boolean isInfinite(float v) {
 		return Float.isInfinite(v);
@@ -569,13 +571,13 @@ public class Mathf {
 	/**
 	 * Returns the angle in radians whose Tan is y/x.
 	 * 
-	 * Return value is the angle between the x-axis and a 2D vector starting at zero
-	 * and terminating at (x,y).
+	 * Return value is the angle between the x-axis and a 2D vector starting at
+	 * zero and terminating at (x,y).
 	 * 
 	 * @param y The ordinate coordinate.
 	 * @param x The abscissa coordinate.
-	 * @return The theta component of the point (r, theta) in polar coordinates that
-	 *         corresponds to the point (x, y) in Cartesian coordinates.
+	 * @return The theta component of the point (r, theta) in polar coordinates
+	 *         that corresponds to the point (x, y) in Cartesian coordinates.
 	 */
 	public static float atan2(float y, float x) {
 		return (float) Math.atan2((double) y, (double) x);
@@ -585,8 +587,8 @@ public class Mathf {
 	 * Returns the smallest mathematical integer greater to or equal to a.
 	 * 
 	 * @param a value
-	 * @return The smallest (closest to negative infinity) floating-point value that
-	 *         is greater than or equal to the argument and is equal to a
+	 * @return The smallest (closest to negative infinity) floating-point value
+	 *         that is greater than or equal to the argument and is equal to a
 	 *         mathematical integer.
 	 */
 	public static float ceil(float a) {
@@ -613,8 +615,8 @@ public class Mathf {
 	 * <li>If the argument is positive infinity, then the result is positive
 	 * infinity.</li>
 	 * <li>If the argument is positive zero or negative zero, then the result is
-	 * negative infinity.</li< <If the argument is equal to 10n for integer n, then
-	 * the result is n.</li>
+	 * negative infinity.</li< <If the argument is equal to 10n for integer n,
+	 * then the result is n.</li>
 	 * </ul>
 	 * 
 	 * @param a A value.
@@ -633,8 +635,8 @@ public class Mathf {
 	 * <li>If the argument is positive zero or negative zero, then the result is
 	 * negative infinity.</li>
 	 * </ul>
-	 * The computed result must be within 1 ulp of the exact result. Results must be
-	 * semi-monotonic.
+	 * The computed result must be within 1 ulp of the exact result. Results must
+	 * be semi-monotonic.
 	 * 
 	 * @param a A value.
 	 * @return The value ln a, the natural logarithm of a.
@@ -644,18 +646,18 @@ public class Mathf {
 	}
 
 	/**
-	 * Returns the largest (closest to positive infinity) integer value that is less
-	 * than or equal to the argument.
+	 * Returns the largest (closest to positive infinity) integer value that is
+	 * less than or equal to the argument.
 	 * <ul>
 	 * <li>If the argument value is already equal to a mathematical integer, then
 	 * the result is the same as the argument.</li>
-	 * <li>If the argument is NaN or an infinity or positive zero or negative zero,
-	 * then the result is the same as the argument.</li>
+	 * <li>If the argument is NaN or an infinity or positive zero or negative
+	 * zero, then the result is the same as the argument.</li>
 	 * </ul>
 	 * 
 	 * @param a A value.
-	 * @return The largest (closest to positive infinity) integer value that is less
-	 *         than or equal to the argument.
+	 * @return The largest (closest to positive infinity) integer value that is
+	 *         less than or equal to the argument.
 	 */
 	public static int floorToInt(float a) {
 		return (int) Math.floor((double) a);
@@ -666,8 +668,8 @@ public class Mathf {
 	 * 
 	 * @param a The value to ceil.
 	 * @return The smallest (closest to negative infinity) integer value that is
-	 *         greater than or equal to the argument and is equal to a mathematical
-	 *         integer.
+	 *         greater than or equal to the argument and is equal to a
+	 *         mathematical integer.
 	 */
 	public static int ceilToInt(float a) {
 		return (int) Math.ceil((double) a);
@@ -675,8 +677,8 @@ public class Mathf {
 
 	/**
 	 * Linearly interpolates between a and b by t. The parameter t is not clamped
-	 * and values outside the range [0, 1] will result in a return value outside the
-	 * range [a, /b/].
+	 * and values outside the range [0, 1] will result in a return value outside
+	 * the range [a, /b/].
 	 * 
 	 * <pre>
 	 * When t = 0 returns a.
@@ -694,8 +696,8 @@ public class Mathf {
 	}
 
 	/**
-	 * Linearly interpolates between from and to by t. The parameter t is clamped to
-	 * the range [0, 1].
+	 * Linearly interpolates between from and to by t. The parameter t is clamped
+	 * to the range [0, 1].
 	 * 
 	 * <pre>
 	 * When t = 0 returns a. 
@@ -734,8 +736,8 @@ public class Mathf {
 
 	/**
 	 * Smoothly interpolates between two values. This function provides a smoother
-	 * transition between the two values compared to linear interpolation. It uses a
-	 * cubic Hermite spline to achieve a smooth curve.
+	 * transition between the two values compared to linear interpolation. It uses
+	 * a cubic Hermite spline to achieve a smooth curve.
 	 * 
 	 * @param from The starting value.
 	 * @param to   The ending value.
@@ -795,16 +797,17 @@ public class Mathf {
 	}
 
 	/**
-	 * Calculates a smooth, oscillating value between 0 and `length` over time `t`.
+	 * Calculates a smooth, oscillating value between 0 and `length` over time
+	 * `t`.
 	 *
-	 * This function is commonly used in game development to create various effects,
-	 * such as character movement, object animations, camera effects, and particle
-	 * systems.
+	 * This function is commonly used in game development to create various
+	 * effects, such as character movement, object animations, camera effects, and
+	 * particle systems.
 	 *
 	 * The function works by repeating the input time `t` over an interval of
-	 * `length * 2`, and then calculating the distance between the repeated time and
-	 * the midpoint `length`. This distance is then subtracted from `length` to
-	 * produce the final oscillating value.
+	 * `length * 2`, and then calculating the distance between the repeated time
+	 * and the midpoint `length`. This distance is then subtracted from `length`
+	 * to produce the final oscillating value.
 	 *
 	 * @param t      The input time.
 	 * @param length The desired range of oscillation.
@@ -816,7 +819,8 @@ public class Mathf {
 	}
 
 	/**
-	 * Normalizes an angle to a specific range centered around a given center angle.
+	 * Normalizes an angle to a specific range centered around a given center
+	 * angle.
 	 *
 	 * This method ensures that the returned angle is within a specific range,
 	 * typically between -π and π or 0 and 2π.
@@ -832,14 +836,14 @@ public class Mathf {
 	/**
 	 * Wraps a value cyclically within a specified range.
 	 *
-	 * This method takes a value `t` and maps it to a value within the interval [0,
-	 * length). The value is repeatedly decreased by `length` until it becomes less
-	 * than `length`. This creates a cyclic effect, where the value continuously
-	 * cycles from 0 to `length` and then back to 0.
+	 * This method takes a value `t` and maps it to a value within the interval
+	 * [0, length). The value is repeatedly decreased by `length` until it becomes
+	 * less than `length`. This creates a cyclic effect, where the value
+	 * continuously cycles from 0 to `length` and then back to 0.
 	 *
-	 * **Example:** For `t = 12` and `length = 5`, the result is: - `floor(12 / 5) =
-	 * 2` (number of full cycles) - `2 * 5 = 10` (value exceeding the range) - `12 -
-	 * 10 = 2` (the returned value)
+	 * **Example:** For `t = 12` and `length = 5`, the result is: - `floor(12 / 5)
+	 * = 2` (number of full cycles) - `2 * 5 = 10` (value exceeding the range) -
+	 * `12 - 10 = 2` (the returned value)
 	 *
 	 * @param t      The value to be wrapped.
 	 * @param length The length of the interval within which the value is wrapped.
@@ -852,18 +856,18 @@ public class Mathf {
 	/**
 	 * Determines if two floating-point numbers are approximately equal.
 	 *
-	 * This method compares two floating-point numbers, `a` and `b`, considering the
-	 * limited precision of floating-point numbers. It accounts for both relative
-	 * and absolute tolerances to provide a robust comparison method.
+	 * This method compares two floating-point numbers, `a` and `b`, considering
+	 * the limited precision of floating-point numbers. It accounts for both
+	 * relative and absolute tolerances to provide a robust comparison method.
 	 * 
 	 * **How it works:** 1. **Calculates absolute difference:** The absolute
 	 * difference between `a` and `b` is calculated. 2. **Determines relative
 	 * tolerance:** The larger of the two absolute values of `a` and `b` is
-	 * multiplied by a small factor (e.g., 1e-6) to obtain a relative tolerance. 3.
-	 * **Determines absolute tolerance:** A small fixed value (e.g., `FLT_EPSILON *
-	 * 8`) is set as the absolute tolerance. 4. **Comparison:** The absolute
-	 * difference is compared with the larger of the two tolerances. If the
-	 * difference is smaller, the numbers are considered approximately equal.
+	 * multiplied by a small factor (e.g., 1e-6) to obtain a relative tolerance.
+	 * 3. **Determines absolute tolerance:** A small fixed value (e.g.,
+	 * `FLT_EPSILON * 8`) is set as the absolute tolerance. 4. **Comparison:** The
+	 * absolute difference is compared with the larger of the two tolerances. If
+	 * the difference is smaller, the numbers are considered approximately equal.
 	 * 
 	 * **Why such a method is necessary:** Due to the limited precision of
 	 * floating-point numbers, small rounding errors can occur, causing two
@@ -879,8 +883,8 @@ public class Mathf {
 	}
 
 	/**
-	 * Clamps the given float value to be between 0 and 1. This method is equivalent
-	 * to {@link #clamp01(float)}.
+	 * Clamps the given float value to be between 0 and 1. This method is
+	 * equivalent to {@link #clamp01(float)}.
 	 * 
 	 * @param a The value to clamp.
 	 * @return A clamped between 0 and 1.
@@ -922,7 +926,8 @@ public class Mathf {
 	 *
 	 * @throws IllegalArgumentException if `from0 == to0` or `from1 == to1`.
 	 */
-	public static float map(float value, float from0, float to0, float from1, float to1) {
+	public static float map(float value, float from0, float to0, float from1,
+	    float to1) {
 		if (from0 == to0 || from1 == to1) {
 			throw new IllegalArgumentException("Invalid input ranges");
 		}

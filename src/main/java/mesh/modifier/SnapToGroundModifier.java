@@ -37,10 +37,19 @@ public class SnapToGroundModifier implements IMeshModifier {
 	/** The mesh to be modified. */
 	private Mesh3D mesh;
 
+	/**
+	 * Constructs a new SnapToGroundModifier with a default ground level of 0.
+	 */
 	public SnapToGroundModifier() {
 		this(0);
 	}
 
+	/**
+	 * Constructs a new SnapToGroundModifier with a specified ground level.
+	 *
+	 * @param groundLevel the vertical level to which the mesh's highest point
+	 *                    should be snapped.
+	 */
 	public SnapToGroundModifier(float groundLevel) {
 		this.groundLevel = groundLevel;
 	}

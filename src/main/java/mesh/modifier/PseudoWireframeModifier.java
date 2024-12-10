@@ -16,14 +16,34 @@ import mesh.Mesh3D;
  */
 public class PseudoWireframeModifier implements IMeshModifier {
 
+	/**
+	 * Default hole percentage used for the pseudo-wireframe effect. A value of
+	 * 0.9 means 90% of the face will be converted into a hole.
+	 */
 	private static final float DEFAULT_HOLE_PECENTAGE = 0.9f;
 
+	/**
+	 * Default thickness used for solidifying the mesh. A value of 0.02 defines
+	 * the thickness of the solidified areas.
+	 */
 	private static final float DEFAULT_THICKNESS = 0.02f;
 
+	/**
+	 * The percentage of the face area to be converted into holes. Must be a value
+	 * between 0 and 1.
+	 */
 	private float holePercentage;
 
+	/**
+	 * The thickness of the solidified mesh after the hole-creation step. Must be
+	 * greater than zero.
+	 */
 	private float thickness;
 
+	/**
+	 * The current 3D mesh being modified. This is set during the modification
+	 * process.
+	 */
 	private Mesh3D mesh;
 
 	/**
