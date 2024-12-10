@@ -25,8 +25,8 @@ public class Mesh3D {
 	}
 
 	/**
-	 * Applies the provided {@link IMeshModifier} to this mesh. This is congruent to
-	 * {@link IMeshModifier#modify(Mesh3D)}.
+	 * Applies the provided {@link IMeshModifier} to this mesh. This is congruent
+	 * to {@link IMeshModifier#modify(Mesh3D)}.
 	 * 
 	 * @param modifier The modifier to apply to this mesh.
 	 * @return this
@@ -82,52 +82,56 @@ public class Mesh3D {
 	}
 
 	/**
-	 * Calculates the axis-aligned bounding box (AABB) for the 3D mesh based on its
-	 * vertices.
+	 * Calculates the axis-aligned bounding box (AABB) for the 3D mesh based on
+	 * its vertices.
 	 * <p>
 	 * The bounding box is defined by the minimum and maximum extents of the
-	 * vertices along the X, Y, and Z axes. If there are no vertices in the mesh, an
-	 * empty `Bounds3` is returned.
+	 * vertices along the X, Y, and Z axes. If there are no vertices in the mesh,
+	 * an empty `Bounds3` is returned.
 	 * </p>
 	 *
-	 * @return A {@link Bounds3} object representing the calculated bounding box of
-	 *         the mesh. The bounding box extends from the minimum vertex coordinate
-	 *         to the maximum vertex coordinate.
+	 * @return A {@link Bounds3} object representing the calculated bounding box
+	 *         of the mesh. The bounding box extends from the minimum vertex
+	 *         coordinate to the maximum vertex coordinate.
 	 */
-    public Bounds3 calculateBounds() {
-        if (vertices.isEmpty())
-            return new Bounds3();
+	public Bounds3 calculateBounds() {
+		if (vertices.isEmpty())
+			return new Bounds3();
 
-        Vector3f min = new Vector3f(getVertexAt(0));
-        Vector3f max = new Vector3f(getVertexAt(0));
-        Bounds3 bounds = new Bounds3();
-        for (Vector3f v : vertices) {
-            float minX = v.getX() < min.getX() ? v.getX() : min.getX();
-            float minY = v.getY() < min.getY() ? v.getY() : min.getY();
-            float minZ = v.getZ() < min.getZ() ? v.getZ() : min.getZ();
-            float maxX = v.getX() > max.getX() ? v.getX() : max.getX();
-            float maxY = v.getY() > max.getY() ? v.getY() : max.getY();
-            float maxZ = v.getZ() > max.getZ() ? v.getZ() : max.getZ();
-            min.set(minX, minY, minZ);
-            max.set(maxX, maxY, maxZ);
-        }
-        bounds.setMinMax(min, max);
-        return bounds;
-    }
+		Vector3f min = new Vector3f(getVertexAt(0));
+		Vector3f max = new Vector3f(getVertexAt(0));
+		Bounds3 bounds = new Bounds3();
+		for (Vector3f v : vertices) {
+			float minX = v.getX() < min.getX() ? v.getX() : min.getX();
+			float minY = v.getY() < min.getY() ? v.getY() : min.getY();
+			float minZ = v.getZ() < min.getZ() ? v.getZ() : min.getZ();
+			float maxX = v.getX() > max.getX() ? v.getX() : max.getX();
+			float maxY = v.getY() > max.getY() ? v.getY() : max.getY();
+			float maxZ = v.getZ() > max.getZ() ? v.getZ() : max.getZ();
+			min.set(minX, minY, minZ);
+			max.set(maxX, maxY, maxZ);
+		}
+		bounds.setMinMax(min, max);
+		return bounds;
+	}
 
 	public Vector3f calculateFaceNormal(Face3D face) {
 		Vector3f faceNormal = new Vector3f();
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f currentVertex = vertices.get(face.indices[i]);
-			Vector3f nextVertex = vertices.get(face.indices[(i + 1) % face.indices.length]);
-			float x = (currentVertex.getY() - nextVertex.getY()) * (currentVertex.getZ() + nextVertex.getZ());
-			float y = (currentVertex.getZ() - nextVertex.getZ()) * (currentVertex.getX() + nextVertex.getX());
-			float z = (currentVertex.getX() - nextVertex.getX()) * (currentVertex.getY() + nextVertex.getY());
+			Vector3f nextVertex = vertices
+			    .get(face.indices[(i + 1) % face.indices.length]);
+			float x = (currentVertex.getY() - nextVertex.getY())
+			    * (currentVertex.getZ() + nextVertex.getZ());
+			float y = (currentVertex.getZ() - nextVertex.getZ())
+			    * (currentVertex.getX() + nextVertex.getX());
+			float z = (currentVertex.getX() - nextVertex.getX())
+			    * (currentVertex.getY() + nextVertex.getY());
 			faceNormal.addLocal(x, y, z);
 		}
 		return faceNormal.normalize();
 	}
-	
+
 	public void removeDoubles(int decimalPlaces) {
 		for (Vector3f v : vertices)
 			v.roundLocalDecimalPlaces(decimalPlaces);
