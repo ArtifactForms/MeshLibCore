@@ -26,14 +26,36 @@ import mesh.Mesh3D;
  */
 public class ExtrudeModifier implements IMeshModifier, FaceModifier {
 
+	/**
+	 * The default scaling factor applied during extrusion. Defaults to 1.0, which
+	 * means no scaling.
+	 */
 	private static final float DEFAULT_SCALE = 1.0f;
 
+	/**
+	 * The default extrusion amount applied to faces. Defaults to 0.0, meaning
+	 * extrusion with a dinstance of zero.
+	 */
 	private static final float DEFAULT_AMOUNT = 0.0f;
 
+	/**
+	 * Flag indicating whether the original faces should be removed after
+	 * extrusion. If true, the original faces are removed; if false, they remain
+	 * in the mesh.
+	 */
 	private boolean removeFaces;
 
+	/**
+	 * The scaling factor applied to the extruded geometry. A value of 1.0
+	 * maintains the original size of the faces, while values greater or less than
+	 * 1.0 scale the extruded faces proportionally.
+	 */
 	private float scale;
 
+	/**
+	 * The distance to extrude faces by. Positive values extrude outward along the
+	 * normal of the face, while negative values extrude inward.
+	 */
 	private float amount;
 
 	/**
