@@ -213,37 +213,12 @@ public class RandomHolesModifier implements IMeshModifier, FaceModifier {
 	}
 
 	/**
-	 * Sets the minimum hole percentage.
-	 *
-	 * @param minAmount the minimum hole percentage. Must be in the range [0, 1].
-	 * @throws IllegalArgumentException if {@code minAmount} is out of range or
-	 *                                  greater than the current
-	 *                                  {@code maxAmount}.
-	 */
-	public void setMinAmount(float minAmount) {
-		validateAmountRange(minAmount, maxAmount);
-		this.minAmount = minAmount;
-	}
-
-	/**
 	 * Gets the maximum hole percentage.
 	 *
 	 * @return the maximum hole percentage.
 	 */
 	public float getMaxAmount() {
 		return maxAmount;
-	}
-
-	/**
-	 * Sets the maximum hole percentage.
-	 *
-	 * @param maxAmount the maximum hole percentage. Must be in the range [0, 1].
-	 * @throws IllegalArgumentException if {@code maxAmount} is out of range or
-	 *                                  less than the current {@code minAmount}.
-	 */
-	public void setMaxAmount(float maxAmount) {
-		validateAmountRange(minAmount, maxAmount);
-		this.maxAmount = maxAmount;
 	}
 
 	/**

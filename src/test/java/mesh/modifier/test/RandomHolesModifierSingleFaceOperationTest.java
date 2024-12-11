@@ -61,7 +61,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
 			modifier.modify(new Mesh3D(), face);
 		});
 	}
-	
+
 	@Test
 	public void nullMeshAndNullFaceThrowsException() {
 		Mesh3D mesh = null;
@@ -103,191 +103,143 @@ public class RandomHolesModifierSingleFaceOperationTest {
 
 	@Test
 	public void testPlaneVerticesWithZeroSeeed() {
-		Vector3f[] expected = {
-			new Vector3f(1.0f, 0.0f, -1.0f),
-			new Vector3f(1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, -1.0f),
-			new Vector3f(0.6847742f, 0.0f, -0.6847742f),
-			new Vector3f(0.6847742f, 0.0f, 0.6847742f),
-			new Vector3f(-0.6847742f, 0.0f, 0.6847742f),
-			new Vector3f(-0.6847742f, 0.0f, -0.6847742f)	
-		};
+		Vector3f[] expected = { new Vector3f(1.0f, 0.0f, -1.0f),
+		    new Vector3f(1.0f, 0.0f, 1.0f), new Vector3f(-1.0f, 0.0f, 1.0f),
+		    new Vector3f(-1.0f, 0.0f, -1.0f),
+		    new Vector3f(0.6847742f, 0.0f, -0.6847742f),
+		    new Vector3f(0.6847742f, 0.0f, 0.6847742f),
+		    new Vector3f(-0.6847742f, 0.0f, 0.6847742f),
+		    new Vector3f(-0.6847742f, 0.0f, -0.6847742f) };
 		Mesh3D plane = new PlaneCreator().create();
 		modifier.modify(plane, plane.getFaceAt(0));
 		assertArrayEquals(expected, plane.vertices.toArray());
 	}
-	
+
 	@Test
 	public void testPlaneVerticesWithPositiveSeeed() {
-		Vector3f[] expected = {
-			new Vector3f(1.0f, 0.0f, -1.0f),
-			new Vector3f(1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, -1.0f),
-			new Vector3f(0.31211585f, 0.0f, -0.31211585f),
-			new Vector3f(0.31211585f, 0.0f, 0.31211585f),
-			new Vector3f(-0.31211585f, 0.0f, 0.31211585f),
-			new Vector3f(-0.31211585f, 0.0f, -0.31211585f),
-		};
+		Vector3f[] expected = { new Vector3f(1.0f, 0.0f, -1.0f),
+		    new Vector3f(1.0f, 0.0f, 1.0f), new Vector3f(-1.0f, 0.0f, 1.0f),
+		    new Vector3f(-1.0f, 0.0f, -1.0f),
+		    new Vector3f(0.31211585f, 0.0f, -0.31211585f),
+		    new Vector3f(0.31211585f, 0.0f, 0.31211585f),
+		    new Vector3f(-0.31211585f, 0.0f, 0.31211585f),
+		    new Vector3f(-0.31211585f, 0.0f, -0.31211585f), };
 		Mesh3D plane = new PlaneCreator().create();
 		modifier.setSeed(13424);
 		modifier.modify(plane, plane.getFaceAt(0));
 		assertArrayEquals(expected, plane.vertices.toArray());
 	}
-	
+
 	@Test
 	public void testPlaneVerticesWithNegativeSeeed() {
-		Vector3f[] expected = {
-			new Vector3f(1.0f, 0.0f, -1.0f),
-			new Vector3f(1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, -1.0f),
-			new Vector3f(0.2969781f, 0.0f, -0.2969781f),
-			new Vector3f(0.2969781f, 0.0f, 0.2969781f),
-			new Vector3f(-0.2969781f, 0.0f, 0.2969781f),
-			new Vector3f(-0.2969781f, 0.0f, -0.2969781f),
-		};
+		Vector3f[] expected = { new Vector3f(1.0f, 0.0f, -1.0f),
+		    new Vector3f(1.0f, 0.0f, 1.0f), new Vector3f(-1.0f, 0.0f, 1.0f),
+		    new Vector3f(-1.0f, 0.0f, -1.0f),
+		    new Vector3f(0.2969781f, 0.0f, -0.2969781f),
+		    new Vector3f(0.2969781f, 0.0f, 0.2969781f),
+		    new Vector3f(-0.2969781f, 0.0f, 0.2969781f),
+		    new Vector3f(-0.2969781f, 0.0f, -0.2969781f), };
 		Mesh3D plane = new PlaneCreator().create();
 		modifier.setSeed(-3244324);
 		modifier.modify(plane, plane.getFaceAt(0));
 		assertArrayEquals(expected, plane.vertices.toArray());
 	}
-	
+
 	@Test
 	public void testPlaneVerticesWithSeedMaxLong() {
-		Vector3f[] expected = {
-			new Vector3f(1.0f, 0.0f, -1.0f),
-			new Vector3f(1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, -1.0f),
-			new Vector3f(0.31515408f, 0.0f, -0.31515408f),
-			new Vector3f(0.31515408f, 0.0f, 0.31515408f),
-			new Vector3f(-0.31515408f, 0.0f, 0.31515408f),
-			new Vector3f(-0.31515408f, 0.0f, -0.31515408f),
-		};
+		Vector3f[] expected = { new Vector3f(1.0f, 0.0f, -1.0f),
+		    new Vector3f(1.0f, 0.0f, 1.0f), new Vector3f(-1.0f, 0.0f, 1.0f),
+		    new Vector3f(-1.0f, 0.0f, -1.0f),
+		    new Vector3f(0.31515408f, 0.0f, -0.31515408f),
+		    new Vector3f(0.31515408f, 0.0f, 0.31515408f),
+		    new Vector3f(-0.31515408f, 0.0f, 0.31515408f),
+		    new Vector3f(-0.31515408f, 0.0f, -0.31515408f), };
 		Mesh3D plane = new PlaneCreator().create();
 		modifier.setSeed(Long.MAX_VALUE);
 		modifier.modify(plane, plane.getFaceAt(0));
 		assertArrayEquals(expected, plane.vertices.toArray());
 	}
-	
+
 	@Test
 	public void testPlaneVerticesWithSeedMinLong() {
-		Vector3f[] expected = {
-			new Vector3f(1.0f, 0.0f, -1.0f),
-			new Vector3f(1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, 1.0f),
-			new Vector3f(-1.0f, 0.0f, -1.0f),
-			new Vector3f(0.6847742f, 0.0f, -0.6847742f),
-			new Vector3f(0.6847742f, 0.0f, 0.6847742f),
-			new Vector3f(-0.6847742f, 0.0f, 0.6847742f),
-			new Vector3f(-0.6847742f, 0.0f, -0.6847742f),
-		};
+		Vector3f[] expected = { new Vector3f(1.0f, 0.0f, -1.0f),
+		    new Vector3f(1.0f, 0.0f, 1.0f), new Vector3f(-1.0f, 0.0f, 1.0f),
+		    new Vector3f(-1.0f, 0.0f, -1.0f),
+		    new Vector3f(0.6847742f, 0.0f, -0.6847742f),
+		    new Vector3f(0.6847742f, 0.0f, 0.6847742f),
+		    new Vector3f(-0.6847742f, 0.0f, 0.6847742f),
+		    new Vector3f(-0.6847742f, 0.0f, -0.6847742f), };
 		Mesh3D plane = new PlaneCreator().create();
 		modifier.setSeed(Long.MIN_VALUE);
 		modifier.modify(plane, plane.getFaceAt(0));
 		assertArrayEquals(expected, plane.vertices.toArray());
 	}
-	
-    @Test
-    public void tesCubeVerticesWithPositiveSeed() {
-		Vector3f[] expected = new Vector3f[] {
-				new Vector3f(1.0f, -1.0f, -1.0f),
-				new Vector3f(1.0f, -1.0f, 1.0f),
-				new Vector3f(-1.0f, -1.0f, 1.0f),
-				new Vector3f(-1.0f, -1.0f, -1.0f),
-				new Vector3f(1.0f, 1.0f, -1.0f),
-				new Vector3f(1.0f, 1.0f, 1.0f),
-				new Vector3f(-1.0f, 1.0f, 1.0f),
-				new Vector3f(-1.0f, 1.0f, -1.0f),
-				new Vector3f(-1.0f, 0.2517369f, 0.2517369f),
-				new Vector3f(-1.0f, 0.2517369f, -0.2517369f),
-				new Vector3f(-1.0f, -0.2517369f, -0.2517369f),
-				new Vector3f(-1.0f, -0.2517369f, 0.2517369f),
-		};
+
+	@Test
+	public void tesCubeVerticesWithPositiveSeed() {
+		Vector3f[] expected = new Vector3f[] { new Vector3f(1.0f, -1.0f, -1.0f),
+		    new Vector3f(1.0f, -1.0f, 1.0f), new Vector3f(-1.0f, -1.0f, 1.0f),
+		    new Vector3f(-1.0f, -1.0f, -1.0f), new Vector3f(1.0f, 1.0f, -1.0f),
+		    new Vector3f(1.0f, 1.0f, 1.0f), new Vector3f(-1.0f, 1.0f, 1.0f),
+		    new Vector3f(-1.0f, 1.0f, -1.0f),
+		    new Vector3f(-1.0f, 0.2517369f, 0.2517369f),
+		    new Vector3f(-1.0f, 0.2517369f, -0.2517369f),
+		    new Vector3f(-1.0f, -0.2517369f, -0.2517369f),
+		    new Vector3f(-1.0f, -0.2517369f, 0.2517369f), };
 		Mesh3D mesh = new CubeCreator().create();
+		
+		modifier = new RandomHolesModifier(0.1f, 0.3f);	
 		modifier.setSeed(234453);
-		modifier.setMinAmount(0.1f);
-		modifier.setMaxAmount(0.3f);
 		modifier.modify(mesh, mesh.getFaceAt(4));
 		assertArrayEquals(expected, mesh.vertices.toArray());
-    }
-    
+	}
+
 	@Test
 	public void testCubeFacesWithPositiveSeed() {
-		int[][] expected = new int[][] {
-			{3,0,1,2},
-			{6,5,4,7},
-			{1,0,4,5},
-			{1,5,6,2},
-			{3,7,4,0},
-			{6,7,9,8},
-			{7,3,10,9},
-			{3,2,11,10},
-			{2,6,8,11},
-		};
+		int[][] expected = new int[][] { { 3, 0, 1, 2 }, { 6, 5, 4, 7 },
+		    { 1, 0, 4, 5 }, { 1, 5, 6, 2 }, { 3, 7, 4, 0 }, { 6, 7, 9, 8 },
+		    { 7, 3, 10, 9 }, { 3, 2, 11, 10 }, { 2, 6, 8, 11 }, };
 		Mesh3D mesh = new CubeCreator().create();
+		modifier = new RandomHolesModifier(0.1f, 0.3f);	
 		modifier.setSeed(234453);
-		modifier.setMinAmount(0.1f);
-		modifier.setMaxAmount(0.3f);
 		modifier.modify(mesh, mesh.getFaceAt(4));
 		for (int i = 0; i < mesh.getFaceCount(); i++) {
 			int[] actual = mesh.getFaceAt(i).indices;
 			assertArrayEquals(expected[i], actual);
 		}
 	}
-	
+
 	@ParameterizedTest
-	@ValueSource(longs = { 
-			0, 
-			13424, 
-			-3244324, 
-			Long.MAX_VALUE, 
-			Long.MIN_VALUE})
+	@ValueSource(longs = { 0, 13424, -3244324, Long.MAX_VALUE, Long.MIN_VALUE })
 	public void testPlaneFaceIndicesWithSeeds(long seed) {
-		int[][] expected = new int[][] {
-			{0,1,5,4},
-			{1,2,6,5},
-			{2,3,7,6},
-			{3,0,4,7},
-		};
+		int[][] expected = new int[][] { { 0, 1, 5, 4 }, { 1, 2, 6, 5 },
+		    { 2, 3, 7, 6 }, { 3, 0, 4, 7 }, };
 		Mesh3D mesh = new PlaneCreator().create();
 		modifier.setSeed(seed);
 		modifier.modify(mesh);
 		for (int i = 0; i < mesh.getFaceCount(); i++) {
 			int[] actual = mesh.getFaceAt(i).indices;
 			assertArrayEquals(expected[i], actual);
-		}		
+		}
 	}
-	
-    @ParameterizedTest
-    @ValueSource(floats = {
-    		0.1f,
-    		0.322f,
-    		0.123f,
-    		0.022f,
-    		0.245f,
-    		0.751f,
-    		0.965f,
-    		Float.MIN_VALUE,
-    		Float.MAX_VALUE,
-    })
-    public void testMinMaxAmountPositiveValuesAndSeed(float amount) {
-    	Mesh3D expected = new PlaneCreator().create();
-    	ExtrudeModifier extrudeModifier = new ExtrudeModifier();
-    	extrudeModifier.setRemoveFaces(true);
-    	extrudeModifier.setScale(amount);
-    	extrudeModifier.setAmount(0);
-    	expected.apply(extrudeModifier);
-    	
-    	Mesh3D actual = new PlaneCreator().create();
-    	modifier.setMinAmount(amount);
-    	modifier.setMaxAmount(amount);
-    	modifier.setSeed(234);
-    	modifier.modify(actual, actual.getFaceAt(0));
+
+	@ParameterizedTest
+	@ValueSource(floats = { 0.1f, 0.322f, 0.123f, 0.022f, 0.245f, 0.751f,
+	    0.965f, })
+	public void testMinMaxAmountPositiveValuesAndSeed(float amount) {
+		Mesh3D expected = new PlaneCreator().create();
+		ExtrudeModifier extrudeModifier = new ExtrudeModifier();
+		extrudeModifier.setRemoveFaces(true);
+		extrudeModifier.setScale(amount);
+		extrudeModifier.setAmount(0);
+		expected.apply(extrudeModifier);
+
+		Mesh3D actual = new PlaneCreator().create();
+		modifier = new RandomHolesModifier(amount, amount);	
+		modifier.setSeed(234);
+		modifier.modify(actual, actual.getFaceAt(0));
 
 		assertArrayEquals(expected.vertices.toArray(), actual.vertices.toArray());
-    }
-    
+	}
+
 }
