@@ -62,6 +62,11 @@ public class GraphicsPImpl implements Graphics {
 	}
 
 	@Override
+	public void translate(float x, float y, float z) {
+		g.translate(x, y, z);
+	}
+
+	@Override
 	public void strokeWeight(float weight) {
 		g.strokeWeight(weight);
 	}

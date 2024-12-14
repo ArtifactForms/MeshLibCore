@@ -13,6 +13,8 @@ public interface Graphics {
 	void popMatrix();
 
 	void translate(float x, float y);
+	
+	void translate(float x, float y, float z);
 
 	void strokeWeight(float weight);
 
