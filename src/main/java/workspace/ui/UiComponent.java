@@ -27,11 +27,11 @@ public class UiComponent implements UiElement {
 
 	protected Border border;
 
-	protected List<UiComponent> components;
-
 	protected Layout layout;
-	
+
 	private Renderer renderer;
+
+	protected List<UiComponent> components;
 
 	public UiComponent() {
 		this(0, 0, 0, 0, true, Color.BLACK, Color.GRAY);
@@ -47,29 +47,6 @@ public class UiComponent implements UiElement {
 		this.foreground = foreground;
 		this.background = background;
 		this.components = new ArrayList<UiComponent>();
-	}
-	
-	@Override
-	public void setRenderer(Renderer renderer) {
-		this.renderer = renderer;
-	}
-
-	@Override
-	public Renderer getRenderer() {
-		return renderer;
-	}
-
-	@Override
-	public Insets getInsets() {
-		if (border == null)
-			return new Insets();
-		return border.getInsets();
-	}
-
-	
-	@Override
-	public void setBorder(Border border) {
-		this.border = border;
 	}
 
 	@Override
@@ -101,10 +78,38 @@ public class UiComponent implements UiElement {
 		border.renderBorder(g, 0, 0, getWidth(), getHeight());
 	}
 
+	protected void renderSelf(Graphics g) {
+		if (renderer == null)
+			return;
+		renderer.render(g, this);
+	}
+
 	protected void renderChildren(Graphics g) {
 		for (UiComponent component : components) {
 			component.render(g);
 		}
+	}
+
+	@Override
+	public void setRenderer(Renderer renderer) {
+		this.renderer = renderer;
+	}
+
+	@Override
+	public Renderer getRenderer() {
+		return renderer;
+	}
+
+	@Override
+	public Insets getInsets() {
+		if (border == null)
+			return new Insets();
+		return border.getInsets();
+	}
+
+	@Override
+	public void setBorder(Border border) {
+		this.border = border;
 	}
 
 	@Override
@@ -126,12 +131,6 @@ public class UiComponent implements UiElement {
 	@Override
 	public boolean isVisible() {
 		return visible;
-	}
-
-	public void renderSelf(Graphics g) {
-		if (renderer == null)
-			return;
-		renderer.render(g, this);
 	}
 
 	protected void layout() {
@@ -187,34 +186,23 @@ public class UiComponent implements UiElement {
 		components.add(component);
 		layout();
 	}
-//
-//	public void remove(UiComponent component) {
-//		if (component == null)
-//			return;
-//		components.remove(component);
-//		layout();
-//	}
-//
-//	public int getComponentCount() {
-//		return components.size();
-//	}
-//
-//	public UiComponent getComponentAt(int index) {
-//		return components.get(index);
-//	}
 
+	@Override
 	public int getX() {
 		return x;
 	}
 
+	@Override
 	public void setX(int x) {
 		this.x = x;
 	}
 
+	@Override
 	public int getY() {
 		return y;
 	}
 
+	@Override
 	public void setY(int y) {
 		this.y = y;
 	}
@@ -224,6 +212,7 @@ public class UiComponent implements UiElement {
 		return width;
 	}
 
+	@Override
 	public void setWidth(int width) {
 		this.width = width;
 	}
@@ -233,6 +222,7 @@ public class UiComponent implements UiElement {
 		return height;
 	}
 
+	@Override
 	public void setHeight(int height) {
 		this.height = height;
 	}
@@ -252,6 +242,5 @@ public class UiComponent implements UiElement {
 	public void setBackground(Color background) {
 		this.background = background;
 	}
-
 
 }

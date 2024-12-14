@@ -19,6 +19,62 @@ import workspace.ui.renderer.Renderer;
 public interface UiElement {
 
 	/**
+	 * Gets the X-coordinate of this element.
+	 * 
+	 * @return The X-coordinate in pixels.
+	 */
+	int getX();
+
+	/**
+	 * Sets the X-coordinate of this element.
+	 * 
+	 * @param x The new X-coordinate in pixels.
+	 */
+	void setX(int x);
+
+	/**
+	 * Gets the Y-coordinate of this element.
+	 * 
+	 * @return The Y-coordinate in pixels.
+	 */
+	int getY();
+
+	/**
+	 * Sets the Y-coordinate of this element.
+	 * 
+	 * @param y The new Y-coordinate in pixels.
+	 */
+	void setY(int y);
+
+	/**
+	 * Retrieves the width of this {@code UiElement}.
+	 * <p>
+	 * The width represents the horizontal size of the UI element. It is used
+	 * during rendering and layout calculations to determine how much horizontal
+	 * space the element occupies.
+	 * </p>
+	 *
+	 * @return The width of this UI element in pixels.
+	 */
+	int getWidth();
+	
+	void setWidth(int width);
+
+	/**
+	 * Retrieves the height of this {@code UiElement}.
+	 * <p>
+	 * The height represents the vertical size of the UI element. It is used
+	 * during rendering and layout calculations to determine how much vertical
+	 * space the element occupies.
+	 * </p>
+	 *
+	 * @return The height of this UI element in pixels.
+	 */
+	int getHeight();
+	
+	void setHeight(int height);
+
+	/**
 	 * Renders this {@code UiElement} using its specific rendering logic.
 	 * <p>
 	 * The rendering logic should account for the element's visual representation,
@@ -129,30 +185,6 @@ public interface UiElement {
 	 *         this UI element.
 	 */
 	Insets getInsets();
-
-	/**
-	 * Retrieves the width of this {@code UiElement}.
-	 * <p>
-	 * The width represents the horizontal size of the UI element. It is used
-	 * during rendering and layout calculations to determine how much horizontal
-	 * space the element occupies.
-	 * </p>
-	 *
-	 * @return The width of this UI element in pixels.
-	 */
-	int getWidth();
-
-	/**
-	 * Retrieves the height of this {@code UiElement}.
-	 * <p>
-	 * The height represents the vertical size of the UI element. It is used
-	 * during rendering and layout calculations to determine how much vertical
-	 * space the element occupies.
-	 * </p>
-	 *
-	 * @return The height of this UI element in pixels.
-	 */
-	int getHeight();
 
 	/**
 	 * Retrieves the background color of this {@code UiElement}.
