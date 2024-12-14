@@ -18,6 +18,7 @@ public class GraphicsPImpl implements Graphics {
 	public GraphicsPImpl(PApplet p) {
 		this.g = p.g;
 		renderer = new Mesh3DRenderer(p);
+		color = Color.BLACK;
 	}
 
 	@Override
