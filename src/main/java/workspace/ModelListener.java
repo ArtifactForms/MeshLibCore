@@ -2,6 +2,6 @@ package workspace;
 
 public interface ModelListener {
 
-    void onModelChanged();
+	void onModelChanged();
 
 }

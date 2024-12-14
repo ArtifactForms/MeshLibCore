@@ -4,48 +4,58 @@ import mesh.Mesh3D;
 
 public interface Graphics {
 
-    int getWidth();
+	int getWidth();
 
-    int getHeight();
+	int getHeight();
 
-    void pushMatrix();
+	void pushMatrix();
 
-    void popMatrix();
+	void popMatrix();
 
-    void translate(float x, float y);
+	void translate(float x, float y);
 
-    void strokeWeight(float weight);
+	void strokeWeight(float weight);
 
-    void setColor(Color color);
+	void setColor(Color color);
 
-    void setColor(int red, int green, int blue);
+	void setColor(math.Color color);
 
-    void drawRect(float x, float y, float width, float height);
+	void setColor(int red, int green, int blue);
 
-    void fillRect(float x, float y, float width, float height);
+	void drawRect(float x, float y, float width, float height);
 
-    void fillFaces(Mesh3D mesh);
+	void fillRect(float x, float y, float width, float height);
 
-    void textSize(float size);
+	void drawOval(float x, float y, float width, float height);
 
-    float getTextSize();
+	void fillOval(float x, float y, float width, float height);
 
-    float textWidth(String text);
+	void drawLine(float x1, float y1, float x2, float y2);
 
-    float textAscent();
+	void fillFaces(Mesh3D mesh);
 
-    float textDescent();
+	void textSize(float size);
 
-    void text(String text, float x, float y);
+	float getTextSize();
 
-    void enableDepthTest();
+	float textWidth(String text);
 
-    void disableDepthTest();
+	float textAscent();
 
-    void rotateX(float angle);
+	float textDescent();
 
-    void rotateY(float angle);
+	void text(String text, float x, float y);
 
-    void rotateZ(float angle);
+	void enableDepthTest();
+
+	void disableDepthTest();
+
+	void rotate(float angle);
+
+	void rotateX(float angle);
+
+	void rotateY(float angle);
+
+	void rotateZ(float angle);
 
 }

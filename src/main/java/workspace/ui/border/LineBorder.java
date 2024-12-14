@@ -1,100 +1,93 @@
 package workspace.ui.border;
 
-import workspace.ui.Color;
+import math.Color;
 import workspace.ui.Graphics;
 
-public class LineBorder extends AbstractBorder {
+/**
+ * A border implementation that draws a solid line around a UI element. The
+ * thickness and color of the border can be customized.
+ */
+public class LineBorder implements Border {
 
-    /**
-     * The width of this border in pixels.
-     */
-    int width;
+	private final int size;
 
-    /**
-     * The color of this border.
-     */
-    Color color;
+	private final Color color;
 
-    /**
-     * Constructs a new instance of this border with the specified color and a
-     * width of 1 pixel.
-     * 
-     * @param color the color of this border
-     */
-    public LineBorder(Color color) {
-        this(color, 1);
-    }
+	/**
+	 * Creates a LineBorder with the specified thickness and color.
+	 * 
+	 * @param size  The thickness of the border. Must be non-negative.
+	 * @param color The color of the border. Cannot be null.
+	 * @throws IllegalArgumentException if size is negative.
+	 * @throws NullPointerException     if color is null.
+	 */
+	public LineBorder(int size, Color color) {
+		if (size < 0) {
+			throw new IllegalArgumentException("Border size must be non-negative.");
+		}
+		if (color == null) {
+			throw new NullPointerException("Color cannot be null.");
+		}
+		this.size = size;
+		this.color = color;
+	}
 
-    /**
-     * Constructs a new instance of this border with the specified color and
-     * width.
-     * 
-     * @param width the width of this border in pixels
-     * @param color the color of this border
-     */
-    public LineBorder(Color color, int width) {
-        super();
-        this.color = color;
-        this.width = width;
-    }
+	/**
+	 * Renders the border by drawing nested rectangles to achieve the desired
+	 * thickness.
+	 * 
+	 * @param g      The Graphics context for rendering.
+	 * @param x      The x-coordinate of the top-left corner.
+	 * @param y      The y-coordinate of the top-left corner.
+	 * @param width  The width of the area to render the border around.
+	 * @param height The height of the area to render the border around.
+	 */
+	@Override
+	public void renderBorder(Graphics g, int x, int y, int width, int height) {
+		g.setColor(color);
+		g.fillRect(x, y, width, size); // Top
+		g.fillRect(x, y + size, size, height - size * 2); // Left
+		g.fillRect(x + width - size, y + size, size, height - size * 2); // Right
+		g.fillRect(x, y + height - size, width, size); // Bottom
+	}
 
-    /**
-     * Returns the width of this border in pixels.
-     * 
-     * @return the width of this border
-     */
-    public int getWidth() {
-        return width;
-    }
+	/**
+	 * Returns the insets required for this border, which are equal to the border
+	 * thickness on all sides.
+	 * 
+	 * @return An Insets object with the border thickness.
+	 */
+	@Override
+	public Insets getInsets() {
+		return new Insets(size, size, size, size);
+	}
 
-    /**
-     * Sets the width of this border to the specified new value.
-     * 
-     * @param width the new width for this border
-     */
-    public void setWidth(int width) {
-        // FIXME Providing a setter may not be that good, cause the component
-        // using
-        // this border has to change it's layout (insets)
-        this.width = width;
-    }
+	/**
+	 * Gets the size (thickness) of the border.
+	 * 
+	 * @return The border thickness.
+	 */
+	public int getSize() {
+		return size;
+	}
 
-    /**
-     * Returns the color of this border.
-     * 
-     * @return the color of this border
-     */
-    public Color getColor() {
-        return color;
-    }
+	/**
+	 * Gets the color of the border.
+	 * 
+	 * @return The border color.
+	 */
+	public Color getColor() {
+		return color;
+	}
 
-    /**
-     * Sets the color of this border to the specified new value.
-     * 
-     * @param color the new color for this border
-     */
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getInsets() {
-        return new Insets(width);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawBorder(Graphics g, int x, int y, int width, int height) {
-        g.strokeWeight(1);
-        g.setColor(color);
-        for (int i = 0; i < this.width; i++) {
-            g.drawRect(x + i, y + i, width - i - i - 1, height - i - i - 1);
-        }
-    }
+	/**
+	 * Returns a string representation of the LineBorder for debugging.
+	 * 
+	 * @return A string with the border's properties.
+	 */
+	@Override
+	public String toString() {
+		return "LineBorder[size=" + size + ", color=" + color + "]";
+	}
 
 }
