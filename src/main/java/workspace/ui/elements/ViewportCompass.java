@@ -1,4 +1,4 @@
-package workspace.ui;
+package workspace.ui.elements;
 
 import math.Mathf;
 import math.Vector3f;
@@ -11,6 +11,8 @@ import mesh.modifier.ScaleModifier;
 import mesh.modifier.TranslateModifier;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
+import workspace.ui.Graphics;
+import workspace.ui.UiComponent;
 
 /**
  * Represents a simple viewport compass in the upper-right corner of the mesh

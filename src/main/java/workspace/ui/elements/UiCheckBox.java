@@ -1,80 +1,141 @@
-package workspace.ui;
+package workspace.ui.elements;
 
-import workspace.ui.border.Insets;
+import workspace.ui.Graphics;
+import workspace.ui.UiComponent;
+import workspace.ui.event.IActionListener;
+import workspace.ui.renderer.CheckBoxRenderer;
 
+/**
+ * A UI CheckBox component that can be toggled (selected/deselected) and
+ * supports click handling.
+ * <p>
+ * This class represents a checkbox UI element with a label, click interaction,
+ * and customizable rendering.
+ * </p>
+ */
 public class UiCheckBox extends UiComponent {
 
-    protected boolean selected;
+	/**
+	 * Checkbox state.
+	 */
+	private boolean selected;
 
-    protected String text;
+	/**
+	 * Label text for the checkbox.
+	 */
+	private String text;
 
-    protected IActionListener actionListener;
+	/**
+	 * Listener for click events.
+	 */
+	private IActionListener actionListener;
 
-    public UiCheckBox(String text) {
-        this.text = text;
-        this.width = 13;
-        this.height = 13;
-    }
+	private final CheckBoxRenderer renderer;
 
-    @Override
-    public void onDraw(Graphics g) {
-        Insets insets = getInsets();
-        int offsetX = getWidth() / 6;
-        int offsetY = getHeight() / 6;
+	/**
+	 * Constructs a new {@code UiCheckBox} with the provided label text.
+	 * <p>
+	 * Initializes default dimensions and sets up the checkbox renderer.
+	 * </p>
+	 * 
+	 * @param text The label text to display next to the checkbox.
+	 */
+	public UiCheckBox(String text) {
+		this.text = text;
+		this.width = 20;
+		this.height = 20;
+		this.renderer = new CheckBoxRenderer();
+	}
 
-        g.setColor(background);
-        g.fillRect(
-                insets.left, insets.top, width - insets.getWidth() - 1,
-                height - insets.getHeight() - 1
-        );
+	/**
+	 * Handles rendering for this checkbox component.
+	 *
+	 * @param g The {@link Graphics} context to draw on.
+	 */
+	@Override
+	public void renderSelf(Graphics g) {
+		renderer.render(g, this);
+	}
 
-        g.setColor(foreground);
-        g.text(text, width + 5, g.getTextSize());
+	/**
+	 * Handles mouse click interactions. Toggles the selection state when clicked.
+	 *
+	 * @param x X-coordinate of the mouse click.
+	 * @param y Y-coordinate of the mouse click.
+	 */
+	@Override
+	public void onMouseClicked(int x, int y) {
+		super.onMouseClicked(x, y);
+		toggleSelection();
+	}
 
-        if (!selected)
-            return;
+	/**
+	 * Toggles the selection state of this checkbox and invokes the action
+	 * listener, if any.
+	 */
+	private void toggleSelection() {
+		setSelected(!selected);
+	}
 
-        g.setColor(foreground);
-        g.fillRect(
-                insets.left + offsetX, insets.top + offsetY,
-                width - insets.getWidth() - 1 - (2 * offsetX),
-                height - insets.getHeight() - 1 - (2 * offsetY)
-        );
-    }
+	/**
+	 * Checks if the checkbox is currently selected.
+	 *
+	 * @return {@code true} if the checkbox is selected; {@code false} otherwise.
+	 */
+	public boolean isSelected() {
+		return selected;
+	}
 
-    @Override
-    public void onMouseClicked(int x, int y) {
-        super.onMouseClicked(x, y);
-        setSelected(!isSelected());
-    }
+	/**
+	 * Updates the selection state of the checkbox and notifies listeners about
+	 * the change.
+	 *
+	 * @param selected The new selection state to set.
+	 */
+	public void setSelected(boolean selected) {
+		if (this.selected == selected) {
+			return; // No state change
+		}
+		this.selected = selected;
+		if (actionListener != null) {
+			actionListener.onActionPerformed();
+		}
+	}
 
-    public boolean isSelected() {
-        return selected;
-    }
+	/**
+	 * Gets the text label associated with the checkbox.
+	 *
+	 * @return The current text label.
+	 */
+	public String getText() {
+		return text;
+	}
 
-    public void setSelected(boolean selected) {
-        boolean oldValue = this.selected;
-        if (oldValue == selected)
-            return;
-        this.selected = selected;
-        if (actionListener != null)
-            actionListener.onActionPerformed();
-    }
+	/**
+	 * Updates the text label of the checkbox.
+	 *
+	 * @param text The new text label.
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    public String getText() {
-        return text;
-    }
+	/**
+	 * Sets an action listener for handling click events on this checkbox.
+	 *
+	 * @param listener The action listener to set.
+	 */
+	public void setActionListener(IActionListener listener) {
+		this.actionListener = listener;
+	}
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public IActionListener getActionListener() {
-        return actionListener;
-    }
-
-    public void setActionListener(IActionListener actionListener) {
-        this.actionListener = actionListener;
-    }
+	/**
+	 * Retrieves the currently set action listener.
+	 *
+	 * @return The action listener currently assigned to this checkbox.
+	 */
+	public IActionListener getActionListener() {
+		return actionListener;
+	}
 
 }

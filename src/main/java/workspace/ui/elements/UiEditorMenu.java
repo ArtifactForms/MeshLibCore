@@ -1,47 +1,48 @@
-package workspace.ui;
+package workspace.ui.elements;
 
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
+import workspace.ui.UiComponent;
+import workspace.ui.renderer.EditorMenuRenderer;
 
+/**
+ * Represents an editor menu component in the UI.
+ * <p>
+ * The menu displays a background and customizable text, styled using values
+ * from the Look and Feel (LAF) system. Rendering is delegated to a dedicated
+ * renderer for modularity.
+ * </p>
+ */
 public class UiEditorMenu extends UiComponent {
 
-    private String text;
+	private String text; // The menu's display text.
 
-    public UiEditorMenu() {
-        setText("");
-        setForeground(UiValues.getColor(UiConstants.KEY_MENU_FOREGROUND_COLOR));
-        setBackground(UiValues.getColor(UiConstants.KEY_MENU_BACKGROUND_COLOR));
-    }
+	/**
+	 * Constructs a new {@code UiEditorMenu} with default styles.
+	 */
+	public UiEditorMenu() {
+		setText("");
+		setForeground(UiValues.getColor(UiConstants.KEY_MENU_FOREGROUND_COLOR));
+		setBackground(UiValues.getColor(UiConstants.KEY_MENU_BACKGROUND_COLOR));
+		setRenderer(new EditorMenuRenderer());
+	}
 
-    @Override
-    public void onDraw(Graphics g) {
-        g.setColor(66, 66, 66);
-        g.fillRect(0, 0, g.getWidth(), 55);
+	/**
+	 * Gets the text displayed in this menu.
+	 *
+	 * @return The current text of the menu.
+	 */
+	public String getText() {
+		return text;
+	}
 
-        drawBackground(g);
-        drawText(g);
-
-        g.setColor(31, 31, 31);
-        g.fillRect(0, 28, g.getWidth(), 1);
-    }
-
-    private void drawBackground(Graphics g) {
-        g.setColor(getBackground());
-        g.fillRect(0, 0, g.getWidth(), 30);
-    }
-
-    private void drawText(Graphics g) {
-        g.setColor(getForeground());
-        g.textSize(UiValues.getInt(UiConstants.KEY_MENU_TEXT_SIZE));
-        g.text(getText(), 10, 20);
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
+	/**
+	 * Sets the text displayed in this menu.
+	 *
+	 * @param text The new text to display.
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
+	
 }
