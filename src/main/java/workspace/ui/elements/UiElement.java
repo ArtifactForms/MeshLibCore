@@ -57,7 +57,13 @@ public interface UiElement {
 	 * @return The width of this UI element in pixels.
 	 */
 	int getWidth();
-	
+
+	/**
+	 * Sets the width of this {@link UiElement} to the specified new width.
+	 * 
+	 * @see #getWidth()
+	 * @param width The new width in pixels.
+	 */
 	void setWidth(int width);
 
 	/**
@@ -71,7 +77,13 @@ public interface UiElement {
 	 * @return The height of this UI element in pixels.
 	 */
 	int getHeight();
-	
+
+	/**
+	 * Sets the height of this {@link UiElement} to the specified new height.
+	 * 
+	 * @see #getHeight()
+	 * @param height The new height in pixels.
+	 */
 	void setHeight(int height);
 
 	/**
