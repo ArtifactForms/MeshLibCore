@@ -143,15 +143,14 @@ public class ViewportCompass extends UiComponent {
 	}
 
 	/**
-	 * Sets the viewport's rotation, clamping each rotation axis value to ensure
-	 * valid ranges.
+	 * Sets the viewport's rotation.
 	 *
 	 * @param rotation The desired rotation vector.
 	 */
 	public void setRotation(Vector3f rotation) {
-		this.rotation.setX(Mathf.clamp(rotation.x, -Mathf.PI, Mathf.PI));
-		this.rotation.setY(Mathf.clamp(rotation.y, -Mathf.PI, Mathf.PI));
-		this.rotation.setZ(Mathf.clamp(rotation.z, -Mathf.PI, Mathf.PI));
+		this.rotation.setX(rotation.x);
+		this.rotation.setY(rotation.y);
+		this.rotation.setZ(rotation.z);
 	}
 
 }
