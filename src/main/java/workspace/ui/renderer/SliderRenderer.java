@@ -1,9 +1,9 @@
 package workspace.ui.renderer;
 
 import workspace.ui.Graphics;
-import workspace.ui.UiSlider;
 import workspace.ui.border.Insets;
 import workspace.ui.elements.UiElement;
+import workspace.ui.elements.UiSlider;
 
 /**
  * Renderer for the slider component.
