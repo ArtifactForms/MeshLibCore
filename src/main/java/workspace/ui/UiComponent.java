@@ -6,6 +6,7 @@ import java.util.List;
 import workspace.ui.border.Border;
 import workspace.ui.border.Insets;
 import workspace.ui.elements.UiElement;
+import workspace.ui.layout.Anchor;
 import workspace.ui.layout.Layout;
 import workspace.ui.renderer.Renderer;
 
@@ -28,6 +29,8 @@ public class UiComponent implements UiElement {
 	protected Border border;
 
 	protected Layout layout;
+
+	protected Anchor anchor;
 
 	private Renderer renderer;
 
@@ -241,6 +244,16 @@ public class UiComponent implements UiElement {
 
 	public void setBackground(Color background) {
 		this.background = background;
+	}
+
+	@Override
+	public Anchor getAnchor() {
+		return anchor;
+	}
+
+	@Override
+	public void setAnchor(Anchor anchor) {
+		this.anchor = anchor;
 	}
 
 }

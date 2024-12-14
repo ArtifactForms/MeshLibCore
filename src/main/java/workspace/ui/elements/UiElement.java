@@ -4,6 +4,7 @@ import workspace.ui.Color;
 import workspace.ui.Graphics;
 import workspace.ui.border.Border;
 import workspace.ui.border.Insets;
+import workspace.ui.layout.Anchor;
 import workspace.ui.layout.Layout;
 import workspace.ui.renderer.Renderer;
 
@@ -127,6 +128,30 @@ public interface UiElement {
 	 *               behavior.
 	 */
 	void setLayout(Layout layout);
+
+	/**
+	 * Retrieves the current anchor type of this UI element.
+	 * <p>
+	 * Anchors define how this element is aligned relative to its parent or
+	 * specific layout logic. Examples include {@code TOP_LEFT}, {@code CENTER},
+	 * and {@code BOTTOM_RIGHT}.
+	 * </p>
+	 * 
+	 * @return The current {@link Anchor} setting for this element.
+	 */
+	Anchor getAnchor();
+
+	/**
+	 * Sets the anchor type for this UI element.
+	 * <p>
+	 * The anchor determines how this element aligns in its container based on the
+	 * defined anchor type, such as centering, top-left, or bottom-right
+	 * alignment.
+	 * </p>
+	 * 
+	 * @param anchor The {@link Anchor} to set for this element.
+	 */
+	void setAnchor(Anchor anchor);
 
 	/**
 	 * Determines if the specified coordinates are within the bounds of this
