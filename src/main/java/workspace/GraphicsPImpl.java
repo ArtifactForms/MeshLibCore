@@ -101,6 +101,16 @@ public class GraphicsPImpl implements Graphics {
 	}
 
 	@Override
+	public void drawLine(float x1, float y1, float z1, float x2, float y2,
+	    float z2) {
+		g.pushStyle();
+		g.noFill();
+		stroke();
+		g.line(x1, y1, z1, x2, y2, z2);
+		g.popStyle();
+	}
+
+	@Override
 	public void fillRect(float x, float y, float width, float height) {
 		g.pushStyle();
 		g.noStroke();

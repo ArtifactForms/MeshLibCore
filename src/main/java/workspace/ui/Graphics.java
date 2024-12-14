@@ -31,6 +31,8 @@ public interface Graphics {
 	void fillOval(float x, float y, float width, float height);
 
 	void drawLine(float x1, float y1, float x2, float y2);
+	
+	void drawLine(float x1, float y1, float z1, float x2, float y2, float z2);
 
 	void fillFaces(Mesh3D mesh);
 
