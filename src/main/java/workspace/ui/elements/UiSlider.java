@@ -1,6 +1,7 @@
-package workspace.ui;
+package workspace.ui.elements;
 
 import math.Mathf;
+import workspace.ui.UiComponent;
 import workspace.ui.border.Insets;
 import workspace.ui.event.ISliderCallBack;
 import workspace.ui.renderer.SliderRenderer;
