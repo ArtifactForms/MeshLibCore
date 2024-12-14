@@ -1,6 +1,7 @@
 package workspace.ui;
 
 import math.Mathf;
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.ConeCreator;
 import mesh.creator.primitives.CubeCreator;
@@ -11,7 +12,7 @@ import mesh.modifier.TranslateModifier;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
 
-public class ViewGizmo extends UiComponent {
+public class ViewportCompass extends UiComponent {
 
 	private static final float DEFAULT_HEIGHT = 2;
 
@@ -21,11 +22,7 @@ public class ViewGizmo extends UiComponent {
 
 	private float size;
 
-	private float rotationX;
-
-	private float rotationY;
-
-	private float rotationZ;
+	private Vector3f rotation;
 
 	private Mesh3D cube;
 
@@ -35,9 +32,10 @@ public class ViewGizmo extends UiComponent {
 
 	private Mesh3D coneZ;
 
-	public ViewGizmo() {
+	public ViewportCompass() {
 		this.height = DEFAULT_HEIGHT;
 		this.size = DEFAULT_SIZE;
+		this.rotation = new Vector3f();
 		createMeshes();
 	}
 
@@ -45,9 +43,9 @@ public class ViewGizmo extends UiComponent {
 	public void render(Graphics g) {
 		g.pushMatrix();
 		g.translate(x, y);
-		g.rotateX(rotationX);
-		g.rotateY(rotationY);
-		g.rotateZ(rotationZ);
+		g.rotateX(rotation.x);
+		g.rotateY(rotation.y);
+		g.rotateZ(rotation.z);
 
 		renderMesh(g, cube, UiConstants.KEY_GIZMO_CENTER_COLOR);
 		renderMesh(g, coneX, UiConstants.KEY_GIZMO_AXIS_X_COLOR);
@@ -96,28 +94,10 @@ public class ViewGizmo extends UiComponent {
 		cube = new CubeCreator(size).create();
 	}
 
-	public float getRotationX() {
-		return rotationX;
-	}
-
-	public void setRotationX(float rotationX) {
-		this.rotationX = rotationX;
-	}
-
-	public float getRotationY() {
-		return rotationY;
-	}
-
-	public void setRotationY(float rotationY) {
-		this.rotationY = rotationY;
-	}
-
-	public float getRotationZ() {
-		return rotationZ;
-	}
-
-	public void setRotationZ(float rotationZ) {
-		this.rotationZ = rotationZ;
+	public void setRotation(Vector3f rotation) {
+		this.rotation.setX(Mathf.clamp(rotation.x, -Mathf.PI, Mathf.PI));
+		this.rotation.setY(Mathf.clamp(rotation.y, -Mathf.PI, Mathf.PI));
+		this.rotation.setZ(Mathf.clamp(rotation.z, -Mathf.PI, Mathf.PI));
 	}
 
 }
