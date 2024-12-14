@@ -3,207 +3,255 @@ package workspace.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import workspace.ui.border.IBorder;
+import workspace.ui.border.Border;
 import workspace.ui.border.Insets;
+import workspace.ui.elements.UiElement;
 import workspace.ui.layout.Layout;
+import workspace.ui.renderer.Renderer;
 
-public class UiComponent {
+public class UiComponent implements UiElement {
 
-    protected int x;
+	protected int x;
 
-    protected int y;
+	protected int y;
 
-    protected int width;
+	protected int width;
 
-    protected int height;
+	protected int height;
 
-    protected boolean visible;
+	protected boolean visible;
 
-    protected Color foreground;
+	protected Color foreground;
 
-    protected Color background;
+	protected Color background;
 
-    protected IBorder border;
+	protected Border border;
 
-    protected List<UiComponent> components;
+	protected List<UiComponent> components;
 
-    protected Layout layout;
+	protected Layout layout;
+	
+	private Renderer renderer;
 
-    public UiComponent() {
-        this(0, 0, 0, 0, true, Color.BLACK, Color.GRAY);
-    }
+	public UiComponent() {
+		this(0, 0, 0, 0, true, Color.BLACK, Color.GRAY);
+	}
 
-    public UiComponent(int x, int y, int width, int height, boolean visible,
-            Color foreground, Color background) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.visible = visible;
-        this.foreground = foreground;
-        this.background = background;
-        this.components = new ArrayList<UiComponent>();
-    }
+	public UiComponent(int x, int y, int width, int height, boolean visible,
+	    Color foreground, Color background) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.visible = visible;
+		this.foreground = foreground;
+		this.background = background;
+		this.components = new ArrayList<UiComponent>();
+	}
+	
+	@Override
+	public void setRenderer(Renderer renderer) {
+		this.renderer = renderer;
+	}
 
-    public void draw(Graphics g) {
-        if (!visible)
-            return;
-        g.pushMatrix();
-        g.translate(x, y);
-        onDraw(g);
-        drawBorder(g);
-        g.translate(getInsets().left, getInsets().top);
-        drawChildren(g);
-        g.popMatrix();
-    }
+	@Override
+	public Renderer getRenderer() {
+		return renderer;
+	}
 
-    public void onDraw(Graphics g) {
+	@Override
+	public Insets getInsets() {
+		if (border == null)
+			return new Insets();
+		return border.getInsets();
+	}
 
-    }
+	
+	@Override
+	public void setBorder(Border border) {
+		this.border = border;
+	}
 
-    protected void layout() {
-        if (layout == null)
-            return;
-        layout.layout(this);
-    }
+	@Override
+	public void render(Graphics g) {
+		if (!visible)
+			return;
+		g.pushMatrix();
+		g.translate(x, y);
+		renderSelf(g);
+		renderBorder(g);
+		g.translate(getInsets().getLeft(), getInsets().getTop());
+		renderChildren(g);
+		g.popMatrix();
+	}
 
-    protected void drawBorder(Graphics g) {
-        IBorder border = getBorder();
-        if (border == null)
-            return;
-        border.drawBorder(g, 0, 0, getWidth(), getHeight());
-    }
+	/**
+	 * Renders the border of the UI element if a border is defined.
+	 * <p>
+	 * This method checks if the {@code border} is not null before calling the
+	 * {@code renderBorder} method on the provided graphics context. It uses the
+	 * element's current width and height to define the area of the border.
+	 * </p>
+	 *
+	 * @param g the graphics context to draw on.
+	 */
+	protected void renderBorder(Graphics g) {
+		if (border == null)
+			return;
+		border.renderBorder(g, 0, 0, getWidth(), getHeight());
+	}
 
-    protected void drawChildren(Graphics g) {
-        for (UiComponent component : components) {
-            component.draw(g);
-        }
-    }
+	protected void renderChildren(Graphics g) {
+		for (UiComponent component : components) {
+			component.render(g);
+		}
+	}
 
-    public boolean contains(int x, int y) {
-        return x >= this.x && y >= this.y && x <= (this.x + getWidth())
-                && y <= (this.y + getHeight());
-    }
+	@Override
+	public void setLayout(Layout layout) {
+		this.layout = layout;
+	}
 
-    public void onMouseClicked(int x, int y) {
-        if (!isVisible())
-            return;
-        for (UiComponent component : components) {
-            if (component.contains(x - this.x, y - this.y)) {
-                component.onMouseClicked(x, y);
-            }
-        }
-    }
+	@Override
+	public boolean contains(int x, int y) {
+		return x >= this.x && y >= this.y && x <= (this.x + getWidth())
+		    && y <= (this.y + getHeight());
+	}
 
-    public void onMouseDragged(int x, int y) {
-        if (!isVisible())
-            return;
-        for (UiComponent component : components) {
-            if (component.contains(x - this.x, y - this.y)) {
-                component.onMouseDragged(x, y);
-            }
-        }
-    }
+	@Override
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
 
-    public void add(UiComponent component) {
-        if (component == null)
-            return;
-        components.add(component);
-        layout();
-    }
+	@Override
+	public boolean isVisible() {
+		return visible;
+	}
 
-    public void remove(UiComponent component) {
-        if (component == null)
-            return;
-        components.remove(component);
-        layout();
-    }
+	public void renderSelf(Graphics g) {
+		if (renderer == null)
+			return;
+		renderer.render(g, this);
+	}
 
-    public int getComponentCount() {
-        return components.size();
-    }
+	protected void layout() {
+		if (layout == null)
+			return;
+		layout.layout(this);
+	}
 
-    public UiComponent getComponentAt(int index) {
-        return components.get(index);
-    }
+	public void onMouseClicked(int x, int y) {
+		if (!isVisible())
+			return;
+		for (UiComponent component : components) {
+			if (component.contains(x - this.x, y - this.y)) {
+				component.onMouseClicked(x, y);
+			}
+		}
+	}
 
-    public Layout getLayout() {
-        return layout;
-    }
+	public void onMouseDragged(int x, int y) {
+		if (!isVisible())
+			return;
+		for (UiComponent component : components) {
+			if (component.contains(x - this.x, y - this.y)) {
+				component.onMouseDragged(x, y);
+			}
+		}
+	}
 
-    public void setLayout(Layout layout) {
-        this.layout = layout;
-    }
+	public void onMouseReleased(int x, int y) {
+		if (!isVisible())
+			return;
+		for (UiComponent component : components) {
+			if (component.contains(x - this.x, y - this.y)) {
+				component.onMouseReleased(x, y);
+			}
+		}
+	}
 
-    public int getX() {
-        return x;
-    }
+	public void onMousePressed(int x, int y) {
+		if (!isVisible())
+			return;
+		for (UiComponent component : components) {
+			if (component.contains(x - this.x, y - this.y)) {
+				component.onMousePressed(x, y);
+			}
+		}
+	}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	// USED
+	public void add(UiComponent component) {
+		if (component == null)
+			return;
+		components.add(component);
+		layout();
+	}
+//
+//	public void remove(UiComponent component) {
+//		if (component == null)
+//			return;
+//		components.remove(component);
+//		layout();
+//	}
+//
+//	public int getComponentCount() {
+//		return components.size();
+//	}
+//
+//	public UiComponent getComponentAt(int index) {
+//		return components.get(index);
+//	}
 
-    public int getY() {
-        return y;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
 
-    public int getWidth() {
-        return width;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
+	public void setY(int y) {
+		this.y = y;
+	}
 
-    public int getHeight() {
-        return height;
-    }
+	@Override
+	public int getWidth() {
+		return width;
+	}
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
+	public void setWidth(int width) {
+		this.width = width;
+	}
 
-    public boolean isVisible() {
-        return visible;
-    }
+	@Override
+	public int getHeight() {
+		return height;
+	}
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
+	public void setHeight(int height) {
+		this.height = height;
+	}
 
-    public Color getForeground() {
-        return foreground;
-    }
+	public Color getForeground() {
+		return foreground;
+	}
 
-    public void setForeground(Color foreground) {
-        this.foreground = foreground;
-    }
+	public void setForeground(Color foreground) {
+		this.foreground = foreground;
+	}
 
-    public Color getBackground() {
-        return background;
-    }
+	public Color getBackground() {
+		return background;
+	}
 
-    public void setBackground(Color background) {
-        this.background = background;
-    }
+	public void setBackground(Color background) {
+		this.background = background;
+	}
 
-    public Insets getInsets() {
-        IBorder border = getBorder();
-        if (border == null)
-            return new Insets();
-        return border.getInsets();
-    }
-
-    public IBorder getBorder() {
-        return border;
-    }
-
-    public void setBorder(IBorder border) {
-        this.border = border;
-    }
 
 }

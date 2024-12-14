@@ -3,11 +3,11 @@ package workspace;
 import workspace.laf.UiValues;
 import workspace.render.Shading;
 import workspace.ui.Color;
-import workspace.ui.IActionListener;
-import workspace.ui.UiCheckBox;
 import workspace.ui.UiComponent;
-import workspace.ui.UiLabel;
-import workspace.ui.UiPanel;
+import workspace.ui.elements.UiCheckBox;
+import workspace.ui.elements.UiLabel;
+import workspace.ui.elements.UiPanel;
+import workspace.ui.event.IActionListener;
 
 public class WorkspaceSideBarUi extends UiComponent implements ModelListener {
 
@@ -82,7 +82,7 @@ public class WorkspaceSideBarUi extends UiComponent implements ModelListener {
 		if (label != null)
 			return label;
 
-		label = new UiLabel();
+		label = new UiLabel("");
 		label.setX(xOffset);
 		label.setY(yOffset);
 		label.setTitle("Controls:");

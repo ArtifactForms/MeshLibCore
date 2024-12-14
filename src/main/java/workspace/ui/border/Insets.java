@@ -1,209 +1,219 @@
 package workspace.ui.border;
 
 /**
- * TODO Explain me
+ * Represents a 2D Insets model, typically used for defining spacing around UI
+ * elements (e.g., margins, padding, or borders).
  * 
- * @author  - Simon Dietz
- * @version 0.1, 17 January 2011
- * 
+ * <p>
+ * Each side of the inset (top, left, bottom, right) can be configured
+ * independently or uniformly. The class also provides utility methods for
+ * computing total horizontal and vertical spacing, and supports operations like
+ * adding insets or copying values.
+ * </p>
  */
-public class Insets implements Cloneable {
+public class Insets {
 
-    /**
-     * The distance from top.
-     */
-    public int top;
+	/**
+	 * The inset value for the top side.
+	 */
+	private int top;
 
-    /**
-     * The distance from left.
-     */
-    public int left;
+	/**
+	 * The inset value for the left side.
+	 */
+	private int left;
 
-    /**
-     * The distance from bottom.
-     */
-    public int bottom;
+	/**
+	 * The inset value for the bottom side.
+	 */
+	private int bottom;
 
-    /**
-     * The distance from right.
-     */
-    public int right;
+	/**
+	 * The inset value for the right side.
+	 */
+	private int right;
 
-    /**
-     * Constructs a new instance of this insets with the top, left, bottom and
-     * right values set to zero.
-     */
-    public Insets() {
-        super();
-    }
+	/**
+	 * Creates a default Insets object with all sides set to zero.
+	 */
+	public Insets() {
+		this(0, 0, 0, 0);
+	}
 
-    /**
-     * Constructs a new instance of this insets with all distances set to the
-     * specified value.
-     * 
-     * @param i the value for the distance from top, left, bottom and right.
-     */
-    public Insets(int i) {
-        this(i, i, i, i);
-    }
+	/**
+	 * Creates a new Insets object as a copy of an existing one.
+	 * 
+	 * @param insets the Insets object to copy
+	 * @throws NullPointerException if the provided insets object is null
+	 */
+	public Insets(Insets insets) {
+		if (insets == null) {
+			throw new NullPointerException("Insets to copy cannot be null.");
+		}
+		this.top = insets.top;
+		this.left = insets.left;
+		this.bottom = insets.bottom;
+		this.right = insets.right;
+	}
 
-    /**
-     * Constructs a new instance of this insets with the specified top, left,
-     * bottom and right values.
-     * 
-     * @param top    the value for the distance from top
-     * @param left   the value for the distance from left
-     * @param bottom the value for the distance from bottom
-     * @param right  the value for the distance from right
-     */
-    public Insets(int top, int left, int bottom, int right) {
-        super();
-        this.top = top;
-        this.left = left;
-        this.bottom = bottom;
-        this.right = right;
-    }
+	/**
+	 * Creates an Insets object with explicit values for each side.
+	 * 
+	 * @param top    the inset value for the top side
+	 * @param left   the inset value for the left side
+	 * @param bottom the inset value for the bottom side
+	 * @param right  the inset value for the right side
+	 * @throws IllegalArgumentException if any value is negative
+	 */
+	public Insets(int top, int left, int bottom, int right) {
+		set(top, left, bottom, right);
+	}
 
-    /**
-     * Constructs a new instance of this insets with all distances same as the
-     * ones of the given insets object.
-     * 
-     * @param i the insets to copy the distance values from
-     */
-    public Insets(Insets i) {
-        this.top = i.top;
-        this.left = i.left;
-        this.bottom = i.bottom;
-        this.right = i.right;
-    }
+	/**
+	 * Adds the values of another Insets object to this one.
+	 * 
+	 * @param other the Insets object whose values will be added
+	 * @throws NullPointerException if the provided insets object is null
+	 */
+	public void add(Insets other) {
+		if (other == null) {
+			throw new NullPointerException("Insets to add cannot be null.");
+		}
+		this.top += other.top;
+		this.left += other.left;
+		this.bottom += other.bottom;
+		this.right += other.right;
+	}
 
-    /**
-     * Adds the distances of the specified insets object to the distances of
-     * this insets.
-     * 
-     * @param i the insets being added
-     */
-    public void add(Insets i) {
-        this.top += i.top;
-        this.left += i.left;
-        this.bottom += i.bottom;
-        this.right += i.right;
-    }
+	/**
+	 * Sets the same value for all four sides.
+	 * 
+	 * @param size the uniform value for all sides
+	 * @throws IllegalArgumentException if the value is negative
+	 */
+	public void set(int size) {
+		set(size, size, size, size);
+	}
 
-    /**
-     * Subtracts the distances of the specified insets object from the distances
-     * of this insets.
-     * 
-     * @param i the insets being subtracted
-     */
-    public void sub(Insets i) {
-        this.top -= i.top;
-        this.left -= i.left;
-        this.bottom -= i.bottom;
-        this.right -= i.right;
-    }
+	/**
+	 * Sets the values for each side explicitly.
+	 * 
+	 * @param top    the inset value for the top side
+	 * @param left   the inset value for the left side
+	 * @param bottom the inset value for the bottom side
+	 * @param right  the inset value for the right side
+	 * @throws IllegalArgumentException if any value is negative
+	 */
+	public void set(int top, int left, int bottom, int right) {
+		if (top < 0 || left < 0 || bottom < 0 || right < 0) {
+			throw new IllegalArgumentException("Insets values cannot be negative.");
+		}
+		this.top = top;
+		this.left = left;
+		this.bottom = bottom;
+		this.right = right;
+	}
 
-    /**
-     * Returns the sum of <code>left</code> and <code>right</code>
-     * 
-     * @return the sum of <code>left</code> and <code>right</code>
-     */
-    public int getWidth() {
-        return left + right;
-    }
+	/**
+	 * Returns the total horizontal spacing (left + right).
+	 * 
+	 * @return the sum of the left and right inset values
+	 */
+	public int getHorizontalInsets() {
+		return left + right;
+	}
 
-    /**
-     * Returns the sum of <code>top</code> and <code>bottom</code>.
-     * 
-     * @return the sum of <code>top</code> and <code>bottom</code>
-     */
-    public int getHeight() {
-        return top + bottom;
-    }
+	/**
+	 * Returns the total vertical spacing (top + bottom).
+	 * 
+	 * @return the sum of the top and bottom inset values
+	 */
+	public int getVerticalInsets() {
+		return top + bottom;
+	}
 
-    /**
-     * Determines if all distances of this insets are equal to zero.
-     * 
-     * @return true if all distances of this insets are equal to zero
-     */
-    public boolean isEmpty() {
-        return top == 0 && left == 0 && bottom == 0 && right == 0;
-    }
+	/**
+	 * Returns the inset value for the top side.
+	 * 
+	 * @return the top inset value
+	 */
+	public int getTop() {
+		return top;
+	}
 
-    public int getHorizontalInsets() {
-        return left + right;
-    }
+	/**
+	 * Returns the inset value for the left side.
+	 * 
+	 * @return the left inset value
+	 */
+	public int getLeft() {
+		return left;
+	}
 
-    public int getVerticalInsets() {
-        return top + bottom;
-    }
+	/**
+	 * Returns the inset value for the bottom side.
+	 * 
+	 * @return the bottom inset value
+	 */
+	public int getBottom() {
+		return bottom;
+	}
 
-    public void set(int size) {
-        top = left = bottom = right = size;
-    }
+	/**
+	 * Returns the inset value for the right side.
+	 * 
+	 * @return the right inset value
+	 */
+	public int getRight() {
+		return right;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + bottom;
-        result = prime * result + left;
-        result = prime * result + right;
-        result = prime * result + top;
-        return result;
-    }
+	/**
+	 * Checks if this Insets object is equal to another object.
+	 * 
+	 * @param obj the object to compare
+	 * @return true if the other object is an Insets instance with identical
+	 *         values; false otherwise
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		Insets insets = (Insets) obj;
+		return top == insets.top && left == insets.left && bottom == insets.bottom
+		    && right == insets.right;
+	}
 
-    /**
-     * Checks if the specified object is equal to this insets. Two insets are
-     * equal if all of there distances (top, left, bottom, right) are equal.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Insets other = (Insets) obj;
-        if (bottom != other.bottom)
-            return false;
-        if (left != other.left)
-            return false;
-        if (right != other.right)
-            return false;
-        if (top != other.top)
-            return false;
-        return true;
-    }
+	/**
+	 * Computes a hash code for this Insets object, consistent with the
+	 * {@link #equals(Object)} method.
+	 * 
+	 * @return the hash code for this Insets object
+	 */
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + top;
+		result = 31 * result + left;
+		result = 31 * result + bottom;
+		result = 31 * result + right;
+		return result;
+	}
 
-    /**
-     * Creates a copy of this insets.
-     * 
-     * @return a copy of this insets
-     */
-    @Override
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            // this shouldn't happen, since we are Cloneable
-            throw new InternalError();
-        }
-    }
-
-    /**
-     * Returns a string representation of this insets.
-     * 
-     * @return a string representation of this insets
-     */
-    @Override
-    public String toString() {
-        return "Insets [top=" + top + ", left=" + left + ", bottom=" + bottom
-                + ", right=" + right + "]";
-    }
+	/**
+	 * Returns a string representation of the Insets object, useful for debugging.
+	 * 
+	 * @return a string describing the insets in the format: "Insets [top=...,
+	 *         left=..., bottom=..., right=...]"
+	 */
+	@Override
+	public String toString() {
+		return "Insets [top=" + top + ", left=" + left + ", bottom=" + bottom
+		    + ", right=" + right + "]";
+	}
 
 }
