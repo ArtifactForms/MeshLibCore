@@ -57,6 +57,11 @@ public class GraphicsPImpl implements Graphics {
 	}
 
 	@Override
+	public void scale(float sx, float sy, float sz) {
+		g.scale(sx, sy, sz);
+	}
+
+	@Override
 	public void translate(float x, float y) {
 		g.translate(x, y);
 	}

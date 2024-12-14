@@ -11,6 +11,8 @@ public interface Graphics {
 	void pushMatrix();
 
 	void popMatrix();
+	
+	void scale(float sx, float sy, float sz);
 
 	void translate(float x, float y);
 	
