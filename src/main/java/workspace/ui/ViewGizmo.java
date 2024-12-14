@@ -5,104 +5,119 @@ import mesh.Mesh3D;
 import mesh.creator.primitives.ConeCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.RotateXModifier;
+import mesh.modifier.RotateZModifier;
 import mesh.modifier.ScaleModifier;
+import mesh.modifier.TranslateModifier;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
 
 public class ViewGizmo extends UiComponent {
 
-    private float height = 2;
+	private static final float DEFAULT_HEIGHT = 2;
 
-    private float size = 10;
+	private static final float DEFAULT_SIZE = 10;
 
-    private float rotationX;
+	private float height;
 
-    private float rotationY;
+	private float size;
 
-    private float rotationZ;
+	private float rotationX;
 
-    private Mesh3D cube;
+	private float rotationY;
 
-    private Mesh3D coneX;
+	private float rotationZ;
 
-    private Mesh3D coneY;
+	private Mesh3D cube;
 
-    private Mesh3D coneZ;
+	private Mesh3D coneX;
 
-    public ViewGizmo() {
-        createMeshes();
-    }
+	private Mesh3D coneY;
 
-    public void draw(Graphics g) {
-        g.pushMatrix();
-        g.translate(x, y);
-        g.rotateX(rotationX);
-        g.rotateY(rotationY);
-        g.rotateZ(rotationZ);
-        g.setColor(UiValues.getColor(UiConstants.KEY_GIZMO_CENTER_COLOR));
-        g.fillFaces(cube);
-        g.setColor(UiValues.getColor(UiConstants.KEY_GIZMO_AXIS_X_COLOR));
-        g.fillFaces(coneX);
-        g.setColor(UiValues.getColor(UiConstants.KEY_GIZMO_AXIS_Y_COLOR));
-        g.fillFaces(coneY);
-        g.setColor(UiValues.getColor(UiConstants.KEY_GIZMO_AXIS_Z_COLOR));
-        g.fillFaces(coneZ);
-        g.popMatrix();
-    }
+	private Mesh3D coneZ;
 
-    private void createMeshes() {
-        createCube();
-        createConeX();
-        createConeY();
-        createConeZ();
-    }
+	public ViewGizmo() {
+		this.height = DEFAULT_HEIGHT;
+		this.size = DEFAULT_SIZE;
+		createMeshes();
+	}
 
-    private void createConeX() {
-        coneX = new ConeCreator().create();
-        coneX.apply(new ScaleModifier(size));
-        coneX.rotateZ(-Mathf.HALF_PI);
-        coneX.translateX(height * size);
-    }
+	@Override
+	public void render(Graphics g) {
+		g.pushMatrix();
+		g.translate(x, y);
+		g.rotateX(rotationX);
+		g.rotateY(rotationY);
+		g.rotateZ(rotationZ);
 
-    private void createConeY() {
-        coneY = new ConeCreator().create();
-        coneY.apply(new ScaleModifier(size));
-        coneY.translateY(height * size);
-    }
+		renderMesh(g, cube, UiConstants.KEY_GIZMO_CENTER_COLOR);
+		renderMesh(g, coneX, UiConstants.KEY_GIZMO_AXIS_X_COLOR);
+		renderMesh(g, coneY, UiConstants.KEY_GIZMO_AXIS_Y_COLOR);
+		renderMesh(g, coneZ, UiConstants.KEY_GIZMO_AXIS_Z_COLOR);
 
-    private void createConeZ() {
-        coneZ = new ConeCreator().create();
-        coneZ.apply(new ScaleModifier(size));
-        coneZ.apply(new RotateXModifier(Mathf.HALF_PI));
-        coneZ.translateZ(height * size);
-    }
+		g.popMatrix();
+	}
 
-    private void createCube() {
-        cube = new CubeCreator(size).create();
-    }
+	private void renderMesh(Graphics g, Mesh3D mesh, String colorKey) {
+		g.setColor(UiValues.getColor(colorKey));
+		g.fillFaces(mesh);
+	}
 
-    public float getRotationX() {
-        return rotationX;
-    }
+	private void createMeshes() {
+		createCube();
+		createConeX();
+		createConeY();
+		createConeZ();
+	}
 
-    public void setRotationX(float rotationX) {
-        this.rotationX = rotationX;
-    }
+	private void createConeX() {
+		coneX = createCone();
+		coneX.apply(new RotateZModifier(-Mathf.HALF_PI));
+		coneX.apply(new TranslateModifier(height * size, 0, 0));
+	}
 
-    public float getRotationY() {
-        return rotationY;
-    }
+	private void createConeY() {
+		coneY = createCone();
+		coneY.apply(new TranslateModifier(0, height * size, 0));
+	}
 
-    public void setRotationY(float rotationY) {
-        this.rotationY = rotationY;
-    }
+	private void createConeZ() {
+		coneZ = createCone();
+		coneZ.apply(new RotateXModifier(Mathf.HALF_PI));
+		coneZ.apply(new TranslateModifier(0, 0, height * size));
+	}
 
-    public float getRotationZ() {
-        return rotationZ;
-    }
+	private Mesh3D createCone() {
+		Mesh3D cone = new ConeCreator().create();
+		cone.apply(new ScaleModifier(size));
+		return cone;
+	}
 
-    public void setRotationZ(float rotationZ) {
-        this.rotationZ = rotationZ;
-    }
+	private void createCube() {
+		cube = new CubeCreator(size).create();
+	}
+
+	public float getRotationX() {
+		return rotationX;
+	}
+
+	public void setRotationX(float rotationX) {
+		this.rotationX = rotationX;
+	}
+
+	public float getRotationY() {
+		return rotationY;
+	}
+
+	public void setRotationY(float rotationY) {
+		this.rotationY = rotationY;
+	}
+
+	public float getRotationZ() {
+		return rotationZ;
+	}
+
+	public void setRotationZ(float rotationZ) {
+		this.rotationZ = rotationZ;
+	}
 
 }
