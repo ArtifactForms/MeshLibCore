@@ -2,14 +2,14 @@ package workspace.command;
 
 public interface KeyCommand {
 
-    void execute();
+	void execute();
 
-    String getName();
+	String getName();
 
-    char getKey();
+	char getKey();
 
-    void setEnabled(boolean enabled);
+	void setEnabled(boolean enabled);
 
-    boolean isEnabled();
+	boolean isEnabled();
 
 }
