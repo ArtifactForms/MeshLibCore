@@ -127,6 +127,44 @@ public interface Graphics2D {
 	void fillRect(float x, float y, float width, float height);
 
 	/**
+	 * Draws the outline of a rounded rectangle with specified position,
+	 * dimensions, and corner radius.
+	 * 
+	 * <p>
+	 * The rectangle is defined by its top-left corner (x, y), its width, and its
+	 * height. The "radii" parameter specifies the corner radius, which determines
+	 * how rounded the corners appear. If the corner radius is 0, this method
+	 * behaves like {@link #drawRect(float, float, float, float)}.
+	 * 
+	 * @param x      The x-coordinate of the top-left corner of the rectangle.
+	 * @param y      The y-coordinate of the top-left corner of the rectangle.
+	 * @param width  The width of the rectangle.
+	 * @param height The height of the rectangle.
+	 * @param radii  The corner radius for rounding the corners of the rectangle.
+	 *               A larger value results in more rounded corners.
+	 */
+	void drawRoundRect(float x, float y, float width, float height, float radii);
+
+	/**
+	 * Draws a filled rounded rectangle with specified position, dimensions, and
+	 * corner radius.
+	 * 
+	 * <p>
+	 * The rectangle is defined by its top-left corner (x, y), its width, and its
+	 * height. The "radii" parameter specifies the corner radius, which determines
+	 * how rounded the corners appear. If the corner radius is 0, this method
+	 * behaves like {@link #fillRect(float, float, float, float)}.
+	 * 
+	 * @param x      The x-coordinate of the top-left corner of the rectangle.
+	 * @param y      The y-coordinate of the top-left corner of the rectangle.
+	 * @param width  The width of the rectangle.
+	 * @param height The height of the rectangle.
+	 * @param radii  The corner radius for rounding the corners of the rectangle.
+	 *               A larger value results in more rounded corners.
+	 */
+	void fillRoundRect(float x, float y, float width, float height, float radii);
+
+	/**
 	 * Draws an unfilled oval at the specified coordinates with the given
 	 * dimensions.
 	 * 
@@ -205,5 +243,5 @@ public interface Graphics2D {
 	 * @param y    The y-coordinate to start rendering the text.
 	 */
 	void text(String text, float x, float y);
-	
+
 }
