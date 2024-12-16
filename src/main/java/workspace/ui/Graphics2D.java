@@ -1,49 +1,209 @@
 package workspace.ui;
 
+/**
+ * Defines the 2D rendering context and operations for a 2D rendering system.
+ * <p>
+ * This interface provides methods for basic 2D graphics rendering operations
+ * such as drawing geometric shapes (rectangles, ovals, and lines), text
+ * rendering, color setting, transformations (translate, scale, rotate), and
+ * text metrics calculations. It serves as the foundation for implementing 2D
+ * rendering capabilities in a graphics pipeline.
+ * </p>
+ * 
+ * <p>
+ * Implementations of this interface are responsible for providing concrete
+ * rendering logic with support for transformations and state management (e.g.,
+ * push and pop matrix operations).
+ * </p>
+ */
 public interface Graphics2D {
-		
+
+	/**
+	 * Retrieves the current width of the rendering context's viewport.
+	 * 
+	 * @return The width in pixels.
+	 */
 	int getWidth();
 
+	/**
+	 * Retrieves the current height of the rendering context's viewport.
+	 * 
+	 * @return The height in pixels.
+	 */
 	int getHeight();
-	
+
+	/**
+	 * Sets the current drawing color using a {@link Color}.
+	 * 
+	 * @param color The color to set for rendering operations.
+	 */
 	void setColor(Color color);
 
+	/**
+	 * Sets the current drawing color using a math-defined {@link math.Color}.
+	 * 
+	 * @param color The math-defined color to use for rendering operations.
+	 */
 	void setColor(math.Color color);
-	
+
+	/**
+	 * Sets the current drawing color using RGB integer values.
+	 * 
+	 * @param red   The red channel value (0-255).
+	 * @param green The green channel value (0-255).
+	 * @param blue  The blue channel value (0-255).
+	 */
 	void setColor(int red, int green, int blue);
-	
+
+	/**
+	 * Sets the thickness of strokes (lines) used in subsequent drawing commands.
+	 * 
+	 * @param weight The stroke weight to apply (e.g., 1.0 for standard line
+	 *               thickness).
+	 */
 	void strokeWeight(float weight);
-	
+
+	/**
+	 * Saves the current transformation matrix onto a stack for future
+	 * restoration.
+	 * 
+	 * This allows temporary transformations without permanently altering the
+	 * rendering state.
+	 */
 	void pushMatrix();
 
+	/**
+	 * Restores the last saved transformation matrix from the stack.
+	 * 
+	 * This undoes any temporary transformations applied since the last
+	 * pushMatrix().
+	 */
 	void popMatrix();
-	
+
+	/**
+	 * Translates the rendering context by a specified distance in 2D space.
+	 * 
+	 * @param x The amount to translate along the x-axis.
+	 * @param y The amount to translate along the y-axis.
+	 */
 	void translate(float x, float y);
-	
+
+	/**
+	 * Scales the rendering context by specified scaling factors along the x and y
+	 * axes.
+	 * 
+	 * @param sx The scaling factor along the x-axis.
+	 * @param sy The scaling factor along the y-axis.
+	 */
 	void scale(float sx, float sy);
-	
+
+	/**
+	 * Rotates the rendering context by the given angle in radians.
+	 * 
+	 * @param angle The angle to rotate by, in radians.
+	 */
 	void rotate(float angle);
 
+	/**
+	 * Draws an unfilled rectangle at the specified coordinates with the given
+	 * dimensions.
+	 * 
+	 * @param x      The x-coordinate of the top-left corner of the rectangle.
+	 * @param y      The y-coordinate of the top-left corner of the rectangle.
+	 * @param width  The width of the rectangle.
+	 * @param height The height of the rectangle.
+	 */
 	void drawRect(float x, float y, float width, float height);
 
+	/**
+	 * Draws a filled rectangle at the specified coordinates with the given
+	 * dimensions.
+	 * 
+	 * @param x      The x-coordinate of the top-left corner of the rectangle.
+	 * @param y      The y-coordinate of the top-left corner of the rectangle.
+	 * @param width  The width of the rectangle.
+	 * @param height The height of the rectangle.
+	 */
 	void fillRect(float x, float y, float width, float height);
 
+	/**
+	 * Draws an unfilled oval at the specified coordinates with the given
+	 * dimensions.
+	 * 
+	 * @param x      The x-coordinate of the top-left corner of the bounding box
+	 *               of the oval.
+	 * @param y      The y-coordinate of the top-left corner of the bounding box
+	 *               of the oval.
+	 * @param width  The width of the bounding box.
+	 * @param height The height of the bounding box.
+	 */
 	void drawOval(float x, float y, float width, float height);
 
+	/**
+	 * Draws a filled oval at the specified coordinates with the given dimensions.
+	 * 
+	 * @param x      The x-coordinate of the top-left corner of the bounding box
+	 *               of the oval.
+	 * @param y      The y-coordinate of the top-left corner of the bounding box
+	 *               of the oval.
+	 * @param width  The width of the bounding box.
+	 * @param height The height of the bounding box.
+	 */
 	void fillOval(float x, float y, float width, float height);
 
+	/**
+	 * Draws a line from (x1, y1) to (x2, y2).
+	 * 
+	 * @param x1 Starting x-coordinate.
+	 * @param y1 Starting y-coordinate.
+	 * @param x2 Ending x-coordinate.
+	 * @param y2 Ending y-coordinate.
+	 */
 	void drawLine(float x1, float y1, float x2, float y2);
 
+	/**
+	 * Sets the size of text to render for subsequent text rendering operations.
+	 * 
+	 * @param size The desired text size.
+	 */
 	void textSize(float size);
 
+	/**
+	 * Retrieves the current text size used by text rendering operations.
+	 * 
+	 * @return The current text size.
+	 */
 	float getTextSize();
 
+	/**
+	 * Computes the width of the given text string at the current text size.
+	 * 
+	 * @param text The text to compute the width for.
+	 * @return The width of the rendered text.
+	 */
 	float textWidth(String text);
 
+	/**
+	 * Retrieves the ascent of text (the portion of text above the baseline).
+	 * 
+	 * @return The ascent value of the text.
+	 */
 	float textAscent();
 
+	/**
+	 * Retrieves the descent of text (the portion of text below the baseline).
+	 * 
+	 * @return The descent value of the text.
+	 */
 	float textDescent();
 
+	/**
+	 * Renders text at the given screen coordinates.
+	 * 
+	 * @param text The text to render.
+	 * @param x    The x-coordinate to start rendering the text.
+	 * @param y    The y-coordinate to start rendering the text.
+	 */
 	void text(String text, float x, float y);
 	
 }
