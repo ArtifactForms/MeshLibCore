@@ -1,57 +1,55 @@
 package engine;
 
 /**
- * This class implements a simple timer. The timer calculates the total time (in
- * seconds) since the first update of this timer, the number of frames per
- * second, the time per frame and the total number of frames since the first
- * update. Furthermore it provides time scaling for slow motion effects and
- * speed up the game.
+ * The {@code Timer} class provides a utility for tracking elapsed time, frames
+ * per second (FPS), and time scaling for games or applications. It uses
+ * nanosecond precision for timekeeping and offers features such as formatted
+ * time representation, time-per-frame calculation, and slow-motion or speed-up
+ * effects via time scaling.
+ *
+ * <p>
+ * Key features include:
+ * <ul>
+ * <li>Tracking total elapsed time (scaled and unscaled).</li>
+ * <li>Calculating frames per second (FPS).</li>
+ * <li>Formatting time as hours:minutes:seconds.</li>
+ * <li>Adjustable time scaling for slow-motion or fast-forward effects.</li>
+ * </ul>
  * 
- * @author - Simon
- * @version 0.2, 5 December 2014
+ * This class is designed to be updated on every frame of an application or
+ * game.
  */
 public class Timer {
 
-	// Used to calculate the frames per second.
+	/** The last recorded time in nanoseconds. */
 	private long lastTime;
 
-	// Used to calculate the frames per second.
+	/** The time in milliseconds taken for the last frame. */
 	private float time;
 
-	// Used to calculate the frames per second.
-	private long secondCount;
+	/** Accumulates milliseconds for FPS calculation. */
+	private long millisecondCounter;
 
-	// Used to calculate the frames per second.
+	/** The frame count during the last FPS update. */
 	private int lastFrameCount;
 
-	/**
-	 * Frames per second.
-	 */
+	/** The calculated frames per second (FPS). */
 	private int fps;
 
-	/**
-	 * The time in milliseconds that has passed since the first update of this
-	 * timer.
-	 */
+	/** Total elapsed time in milliseconds. */
 	private long totalTime;
 
-	/**
-	 * The scale at which the time is passing. This can be used for slow motion
-	 * effects.
-	 */
+	/** Scaling factor for time (default is 1.0 for real-time). */
 	private float timeScale;
 
-	/**
-	 * The total number of frames that have passed since the first update of
-	 * this timer.
-	 */
+	/** Total number of frames since the Timer started. */
 	private int frameCount;
 
 	/**
-	 * Constructs a new instance of this timer.
+	 * Constructs a {@code Timer} with a default time scale of 1.0.
 	 */
 	public Timer() {
-		this.lastTime = System.currentTimeMillis();
+		this.lastTime = System.nanoTime();
 		this.time = 0;
 		this.totalTime = 0;
 		this.timeScale = 1f;
@@ -59,8 +57,18 @@ public class Timer {
 	}
 
 	/**
-	 * Returns the frames per second.
-	 * 
+	 * Constructs a {@code Timer} with the specified initial time scale.
+	 *
+	 * @param initialTimeScale the initial time scaling factor
+	 */
+	public Timer(float initialTimeScale) {
+		this();
+		this.timeScale = initialTimeScale;
+	}
+
+	/**
+	 * Returns the current frames per second (FPS).
+	 *
 	 * @return the frames per second
 	 */
 	public float getFrameRate() {
@@ -68,148 +76,140 @@ public class Timer {
 	}
 
 	/**
-	 * Updates the frames per second value.
+	 * Updates the FPS calculation based on the accumulated milliseconds.
 	 */
 	private void updateFPS() {
-		secondCount += time;
-		if (secondCount >= 1000) {
-			secondCount = 0;
+		millisecondCounter += time;
+		if (millisecondCounter >= 1000) {
+			millisecondCounter = 0;
 			fps = frameCount - lastFrameCount;
 			lastFrameCount = frameCount;
 		}
 	}
 
 	/**
-	 * Updates this timer. This method must invoked each frame to ensure
-	 * accurate timer functionality.
+	 * Updates the Timer. This method must be called once per frame to ensure
+	 * accurate time tracking.
 	 */
 	public void update() {
-		time = System.currentTimeMillis() - lastTime;
-		lastTime = System.currentTimeMillis();
+		long currentTime = System.nanoTime();
+		time = (currentTime - lastTime) / 1_000_000.0f; // Convert to milliseconds
+		lastTime = currentTime;
 		totalTime += time;
 		frameCount++;
 		updateFPS();
 	}
 
 	/**
-	 * Returns the scaled time in seconds that has passed since the first update
-	 * of this timer. This is usually the time in seconds since the start of the
-	 * game multiplied by the time scale.
-	 * 
-	 * @return the scaled time in seconds that has passed since the first update
-	 *         of this timer
-	 * @see #getUnscaledTotalTime()
+	 * Returns the total elapsed time in seconds, scaled by the current time
+	 * scale.
+	 *
+	 * @return the scaled total elapsed time in seconds
 	 */
 	public float getTotalTime() {
 		return totalTime / 1000.0f * timeScale;
 	}
 
 	/**
-	 * Returns the time scale independent time in seconds that has passed since
-	 * the first update of this timer. This is usually the time in seconds since
-	 * the start of the game.
-	 * 
-	 * @return the time in seconds that has passes since the first update of
-	 *         this timer
-	 * @see #getTotalTime()
+	 * Returns the total elapsed time in seconds, independent of the time scale.
+	 *
+	 * @return the unscaled total elapsed time in seconds
 	 */
 	public float getUnscaledTotalTime() {
 		return totalTime / 1000.0f;
 	}
 
 	/**
-	 * Returns a string representation of the scaled total time with the
-	 * following format: <b>hours:minutes:seconds</b>. The total time is the
-	 * time that has passed since the first update of this timer.
-	 * 
-	 * @return a formatted string representation of totalTime
-	 * @see #getUnscaledFormattedTotalTime()
-	 * @see #getTotalTime()
-	 * @see #getUnscaledTotalTime()
+	 * Returns a formatted string representing the scaled total time in the format
+	 * HH:MM:SS.
+	 *
+	 * @return the formatted scaled total time
 	 */
 	public String getFormattedTotalTime() {
-		int s = (int) (this.totalTime * timeScale / 1000);
-		String result = String.format("%d:%02d:%02d", s / 3600,
-				(s % 3600) / 60, (s % 60));
-		return result;
+		return formatTime(getTotalTime());
 	}
 
 	/**
-	 * Returns a time scale independent string representation of the total time
-	 * with the following format: <b>hours:minutes:seconds</b>. The total time
-	 * is the time that has passed since the first update of this timer.
-	 * 
-	 * @return a formatted, time scale independent string representation of
-	 *         total time
-	 * @see #getFormattedTotalTime()
-	 * @see #getTotalTime()
-	 * @see #getUnscaledTotalTime()
+	 * Returns a formatted string representing the unscaled total time in the
+	 * format HH:MM:SS.
+	 *
+	 * @return the formatted unscaled total time
 	 */
 	public String getUnscaledFormattedTotalTime() {
-		int s = (int) (this.totalTime / 1000);
-		String result = String.format("%d:%02d:%02d", s / 3600,
-				(s % 3600) / 60, (s % 60));
-		return result;
+		return formatTime(getUnscaledTotalTime());
 	}
 
 	/**
-	 * Returns the time in seconds it took to complete the last frame.
-	 * 
-	 * @return the time in seconds it took to complete the last frame
+	 * Returns the time it took to complete the last frame in seconds, scaled by
+	 * the current time scale.
+	 *
+	 * @return the scaled time per frame in seconds
 	 */
 	public float getTimePerFrame() {
 		return time / 1000.0f * timeScale;
 	}
-	
+
 	/**
-	 * Returns the time scale independent time in seconds it took to complete the last frame.
-	 * 
-	 * @return the time scale independent time in seconds it took to complete the last frame
+	 * Returns the time it took to complete the last frame in seconds, independent
+	 * of the time scale.
+	 *
+	 * @return the unscaled time per frame in seconds
 	 */
 	public float getUnscaledTimePerFrame() {
 		return time / 1000.0f;
 	}
 
 	/**
-	 * Returns the scale at which time is passing.
-	 * 
-	 * @return the scale at which time is passing
+	 * Returns the current time scaling factor.
+	 *
+	 * @return the time scale
 	 */
 	public float getTimeScale() {
 		return timeScale;
 	}
 
 	/**
-	 * Sets the scale at which time is passing to the specified new value. This
-	 * can be used for slow motion effects.
-	 * 
-	 * @param timeScale
-	 *            the specified new value
+	 * Sets the time scaling factor. A value of 1.0 represents real-time, values
+	 * less than 1.0 slow down time, and values greater than 1.0 speed up time.
+	 *
+	 * @param timeScale the new time scaling factor
 	 */
 	public void setTimeScale(float timeScale) {
 		this.timeScale = timeScale;
 	}
 
 	/**
-	 * Returns the total number of frames that have passed since the first
-	 * update of this timer.
-	 * 
-	 * @return the total number of frames that have passed
+	 * Returns the total number of frames that have passed since the Timer
+	 * started.
+	 *
+	 * @return the total frame count
 	 */
 	public int getFrameCount() {
 		return frameCount;
 	}
+	
+	/**
+	 * Formats a time value in seconds into a string in the format HH:MM:SS.
+	 *
+	 * @param timeInSeconds the time in seconds to format
+	 * @return the formatted time string
+	 */
+	private String formatTime(float timeInSeconds) {
+		int s = (int) timeInSeconds;
+		return String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60);
+	}
 
 	/**
-	 * Returns a string representation of this timer.
+	 * Returns a string representation of this Timer, showing its current state.
+	 *
+	 * @return a string representation of the Timer
 	 */
 	@Override
 	public String toString() {
-		return "Timer [secondCount=" + secondCount + ", lastFrameCount="
-				+ lastFrameCount + ", fps=" + fps + ", lastTime=" + lastTime
-				+ ", time=" + time + ", totalTime=" + totalTime
-				+ ", timeScale=" + timeScale + ", frameCount=" + frameCount
-				+ "]";
+		return "Timer [millisecondCounter=" + millisecondCounter
+		    + ", lastFrameCount=" + lastFrameCount + ", fps=" + fps + ", lastTime="
+		    + lastTime + ", time=" + time + ", totalTime=" + totalTime
+		    + ", timeScale=" + timeScale + ", frameCount=" + frameCount + "]";
 	}
 
 }
