@@ -1,4 +1,4 @@
-package scene.light;
+package engine.scene.light;
 
 /**
  * Interface for rendering various light sources in a 3D scene.
