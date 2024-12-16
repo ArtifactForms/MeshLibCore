@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Matrix4f {
 
 	public static final Matrix4f ZERO = new Matrix4f();
-	
+
 	public static final Matrix4f IDENTITY = new Matrix4f().identity();
 
 	private final float[] values;
@@ -78,11 +78,55 @@ public class Matrix4f {
 	}
 
 	public static Matrix4f createTranslation(float x, float y, float z) {
-		return new Matrix4f(
-				1, 0, 0, x, 
-				0, 1, 0, y, 
-				0, 0, 1, z, 
-				0, 0, 0, 1);
+		return new Matrix4f(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1);
+	}
+
+	/**
+	 * Sets the matrix to represent a perspective projection matrix.
+	 * 
+	 * <p>
+	 * This method computes a standard perspective projection matrix based on the
+	 * provided field of view, aspect ratio, near clipping plane, and far clipping
+	 * plane. The resulting matrix transforms 3D points into normalized device
+	 * coordinates for rendering with perspective projection.
+	 * </p>
+	 * 
+	 * @param fov       Field of view in radians (vertical field of view). Must be
+	 *                  between 0 and π radians.
+	 * @param aspect    Aspect ratio of the viewport (width / height). Must be
+	 *                  positive.
+	 * @param nearPlane Distance to the near clipping plane. Must be less than
+	 *                  `farPlane`.
+	 * @param farPlane  Distance to the far clipping plane. Must be greater than
+	 *                  `nearPlane`.
+	 * @return This matrix for chaining calls.
+	 * @throws IllegalArgumentException if the input parameters are invalid.
+	 */
+	public Matrix4f setPerspective(float fov, float aspect, float nearPlane,
+	    float farPlane) {
+		if (nearPlane > farPlane) {
+			throw new IllegalArgumentException(String.format(
+			    "Near plane (%.2f) cannot be greater than far plane (%.2f).",
+			    nearPlane, farPlane));
+		}
+		if (aspect <= 0) {
+			throw new IllegalArgumentException(
+			    "Aspect ratio must be a positive number.");
+		}
+		if (fov <= 0.0 || fov >= Math.PI) {
+			throw new IllegalArgumentException(
+			    "Field of view must be between 0 and π radians.");
+		}
+
+		float f = (float) (1.0 / Math.tan(fov / 2.0));
+		Arrays.fill(values, 0);
+		values[0] = f / aspect;
+		values[5] = f;
+		values[10] = (farPlane + nearPlane) / (nearPlane - farPlane);
+		values[11] = -1;
+		values[14] = (2 * farPlane * nearPlane) / (nearPlane - farPlane);
+
+		return this;
 	}
 
 	/**
@@ -124,11 +168,9 @@ public class Matrix4f {
 		Vector3f forward = new Vector3f(sinYaw * cosPitch, -sinPitch,
 		    cosPitch * cosYaw);
 
-		Matrix4f viewMatrix = new Matrix4f(
-				right.x, up.x, forward.x, 0,
-				right.y, up.y, forward.y, 0, 
-				right.z, up.z, forward.z, 0,
-			 -right.dot(eye), -up.dot(eye), -forward.dot(eye), 1);
+		Matrix4f viewMatrix = new Matrix4f(right.x, up.x, forward.x, 0, right.y,
+		    up.y, forward.y, 0, right.z, up.z, forward.z, 0, -right.dot(eye),
+		    -up.dot(eye), -forward.dot(eye), 1);
 
 		return viewMatrix;
 	}
