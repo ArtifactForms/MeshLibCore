@@ -3,10 +3,6 @@ package math;
 /**
  * Representation of RGBA colors. The components (r,g,b) define a color in RGB
  * color space.
- * 
- * @author Simon
- * @version 0.3, 11 December 2017
- * 
  */
 public class Color {
 
