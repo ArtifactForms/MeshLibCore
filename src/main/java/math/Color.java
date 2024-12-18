@@ -166,7 +166,7 @@ public class Color {
 	 * @return the resultant color
 	 */
 	public Color add(Color color) {
-		return subtract(color, null);
+		return add(color, null);
 	}
 
 	/**
@@ -329,6 +329,18 @@ public class Color {
 		this.g /= a;
 		this.b /= a;
 		this.a /= a;
+		return this;
+	}
+	
+	/**
+	 * @param a
+	 * @return
+	 */
+	public Color multLocal(float r, float g, float b, float a) {
+		this.r *= a;
+		this.g *= g;
+		this.b *= b;
+		this.a *= a;
 		return this;
 	}
 
