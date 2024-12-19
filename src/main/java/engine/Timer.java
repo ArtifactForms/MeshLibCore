@@ -21,6 +21,11 @@ package engine;
  */
 public class Timer {
 
+	/**
+	 * Real world time when the timer started.
+	 */
+	private long startTime;
+
 	/** The last recorded time in nanoseconds. */
 	private long lastTime;
 
@@ -49,6 +54,7 @@ public class Timer {
 	 * Constructs a {@code Timer} with a default time scale of 1.0.
 	 */
 	public Timer() {
+		this.startTime = System.nanoTime();
 		this.lastTime = System.nanoTime();
 		this.time = 0;
 		this.totalTime = 0;
@@ -179,6 +185,38 @@ public class Timer {
 	}
 
 	/**
+	 * Returns the real-time elapsed since the game / application started,
+	 * measured in seconds.
+	 * 
+	 * <p>
+	 * This method uses `System.nanoTime()` to obtain a high-precision timestamp.
+	 * The returned value is a `float` representing the elapsed time in seconds.
+	 * </p>
+	 *
+	 * @return The real-time elapsed since the game started, in seconds.
+	 */
+	public float getRealtimeSinceStartup() {
+		return (System.nanoTime() - startTime) / 1_000_000_000.0f;
+	}
+
+	/**
+	 * Returns the real-time elapsed since the game / application started,
+	 * measured in seconds, as a `double` value.
+	 * 
+	 * <p>
+	 * This method uses `System.nanoTime()` to obtain a high-precision timestamp.
+	 * The returned value is a `double` representing the elapsed time in seconds,
+	 * providing higher precision than the `float` version.
+	 * </p>
+	 *
+	 * @return The real-time elapsed since the game started, in seconds, as a
+	 *         `double`.
+	 */
+	public double getRealtimeSinceStartupAsDouble() {
+		return (System.nanoTime() - startTime) / 1_000_000_000.0;
+	}
+
+	/**
 	 * Returns the total number of frames that have passed since the Timer
 	 * started.
 	 *
@@ -187,7 +225,7 @@ public class Timer {
 	public int getFrameCount() {
 		return frameCount;
 	}
-	
+
 	/**
 	 * Formats a time value in seconds into a string in the format HH:MM:SS.
 	 *
