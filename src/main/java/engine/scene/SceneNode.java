@@ -35,7 +35,7 @@ import workspace.ui.Graphics;
  * 
  * @see Transform
  * @see Component
- * @see RenderComponent
+ * @see RenderComponents
  */
 public class SceneNode {
 
@@ -243,6 +243,7 @@ public class SceneNode {
 		if (!components.contains(component)) {
 			components.add(component);
 			component.setOwner(this);
+			component.initialize();
 		}
 	}
 
@@ -370,5 +371,5 @@ public class SceneNode {
 		}
 		this.name = name;
 	}
-
+	
 }
