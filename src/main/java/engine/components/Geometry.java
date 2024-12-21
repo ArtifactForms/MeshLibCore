@@ -1,68 +1,75 @@
 package engine.components;
 
 import engine.render.Material;
+import math.Bounds;
+import math.Color;
 import mesh.Mesh3D;
+import mesh.util.MeshBoundsCalculator;
 import workspace.ui.Graphics;
 
 /**
- * Represents a renderable geometry component within the scene graph.
- * <p>
- * The Geometry class is a component that encapsulates a 3D mesh and its
- * associated material. It implements rendering behavior through the
- * {@link RenderableComponent} interface, allowing it to be drawn during the
- * rendering pass of the scene graph traversal.
- * </p>
- * <p>
- * This class is responsible for applying the provided {@link Material} during
- * rendering, ensuring proper visualization of the associated {@link Mesh3D}.
- * </p>
+ * The {@code Geometry} class represents a 3D object in a scene with a mesh and
+ * material applied to it. It is responsible for rendering the mesh and applying
+ * the appropriate material to it. The class also provides access to the mesh's
+ * bounding box, which is useful for purposes like culling, spatial
+ * partitioning, and debugging.
  * 
- * <h3>Key Features</h3>
- * <ul>
- * <li>Supports a default white material if no custom material is provided.</li>
- * <li>Handles cleanup by releasing references to the mesh and material.</li>
- * <li>Integrates with the graphics context to issue rendering commands via the
- * {@link Graphics} class.</li>
- * </ul>
+ * This class implements the {@link RenderableComponent} interface, indicating
+ * that it has a render method to be invoked during the render loop of the
+ * engine.
+ * 
+ * @see RenderableComponent
+ * @see Material
+ * @see Mesh3D
+ * @see Bounds
  */
 public class Geometry extends AbstractComponent implements RenderableComponent {
 
-	/** The 3D mesh to be rendered by this component. */
+	/** The mesh representing the geometry of the object. */
 	private Mesh3D mesh;
 
-	/** The material associated with this geometry for rendering purposes. */
+	/** The material applied to the mesh for rendering. */
 	private Material material;
 
 	/**
-	 * Constructs a Geometry component with a provided mesh and the default white
+	 * The bounding box of the mesh used for culling, spatial partitioning, and
+	 * debugging.
+	 */
+	private Bounds bounds;
+
+	/**
+	 * Constructs a {@code Geometry} with the specified mesh and a default
 	 * material.
-	 * 
-	 * @param mesh The mesh to associate with this geometry.
+	 *
+	 * @param mesh The {@link Mesh3D} object representing the geometry of the
+	 *             object.
+	 * @throws IllegalArgumentException If the mesh is {@code null}.
 	 */
 	public Geometry(Mesh3D mesh) {
 		this(mesh, Material.DEFAULT_WHITE);
 	}
 
 	/**
-	 * Constructs a Geometry component with a specific mesh and material.
-	 * 
-	 * @param mesh     The 3D mesh to associate with this geometry. Must not be
-	 *                 null.
-	 * @param material The material to use for rendering. Must not be null.
-	 * @throws IllegalArgumentException if either mesh or material is null.
+	 * Constructs a {@code Geometry} with the specified mesh and material.
+	 *
+	 * @param mesh     The {@link Mesh3D} object representing the geometry of the
+	 *                 object.
+	 * @param material The {@link Material} to be applied to the mesh.
+	 * @throws IllegalArgumentException If the mesh or material is {@code null}.
 	 */
 	public Geometry(Mesh3D mesh, Material material) {
 		validate(mesh, material);
 		this.mesh = mesh;
 		this.material = material;
+		this.bounds = MeshBoundsCalculator.calculateBounds(mesh);
 	}
 
 	/**
-	 * Validates the provided mesh and material to ensure they are non-null.
-	 * 
-	 * @param mesh     The 3D mesh to validate.
-	 * @param material The material to validate.
-	 * @throws IllegalArgumentException if either mesh or material is null.
+	 * Validates the mesh and material to ensure they are not {@code null}.
+	 *
+	 * @param mesh     The {@link Mesh3D} object to validate.
+	 * @param material The {@link Material} to validate.
+	 * @throws IllegalArgumentException If the mesh or material is {@code null}.
 	 */
 	private void validate(Mesh3D mesh, Material material) {
 		if (mesh == null) {
@@ -74,53 +81,96 @@ public class Geometry extends AbstractComponent implements RenderableComponent {
 	}
 
 	/**
-	 * Cleans up resources associated with this component by nullifying references
-	 * to the mesh and material. This is called when the component is no longer
-	 * needed or during application shutdown.
-	 */
-	@Override
-	public void cleanup() {
-		mesh = null;
-		material = null;
-	}
-
-	/**
-	 * Handles rendering of the mesh with its material using the provided graphics
-	 * context.
-	 * 
-	 * <p>
-	 * This method applies the material, renders the associated mesh's faces using
-	 * the {@link Graphics} instance, and then releases the material's state
-	 * afterward.
-	 * </p>
-	 * 
-	 * @param g The graphics context to use for rendering the geometry.
+	 * Renders the geometry by applying the material and drawing the mesh using
+	 * the specified graphics context.
+	 *
+	 * @param g The {@link Graphics} context used for rendering.
 	 */
 	@Override
 	public void render(Graphics g) {
 		material.apply(g);
 		g.fillFaces(mesh);
 		material.release(g);
+		debugRenderBounds(g);
 	}
 
 	/**
-	 * Placeholder for initialization logic if needed in future development.
-	 * Currently, no specific initialization is necessary.
-	 */
-	@Override
-	public void initialize() {
-		// Initialization logic, if needed
-	}
-
-	/**
-	 * Updates geometry's state over time, if necessary. Currently, this is a
-	 * placeholder for potential future logic.
+	 * Debugs the rendering by drawing the bounding box of the mesh using the
+	 * specified graphics context. The bounding box is rendered in red to help
+	 * visualize the mesh's extents. This method can be used for debugging
+	 * purposes to ensure the mesh is properly positioned and scaled in the scene.
 	 * 
-	 * @param tpf Time per frame, used to synchronize updates across frames.
+	 * <p>
+	 * Beyond debugging, the bounding box is useful for spatial partitioning
+	 * techniques like frustum culling, as well as for determining the overall
+	 * size and position of the mesh in the 3D world.
+	 * </p>
+	 *
+	 * @param g The {@link Graphics} context used for rendering the debug bounding
+	 *          box.
+	 */
+	public void debugRenderBounds(Graphics g) {
+		if (bounds == null) {
+			return;
+		}
+
+		g.setColor(Color.RED);
+
+		// Extract corner points for readability
+		float minX = bounds.getMin().x;
+		float minY = bounds.getMin().y;
+		float minZ = bounds.getMin().z;
+		float maxX = bounds.getMax().x;
+		float maxY = bounds.getMax().y;
+		float maxZ = bounds.getMax().z;
+
+		// Draw lines for each edge of the bounding box
+		g.drawLine(minX, minY, minZ, maxX, minY, minZ);
+		g.drawLine(minX, minY, minZ, minX, maxY, minZ);
+		g.drawLine(minX, minY, minZ, minX, minY, maxZ);
+
+		g.drawLine(maxX, maxY, maxZ, minX, maxY, maxZ);
+		g.drawLine(maxX, maxY, maxZ, maxX, minY, maxZ);
+		g.drawLine(maxX, maxY, maxZ, maxX, maxY, minZ);
+
+		g.drawLine(minX, maxY, minZ, maxX, maxY, minZ);
+		g.drawLine(maxX, minY, minZ, maxX, maxY, minZ);
+		g.drawLine(maxX, minY, minZ, maxX, minY, maxZ);
+
+		g.drawLine(minX, maxY, maxZ, minX, minY, maxZ);
+		g.drawLine(maxX, minY, maxZ, minX, minY, maxZ);
+		g.drawLine(minX, maxY, maxZ, minX, maxY, minZ);
+	}
+
+	/**
+	 * Updates the state of the geometry. This method is a placeholder for
+	 * potential updates to the mesh state over time.
+	 *
+	 * @param tpf The time per frame used for the update (in seconds).
 	 */
 	@Override
 	public void update(float tpf) {
 		// Placeholder for potential mesh state updates
+	}
+
+	/**
+	 * Called when the component is attached to a parent object in the scene. This
+	 * method is a hook for additional initialization or setup when the component
+	 * is added.
+	 */
+	@Override
+	public void onAttach() {
+		// Hook for additional setup on attachment
+	}
+
+	/**
+	 * Called when the component is detached from its parent object in the scene.
+	 * This method is a hook for cleanup or other actions when the component is
+	 * removed.
+	 */
+	@Override
+	public void onDetach() {
+		// Hook for cleanup on detachment
 	}
 	
 }
