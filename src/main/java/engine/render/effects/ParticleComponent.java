@@ -1,14 +1,14 @@
 package engine.render.effects;
 
 import engine.components.AbstractComponent;
-import engine.components.RenderComponent;
+import engine.components.RenderableComponent;
 import workspace.ui.Graphics;
 
 /**
  * A component responsible for managing and rendering particles using a
  * specified particle emitter and renderer.
  * <p>
- * This class implements the {@link RenderComponent} interface, allowing it to
+ * This class implements the {@link RenderableComponent} interface, allowing it to
  * integrate seamlessly with the rendering system. It uses a
  * {@link ParticleEmitter} to handle the logic of particle spawning and updates,
  * while delegating rendering operations to a {@link ParticleRenderer}.
@@ -22,7 +22,7 @@ import workspace.ui.Graphics;
  * @author Simon Dietz
  */
 public class ParticleComponent extends AbstractComponent
-    implements RenderComponent {
+    implements RenderableComponent {
 
 	private ParticleEmitter emitter;
 

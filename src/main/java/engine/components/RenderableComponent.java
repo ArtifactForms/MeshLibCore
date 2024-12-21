@@ -25,7 +25,7 @@ import workspace.ui.Graphics;
  * @see Component
  * @see SceneNode
  */
-public interface RenderComponent extends Component {
+public interface RenderableComponent extends Component {
 
 	/**
 	 * Renders this component using the provided graphics context.

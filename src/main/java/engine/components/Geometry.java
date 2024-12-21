@@ -9,7 +9,7 @@ import workspace.ui.Graphics;
  * <p>
  * The Geometry class is a component that encapsulates a 3D mesh and its
  * associated material. It implements rendering behavior through the
- * {@link RenderComponent} interface, allowing it to be drawn during the
+ * {@link RenderableComponent} interface, allowing it to be drawn during the
  * rendering pass of the scene graph traversal.
  * </p>
  * <p>
@@ -25,7 +25,7 @@ import workspace.ui.Graphics;
  * {@link Graphics} class.</li>
  * </ul>
  */
-public class Geometry extends AbstractComponent implements RenderComponent {
+public class Geometry extends AbstractComponent implements RenderableComponent {
 
 	/** The 3D mesh to be rendered by this component. */
 	private Mesh3D mesh;

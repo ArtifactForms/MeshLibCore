@@ -15,7 +15,7 @@ import workspace.ui.Graphics;
  * </p>
  */
 public class CinematicBlackBarsRenderer extends AbstractComponent
-    implements RenderComponent {
+    implements RenderableComponent {
 
 	/** Default height (in pixels) of the cinematic bars at full fade-in. */
 	private static final int DEFAULT_TARGET_BAR_HEIGHT = 200;

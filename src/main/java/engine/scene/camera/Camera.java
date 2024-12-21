@@ -22,6 +22,8 @@ import math.Vector3f;
  */
 public interface Camera {
 
+	Vector3f getTarget();
+	
 	/**
 	 * Retrieves the camera's transformation.
 	 * <p>

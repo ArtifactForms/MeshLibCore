@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.components.Component;
-import engine.components.RenderComponent;
+import engine.components.RenderableComponent;
 import engine.components.Transform;
 import workspace.ui.Graphics;
 
@@ -21,7 +21,7 @@ import workspace.ui.Graphics;
  * The {@code SceneNode} manages its own transformation through a
  * {@link Transform} object, handles rendering, updates logic for itself and its
  * children, and provides methods for managing components like
- * {@link RenderComponent}.
+ * {@link RenderableComponent}.
  * </p>
  * <p>
  * Example use cases include:
@@ -116,7 +116,7 @@ public class SceneNode {
 	}
 
 	/**
-	 * Renders all associated {@link RenderComponent} instances attached to this
+	 * Renders all associated {@link RenderableComponent} instances attached to this
 	 * node.
 	 * <p>
 	 * This method iterates through all render components and calls their
@@ -126,7 +126,7 @@ public class SceneNode {
 	 * @param g The graphics context used for rendering.
 	 */
 	protected void renderComponents(Graphics g) {
-		for (RenderComponent renderer : getRenderComponents()) {
+		for (RenderableComponent renderer : getRenderComponents()) {
 			renderer.render(g);
 		}
 	}
@@ -307,11 +307,11 @@ public class SceneNode {
 	/**
 	 * Retrieves all render components for this node.
 	 * 
-	 * @return A list of {@link RenderComponent} instances associated with this
+	 * @return A list of {@link RenderableComponent} instances associated with this
 	 *         node.
 	 */
-	public List<RenderComponent> getRenderComponents() {
-		return getComponents(RenderComponent.class);
+	public List<RenderableComponent> getRenderComponents() {
+		return getComponents(RenderableComponent.class);
 	}
 
 	/**

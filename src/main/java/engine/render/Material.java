@@ -83,6 +83,8 @@ public class Material {
 	 */
 	public static final Material WATER_MATERIAL = MaterialFactory.createWater();
 
+	private boolean useLighting;
+
 	/**
 	 * Base color for the material.
 	 */
@@ -118,6 +120,7 @@ public class Material {
 	}
 
 	private Material(Builder builder) {
+		this.useLighting = builder.useLighting;
 		this.color = builder.color;
 		this.ambient = builder.ambient;
 		this.diffuse = builder.diffuse;
@@ -130,6 +133,8 @@ public class Material {
 	 * lighting and shader properties.
 	 */
 	public static class Builder {
+
+		private boolean useLighting = true;
 
 		private Color color = new Color(1, 1, 1); // Default color is white
 
@@ -196,6 +201,11 @@ public class Material {
 			return this;
 		}
 
+		public Builder setUseLighting(boolean useLighting) {
+			this.useLighting = useLighting;
+			return this;
+		}
+
 		/**
 		 * Builds and returns the Material instance with the set properties.
 		 *
@@ -224,6 +234,10 @@ public class Material {
 	 */
 	public void release(Graphics g) {
 		// Logic for releasing or resetting rendering context goes here
+	}
+
+	public boolean isUseLighting() {
+		return useLighting;
 	}
 
 	/**
