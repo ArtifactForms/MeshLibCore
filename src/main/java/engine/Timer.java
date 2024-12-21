@@ -68,7 +68,6 @@ public class Timer {
 	 * @param initialTimeScale the initial time scaling factor
 	 */
 	public Timer(float initialTimeScale) {
-		this();
 		this.timeScale = initialTimeScale;
 	}
 
