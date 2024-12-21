@@ -153,24 +153,12 @@ public class Geometry extends AbstractComponent implements RenderableComponent {
 		// Placeholder for potential mesh state updates
 	}
 
-	/**
-	 * Called when the component is attached to a parent object in the scene. This
-	 * method is a hook for additional initialization or setup when the component
-	 * is added.
-	 */
 	@Override
 	public void onAttach() {
-		// Hook for additional setup on attachment
 	}
 
-	/**
-	 * Called when the component is detached from its parent object in the scene.
-	 * This method is a hook for cleanup or other actions when the component is
-	 * removed.
-	 */
 	@Override
 	public void onDetach() {
-		// Hook for cleanup on detachment
 	}
 	
 }

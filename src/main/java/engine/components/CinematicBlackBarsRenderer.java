@@ -192,28 +192,12 @@ public class CinematicBlackBarsRenderer extends AbstractComponent
 		    (int) currentSize);
 	}
 
-	/**
-	 * Initialization logic for this renderer.
-	 * <p>
-	 * Currently unimplemented but provided as a placeholder for any setup
-	 * required when initializing this component in a larger system.
-	 * </p>
-	 */
 	@Override
-	public void initialize() {
-		// Placeholder for initialization logic.
+	public void onAttach() {
 	}
 
-	/**
-	 * Cleans up resources when the renderer is no longer needed.
-	 * <p>
-	 * Currently unimplemented but can be used to clean up graphics resources,
-	 * listeners, or other allocated resources in a larger system.
-	 * </p>
-	 */
 	@Override
-	public void cleanup() {
-		// Placeholder for cleanup logic.
+	public void onDetach() {
 	}
 
 }

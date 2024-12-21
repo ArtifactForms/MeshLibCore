@@ -99,28 +99,12 @@ public class CircularAnimationComponent extends AbstractComponent {
 		transform.setPosition(x, transform.getPosition().y, z);
 	}
 
-	/**
-	 * Handles any initialization logic required before the animation starts.
-	 * <p>
-	 * Currently, this is left blank but can be implemented if preconditions need
-	 * to be set before the animation begins.
-	 * </p>
-	 */
 	@Override
-	public void initialize() {
-		// Placeholder for potential initialization logic
+	public void onAttach() {
 	}
 
-	/**
-	 * Handles any cleanup logic when the animation component is no longer needed.
-	 * <p>
-	 * Currently, this is left blank but can be implemented if resources need to
-	 * be released or reset during cleanup.
-	 * </p>
-	 */
 	@Override
-	public void cleanup() {
-		// Placeholder for potential cleanup logic
+	public void onDetach() {
 	}
 
 }

@@ -112,13 +112,11 @@ public class RotationComponent extends AbstractComponent {
 	}
 
 	@Override
-	public void initialize() {
-		// Initialization logic if needed
+	public void onAttach() {
 	}
 
 	@Override
-	public void cleanup() {
-		// Cleanup logic if needed
+	public void onDetach() {
 	}
-	
+
 }

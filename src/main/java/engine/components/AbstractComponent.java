@@ -37,5 +37,5 @@ public abstract class AbstractComponent implements Component {
 	public SceneNode getOwner() {
 		return owner;
 	}
-	
+
 }

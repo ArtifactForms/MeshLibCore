@@ -74,15 +74,6 @@ public class ControlWASD extends AbstractComponent {
 	}
 
 	/**
-	 * Initializes the component. Currently no initialization logic is required,
-	 * but this is provided as a placeholder for future logic.
-	 */
-	@Override
-	public void initialize() {
-		// No additional initialization logic required at this stage.
-	}
-
-	/**
 	 * Updates the movement of the owning node based on keyboard input.
 	 * <p>
 	 * This method calculates the velocity vector by processing the WASD input and
@@ -113,28 +104,22 @@ public class ControlWASD extends AbstractComponent {
 	 */
 	private Vector3f handleInput() {
 		Vector3f velocity = new Vector3f();
-		
+
 		// Check for movement inputs
-		if (input.isKeyPressed(Key.W)) velocity.addLocal(0, 0, -1);
-		if (input.isKeyPressed(Key.A)) velocity.addLocal(-1, 0, 0);
-		if (input.isKeyPressed(Key.S)) velocity.addLocal(0, 0, 1);
-		if (input.isKeyPressed(Key.D)) velocity.addLocal(1, 0, 0);
+		if (input.isKeyPressed(Key.W))
+			velocity.addLocal(0, 0, -1);
+		if (input.isKeyPressed(Key.A))
+			velocity.addLocal(-1, 0, 0);
+		if (input.isKeyPressed(Key.S))
+			velocity.addLocal(0, 0, 1);
+		if (input.isKeyPressed(Key.D))
+			velocity.addLocal(1, 0, 0);
 
 		// Normalize diagonal movement to prevent unintended speed boosts
 		if (velocity.length() > 0) {
 			velocity.normalizeLocal().multLocal(speed);
 		}
 		return velocity;
-	}
-
-	/**
-	 * Cleans up resources when the component is removed or the application is
-	 * shutting down. Currently, there is no cleanup logic necessary, but this is
-	 * a placeholder for extensibility.
-	 */
-	@Override
-	public void cleanup() {
-		// Cleanup logic placeholder
 	}
 
 	/**
@@ -165,6 +150,14 @@ public class ControlWASD extends AbstractComponent {
 			throw new IllegalArgumentException("Speed must be non-negative.");
 		}
 		this.speed = speed;
+	}
+
+	@Override
+	public void onAttach() {
+	}
+
+	@Override
+	public void onDetach() {
 	}
 
 }
