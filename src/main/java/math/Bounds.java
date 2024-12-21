@@ -66,26 +66,24 @@ public class Bounds {
 	 * considered inside if all of its coordinates are between the minimum and
 	 * maximum coordinates of the box.
 	 *
-	 * @param point the point to check
+	 * @param p the point to check
 	 * @return {@code true} if the point is inside the bounding box, {@code false}
 	 *         otherwise
 	 */
-	public boolean contains(Vector3f point) {
-		return point.x >= min.x && point.x <= max.x && point.y >= min.y
-		    && point.y <= max.y && point.z >= min.z && point.z <= max.z;
+	public boolean contains(Vector3f p) {
+		return p.x >= min.x && p.x <= max.x && p.y >= min.y
+		    && p.y <= max.y && p.z >= min.z && p.z <= max.z;
 	}
 
 	/**
 	 * Expands the bounding box to encompass the given {@code point}. If the point
 	 * is outside the current bounds, the box will be enlarged to include it.
 	 *
-	 * @param point the point to include in the bounding box
+	 * @param p the point to include in the bounding box
 	 */
-	public void encapsulate(Vector3f point) {
-		min = new Vector3f(Math.min(min.x, point.x), Math.min(min.y, point.y),
-		    Math.min(min.z, point.z));
-		max = new Vector3f(Math.max(max.x, point.x), Math.max(max.y, point.y),
-		    Math.max(max.z, point.z));
+	public void encapsulate(Vector3f p) {
+		min.set(Math.min(min.x, p.x), Math.min(min.y, p.y), Math.min(min.z, p.z));
+		max.set(Math.max(max.x, p.x), Math.max(max.y, p.y), Math.max(max.z, p.z));
 	}
 
 	/**
@@ -96,34 +94,72 @@ public class Bounds {
 	 * @param amount the amount to expand the bounding box by
 	 */
 	public void expand(float amount) {
-		Vector3f expansion = new Vector3f(amount / 2, amount / 2, amount / 2);
-		min = min.subtract(expansion);
-		max = max.add(expansion);
+		float halfAmount = amount / 2;
+		min.subtractLocal(halfAmount, halfAmount, halfAmount);
+		max.addLocal(halfAmount, halfAmount, halfAmount);
 	}
 
 	/**
-	 * Tests if the given {@code ray} intersects the bounding box. The
-	 * intersection is checked using the slab method, which determines if the ray
-	 * intersects the box along each axis.
+	 * Tests whether the given ray intersects this axis-aligned bounding box
+	 * (AABB).
+	 * <p>
+	 * The method uses the slab method to compute the intersection by checking the
+	 * ray's position and direction relative to the box's bounds in each axis (x,
+	 * y, z). It accounts for parallel rays and updates intersection intervals to
+	 * determine if there is an overlap.
+	 * </p>
 	 *
-	 * @param ray the ray to test for intersection
-	 * @return {@code true} if the ray intersects the bounding box, {@code false}
-	 *         otherwise
+	 * @param ray the {@link Ray3f} to test for intersection with this AABB. The
+	 *            ray must have its inverse direction precomputed and accessible
+	 *            via {@code ray.getDirectionInv()} for optimal performance.
+	 * @return {@code true} if the ray intersects the AABB, {@code false}
+	 *         otherwise.
 	 */
 	public boolean intersectRay(Ray3f ray) {
-		Vector3f invDir = ray.getDirection().reciprocal();
-		Vector3f tMin = min.subtract(ray.getOrigin()).mult(invDir);
-		Vector3f tMax = max.subtract(ray.getOrigin()).mult(invDir);
-
-		float t1 = Math.min(tMin.x, tMax.x);
-		float t2 = Math.max(tMin.x, tMax.x);
-
-		for (int i = 1; i < 3; i++) { // For y and z axes
-			t1 = Math.max(t1, Math.min(tMin.get(i), tMax.get(i)));
-			t2 = Math.min(t2, Math.max(tMin.get(i), tMax.get(i)));
+		if (ray.getDirection().isZero()) {
+			return false; // A ray with zero direction cannot intersect anything
 		}
 
-		return t1 <= t2 && t2 >= 0;
+		if (min.equals(max)) {
+			return ray.getOrigin().equals(min);
+		}
+
+		float tmin = 0.0f;
+		float tmax = Float.POSITIVE_INFINITY;
+
+		for (int d = 0; d < 3; ++d) {
+			float invDir = ray.getDirectionInv().get(d);
+
+			// Handle zero direction component
+			if (invDir == 0.0f) {
+				if (ray.getOrigin().get(d) < min.get(d)
+				    || ray.getOrigin().get(d) > max.get(d)) {
+					return false;
+				}
+				continue;
+			}
+
+			float bmin, bmax;
+			if (invDir < 0.0f) {
+				bmin = max.get(d);
+				bmax = min.get(d);
+			} else {
+				bmin = min.get(d);
+				bmax = max.get(d);
+			}
+
+			float dmin = (bmin - ray.getOrigin().get(d)) * invDir;
+			float dmax = (bmax - ray.getOrigin().get(d)) * invDir;
+
+			tmin = Math.max(tmin, dmin);
+			tmax = Math.min(tmax, dmax);
+
+			if (tmin > tmax) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -162,8 +198,12 @@ public class Bounds {
 	 *
 	 * @param min the new minimum corner
 	 * @param max the new maximum corner
+	 * @throws IllegalArgumentException if min or max is null.
 	 */
 	public void setMinMax(Vector3f min, Vector3f max) {
+		if (min == null || max == null) {
+			throw new IllegalArgumentException("Min and Max cannot be null.");
+		}
 		this.min = new Vector3f(min);
 		this.max = new Vector3f(max);
 	}
@@ -185,5 +225,5 @@ public class Bounds {
 	public Vector3f getMax() {
 		return max;
 	}
-	
+
 }
