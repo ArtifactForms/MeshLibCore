@@ -115,7 +115,7 @@ public class Bounds {
 	 * @return {@code true} if the ray intersects the AABB, {@code false}
 	 *         otherwise.
 	 */
-	public boolean intersectRay(Ray3f ray) {
+	public boolean intersectsRay(Ray3f ray) {
 		if (ray.getDirection().isZero()) {
 			return false; // A ray with zero direction cannot intersect anything
 		}
