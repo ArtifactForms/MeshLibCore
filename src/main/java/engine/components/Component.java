@@ -10,8 +10,8 @@ import engine.scene.SceneNode;
  * behaviors, following a component-based design pattern.
  * </p>
  * <p>
- * Each component should manage its lifecycle, with {@code initialize()},
- * {@code update()}, and {@code cleanup()} methods, allowing nodes to manage
+ * Each component should manage its lifecycle, with {@code onAttach()},
+ * {@code update()}, and {@code onDetach()} methods, allowing nodes to manage
  * their behavior lifecycle cleanly.
  * </p>
  */
@@ -44,24 +44,22 @@ public interface Component {
 	void update(float tpf);
 
 	/**
-	 * Initializes the component before it becomes active.
+	 * Called when the component is attached to a {@link SceneNode}.
 	 * <p>
-	 * This is called once after the component is attached to a {@link SceneNode}.
-	 * It allows the component to set up necessary resources, state, or perform
-	 * other preparatory work.
+	 * This allows the component to set up necessary resources, state, or perform
+	 * other preparatory work specific to being added to a node.
 	 * </p>
 	 */
-	void initialize();
+	void onAttach();
 
 	/**
-	 * Cleans up resources and performs necessary teardown when the component is
-	 * removed or the scene is unloaded.
+	 * Called when the component is detached from a {@link SceneNode}.
 	 * <p>
 	 * This ensures no memory is leaked, threads are terminated, or other
 	 * resources are left hanging by cleaning up internal state and releasing
 	 * references.
 	 * </p>
 	 */
-	void cleanup();
+	void onDetach();
 	
 }
