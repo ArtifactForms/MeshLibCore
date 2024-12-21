@@ -130,15 +130,8 @@ public class Scene {
 	 * the main thread for compatibility with most rendering APIs.
 	 */
 	public void render(Graphics g) {
-
 		if (activeCamera != null) {
-//			Vector3f position = activeCamera.getTransform().getPosition();
-//			g.applyMatrix(activeCamera.getProjectionMatrix());
-//			g.applyMatrix(activeCamera.getViewMatrix());
 			g.applyCamera(activeCamera);
-//			if (position != null)
-//			g.translate(position.x, position.y, position.z);
-//			System.out.println(position);
 		}
 
 		g.setWireframeMode(wireframeMode);
