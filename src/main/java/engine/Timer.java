@@ -106,6 +106,34 @@ public class Timer {
 	}
 
 	/**
+	 * Resets the {@code Timer} to its initial state, clearing all accumulated
+	 * time and frame count values. This includes resetting the following:
+	 * <ul>
+	 * <li>The start time to the current system time.</li>
+	 * <li>The last time recorded to the current system time.</li>
+	 * <li>The total elapsed time to zero.</li>
+	 * <li>The frame count to zero.</li>
+	 * <li>The frames per second (FPS) to zero.</li>
+	 * <li>The millisecond counter to zero.</li>
+	 * <li>The last frame count for FPS calculation to zero.</li>
+	 * </ul>
+	 * <p>
+	 * This method can be used when you need to restart the timer, such as for
+	 * restarting the game / application or resetting the simulation state.
+	 * </p>
+	 */
+	public void reset() {
+		this.startTime = System.nanoTime();
+		this.lastTime = startTime;
+		this.time = 0;
+		this.totalTime = 0;
+		this.frameCount = 0;
+		this.fps = 0;
+		this.millisecondCounter = 0;
+		this.lastFrameCount = 0;
+	}
+
+	/**
 	 * Returns the total elapsed time in seconds, scaled by the current time
 	 * scale.
 	 *
