@@ -1,6 +1,7 @@
 package engine.scene;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -114,14 +115,11 @@ public class Scene {
 	 * @param deltaTime The time step for simulation logic updates.
 	 */
 	public void update(float deltaTime) {
-		List<SceneNode> nodesCopy;
 		synchronized (rootNodes) {
-			nodesCopy = new ArrayList<>(rootNodes);
-		}
-
-		// Submit updates to worker threads
-		for (SceneNode node : nodesCopy) {
-			updateExecutor.submit(() -> node.update(deltaTime));
+			for (SceneNode node : Collections.unmodifiableList(rootNodes)) {
+				// Submit updates to worker threads
+				updateExecutor.submit(() -> node.update(deltaTime));
+			}
 		}
 	}
 
