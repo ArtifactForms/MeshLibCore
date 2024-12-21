@@ -521,6 +521,19 @@ public class Vector3f {
 		return this;
 	}
 
+	public float get(int i) {
+		switch (i) {
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			throw new IndexOutOfBoundsException("Index must be 0, 1, or 2.");
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
