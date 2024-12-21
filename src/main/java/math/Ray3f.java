@@ -23,6 +23,12 @@ public class Ray3f {
 	private final Vector3f direction;
 
 	/**
+	 * The reciprocal of the direction vector, used for optimized ray-box
+	 * intersection.
+	 */
+	private final Vector3f directionInv;
+
+	/**
 	 * Constructs a new {@code Ray3f} with the given origin and direction.
 	 * <p>
 	 * The direction vector will be normalized internally to ensure correctness in
@@ -45,10 +51,14 @@ public class Ray3f {
 		this.origin = origin;
 		this.direction = direction;
 		this.direction.normalizeLocal();
+		this.directionInv = direction.reciprocal();
 	}
 
 	/**
 	 * Returns the origin of the ray.
+	 * <p>
+	 * The origin is the starting point from which the ray emanates.
+	 * </p>
 	 * 
 	 * @return The origin of the ray.
 	 */
@@ -58,11 +68,30 @@ public class Ray3f {
 
 	/**
 	 * Returns the normalized direction vector of the ray.
+	 * <p>
+	 * The direction vector defines the direction in which the ray travels. The
+	 * vector is normalized, ensuring consistent calculations for operations like
+	 * intersections.
+	 * </p>
 	 * 
 	 * @return The direction vector of the ray.
 	 */
 	public Vector3f getDirection() {
 		return direction;
+	}
+
+	/**
+	 * Returns the reciprocal of the direction vector of the ray.
+	 * <p>
+	 * The reciprocal of the direction vector is precomputed to optimize ray-box
+	 * intersection tests, where division by components of the direction vector is
+	 * required.
+	 * </p>
+	 * 
+	 * @return The reciprocal of the direction vector of the ray.
+	 */
+	public Vector3f getDirectionInv() {
+		return directionInv;
 	}
 
 	/**
@@ -77,10 +106,12 @@ public class Ray3f {
 	 * </pre>
 	 * 
 	 * where {@code t} is a scalar representing the distance along the ray from
-	 * the origin.
+	 * the origin. Positive values of {@code t} will give points in the direction
+	 * the ray is pointing, while negative values will give points in the opposite
+	 * direction.
 	 * </p>
 	 * 
-	 * @param t The parameter along the ray (can be negative, zero, or positive)-
+	 * @param t The parameter along the ray (can be negative, zero, or positive).
 	 * @return The point at parameter {@code t}.
 	 */
 	public Vector3f getPointAt(float t) {
