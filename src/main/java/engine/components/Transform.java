@@ -232,17 +232,14 @@ public class Transform extends AbstractComponent {
 
 	@Override
 	public void update(float tpf) {
-		// Logic for dynamic transform updates if needed.
 	}
 
 	@Override
-	public void initialize() {
-		// Logic for additional initialization.
+	public void onAttach() {
 	}
 
 	@Override
-	public void cleanup() {
-		// Cleanup logic if required.
+	public void onDetach() {
 	}
 
 }
