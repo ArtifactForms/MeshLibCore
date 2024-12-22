@@ -350,72 +350,7 @@ public class GraphicsPImpl implements Graphics {
 
   public void camera() {
     g.camera();
-    //		// Push the current transformation state
-    //		pushMatrix();
-    //
-    //		// Set up orthographic projection for 2D UI rendering
-    //		// Adjust these parameters depending on your screen size or UI layout
-    //		float left = 0;
-    //		float right = getWidth();
-    //		float bottom = getHeight();
-    //		float top = 0;
-    //		float near = -1;
-    //		float far = 1;
-    //
-    //		Matrix4f orthoProjection = new Matrix4f().setOrtho(left, right, bottom, top,
-    //		    near, far);
-    //		setProjectionMatrix(orthoProjection);
-    //
-    //		// Disable depth testing to ensure 2D UI renders on top
-    //		disableDepthTest();
   }
-
-  //	@Override
-  //	public void setMaterial(Material material) {
-  //		if (material == null) {
-  //			System.err.println("Warning: Null material passed to setMaterial().");
-  //			return;
-  //		}
-  //
-  //		// Extract material properties
-  //		math.Color color = material.getColor();
-  //		float[] ambient = material.getAmbient();
-  //		float[] diffuse = material.getDiffuse(); // NEW
-  //		float[] specular = material.getSpecular();
-  //		float shininess = material.getShininess();
-  //
-  //		// Ensure ambient, diffuse, and specular arrays are valid
-  //		if (ambient == null || ambient.length < 3) {
-  //			ambient = new float[] { 0.2f, 0.2f, 0.2f }; // Default ambient
-  //			System.err
-  //			    .println("Warning: Material ambient property is null or incomplete.");
-  //		}
-  //		if (diffuse == null || diffuse.length < 3) {
-  //			diffuse = new float[] { 1.0f, 1.0f, 1.0f }; // Default diffuse
-  //			System.err
-  //			    .println("Warning: Material diffuse property is null or incomplete.");
-  //		}
-  //		if (specular == null || specular.length < 3) {
-  //			specular = new float[] { 1.0f, 1.0f, 1.0f }; // Default specular
-  //			System.err.println(
-  //			    "Warning: Material specular property is null or incomplete.");
-  //		}
-  //
-  //		// Apply material properties
-  //		setColor(color != null ? color : math.Color.WHITE); // Default to white
-  //
-  //		math.Color ambientColor = new math.Color(this.ambientColor);
-  //		ambientColor.multLocal(ambient[0], ambient[1], ambient[2], 1);
-  //		ambientColor.clampLocal();
-  //
-  //		g.ambient(ambientColor.getRedInt(), ambientColor.getGreenInt(),
-  //		    ambientColor.getBlueInt());
-  //		// Set diffuse indirectly using fill() for now
-  //		// FIXME
-  //		// g.fill(diffuse[0] * 255, diffuse[1] * 255, diffuse[2] * 255);
-  //		g.specular(specular[0], specular[1], specular[2]);
-  //		g.shininess(shininess);
-  //	}
 
   @Override
   public void setMaterial(Material material) {
@@ -499,12 +434,6 @@ public class GraphicsPImpl implements Graphics {
   }
 
   @Override
-  public void lookAt(Vector3f eye, Vector3f target, Vector3f up) {
-    //		g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, up.x, up.y,
-    //		    up.z);
-  }
-
-  @Override
   public void applyMatrix(Matrix4f matrix) {
     if (matrix == null) return;
     float[] values = matrix.getValues();
@@ -532,61 +461,15 @@ public class GraphicsPImpl implements Graphics {
     if (camera == null) {
       throw new IllegalArgumentException("Camera instance cannot be null.");
     }
-    applyMatrix(camera.getViewMatrix());
 
-    //      // Get camera parameters
-    //      Vector3f position = camera.getPosition();
-    //      float pitch = camera.getPitch();
-    //      float yaw = camera.getYaw();
-    //      Matrix4f viewMatrix = camera.getViewMatrix();
-    Matrix4f projectionMatrix = camera.getProjectionMatrix();
-    //
-    //      // Set the view matrix
-    //      g.camera(
-    //          position.x, position.y, position.z, // Camera position
-    //          position.x + (float) Math.cos(yaw), // Look at position (X)
-    //          position.y + (float) Math.sin(pitch), // Look at position (Y)
-    //          position.z + (float) Math.sin(yaw), // Look at position (Z)
-    //          0, 1, 0 // Up vector
-    //      );
-    //
-    // Set the projection matrix (if applicable)
-    if (projectionMatrix != null) {
-      //          applyProjectionMatrix(projectionMatrix);
-    }
+    float fov = camera.getFieldOfView();
+    float aspect = camera.getAspectRatio();
+    float near = camera.getNearPlane();
+    float far = camera.getFarPlane();
+    g.perspective(fov, aspect, near, far);
+
+    Vector3f target = camera.getTarget();
+    Vector3f eye = camera.getTransform().getPosition();
+    g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, -1, 0);
   }
-
-  private void applyProjectionMatrix(Matrix4f projectionMatrix) {
-    float near = projectionMatrix.get(2, 3) / (projectionMatrix.get(2, 2) - 1);
-    float far = projectionMatrix.get(3, 2) / (projectionMatrix.get(2, 2) + 1);
-
-    float left = near * (projectionMatrix.get(2, 0) - 1) / projectionMatrix.get(0, 0);
-    float right = near * (projectionMatrix.get(2, 0) + 1) / projectionMatrix.get(0, 0);
-    float bottom = near * (projectionMatrix.get(2, 1) - 1) / projectionMatrix.get(1, 1);
-    float top = near * (projectionMatrix.get(2, 1) + 1) / projectionMatrix.get(1, 1);
-
-    g.frustum(left, right, bottom, top, near, far);
-  }
-
-  //	@Override
-  //	public void setViewMatrix(Matrix4f viewMatrix) {
-  ////		float[] viewValues = viewMatrix.getValues();
-  ////		g.applyMatrix(viewValues[0], viewValues[1], viewValues[2], viewValues[3],
-  ////		    viewValues[4], viewValues[5], viewValues[6], viewValues[7],
-  ////		    viewValues[8], viewValues[9], viewValues[10], viewValues[11],
-  ////		    viewValues[12], viewValues[13], viewValues[14], viewValues[15]);
-  //////		g.camera(0, 0, 100, 0, 0, 0, 0, 1, 0);
-  //	}
-  //
-  //	@Override
-  //	public void setProjectionMatrix(Matrix4f projectionMatrix) {
-  ////		float[] projectionValues = projectionMatrix.getValues();
-  ////		g.applyMatrix(projectionValues[0], projectionValues[1], projectionValues[2],
-  ////		    projectionValues[3], projectionValues[4], projectionValues[5],
-  ////		    projectionValues[6], projectionValues[7], projectionValues[8],
-  ////		    projectionValues[9], projectionValues[10], projectionValues[11],
-  ////		    projectionValues[12], projectionValues[13], projectionValues[14],
-  ////		    projectionValues[15]);
-  //	}
-
 }
