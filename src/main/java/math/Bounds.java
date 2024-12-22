@@ -210,4 +210,16 @@ public class Bounds {
   public Vector3f getMax() {
     return max;
   }
+
+  /**
+   * Returns a string representation of the Bounds object. The string includes the minimum and
+   * maximum points of the bounds.
+   *
+   * @return a string representation of this Bounds object in the format: "Bounds [min=<min>,
+   *     max=<max>]".
+   */
+  @Override
+  public String toString() {
+    return "Bounds [min=" + min + ", max=" + max + "]";
+  }
 }
