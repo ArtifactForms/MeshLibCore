@@ -7,7 +7,6 @@ import engine.input.KeyInput;
 import engine.input.MouseInput;
 import processing.core.PApplet;
 import workspace.GraphicsPImpl;
-import workspace.Workspace;
 import workspace.ui.Graphics;
 
 public class ProcessingApplication extends PApplet {
@@ -17,8 +16,6 @@ public class ProcessingApplication extends PApplet {
   private static ApplicationContainer container;
 
   private static ApplicationSettings settings;
-
-  private Workspace workspace;
 
   @Override
   public void settings() {
@@ -35,10 +32,6 @@ public class ProcessingApplication extends PApplet {
     container.setGraphics(g);
     getSurface().setTitle(settings.getTitle());
     setupInput();
-    //		workspace = new Workspace(this);
-    //		workspace.setLoop(true);
-    //		workspace.setGridVisible(false);
-    //		workspace.setUiVisible(false);
     container.initialize();
     noCursor();
   }
@@ -54,8 +47,6 @@ public class ProcessingApplication extends PApplet {
   public void draw() {
     colorMode(RGB);
     background(0);
-    scale(100);
-    strokeWeight(0.01f);
     noLights();
     container.update();
     container.render();
