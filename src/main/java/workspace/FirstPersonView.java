@@ -1,6 +1,5 @@
 package workspace;
 
-import engine.world.PlayerMock;
 import math.Mathf;
 import math.Matrix3f;
 import math.Matrix4f;
@@ -79,8 +78,6 @@ public class FirstPersonView {
 
     eye.addLocal(velocity.mult(speed));
     eye.setY(-300);
-
-    PlayerMock.playerPosition.addLocal(velocity.mult(0.1f));
   }
 
   public void apply() {
