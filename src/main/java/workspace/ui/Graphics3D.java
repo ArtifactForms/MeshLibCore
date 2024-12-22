@@ -19,6 +19,8 @@ public interface Graphics3D extends Graphics2D {
   void rotateY(float angle);
 
   void rotateZ(float angle);
+  
+  void rotate(float rx, float ry, float rz);
 
   void render(Light light);
 
