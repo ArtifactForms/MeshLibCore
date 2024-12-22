@@ -12,6 +12,8 @@ import workspace.render.Mesh3DRenderer;
 import workspace.render.ObjectSelectionRender;
 import workspace.render.Shading;
 import workspace.ui.Color;
+import workspace.ui.ui3d.Axis3D;
+import workspace.ui.ui3d.Grid3D;
 
 public class Workspace extends Editor implements ModelListener {
 
@@ -30,10 +32,16 @@ public class Workspace extends Editor implements ModelListener {
 	private SceneObject selectedObject;
 
 	private boolean select;
+	
+	private Grid3D grid;
+	
+	private Axis3D axis;
 
 	private GraphicsPImpl gImpl;
 
 	public Workspace(PApplet p) {
+		grid = new Grid3D(32, 32, 1);
+		axis = new Axis3D(1);
 		this.p = p;
 		registerMethods();
 		firstPersonView = new FirstPersonView(p);
@@ -88,53 +96,17 @@ public class Workspace extends Editor implements ModelListener {
 		firstPersonView.apply();
 	}
 
-	public void drawGrid(int rows, int cols, float size) {
-		if (!isGridVisible())
-			return;
-
-		p.stroke(UiValues.getColor(UiConstants.KEY_GRID_COLOR).getRGBA());
-		p.noFill();
-
-		p.pushMatrix();
-		p.rotateX(PApplet.radians(-90));
-		p.translate(-cols / 2, -rows / 2);
-
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				p.rect(j * size, i * size, size, size);
-			}
-		}
-
-		p.popMatrix();
+	public void drawGrid() {
+		grid.setVisible(model.isGridVisible());
+		grid.render(gImpl);
 	}
 
 	protected void drawAxis(float size) {
-		p.pushStyle();
-		p.pushMatrix();
-
-		p.noFill();
-		p.strokeWeight(1.5f / getScale());
-
-		if (isxAxisVisible()) {
-			p.stroke(UiValues.getColor(UiConstants.KEY_AXIS_X_COLOR).getRGBA());
-			p.line(size, 0, 0, 0, 0, 0);
-			p.line(-size, 0, 0, 0, 0, 0);
-		}
-
-		if (isyAxisVisible()) {
-			p.stroke(UiValues.getColor(UiConstants.KEY_AXIS_Y_COLOR).getRGBA());
-			p.line(0, size, 0, 0, 0, 0);
-			p.line(0, -size, 0, 0, 0, 0);
-		}
-
-		if (iszAxisVisible()) {
-			p.stroke(UiValues.getColor(UiConstants.KEY_AXIS_Z_COLOR).getRGBA());
-			p.line(0, 0, size, 0, 0, 0);
-			p.line(0, 0, -size, 0, 0, 0);
-		}
-
-		p.popStyle();
-		p.popMatrix();
+		axis.setSize(size);
+		axis.setXAxisVisible(isxAxisVisible());
+		axis.setYAxisVisible(isyAxisVisible());
+		axis.setZAxisVisible(iszAxisVisible());
+		axis.render(gImpl, getScale());
 	}
 
 	public void pre() {
@@ -145,7 +117,7 @@ public class Workspace extends Editor implements ModelListener {
 		p.lights();
 		applyTransformations();
 		p.strokeWeight(1 / getScale());
-		drawGrid(32, 32, 1);
+		drawGrid();
 		drawAxis(2000);
 	}
 

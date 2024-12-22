@@ -4,6 +4,7 @@ import workspace.ui.Color;
 import workspace.ui.Graphics;
 import workspace.ui.border.Border;
 import workspace.ui.border.Insets;
+import workspace.ui.layout.Anchor;
 import workspace.ui.layout.Layout;
 import workspace.ui.renderer.Renderer;
 
@@ -17,6 +18,74 @@ import workspace.ui.renderer.Renderer;
  * </p>
  */
 public interface UiElement {
+
+	/**
+	 * Gets the X-coordinate of this element.
+	 * 
+	 * @return The X-coordinate in pixels.
+	 */
+	int getX();
+
+	/**
+	 * Sets the X-coordinate of this element.
+	 * 
+	 * @param x The new X-coordinate in pixels.
+	 */
+	void setX(int x);
+
+	/**
+	 * Gets the Y-coordinate of this element.
+	 * 
+	 * @return The Y-coordinate in pixels.
+	 */
+	int getY();
+
+	/**
+	 * Sets the Y-coordinate of this element.
+	 * 
+	 * @param y The new Y-coordinate in pixels.
+	 */
+	void setY(int y);
+
+	/**
+	 * Retrieves the width of this {@code UiElement}.
+	 * <p>
+	 * The width represents the horizontal size of the UI element. It is used
+	 * during rendering and layout calculations to determine how much horizontal
+	 * space the element occupies.
+	 * </p>
+	 *
+	 * @return The width of this UI element in pixels.
+	 */
+	int getWidth();
+
+	/**
+	 * Sets the width of this {@link UiElement} to the specified new width.
+	 * 
+	 * @see #getWidth()
+	 * @param width The new width in pixels.
+	 */
+	void setWidth(int width);
+
+	/**
+	 * Retrieves the height of this {@code UiElement}.
+	 * <p>
+	 * The height represents the vertical size of the UI element. It is used
+	 * during rendering and layout calculations to determine how much vertical
+	 * space the element occupies.
+	 * </p>
+	 *
+	 * @return The height of this UI element in pixels.
+	 */
+	int getHeight();
+
+	/**
+	 * Sets the height of this {@link UiElement} to the specified new height.
+	 * 
+	 * @see #getHeight()
+	 * @param height The new height in pixels.
+	 */
+	void setHeight(int height);
 
 	/**
 	 * Renders this {@code UiElement} using its specific rendering logic.
@@ -59,6 +128,30 @@ public interface UiElement {
 	 *               behavior.
 	 */
 	void setLayout(Layout layout);
+
+	/**
+	 * Retrieves the current anchor type of this UI element.
+	 * <p>
+	 * Anchors define how this element is aligned relative to its parent or
+	 * specific layout logic. Examples include {@code TOP_LEFT}, {@code CENTER},
+	 * and {@code BOTTOM_RIGHT}.
+	 * </p>
+	 * 
+	 * @return The current {@link Anchor} setting for this element.
+	 */
+	Anchor getAnchor();
+
+	/**
+	 * Sets the anchor type for this UI element.
+	 * <p>
+	 * The anchor determines how this element aligns in its container based on the
+	 * defined anchor type, such as centering, top-left, or bottom-right
+	 * alignment.
+	 * </p>
+	 * 
+	 * @param anchor The {@link Anchor} to set for this element.
+	 */
+	void setAnchor(Anchor anchor);
 
 	/**
 	 * Determines if the specified coordinates are within the bounds of this
@@ -129,30 +222,6 @@ public interface UiElement {
 	 *         this UI element.
 	 */
 	Insets getInsets();
-
-	/**
-	 * Retrieves the width of this {@code UiElement}.
-	 * <p>
-	 * The width represents the horizontal size of the UI element. It is used
-	 * during rendering and layout calculations to determine how much horizontal
-	 * space the element occupies.
-	 * </p>
-	 *
-	 * @return The width of this UI element in pixels.
-	 */
-	int getWidth();
-
-	/**
-	 * Retrieves the height of this {@code UiElement}.
-	 * <p>
-	 * The height represents the vertical size of the UI element. It is used
-	 * during rendering and layout calculations to determine how much vertical
-	 * space the element occupies.
-	 * </p>
-	 *
-	 * @return The height of this UI element in pixels.
-	 */
-	int getHeight();
 
 	/**
 	 * Retrieves the background color of this {@code UiElement}.

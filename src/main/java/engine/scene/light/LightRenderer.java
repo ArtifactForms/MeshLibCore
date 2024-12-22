@@ -1,4 +1,6 @@
-package scene.light;
+package engine.scene.light;
+
+import workspace.ui.Graphics;
 
 /**
  * Interface for rendering various light sources in a 3D scene.
@@ -11,6 +13,22 @@ package scene.light;
  * </p>
  */
 public interface LightRenderer {
+
+	/**
+	 * Sets the graphics context for the light renderer.
+	 * <p>
+	 * This method initializes the rendering environment by associating the given
+	 * {@link Graphics} instance with the light renderer. The graphics context is
+	 * responsible for rendering commands, shader bindings, and light
+	 * computations. Implementations can use this context to issue rendering
+	 * commands for different light types or configure the rendering pipeline as
+	 * needed.
+	 * </p>
+	 *
+	 * @param g The {@link Graphics} instance to be used by the light renderer.
+	 *          Must not be null.
+	 */
+	void setGraphics(Graphics g);
 
 	/**
 	 * Renders a generic light source.
@@ -62,5 +80,18 @@ public interface LightRenderer {
 	 * @param light The directional light source to render. Must not be null.
 	 */
 	void render(DirectionalLight light);
+
+	/**
+	 * Renders an ambient light source.
+	 * <p>
+	 * This method handles the rendering of ambient light, which provides uniform
+	 * illumination across the entire scene without directionality or position.
+	 * Ambient light is used to simulate indirect lighting and ensures that
+	 * objects are visible even when not directly lit by other light sources.
+	 * </p>
+	 *
+	 * @param light The ambient light source to render. Must not be null.
+	 */
+	void render(AmbientLight light);
 
 }

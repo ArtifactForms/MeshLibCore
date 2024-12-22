@@ -18,6 +18,7 @@ public class GraphicsPImpl implements Graphics {
 	public GraphicsPImpl(PApplet p) {
 		this.g = p.g;
 		renderer = new Mesh3DRenderer(p);
+		color = Color.BLACK;
 	}
 
 	@Override
@@ -57,8 +58,18 @@ public class GraphicsPImpl implements Graphics {
 	}
 
 	@Override
+	public void scale(float sx, float sy, float sz) {
+		g.scale(sx, sy, sz);
+	}
+
+	@Override
 	public void translate(float x, float y) {
 		g.translate(x, y);
+	}
+
+	@Override
+	public void translate(float x, float y, float z) {
+		g.translate(x, y, z);
 	}
 
 	@Override
@@ -97,6 +108,16 @@ public class GraphicsPImpl implements Graphics {
 		g.noFill();
 		stroke();
 		g.line(x1, y1, x2, y2);
+		g.popStyle();
+	}
+
+	@Override
+	public void drawLine(float x1, float y1, float z1, float x2, float y2,
+	    float z2) {
+		g.pushStyle();
+		g.noFill();
+		stroke();
+		g.line(x1, y1, z1, x2, y2, z2);
 		g.popStyle();
 	}
 

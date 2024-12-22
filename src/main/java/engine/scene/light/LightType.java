@@ -1,9 +1,9 @@
-package scene.light;
+package engine.scene.light;
 
 /**
  * Enum representing different types of lights.
  *
- * This enum defines the three primary types of lights commonly used in 3D
+ * This enum defines the four primary types of lights commonly used in 3D
  * graphics:
  *
  * <pre>
@@ -12,10 +12,13 @@ package scene.light;
  *   a specific direction.
  * - SPOT: A spotlight emits light in a cone shape, with a specific 
  *   direction and angle.
+ * - AMBIENT: An ambient light provides uniform illumination across the 
+ *   entire scene, simulating indirect lighting with no specific direction 
+ *   or position.
  * </pre>
  */
 public enum LightType {
 
-	POINT, DIRECTIONAL, SPOT
+	POINT, DIRECTIONAL, SPOT, AMBIENT
 
 }

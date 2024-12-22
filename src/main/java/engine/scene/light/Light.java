@@ -1,4 +1,4 @@
-package scene.light;
+package engine.scene.light;
 
 import math.Color;
 
