@@ -1,9 +1,7 @@
 package workspace.render;
 
 public enum Shading {
+  SMOOTH,
 
-    SMOOTH,
-
-    FLAT
-
+  FLAT
 }
