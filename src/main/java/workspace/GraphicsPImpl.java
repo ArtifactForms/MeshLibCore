@@ -340,6 +340,13 @@ public class GraphicsPImpl implements Graphics {
     g.rotate(angle);
   }
 
+  @Override
+  public void rotate(float rx, float ry, float rz) {
+      g.rotateX(rx);
+      g.rotateY(ry);
+      g.rotateZ(rz);
+  }
+
   public void camera() {
     g.camera();
   }
@@ -453,7 +460,7 @@ public class GraphicsPImpl implements Graphics {
     if (camera == null) {
       throw new IllegalArgumentException("Camera instance cannot be null.");
     }
-
+    
     float fov = camera.getFieldOfView();
     float aspect = camera.getAspectRatio();
     float near = camera.getNearPlane();
@@ -462,6 +469,6 @@ public class GraphicsPImpl implements Graphics {
 
     Vector3f target = camera.getTarget();
     Vector3f eye = camera.getTransform().getPosition();
-    g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, -1, 0);
+    g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0);
   }
 }

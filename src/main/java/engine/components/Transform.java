@@ -57,11 +57,11 @@ public class Transform extends AbstractComponent {
    * @param g The graphics context to which this transformation is applied.
    */
   public void apply(Graphics g) {
-    g.translate(position.x, position.y, position.z);
-    g.rotateX(rotation.x);
+    g.scale(scale.x, scale.y, scale.z); // Scale first
+    g.rotateX(rotation.x); // Then rotate
     g.rotateY(rotation.y);
     g.rotateZ(rotation.z);
-    g.scale(scale.x, scale.y, scale.z);
+    g.translate(position.x, position.y, position.z); // Translate last
   }
 
   /**
@@ -86,6 +86,17 @@ public class Transform extends AbstractComponent {
    */
   public void rotate(Vector3f delta) {
     this.rotation.addLocal(delta);
+  }
+
+  /**
+   * Rotates this transformation by the given delta values for each axis (in radians).
+   *
+   * @param x The change in rotation around the X-axis (in radians).
+   * @param y The change in rotation around the Y-axis (in radians).
+   * @param z The change in rotation around the Z-axis (in radians).
+   */
+  public void rotate(float x, float y, float z) {
+    this.rotation.addLocal(x, y, z);
   }
 
   /**
@@ -206,6 +217,38 @@ public class Transform extends AbstractComponent {
    */
   public void setScale(float sx, float sy, float sz) {
     this.scale.set(sx, sy, sz);
+  }
+
+  /**
+   * Retrieves the forward direction of the transform, based on its current rotation.
+   *
+   * <p>The forward direction is calculated using the rotation values and represents the vector that
+   * points in the direction the object is facing.
+   *
+   * @return A normalized {@link Vector3f} representing the forward direction of the object.
+   */
+  public Vector3f getForward() {
+    float cosY = (float) Math.cos(rotation.y);
+    float sinY = (float) Math.sin(rotation.y);
+    float cosX = (float) Math.cos(rotation.x);
+    float sinX = (float) Math.sin(rotation.x);
+
+    return new Vector3f(cosY * cosX, sinX, sinY * cosX).normalizeLocal();
+  }
+
+  /**
+   * Retrieves the right direction of the transform, based on its current rotation.
+   *
+   * <p>The right direction is calculated using the rotation values and represents the vector that
+   * points to the right of the object.
+   *
+   * @return A normalized {@link Vector3f} representing the right direction of the object.
+   */
+  public Vector3f getRight() {
+    float cosY = (float) Math.cos(rotation.y);
+    float sinY = (float) Math.sin(rotation.y);
+
+    return new Vector3f(-sinY, 0, cosY).normalizeLocal();
   }
 
   @Override
