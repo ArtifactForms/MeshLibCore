@@ -9,6 +9,8 @@ import engine.Timer;
 import engine.input.Input;
 import engine.input.Key;
 import engine.scene.Scene;
+import engine.scene.camera.Camera;
+import math.Mathf;
 
 /**
  * The {@code DebugInfoUpdater} class is responsible for updating debug information displayed by a
@@ -24,8 +26,10 @@ public class DebugInfoUpdater {
   private static final String CATEGORY_SCENE = "Scene";
 
   private static final String CATEGORY_SYSTEM = "System";
-  
+
   private static final String CATEGORY_OS = "OS";
+
+  private static final String CATEGORY_CAMERA = "Camera";
 
   private final DebugOverlay debugOverlay;
 
@@ -80,6 +84,7 @@ public class DebugInfoUpdater {
     updateInputMetrics(input);
     if (activeScene != null) {
       updateSceneMetrics(activeScene);
+      updateCameraInfo(activeScene.getActiveCamera());
     }
     updateOsMetrics();
   }
@@ -91,12 +96,20 @@ public class DebugInfoUpdater {
     }
     return pressedKeys;
   }
-  
+
+  private void updateCameraInfo(Camera camera) {
+    if (camera == null) return;
+    setInfo(CATEGORY_CAMERA, "Aspect", camera.getAspectRatio());
+    setInfo(CATEGORY_CAMERA, "FOV", Mathf.toDegrees(camera.getFieldOfView()));
+    setInfo(CATEGORY_CAMERA, "Near", Mathf.toDegrees(camera.getNearPlane()));
+    setInfo(CATEGORY_CAMERA, "Far", Mathf.toDegrees(camera.getFarPlane()));
+  }
+
   private void updateOsMetrics() {
-      setInfo(CATEGORY_OS, "Name", osBean.getName());
-      setInfo(CATEGORY_OS, "Arch", osBean.getArch());
-      setInfo(CATEGORY_OS, "Processors", osBean.getAvailableProcessors());
-      setInfo(CATEGORY_OS, "Version", osBean.getVersion());
+    setInfo(CATEGORY_OS, "Name", osBean.getName());
+    setInfo(CATEGORY_OS, "Arch", osBean.getArch());
+    setInfo(CATEGORY_OS, "Processors", osBean.getAvailableProcessors());
+    setInfo(CATEGORY_OS, "Version", osBean.getVersion());
   }
 
   private void updateInputMetrics(Input input) {

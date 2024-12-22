@@ -9,91 +9,109 @@ import mesh.util.VertexNormals;
 
 public class NoiseModifier implements IMeshModifier {
 
-	private float minimum;
+  private static final float DEFAULT_MINIMUM = 0;
 
-	private float maximum;
+  private static final float DEFAULT_MAXIMUM = 1;
 
-	private long seed;
+  private float minimum;
 
-	private Random random;
+  private float maximum;
 
-	private Mesh3D mesh;
+  private long seed;
 
-	private List<Vector3f> vertexNormals;
+  private Random random;
 
-	public NoiseModifier() {
-		this(0.0f, 1.0f);
-	}
+  private Mesh3D mesh;
 
-	public NoiseModifier(float minimum, float maximum) {
-		this.minimum = minimum;
-		this.maximum = maximum;
-	}
+  private List<Vector3f> vertexNormals;
 
-	@Override
-	public Mesh3D modify(Mesh3D mesh) {
-		random = new Random(seed);
-		setMesh(mesh);
-		calculateVertexNormals();
-		applyNoise();
-		return mesh;
-	}
+  public NoiseModifier() {
+    this(DEFAULT_MINIMUM, DEFAULT_MAXIMUM);
+  }
 
-	private void applyNoise() {
-		for (int i = 0; i < getVertexCount(); i++) {
-			float length = createRandomValue();
-			Vector3f vertex = getVertexAt(i);
-			Vector3f normal = getVertexNormalAt(i);
-			vertex.addLocal(normal.mult(length));
-		}
-	}
+  public NoiseModifier(float minimum, float maximum) {
+    this.minimum = minimum;
+    this.maximum = maximum;
+    this.random = new Random(seed);
+  }
 
-	private Vector3f getVertexAt(int index) {
-		return mesh.getVertexAt(index);
-	}
+  @Override
+  public Mesh3D modify(Mesh3D mesh) {
+    validate(mesh);
+    if (mesh.vertices.isEmpty()) {
+      return mesh;
+    }
+    setMesh(mesh);
+    calculateVertexNormals();
+    applyNoise();
+    return mesh;
+  }
 
-	private Vector3f getVertexNormalAt(int index) {
-		return vertexNormals.get(index);
-	}
+  private void applyNoise() {
+    for (int index = 0; index < getVertexCount(); index++) {
+      applyNoiseToVertex(index);
+    }
+  }
 
-	private int getVertexCount() {
-		return mesh.vertices.size();
-	}
+  private void applyNoiseToVertex(int index) {
+    float length = createRandomValue();
+    Vector3f vertex = getVertexAt(index);
+    Vector3f normal = getVertexNormalAt(index);
+    vertex.addLocal(normal.mult(length));
+  }
 
-	private void calculateVertexNormals() {
-		vertexNormals = new VertexNormals(mesh).getVertexNormals();
-	}
+  private Vector3f getVertexAt(int index) {
+    return mesh.getVertexAt(index);
+  }
 
-	private float createRandomValue() {
-		return minimum + random.nextFloat() * (maximum - minimum);
-	}
+  private Vector3f getVertexNormalAt(int index) {
+    return vertexNormals.get(index);
+  }
 
-	private void setMesh(Mesh3D mesh) {
-		this.mesh = mesh;
-	}
+  private int getVertexCount() {
+    return mesh.vertices.size();
+  }
 
-	public float getMinimum() {
-		return minimum;
-	}
+  private void calculateVertexNormals() {
+    vertexNormals = new VertexNormals(mesh).getVertexNormals();
+  }
 
-	public void setMinimum(float minimum) {
-		this.minimum = minimum;
-	}
+  private float createRandomValue() {
+    return minimum + random.nextFloat() * (maximum - minimum);
+  }
 
-	public float getMaximum() {
-		return maximum;
-	}
+  private void validate(Mesh3D mesh) {
+    if (mesh == null) {
+      throw new IllegalArgumentException("Mesh cannot be null.");
+    }
+  }
 
-	public void setMaximum(float maximum) {
-		this.maximum = maximum;
-	}
+  private void setMesh(Mesh3D mesh) {
+    this.mesh = mesh;
+  }
 
-	public long getSeed() {
-		return seed;
-	}
+  public float getMinimum() {
+    return minimum;
+  }
 
-	public void setSeed(long seed) {
-		this.seed = seed;
-	}
+  public void setMinimum(float minimum) {
+    this.minimum = minimum;
+  }
 
+  public float getMaximum() {
+    return maximum;
+  }
+
+  public void setMaximum(float maximum) {
+    this.maximum = maximum;
+  }
+
+  public long getSeed() {
+    return seed;
+  }
+
+  public void setSeed(long seed) {
+    this.seed = seed;
+    random = new Random(seed);
+  }
 }
