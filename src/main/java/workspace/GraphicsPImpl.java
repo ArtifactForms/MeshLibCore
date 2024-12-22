@@ -116,14 +116,6 @@ public class GraphicsPImpl implements Graphics {
   }
 
   private void drawMeshFaces(Mesh3D mesh) {
-    //    g.beginShape(PApplet.TRIANGLES);
-    //    for (Face3D f : mesh.getFaces()) {
-    //      for (int index : f.indices) {
-    //        Vector3f v = mesh.vertices.get(index);
-    //        g.vertex(v.getX(), v.getY(), v.getZ());
-    //      }
-    //    }
-    //    g.endShape();
     for (Face3D f : mesh.getFaces()) {
       if (f.indices.length == 3) {
         g.beginShape(PApplet.TRIANGLES);
