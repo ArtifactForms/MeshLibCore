@@ -1,8 +1,6 @@
 package engine.scene.camera;
 
 import engine.components.Transform;
-import math.Matrix4f;
-import math.Ray3f;
 import math.Vector3f;
 
 /**
@@ -19,60 +17,48 @@ import math.Vector3f;
  */
 public interface Camera {
 
+  /**
+   * Sets the camera's target position in the world.
+   *
+   * <p>The target defines the point in the 3D world that the camera is focused on. This is
+   * typically used for creating behaviors such as following an object or maintaining a fixed view
+   * of a specific scene element. The target can be dynamically updated during runtime to adjust the
+   * camera's view.
+   *
+   * @param target The new target for the camera to focus on, represented as a {@link Vector3f}.
+   */
+  void setTarget(Vector3f target);
+
+  /**
+   * Retrieves the current target position of the camera.
+   *
+   * <p>The target defines the point in the 3D world that the camera is currently focused on. This
+   * is useful for determining the camera's orientation or calculating the view matrix. The target
+   * remains constant unless explicitly changed using {@link #setTarget(Vector3f)}.
+   *
+   * @return The current target of the camera as a {@link Vector3f}.
+   */
   Vector3f getTarget();
 
   /**
-   * Retrieves the camera's transformation.
+   * Retrieves the camera's transformation, including its position, rotation, and scale in the 3D
+   * world.
    *
-   * <p>The transformation defines the position, rotation, and scaling of the camera in the 3D
-   * world. This transformation is used to compute the camera's position and orientation in world
-   * space.
+   * <p>The transformation is a {@link Transform} object that encapsulates the camera's position,
+   * rotation, and scaling within the scene. It is used to compute the camera's world space
+   * orientation and can be updated to change the camera's location or rotation in the scene.
    *
-   * @return The {@link Transform} representing the camera's position, rotation, and scaling.
+   * @return The camera's {@link Transform} representing its position, rotation, and scaling in the
+   *     world.
    */
   Transform getTransform();
 
   /**
-   * Retrieves the current view matrix of the camera.
+   * Retrieves the field of view (FOV) of the camera, applicable for perspective projections.
    *
-   * <p>The view matrix is used to transform world-space coordinates into camera (view) space. It is
-   * typically derived from the camera's position and orientation in the 3D world.
-   *
-   * @return The view matrix as a {@link Matrix4f}.
-   */
-  Matrix4f getViewMatrix();
-
-  /**
-   * Retrieves the current projection matrix of the camera.
-   *
-   * <p>The projection matrix defines how a 3D scene is projected onto a 2D viewport, depending on
-   * the camera's projection settings (perspective or orthographic).
-   *
-   * @return The projection matrix as a {@link Matrix4f}.
-   */
-  Matrix4f getProjectionMatrix();
-
-  /**
-   * Updates the view matrix based on the current transformation.
-   *
-   * <p>This method should recalculate the view matrix whenever the camera's position or orientation
-   * has changed.
-   */
-  void updateViewMatrix();
-
-  /**
-   * Updates the projection matrix based on camera-specific settings.
-   *
-   * <p>This method should be called whenever changes are made to parameters like the field of view,
-   * near or far clipping planes, or aspect ratio.
-   */
-  void updateProjectionMatrix();
-
-  /**
-   * Retrieves the field of view (FOV) for perspective cameras.
-   *
-   * <p>The field of view determines how wide or narrow the camera's view is and only applies to
-   * perspective projections.
+   * <p>The field of view determines how wide or narrow the camera's perspective is, affecting how
+   * much of the 3D scene is visible at any given time. This property is only relevant for
+   * perspective cameras.
    *
    * @return The current field of view in degrees.
    */
@@ -81,45 +67,53 @@ public interface Camera {
   /**
    * Sets the field of view (FOV) for perspective cameras.
    *
-   * <p>This only has an effect on cameras configured for perspective projection.
+   * <p>The field of view defines how wide or narrow the camera's perspective is, which influences
+   * the perception of depth in the scene. This property only applies to perspective cameras and has
+   * no effect on orthographic cameras.
    *
    * @param fov The desired field of view in degrees.
    */
   void setFieldOfView(float fov);
 
   /**
-   * Retrieves the near clipping plane distance.
+   * Retrieves the near clipping plane distance for the camera.
    *
-   * <p>The near clipping plane defines the closest distance from the camera at which objects are
-   * rendered. Objects closer than this distance will not be visible.
+   * <p>The near clipping plane defines the closest distance at which objects will be rendered by
+   * the camera. Any objects closer than this distance will not be visible. This value is crucial
+   * for depth calculations and scene rendering.
    *
    * @return The near clipping plane distance.
    */
   float getNearPlane();
 
   /**
-   * Sets the near clipping plane distance.
+   * Sets the near clipping plane distance for the camera.
    *
-   * <p>This modifies how close an object must be to the camera to be visible.
+   * <p>The near clipping plane defines the closest visible distance in the 3D world. Objects closer
+   * than this plane will not be rendered. Adjusting this value helps prevent issues like z-fighting
+   * and ensures proper visibility of objects.
    *
    * @param nearPlane The desired near clipping plane distance.
    */
   void setNearPlane(float nearPlane);
 
   /**
-   * Retrieves the far clipping plane distance.
+   * Retrieves the far clipping plane distance for the camera.
    *
-   * <p>The far clipping plane defines the furthest distance from the camera at which objects are
-   * rendered. Objects farther away than this distance will not be visible.
+   * <p>The far clipping plane defines the furthest distance at which objects will be rendered.
+   * Objects farther than this distance will not be visible. This value is critical for controlling
+   * the rendering of distant objects and depth precision.
    *
    * @return The far clipping plane distance.
    */
   float getFarPlane();
 
   /**
-   * Sets the far clipping plane distance.
+   * Sets the far clipping plane distance for the camera.
    *
-   * <p>This modifies how far objects can be from the camera to remain visible.
+   * <p>The far clipping plane defines the maximum visible distance for the camera. Objects beyond
+   * this distance will not be rendered. Modifying this value affects the range of visible objects
+   * in the scene and can help optimize performance by excluding distant geometry.
    *
    * @param farPlane The desired far clipping plane distance.
    */
@@ -128,46 +122,23 @@ public interface Camera {
   /**
    * Retrieves the current aspect ratio of the camera's viewport.
    *
-   * <p>The aspect ratio is defined as the ratio of the viewport's width to its height and is used
-   * to adjust the projection matrix accordingly.
+   * <p>The aspect ratio is the ratio of the width to the height of the camera's viewport and
+   * determines how the scene is projected onto the screen. The aspect ratio is used to adjust the
+   * projection matrix for accurate rendering and proper scene alignment, especially in 3D.
    *
-   * @return The aspect ratio of the viewport.
+   * @return The current aspect ratio of the camera's viewport (width divided by height).
    */
   float getAspectRatio();
 
   /**
    * Sets the aspect ratio for the camera's viewport.
    *
-   * <p>Changing the aspect ratio should trigger an update to the projection matrix.
+   * <p>Changing the aspect ratio of the camera will affect how the scene is projected, ensuring
+   * that the rendered image fits the viewport properly. This adjustment is typically necessary when
+   * resizing the window or changing the display resolution.
    *
-   * @param aspectRatio The desired aspect ratio.
+   * @param aspectRatio The desired aspect ratio for the camera's viewport (width divided by
+   *     height).
    */
   void setAspectRatio(float aspectRatio);
-
-  /**
-   * Converts 2D screen coordinates to a 3D ray in world space.
-   *
-   * <p>This method is essential for raycasting operations, such as determining which objects in the
-   * scene correspond to a given 2D screen-space click.
-   *
-   * @param screenX The x-coordinate on the screen.
-   * @param screenY The y-coordinate on the screen.
-   * @param viewportWidth The width of the viewport in pixels.
-   * @param viewportHeight The height of the viewport in pixels.
-   * @return A {@link Ray3f} representing the computed ray in 3D world space.
-   */
-  Ray3f createRay(float screenX, float screenY, int viewportWidth, int viewportHeight);
-
-  /**
-   * Converts 2D screen-space coordinates to their corresponding world-space coordinates.
-   *
-   * <p>This is the inverse of projection and can be used for operations like object picking or
-   * determining intersections between screen-space inputs and 3D objects in the world.
-   *
-   * @param screenCoords The 2D screen-space coordinates to unproject.
-   * @param viewportWidth The width of the viewport in pixels.
-   * @param viewportHeight The height of the viewport in pixels.
-   * @return The corresponding 3D world-space coordinates as a {@link Vector3f}.
-   */
-  Vector3f unproject(Vector3f screenCoords, int viewportWidth, int viewportHeight);
 }
