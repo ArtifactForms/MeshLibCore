@@ -366,6 +366,45 @@ public class Vector4f {
   }
 
   /**
+   * Reflects this vector around the given normal vector.
+   *
+   * <p>Reflection is the process of "bouncing" a vector off a surface defined by the normal vector,
+   * such that the angle of incidence equals the angle of reflection. This is commonly used in
+   * physics simulations, computer graphics, and geometric calculations.
+   *
+   * <p>The reflection formula is:
+   *
+   * <pre>
+   * R = V - 2 * (V ⋅ N) * N
+   * </pre>
+   *
+   * where:
+   *
+   * <ul>
+   *   <li><b>R</b>: Reflected vector
+   *   <li><b>V</b>: Original vector (this vector)
+   *   <li><b>N</b>: Normal vector (should be normalized to ensure accurate results)
+   * </ul>
+   *
+   * This method computes the reflection of the current vector based on the specified normal and
+   * returns the resulting vector.
+   *
+   * @param normal the normal vector around which this vector will be reflected. Must not be {@code
+   *     null} or a zero vector.
+   * @return a new {@code Vector4f} instance representing the reflected vector.
+   * @throws IllegalArgumentException if the {@code normal} vector is {@code null} or a zero vector.
+   */
+  public Vector4f reflect(Vector4f normal) {
+    if (normal == null) {
+      throw new IllegalArgumentException("Normal cannot be null.");
+    }
+    if (normal.isZero()) {
+      throw new IllegalArgumentException("Normal cannot be zero vertor.");
+    }
+    return this.subtract(normal.multiply(2 * this.dot(normal)));
+  }
+
+  /**
    * Returns the x component of the vector.
    *
    * @return The x component of the vector.

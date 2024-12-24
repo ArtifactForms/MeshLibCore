@@ -2117,6 +2117,147 @@ public class Vector4fTest {
   }
 
   // ----------------------------------------------------------------------------------------------
+  // Reflect
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testReflectXAxis() {
+    Vector4f v1 = new Vector4f(1, 2, 3, 4);
+    Vector4f normal = new Vector4f(1, 0, 0, 0); // Normal of the x-axis
+    Vector4f expected = new Vector4f(-1, 2, 3, 4);
+    assertEquals(expected, v1.reflect(normal));
+  }
+
+  @Test
+  public void testReflectYAxis() {
+    Vector4f v1 = new Vector4f(1, 2, 3, 4);
+    Vector4f normal = new Vector4f(0, 1, 0, 0); // Normal of the y-axis
+    Vector4f expected = new Vector4f(1, -2, 3, 4);
+    assertEquals(expected, v1.reflect(normal));
+  }
+
+  @Test
+  public void testReflectZAxis() {
+    Vector4f v1 = new Vector4f(1, 2, 3, 4);
+    Vector4f normal = new Vector4f(0, 0, 1, 0); // Normal of the z-axis
+    Vector4f expected = new Vector4f(1, 2, -3, 4);
+    assertEquals(expected, v1.reflect(normal));
+  }
+
+  @Test
+  public void testReflectArbitraryNormal() {
+    // Setup
+    Vector4f v1 = new Vector4f(1, 1, 1, 1);
+    Vector4f normal = new Vector4f(1, 1, 1, 0).normalize();
+
+    // Expected reflection result calculated manually:
+    // Reflection formula: v' = v - 2 * (v ⋅ n) * n
+    // Dot product (v ⋅ n)
+    float dot =
+        v1.getX() * normal.getX()
+            + v1.getY() * normal.getY()
+            + v1.getZ() * normal.getZ()
+            + v1.getW() * normal.getW();
+
+    // Scale the normal by 2 * dot
+    Vector4f scaledNormal =
+        new Vector4f(
+            2 * dot * normal.getX(),
+            2 * dot * normal.getY(),
+            2 * dot * normal.getZ(),
+            2 * dot * normal.getW());
+
+    // Subtract scaledNormal from v1 to get the reflected vector
+    Vector4f expectedReflection =
+        new Vector4f(
+            v1.getX() - scaledNormal.getX(),
+            v1.getY() - scaledNormal.getY(),
+            v1.getZ() - scaledNormal.getZ(),
+            v1.getW() - scaledNormal.getW());
+
+    // Actual reflection
+    Vector4f reflected = v1.reflect(normal);
+
+    // Assert equality
+    assertEquals(expectedReflection.getX(), reflected.getX(), 1e-6);
+    assertEquals(expectedReflection.getY(), reflected.getY(), 1e-6);
+    assertEquals(expectedReflection.getZ(), reflected.getZ(), 1e-6);
+    assertEquals(expectedReflection.getW(), reflected.getW(), 1e-6);
+  }
+
+  @Test
+  public void testReflectAlongItself() {
+    Vector4f v1 = new Vector4f(1, 0, 0, 0);
+    Vector4f normal = new Vector4f(1, 0, 0, 0);
+    assertEquals(v1.negate(), v1.reflect(normal));
+  }
+
+  @Test
+  public void testReflectAlongZeroVector() {
+    Vector4f v1 = new Vector4f(1, 2, 3, 4);
+    Vector4f normal = new Vector4f(0, 0, 0, 0);
+    assertThrows(IllegalArgumentException.class, () -> v1.reflect(normal));
+  }
+
+  @Test
+  public void testReflectAlongNullVectorThrowsIllegalArgumentException() {
+    Vector4f v1 = new Vector4f(1, 2, 3, 4);
+    assertThrows(IllegalArgumentException.class, () -> v1.reflect(null));
+  }
+
+  @Test
+  public void testReflectParallelToNormal() {
+    // Vector and normal are parallel
+    Vector4f v1 = new Vector4f(2, 0, 0, 0);
+    Vector4f normal = new Vector4f(1, 0, 0, 0).normalize();
+
+    // Perform reflection
+    Vector4f reflected = v1.reflect(normal);
+
+    // Expected result: negation of the vector
+    Vector4f expected = new Vector4f(-2, 0, 0, 0);
+
+    // Assert the reflected vector is correct
+    assertEquals(
+        expected, reflected, "The reflected vector is incorrect when v1 is parallel to normal.");
+
+    // Assert v1 and normal remain unchanged
+    Vector4f originalV1 = new Vector4f(2, 0, 0, 0);
+    Vector4f originalNormal = new Vector4f(1, 0, 0, 0).normalize();
+    assertEquals(originalV1, v1, "The original vector should remain unchanged.");
+    assertEquals(originalNormal, normal, "The normal vector should remain unchanged.");
+  }
+
+  @Test
+  public void testReflectCreatesNewInstanceAndDoesNotChangeOriginalVectorAndInputNormal() {
+    // Original vector
+    Vector4f v1 = new Vector4f(3, -2, 1, 0);
+    // Normal vector
+    Vector4f normal = new Vector4f(0, 1, 0, 0).normalize();
+
+    // Store copies of the original vectors for later comparison
+    Vector4f originalV1 = new Vector4f(v1.getX(), v1.getY(), v1.getZ(), v1.getW());
+    Vector4f originalNormal =
+        new Vector4f(normal.getX(), normal.getY(), normal.getZ(), normal.getW());
+
+    // Perform reflection
+    Vector4f reflected = v1.reflect(normal);
+
+    // Assert that the returned instance is a new object
+    assertNotSame("The method should return a new Vector4f instance.", v1, reflected);
+
+    // Assert the original vector remains unchanged
+    assertEquals(originalV1, v1, "The original vector should remain unchanged.");
+
+    // Assert the normal vector remains unchanged
+    assertEquals(originalNormal, normal, "The normal vector should remain unchanged.");
+
+    // Optional: Assert that the reflection result is correct
+    Vector4f expected = new Vector4f(3, 2, 1, 0); // Reflection around Y-axis
+    assertEquals(expected, reflected, "The reflected vector is incorrect.");
+  }
+
+  // ----------------------------------------------------------------------------------------------
   // Set Values
   // ----------------------------------------------------------------------------------------------
 
