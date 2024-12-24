@@ -110,7 +110,7 @@ public abstract class BasicApplication implements Application {
   }
 
   @Override
-  public void render(Graphics g) {
+  public void render(Graphics g) {      
     if (activeScene != null) {
       activeScene.render(g);
     }
@@ -169,5 +169,9 @@ public abstract class BasicApplication implements Application {
 
   public void setActiveScene(Scene activeScene) {
     this.activeScene = activeScene;
+  }
+  
+  public void setDisplayInfoText(boolean displayInfoText) {
+      this.displayInfoText =  displayInfoText;
   }
 }
