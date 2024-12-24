@@ -1811,6 +1811,149 @@ public class Vector4fTest {
   }
 
   // ----------------------------------------------------------------------------------------------
+  // Lerp (Clamped)
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testLerpClampedWithTZero() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerp(end, 0.0f);
+
+    // Assert
+    assertEquals(start.getX(), result.getX(), 0.0001f);
+    assertEquals(start.getY(), result.getY(), 0.0001f);
+    assertEquals(start.getZ(), result.getZ(), 0.0001f);
+    assertEquals(start.getW(), result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpClampedWithTOne() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerp(end, 1.0f);
+
+    // Assert
+    assertEquals(end.getX(), result.getX(), 0.0001f);
+    assertEquals(end.getY(), result.getY(), 0.0001f);
+    assertEquals(end.getZ(), result.getZ(), 0.0001f);
+    assertEquals(end.getW(), result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpClampedWithHalfwayT() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerp(end, 0.5f);
+
+    // Assert
+    assertEquals(3.0f, result.getX(), 0.0001f);
+    assertEquals(4.0f, result.getY(), 0.0001f);
+    assertEquals(5.0f, result.getZ(), 0.0001f);
+    assertEquals(6.0f, result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpClampedWithNegativeT() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerp(end, -0.5f);
+
+    // Assert
+    assertEquals(start.getX(), result.getX(), 0.0001f); // Clamped to 0
+    assertEquals(start.getY(), result.getY(), 0.0001f);
+    assertEquals(start.getZ(), result.getZ(), 0.0001f);
+    assertEquals(start.getW(), result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpClampedWithOverOneT() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerp(end, 1.5f);
+
+    // Assert
+    assertEquals(end.getX(), result.getX(), 0.0001f); // Clamped to 1
+    assertEquals(end.getY(), result.getY(), 0.0001f);
+    assertEquals(end.getZ(), result.getZ(), 0.0001f);
+    assertEquals(end.getW(), result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpClampedWithIdenticalStartAndEnd() {
+    // Arrange
+    Vector4f start = new Vector4f(3.0f, 3.0f, 3.0f, 3.0f);
+    Vector4f end = new Vector4f(3.0f, 3.0f, 3.0f, 3.0f);
+
+    // Act
+    Vector4f result = start.lerp(end, 0.5f);
+
+    // Assert
+    assertEquals(3.0f, result.getX(), 0.0001f);
+    assertEquals(3.0f, result.getY(), 0.0001f);
+    assertEquals(3.0f, result.getZ(), 0.0001f);
+    assertEquals(3.0f, result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpClampedReturnsNewInstanceAndOriginalVectorsUntouched() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+    Vector4f startCopy = start.clone();
+    Vector4f endCopy = end.clone();
+
+    // Act
+    Vector4f result = start.lerp(end, 0.5f);
+
+    // Assert
+    // Verify that a new instance is returned
+    assertNotSame(start, result);
+    assertNotSame(end, result);
+
+    // Verify that the original start vector is untouched
+    assertEquals(startCopy.getX(), start.getX(), 0.0001f);
+    assertEquals(startCopy.getY(), start.getY(), 0.0001f);
+    assertEquals(startCopy.getZ(), start.getZ(), 0.0001f);
+    assertEquals(startCopy.getW(), start.getW(), 0.0001f);
+
+    // Verify that the original end vector is untouched
+    assertEquals(endCopy.getX(), end.getX(), 0.0001f);
+    assertEquals(endCopy.getY(), end.getY(), 0.0001f);
+    assertEquals(endCopy.getZ(), end.getZ(), 0.0001f);
+    assertEquals(endCopy.getW(), end.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpClampedWithNullThrowsException() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f other = null;
+    float t = 0.5f;
+
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          start.lerp(other, t);
+        });
+  }
+
+  // ----------------------------------------------------------------------------------------------
   // Distance To Squared
   // ----------------------------------------------------------------------------------------------
 

@@ -263,12 +263,40 @@ public class Vector4f {
   }
 
   /**
-   * Linearly interpolates between this vector and another vector by a factor t.
+   * Linearly interpolates between this vector and another vector by a factor t. The parameter t is
+   * clamped between [0...1].
    *
    * @param other The other vector.
    * @param t The interpolation factor (0.0 <= t <= 1.0).
    * @return A new vector representing the result of the interpolation.
    * @throws IllegalArgumentException If the given vector is null.
+   */
+  public Vector4f lerp(Vector4f other, float t) {
+    if (other == null) {
+      throw new IllegalArgumentException("Other vector cannot be null.");
+    }
+    float lerpedX = Mathf.lerp(x, other.x, t);
+    float lerpedY = Mathf.lerp(y, other.y, t);
+    float lerpedZ = Mathf.lerp(z, other.z, t);
+    float lerpedW = Mathf.lerp(w, other.w, t);
+    return new Vector4f(lerpedX, lerpedY, lerpedZ, lerpedW);
+  }
+
+  /**
+   * Performs linear interpolation between this vector and the specified vector using the given
+   * factor {@code t}. Unlike clamped interpolation, {@code t} is not restricted to the range [0,
+   * 1], allowing extrapolation.
+   *
+   * <ul>
+   *   <li>When {@code t = 0}, the method returns this vector.
+   *   <li>When {@code t = 1}, the method returns the other vector.
+   *   <li>Values of {@code t} outside [0, 1] produce extrapolated results.
+   * </ul>
+   *
+   * @param other the target vector to interpolate towards.
+   * @param t the interpolation factor, which is not clamped.
+   * @return a new vector representing the interpolated or extrapolated result.
+   * @throws IllegalArgumentException if the {@code other} vector is {@code null}.
    */
   public Vector4f lerpUnclamped(Vector4f other, float t) {
     if (other == null) {
