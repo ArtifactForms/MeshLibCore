@@ -5,6 +5,7 @@ import engine.application.ApplicationSettings;
 import engine.input.Input;
 import engine.input.KeyInput;
 import engine.input.MouseInput;
+import engine.resources.ResourceManager;
 import processing.core.PApplet;
 import workspace.GraphicsPImpl;
 import workspace.ui.Graphics;
@@ -29,6 +30,7 @@ public class ProcessingApplication extends PApplet {
   @Override
   public void setup() {
     Graphics g = new GraphicsPImpl(this);
+    ResourceManager.getInstance().setImageLoader(new ProcessingImageLoader(this));
     container.setGraphics(g);
     getSurface().setTitle(settings.getTitle());
     setupInput();

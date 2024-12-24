@@ -25,4 +25,6 @@ public interface MouseInput {
   float getMouseDeltaY();
 
   void updateMouseState(); // To track mouse-specific states
+  
+  void center();
 }

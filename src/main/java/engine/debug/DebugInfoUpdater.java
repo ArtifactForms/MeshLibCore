@@ -11,6 +11,7 @@ import engine.input.Key;
 import engine.scene.Scene;
 import engine.scene.camera.Camera;
 import math.Mathf;
+import workspace.GraphicsPImpl;
 
 /**
  * The {@code DebugInfoUpdater} class is responsible for updating debug information displayed by a
@@ -101,8 +102,8 @@ public class DebugInfoUpdater {
     if (camera == null) return;
     setInfo(CATEGORY_CAMERA, "Aspect", camera.getAspectRatio());
     setInfo(CATEGORY_CAMERA, "FOV", Mathf.toDegrees(camera.getFieldOfView()));
-    setInfo(CATEGORY_CAMERA, "Near", Mathf.toDegrees(camera.getNearPlane()));
-    setInfo(CATEGORY_CAMERA, "Far", Mathf.toDegrees(camera.getFarPlane()));
+    setInfo(CATEGORY_CAMERA, "Near", camera.getNearPlane());
+    setInfo(CATEGORY_CAMERA, "Far", camera.getFarPlane());
   }
 
   private void updateOsMetrics() {
@@ -122,6 +123,8 @@ public class DebugInfoUpdater {
     setInfo(CATEGORY_SCENE, "Root count", activeScene.getRootCount());
     setInfo(CATEGORY_SCENE, "Lights count", activeScene.getLightCount());
     setInfo(CATEGORY_SCENE, "Wireframe mode", activeScene.isWireframeMode());
+    setInfo(CATEGORY_SCENE, "Faces", GraphicsPImpl.faceCount);
+    setInfo(CATEGORY_SCENE, "Vertices", GraphicsPImpl.vertexCount);
   }
 
   private void updateTimeMetrics(Timer timer) {
