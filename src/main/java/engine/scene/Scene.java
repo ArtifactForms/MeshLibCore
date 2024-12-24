@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
+import workspace.GraphicsPImpl;
 import workspace.ui.Graphics;
 
 /**
@@ -123,6 +124,8 @@ public class Scene {
     renderLights(g);
 
     synchronized (rootNodes) {
+      GraphicsPImpl.faceCount = 0;
+      GraphicsPImpl.vertexCount = 0;
       for (SceneNode node : rootNodes) {
         node.render(g);
       }

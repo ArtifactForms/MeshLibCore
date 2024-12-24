@@ -2,6 +2,8 @@ package engine.scene.camera;
 
 import engine.components.Transform;
 import math.Mathf;
+import math.Matrix4;
+import math.Matrix4f;
 import math.Vector3f;
 
 /**
@@ -146,5 +148,29 @@ public class PerspectiveCamera implements Camera {
   @Override
   public void setAspectRatio(float aspectRatio) {
     this.aspectRatio = aspectRatio;
+  }
+
+  @Override
+  public Matrix4f getViewMatrix() {
+    Matrix4f view = new Matrix4f();
+    view.setViewMatrix(transform.getPosition(), transform.getRotation());
+    // FIXME
+    return view;
+  }
+
+  @Override
+  public Matrix4f getProjectionMatrix() {
+    Matrix4f projection = new Matrix4f();
+    Matrix4 m = Matrix4.perspective(fov, aspectRatio, nearPlane, farPlane);
+    ;
+    projection = new Matrix4f(m.getValues());
+    return projection;
+  }
+
+  @Override
+  public Matrix4f getViewProjectionMatrix() {
+    Matrix4f view = getViewMatrix();
+    Matrix4f projection = getProjectionMatrix();
+    return projection.multiply(view); // Assuming Matrix4f.multiply() is column-major
   }
 }
