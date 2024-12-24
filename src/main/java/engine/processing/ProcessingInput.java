@@ -94,6 +94,11 @@ public class ProcessingInput implements Input {
   }
 
   @Override
+  public void center() {
+    mouseInput.center();
+  }
+
+  @Override
   public void update() {
     updateKeyState();
     updateMouseState();
