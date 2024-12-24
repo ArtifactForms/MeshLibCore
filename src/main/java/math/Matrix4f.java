@@ -241,29 +241,65 @@ public class Matrix4f {
    * @return This matrix for chaining calls.
    * @throws IllegalArgumentException if the input parameters are invalid.
    */
-  public Matrix4f setPerspective(float fov, float aspect, float nearPlane, float farPlane) {
-    if (nearPlane > farPlane) {
-      throw new IllegalArgumentException(
-          String.format(
-              "Near plane (%.2f) cannot be greater than far plane (%.2f).", nearPlane, farPlane));
-    }
-    if (aspect <= 0) {
-      throw new IllegalArgumentException("Aspect ratio must be a positive number.");
-    }
-    if (fov <= 0.0 || fov >= Math.PI) {
-      throw new IllegalArgumentException("Field of view must be between 0 and π radians.");
-    }
+//  public Matrix4f setPerspective(float fov, float aspect, float nearPlane, float farPlane) {
+//    if (nearPlane > farPlane) {
+//      throw new IllegalArgumentException(
+//          String.format(
+//              "Near plane (%.2f) cannot be greater than far plane (%.2f).", nearPlane, farPlane));
+//    }
+//    if (aspect <= 0) {
+//      throw new IllegalArgumentException("Aspect ratio must be a positive number.");
+//    }
+//    if (fov <= 0.0 || fov >= Math.PI) {
+//      throw new IllegalArgumentException("Field of view must be between 0 and π radians.");
+//    }
+//
+//    float f = (float) (1.0 / Math.tan(fov / 2.0));
+//    Arrays.fill(values, 0);
+//    values[0] = f / aspect;
+//    values[5] = f;
+//    values[10] = (farPlane + nearPlane) / (nearPlane - farPlane);
+//    values[11] = -1;
+//    values[14] = (2 * farPlane * nearPlane) / (nearPlane - farPlane);
+//
+//    return this;
+//  }
 
-    float f = (float) (1.0 / Math.tan(fov / 2.0));
-    Arrays.fill(values, 0);
-    values[0] = f / aspect;
-    values[5] = f;
-    values[10] = (farPlane + nearPlane) / (nearPlane - farPlane);
-    values[11] = -1;
-    values[14] = (2 * farPlane * nearPlane) / (nearPlane - farPlane);
-
-    return this;
-  }
+    public Matrix4f setPerspective(float fov, float aspect, float nearPlane, float farPlane) {
+      // Check if the near and far planes are valid
+      if (nearPlane <= 0 || farPlane <= 0) {
+        throw new IllegalArgumentException("Near and far planes must be positive values.");
+      }
+      if (nearPlane > farPlane) {
+        throw new IllegalArgumentException(
+            String.format(
+                "Near plane (%.2f) cannot be greater than far plane (%.2f).", nearPlane,
+   farPlane));
+      }
+      if (aspect <= 0) {
+        throw new IllegalArgumentException("Aspect ratio must be a positive number.");
+      }
+      if (fov <= 0.0 || fov >= Math.PI) {
+        throw new IllegalArgumentException("Field of view must be between 0 and π radians.");
+      }
+  
+      // Calculate the tangent of the vertical field of view angle
+      float f = (float) (1.0 / Math.tan(fov / 2.0));
+  
+      // Reset the matrix values to zero
+      Arrays.fill(values, 0);
+  
+      // Set the perspective matrix values
+      values[0] = f / aspect; // Horizontal scaling factor
+      values[5] = f; // Vertical scaling factor
+      values[10] = -(farPlane + nearPlane) / (farPlane - nearPlane); // Depth scaling factor
+      values[11] = -1; // Far/near plane relationship
+      values[14] =
+          -(2 * farPlane * nearPlane) / (farPlane - nearPlane); // Near and far planes interaction
+      values[15] = 0; // Perspective divide (used for homogeneous coordinates)
+  
+      return this;
+    }
 
   //	/**
   //	 * Constructs a right-handed view matrix for an FPS (First-Person Shooter)
@@ -364,6 +400,60 @@ public class Matrix4f {
             1);
 
     return viewMatrix;
+  }
+  
+  public Matrix4f rotateX(float angle) {
+      float cos = (float) Math.cos(angle);
+      float sin = (float) Math.sin(angle);
+      Matrix4f rotation = new Matrix4f(
+          1, 0, 0, 0,
+          0, cos, -sin, 0,
+          0, sin, cos, 0,
+          0, 0, 0, 1
+      );
+      return this.multiply(rotation);
+  }
+
+  public Matrix4f rotateY(float angle) {
+      float cos = (float) Math.cos(angle);
+      float sin = (float) Math.sin(angle);
+      Matrix4f rotation = new Matrix4f(
+          cos, 0, sin, 0,
+          0, 1, 0, 0,
+          -sin, 0, cos, 0,
+          0, 0, 0, 1
+      );
+      return this.multiply(rotation);
+  }
+
+  public Matrix4f rotateZ(float angle) {
+      float cos = (float) Math.cos(angle);
+      float sin = (float) Math.sin(angle);
+      Matrix4f rotation = new Matrix4f(
+          cos, -sin, 0, 0,
+          sin, cos, 0, 0,
+          0, 0, 1, 0,
+          0, 0, 0, 1
+      );
+      return this.multiply(rotation);
+  }
+
+  public Matrix4f translate(float x, float y, float z) {
+      Matrix4f translation = new Matrix4f(
+          1, 0, 0, x,
+          0, 1, 0, y,
+          0, 0, 1, z,
+          0, 0, 0, 1
+      );
+      return this.multiply(translation);
+  }
+
+  public Matrix4f setViewMatrix(Vector3f rotation, Vector3f position) {
+      return this.identity()
+          .rotateX(-rotation.x)
+          .rotateY(-rotation.y)
+          .rotateZ(-rotation.z)
+          .translate(-position.x, -position.y, -position.z);
   }
 
   @Override
