@@ -7,117 +7,175 @@ import engine.scene.camera.PerspectiveCamera;
 import math.Mathf;
 import math.Vector3f;
 
+/**
+ * The {@code FlyByCameraControl} class provides first-person camera control functionality, allowing
+ * the user to move the camera in all directions and adjust its orientation using mouse and keyboard
+ * input. This control simulates a "fly-by" movement, typically used in 3D games or applications
+ * that require free-form camera navigation.
+ *
+ * <p>The movement is controlled by the following keys:
+ *
+ * <ul>
+ *   <li>W: Move forward
+ *   <li>S: Move backward
+ *   <li>A: Move left (strafe)
+ *   <li>D: Move right (strafe)
+ *   <li>SPACE: Move up
+ *   <li>SHIFT: Move down
+ * </ul>
+ *
+ * <p>The mouse controls the camera's yaw (left-right) and pitch (up-down) based on the mouse
+ * movement, with vertical angle limits set for pitch to prevent excessive rotations.
+ */
 public class FlyByCameraControl extends AbstractComponent {
+
+  private static final float DEFAULT_MOUSE_SENSITIVITY = 10f;
+
+  private static final float DEFAULT_MOVE_SPEED = 30f;
+
+  private static final float MAX_VERTICAL_ANGLE = 80f;
+
+  private static final float MIN_VERTICAL_ANGLE = -80f;
 
   private final Vector3f forward = new Vector3f();
 
   private final Vector3f target = new Vector3f();
 
-  private float mouseSensitivity = 10f;
+  private float mouseSensitivity = DEFAULT_MOUSE_SENSITIVITY;
 
-  private float moveSpeed = 30f;
+  private float moveSpeed = DEFAULT_MOVE_SPEED;
 
   private Input input;
 
   private Camera camera;
 
-  // Additional parameters for controlling vertical look limits
-  private float maxVerticalAngle = 80f; // Max pitch angle in degrees
-
-  private float minVerticalAngle = -80f; // Min pitch angle in degrees
-
+  /**
+   * Constructs a new {@code FlyByCameraControl} with the specified input and camera.
+   *
+   * @param input The {@link Input} instance to capture user input.
+   * @param camera The {@link PerspectiveCamera} to control.
+   * @throws IllegalArgumentException if either {@code input} or {@code camera} is {@code null}.
+   */
   public FlyByCameraControl(Input input, PerspectiveCamera camera) {
-    if (input == null) {
-      throw new IllegalArgumentException("Input cannot be null.");
-    }
-    if (camera == null) {
-      throw new IllegalArgumentException("Camera cannot be null.");
+    if (input == null || camera == null) {
+      throw new IllegalArgumentException("Input and Camera cannot be null.");
     }
     this.input = input;
     this.camera = camera;
   }
 
+  /**
+   * Updates the camera control state, handling mouse input for camera rotation and keyboard input
+   * for movement.
+   *
+   * <p>This method is typically called once per frame.
+   *
+   * @param tpf The time per frame (delta time) used for movement scaling.
+   */
   @Override
   public void update(float tpf) {
     float mouseX = input.getMouseDeltaX() * mouseSensitivity * tpf;
     float mouseY = input.getMouseDeltaY() * mouseSensitivity * tpf;
 
-    float yaw = mouseX;
-    // To avoid issues with yaw wrapping at 360 or -360 degrees, we can clamp yaw between -180 and
-    // 180
-    yaw = Mathf.clamp(yaw, -180f, 180f);
-
-    camera.getTransform().rotate(0, Mathf.toRadians(yaw), 0);
-
-    updateTarget();
-
-    Vector3f rotation = camera.getTransform().getRotation();
-    float currentPitch = rotation.x; // Current pitch around the X-axis
-    currentPitch += Mathf.toRadians(mouseY); // Adjust based on mouse movement
-
-    // Clamp the vertical rotation (pitch) to avoid excessive rotation
-    currentPitch =
-        Mathf.clamp(
-            currentPitch, Mathf.toRadians(minVerticalAngle), Mathf.toRadians(maxVerticalAngle));
-
-    rotation.x = currentPitch;
-    camera.getTransform().setRotation(rotation);
-
-    // Update camera's target based on position and rotation
+    handleRotation(mouseX, mouseY);
     updateTarget();
 
     Vector3f velocity = calculateVelocity();
-
     if (velocity.length() > 0) {
-      velocity.normalizeLocal();
-      Vector3f position = camera.getTransform().getPosition();
-      position.addLocal(velocity.mult(moveSpeed * tpf));
-      camera.getTransform().setPosition(position);
-      updateTarget();
+      applyMovement(velocity, tpf);
     }
 
     input.center();
   }
 
+  /**
+   * Handles camera rotation based on mouse input, applying yaw and pitch to the camera's transform.
+   * The vertical rotation (pitch) is clamped within defined limits to prevent excessive rotation.
+   *
+   * @param mouseX The mouse movement on the X-axis (horizontal movement).
+   * @param mouseY The mouse movement on the Y-axis (vertical movement).
+   */
+  private void handleRotation(float mouseX, float mouseY) {
+    // Handle yaw (left-right rotation)
+    float yaw = mouseX;
+    yaw = Mathf.clamp(yaw, -180f, 180f);
+    camera.getTransform().rotate(0, Mathf.toRadians(yaw), 0);
+
+    // Handle pitch (up-down rotation)
+    Vector3f rotation = camera.getTransform().getRotation();
+    float currentPitch = rotation.x;
+    currentPitch += Mathf.toRadians(mouseY);
+    currentPitch =
+        Mathf.clamp(
+            currentPitch, Mathf.toRadians(MIN_VERTICAL_ANGLE), Mathf.toRadians(MAX_VERTICAL_ANGLE));
+
+    rotation.x = currentPitch;
+    camera.getTransform().setRotation(rotation);
+  }
+
+  /**
+   * Calculates the movement velocity vector based on the current keyboard input. The velocity is a
+   * vector that indicates the desired direction of movement.
+   *
+   * @return A {@link Vector3f} representing the movement velocity.
+   */
   private Vector3f calculateVelocity() {
     Vector3f velocity = new Vector3f();
     Vector3f forward = camera.getTransform().getForward();
     Vector3f right = camera.getTransform().getRight();
 
+    // Movement controls (WASD, Space, Shift)
     if (input.isKeyPressed(Key.W)) velocity.addLocal(forward);
     if (input.isKeyPressed(Key.S)) velocity.addLocal(forward.negate());
-    if (input.isKeyPressed(Key.A)) velocity.addLocal(right.negate()); // Strafe left
-    if (input.isKeyPressed(Key.D)) velocity.addLocal(right); // Strafe right
+    if (input.isKeyPressed(Key.A)) velocity.addLocal(right.negate());
+    if (input.isKeyPressed(Key.D)) velocity.addLocal(right);
+    if (input.isKeyPressed(Key.SPACE)) velocity.addLocal(0, -1, 0);
+    if (input.isKeyPressed(Key.SHIFT)) velocity.addLocal(0, 1, 0);
 
-    if (input.isKeyPressed(Key.SPACE)) {
-      velocity.addLocal(0, -1, 0);
-    }
-    if (input.isKeyPressed(Key.SHIFT)) {
-      velocity.addLocal(0, 1, 0);
-    }
     return velocity;
   }
 
+  /**
+   * Applies the calculated velocity to the camera's position, updating the camera's location based
+   * on user movement input.
+   *
+   * @param velocity The movement velocity to apply.
+   * @param tpf The time per frame (delta time) to scale the movement.
+   */
+  private void applyMovement(Vector3f velocity, float tpf) {
+    velocity.normalizeLocal();
+    Vector3f position = camera.getTransform().getPosition();
+    position.addLocal(velocity.mult(moveSpeed * tpf));
+    camera.getTransform().setPosition(position);
+    updateTarget();
+  }
+
+  /**
+   * Updates the target position for the camera. The target is a point in the scene that the camera
+   * looks at, and it is updated based on the camera's current position and rotation.
+   */
   private void updateTarget() {
     Vector3f position = camera.getTransform().getPosition();
     Vector3f rotation = camera.getTransform().getRotation();
-    float yaw = rotation.y;
-    float pitch = rotation.x;
 
     forward
-        .set(Mathf.cos(yaw) * Mathf.cos(pitch), Mathf.sin(pitch), Mathf.sin(yaw) * Mathf.cos(pitch))
+        .set(
+            Mathf.cos(rotation.y) * Mathf.cos(rotation.x),
+            Mathf.sin(rotation.x),
+            Mathf.sin(rotation.y) * Mathf.cos(rotation.x))
         .normalizeLocal();
 
     target.set(position).addLocal(forward);
-
     camera.setTarget(target);
   }
 
+  /** This method is called when the component is attached to an entity. Currently not used. */
   @Override
   public void onAttach() {
     // Not used yet
   }
 
+  /** This method is called when the component is detached from an entity. Currently not used. */
   @Override
   public void onDetach() {
     // Not used yet
