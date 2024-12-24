@@ -1,6 +1,7 @@
 package engine.scene.camera;
 
 import engine.components.Transform;
+import math.Matrix4f;
 import math.Vector3f;
 
 /**
@@ -141,4 +142,35 @@ public interface Camera {
    *     height).
    */
   void setAspectRatio(float aspectRatio);
+
+  /**
+   * Computes the view matrix for this camera.
+   *
+   * <p>The view matrix represents the transformation that converts world-space coordinates into
+   * camera-space coordinates, based on the camera's position and orientation.
+   *
+   * @return The view matrix as a {@link Matrix4f}.
+   */
+  Matrix4f getViewMatrix();
+
+  /**
+   * Computes the projection matrix for this camera.
+   *
+   * <p>The projection matrix defines how the 3D scene is projected onto a 2D screen, taking into
+   * account the field of view, aspect ratio, and near/far clipping planes. The specific
+   * implementation depends on whether the camera uses perspective or orthographic projection.
+   *
+   * @return The projection matrix as a {@link Matrix4f}.
+   */
+  Matrix4f getProjectionMatrix();
+
+  /**
+   * Computes the combined view-projection matrix for this camera.
+   *
+   * <p>The view-projection matrix combines the view and projection transformations into a single
+   * matrix, allowing objects to be transformed directly from world space to clip space.
+   *
+   * @return The combined view-projection matrix as a {@link Matrix4f}.
+   */
+  Matrix4f getViewProjectionMatrix();
 }
