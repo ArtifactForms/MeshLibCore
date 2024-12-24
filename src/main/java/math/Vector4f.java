@@ -270,7 +270,7 @@ public class Vector4f {
    * @return A new vector representing the result of the interpolation.
    * @throws IllegalArgumentException If the given vector is null.
    */
-  public Vector4f lerp(Vector4f other, float t) {
+  public Vector4f lerpUnclamped(Vector4f other, float t) {
     if (other == null) {
       throw new IllegalArgumentException("Other vector cannot be null.");
     }

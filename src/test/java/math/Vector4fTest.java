@@ -1668,17 +1668,17 @@ public class Vector4fTest {
   }
 
   // ----------------------------------------------------------------------------------------------
-  // Lerp
+  // Lerp Unclamped
   // ----------------------------------------------------------------------------------------------
 
   @Test
-  public void testLerpWithTZero() {
+  public void testLerpUnclampedWithTZero() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
 
     // Act
-    Vector4f result = start.lerp(end, 0.0f);
+    Vector4f result = start.lerpUnclamped(end, 0.0f);
 
     // Assert
     assertEquals(start.getX(), result.getX(), 0.0001f);
@@ -1688,13 +1688,13 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithTOne() {
+  public void testLerpUnclampedWithTOne() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
 
     // Act
-    Vector4f result = start.lerp(end, 1.0f);
+    Vector4f result = start.lerpUnclamped(end, 1.0f);
 
     // Assert
     assertEquals(end.getX(), result.getX(), 0.0001f);
@@ -1704,13 +1704,13 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithHalfwayT() {
+  public void testLerpUnclampedWithHalfwayT() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
 
     // Act
-    Vector4f result = start.lerp(end, 0.5f);
+    Vector4f result = start.lerpUnclamped(end, 0.5f);
 
     // Assert
     assertEquals(3.0f, result.getX(), 0.0001f);
@@ -1720,13 +1720,13 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithNegativeT() {
+  public void testLerpUnclampedWithNegativeT() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
 
     // Act
-    Vector4f result = start.lerp(end, -0.5f);
+    Vector4f result = start.lerpUnclamped(end, -0.5f);
 
     // Assert
     assertEquals(-1.0f, result.getX(), 0.0001f);
@@ -1736,13 +1736,13 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithOverOneT() {
+  public void testLerpUnclampedWithOverOneT() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
 
     // Act
-    Vector4f result = start.lerp(end, 1.5f);
+    Vector4f result = start.lerpUnclamped(end, 1.5f);
 
     // Assert
     assertEquals(7.0f, result.getX(), 0.0001f);
@@ -1752,13 +1752,13 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithIdenticalStartAndEnd() {
+  public void testLerpUnclampedWithIdenticalStartAndEnd() {
     // Arrange
     Vector4f start = new Vector4f(3.0f, 3.0f, 3.0f, 3.0f);
     Vector4f end = new Vector4f(3.0f, 3.0f, 3.0f, 3.0f);
 
     // Act
-    Vector4f result = start.lerp(end, 0.5f);
+    Vector4f result = start.lerpUnclamped(end, 0.5f);
 
     // Assert
     assertEquals(3.0f, result.getX(), 0.0001f);
@@ -1768,7 +1768,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpReturnsNewInstanceAndOriginalVectorsUntouched() {
+  public void testLerpUnclampedReturnsNewInstanceAndOriginalVectorsUntouched() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
@@ -1776,7 +1776,7 @@ public class Vector4fTest {
     Vector4f endCopy = end.clone();
 
     // Act
-    Vector4f result = start.lerp(end, 0.5f);
+    Vector4f result = start.lerpUnclamped(end, 0.5f);
 
     // Assert
     // Verify that a new instance is returned
@@ -1797,7 +1797,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithNullThrowsException() {
+  public void testLerpUnclampedWithNullThrowsException() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f other = null;
@@ -1806,7 +1806,7 @@ public class Vector4fTest {
     assertThrows(
         IllegalArgumentException.class,
         () -> {
-          start.lerp(other, t);
+          start.lerpUnclamped(other, t);
         });
   }
 
