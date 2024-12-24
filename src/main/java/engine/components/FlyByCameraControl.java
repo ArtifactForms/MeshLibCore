@@ -66,6 +66,20 @@ public class FlyByCameraControl extends AbstractComponent {
     // Update camera's target based on position and rotation
     updateTarget();
 
+    Vector3f velocity = calculateVelocity();
+
+    if (velocity.length() > 0) {
+      velocity.normalizeLocal();
+      Vector3f position = camera.getTransform().getPosition();
+      position.addLocal(velocity.mult(moveSpeed * tpf));
+      camera.getTransform().setPosition(position);
+      updateTarget();
+    }
+
+    input.center();
+  }
+
+  private Vector3f calculateVelocity() {
     Vector3f velocity = new Vector3f();
     Vector3f forward = camera.getTransform().getForward();
     Vector3f right = camera.getTransform().getRight();
@@ -81,16 +95,7 @@ public class FlyByCameraControl extends AbstractComponent {
     if (input.isKeyPressed(Key.SHIFT)) {
       velocity.addLocal(0, 1, 0);
     }
-
-    if (velocity.length() > 0) {
-      velocity.normalizeLocal();
-      Vector3f position = camera.getTransform().getPosition();
-      position.addLocal(velocity.mult(moveSpeed * tpf));
-      camera.getTransform().setPosition(position);
-      updateTarget();
-    }
-
-    input.center();
+    return velocity;
   }
 
   private void updateTarget() {

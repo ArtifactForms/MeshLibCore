@@ -1,5 +1,7 @@
 package engine.processing;
 
+import java.awt.Robot;
+
 import engine.input.MouseInput;
 import processing.core.PApplet;
 
@@ -9,9 +11,15 @@ public class ProcessingMouseInput implements MouseInput {
 
   private float mouseWheelDelta = 0;
 
+  private Robot robot;
+
   public ProcessingMouseInput(PApplet applet) {
     this.applet = applet;
     applet.registerMethod("mouseEvent", this);
+    try {
+      robot = new Robot();
+    } catch (Throwable e) {
+    }
   }
 
   public void mouseEvent(processing.event.MouseEvent event) {
@@ -79,7 +87,14 @@ public class ProcessingMouseInput implements MouseInput {
   }
 
   @Override
-  public void updateMouseState() {
-    // Handle frame-specific mouse state updates if necessary
+  public void updateMouseState() {}
+
+  @Override
+  public void center() {
+    applet.mouseX = applet.width / 2;
+    applet.mouseY = applet.height / 2;
+    applet.pmouseX = applet.width / 2;
+    applet.pmouseY = applet.height / 2;
+    robot.mouseMove((int) getScreenWidth() / 2, (int) getScreenHeight() / 2);
   }
 }
