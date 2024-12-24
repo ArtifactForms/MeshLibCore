@@ -5,6 +5,7 @@ import java.util.List;
 import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
 import engine.render.Material;
+import engine.resources.Image;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.scene.light.LightRenderer;
@@ -14,6 +15,8 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PImage;
+import processing.opengl.PGraphicsOpenGL;
 import processing.opengl.PShader;
 import workspace.render.Mesh3DRenderer;
 import workspace.ui.Color;
@@ -34,6 +37,10 @@ public class GraphicsPImpl implements Graphics {
   private LightRenderer lightRenderer;
 
   private LightGizmoRenderer lightGizmoRenderer;
+
+  public static int faceCount = 0;
+
+  public static int vertexCount = 0;
 
   @Override
   public void setAmbientColor(math.Color ambientColor) {
@@ -66,6 +73,8 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void fillFaces(Mesh3D mesh) {
+    faceCount += mesh.faces.size();
+    vertexCount += mesh.vertices.size();
     if (wireframeMode) {
       g.noFill();
       stroke();
@@ -342,9 +351,9 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void rotate(float rx, float ry, float rz) {
-      g.rotateX(rx);
-      g.rotateY(ry);
-      g.rotateZ(rz);
+    g.rotateX(rx);
+    g.rotateY(ry);
+    g.rotateZ(rz);
   }
 
   public void camera() {
@@ -460,15 +469,48 @@ public class GraphicsPImpl implements Graphics {
     if (camera == null) {
       throw new IllegalArgumentException("Camera instance cannot be null.");
     }
-    
+
+    //    g.resetMatrix();
+    //    Matrix4f  m = camera.getViewProjectionMatrix();
+    //
+    //
+    //  Vector3f target = camera.getTarget();
+    //  Vector3f eye = camera.getTransform().getPosition();
+    //    Matrix4f look = Matrix4f.lookAt(eye, target, new Vector3f(0, 1, 0));
+    //
+    //    m = m.multiply(look);
+
+    //    g.getMatrix().set(m.getValues());
+
     float fov = camera.getFieldOfView();
     float aspect = camera.getAspectRatio();
     float near = camera.getNearPlane();
     float far = camera.getFarPlane();
-    g.perspective(fov, aspect, near, far);
+    //    g.perspective(fov, aspect, near, far);
+
+    Matrix4f m = camera.getProjectionMatrix();
+    ((PGraphicsOpenGL) g).projection.set(m.getValues());
 
     Vector3f target = camera.getTarget();
     Vector3f eye = camera.getTransform().getPosition();
     g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0);
+  }
+
+  @Override
+  public void drawImage(Image image, float x, float y) {
+    if (image.getBackendImage() instanceof PImage) {
+      g.image((PImage) image.getBackendImage(), x, y);
+    } else {
+      throw new IllegalArgumentException("Unsupported image backend.");
+    }
+  }
+
+  @Override
+  public void drawImage(Image image, float x, float y, float width, float height) {
+    if (image.getBackendImage() instanceof PImage) {
+      g.image((PImage) image.getBackendImage(), x, y, width, height);
+    } else {
+      throw new IllegalArgumentException("Unsupported image backend.");
+    }
   }
 }
