@@ -2921,4 +2921,50 @@ public class Vector4fTest {
     assertEquals(0.0f, result.getZ(), 1e-6, "Z component should remain unchanged");
     assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
   }
+
+  // ----------------------------------------------------------------------------------------------
+  // To Vector3f
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testToVector3f() {
+    // Create a Vector4f instance
+    Vector4f vector4f = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+
+    // Convert to Vector3f
+    Vector3f result = vector4f.toVector3f();
+
+    // Assert the components are correctly converted
+    assertEquals(1.0f, result.getX(), 1e-6, "X component should match");
+    assertEquals(2.0f, result.getY(), 1e-6, "Y component should match");
+    assertEquals(3.0f, result.getZ(), 1e-6, "Z component should match");
+  }
+
+  @Test
+  public void testToVector3fNegativeValues() {
+    // Create a Vector4f instance with negative values
+    Vector4f vector4f = new Vector4f(-5.5f, -6.6f, -7.7f, -8.8f);
+
+    // Convert to Vector3f
+    Vector3f result = vector4f.toVector3f();
+
+    // Assert the components are correctly converted
+    assertEquals(-5.5f, result.getX(), 1e-6, "X component should match");
+    assertEquals(-6.6f, result.getY(), 1e-6, "Y component should match");
+    assertEquals(-7.7f, result.getZ(), 1e-6, "Z component should match");
+  }
+
+  @Test
+  public void testToVector3fZeroValues() {
+    // Create a Vector4f instance with zero values
+    Vector4f vector4f = new Vector4f(0.0f, 0.0f, 0.0f, 0.0f);
+
+    // Convert to Vector3f
+    Vector3f result = vector4f.toVector3f();
+
+    // Assert the components are correctly converted
+    assertEquals(0.0f, result.getX(), 1e-6, "X component should match");
+    assertEquals(0.0f, result.getY(), 1e-6, "Y component should match");
+    assertEquals(0.0f, result.getZ(), 1e-6, "Z component should match");
+  }
 }

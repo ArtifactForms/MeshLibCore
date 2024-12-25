@@ -464,6 +464,15 @@ public class Vector4f {
   }
 
   /**
+   * Converts this 4D vector to a 3D vector by dropping the w-component.
+   *
+   * @return a new Vector3f instance containing the x, y, and z components of this Vector4f.
+   */
+  public Vector3f toVector3f() {
+    return new Vector3f(x, y, z);
+  }
+
+  /**
    * Returns the x component of the vector.
    *
    * @return The x component of the vector.
