@@ -173,10 +173,10 @@ public class Vector4f {
    * @return The current vector after negation.
    */
   public Vector4f negateLocal() {
-    x = x == 0 ? 0 : -x;
-    y = y == 0 ? 0 : -y;
-    z = z == 0 ? 0 : -z;
-    w = w == 0 ? 0 : -w;
+    x *= -1;
+    y *= -1;
+    z *= -1;
+    w *= -1;
     return this;
   }
 
