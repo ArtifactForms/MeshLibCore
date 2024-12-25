@@ -2817,4 +2817,108 @@ public class Vector4fTest {
     vector.setW(8.0f);
     assertEquals(8.0f, vector.getW(), 0.0001);
   }
+
+  // ----------------------------------------------------------------------------------------------
+  // Multiply Matrix4
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  void testMultiplyWithIdentityMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
+    Matrix4 identityMatrix =
+        new Matrix4(
+            new float[] {
+              1.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 1.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 1.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 1.0f
+            });
+
+    Vector4f result = vector.multiply(identityMatrix);
+
+    assertEquals(1.0f, result.getX(), 1e-6, "X component should remain unchanged");
+    assertEquals(2.0f, result.getY(), 1e-6, "Y component should remain unchanged");
+    assertEquals(3.0f, result.getZ(), 1e-6, "Z component should remain unchanged");
+    assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
+  }
+
+  @Test
+  void testMultiplyWithZeroMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
+    Matrix4 zeroMatrix =
+        new Matrix4(
+            new float[] {
+              0.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 0.0f
+            });
+
+    Vector4f result = vector.multiply(zeroMatrix);
+
+    assertEquals(0.0f, result.getX(), 1e-6, "X component should be 0");
+    assertEquals(0.0f, result.getY(), 1e-6, "Y component should be 0");
+    assertEquals(0.0f, result.getZ(), 1e-6, "Z component should be 0");
+    assertEquals(0.0f, result.getW(), 1e-6, "W component should be 0");
+  }
+
+  @Test
+  void testMultiplyWithTranslationMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
+    Matrix4 translationMatrix =
+        new Matrix4(
+            new float[] {
+              1.0f, 0.0f, 0.0f, 5.0f,
+              0.0f, 1.0f, 0.0f, 10.0f,
+              0.0f, 0.0f, 1.0f, 15.0f,
+              0.0f, 0.0f, 0.0f, 1.0f
+            });
+
+    Vector4f result = vector.multiply(translationMatrix);
+
+    assertEquals(6.0f, result.getX(), 1e-6, "X component should include translation");
+    assertEquals(12.0f, result.getY(), 1e-6, "Y component should include translation");
+    assertEquals(18.0f, result.getZ(), 1e-6, "Z component should include translation");
+    assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
+  }
+
+  @Test
+  void testMultiplyWithScalingMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
+    Matrix4 scalingMatrix =
+        new Matrix4(
+            new float[] {
+              2.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 3.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 4.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 1.0f
+            });
+
+    Vector4f result = vector.multiply(scalingMatrix);
+
+    assertEquals(2.0f, result.getX(), 1e-6, "X component should be scaled");
+    assertEquals(6.0f, result.getY(), 1e-6, "Y component should be scaled");
+    assertEquals(12.0f, result.getZ(), 1e-6, "Z component should be scaled");
+    assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
+  }
+
+  @Test
+  void testMultiplyWithRotationMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+    Matrix4 rotationMatrix =
+        new Matrix4(
+            new float[] {
+              0.0f, -1.0f, 0.0f, 0.0f,
+              1.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 1.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 1.0f
+            });
+
+    Vector4f result = vector.multiply(rotationMatrix);
+
+    assertEquals(0.0f, result.getX(), 1e-6, "X component after rotation");
+    assertEquals(1.0f, result.getY(), 1e-6, "Y component after rotation");
+    assertEquals(0.0f, result.getZ(), 1e-6, "Z component should remain unchanged");
+    assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
+  }
 }

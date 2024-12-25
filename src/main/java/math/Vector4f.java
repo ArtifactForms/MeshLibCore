@@ -433,6 +433,37 @@ public class Vector4f {
   }
 
   /**
+   * Multiplies this vector by a 4x4 matrix and returns the resulting vector.
+   *
+   * <p>This method performs a matrix-vector multiplication, treating this vector as a column vector
+   * and applying the transformation defined by the given 4x4 matrix. The resulting vector
+   * represents the transformed coordinates.
+   *
+   * <p>The operation is mathematically equivalent to:
+   *
+   * <pre>
+   * [ newX ]   [ m00 m01 m02 m03 ]   [ x ]
+   * [ newY ] = [ m10 m11 m12 m13 ] * [ y ]
+   * [ newZ ]   [ m20 m21 m22 m23 ]   [ z ]
+   * [ newW ]   [ m30 m31 m32 m33 ]   [ w ]
+   * </pre>
+   *
+   * @param m the 4x4 matrix to multiply with. This matrix defines the transformation (e.g.,
+   *     scaling, translation, rotation) to be applied to this vector. The matrix should be in
+   *     row-major order for correct computation.
+   * @return a new {@code Vector4f} instance representing the transformed vector.
+   * @throws NullPointerException if {@code m} is {@code null}.
+   */
+  public Vector4f multiply(Matrix4 m) {
+    float newX = m.get(0, 0) * x + m.get(0, 1) * y + m.get(0, 2) * z + m.get(0, 3) * w;
+    float newY = m.get(1, 0) * x + m.get(1, 1) * y + m.get(1, 2) * z + m.get(1, 3) * w;
+    float newZ = m.get(2, 0) * x + m.get(2, 1) * y + m.get(2, 2) * z + m.get(2, 3) * w;
+    float newW = m.get(3, 0) * x + m.get(3, 1) * y + m.get(3, 2) * z + m.get(3, 3) * w;
+
+    return new Vector4f(newX, newY, newZ, newW);
+  }
+
+  /**
    * Returns the x component of the vector.
    *
    * @return The x component of the vector.
