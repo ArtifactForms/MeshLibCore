@@ -2967,4 +2967,123 @@ public class Vector4fTest {
     assertEquals(0.0f, result.getY(), 1e-6, "Y component should match");
     assertEquals(0.0f, result.getZ(), 1e-6, "Z component should match");
   }
+
+  // ----------------------------------------------------------------------------------------------
+  // Divide By W
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testDivideByW_validW() {
+    // Test case where w is non-zero
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
+
+    Vector4f result = vector.divideByW();
+
+    // Expected result after division by w = 2.0f
+    Vector4f expected = new Vector4f(2.0f, 4.0f, 6.0f, 1.0f);
+
+    assertEquals(expected, result, "The vector should be correctly divided by w.");
+  }
+
+  @Test
+  public void testDivideByW_wIsZero() {
+    // Test case where w is zero, expecting an ArithmeticException
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 0.0f);
+
+    ArithmeticException exception =
+        assertThrows(
+            ArithmeticException.class,
+            () -> {
+              vector.divideByW();
+            });
+
+    assertEquals(
+        "Division by zero.", exception.getMessage(), "Exception message should be correct.");
+  }
+
+  @Test
+  public void testDivideByW_wIsNegative() {
+    // Test case where w is negative
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, -2.0f);
+
+    Vector4f result = vector.divideByW();
+
+    // Expected result after division by w = -2.0f
+    Vector4f expected = new Vector4f(-2.0f, -4.0f, -6.0f, 1.0f);
+
+    assertEquals(expected, result, "The vector should be correctly divided by w.");
+  }
+
+  @Test
+  public void testDivideByW_createsNewInstance() {
+    // Create an original vector
+    Vector4f originalVector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
+
+    // Call divideByW on the original vector
+    Vector4f newVector = originalVector.divideByW();
+
+    // Check that the original vector is not modified
+    assertEquals(
+        new Vector4f(4.0f, 8.0f, 12.0f, 2.0f),
+        originalVector,
+        "The original vector should remain unchanged.");
+
+    // Check that a new vector is returned with the correct values
+    Vector4f expectedNewVector = new Vector4f(2.0f, 4.0f, 6.0f, 1.0f);
+    assertEquals(
+        expectedNewVector,
+        newVector,
+        "The returned vector should be a new instance with the expected values.");
+
+    // Check that the original and new vectors are different instances
+    assertNotSame(originalVector, newVector);
+  }
+
+  // ----------------------------------------------------------------------------------------------
+  // Divide By W Local
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testDivideByWLocal_updatesOriginalVector() {
+    // Create a vector
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
+
+    // Call divideByWLocal on the vector
+    Vector4f result = vector.divideByWLocal();
+
+    // Check that the original vector has been modified
+    assertEquals(
+        new Vector4f(2.0f, 4.0f, 6.0f, 1.0f),
+        vector,
+        "The original vector should be modified in place.");
+
+    // Check that the method returns the same instance (this) with the modified values
+    assertSame(vector, result);
+  }
+
+  @Test
+  public void testDivideByWLocal_throwsArithmeticException_whenWIsZero() {
+    // Create a vector with w = 0
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 0.0f);
+
+    // Assert that calling divideByWLocal throws ArithmeticException
+    assertThrows(
+        ArithmeticException.class,
+        () -> {
+          vector.divideByWLocal();
+        },
+        "Division by zero should throw an ArithmeticException.");
+  }
+
+  @Test
+  public void testDivideByWLocal_doesNotCreateNewInstance() {
+    // Create a vector
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
+
+    // Call divideByWLocal on the vector
+    vector.divideByWLocal();
+
+    // Check that the method does not create a new instance, but modifies the original instance
+    assertSame(vector, vector.divideByWLocal());
+  }
 }

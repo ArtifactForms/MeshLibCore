@@ -159,6 +159,42 @@ public class Vector4f {
   }
 
   /**
+   * Divides the components of this vector by its w component to convert it from homogeneous
+   * coordinates to Euclidean coordinates. This operation returns a new vector with the transformed
+   * coordinates. If the w component is zero, an {@link ArithmeticException} is thrown as division
+   * by zero is not allowed.
+   *
+   * @return A new {@link Vector4f} with the components divided by w and w set to 1.0f.
+   * @throws ArithmeticException If the w component is zero.
+   */
+  public Vector4f divideByW() {
+    if (w == 0.0f) {
+      throw new ArithmeticException("Division by zero.");
+    }
+    return new Vector4f(x / w, y / w, z / w, 1.0f);
+  }
+
+  /**
+   * Divides the components of this vector by its w component to convert it from homogeneous
+   * coordinates to Euclidean coordinates. This operation modifies the current vector's components
+   * and sets w to 1.0f. If the w component is zero, an {@link ArithmeticException} is thrown as
+   * division by zero is not allowed.
+   *
+   * @return This {@link Vector4f} object, with its components modified and w set to 1.0f.
+   * @throws ArithmeticException If the w component is zero.
+   */
+  public Vector4f divideByWLocal() {
+    if (w == 0.0f) {
+      throw new ArithmeticException("Division by zero.");
+    }
+    x /= w;
+    y /= w;
+    z /= w;
+    w = 1.0f;
+    return this;
+  }
+
+  /**
    * Negates this vector and returns the result.
    *
    * @return A new vector representing the negated vector.
