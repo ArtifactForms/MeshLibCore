@@ -94,9 +94,15 @@ public class Mathf {
    *     `numberOfColumns` is less than or equal to zero.
    */
   public static int toOneDimensionalIndex(int rowIndex, int colIndex, int numberOfColumns) {
-    if (rowIndex < 0 || colIndex < 0) throw new IllegalArgumentException();
-
-    if (numberOfColumns <= 0) throw new IllegalArgumentException();
+    if (numberOfColumns <= 0) {
+      throw new IllegalArgumentException("NumberOfColumns must be greater than zero.");
+    }
+    if (rowIndex < 0) {
+      throw new IllegalArgumentException("rowIndex must be non-negative");
+    }
+    if (colIndex < 0 || colIndex >= numberOfColumns) {
+      throw new IllegalArgumentException("colIndex is out of bounds");
+    }
 
     return rowIndex * numberOfColumns + colIndex;
   }
@@ -889,5 +895,18 @@ public class Mathf {
     }
 
     return angle;
+  }
+
+  /**
+   * Compares two floating-point numbers for equality within a given tolerance (epsilon).
+   *
+   * @param a The first number.
+   * @param b The second number.
+   * @param epsilon The tolerance within which the two numbers are considered equal.
+   * @return True if the absolute difference between the two numbers is less than or equal to
+   *     epsilon, otherwise false.
+   */
+  public static boolean equals(float a, float b, float epsilon) {
+    return Math.abs(a - b) <= epsilon;
   }
 }
