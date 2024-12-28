@@ -37,7 +37,7 @@ public class ArcCreator implements IMeshCreator {
   private void createVertices() {
     float angleBetweenPoints = calculateAngleBetweenPoints();
     for (int i = 0; i < vertices; i++) {
-      float currentAngle = angleBetweenPoints * i;
+      float currentAngle = startAngle + angleBetweenPoints * i;
       float x = radius * Mathf.cos(currentAngle);
       float z = radius * Mathf.sin(currentAngle);
       addVertex(x, 0, z);
@@ -49,7 +49,7 @@ public class ArcCreator implements IMeshCreator {
   }
 
   private float calculateAngleBetweenPoints() {
-    return startAngle + ((endAngle - startAngle) / ((float) vertices - 1));
+    return (endAngle - startAngle) / ((float) vertices - 1);
   }
 
   public float getStartAngle() {
@@ -81,6 +81,9 @@ public class ArcCreator implements IMeshCreator {
   }
 
   public void setVertices(int vertices) {
+    if (vertices < 2) {
+      throw new IllegalArgumentException("Vertex count must be at least 2");
+    }
     this.vertices = vertices;
   }
 }
