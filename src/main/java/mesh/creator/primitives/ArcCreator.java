@@ -1,6 +1,7 @@
 package mesh.creator.primitives;
 
 import math.Mathf;
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -14,6 +15,8 @@ public class ArcCreator implements IMeshCreator {
 
   private int vertices;
 
+  private Vector3f center;
+
   private Mesh3D mesh;
 
   public ArcCreator() {
@@ -21,6 +24,7 @@ public class ArcCreator implements IMeshCreator {
     endAngle = Mathf.TWO_PI;
     radius = 1;
     vertices = 32;
+    center = new Vector3f();
   }
 
   @Override
@@ -38,9 +42,9 @@ public class ArcCreator implements IMeshCreator {
     float angleBetweenPoints = calculateAngleBetweenPoints();
     for (int i = 0; i < vertices; i++) {
       float currentAngle = startAngle + angleBetweenPoints * i;
-      float x = radius * Mathf.cos(currentAngle);
-      float z = radius * Mathf.sin(currentAngle);
-      addVertex(x, 0, z);
+      float x = center.x + radius * Mathf.cos(currentAngle);
+      float z = center.z + radius * Mathf.sin(currentAngle);
+      addVertex(x, center.y, z);
     }
   }
 
@@ -82,8 +86,19 @@ public class ArcCreator implements IMeshCreator {
 
   public void setVertices(int vertices) {
     if (vertices < 2) {
-      throw new IllegalArgumentException("Vertex count must be at least 2");
+      throw new IllegalArgumentException("Vertex count must be at least 2.");
     }
     this.vertices = vertices;
+  }
+
+  public Vector3f getCenter() {
+    return new Vector3f(center);
+  }
+
+  public void setCenter(Vector3f center) {
+    if (center == null) {
+      throw new IllegalArgumentException("Center cannot be null.");
+    }
+    this.center.set(center);
   }
 }
