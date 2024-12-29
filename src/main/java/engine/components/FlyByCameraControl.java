@@ -180,4 +180,22 @@ public class FlyByCameraControl extends AbstractComponent {
   public void onDetach() {
     // Not used yet
   }
+
+  /**
+   * Returns the current movement speed of the camera.
+   *
+   * @return The movement speed in units per second.
+   */
+  public float getMoveSpeed() {
+    return moveSpeed;
+  }
+
+  /**
+   * Sets the movement speed of the camera.
+   *
+   * @param moveSpeed The new movement speed in units per second.
+   */
+  public void setMoveSpeed(float moveSpeed) {
+    this.moveSpeed = moveSpeed;
+  }
 }
