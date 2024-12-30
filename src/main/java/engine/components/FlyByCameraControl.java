@@ -78,13 +78,12 @@ public class FlyByCameraControl extends AbstractComponent {
     float mouseY = input.getMouseDeltaY() * mouseSensitivity * tpf;
 
     handleRotation(mouseX, mouseY);
-    updateTarget();
 
     Vector3f velocity = calculateVelocity();
     if (velocity.length() > 0) {
       applyMovement(velocity, tpf);
     }
-
+    updateTarget();
     input.center();
   }
 
@@ -147,7 +146,6 @@ public class FlyByCameraControl extends AbstractComponent {
     Vector3f position = camera.getTransform().getPosition();
     position.addLocal(velocity.mult(moveSpeed * tpf));
     camera.getTransform().setPosition(position);
-    updateTarget();
   }
 
   /**
