@@ -198,4 +198,28 @@ public class FlyByCameraControl extends AbstractComponent {
   public void setMoveSpeed(float moveSpeed) {
     this.moveSpeed = moveSpeed;
   }
+
+  /**
+   * Returns the current mouse sensitivity used for camera rotation.
+   *
+   * <p>The mouse sensitivity determines how much the camera rotates based on mouse movement. Higher
+   * sensitivity values result in larger rotations for smaller mouse movements.
+   *
+   * @return The current mouse sensitivity.
+   */
+  public float getMouseSensitivity() {
+    return mouseSensitivity;
+  }
+
+  /**
+   * Sets the mouse sensitivity used for camera rotation.
+   *
+   * <p>The mouse sensitivity determines how much the camera rotates based on mouse movement. Higher
+   * sensitivity values result in larger rotations for smaller mouse movements.
+   *
+   * @param mouseSensitivity The new mouse sensitivity value.
+   */
+  public void setMouseSensitivity(float mouseSensitivity) {
+    this.mouseSensitivity = mouseSensitivity;
+  }
 }
