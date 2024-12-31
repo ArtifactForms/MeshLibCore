@@ -68,8 +68,7 @@ public class Material {
   /** Shininess factor for specular highlights. */
   private final float shininess;
 
-  private Texture normalTexture;
-  
+  /** The diffuse texture map (map_Kd) of the material. */
   private Texture diffuseTexture;
 
   /**
@@ -88,7 +87,6 @@ public class Material {
     this.diffuse = builder.diffuse;
     this.specular = builder.specular;
     this.shininess = builder.shininess;
-    this.normalTexture = builder.normalTexture;
     this.diffuseTexture = builder.diffuseTexture;
   }
 
@@ -111,8 +109,6 @@ public class Material {
     private float shininess = 10.0f;
 
     private Texture diffuseTexture = null;
-
-    private Texture normalTexture = null;
 
     /**
      * Sets the base color of the material.
@@ -175,17 +171,6 @@ public class Material {
     }
 
     /**
-     * Sets the normal texture of the material.
-     *
-     * @param normalTexture The normal texture, can be null
-     * @return The builder instance for chaining
-     */
-    public Builder setNormalTexture(Texture normalTexture) {
-      this.normalTexture = normalTexture;
-      return this;
-    }
-
-    /**
      * Sets the diffuse texture of the material.
      *
      * @param diffuseTexture The diffuse texture, can be null.
@@ -216,9 +201,6 @@ public class Material {
 
     if (diffuseTexture != null) {
       g.bindTexture(diffuseTexture, 0); // Bind to texture unit 0
-    }
-    if (normalTexture != null) {
-      g.bindTexture(normalTexture, 1); // Bind to texture unit 1
     }
   }
 
@@ -281,11 +263,19 @@ public class Material {
     return shininess;
   }
 
+  /**
+   * Returns the diffuse texture map (map_Kd) of the material.
+   *
+   * <p>The diffuse texture is a 2D image used to define the base color and pattern of the surface,
+   * simulating the appearance of the material under diffuse lighting. This texture is typically
+   * applied using UV mapping to wrap the image onto the geometry of a 3D model.
+   *
+   * <p>In the context of material definition files (e.g., MTL for OBJ models), this corresponds to
+   * the `map_Kd` property, which specifies the file path to the texture image.
+   *
+   * @return The diffuse texture map as {@link Texture}.
+   */
   public Texture getDiffuseTexture() {
     return diffuseTexture;
-  }
-
-  public Texture getNormalTexture() {
-    return normalTexture;
   }
 }
