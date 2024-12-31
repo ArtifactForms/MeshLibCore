@@ -89,6 +89,58 @@ public class Matrix4 {
     }
     return new Vector3f(x, y, z);
   }
+  
+  public Matrix4 rotateX(float angle) {
+      float cos = (float) Math.cos(angle);
+      float sin = (float) Math.sin(angle);
+      Matrix4 rotation = new Matrix4(
+          1, 0, 0, 0,
+          0, cos, -sin, 0,
+          0, sin, cos, 0,
+          0, 0, 0, 1
+      );
+      return this.multiply(rotation);
+  }
+
+  public Matrix4 rotateY(float angle) {
+      float cos = (float) Math.cos(angle);
+      float sin = (float) Math.sin(angle);
+      Matrix4 rotation = new Matrix4(
+          cos, 0, sin, 0,
+          0, 1, 0, 0,
+          -sin, 0, cos, 0,
+          0, 0, 0, 1
+      );
+      return this.multiply(rotation);
+  }
+
+  public Matrix4 rotateZ(float angle) {
+      float cos = (float) Math.cos(angle);
+      float sin = (float) Math.sin(angle);
+      Matrix4 rotation = new Matrix4(
+          cos, -sin, 0, 0,
+          sin, cos, 0, 0,
+          0, 0, 1, 0,
+          0, 0, 0, 1
+      );
+      return this.multiply(rotation);
+  }
+
+  public Matrix4 translate(float x, float y, float z) {
+      Matrix4 translation = new Matrix4(
+          1, 0, 0, x,
+          0, 1, 0, y,
+          0, 0, 1, z,
+          0, 0, 0, 1
+      );
+      return this.multiply(translation);
+  }
+  
+  public Matrix4 identity() {
+      Arrays.fill(values, 0);
+      values[0] = values[5] = values[10] = values[15] = 1;
+      return this;
+    }
 
   public Matrix4 transpose() {
     return new Matrix4(
@@ -131,21 +183,66 @@ public class Matrix4 {
     return this;
   }
 
-  public Matrix4 setToIdentity() {
-    Arrays.fill(values, 0);
-    values[0] = values[5] = values[10] = values[15] = 1;
-    return this;
-  }
+  public Matrix4 invert() {
+    float[] result = new float[16];
+    float det = determinant();
 
-  public float[] getValues() {
-    return Arrays.copyOf(values, values.length);
-  }
-
-  public void setValues(float... values) {
-    if (values.length != 16) {
-      throw new IllegalArgumentException("Matrix4 must have 16 elements.");
+    if (Math.abs(det) < 1E-6f) { // Check for near-zero determinant
+      throw new ArithmeticException("Matrix is singular or nearly singular. Inversion failed.");
     }
-    this.values = values;
+
+    // Calculate cofactors
+    float[] cofactors = new float[16];
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        cofactors[j * 4 + i] = cofactor(i, j); // Transpose while calculating cofactors
+      }
+    }
+
+    // Calculate inverse
+    for (int i = 0; i < 16; i++) {
+      result[i] = normalize(cofactors[i] / det);
+    }
+
+    return new Matrix4(result);
+  }
+
+  public float determinant() {
+    float det = 0.0f;
+
+    for (int i = 0; i < 4; i++) {
+      det += values[i] * cofactor(0, i); // Use row 0 for determinant calculation
+    }
+
+    return det;
+  }
+
+  private float cofactor(int row, int col) {
+    float[] minor = new float[9]; // 3x3 minor matrix
+    int minorIndex = 0;
+
+    for (int i = 0; i < 4; i++) {
+      if (i != row) {
+        for (int j = 0; j < 4; j++) {
+          if (j != col) {
+            minor[minorIndex++] = values[i * 4 + j]; // Correct indexing for 1D array
+          }
+        }
+      }
+    }
+
+    return (float) Math.pow(-1, row + col) * determinant3x3(minor);
+  }
+
+  private float determinant3x3(float[] matrix) {
+    return matrix[0] * (matrix[4] * matrix[8] - matrix[5] * matrix[7])
+        - matrix[1] * (matrix[3] * matrix[8] - matrix[5] * matrix[6])
+        + matrix[2] * (matrix[3] * matrix[7] - matrix[4] * matrix[6]);
+  }
+
+  // Helper method to normalize values
+  private float normalize(float value) {
+    return Math.abs(value) < 1e-6 ? 0.0f : value; // Convert -0.0 to 0.0
   }
 
   public boolean isIdentity() {
@@ -211,6 +308,28 @@ public class Matrix4 {
       throw new IllegalArgumentException(
           String.format("Near plane (%.2f) cannot be equal to far plane (%.2f).", zNear, zFar));
     }
+  }
+
+  public Matrix4 setToIdentity() {
+    Arrays.fill(values, 0);
+    values[0] = values[5] = values[10] = values[15] = 1;
+    return this;
+  }
+
+  public float[] getValues() {
+    return Arrays.copyOf(values, values.length);
+  }
+
+  public void setValues(float... values) {
+    if (values.length != 16) {
+      throw new IllegalArgumentException("Matrix4 must have 16 elements.");
+    }
+    this.values = values;
+  }
+
+  public float get(int row, int col) {
+    int index = Mathf.toOneDimensionalIndex(row, col, 4);
+    return (values[index]);
   }
 
   @Override
