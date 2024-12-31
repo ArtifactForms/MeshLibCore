@@ -1668,11 +1668,154 @@ public class Vector4fTest {
   }
 
   // ----------------------------------------------------------------------------------------------
-  // Lerp
+  // Lerp Unclamped
   // ----------------------------------------------------------------------------------------------
 
   @Test
-  public void testLerpWithTZero() {
+  public void testLerpUnclampedWithTZero() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerpUnclamped(end, 0.0f);
+
+    // Assert
+    assertEquals(start.getX(), result.getX(), 0.0001f);
+    assertEquals(start.getY(), result.getY(), 0.0001f);
+    assertEquals(start.getZ(), result.getZ(), 0.0001f);
+    assertEquals(start.getW(), result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpUnclampedWithTOne() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerpUnclamped(end, 1.0f);
+
+    // Assert
+    assertEquals(end.getX(), result.getX(), 0.0001f);
+    assertEquals(end.getY(), result.getY(), 0.0001f);
+    assertEquals(end.getZ(), result.getZ(), 0.0001f);
+    assertEquals(end.getW(), result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpUnclampedWithHalfwayT() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerpUnclamped(end, 0.5f);
+
+    // Assert
+    assertEquals(3.0f, result.getX(), 0.0001f);
+    assertEquals(4.0f, result.getY(), 0.0001f);
+    assertEquals(5.0f, result.getZ(), 0.0001f);
+    assertEquals(6.0f, result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpUnclampedWithNegativeT() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerpUnclamped(end, -0.5f);
+
+    // Assert
+    assertEquals(-1.0f, result.getX(), 0.0001f);
+    assertEquals(0.0f, result.getY(), 0.0001f);
+    assertEquals(1.0f, result.getZ(), 0.0001f);
+    assertEquals(2.0f, result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpUnclampedWithOverOneT() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+
+    // Act
+    Vector4f result = start.lerpUnclamped(end, 1.5f);
+
+    // Assert
+    assertEquals(7.0f, result.getX(), 0.0001f);
+    assertEquals(8.0f, result.getY(), 0.0001f);
+    assertEquals(9.0f, result.getZ(), 0.0001f);
+    assertEquals(10.0f, result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpUnclampedWithIdenticalStartAndEnd() {
+    // Arrange
+    Vector4f start = new Vector4f(3.0f, 3.0f, 3.0f, 3.0f);
+    Vector4f end = new Vector4f(3.0f, 3.0f, 3.0f, 3.0f);
+
+    // Act
+    Vector4f result = start.lerpUnclamped(end, 0.5f);
+
+    // Assert
+    assertEquals(3.0f, result.getX(), 0.0001f);
+    assertEquals(3.0f, result.getY(), 0.0001f);
+    assertEquals(3.0f, result.getZ(), 0.0001f);
+    assertEquals(3.0f, result.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpUnclampedReturnsNewInstanceAndOriginalVectorsUntouched() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
+    Vector4f startCopy = start.clone();
+    Vector4f endCopy = end.clone();
+
+    // Act
+    Vector4f result = start.lerpUnclamped(end, 0.5f);
+
+    // Assert
+    // Verify that a new instance is returned
+    assertNotSame(start, result);
+    assertNotSame(end, result);
+
+    // Verify that the original start vector is untouched
+    assertEquals(startCopy.getX(), start.getX(), 0.0001f);
+    assertEquals(startCopy.getY(), start.getY(), 0.0001f);
+    assertEquals(startCopy.getZ(), start.getZ(), 0.0001f);
+    assertEquals(startCopy.getW(), start.getW(), 0.0001f);
+
+    // Verify that the original end vector is untouched
+    assertEquals(endCopy.getX(), end.getX(), 0.0001f);
+    assertEquals(endCopy.getY(), end.getY(), 0.0001f);
+    assertEquals(endCopy.getZ(), end.getZ(), 0.0001f);
+    assertEquals(endCopy.getW(), end.getW(), 0.0001f);
+  }
+
+  @Test
+  public void testLerpUnclampedWithNullThrowsException() {
+    // Arrange
+    Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+    Vector4f other = null;
+    float t = 0.5f;
+
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          start.lerpUnclamped(other, t);
+        });
+  }
+
+  // ----------------------------------------------------------------------------------------------
+  // Lerp (Clamped)
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testLerpClampedWithTZero() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
@@ -1688,7 +1831,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithTOne() {
+  public void testLerpClampedWithTOne() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
@@ -1704,7 +1847,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithHalfwayT() {
+  public void testLerpClampedWithHalfwayT() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
@@ -1720,7 +1863,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithNegativeT() {
+  public void testLerpClampedWithNegativeT() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
@@ -1729,14 +1872,14 @@ public class Vector4fTest {
     Vector4f result = start.lerp(end, -0.5f);
 
     // Assert
-    assertEquals(-1.0f, result.getX(), 0.0001f);
-    assertEquals(0.0f, result.getY(), 0.0001f);
-    assertEquals(1.0f, result.getZ(), 0.0001f);
-    assertEquals(2.0f, result.getW(), 0.0001f);
+    assertEquals(start.getX(), result.getX(), 0.0001f); // Clamped to 0
+    assertEquals(start.getY(), result.getY(), 0.0001f);
+    assertEquals(start.getZ(), result.getZ(), 0.0001f);
+    assertEquals(start.getW(), result.getW(), 0.0001f);
   }
 
   @Test
-  public void testLerpWithOverOneT() {
+  public void testLerpClampedWithOverOneT() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
@@ -1745,14 +1888,14 @@ public class Vector4fTest {
     Vector4f result = start.lerp(end, 1.5f);
 
     // Assert
-    assertEquals(7.0f, result.getX(), 0.0001f);
-    assertEquals(8.0f, result.getY(), 0.0001f);
-    assertEquals(9.0f, result.getZ(), 0.0001f);
-    assertEquals(10.0f, result.getW(), 0.0001f);
+    assertEquals(end.getX(), result.getX(), 0.0001f); // Clamped to 1
+    assertEquals(end.getY(), result.getY(), 0.0001f);
+    assertEquals(end.getZ(), result.getZ(), 0.0001f);
+    assertEquals(end.getW(), result.getW(), 0.0001f);
   }
 
   @Test
-  public void testLerpWithIdenticalStartAndEnd() {
+  public void testLerpClampedWithIdenticalStartAndEnd() {
     // Arrange
     Vector4f start = new Vector4f(3.0f, 3.0f, 3.0f, 3.0f);
     Vector4f end = new Vector4f(3.0f, 3.0f, 3.0f, 3.0f);
@@ -1768,7 +1911,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpReturnsNewInstanceAndOriginalVectorsUntouched() {
+  public void testLerpClampedReturnsNewInstanceAndOriginalVectorsUntouched() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f end = new Vector4f(5.0f, 6.0f, 7.0f, 8.0f);
@@ -1797,7 +1940,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testLerpWithNullThrowsException() {
+  public void testLerpClampedWithNullThrowsException() {
     // Arrange
     Vector4f start = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
     Vector4f other = null;
@@ -2673,5 +2816,274 @@ public class Vector4fTest {
 
     vector.setW(8.0f);
     assertEquals(8.0f, vector.getW(), 0.0001);
+  }
+
+  // ----------------------------------------------------------------------------------------------
+  // Multiply Matrix4
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  void testMultiplyWithIdentityMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
+    Matrix4 identityMatrix =
+        new Matrix4(
+            new float[] {
+              1.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 1.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 1.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 1.0f
+            });
+
+    Vector4f result = vector.multiply(identityMatrix);
+
+    assertEquals(1.0f, result.getX(), 1e-6, "X component should remain unchanged");
+    assertEquals(2.0f, result.getY(), 1e-6, "Y component should remain unchanged");
+    assertEquals(3.0f, result.getZ(), 1e-6, "Z component should remain unchanged");
+    assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
+  }
+
+  @Test
+  void testMultiplyWithZeroMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
+    Matrix4 zeroMatrix =
+        new Matrix4(
+            new float[] {
+              0.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 0.0f
+            });
+
+    Vector4f result = vector.multiply(zeroMatrix);
+
+    assertEquals(0.0f, result.getX(), 1e-6, "X component should be 0");
+    assertEquals(0.0f, result.getY(), 1e-6, "Y component should be 0");
+    assertEquals(0.0f, result.getZ(), 1e-6, "Z component should be 0");
+    assertEquals(0.0f, result.getW(), 1e-6, "W component should be 0");
+  }
+
+  @Test
+  void testMultiplyWithTranslationMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
+    Matrix4 translationMatrix =
+        new Matrix4(
+            new float[] {
+              1.0f, 0.0f, 0.0f, 5.0f,
+              0.0f, 1.0f, 0.0f, 10.0f,
+              0.0f, 0.0f, 1.0f, 15.0f,
+              0.0f, 0.0f, 0.0f, 1.0f
+            });
+
+    Vector4f result = vector.multiply(translationMatrix);
+
+    assertEquals(6.0f, result.getX(), 1e-6, "X component should include translation");
+    assertEquals(12.0f, result.getY(), 1e-6, "Y component should include translation");
+    assertEquals(18.0f, result.getZ(), 1e-6, "Z component should include translation");
+    assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
+  }
+
+  @Test
+  void testMultiplyWithScalingMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
+    Matrix4 scalingMatrix =
+        new Matrix4(
+            new float[] {
+              2.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 3.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 4.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 1.0f
+            });
+
+    Vector4f result = vector.multiply(scalingMatrix);
+
+    assertEquals(2.0f, result.getX(), 1e-6, "X component should be scaled");
+    assertEquals(6.0f, result.getY(), 1e-6, "Y component should be scaled");
+    assertEquals(12.0f, result.getZ(), 1e-6, "Z component should be scaled");
+    assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
+  }
+
+  @Test
+  void testMultiplyWithRotationMatrix() {
+    Vector4f vector = new Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+    Matrix4 rotationMatrix =
+        new Matrix4(
+            new float[] {
+              0.0f, -1.0f, 0.0f, 0.0f,
+              1.0f, 0.0f, 0.0f, 0.0f,
+              0.0f, 0.0f, 1.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 1.0f
+            });
+
+    Vector4f result = vector.multiply(rotationMatrix);
+
+    assertEquals(0.0f, result.getX(), 1e-6, "X component after rotation");
+    assertEquals(1.0f, result.getY(), 1e-6, "Y component after rotation");
+    assertEquals(0.0f, result.getZ(), 1e-6, "Z component should remain unchanged");
+    assertEquals(1.0f, result.getW(), 1e-6, "W component should remain unchanged");
+  }
+
+  // ----------------------------------------------------------------------------------------------
+  // To Vector3f
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testToVector3f() {
+    // Create a Vector4f instance
+    Vector4f vector4f = new Vector4f(1.0f, 2.0f, 3.0f, 4.0f);
+
+    // Convert to Vector3f
+    Vector3f result = vector4f.toVector3f();
+
+    // Assert the components are correctly converted
+    assertEquals(1.0f, result.getX(), 1e-6, "X component should match");
+    assertEquals(2.0f, result.getY(), 1e-6, "Y component should match");
+    assertEquals(3.0f, result.getZ(), 1e-6, "Z component should match");
+  }
+
+  @Test
+  public void testToVector3fNegativeValues() {
+    // Create a Vector4f instance with negative values
+    Vector4f vector4f = new Vector4f(-5.5f, -6.6f, -7.7f, -8.8f);
+
+    // Convert to Vector3f
+    Vector3f result = vector4f.toVector3f();
+
+    // Assert the components are correctly converted
+    assertEquals(-5.5f, result.getX(), 1e-6, "X component should match");
+    assertEquals(-6.6f, result.getY(), 1e-6, "Y component should match");
+    assertEquals(-7.7f, result.getZ(), 1e-6, "Z component should match");
+  }
+
+  @Test
+  public void testToVector3fZeroValues() {
+    // Create a Vector4f instance with zero values
+    Vector4f vector4f = new Vector4f(0.0f, 0.0f, 0.0f, 0.0f);
+
+    // Convert to Vector3f
+    Vector3f result = vector4f.toVector3f();
+
+    // Assert the components are correctly converted
+    assertEquals(0.0f, result.getX(), 1e-6, "X component should match");
+    assertEquals(0.0f, result.getY(), 1e-6, "Y component should match");
+    assertEquals(0.0f, result.getZ(), 1e-6, "Z component should match");
+  }
+
+  // ----------------------------------------------------------------------------------------------
+  // Divide By W
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testDivideByW_validW() {
+    // Test case where w is non-zero
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
+
+    Vector4f result = vector.divideByW();
+
+    // Expected result after division by w = 2.0f
+    Vector4f expected = new Vector4f(2.0f, 4.0f, 6.0f, 1.0f);
+
+    assertEquals(expected, result, "The vector should be correctly divided by w.");
+  }
+
+  @Test
+  public void testDivideByW_wIsZero() {
+    // Test case where w is zero, expecting an ArithmeticException
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 0.0f);
+
+    ArithmeticException exception =
+        assertThrows(
+            ArithmeticException.class,
+            () -> {
+              vector.divideByW();
+            });
+
+    assertEquals(
+        "Division by zero.", exception.getMessage(), "Exception message should be correct.");
+  }
+
+  @Test
+  public void testDivideByW_wIsNegative() {
+    // Test case where w is negative
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, -2.0f);
+
+    Vector4f result = vector.divideByW();
+
+    // Expected result after division by w = -2.0f
+    Vector4f expected = new Vector4f(-2.0f, -4.0f, -6.0f, 1.0f);
+
+    assertEquals(expected, result, "The vector should be correctly divided by w.");
+  }
+
+  @Test
+  public void testDivideByW_createsNewInstance() {
+    // Create an original vector
+    Vector4f originalVector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
+
+    // Call divideByW on the original vector
+    Vector4f newVector = originalVector.divideByW();
+
+    // Check that the original vector is not modified
+    assertEquals(
+        new Vector4f(4.0f, 8.0f, 12.0f, 2.0f),
+        originalVector,
+        "The original vector should remain unchanged.");
+
+    // Check that a new vector is returned with the correct values
+    Vector4f expectedNewVector = new Vector4f(2.0f, 4.0f, 6.0f, 1.0f);
+    assertEquals(
+        expectedNewVector,
+        newVector,
+        "The returned vector should be a new instance with the expected values.");
+
+    // Check that the original and new vectors are different instances
+    assertNotSame(originalVector, newVector);
+  }
+
+  // ----------------------------------------------------------------------------------------------
+  // Divide By W Local
+  // ----------------------------------------------------------------------------------------------
+
+  @Test
+  public void testDivideByWLocal_updatesOriginalVector() {
+    // Create a vector
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
+
+    // Call divideByWLocal on the vector
+    Vector4f result = vector.divideByWLocal();
+
+    // Check that the original vector has been modified
+    assertEquals(
+        new Vector4f(2.0f, 4.0f, 6.0f, 1.0f),
+        vector,
+        "The original vector should be modified in place.");
+
+    // Check that the method returns the same instance (this) with the modified values
+    assertSame(vector, result);
+  }
+
+  @Test
+  public void testDivideByWLocal_throwsArithmeticException_whenWIsZero() {
+    // Create a vector with w = 0
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 0.0f);
+
+    // Assert that calling divideByWLocal throws ArithmeticException
+    assertThrows(
+        ArithmeticException.class,
+        () -> {
+          vector.divideByWLocal();
+        },
+        "Division by zero should throw an ArithmeticException.");
+  }
+
+  @Test
+  public void testDivideByWLocal_doesNotCreateNewInstance() {
+    // Create a vector
+    Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
+
+    // Call divideByWLocal on the vector
+    vector.divideByWLocal();
+
+    // Check that the method does not create a new instance, but modifies the original instance
+    assertSame(vector, vector.divideByWLocal());
   }
 }

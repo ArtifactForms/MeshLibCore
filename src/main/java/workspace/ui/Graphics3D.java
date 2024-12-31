@@ -3,6 +3,7 @@ package workspace.ui;
 import java.util.List;
 
 import engine.render.Material;
+import engine.resources.Texture;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import math.Matrix4f;
@@ -19,7 +20,7 @@ public interface Graphics3D extends Graphics2D {
   void rotateY(float angle);
 
   void rotateZ(float angle);
-  
+
   void rotate(float rx, float ry, float rz);
 
   void render(Light light);
@@ -43,6 +44,10 @@ public interface Graphics3D extends Graphics2D {
   void lightsOff();
 
   void setWireframeMode(boolean wireframeMode);
+
+  void bindTexture(Texture texture, int unit);
+
+  void unbindTexture(int unit);
 
   /**
    * Sets the global ambient light color for the scene.

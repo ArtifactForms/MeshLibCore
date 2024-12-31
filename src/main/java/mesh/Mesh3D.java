@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import math.Vector2f;
 import math.Vector3f;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.RemoveDoubleVerticesModifier;
@@ -16,11 +17,18 @@ import mesh.util.Bounds3;
 public class Mesh3D {
 
   public ArrayList<Vector3f> vertices;
+
   public ArrayList<Face3D> faces;
+
+  private ArrayList<Vector3f> vertexNormals;
+
+  private ArrayList<Vector2f> uvs;
 
   public Mesh3D() {
     vertices = new ArrayList<Vector3f>();
     faces = new ArrayList<Face3D>();
+    vertexNormals = new ArrayList<Vector3f>();
+    uvs = new ArrayList<Vector2f>();
   }
 
   /**
@@ -262,5 +270,43 @@ public class Mesh3D {
 
   public Face3D getFaceAt(int index) {
     return faces.get(index);
+  }
+
+  /**
+   * Sets the UV coordinates for this mesh.
+   *
+   * <p>This method sets the list of UV coordinates that will be used for the mesh. The provided
+   * list of UV coordinates will replace any existing UVs. The list must be a valid {@link
+   * ArrayList} of {@link Vector2f} objects. If the provided list is {@code null}, an {@link
+   * IllegalArgumentException} will be thrown.
+   *
+   * @param uvs The list of UV coordinates to be set. It must not be {@code null} and should contain
+   *     {@link Vector2f} objects representing the UV mapping for the mesh.
+   * @throws IllegalArgumentException if the provided {@code uvs} list is {@code null}.
+   */
+  public void setUvs(ArrayList<Vector2f> uvs) {
+    if (uvs == null) {
+      throw new IllegalArgumentException("The list of UV coordinates cannot be null.");
+    }
+    this.uvs = uvs;
+  }
+
+  /**
+   * Retrieves the UV coordinates at the specified index.
+   *
+   * <p>This method returns the UV coordinates associated with the given index. If the index is out
+   * of bounds (either negative or beyond the size of the list), a default UV coordinate (0, 0) is
+   * returned to avoid potential errors or exceptions. The method does not throw an exception when
+   * an invalid index is provided, ensuring that the calling code can proceed without disruption.
+   *
+   * @param index The index of the UV coordinate to retrieve.
+   * @return The UV coordinates as a {@link Vector2f}. If the index is out of bounds, returns {@code
+   *     new Vector2f(0, 0)}. The return value will never be {@code null}.
+   */
+  public Vector2f getUvAt(int index) {
+    if (index < 0 || index >= uvs.size()) {
+      return new Vector2f(0, 0);
+    }
+    return uvs.get(index);
   }
 }

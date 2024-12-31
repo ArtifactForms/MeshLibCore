@@ -78,13 +78,12 @@ public class FlyByCameraControl extends AbstractComponent {
     float mouseY = input.getMouseDeltaY() * mouseSensitivity * tpf;
 
     handleRotation(mouseX, mouseY);
-    updateTarget();
 
     Vector3f velocity = calculateVelocity();
     if (velocity.length() > 0) {
       applyMovement(velocity, tpf);
     }
-
+    updateTarget();
     input.center();
   }
 
@@ -147,7 +146,6 @@ public class FlyByCameraControl extends AbstractComponent {
     Vector3f position = camera.getTransform().getPosition();
     position.addLocal(velocity.mult(moveSpeed * tpf));
     camera.getTransform().setPosition(position);
-    updateTarget();
   }
 
   /**
@@ -179,5 +177,47 @@ public class FlyByCameraControl extends AbstractComponent {
   @Override
   public void onDetach() {
     // Not used yet
+  }
+
+  /**
+   * Returns the current movement speed of the camera.
+   *
+   * @return The movement speed in units per second.
+   */
+  public float getMoveSpeed() {
+    return moveSpeed;
+  }
+
+  /**
+   * Sets the movement speed of the camera.
+   *
+   * @param moveSpeed The new movement speed in units per second.
+   */
+  public void setMoveSpeed(float moveSpeed) {
+    this.moveSpeed = moveSpeed;
+  }
+
+  /**
+   * Returns the current mouse sensitivity used for camera rotation.
+   *
+   * <p>The mouse sensitivity determines how much the camera rotates based on mouse movement. Higher
+   * sensitivity values result in larger rotations for smaller mouse movements.
+   *
+   * @return The current mouse sensitivity.
+   */
+  public float getMouseSensitivity() {
+    return mouseSensitivity;
+  }
+
+  /**
+   * Sets the mouse sensitivity used for camera rotation.
+   *
+   * <p>The mouse sensitivity determines how much the camera rotates based on mouse movement. Higher
+   * sensitivity values result in larger rotations for smaller mouse movements.
+   *
+   * @param mouseSensitivity The new mouse sensitivity value.
+   */
+  public void setMouseSensitivity(float mouseSensitivity) {
+    this.mouseSensitivity = mouseSensitivity;
   }
 }

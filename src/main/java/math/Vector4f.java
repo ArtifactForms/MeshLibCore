@@ -159,6 +159,42 @@ public class Vector4f {
   }
 
   /**
+   * Divides the components of this vector by its w component to convert it from homogeneous
+   * coordinates to Euclidean coordinates. This operation returns a new vector with the transformed
+   * coordinates. If the w component is zero, an {@link ArithmeticException} is thrown as division
+   * by zero is not allowed.
+   *
+   * @return A new {@link Vector4f} with the components divided by w and w set to 1.0f.
+   * @throws ArithmeticException If the w component is zero.
+   */
+  public Vector4f divideByW() {
+    if (w == 0.0f) {
+      throw new ArithmeticException("Division by zero.");
+    }
+    return new Vector4f(x / w, y / w, z / w, 1.0f);
+  }
+
+  /**
+   * Divides the components of this vector by its w component to convert it from homogeneous
+   * coordinates to Euclidean coordinates. This operation modifies the current vector's components
+   * and sets w to 1.0f. If the w component is zero, an {@link ArithmeticException} is thrown as
+   * division by zero is not allowed.
+   *
+   * @return This {@link Vector4f} object, with its components modified and w set to 1.0f.
+   * @throws ArithmeticException If the w component is zero.
+   */
+  public Vector4f divideByWLocal() {
+    if (w == 0.0f) {
+      throw new ArithmeticException("Division by zero.");
+    }
+    x /= w;
+    y /= w;
+    z /= w;
+    w = 1.0f;
+    return this;
+  }
+
+  /**
    * Negates this vector and returns the result.
    *
    * @return A new vector representing the negated vector.
@@ -263,7 +299,8 @@ public class Vector4f {
   }
 
   /**
-   * Linearly interpolates between this vector and another vector by a factor t.
+   * Linearly interpolates between this vector and another vector by a factor t. The parameter t is
+   * clamped between [0...1].
    *
    * @param other The other vector.
    * @param t The interpolation factor (0.0 <= t <= 1.0).
@@ -271,6 +308,33 @@ public class Vector4f {
    * @throws IllegalArgumentException If the given vector is null.
    */
   public Vector4f lerp(Vector4f other, float t) {
+    if (other == null) {
+      throw new IllegalArgumentException("Other vector cannot be null.");
+    }
+    float lerpedX = Mathf.lerp(x, other.x, t);
+    float lerpedY = Mathf.lerp(y, other.y, t);
+    float lerpedZ = Mathf.lerp(z, other.z, t);
+    float lerpedW = Mathf.lerp(w, other.w, t);
+    return new Vector4f(lerpedX, lerpedY, lerpedZ, lerpedW);
+  }
+
+  /**
+   * Performs linear interpolation between this vector and the specified vector using the given
+   * factor {@code t}. Unlike clamped interpolation, {@code t} is not restricted to the range [0,
+   * 1], allowing extrapolation.
+   *
+   * <ul>
+   *   <li>When {@code t = 0}, the method returns this vector.
+   *   <li>When {@code t = 1}, the method returns the other vector.
+   *   <li>Values of {@code t} outside [0, 1] produce extrapolated results.
+   * </ul>
+   *
+   * @param other the target vector to interpolate towards.
+   * @param t the interpolation factor, which is not clamped.
+   * @return a new vector representing the interpolated or extrapolated result.
+   * @throws IllegalArgumentException if the {@code other} vector is {@code null}.
+   */
+  public Vector4f lerpUnclamped(Vector4f other, float t) {
     if (other == null) {
       throw new IllegalArgumentException("Other vector cannot be null.");
     }
@@ -402,6 +466,46 @@ public class Vector4f {
       throw new IllegalArgumentException("Normal cannot be zero vertor.");
     }
     return this.subtract(normal.multiply(2 * this.dot(normal)));
+  }
+
+  /**
+   * Multiplies this vector by a 4x4 matrix and returns the resulting vector.
+   *
+   * <p>This method performs a matrix-vector multiplication, treating this vector as a column vector
+   * and applying the transformation defined by the given 4x4 matrix. The resulting vector
+   * represents the transformed coordinates.
+   *
+   * <p>The operation is mathematically equivalent to:
+   *
+   * <pre>
+   * [ newX ]   [ m00 m01 m02 m03 ]   [ x ]
+   * [ newY ] = [ m10 m11 m12 m13 ] * [ y ]
+   * [ newZ ]   [ m20 m21 m22 m23 ]   [ z ]
+   * [ newW ]   [ m30 m31 m32 m33 ]   [ w ]
+   * </pre>
+   *
+   * @param m the 4x4 matrix to multiply with. This matrix defines the transformation (e.g.,
+   *     scaling, translation, rotation) to be applied to this vector. The matrix should be in
+   *     row-major order for correct computation.
+   * @return a new {@code Vector4f} instance representing the transformed vector.
+   * @throws NullPointerException if {@code m} is {@code null}.
+   */
+  public Vector4f multiply(Matrix4 m) {
+    float newX = m.get(0, 0) * x + m.get(0, 1) * y + m.get(0, 2) * z + m.get(0, 3) * w;
+    float newY = m.get(1, 0) * x + m.get(1, 1) * y + m.get(1, 2) * z + m.get(1, 3) * w;
+    float newZ = m.get(2, 0) * x + m.get(2, 1) * y + m.get(2, 2) * z + m.get(2, 3) * w;
+    float newW = m.get(3, 0) * x + m.get(3, 1) * y + m.get(3, 2) * z + m.get(3, 3) * w;
+
+    return new Vector4f(newX, newY, newZ, newW);
+  }
+
+  /**
+   * Converts this 4D vector to a 3D vector by dropping the w-component.
+   *
+   * @return a new Vector3f instance containing the x, y, and z components of this Vector4f.
+   */
+  public Vector3f toVector3f() {
+    return new Vector3f(x, y, z);
   }
 
   /**
