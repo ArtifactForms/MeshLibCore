@@ -24,7 +24,6 @@ public class ProcessingTexture implements Texture {
   @Override
   public void bind(int unit) {
     // Processing doesn't use texture units in the same way, just bind globally
-    image.loadPixels();
   }
 
   @Override
