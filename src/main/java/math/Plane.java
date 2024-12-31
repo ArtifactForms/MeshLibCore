@@ -75,7 +75,7 @@ public class Plane {
    * @return the normal vector of the plane.
    */
   public Vector3f getNormal() {
-    return normal;
+    return new Vector3f(normal);
   }
 
   /**
