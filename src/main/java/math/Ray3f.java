@@ -36,8 +36,8 @@ public class Ray3f {
     if (direction == null) {
       throw new IllegalArgumentException("Direction cannot be null.");
     }
-    this.origin = origin;
-    this.direction = direction;
+    this.origin = new Vector3f(origin);
+    this.direction = new Vector3f(direction);
     this.direction.normalizeLocal();
     this.directionInv = direction.reciprocal();
   }
@@ -50,7 +50,7 @@ public class Ray3f {
    * @return The origin of the ray.
    */
   public Vector3f getOrigin() {
-    return origin;
+    return new Vector3f(origin);
   }
 
   /**
@@ -62,7 +62,7 @@ public class Ray3f {
    * @return The direction vector of the ray.
    */
   public Vector3f getDirection() {
-    return direction;
+    return new Vector3f(direction);
   }
 
   /**
