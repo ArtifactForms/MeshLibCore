@@ -43,6 +43,63 @@ public class Ray3f {
   }
 
   /**
+   * Computes the shortest distance from the ray to a point in 3D space.
+   *
+   * <p>This method calculates the perpendicular distance from the given point to the ray. If the
+   * point lies behind the origin of the ray, the distance from the point to the ray's origin is
+   * returned. If the point lies along the ray's path (in the direction of the ray), the
+   * perpendicular distance is calculated. The ray is considered to extend infinitely in both
+   * directions from the origin.
+   *
+   * @param point The point in 3D space to compute the distance to (non-null).
+   * @return The shortest distance from the ray to the point. If the point is behind the ray's
+   *     origin, the distance from the point to the origin is returned.
+   * @throws IllegalArgumentException if the point is null.
+   */
+  public float distanceToPoint(Vector3f point) {
+    if (point == null) {
+      throw new IllegalArgumentException("Point cannot be null.");
+    }
+
+    // Calculate vector from ray origin to the point
+    Vector3f toPoint = point.subtract(origin);
+
+    // Project the vector to the ray's direction (dot product normalized)
+    float projection = toPoint.dot(direction);
+
+    // If the projection is negative, the point is behind the ray's origin
+    if (projection < 0) {
+      // Return the distance from the origin to the point
+      return toPoint.length();
+    }
+
+    // Return the perpendicular distance (calculate as the distance from the point to the closest
+    // point on the ray)
+    Vector3f closestPoint = getPointAt(projection);
+    return closestPoint.subtract(point).length();
+  }
+
+  /**
+   * Computes the point along the ray at a given parameter {@code t}.
+   *
+   * <p>The formula for the point is:
+   *
+   * <pre>{@code
+   * point = origin + t * direction
+   * }</pre>
+   *
+   * where {@code t} is a scalar representing the distance along the ray from the origin. Positive
+   * values of {@code t} will give points in the direction the ray is pointing, while negative
+   * values will give points in the opposite direction.
+   *
+   * @param t The parameter along the ray (can be negative, zero, or positive).
+   * @return The point at parameter {@code t}.
+   */
+  public Vector3f getPointAt(float t) {
+    return origin.add(direction.mult(t));
+  }
+
+  /**
    * Returns the origin of the ray.
    *
    * <p>The origin is the starting point from which the ray emanates.
@@ -75,25 +132,5 @@ public class Ray3f {
    */
   public Vector3f getDirectionInv() {
     return new Vector3f(directionInv);
-  }
-
-  /**
-   * Computes the point along the ray at a given parameter {@code t}.
-   *
-   * <p>The formula for the point is:
-   *
-   * <pre>{@code
-   * point = origin + t * direction
-   * }</pre>
-   *
-   * where {@code t} is a scalar representing the distance along the ray from the origin. Positive
-   * values of {@code t} will give points in the direction the ray is pointing, while negative
-   * values will give points in the opposite direction.
-   *
-   * @param t The parameter along the ray (can be negative, zero, or positive).
-   * @return The point at parameter {@code t}.
-   */
-  public Vector3f getPointAt(float t) {
-    return origin.add(direction.mult(t));
   }
 }
