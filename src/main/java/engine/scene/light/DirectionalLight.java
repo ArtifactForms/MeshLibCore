@@ -46,6 +46,25 @@ public class DirectionalLight implements Light {
   }
 
   /**
+   * Creates a new DirectionalLight instance with the specified color and direction.
+   *
+   * <p>This constructor initializes the light with the given color and direction, and a default
+   * intensity of 1.0. The provided direction vector is normalized during initialization to ensure
+   * consistent light behavior.
+   *
+   * @param color The color of the light emitted by the directional light source. Represents the RGB
+   *     values of the light's color. This parameter cannot be null.
+   * @param direction The direction of the light source. This vector determines the direction in
+   *     which the light rays travel. The provided vector is automatically normalized during
+   *     construction, ensuring the direction's magnitude is always 1. This parameter cannot be
+   *     null.
+   * @throws IllegalArgumentException if the direction or color is null.
+   */
+  public DirectionalLight(Color color, Vector3f direction) {
+    this(color, direction, 1.0f);
+  }
+
+  /**
    * Creates a new DirectionalLight instance.
    *
    * @param color The color of the light emitted by the directional light source. Represents the RGB
