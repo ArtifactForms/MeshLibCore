@@ -74,7 +74,7 @@ public class Ray3f {
    * @return The reciprocal of the direction vector of the ray.
    */
   public Vector3f getDirectionInv() {
-    return directionInv;
+    return new Vector3f(directionInv);
   }
 
   /**
