@@ -1,5 +1,6 @@
 package engine.render;
 
+import engine.resources.Texture;
 import math.Color;
 import workspace.ui.Graphics;
 
@@ -67,6 +68,10 @@ public class Material {
   /** Shininess factor for specular highlights. */
   private final float shininess;
 
+  private Texture normalTexture;
+  
+  private Texture diffuseTexture;
+
   /**
    * Constructor to set the base color of the material.
    *
@@ -83,11 +88,13 @@ public class Material {
     this.diffuse = builder.diffuse;
     this.specular = builder.specular;
     this.shininess = builder.shininess;
+    this.normalTexture = builder.normalTexture;
+    this.diffuseTexture = builder.diffuseTexture;
   }
 
   /**
-   * Builder class to facilitate the creation of custom materials with specific lighting and shader
-   * properties.
+   * Builder class to facilitate the creation of custom materials with specific lighting, shader and
+   * texture properties.
    */
   public static class Builder {
 
@@ -102,6 +109,10 @@ public class Material {
     private float[] specular = new float[] {1.0f, 1.0f, 1.0f};
 
     private float shininess = 10.0f;
+
+    private Texture diffuseTexture = null;
+
+    private Texture normalTexture = null;
 
     /**
      * Sets the base color of the material.
@@ -164,6 +175,28 @@ public class Material {
     }
 
     /**
+     * Sets the normal texture of the material.
+     *
+     * @param normalTexture The normal texture, can be null
+     * @return The builder instance for chaining
+     */
+    public Builder setNormalTexture(Texture normalTexture) {
+      this.normalTexture = normalTexture;
+      return this;
+    }
+
+    /**
+     * Sets the diffuse texture of the material.
+     *
+     * @param diffuseTexture The diffuse texture, can be null.
+     * @return The builder instance for chaining
+     */
+    public Builder setDiffuseTexture(Texture diffuseTexture) {
+      this.diffuseTexture = diffuseTexture;
+      return this;
+    }
+
+    /**
      * Builds and returns the Material instance with the set properties.
      *
      * @return A new instance of {@link Material}.
@@ -180,6 +213,13 @@ public class Material {
    */
   public void apply(Graphics g) {
     g.setMaterial(this);
+
+    if (diffuseTexture != null) {
+      g.bindTexture(diffuseTexture, 0); // Bind to texture unit 0
+    }
+    if (normalTexture != null) {
+      g.bindTexture(normalTexture, 1); // Bind to texture unit 1
+    }
   }
 
   /**
@@ -239,5 +279,13 @@ public class Material {
    */
   public float getShininess() {
     return shininess;
+  }
+
+  public Texture getDiffuseTexture() {
+    return diffuseTexture;
+  }
+
+  public Texture getNormalTexture() {
+    return normalTexture;
   }
 }

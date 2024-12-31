@@ -4,12 +4,15 @@ import java.util.List;
 
 import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
+import engine.processing.ProcessingTexture;
 import engine.render.Material;
 import engine.resources.Image;
+import engine.resources.Texture;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.scene.light.LightRenderer;
 import math.Matrix4f;
+import math.Vector2f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
@@ -32,6 +35,8 @@ public class GraphicsPImpl implements Graphics {
 
   private PGraphics g;
 
+  private PApplet p;
+
   private Mesh3DRenderer renderer;
 
   private LightRenderer lightRenderer;
@@ -41,6 +46,8 @@ public class GraphicsPImpl implements Graphics {
   public static int faceCount = 0;
 
   public static int vertexCount = 0;
+
+  private PImage texture;
 
   @Override
   public void setAmbientColor(math.Color ambientColor) {
@@ -59,6 +66,7 @@ public class GraphicsPImpl implements Graphics {
 
   public GraphicsPImpl(PApplet p) {
     this.g = p.g;
+    this.p = p;
     renderer = new Mesh3DRenderer(p);
 
     lightRenderer = new LightRendererImpl(p);
@@ -78,11 +86,12 @@ public class GraphicsPImpl implements Graphics {
     if (wireframeMode) {
       g.noFill();
       stroke();
-      renderer.drawFaces(mesh);
+      //      renderer.drawFaces(mesh);
+      drawMeshFaces(mesh);
     } else {
       g.noStroke();
       fill();
-      renderer.drawFaces(mesh);
+      drawMeshFaces(mesh);
     }
   }
 
@@ -133,11 +142,24 @@ public class GraphicsPImpl implements Graphics {
       } else {
         g.beginShape(PApplet.POLYGON);
       }
-      for (int index : f.indices) {
-        Vector3f v = mesh.vertices.get(index);
-        g.vertex(v.getX(), v.getY(), v.getZ());
+
+      if (texture != null) {
+        g.texture(texture);
+        g.textureMode(PApplet.NORMAL);
       }
-      g.endShape(PApplet.CLOSE);
+
+      int[] indices = f.indices;
+      for (int i = 0; i < indices.length; i++) {
+        Vector3f v = mesh.vertices.get(f.indices[i]);
+        int uvIndex = f.getUvIndexAt(i);
+        if (uvIndex != -1) {
+          Vector2f uv = mesh.getUvAt(uvIndex);
+          g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+        } else {
+          g.vertex(v.getX(), v.getY(), v.getZ());
+        }
+      }
+      g.endShape();
     }
   }
 
@@ -367,6 +389,8 @@ public class GraphicsPImpl implements Graphics {
       return;
     }
 
+    this.texture = null;
+
     // Extract material properties
     math.Color color = material.getColor();
     float[] ambient = material.getAmbient();
@@ -409,6 +433,19 @@ public class GraphicsPImpl implements Graphics {
     // Set specular and shininess properties
     g.specular(specular[0] * 255, specular[1] * 255, specular[2] * 255);
     g.shininess(shininess);
+  }
+
+  @Override
+  public void bindTexture(Texture texture, int unit) { // TODO Auto-generated method stub
+    //      if (unit == 1) {
+    //	  g.textureMode(PApplet.NORMAL);
+    //      }
+    ProcessingTexture texture2 = (ProcessingTexture) texture;
+    this.texture = texture2.getImage();
+  }
+
+  @Override
+  public void unbindTexture(int unit) { // TODO Auto-generated method stub
   }
 
   @Override
