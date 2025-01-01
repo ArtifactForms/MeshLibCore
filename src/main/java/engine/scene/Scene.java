@@ -38,6 +38,7 @@ public class Scene {
   /** Name of the scene. Used for identification or debugging purposes. */
   private final String name;
 
+  /** The background color of the scene. Defaults to black if not explicitly set. */
   private Color background;
 
   /** The currently active camera that determines the scene's view transformation. */
