@@ -226,6 +226,17 @@ public interface Graphics2D {
    */
   void text(String text, float x, float y);
 
+  /**
+   * Clears the rendering context with the specified color.
+   *
+   * <p>This method fills the entire viewport with the provided color, effectively resetting the
+   * drawing surface to a blank state. Any previously drawn content is overwritten.
+   *
+   * @param color The {@link math.Color} to use for clearing the viewport. The color is applied
+   *     uniformly across the entire rendering surface.
+   */
+  void clear(math.Color color);
+
   void drawImage(Image image, float x, float y);
 
   void drawImage(Image image, float x, float y, float width, float height);
