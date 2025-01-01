@@ -1,6 +1,7 @@
 package engine.application;
 
 import engine.Timer;
+import engine.components.FlyByCameraControl;
 import engine.debug.DebugInfoUpdater;
 import engine.debug.DebugOverlay;
 import engine.debug.FpsGraph;
@@ -10,13 +11,14 @@ import engine.input.Key;
 import engine.processing.ProcessingApplication;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
+import engine.scene.camera.PerspectiveCamera;
 import workspace.ui.Graphics;
 
 public abstract class BasicApplication implements Application {
 
   private boolean launched;
 
-  private boolean displayInfoText = true;
+  private boolean displayInfo = true;
 
   private boolean isPaused = false;
 
@@ -74,6 +76,18 @@ public abstract class BasicApplication implements Application {
     initializeDebugOverlay();
     fpsGraph = new FpsGraph(new FpsHistory());
     onInitialize();
+    setupDefaultCamera();
+  }
+
+  private void setupDefaultCamera() {
+    if (activeScene == null) return;
+    if (activeScene.getActiveCamera() != null) return;
+
+    PerspectiveCamera defaultCamera = new PerspectiveCamera();
+    activeScene.setActiveCamera(defaultCamera);
+    SceneNode cameraNode = new SceneNode("DefaultCamera");
+    cameraNode.addComponent(new FlyByCameraControl(input, defaultCamera));
+    activeScene.addNode(cameraNode);
   }
 
   private void initializeDebugOverlay() {
@@ -110,7 +124,7 @@ public abstract class BasicApplication implements Application {
   }
 
   @Override
-  public void render(Graphics g) {      
+  public void render(Graphics g) {
     if (activeScene != null) {
       activeScene.render(g);
     }
@@ -124,7 +138,7 @@ public abstract class BasicApplication implements Application {
     g.strokeWeight(1);
     renderUi(g);
     renderDebugUi(g);
-    fpsGraph.render(g);
+
 
     g.enableDepthTest();
   }
@@ -134,8 +148,9 @@ public abstract class BasicApplication implements Application {
   }
 
   private void renderDebugUi(Graphics g) {
-    if (!displayInfoText) return;
+    if (!displayInfo) return;
     debugOverlay.render(g);
+    fpsGraph.render(g);
   }
 
   @Override
@@ -170,8 +185,8 @@ public abstract class BasicApplication implements Application {
   public void setActiveScene(Scene activeScene) {
     this.activeScene = activeScene;
   }
-  
-  public void setDisplayInfoText(boolean displayInfoText) {
-      this.displayInfoText =  displayInfoText;
+
+  public void setDisplayInfo(boolean displayInfo) {
+    this.displayInfo = displayInfo;
   }
 }
