@@ -1,5 +1,7 @@
 package engine.processing;
 
+import java.awt.Image;
+
 import engine.resources.Texture;
 import engine.resources.TextureLoader;
 import processing.core.PApplet;
@@ -23,5 +25,11 @@ public class ProcessingTextureLoader implements TextureLoader {
                 .getPath());
     ProcessingTexture texture = new ProcessingTexture(image);
     return texture;
+  }
+
+  @Override
+  public Texture createTexture(Image image) {
+    PImage pImage = new PImage(image);
+    return new ProcessingTexture(pImage);
   }
 }

@@ -1,5 +1,6 @@
 package engine.resources;
 
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ public class TextureManager {
 
   private static TextureManager instance;
 
-  private TextureLoader imageLoader;
+  private TextureLoader textureLoader;
 
   private final Map<String, Texture> resourceCache = new HashMap<>();
 
@@ -21,7 +22,7 @@ public class TextureManager {
   }
 
   public void setTextureLoader(TextureLoader loader) {
-    this.imageLoader = loader;
+    this.textureLoader = loader;
   }
 
   public Texture loadTexture(String path) {
@@ -29,11 +30,11 @@ public class TextureManager {
       return resourceCache.get(path); // Return cached resource
     }
 
-    if (imageLoader == null) {
-      throw new IllegalStateException("ImageLoader is not set!");
+    if (textureLoader == null) {
+      throw new IllegalStateException("TextureLoader is not set.");
     }
 
-    Texture texture = imageLoader.loadTexture(path);
+    Texture texture = textureLoader.loadTexture(path);
     resourceCache.put(path, texture);
 
     return texture;
@@ -41,5 +42,9 @@ public class TextureManager {
 
   public void unloadImage(String path) {
     resourceCache.remove(path); // Optionally handle cleanup for backend-specific resources
+  }
+
+  public Texture createTexture(Image image) {
+    return textureLoader.createTexture(image);
   }
 }
