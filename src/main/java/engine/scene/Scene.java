@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
+import math.Color;
 import workspace.GraphicsPImpl;
 import workspace.ui.Graphics;
 
@@ -37,6 +38,8 @@ public class Scene {
   /** Name of the scene. Used for identification or debugging purposes. */
   private final String name;
 
+  private Color background;
+
   /** The currently active camera that determines the scene's view transformation. */
   private Camera activeCamera;
 
@@ -56,6 +59,7 @@ public class Scene {
       throw new IllegalArgumentException("Name cannot be null.");
     }
     this.name = name;
+    this.background = new Color(0, 0, 0, 1);
   }
 
   /**
@@ -116,6 +120,8 @@ public class Scene {
    * compatibility with most rendering APIs.
    */
   public void render(Graphics g) {
+    g.clear(background);
+
     if (activeCamera != null) {
       g.applyCamera(activeCamera);
     }
@@ -294,5 +300,31 @@ public class Scene {
    */
   public void setWireframeMode(boolean wireframeMode) {
     this.wireframeMode = wireframeMode;
+  }
+
+  /**
+   * Retrieves the background color of the scene.
+   *
+   * <p>The background color is used to clear the rendering surface before drawing the scene.
+   *
+   * @return The current background color of the scene.
+   */
+  public Color getBackground() {
+    return background;
+  }
+
+  /**
+   * Sets the background color of the scene.
+   *
+   * <p>The background color is used to clear the rendering surface before drawing the scene.
+   *
+   * @param background The new background color for the scene. Must not be {@code null}.
+   * @throws IllegalArgumentException if the provided background color is {@code null}.
+   */
+  public void setBackground(Color background) {
+    if (background == null) {
+      throw new IllegalArgumentException("Background color cannot be null.");
+    }
+    this.background = background;
   }
 }
