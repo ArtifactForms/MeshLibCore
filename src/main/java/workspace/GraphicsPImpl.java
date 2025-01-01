@@ -550,4 +550,9 @@ public class GraphicsPImpl implements Graphics {
       throw new IllegalArgumentException("Unsupported image backend.");
     }
   }
+
+  @Override
+  public void clear(math.Color color) {
+    g.background(color.getRedInt(), color.getGreenInt(), color.getBlueInt(), color.getAlphaInt());
+  }
 }
