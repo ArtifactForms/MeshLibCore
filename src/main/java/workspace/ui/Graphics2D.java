@@ -237,7 +237,31 @@ public interface Graphics2D {
    */
   void clear(math.Color color);
 
+  /**
+   * Draws an image at the specified coordinates (x, y).
+   *
+   * <p>This method renders the provided image at the given position (x, y) on the screen, using the
+   * image's natural dimensions without scaling.
+   *
+   * @param image The {@link Image} object to render.
+   * @param x The x-coordinate where the image's top-left corner will be placed.
+   * @param y The y-coordinate where the image's top-left corner will be placed.
+   */
   void drawImage(Image image, float x, float y);
 
+  /**
+   * Draws an image at the specified coordinates (x, y) and scales it to the specified width and
+   * height.
+   *
+   * <p>This method renders the provided image at the given position (x, y) on the screen, scaling
+   * the image to fit the specified width and height. The aspect ratio of the image may be distorted
+   * if the aspect ratio of the width and height differs from the image's natural dimensions.
+   *
+   * @param image The {@link Image} object to render.
+   * @param x The x-coordinate where the image's top-left corner will be placed.
+   * @param y The y-coordinate where the image's top-left corner will be placed.
+   * @param width The width to scale the image to.
+   * @param height The height to scale the image to.
+   */
   void drawImage(Image image, float x, float y, float width, float height);
 }
