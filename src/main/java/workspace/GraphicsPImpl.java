@@ -500,7 +500,7 @@ public class GraphicsPImpl implements Graphics {
     //      if (unit == 1) {
     //	  g.textureMode(PApplet.NORMAL);
     //      }
-    ProcessingTexture texture2 = (ProcessingTexture) texture;
+    ProcessingTexture texture2 = (ProcessingTexture) texture.getBackendTexture();
     this.texture = texture2;
   }
 

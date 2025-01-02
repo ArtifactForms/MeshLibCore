@@ -17,4 +17,6 @@ public interface Texture {
   FilterMode getFilterMode();
   
   void setFilterMode(FilterMode filterMode);
+  
+  Texture getBackendTexture();
 }
