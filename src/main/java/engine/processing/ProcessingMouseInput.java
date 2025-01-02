@@ -10,6 +10,11 @@ public class ProcessingMouseInput implements MouseInput {
   private final PApplet applet;
 
   private float mouseWheelDelta = 0;
+  
+  private float mouseX;
+  private float mouseY;
+  private float pMouseX;
+  private float pMouseY;
 
   private Robot robot;
 
@@ -51,32 +56,32 @@ public class ProcessingMouseInput implements MouseInput {
 
   @Override
   public float getMouseX() {
-    return applet.mouseX;
+      return mouseX;
   }
 
   @Override
   public float getMouseY() {
-    return applet.mouseY;
+      return mouseY;
   }
 
   @Override
   public float getLastMouseX() {
-    return applet.pmouseX;
+      return pMouseX;
   }
 
   @Override
   public float getLastMouseY() {
-    return applet.pmouseY;
+      return pMouseY;
   }
 
   @Override
   public float getMouseDeltaX() {
-    return applet.mouseX - applet.pmouseX;
+    return mouseX - pMouseX;
   }
 
   @Override
   public float getMouseDeltaY() {
-    return applet.mouseY - applet.pmouseY;
+      return mouseY - pMouseY;
   }
 
   @Override
@@ -87,7 +92,12 @@ public class ProcessingMouseInput implements MouseInput {
   }
 
   @Override
-  public void updateMouseState() {}
+  public void updateMouseState() {
+      this.mouseX = applet.mouseX;
+      this.mouseY = applet.mouseY;
+      this.pMouseX = applet.pmouseX;
+      this.pMouseY = applet.pmouseY;
+  }
 
   @Override
   public void center() {

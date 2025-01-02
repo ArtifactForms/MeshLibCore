@@ -646,6 +646,29 @@ public class Mathf {
   }
 
   /**
+   * Calculates the interpolation factor of a value within a specified range.
+   *
+   * <p>The `inverseLerp` function computes the normalized position of a value `t` within the range
+   * defined by `from` and `to`. It determines how far `t` lies between `from` and `to` on a scale
+   * from 0 to 1. If `t` is less than `from`, it returns a negative value. If `t` is greater than
+   * `to`, it returns a value greater than 1.
+   *
+   * @param from The start of the range.
+   * @param to The end of the range.
+   * @param t The value to normalize within the range.
+   * @return The normalized position of `t` in the range `[from, to]`.
+   * @throws IllegalArgumentException if `from` equals `to`, as this would result in division by
+   *     zero.
+   */
+  public static float inverseLerp(float from, float to, float t) {
+    if (from == to) {
+      throw new IllegalArgumentException(
+          "The start and end of the range cannot be the same (division by zero).");
+    }
+    return (t - from) / (to - from);
+  }
+
+  /**
    * Returns the next power of two greater than or equal to the given value.
    *
    * <p>For example:

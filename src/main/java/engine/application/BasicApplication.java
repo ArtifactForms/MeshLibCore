@@ -105,8 +105,8 @@ public abstract class BasicApplication implements Application {
 
       lastZ = input.isKeyPressed(Key.Z);
     }
-
     timer.update();
+    input.update();
     fpsGraph.update(timer);
     debugInfoUpdater.update(timer, activeScene, input);
 
@@ -138,7 +138,6 @@ public abstract class BasicApplication implements Application {
     g.strokeWeight(1);
     renderUi(g);
     renderDebugUi(g);
-
 
     g.enableDepthTest();
   }

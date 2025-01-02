@@ -6,6 +6,7 @@ import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
 import engine.processing.ProcessingTexture;
 import engine.render.Material;
+import engine.resources.FilterMode;
 import engine.resources.Image;
 import engine.resources.Texture;
 import engine.scene.camera.Camera;
@@ -47,7 +48,7 @@ public class GraphicsPImpl implements Graphics {
 
   public static int vertexCount = 0;
 
-  private PImage texture;
+  private ProcessingTexture texture;
 
   @Override
   public void setAmbientColor(math.Color ambientColor) {
@@ -133,6 +134,62 @@ public class GraphicsPImpl implements Graphics {
         matrix[15]);
   }
 
+  /**
+   * Applies the specified texture to the current rendering context, setting the appropriate texture
+   * sampling mode based on the filter mode of the texture.
+   *
+   * <p>This method checks the texture's filter mode and applies the corresponding texture sampling
+   * mode. It also ensures that the texture is properly initialized before usage.
+   *
+   * <p>The available filter modes are mapped to the following sampling modes:
+   *
+   * <ul>
+   *   <li>POINT -> 2
+   *   <li>LINEAR -> 3
+   *   <li>BILINEAR -> 4
+   *   <li>TRILINEAR -> 5
+   * </ul>
+   *
+   * If an unexpected filter mode is encountered, a warning is logged, and the default BILINEAR mode
+   * (sampling mode 4) is applied.
+   *
+   * @throws IllegalArgumentException if the filter mode is unexpected and no fallback is defined.
+   * @see processing.opengl.Texture
+   */
+  private void applyTexture() {
+    if (texture == null || texture.getImage() == null) {
+      return; // Ensure texture is properly initialized before applying it.
+    }
+
+    FilterMode filterMode = texture.getFilterMode();
+    int textureSampling;
+
+    switch (filterMode) {
+      case POINT:
+        textureSampling = 2;
+        break;
+      case LINEAR:
+        textureSampling = 3;
+        break;
+      case BILINEAR:
+        textureSampling = 4;
+        break;
+      case TRILINEAR:
+        textureSampling = 5;
+        break;
+      default:
+        // Log a warning for unexpected filter modes (in case of future extensions).
+        System.err.println("Warning: Unexpected filter mode value: " + filterMode);
+        textureSampling = 4; // Default to BILINEAR if undefined
+        break;
+    }
+
+    // Apply the texture with the corresponding sampling mode
+    ((PGraphicsOpenGL) g).textureSampling(textureSampling);
+    g.texture(texture.getImage());
+    g.textureMode(PApplet.NORMAL);
+  }
+
   private void drawMeshFaces(Mesh3D mesh) {
     for (Face3D f : mesh.getFaces()) {
       if (f.indices.length == 3) {
@@ -143,10 +200,7 @@ public class GraphicsPImpl implements Graphics {
         g.beginShape(PApplet.POLYGON);
       }
 
-      if (texture != null) {
-        g.texture(texture);
-        g.textureMode(PApplet.NORMAL);
-      }
+      applyTexture();
 
       int[] indices = f.indices;
       for (int i = 0; i < indices.length; i++) {
@@ -391,8 +445,17 @@ public class GraphicsPImpl implements Graphics {
 
     this.texture = null;
 
-    // Extract material properties
     math.Color color = material.getColor();
+    // Apply material properties
+    setColor(color != null ? color : math.Color.WHITE); // Default to white
+
+    if (!material.isUseLighting()) {
+      g.noLights();
+      return;
+    }
+
+    // Extract material properties
+
     float[] ambient = material.getAmbient();
     float[] diffuse = material.getDiffuse();
     float[] specular = material.getSpecular();
@@ -414,9 +477,6 @@ public class GraphicsPImpl implements Graphics {
       System.err.println(
           "Warning: Material specular property is null or incomplete. Using default.");
     }
-
-    // Apply material properties
-    setColor(color != null ? color : math.Color.WHITE); // Default to white
 
     // Calculate and apply ambient color
     math.Color ambientColor = new math.Color(this.ambientColor);
@@ -440,8 +500,8 @@ public class GraphicsPImpl implements Graphics {
     //      if (unit == 1) {
     //	  g.textureMode(PApplet.NORMAL);
     //      }
-    ProcessingTexture texture2 = (ProcessingTexture) texture;
-    this.texture = texture2.getImage();
+    ProcessingTexture texture2 = (ProcessingTexture) texture.getBackendTexture();
+    this.texture = texture2;
   }
 
   @Override

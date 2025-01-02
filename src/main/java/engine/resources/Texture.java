@@ -11,4 +11,12 @@ public interface Texture {
   void unbind();
 
   void delete();
+
+  void setPixels(int[] pixels);
+  
+  FilterMode getFilterMode();
+  
+  void setFilterMode(FilterMode filterMode);
+  
+  Texture getBackendTexture();
 }

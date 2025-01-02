@@ -273,6 +273,21 @@ public class Mesh3D {
   }
 
   /**
+   * Adds a UV coordinate to the mesh.
+   *
+   * <p>This method appends a new UV coordinate, specified by the parameters {@code u} and {@code
+   * v}, to the list of UV coordinates for this mesh. UV coordinates are used for mapping textures
+   * to the surface of the mesh, where {@code u} and {@code v} typically represent the horizontal
+   * and vertical texture coordinates, respectively.
+   *
+   * @param u The horizontal component of the UV coordinate.
+   * @param v The vertical component of the UV coordinate.
+   */
+  public void addUvCoordinate(float u, float v) {
+    uvs.add(new Vector2f(u, v));
+  }
+
+  /**
    * Sets the UV coordinates for this mesh.
    *
    * <p>This method sets the list of UV coordinates that will be used for the mesh. The provided
