@@ -13,4 +13,8 @@ public interface Texture {
   void delete();
 
   void setPixels(int[] pixels);
+  
+  FilterMode getFilterMode();
+  
+  void setFilterMode(FilterMode filterMode);
 }
