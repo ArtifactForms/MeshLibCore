@@ -32,6 +32,20 @@ public class Plane {
   }
 
   /**
+   * Constructs a plane with a given normal vector and distance.
+   *
+   * <p>The normal vector is automatically normalized during this operation.
+   *
+   * @param normal the normal vector of the plane.
+   * @param distance the distance of the plane from the origin along its normal vector.
+   */
+  public Plane(Vector3f normal, float distance) {
+    this.normal = new Vector3f(normal);
+    this.normal.normalizeLocal();
+    this.distance = distance;
+  }
+
+  /**
    * Sets the plane parameters using its coefficients.
    *
    * <p>The coefficients (A, B, C, D) define the plane equation <code>Ax + By + Cz + D = 0</code>.
@@ -43,9 +57,10 @@ public class Plane {
    * @param d the distance from the origin along the plane's normal vector.
    */
   public void set(float a, float b, float c, float d) {
-    this.normal.set(a, b, c);
-    normal.normalizeLocal();
-    this.distance = d;
+    float length = (float) Math.sqrt(a * a + b * b + c * c);
+    if (length == 0) throw new IllegalArgumentException("Plane normal cannot be zero.");
+    this.normal.set(a / length, b / length, c / length);
+    this.distance = d / length; // Normalize the distance as well
   }
 
   /**
