@@ -391,8 +391,17 @@ public class GraphicsPImpl implements Graphics {
 
     this.texture = null;
 
-    // Extract material properties
     math.Color color = material.getColor();
+    // Apply material properties
+    setColor(color != null ? color : math.Color.WHITE); // Default to white
+
+    if (!material.isUseLighting()) {
+      g.noLights();
+      return;
+    }
+
+    // Extract material properties
+
     float[] ambient = material.getAmbient();
     float[] diffuse = material.getDiffuse();
     float[] specular = material.getSpecular();
@@ -414,9 +423,6 @@ public class GraphicsPImpl implements Graphics {
       System.err.println(
           "Warning: Material specular property is null or incomplete. Using default.");
     }
-
-    // Apply material properties
-    setColor(color != null ? color : math.Color.WHITE); // Default to white
 
     // Calculate and apply ambient color
     math.Color ambientColor = new math.Color(this.ambientColor);
