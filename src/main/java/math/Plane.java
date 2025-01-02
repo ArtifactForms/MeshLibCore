@@ -45,6 +45,13 @@ public class Plane {
     this.distance = distance;
   }
 
+  /** Flips the orientation of the plane by inverting its normal and distance. */
+  public void flip() {
+      normal.negateLocal();
+      normal.normalizeLocal();  // Ensure the normal vector is normalized after negation
+      distance = distance == 0 ? 0 : -distance; // Avoid -0
+  }
+
   /**
    * Sets the plane parameters using its coefficients.
    *
@@ -100,5 +107,10 @@ public class Plane {
    */
   public float getDistance() {
     return distance;
+  }
+
+  @Override
+  public String toString() {
+    return "Plane [normal=" + normal + ", distance=" + distance + "]";
   }
 }
