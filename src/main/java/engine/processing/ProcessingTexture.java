@@ -1,5 +1,6 @@
 package engine.processing;
 
+import engine.resources.FilterMode;
 import engine.resources.Texture;
 import processing.core.PImage;
 
@@ -7,8 +8,11 @@ public class ProcessingTexture implements Texture {
 
   private final PImage image;
 
+  private FilterMode filterMode;
+
   public ProcessingTexture(PImage image) {
     this.image = image;
+    this.filterMode = FilterMode.BILINEAR;
   }
 
   @Override
@@ -38,12 +42,22 @@ public class ProcessingTexture implements Texture {
 
   @Override
   public void setPixels(int[] pixels) {
-      image.loadPixels();
-      image.pixels = pixels;
-      image.updatePixels();
+    image.loadPixels();
+    image.pixels = pixels;
+    image.updatePixels();
   }
 
   public PImage getImage() {
     return image;
+  }
+
+  @Override
+  public FilterMode getFilterMode() {
+    return filterMode;
+  }
+
+  @Override
+  public void setFilterMode(FilterMode filterMode) {
+    this.filterMode = filterMode;
   }
 }
