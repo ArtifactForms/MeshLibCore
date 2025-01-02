@@ -11,4 +11,6 @@ public interface Texture {
   void unbind();
 
   void delete();
+
+  void setPixels(int[] pixels);
 }

@@ -32,4 +32,10 @@ public class ProcessingTextureLoader implements TextureLoader {
     PImage pImage = new PImage(image);
     return new ProcessingTexture(pImage);
   }
+
+  @Override
+  public Texture createTexture(int width, int height) {
+    PImage pImage = new PImage(width, height);
+    return new ProcessingTexture(pImage);
+  }
 }

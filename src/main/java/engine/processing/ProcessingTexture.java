@@ -36,6 +36,13 @@ public class ProcessingTexture implements Texture {
     // Processing handles memory management automatically
   }
 
+  @Override
+  public void setPixels(int[] pixels) {
+      image.loadPixels();
+      image.pixels = pixels;
+      image.updatePixels();
+  }
+
   public PImage getImage() {
     return image;
   }

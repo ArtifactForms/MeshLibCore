@@ -8,4 +8,6 @@ public interface TextureLoader {
   
   Texture createTexture(Image image);
   
+  Texture createTexture(int width, int height);
+  
 }

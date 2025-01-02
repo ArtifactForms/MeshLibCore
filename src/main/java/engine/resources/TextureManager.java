@@ -47,4 +47,8 @@ public class TextureManager {
   public Texture createTexture(Image image) {
     return textureLoader.createTexture(image);
   }
+
+  public Texture createTexture(int width, int height) {
+    return textureLoader.createTexture(width, height);
+  }
 }
