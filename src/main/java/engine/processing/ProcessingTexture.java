@@ -60,4 +60,9 @@ public class ProcessingTexture implements Texture {
   public void setFilterMode(FilterMode filterMode) {
     this.filterMode = filterMode;
   }
+
+  @Override
+  public Texture getBackendTexture() {
+    return this;
+  }
 }
