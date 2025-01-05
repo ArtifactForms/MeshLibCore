@@ -73,6 +73,27 @@ public class LightRendererImpl implements LightRenderer {
         light.getPosition().getX(),
         light.getPosition().getY(),
         light.getPosition().getZ());
+
+    float intensity = light.getIntensity();
+
+    // Retrieve light color
+    float red = light.getColor().getRed(); // Gives a value from 0 to 1
+    float green = light.getColor().getGreen(); // Same for green
+    float blue = light.getColor().getBlue(); // Same for blue
+
+    // Apply intensity to each color component
+    red *= intensity;
+    green *= intensity;
+    blue *= intensity;
+
+    // Call pointLight() with adjusted color
+    p.pointLight(
+        red * 255, // Scale back to 0-255 range for Processing's pointLight
+        green * 255, // Same for green
+        blue * 255, // Same for blue
+        light.getPosition().getX(),
+        light.getPosition().getY(),
+        light.getPosition().getZ());
   }
 
   public void render(DirectionalLight light) {
