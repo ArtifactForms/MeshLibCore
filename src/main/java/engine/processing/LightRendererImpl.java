@@ -66,13 +66,6 @@ public class LightRendererImpl implements LightRenderer {
 
   public void render(PointLight light) {
     renderCommon(light.getColor(), light.getIntensity());
-    p.pointLight(
-        light.getColor().getRedInt(),
-        light.getColor().getGreenInt(),
-        light.getColor().getBlueInt(),
-        light.getPosition().getX(),
-        light.getPosition().getY(),
-        light.getPosition().getZ());
 
     float intensity = light.getIntensity();
 
