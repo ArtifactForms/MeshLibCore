@@ -9,6 +9,7 @@ import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Image;
 import engine.resources.Texture;
+import engine.resources.TextureWrapMode;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.scene.light.LightRenderer;
@@ -97,6 +98,13 @@ public class GraphicsPImpl implements Graphics {
   }
 
   @Override
+  public void drawFaces(Mesh3D mesh) {
+    g.noFill();
+    stroke();
+    drawMeshFaces(mesh);
+  }
+
+  @Override
   public void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms) {
     if (mesh.getFaces().isEmpty() || mesh.getVertices().isEmpty()) {
       return;
@@ -135,13 +143,56 @@ public class GraphicsPImpl implements Graphics {
   }
 
   /**
-   * Applies the specified texture to the current rendering context, setting the appropriate texture
-   * sampling mode based on the filter mode of the texture.
+   * Applies the specified texture to the current rendering context with the appropriate sampling
+   * mode.
    *
-   * <p>This method checks the texture's filter mode and applies the corresponding texture sampling
-   * mode. It also ensures that the texture is properly initialized before usage.
+   * <p>The filter mode of the texture is used to determine the sampling mode, which is then applied
+   * to the rendering context. If the texture is not initialized, this method does nothing. If an
+   * unexpected filter mode is encountered, a warning is logged, and BILINEAR mode is used as a
+   * fallback.
    *
-   * <p>The available filter modes are mapped to the following sampling modes:
+   * @see #getSamplingMode(FilterMode)
+   * @see processing.opengl.Texture
+   */
+  private void applyTexture() {
+    if (texture == null || texture.getImage() == null) {
+      return; // Ensure texture is properly initialized before applying it.
+    }
+    ((PGraphicsOpenGL) g).textureSampling(getSamplingMode(texture.getFilterMode()));
+    g.textureWrap(getTextureWrapMode());
+    g.textureMode(PApplet.NORMAL);
+    g.texture(texture.getImage());
+  }
+
+  /**
+   * Converts the internal {@link TextureWrapMode} to a corresponding Processing constant.
+   *
+   * <p>This method maps the engine's {@link TextureWrapMode} values to the equivalent constants
+   * defined by the {@link PApplet} class for use in Processing-based rendering. The supported
+   * mappings are:
+   *
+   * <ul>
+   *   <li>{@link TextureWrapMode#CLAMP} -> {@link PApplet#CLAMP}
+   *   <li>{@link TextureWrapMode#REPEAT} -> {@link PApplet#REPEAT}
+   * </ul>
+   *
+   * <p>If an unsupported or unexpected wrap mode is encountered, a warning is printed to {@code
+   * System.err}, and {@link PApplet#CLAMP} is returned as a fallback.
+   *
+   * @return the corresponding Processing constant for the texture wrap mode.
+   */
+  private int getTextureWrapMode() {
+    TextureWrapMode textureWrapMode = texture.getTextureWrapMode();
+    if (textureWrapMode == TextureWrapMode.CLAMP) return PApplet.CLAMP;
+    if (textureWrapMode == TextureWrapMode.REPEAT) return PApplet.REPEAT;
+    System.err.println("Warning: Unexpected texture wrap mode value: " + textureWrapMode);
+    return PApplet.CLAMP;
+  }
+
+  /**
+   * Maps the given filter mode to the corresponding texture sampling mode.
+   *
+   * <p>Supported mappings:
    *
    * <ul>
    *   <li>POINT -> 2
@@ -150,44 +201,27 @@ public class GraphicsPImpl implements Graphics {
    *   <li>TRILINEAR -> 5
    * </ul>
    *
-   * If an unexpected filter mode is encountered, a warning is logged, and the default BILINEAR mode
-   * (sampling mode 4) is applied.
+   * <p>If an unexpected filter mode is provided, a warning is logged, and BILINEAR mode (4) is
+   * returned.
    *
-   * @throws IllegalArgumentException if the filter mode is unexpected and no fallback is defined.
+   * @param filterMode the filter mode to map
+   * @return the corresponding sampling mode
    * @see processing.opengl.Texture
    */
-  private void applyTexture() {
-    if (texture == null || texture.getImage() == null) {
-      return; // Ensure texture is properly initialized before applying it.
-    }
-
-    FilterMode filterMode = texture.getFilterMode();
-    int textureSampling;
-
+  private int getSamplingMode(FilterMode filterMode) {
     switch (filterMode) {
       case POINT:
-        textureSampling = 2;
-        break;
+        return 2;
       case LINEAR:
-        textureSampling = 3;
-        break;
+        return 3;
       case BILINEAR:
-        textureSampling = 4;
-        break;
+        return 4;
       case TRILINEAR:
-        textureSampling = 5;
-        break;
+        return 5;
       default:
-        // Log a warning for unexpected filter modes (in case of future extensions).
         System.err.println("Warning: Unexpected filter mode value: " + filterMode);
-        textureSampling = 4; // Default to BILINEAR if undefined
-        break;
+        return 4; // Default to BILINEAR
     }
-
-    // Apply the texture with the corresponding sampling mode
-    ((PGraphicsOpenGL) g).textureSampling(textureSampling);
-    g.texture(texture.getImage());
-    g.textureMode(PApplet.NORMAL);
   }
 
   private void drawMeshFaces(Mesh3D mesh) {

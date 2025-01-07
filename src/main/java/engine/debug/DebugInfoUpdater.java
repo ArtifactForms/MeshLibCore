@@ -104,6 +104,9 @@ public class DebugInfoUpdater {
     setInfo(CATEGORY_CAMERA, "FOV", Mathf.toDegrees(camera.getFieldOfView()));
     setInfo(CATEGORY_CAMERA, "Near", camera.getNearPlane());
     setInfo(CATEGORY_CAMERA, "Far", camera.getFarPlane());
+    setInfo(CATEGORY_CAMERA, "PositionX", camera.getTransform().getPosition().getX());
+    setInfo(CATEGORY_CAMERA, "PositionY", camera.getTransform().getPosition().getY());
+    setInfo(CATEGORY_CAMERA, "PositionZ", camera.getTransform().getPosition().getZ());
   }
 
   private void updateOsMetrics() {

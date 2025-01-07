@@ -56,6 +56,29 @@ public interface Texture {
   void setFilterMode(FilterMode filterMode);
 
   /**
+   * Gets the current texture wrapping mode.
+   *
+   * <p>The texture wrap mode determines how the texture is applied when texture coordinates exceed
+   * the [0, 1] range. For example, in {@link TextureWrapMode#REPEAT}, the texture will repeat,
+   * whereas in {@link TextureWrapMode#CLAMP}, the texture will extend the edge pixels.
+   *
+   * @return the {@link TextureWrapMode} currently applied to the texture.
+   */
+  TextureWrapMode getTextureWrapMode();
+
+  /**
+   * Sets the texture wrapping mode.
+   *
+   * <p>This method controls how the texture is mapped outside the standard [0, 1] texture
+   * coordinate range. Use {@link TextureWrapMode#REPEAT} to tile the texture across a surface, or
+   * {@link TextureWrapMode#CLAMP} to stretch the texture's edge pixels when coordinates exceed the
+   * valid range.
+   *
+   * @param textureWrapMode the new {@link TextureWrapMode} to apply to the texture.
+   */
+  void setTextureWrapMode(TextureWrapMode textureWrapMode);
+
+  /**
    * Gets the underlying backend texture implementation. This is useful for accessing
    * engine-specific or platform-specific features.
    *

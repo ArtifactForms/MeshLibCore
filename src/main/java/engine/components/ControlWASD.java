@@ -7,16 +7,16 @@ import math.Vector3f;
 
 /**
  * ControlWASD is a movement component that allows moving a node in the scene graph using keyboard
- * input (W/A/S/D). It integrates with the scene's transformation system to control position
- * changes, allowing basic 3D navigation in a scene graph.
+ * input (W/A/S/D) or custom key mappings. It integrates with the scene's transformation system to
+ * control position changes, allowing basic 3D navigation in a scene graph.
  *
  * <p>Movement is normalized to ensure consistent speed, even when moving diagonally. This class
  * supports velocity adjustments via the speed multiplier and works by translating the owning node
  * within the 3D world space.
  *
- * <p>Example usage: Attach this component to a {@link SceneNode} to allow movement using WASD
- * keyboard inputs. The position updates depend on the elapsed time per frame to ensure smooth and
- * consistent movement over varying frame rates.
+ * <p>Example usage: Attach this component to a {@link SceneNode} to allow movement using keyboard
+ * inputs. The position updates depend on the elapsed time per frame to ensure smooth and consistent
+ * movement over varying frame rates.
  */
 public class ControlWASD extends AbstractComponent {
 
@@ -25,6 +25,18 @@ public class ControlWASD extends AbstractComponent {
 
   /** The Input instance to monitor keyboard events (injected dependency). */
   private Input input;
+
+  /** Key used for moving left. Default is 'A'. */
+  private Key leftKey = Key.A;
+
+  /** Key used for moving right. Default is 'D'. */
+  private Key rightKey = Key.D;
+
+  /** Key used for moving forward. Default is 'W'. */
+  private Key forwardKey = Key.W;
+
+  /** Key used for moving backward. Default is 'S'. */
+  private Key backwardKey = Key.S;
 
   /**
    * Constructs a new ControlWASD component, injecting the Input logic needed for detecting key
@@ -63,7 +75,7 @@ public class ControlWASD extends AbstractComponent {
   /**
    * Updates the movement of the owning node based on keyboard input.
    *
-   * <p>This method calculates the velocity vector by processing the WASD input and applies it to
+   * <p>This method calculates the velocity vector by processing the input keys and applies it to
    * move the node smoothly in the 3D space by adjusting its position over time with respect to
    * `tpf` (time per frame).
    *
@@ -81,8 +93,9 @@ public class ControlWASD extends AbstractComponent {
   }
 
   /**
-   * Processes keyboard input to determine velocity. Handles the W/A/S/D keys to allow movement in
-   * the 3D plane. Normalizes the vector to ensure diagonal movement doesn't lead to faster speeds.
+   * Processes keyboard input to determine velocity. Handles the configured keys to allow movement
+   * in the 3D plane. Normalizes the vector to ensure diagonal movement doesn't lead to faster
+   * speeds.
    *
    * @return A velocity vector representing the computed movement direction and speed.
    */
@@ -90,10 +103,10 @@ public class ControlWASD extends AbstractComponent {
     Vector3f velocity = new Vector3f();
 
     // Check for movement inputs
-    if (input.isKeyPressed(Key.W)) velocity.addLocal(0, 0, -1);
-    if (input.isKeyPressed(Key.A)) velocity.addLocal(-1, 0, 0);
-    if (input.isKeyPressed(Key.S)) velocity.addLocal(0, 0, 1);
-    if (input.isKeyPressed(Key.D)) velocity.addLocal(1, 0, 0);
+    if (input.isKeyPressed(forwardKey)) velocity.addLocal(0, 0, -1);
+    if (input.isKeyPressed(leftKey)) velocity.addLocal(-1, 0, 0);
+    if (input.isKeyPressed(backwardKey)) velocity.addLocal(0, 0, 1);
+    if (input.isKeyPressed(rightKey)) velocity.addLocal(1, 0, 0);
 
     // Normalize diagonal movement to prevent unintended speed boosts
     if (velocity.length() > 0) {
@@ -128,9 +141,49 @@ public class ControlWASD extends AbstractComponent {
     this.speed = speed;
   }
 
+  /**
+   * Sets the key used to move left.
+   *
+   * @param leftKey The new key to use for left movement.
+   */
+  public void setLeftKey(Key leftKey) {
+    this.leftKey = leftKey;
+  }
+
+  /**
+   * Sets the key used to move right.
+   *
+   * @param rightKey The new key to use for right movement.
+   */
+  public void setRightKey(Key rightKey) {
+    this.rightKey = rightKey;
+  }
+
+  /**
+   * Sets the key used to move forward.
+   *
+   * @param forwardKey The new key to use for forward movement.
+   */
+  public void setForwardKey(Key forwardKey) {
+    this.forwardKey = forwardKey;
+  }
+
+  /**
+   * Sets the key used to move backward.
+   *
+   * @param backwardKey The new key to use for backward movement.
+   */
+  public void setBackwardKey(Key backwardKey) {
+    this.backwardKey = backwardKey;
+  }
+
+  /** Called when the component is attached to a {@link SceneNode}. Override for custom behavior. */
   @Override
   public void onAttach() {}
 
+  /**
+   * Called when the component is detached from a {@link SceneNode}. Override for custom behavior.
+   */
   @Override
   public void onDetach() {}
 }
