@@ -9,6 +9,7 @@ import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Image;
 import engine.resources.Texture;
+import engine.resources.TextureWrapMode;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.scene.light.LightRenderer;
@@ -158,8 +159,34 @@ public class GraphicsPImpl implements Graphics {
       return; // Ensure texture is properly initialized before applying it.
     }
     ((PGraphicsOpenGL) g).textureSampling(getSamplingMode(texture.getFilterMode()));
+    g.textureWrap(getTextureWrapMode());
     g.textureMode(PApplet.NORMAL);
     g.texture(texture.getImage());
+  }
+
+  /**
+   * Converts the internal {@link TextureWrapMode} to a corresponding Processing constant.
+   *
+   * <p>This method maps the engine's {@link TextureWrapMode} values to the equivalent constants
+   * defined by the {@link PApplet} class for use in Processing-based rendering. The supported
+   * mappings are:
+   *
+   * <ul>
+   *   <li>{@link TextureWrapMode#CLAMP} -> {@link PApplet#CLAMP}
+   *   <li>{@link TextureWrapMode#REPEAT} -> {@link PApplet#REPEAT}
+   * </ul>
+   *
+   * <p>If an unsupported or unexpected wrap mode is encountered, a warning is printed to {@code
+   * System.err}, and {@link PApplet#CLAMP} is returned as a fallback.
+   *
+   * @return the corresponding Processing constant for the texture wrap mode.
+   */
+  private int getTextureWrapMode() {
+    TextureWrapMode textureWrapMode = texture.getTextureWrapMode();
+    if (textureWrapMode == TextureWrapMode.CLAMP) return PApplet.CLAMP;
+    if (textureWrapMode == TextureWrapMode.REPEAT) return PApplet.REPEAT;
+    System.err.println("Warning: Unexpected texture wrap mode value: " + textureWrapMode);
+    return PApplet.CLAMP;
   }
 
   /**

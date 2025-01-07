@@ -2,6 +2,7 @@ package engine.processing;
 
 import engine.resources.FilterMode;
 import engine.resources.Texture;
+import engine.resources.TextureWrapMode;
 import processing.core.PImage;
 
 public class ProcessingTexture implements Texture {
@@ -10,9 +11,12 @@ public class ProcessingTexture implements Texture {
 
   private FilterMode filterMode;
 
+  private TextureWrapMode textureWrapMode;
+
   public ProcessingTexture(PImage image) {
     this.image = image;
     this.filterMode = FilterMode.BILINEAR;
+    this.textureWrapMode = TextureWrapMode.CLAMP;
   }
 
   @Override
@@ -59,6 +63,16 @@ public class ProcessingTexture implements Texture {
   @Override
   public void setFilterMode(FilterMode filterMode) {
     this.filterMode = filterMode;
+  }
+
+  @Override
+  public TextureWrapMode getTextureWrapMode() {
+    return textureWrapMode;
+  }
+
+  @Override
+  public void setTextureWrapMode(TextureWrapMode textureWrapMode) {
+    this.textureWrapMode = textureWrapMode;
   }
 
   @Override

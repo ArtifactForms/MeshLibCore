@@ -55,20 +55,33 @@ public class Texture2D implements Texture {
   /**
    * Binds the texture to the specified texture unit for rendering.
    *
+   * <p>Binding a texture makes it available for use in subsequent rendering operations. The texture
+   * unit represents a specific slot in the graphics pipeline to which the texture is assigned.
+   *
    * @param unit the texture unit to bind this texture to.
+   * @see #unbind()
    */
   @Override
   public void bind(int unit) {
     texture.bind(unit);
   }
 
-  /** Unbinds the texture from its currently bound texture unit. */
+  /**
+   * Unbinds the texture from its currently bound texture unit.
+   *
+   * <p>Once a texture is unbound, it is no longer available for rendering until it is bound again.
+   */
   @Override
   public void unbind() {
     texture.unbind();
   }
 
-  /** Deletes the texture and releases any associated resources. */
+  /**
+   * Deletes the texture and releases any associated resources.
+   *
+   * <p>This method should be called when the texture is no longer needed to free up GPU memory.
+   * After a texture is deleted, it cannot be used for rendering unless it is recreated.
+   */
   @Override
   public void delete() {
     texture.delete();
@@ -77,7 +90,11 @@ public class Texture2D implements Texture {
   /**
    * Updates the pixel data of the texture.
    *
+   * <p>This method replaces the existing texture data with new pixel values. The pixel data must
+   * match the dimensions of the texture.
+   *
    * @param pixels an array of pixel data to set for this texture.
+   * @throws IllegalArgumentException if the pixel array size does not match the texture dimensions.
    */
   @Override
   public void setPixels(int[] pixels) {
@@ -86,6 +103,9 @@ public class Texture2D implements Texture {
 
   /**
    * Gets the filter mode currently applied to the texture.
+   *
+   * <p>The filter mode determines how the texture is sampled when it is magnified or minified
+   * during rendering. Common filter modes include nearest-neighbor and linear filtering.
    *
    * @return the filter mode of the texture.
    * @see FilterMode
@@ -98,6 +118,10 @@ public class Texture2D implements Texture {
   /**
    * Sets the filter mode for the texture.
    *
+   * <p>The filter mode controls how the texture is sampled when rendered at different sizes. For
+   * example, linear filtering smooths the texture when scaled, while nearest-neighbor filtering
+   * preserves sharp edges.
+   *
    * @param filterMode the desired filter mode to apply to the texture.
    * @see FilterMode
    */
@@ -107,7 +131,40 @@ public class Texture2D implements Texture {
   }
 
   /**
+   * Gets the texture wrapping mode currently applied to this texture.
+   *
+   * <p>The texture wrap mode controls how the texture is applied when texture coordinates exceed
+   * the [0, 1] range. For example, in {@link TextureWrapMode#REPEAT}, the texture will tile
+   * infinitely, whereas in {@link TextureWrapMode#CLAMP}, the texture's edge pixels are stretched.
+   *
+   * @return the {@link TextureWrapMode} applied to the texture.
+   */
+  @Override
+  public TextureWrapMode getTextureWrapMode() {
+    return texture.getTextureWrapMode();
+  }
+
+  /**
+   * Sets the texture wrapping mode for this texture.
+   *
+   * <p>This method controls how the texture is mapped outside the standard [0, 1] texture
+   * coordinate range. Use {@link TextureWrapMode#REPEAT} to tile the texture across a surface, or
+   * {@link TextureWrapMode#CLAMP} to stretch the texture's edge pixels when coordinates exceed the
+   * valid range.
+   *
+   * @param textureWrapMode the new {@link TextureWrapMode} to apply to the texture.
+   */
+  @Override
+  public void setTextureWrapMode(TextureWrapMode textureWrapMode) {
+    this.texture.setTextureWrapMode(textureWrapMode);
+  }
+
+  /**
    * Retrieves the backend texture instance used by this facade.
+   *
+   * <p>This method provides access to the underlying texture object managed by the {@link
+   * TextureManager}. It is useful for accessing low-level or engine-specific features not exposed
+   * by the {@link Texture2D} class.
    *
    * @return the underlying {@link Texture} instance.
    */
