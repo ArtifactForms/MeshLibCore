@@ -97,6 +97,13 @@ public class GraphicsPImpl implements Graphics {
   }
 
   @Override
+  public void drawFaces(Mesh3D mesh) {
+    g.noFill();
+    stroke();
+    drawMeshFaces(mesh);
+  }
+
+  @Override
   public void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms) {
     if (mesh.getFaces().isEmpty() || mesh.getVertices().isEmpty()) {
       return;

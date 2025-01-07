@@ -25,6 +25,8 @@ public interface Graphics3D extends Graphics2D {
 
   void render(Light light);
 
+  void drawFaces(Mesh3D mesh);
+  
   void fillFaces(Mesh3D mesh);
 
   void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms);
