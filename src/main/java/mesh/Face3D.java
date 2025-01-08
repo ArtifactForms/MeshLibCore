@@ -25,6 +25,11 @@ public class Face3D {
     this(indices, new int[0]);
   }
 
+  public Face3D(Face3D f) {
+    this(f.indices);
+    this.tag = new String(f.tag);
+  }
+
   public Face3D(int[] indices, int[] uvIndices) {
     this.color = new Color();
     this.indices = new int[indices.length];
@@ -54,13 +59,12 @@ public class Face3D {
     return uvIndices[index % uvIndices.length];
   }
 
-  public int getVertexCount() {
-    return indices.length;
+  public void setUvIndices(int... uvIndices) {
+    this.uvIndices = uvIndices;
   }
 
-  public Face3D(Face3D f) {
-    this(f.indices);
-    this.tag = new String(f.tag);
+  public int getVertexCount() {
+    return indices.length;
   }
 
   @Override

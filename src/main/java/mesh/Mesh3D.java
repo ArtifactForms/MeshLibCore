@@ -215,6 +215,10 @@ public class Mesh3D {
   public void addFace(int... indices) {
     faces.add(new Face3D(indices));
   }
+  
+  public void addFace(boolean uvs, int... indices) {
+      faces.add(new Face3D(indices, indices));
+  }
 
   public void addVertices(Collection<Vector3f> vertices) {
     this.vertices.addAll(vertices);
