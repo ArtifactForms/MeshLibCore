@@ -75,7 +75,7 @@ public class StaticGeometry extends AbstractComponent implements RenderableCompo
   }
 
   @Override
-  public void update(float tpf) {}
+  public void onUpdate(float tpf) {}
 
   @Override
   public void onAttach() {}

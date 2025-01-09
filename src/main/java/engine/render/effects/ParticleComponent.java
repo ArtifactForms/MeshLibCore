@@ -47,7 +47,7 @@ public class ParticleComponent extends AbstractComponent implements RenderableCo
    * time.
    */
   @Override
-  public void update(float tpf) {
+  public void onUpdate(float tpf) {
     emitter.update(tpf);
   }
 

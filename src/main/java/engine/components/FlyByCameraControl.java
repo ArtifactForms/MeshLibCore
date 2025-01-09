@@ -73,7 +73,7 @@ public class FlyByCameraControl extends AbstractComponent {
    * @param tpf The time per frame (delta time) used for movement scaling.
    */
   @Override
-  public void update(float tpf) {
+  public void onUpdate(float tpf) {
     float mouseX = input.getMouseDeltaX() * mouseSensitivity * tpf;
     float mouseY = input.getMouseDeltaY() * mouseSensitivity * tpf;
 

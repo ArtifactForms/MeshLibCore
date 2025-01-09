@@ -13,10 +13,11 @@ import math.Mathf;
  */
 public class MapGenerator {
 
-//  private int chunkSize = 481;
-  private int chunkSize = 961;
-  private int mapWidth = chunkSize;
-  private int mapHeight = chunkSize;
+  private int chunkSize;
+  //  private int chunkSize = 481;
+  //  private int chunkSize = 961;
+  private int mapWidth;
+  private int mapHeight;
   private int seed = 221;
   private int octaves = 4;
   private float scale = 50;
@@ -26,7 +27,10 @@ public class MapGenerator {
   private TerrainType[] regions;
 
   /** Constructs a new {@code MapGenerator} and initializes the height map and terrain regions. */
-  public MapGenerator() {
+  public MapGenerator(int chunkSize) {
+    this.chunkSize = chunkSize + 1;
+    this.mapWidth = this.chunkSize;
+    this.mapHeight = this.chunkSize;
     initializeRegions();
     heightMap =
         Noise.createHeightMap(mapWidth, mapHeight, seed, scale, octaves, persistance, lacunarity);

@@ -82,7 +82,7 @@ public class ControlWASD extends AbstractComponent {
    * @param tpf Time per frame, used to ensure frame-rate-independent movement.
    */
   @Override
-  public void update(float tpf) {
+  public void onUpdate(float tpf) {
     SceneNode node = getOwner();
     Vector3f velocity = handleInput();
 

@@ -1,7 +1,6 @@
 package engine.processing;
 
 import engine.render.Material;
-import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.vbo.VBO;
 import math.Vector2f;
@@ -23,15 +22,16 @@ public class VBOProcessing implements VBO {
   }
 
   @Override
-  public void create(Mesh3D mesh, Material material) { // TODO Auto-generated method stub
+  public void create(Mesh3D mesh, Material material) {
     faceCount = mesh.getFaceCount();
     vertexCount = mesh.getVertexCount();
 
     shape = graphics.createShape();
 
     shape.beginShape();
-
     shape.noStroke();
+    // TODO Full material support
+    shape.fill(material.getColor().getRGBA());
 
     for (Face3D f : mesh.getFaces()) {
       if (f.indices.length == 3) {
@@ -41,9 +41,6 @@ public class VBOProcessing implements VBO {
       } else {
         shape.beginShape(PApplet.POLYGON);
       }
-
-      //      applyTexture();
-
       int[] indices = f.indices;
       for (int i = 0; i < indices.length; i++) {
         Vector3f v = mesh.vertices.get(f.indices[i]);
@@ -55,9 +52,7 @@ public class VBOProcessing implements VBO {
           shape.vertex(v.getX(), v.getY(), v.getZ());
         }
       }
-      //      shape.endShape();
     }
-
     shape.endShape();
 
     Texture texture = material.getDiffuseTexture();
@@ -68,35 +63,17 @@ public class VBOProcessing implements VBO {
     }
   }
 
-  private int getSamplingMode(FilterMode filterMode) {
-    switch (filterMode) {
-      case POINT:
-        return 2;
-      case LINEAR:
-        return 3;
-      case BILINEAR:
-        return 4;
-      case TRILINEAR:
-        return 5;
-      default:
-        System.err.println("Warning: Unexpected filter mode value: " + filterMode);
-        return 4; // Default to BILINEAR
-    }
-  }
-
   @Override
   public void create(float[] vertices, int[] indices) {
+    // TODO Full implementation
     // Create a PShape object for the mesh
-    //    shape = new PShape(PShape.POINTS, vertices.length / 3);
     shape = new PShape();
-
     // Load vertices into the PShape
     shape.beginShape();
     for (int i = 0; i < vertices.length; i += 3) {
       shape.vertex(vertices[i], vertices[i + 1], vertices[i + 2]);
     }
     shape.endShape();
-
     // Optional: store indices if using indexed rendering
     vertexCount = vertices.length / 3; // Assuming vertices are in 3D (x, y, z)
   }

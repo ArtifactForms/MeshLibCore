@@ -82,7 +82,7 @@ public class RoundReticle extends AbstractComponent implements RenderableCompone
    * @param tpf time per frame, used for animations or updates.
    */
   @Override
-  public void update(float tpf) {}
+  public void onUpdate(float tpf) {}
 
   /** Called when the component is attached to a {@link engine.SceneNode}. */
   @Override

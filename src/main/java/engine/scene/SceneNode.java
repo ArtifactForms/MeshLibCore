@@ -6,6 +6,8 @@ import java.util.List;
 import engine.components.Component;
 import engine.components.RenderableComponent;
 import engine.components.Transform;
+import engine.scene.audio.AudioSource;
+import engine.scene.audio.AudioSystem;
 import workspace.ui.Graphics;
 
 /**
@@ -37,11 +39,15 @@ public class SceneNode {
   /** The default name assigned to a scene node if no name is provided. */
   private static final String DEFAULT_NAME = "Untitled-Node";
 
+  private boolean active;
+
   /** The name of this node, primarily intended for debugging and identification purposes. */
   private String name;
 
   /** The parent node in the scene graph hierarchy. */
   private SceneNode parent;
+
+  private Transform transform;
 
   /** List of child nodes attached to this node. */
   private List<SceneNode> children;
@@ -59,11 +65,12 @@ public class SceneNode {
     if (name == null) {
       throw new IllegalArgumentException("Name cannot be null.");
     }
+    this.active = true;
     this.name = name;
+    this.transform = new Transform();
     this.children = new ArrayList<SceneNode>();
     this.components = new ArrayList<Component>();
-    // Add a default Transform component
-    this.components.add(new Transform());
+    this.components.add(transform);
   }
 
   /**
@@ -84,6 +91,8 @@ public class SceneNode {
    * @param g The graphics context used for rendering this node and its children.
    */
   public void render(Graphics g) {
+    if (!active) return;
+
     g.pushMatrix();
 
     applyLocalTransform(g);
@@ -110,6 +119,7 @@ public class SceneNode {
    * @param g The graphics context used for rendering.
    */
   protected void renderComponents(Graphics g) {
+    if (!active) return;
     for (RenderableComponent renderer : getRenderComponents()) {
       renderer.render(g);
     }
@@ -121,8 +131,17 @@ public class SceneNode {
    * @param tpf The time per frame in seconds (delta time).
    */
   public void update(float tpf) {
+    if (!active) return;
     updateComponents(tpf);
     updateChildren(tpf);
+  }
+
+  public void updateAudio(AudioSystem audioSystem) {
+    if (!active) return;
+    audioSystem.update(getComponents(AudioSource.class));
+    for (SceneNode child : children) {
+      child.updateAudio(audioSystem);
+    }
   }
 
   /**
@@ -131,6 +150,7 @@ public class SceneNode {
    * @param tpf The time per frame in seconds.
    */
   protected void updateComponents(float tpf) {
+    if (!active) return;
     for (Component component : components) {
       component.update(tpf);
     }
@@ -142,6 +162,7 @@ public class SceneNode {
    * @param tpf The time per frame in seconds.
    */
   protected void updateChildren(float tpf) {
+    if (!active) return;
     for (SceneNode child : children) {
       child.update(tpf);
     }
@@ -322,10 +343,7 @@ public class SceneNode {
 
   /** Retrieves the Transform component associated with this node. */
   public Transform getTransform() {
-    return getComponents(Transform.class)
-        .stream()
-        .findFirst()
-        .orElseThrow(() -> new IllegalStateException("Transform component is missing."));
+    return transform;
   }
 
   /**
@@ -348,5 +366,62 @@ public class SceneNode {
       throw new IllegalArgumentException("Name cannot be null.");
     }
     this.name = name;
+  }
+
+  /**
+   * Retrieves the active state of this node.
+   *
+   * <p>This method returns whether the node is active or not. An active node is typically involved
+   * in updates, rendering, and other game logic, whereas an inactive node may be ignored during
+   * these processes.
+   *
+   * @return {@code true} if the node is active, {@code false} if it is inactive.
+   */
+  public boolean isActive() {
+    return active;
+  }
+
+  /**
+   * Sets the active state of this node.
+   *
+   * <p>This method changes the active state of the node. If the node's active state is already in
+   * the desired state, it does nothing to avoid unnecessary changes. When the active state is
+   * updated, it also propagates the change to the node's components and child nodes.
+   *
+   * @param active The desired active state for this node. {@code true} sets the node as active,
+   *     {@code false} deactivates it.
+   */
+  public void setActive(boolean active) {
+    // Skip if already in the desired state
+    if (active == this.active) return;
+    this.active = active;
+    setComponentsActive();
+    setChildrenActive();
+  }
+
+  /**
+   * Sets the active state for all child nodes of this node.
+   *
+   * <p>This method recursively sets the active state of each child node in the hierarchy. If the
+   * parent node is set to active, all of its child nodes will also be activated, and vice versa.
+   * This ensures that all child nodes are consistently updated with the parent node's active state.
+   */
+  protected void setChildrenActive() {
+    for (SceneNode child : children) {
+      child.setActive(active);
+    }
+  }
+
+  /**
+   * Sets the active state for all components attached to this node.
+   *
+   * <p>This method updates the active state of each component attached to the node. This ensures
+   * that all components are either activated or deactivated in sync with the node itself, depending
+   * on the current active state of the node.
+   */
+  protected void setComponentsActive() {
+    for (Component component : components) {
+      component.setActive(active);
+    }
   }
 }

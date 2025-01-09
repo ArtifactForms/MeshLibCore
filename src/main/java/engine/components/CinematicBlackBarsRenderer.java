@@ -66,7 +66,7 @@ public class CinematicBlackBarsRenderer extends AbstractComponent implements Ren
    * @param tpf Time per frame (time elapsed since the last frame in seconds).
    */
   @Override
-  public void update(float tpf) {
+  public void onUpdate(float tpf) {
     if (!isFading()) {
       return;
     }
