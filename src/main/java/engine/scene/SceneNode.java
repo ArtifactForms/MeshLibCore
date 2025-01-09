@@ -68,6 +68,7 @@ public class SceneNode {
     this.active = true;
     this.name = name;
     this.transform = new Transform();
+    this.children = new ArrayList<SceneNode>();
     this.components = new ArrayList<Component>();
     this.components.add(transform);
   }
@@ -201,9 +202,6 @@ public class SceneNode {
   public void addChild(SceneNode child) {
     if (child == null) {
       throw new IllegalArgumentException("Child node cannot be null.");
-    }
-    if (children == null) {
-      children = new ArrayList<SceneNode>();
     }
     if (children.contains(child)) {
       return;
