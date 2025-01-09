@@ -16,7 +16,7 @@ import engine.scene.SceneNode;
 public abstract class AbstractComponent implements Component {
 
   /** Indicates whether the component is currently active. */
-  protected boolean active;
+  protected boolean active = true;
 
   /** Reference to the owning {@link SceneNode}. */
   protected SceneNode owner;
