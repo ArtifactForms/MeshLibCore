@@ -2,7 +2,7 @@ package engine.demos.landmass;
 
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
-import engine.components.Geometry;
+import engine.components.StaticGeometry;
 import engine.components.RoundReticle;
 import engine.components.SmoothFlyByCameraControl;
 import engine.render.Material;
@@ -41,7 +41,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
   }
 
   // Configuration fields
-  private int levelOfDetail = 1; // Level of detail for the terrain mesh (0 - 6)
+  private int levelOfDetail = 0; // Level of detail for the terrain mesh (0 - 6)
   private DrawMode drawMode = DrawMode.COLOR_MAP;
   private Scene scene;
 
@@ -103,7 +103,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
     terrainMesh.apply(new ScaleModifier(3));
     terrainMesh.apply(new CenterAtModifier());
 
-    Geometry terrainGeometry = new Geometry(terrainMesh, mapMaterial);
+    StaticGeometry terrainGeometry = new StaticGeometry(terrainMesh, mapMaterial);
     SceneNode terrainNode = new SceneNode();
     terrainNode.addComponent(terrainGeometry);
     scene.addNode(terrainNode);
