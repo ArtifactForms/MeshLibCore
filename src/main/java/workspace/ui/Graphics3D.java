@@ -6,6 +6,7 @@ import engine.render.Material;
 import engine.resources.Texture;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
+import engine.vbo.VBO;
 import math.Matrix4f;
 import mesh.Mesh3D;
 
@@ -28,6 +29,8 @@ public interface Graphics3D extends Graphics2D {
   void drawFaces(Mesh3D mesh);
   
   void fillFaces(Mesh3D mesh);
+  
+  void draw(VBO vbo);
 
   void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms);
 
