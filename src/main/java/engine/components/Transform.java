@@ -251,8 +251,30 @@ public class Transform extends AbstractComponent {
     return new Vector3f(-sinY, 0, cosY).normalizeLocal();
   }
 
+  /**
+   * Sets the forward direction of this transform.
+   *
+   * <p>This method calculates the rotation angles (pitch and yaw) needed to make the object face
+   * the given forward direction and updates the rotation vector accordingly.
+   *
+   * @param forward The desired forward direction as a normalized vector.
+   */
+  public void setForward(Vector3f forward) {
+    if (forward == null || forward.length() == 0) {
+      throw new IllegalArgumentException("Forward vector cannot be null or zero-length.");
+    }
+
+    // Calculate yaw (rotation around the Y-axis) and pitch (rotation around the X-axis)
+    float yaw = (float) Math.atan2(forward.z, forward.x);
+    float pitch =
+        (float) Math.atan2(forward.y, Math.sqrt(forward.x * forward.x + forward.z * forward.z));
+
+    // Update the rotation vector
+    this.rotation.set(pitch, yaw, 0);
+  }
+
   @Override
-  public void update(float tpf) {}
+  public void onUpdate(float tpf) {}
 
   @Override
   public void onAttach() {}

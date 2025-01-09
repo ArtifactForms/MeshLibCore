@@ -2,9 +2,9 @@ package engine.demos.landmass;
 
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
-import engine.components.StaticGeometry;
 import engine.components.RoundReticle;
 import engine.components.SmoothFlyByCameraControl;
+import engine.components.StaticGeometry;
 import engine.render.Material;
 import engine.resources.Texture2D;
 import engine.scene.Scene;
@@ -42,6 +42,8 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
   // Configuration fields
   private int levelOfDetail = 0; // Level of detail for the terrain mesh (0 - 6)
+  private int chunkSize = 240; // TODO Note that the size has to fit LOD
+  private int chunkScale = 3;
   private DrawMode drawMode = DrawMode.COLOR_MAP;
   private Scene scene;
 
@@ -80,7 +82,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
   /** Creates the terrain based on the selected draw mode and level of detail. */
   private void createTerrain() {
-    MapGenerator generator = new MapGenerator();
+    MapGenerator generator = new MapGenerator(chunkSize);
     float[][] noiseMap = generator.getHeightMap();
 
     // Create and display the noise map or color map based on the draw mode
@@ -100,13 +102,18 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
     // Generate the terrain mesh, apply transformations, and create a geometry node
     Mesh3D terrainMesh = new TerrainMeshLOD(noiseMap, levelOfDetail).getMesh();
-    terrainMesh.apply(new ScaleModifier(3));
+    terrainMesh.apply(new ScaleModifier(chunkScale));
     terrainMesh.apply(new CenterAtModifier());
 
     StaticGeometry terrainGeometry = new StaticGeometry(terrainMesh, mapMaterial);
     SceneNode terrainNode = new SceneNode();
     terrainNode.addComponent(terrainGeometry);
     scene.addNode(terrainNode);
+
+    // Visualize chunk
+    SceneNode chunkDisplayNode = new SceneNode();
+    chunkDisplayNode.addComponent(new ChunkBoxDisplay(chunkSize * chunkScale));
+    scene.addNode(chunkDisplayNode);
   }
 
   /** Sets up the camera with smooth fly-by controls. */

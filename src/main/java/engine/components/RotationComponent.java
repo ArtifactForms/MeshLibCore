@@ -55,7 +55,7 @@ public class RotationComponent extends AbstractComponent {
    * @param tpf Time per frame (in seconds since the last frame).
    */
   @Override
-  public void update(float tpf) {
+  public void onUpdate(float tpf) {
     SceneNode node = getOwner();
     if (node == null) return;
 

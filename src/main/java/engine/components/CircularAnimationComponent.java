@@ -68,7 +68,7 @@ public class CircularAnimationComponent extends AbstractComponent {
    * @param tpf Time per frame (time in seconds since the last frame).
    */
   @Override
-  public void update(float tpf) {
+  public void onUpdate(float tpf) {
     // Update the elapsed time based on the time per frame
     timeElapsed += tpf;
 

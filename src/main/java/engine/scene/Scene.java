@@ -6,9 +6,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import engine.scene.audio.AudioListener;
+import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import math.Color;
+import math.Vector3f;
 import workspace.GraphicsPImpl;
 import workspace.ui.Graphics;
 
@@ -44,9 +47,12 @@ public class Scene {
   /** The currently active camera that determines the scene's view transformation. */
   private Camera activeCamera;
 
+  private AudioSystem audioSystem;
+
   /** Constructs a {@code Scene} with a default name. */
   public Scene() {
     this(DEFAULT_NAME);
+    audioSystem = new AudioSystem();
   }
 
   /**
@@ -112,7 +118,22 @@ public class Scene {
    */
   public void update(float deltaTime) {
     for (SceneNode node : rootNodes) {
-      updateExecutor.submit(() -> node.update(deltaTime));
+      //      updateExecutor.submit(() -> node.update(deltaTime));
+      node.update(deltaTime);
+    }
+    updateAudio();
+  }
+
+  private void updateAudio() {
+    if (activeCamera == null) return;
+
+    AudioListener listener = new AudioListener();
+    listener.setPosition(activeCamera.getTransform().getPosition());
+    listener.setForward(activeCamera.getTransform().getForward());
+
+    audioSystem.setListener(listener);
+    for (SceneNode node : rootNodes) {
+      node.updateAudio(audioSystem);
     }
   }
 
@@ -121,11 +142,11 @@ public class Scene {
    * compatibility with most rendering APIs.
    */
   public void render(Graphics g) {
-    g.clear(background);
-
     if (activeCamera != null) {
       g.applyCamera(activeCamera);
     }
+
+    g.clear(background);
 
     g.setWireframeMode(wireframeMode);
     renderLights(g);

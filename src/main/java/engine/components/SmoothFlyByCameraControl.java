@@ -72,7 +72,7 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
    * @param tpf Time per frame, used to adjust movement and smoothing.
    */
   @Override
-  public void update(float tpf) {
+  public void onUpdate(float tpf) {
     float rawMouseX = input.getMouseDeltaX() * mouseSensitivity * tpf;
     float rawMouseY = input.getMouseDeltaY() * mouseSensitivity * tpf;
 

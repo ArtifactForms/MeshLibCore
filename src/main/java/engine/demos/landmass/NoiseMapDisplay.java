@@ -107,7 +107,7 @@ public class NoiseMapDisplay extends AbstractComponent implements RenderableComp
    * @param tpf time per frame, in seconds
    */
   @Override
-  public void update(float tpf) {
+  public void onUpdate(float tpf) {
     // No updates are required for this component
   }
 
