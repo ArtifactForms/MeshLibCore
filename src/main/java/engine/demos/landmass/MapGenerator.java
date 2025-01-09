@@ -13,7 +13,8 @@ import math.Mathf;
  */
 public class MapGenerator {
 
-  private int chunkSize = 241;
+//  private int chunkSize = 481;
+  private int chunkSize = 961;
   private int mapWidth = chunkSize;
   private int mapHeight = chunkSize;
   private int seed = 221;

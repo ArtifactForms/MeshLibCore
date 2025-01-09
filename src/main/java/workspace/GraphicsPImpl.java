@@ -5,6 +5,7 @@ import java.util.List;
 import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
 import engine.processing.ProcessingTexture;
+import engine.processing.VBOProcessing;
 import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Image;
@@ -13,6 +14,7 @@ import engine.resources.TextureWrapMode;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.scene.light.LightRenderer;
+import engine.vbo.VBO;
 import math.Matrix4f;
 import math.Vector2f;
 import math.Vector3f;
@@ -102,6 +104,15 @@ public class GraphicsPImpl implements Graphics {
     g.noFill();
     stroke();
     drawMeshFaces(mesh);
+  }
+
+  @Override
+  public void draw(VBO vbo) {
+    faceCount += vbo.getFaceCount();
+    vertexCount += vbo.getVertexCount();
+    applyTexture();
+    VBOProcessing vboProcessing = (VBOProcessing) vbo;
+    vboProcessing.draw(g);
   }
 
   @Override
