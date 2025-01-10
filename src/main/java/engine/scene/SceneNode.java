@@ -121,7 +121,7 @@ public class SceneNode {
   protected void renderComponents(Graphics g) {
     if (!active) return;
     for (RenderableComponent renderer : getRenderComponents()) {
-      renderer.render(g);
+      if (renderer.isActive()) renderer.render(g);
     }
   }
 
