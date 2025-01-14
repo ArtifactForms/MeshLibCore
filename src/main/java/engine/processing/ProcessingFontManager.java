@@ -28,6 +28,21 @@ public class ProcessingFontManager {
     this.p = p;
   }
 
+  private void loadFont(int size, boolean smooth) {
+    try {
+      // Load the font from a custom folder
+      String filePath =
+          "monogram/ttf/monogram-extended.ttf"; // Relative path to your custom font folder
+      String fontPath =
+          ProcessingTextureLoader.class.getClassLoader().getResource("fonts/" + filePath).getPath();
+
+      PFont font = p.createFont(fontPath, size);
+      fontCache.put(new Font("monogram-extended", size, Font.PLAIN), font);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   /**
    * Loads a font based on the provided Font object. If the font is already cached, it returns the
    * cached version. Otherwise, it creates a new font and stores it in the cache. Font smoothing is
@@ -41,8 +56,12 @@ public class ProcessingFontManager {
       // Enable smoothing by default
       boolean smooth = true;
       // Create the PFont and add it to the cache
-      PFont pFont = p.createFont(getFontName(font), font.getSize(), smooth);
-      fontCache.put(font, pFont);
+      if (font.getName().startsWith("monogram")) {
+        loadFont(font.getSize(), smooth);
+      } else {
+        PFont pFont = p.createFont(getFontName(font), font.getSize(), smooth);
+        fontCache.put(font, pFont);
+      }
     }
     return fontCache.get(font);
   }
