@@ -1,5 +1,6 @@
 package workspace.ui;
 
+import engine.resources.Font;
 import engine.resources.Image;
 
 /**
@@ -225,6 +226,19 @@ public interface Graphics2D {
    * @param y The y-coordinate to start rendering the text.
    */
   void text(String text, float x, float y);
+
+  /**
+   * Sets the current font used for text rendering operations.
+   *
+   * <p>This method changes the font that will be applied to subsequent text rendering commands. The
+   * provided {@link Font} object determines the style, weight, and size of the text that will be
+   * drawn on the rendering surface.
+   *
+   * <p>Passing a {@code null} value will reset the font to the default system font.
+   *
+   * @param font The {@link Font} to set. If {@code null}, the default font will be used.
+   */
+  void setFont(Font font);
 
   /**
    * Clears the rendering context with the specified color.

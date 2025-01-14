@@ -9,6 +9,7 @@ import engine.debug.FpsHistory;
 import engine.input.Input;
 import engine.input.Key;
 import engine.processing.ProcessingApplication;
+import engine.resources.Font;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
@@ -148,6 +149,7 @@ public abstract class BasicApplication implements Application {
 
   private void renderDebugUi(Graphics g) {
     if (!displayInfo) return;
+    g.setFont(new Font("Lucida Sans", 12, Font.PLAIN));
     debugOverlay.render(g);
     fpsGraph.render(g);
   }
