@@ -53,6 +53,17 @@ public class Material {
   /** Indicates whether this material should use lighting effects during rendering. */
   private boolean useLighting;
 
+  /**
+   * The name of the material, used to identify and reference the material in rendering pipelines
+   * and material libraries.
+   *
+   * <p>This name is often defined in material definition files (e.g., MTL files for OBJ models) and
+   * is used to associate textures and shading properties with specific parts of a 3D model. Having
+   * a descriptive name can help streamline asset management and debugging within a rendering
+   * engine.
+   */
+  private String name;
+
   /** Base color for the material. */
   private Color color;
 
@@ -87,6 +98,12 @@ public class Material {
    */
   public Material(Color color) {
     this.color = color;
+    this.name = "";
+    this.useLighting = true;
+    this.ambient = new float[] {0.2f, 0.2f, 0.2f};
+    this.diffuse = new float[] {1.0f, 1.0f, 1.0f};
+    this.specular = new float[] {1.0f, 1.0f, 1.0f};
+    this.shininess = 10.0f;
   }
 
   /**
@@ -134,6 +151,28 @@ public class Material {
    */
   public void setUseLighting(boolean useLighting) {
     this.useLighting = useLighting;
+  }
+
+  /**
+   * Returns the name of the material.
+   *
+   * @return The name of the material as a String.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Sets the name of the material.
+   *
+   * @param name The new name of the material.
+   * @throws IllegalArgumentException If the name is null.
+   */
+  public void setName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Material name cannot be null.");
+    }
+    this.name = name;
   }
 
   /**
