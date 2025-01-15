@@ -86,6 +86,9 @@ public class Material {
   /** The diffuse texture map (map_Kd) of the material. */
   private Texture diffuseTexture;
 
+  /** The opacity texture map (map_d) of the material */
+  private Texture opacityMap;
+
   /** Default constructor that initializes the material with a base white color. */
   public Material() {
     this(Color.WHITE);
@@ -289,5 +292,23 @@ public class Material {
    */
   public void setDiffuseTexture(Texture diffuseTexture) {
     this.diffuseTexture = diffuseTexture;
+  }
+
+  /**
+   * Returns the opacity texture map (map_d) of the material.
+   *
+   * @return The opacity texture map as {@link Texture}.
+   */
+  public Texture getOpacityMap() {
+    return opacityMap;
+  }
+
+  /**
+   * Sets the opacity texture map (map_d) of the material.
+   *
+   * @param opacityMap The new opacity texture map to set.
+   */
+  public void setOpacityMap(Texture opacityMap) {
+    this.opacityMap = opacityMap;
   }
 }
