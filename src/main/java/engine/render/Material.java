@@ -95,8 +95,12 @@ public class Material {
    * Constructor to set the base color of the material.
    *
    * @param color The base color of the material.
+   * @throws IllegalArgumentException If the color is null.
    */
   public Material(Color color) {
+    if (color == null) {
+      throw new IllegalArgumentException("Color cannot be null.");
+    }
     this.color = color;
     this.name = "";
     this.useLighting = true;
@@ -188,8 +192,12 @@ public class Material {
    * Sets the base color of the material.
    *
    * @param color The new base color to set.
+   * @throws IllegalArgumentException If color is null.
    */
   public void setColor(Color color) {
+    if (color == null) {
+      throw new IllegalArgumentException("Color cannot be null.");
+    }
     this.color = color;
   }
 
