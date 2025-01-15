@@ -11,7 +11,9 @@ import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
 import engine.scene.light.DirectionalLight;
+import engine.ui.LoadingScreen;
 import math.Color;
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.modifier.CenterAtModifier;
 import mesh.modifier.ScaleModifier;
@@ -42,10 +44,15 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
   // Configuration fields
   private int levelOfDetail = 0; // Level of detail for the terrain mesh (0 - 6)
-  private int chunkSize = 240; // TODO Note that the size has to fit LOD
-  private int chunkScale = 3;
+  //  private int chunkSize = 960; // TODO Note that the size has to fit LOD
+  private int chunkSize = 480;
+  private int chunkScale = 4;
   private DrawMode drawMode = DrawMode.COLOR_MAP;
   private Scene scene;
+  //  private EndlessTerrain endlessTerrain;
+
+  private LoadingScreen loadingScreen;
+  private RoundReticle roundReticle;
 
   public static void main(String[] args) {
     ProceduralLandmassDemo application = new ProceduralLandmassDemo();
@@ -57,10 +64,22 @@ public class ProceduralLandmassDemo extends BasicApplication {
   /** Initializes the demo scene, including terrain generation, lighting, and UI components. */
   @Override
   public void onInitialize() {
-    setupScene();
     setupUI();
-    createTerrain();
+    setupScene();
     createCamera();
+    runTerrainCreation();
+    //    endlessTerrain = new EndlessTerrain(scene, chunkSize * chunkScale);
+  }
+
+  private void runTerrainCreation() {
+    new Thread(
+            new Runnable() {
+              @Override
+              public void run() {
+                createTerrain();
+              }
+            })
+        .start();
   }
 
   /** Sets up the base scene with a background color and directional lighting. */
@@ -76,8 +95,15 @@ public class ProceduralLandmassDemo extends BasicApplication {
   /** Sets up the UI elements, such as the round reticle. */
   private void setupUI() {
     SceneNode reticleNode = new SceneNode();
-    reticleNode.addComponent(new RoundReticle());
+    roundReticle = new RoundReticle();
+    roundReticle.setActive(false);
+    reticleNode.addComponent(roundReticle);
     rootUI.addChild(reticleNode);
+
+    SceneNode loadingScreenNode = new SceneNode();
+    loadingScreen = new LoadingScreen();
+    loadingScreenNode.addComponent(loadingScreen);
+    rootUI.addChild(loadingScreenNode);
   }
 
   /** Creates the terrain based on the selected draw mode and level of detail. */
@@ -98,7 +124,8 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
     // Create a texture from the display and apply it to the terrain material
     Texture2D texture = display.getTexture();
-    Material mapMaterial = new Material.Builder().setDiffuseTexture(texture).build();
+    Material mapMaterial = new Material();
+    mapMaterial.setDiffuseTexture(texture);
 
     // Generate the terrain mesh, apply transformations, and create a geometry node
     Mesh3D terrainMesh = new TerrainMeshLOD(noiseMap, levelOfDetail).getMesh();
@@ -114,13 +141,18 @@ public class ProceduralLandmassDemo extends BasicApplication {
     SceneNode chunkDisplayNode = new SceneNode();
     chunkDisplayNode.addComponent(new ChunkBoxDisplay(chunkSize * chunkScale));
     scene.addNode(chunkDisplayNode);
+
+    roundReticle.setActive(true);
+    loadingScreen.hide();
   }
 
   /** Sets up the camera with smooth fly-by controls. */
   private void createCamera() {
     PerspectiveCamera camera = new PerspectiveCamera();
+    camera.getTransform().setPosition(0, -chunkSize / 2f * chunkScale, 0);
+
     SmoothFlyByCameraControl cameraControl = new SmoothFlyByCameraControl(input, camera);
-    cameraControl.setMoveSpeed(70);
+    cameraControl.setMoveSpeed(200);
 
     SceneNode cameraNode = new SceneNode();
     cameraNode.addComponent(cameraControl);
@@ -131,7 +163,9 @@ public class ProceduralLandmassDemo extends BasicApplication {
   /** Update logic (currently empty). */
   @Override
   public void onUpdate(float tpf) {
-    // No update logic for this demo
+    Vector3f viewerPosition = activeScene.getActiveCamera().getTransform().getPosition();
+    //    endlessTerrain.setViewerPosition(viewerPosition);
+    //    endlessTerrain.update();
   }
 
   /** Render logic (currently empty). */

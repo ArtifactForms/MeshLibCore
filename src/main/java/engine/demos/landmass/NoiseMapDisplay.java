@@ -73,7 +73,8 @@ public class NoiseMapDisplay extends AbstractComponent implements RenderableComp
    */
   public void setPixels(int[] pixels) {
     texture.setPixels(pixels);
-    Material material = new Material.Builder().setDiffuseTexture(texture).build();
+    Material material = new Material();
+    material.setDiffuseTexture(texture);
     planeGeometry = new Geometry(planeMesh, material);
   }
 
