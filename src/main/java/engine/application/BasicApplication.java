@@ -2,6 +2,7 @@ package engine.application;
 
 import engine.Timer;
 import engine.components.FlyByCameraControl;
+import engine.components.SmoothFlyByCameraControl;
 import engine.debug.DebugInfoUpdater;
 import engine.debug.DebugOverlay;
 import engine.debug.FpsGraph;
@@ -87,7 +88,7 @@ public abstract class BasicApplication implements Application {
     PerspectiveCamera defaultCamera = new PerspectiveCamera();
     activeScene.setActiveCamera(defaultCamera);
     SceneNode cameraNode = new SceneNode("DefaultCamera");
-    cameraNode.addComponent(new FlyByCameraControl(input, defaultCamera));
+    cameraNode.addComponent(new SmoothFlyByCameraControl(input, defaultCamera));
     activeScene.addNode(cameraNode);
   }
 
