@@ -4,10 +4,12 @@ import java.util.List;
 
 import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
+import engine.processing.ProcessingFontManager;
 import engine.processing.ProcessingTexture;
 import engine.processing.VBOProcessing;
 import engine.render.Material;
 import engine.resources.FilterMode;
+import engine.resources.Font;
 import engine.resources.Image;
 import engine.resources.Texture;
 import engine.resources.TextureWrapMode;
@@ -21,6 +23,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.opengl.PGraphicsOpenGL;
@@ -53,6 +56,29 @@ public class GraphicsPImpl implements Graphics {
 
   private ProcessingTexture texture;
 
+  private Font font;
+
+  private PFont pFont;
+
+  private ProcessingFontManager fontManager;
+
+  public GraphicsPImpl(PApplet p) {
+    this.g = p.g;
+    this.p = p;
+    renderer = new Mesh3DRenderer(p);
+
+    lightRenderer = new LightRendererImpl(p);
+    lightRenderer.setGraphics(this);
+
+    lightGizmoRenderer = new LightGizmoRenderer(p);
+    lightGizmoRenderer.setGraphics(this);
+
+    fontManager = new ProcessingFontManager(p);
+
+    color = Color.BLACK;
+    ambientColor = math.Color.WHITE;
+  }
+
   @Override
   public void setAmbientColor(math.Color ambientColor) {
     this.ambientColor = ambientColor;
@@ -68,21 +94,6 @@ public class GraphicsPImpl implements Graphics {
     this.wireframeMode = wireframeMode;
   }
 
-  public GraphicsPImpl(PApplet p) {
-    this.g = p.g;
-    this.p = p;
-    renderer = new Mesh3DRenderer(p);
-
-    lightRenderer = new LightRendererImpl(p);
-    lightRenderer.setGraphics(this);
-
-    lightGizmoRenderer = new LightGizmoRenderer(p);
-    lightGizmoRenderer.setGraphics(this);
-
-    color = Color.BLACK;
-    ambientColor = math.Color.WHITE;
-  }
-
   @Override
   public void fillFaces(Mesh3D mesh) {
     faceCount += mesh.faces.size();
@@ -91,11 +102,11 @@ public class GraphicsPImpl implements Graphics {
       g.noFill();
       stroke();
       //      renderer.drawFaces(mesh);
-      drawMeshFaces(mesh);
+      drawMeshFaces(mesh, true);
     } else {
       g.noStroke();
       fill();
-      drawMeshFaces(mesh);
+      drawMeshFaces(mesh, true);
     }
   }
 
@@ -103,7 +114,7 @@ public class GraphicsPImpl implements Graphics {
   public void drawFaces(Mesh3D mesh) {
     g.noFill();
     stroke();
-    drawMeshFaces(mesh);
+    drawMeshFaces(mesh, false);
   }
 
   @Override
@@ -115,7 +126,7 @@ public class GraphicsPImpl implements Graphics {
     vboProcessing.draw(g);
   }
 
-  @Override
+  @Override // TODO remove or fix
   public void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms) {
     if (mesh.getFaces().isEmpty() || mesh.getVertices().isEmpty()) {
       return;
@@ -126,7 +137,7 @@ public class GraphicsPImpl implements Graphics {
     for (Matrix4f transform : instanceTransforms) {
       g.pushMatrix();
       applyTransform(transform);
-      drawMeshFaces(mesh);
+      drawMeshFaces(mesh, true);
       g.popMatrix();
     }
   }
@@ -151,6 +162,16 @@ public class GraphicsPImpl implements Graphics {
         matrix[13],
         matrix[14],
         matrix[15]);
+  }
+
+  @Override
+  public void setFont(Font font) {
+    if (font == null) {
+      this.font = new Font("Lucida Sans", 12, Font.PLAIN);
+    } else {
+      this.font = font;
+    }
+    g.textFont(fontManager.loadFont(this.font));
   }
 
   /**
@@ -235,7 +256,7 @@ public class GraphicsPImpl implements Graphics {
     }
   }
 
-  private void drawMeshFaces(Mesh3D mesh) {
+  private void drawMeshFaces(Mesh3D mesh, boolean texture) {
     for (Face3D f : mesh.getFaces()) {
       if (f.indices.length == 3) {
         g.beginShape(PApplet.TRIANGLES);
@@ -245,7 +266,7 @@ public class GraphicsPImpl implements Graphics {
         g.beginShape(PApplet.POLYGON);
       }
 
-      applyTexture();
+      if (texture) applyTexture();
 
       int[] indices = f.indices;
       for (int i = 0; i < indices.length; i++) {

@@ -2,6 +2,7 @@ package engine.application;
 
 import engine.Timer;
 import engine.components.FlyByCameraControl;
+import engine.components.SmoothFlyByCameraControl;
 import engine.debug.DebugInfoUpdater;
 import engine.debug.DebugOverlay;
 import engine.debug.FpsGraph;
@@ -9,6 +10,7 @@ import engine.debug.FpsHistory;
 import engine.input.Input;
 import engine.input.Key;
 import engine.processing.ProcessingApplication;
+import engine.resources.Font;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
@@ -86,7 +88,7 @@ public abstract class BasicApplication implements Application {
     PerspectiveCamera defaultCamera = new PerspectiveCamera();
     activeScene.setActiveCamera(defaultCamera);
     SceneNode cameraNode = new SceneNode("DefaultCamera");
-    cameraNode.addComponent(new FlyByCameraControl(input, defaultCamera));
+    cameraNode.addComponent(new SmoothFlyByCameraControl(input, defaultCamera));
     activeScene.addNode(cameraNode);
   }
 
@@ -148,6 +150,7 @@ public abstract class BasicApplication implements Application {
 
   private void renderDebugUi(Graphics g) {
     if (!displayInfo) return;
+    g.setFont(new Font("Lucida Sans", 12, Font.PLAIN));
     debugOverlay.render(g);
     fpsGraph.render(g);
   }

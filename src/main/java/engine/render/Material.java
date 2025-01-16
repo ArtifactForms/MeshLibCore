@@ -13,8 +13,7 @@ import workspace.ui.Graphics;
  * reflects off the object's surface.
  *
  * <p>This class includes predefined materials for common use cases (e.g., default white, black, or
- * other colors) and supports the creation of custom materials with specific properties through the
- * use of {@link Builder}.
+ * other colors) and supports the creation of custom materials with specific properties.
  *
  * <p>The material properties can control effects like reflectivity, surface roughness, and color,
  * enabling diverse visual representations for 3D meshes in a rendering engine.
@@ -51,148 +50,74 @@ public class Material {
   /** Water material with a reflective blue appearance. */
   public static final Material WATER_MATERIAL = MaterialFactory.createWater();
 
+  /** Indicates whether this material should use lighting effects during rendering. */
   private boolean useLighting;
 
+  /**
+   * The name of the material, used to identify and reference the material in rendering pipelines
+   * and material libraries.
+   *
+   * <p>This name is often defined in material definition files (e.g., MTL files for OBJ models) and
+   * is used to associate textures and shading properties with specific parts of a 3D model. Having
+   * a descriptive name can help streamline asset management and debugging within a rendering
+   * engine.
+   */
+  private String name;
+
   /** Base color for the material. */
-  private final Color color;
+  private Color color;
 
-  /** Ambient light coefficient (R, G, B). */
-  private final float[] ambient;
+  /** Ambient light coefficient (R, G, B), controlling the material's reaction to ambient light. */
+  private float[] ambient;
 
-  /** Diffuse light coefficient (R, G, B). */
-  private final float[] diffuse;
+  /** Diffuse light coefficient (R, G, B), controlling how the material reflects diffuse light. */
+  private float[] diffuse;
 
-  /** Specular light coefficient (R, G, B). */
-  private final float[] specular;
+  /**
+   * Specular light coefficient (R, G, B), controlling the shininess and reflections on the surface.
+   */
+  private float[] specular;
 
-  /** Shininess factor for specular highlights. */
-  private final float shininess;
+  /**
+   * Shininess factor for specular highlights, controlling the size and intensity of reflections.
+   */
+  private float shininess;
 
   /** The diffuse texture map (map_Kd) of the material. */
   private Texture diffuseTexture;
+
+  /** The opacity texture map (map_d) of the material */
+  private Texture opacityMap;
+
+  /** Default constructor that initializes the material with a base white color. */
+  public Material() {
+    this(Color.WHITE);
+  }
 
   /**
    * Constructor to set the base color of the material.
    *
    * @param color The base color of the material.
+   * @throws IllegalArgumentException If the color is null.
    */
   public Material(Color color) {
-    this(new Builder().setColor(color));
-  }
-
-  private Material(Builder builder) {
-    this.useLighting = builder.useLighting;
-    this.color = builder.color;
-    this.ambient = builder.ambient;
-    this.diffuse = builder.diffuse;
-    this.specular = builder.specular;
-    this.shininess = builder.shininess;
-    this.diffuseTexture = builder.diffuseTexture;
-  }
-
-  /**
-   * Builder class to facilitate the creation of custom materials with specific lighting, shader and
-   * texture properties.
-   */
-  public static class Builder {
-
-    private boolean useLighting = true;
-
-    private Color color = new Color(1, 1, 1); // Default color is white
-
-    private float[] ambient = new float[] {0.2f, 0.2f, 0.2f};
-
-    private float[] diffuse = new float[] {1.0f, 1.0f, 1.0f};
-
-    private float[] specular = new float[] {1.0f, 1.0f, 1.0f};
-
-    private float shininess = 10.0f;
-
-    private Texture diffuseTexture = null;
-
-    /**
-     * Sets the base color of the material.
-     *
-     * @param color The desired base color.
-     * @return The builder instance for chaining.
-     */
-    public Builder setColor(Color color) {
-      this.color = color;
-      return this;
+    if (color == null) {
+      throw new IllegalArgumentException("Color cannot be null.");
     }
-
-    /**
-     * Sets the ambient light coefficient of the material.
-     *
-     * @param ambient The desired ambient light coefficient (R, G, B).
-     * @return The builder instance for chaining.
-     */
-    public Builder setAmbient(float[] ambient) {
-      this.ambient = ambient;
-      return this;
-    }
-
-    /**
-     * Sets the diffuse light coefficient of the material.
-     *
-     * @param diffuse The desired diffuse light coefficient (R, G, B).
-     * @return The builder instance for chaining.
-     */
-    public Builder setDiffuse(float[] diffuse) {
-      this.diffuse = diffuse;
-      return this;
-    }
-
-    /**
-     * Sets the specular light coefficient of the material.
-     *
-     * @param specular The desired specular light coefficient (R, G, B).
-     * @return The builder instance for chaining.
-     */
-    public Builder setSpecular(float[] specular) {
-      this.specular = specular;
-      return this;
-    }
-
-    /**
-     * Sets the shininess value of the material.
-     *
-     * @param shininess The shininess factor for specular highlights.
-     * @return The builder instance for chaining.
-     */
-    public Builder setShininess(float shininess) {
-      this.shininess = shininess;
-      return this;
-    }
-
-    public Builder setUseLighting(boolean useLighting) {
-      this.useLighting = useLighting;
-      return this;
-    }
-
-    /**
-     * Sets the diffuse texture of the material.
-     *
-     * @param diffuseTexture The diffuse texture, can be null.
-     * @return The builder instance for chaining
-     */
-    public Builder setDiffuseTexture(Texture diffuseTexture) {
-      this.diffuseTexture = diffuseTexture;
-      return this;
-    }
-
-    /**
-     * Builds and returns the Material instance with the set properties.
-     *
-     * @return A new instance of {@link Material}.
-     */
-    public Material build() {
-      return new Material(this);
-    }
+    this.color = color;
+    this.name = "";
+    this.useLighting = true;
+    this.ambient = new float[] {0.2f, 0.2f, 0.2f};
+    this.diffuse = new float[] {1.0f, 1.0f, 1.0f};
+    this.specular = new float[] {1.0f, 1.0f, 1.0f};
+    this.shininess = 10.0f;
   }
 
   /**
    * Applies this material's properties to the provided rendering context.
+   *
+   * <p>This method sets the material's color, lighting properties, and binds any associated
+   * textures to the rendering context.
    *
    * @param g The {@link Graphics} instance to apply this material to.
    */
@@ -208,14 +133,53 @@ public class Material {
    * Releases this material's properties from the rendering context, useful for cleaning up shaders
    * or material-specific settings.
    *
+   * <p>This method unbinds textures and resets any material properties set during the rendering
+   * process to ensure the rendering context is restored to a neutral state.
+   *
    * @param g The {@link Graphics} instance from which this material will be unbound.
    */
   public void release(Graphics g) {
     // Logic for releasing or resetting rendering context goes here
   }
 
+  /**
+   * Checks whether lighting effects are enabled for this material.
+   *
+   * @return {@code true} if lighting is used; {@code false} otherwise.
+   */
   public boolean isUseLighting() {
     return useLighting;
+  }
+
+  /**
+   * Sets whether this material should use lighting effects during rendering.
+   *
+   * @param useLighting {@code true} to enable lighting; {@code false} to disable.
+   */
+  public void setUseLighting(boolean useLighting) {
+    this.useLighting = useLighting;
+  }
+
+  /**
+   * Returns the name of the material.
+   *
+   * @return The name of the material as a String.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Sets the name of the material.
+   *
+   * @param name The new name of the material.
+   * @throws IllegalArgumentException If the name is null.
+   */
+  public void setName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Material name cannot be null.");
+    }
+    this.name = name;
   }
 
   /**
@@ -228,12 +192,34 @@ public class Material {
   }
 
   /**
+   * Sets the base color of the material.
+   *
+   * @param color The new base color to set.
+   * @throws IllegalArgumentException If color is null.
+   */
+  public void setColor(Color color) {
+    if (color == null) {
+      throw new IllegalArgumentException("Color cannot be null.");
+    }
+    this.color = color;
+  }
+
+  /**
    * Retrieves the ambient light coefficient of the material.
    *
    * @return An array representing the ambient light coefficient (R, G, B).
    */
   public float[] getAmbient() {
     return ambient;
+  }
+
+  /**
+   * Sets the ambient light coefficient of the material.
+   *
+   * @param ambient An array representing the new ambient light coefficient (R, G, B).
+   */
+  public void setAmbient(float[] ambient) {
+    this.ambient = ambient;
   }
 
   /**
@@ -246,12 +232,30 @@ public class Material {
   }
 
   /**
+   * Sets the diffuse light coefficient of the material.
+   *
+   * @param diffuse An array representing the new diffuse light coefficient (R, G, B).
+   */
+  public void setDiffuse(float[] diffuse) {
+    this.diffuse = diffuse;
+  }
+
+  /**
    * Retrieves the specular light coefficient of the material.
    *
    * @return An array representing the specular light coefficient (R, G, B).
    */
   public float[] getSpecular() {
     return specular;
+  }
+
+  /**
+   * Sets the specular light coefficient of the material.
+   *
+   * @param specular An array representing the new specular light coefficient (R, G, B).
+   */
+  public void setSpecular(float[] specular) {
+    this.specular = specular;
   }
 
   /**
@@ -264,18 +268,47 @@ public class Material {
   }
 
   /**
+   * Sets the shininess factor of the material.
+   *
+   * @param shininess The new shininess factor to set.
+   */
+  public void setShininess(float shininess) {
+    this.shininess = shininess;
+  }
+
+  /**
    * Returns the diffuse texture map (map_Kd) of the material.
-   *
-   * <p>The diffuse texture is a 2D image used to define the base color and pattern of the surface,
-   * simulating the appearance of the material under diffuse lighting. This texture is typically
-   * applied using UV mapping to wrap the image onto the geometry of a 3D model.
-   *
-   * <p>In the context of material definition files (e.g., MTL for OBJ models), this corresponds to
-   * the `map_Kd` property, which specifies the file path to the texture image.
    *
    * @return The diffuse texture map as {@link Texture}.
    */
   public Texture getDiffuseTexture() {
     return diffuseTexture;
+  }
+
+  /**
+   * Sets the diffuse texture map (map_Kd) of the material.
+   *
+   * @param diffuseTexture The new diffuse texture map to set.
+   */
+  public void setDiffuseTexture(Texture diffuseTexture) {
+    this.diffuseTexture = diffuseTexture;
+  }
+
+  /**
+   * Returns the opacity texture map (map_d) of the material.
+   *
+   * @return The opacity texture map as {@link Texture}.
+   */
+  public Texture getOpacityMap() {
+    return opacityMap;
+  }
+
+  /**
+   * Sets the opacity texture map (map_d) of the material.
+   *
+   * @param opacityMap The new opacity texture map to set.
+   */
+  public void setOpacityMap(Texture opacityMap) {
+    this.opacityMap = opacityMap;
   }
 }
