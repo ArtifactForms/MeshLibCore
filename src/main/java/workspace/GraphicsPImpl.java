@@ -679,7 +679,8 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void lightsOff() {
-    g.noLights();
+    //    g.noLights();
+    lightRenderer.off();
   }
 
   @Override
