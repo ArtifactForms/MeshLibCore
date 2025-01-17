@@ -597,11 +597,10 @@ public class GraphicsPImpl implements Graphics {
     // Apply material properties
     setColor(color != null ? color : math.Color.WHITE); // Default to white
 
-    if (!material.isUseLighting()) {
-      lightRenderer.off();
-      return;
-    } else {
+    if (material.isUseLighting()) {
       lightRenderer.on();
+    } else {
+      lightRenderer.off();
     }
 
     // Extract material properties

@@ -28,6 +28,7 @@ public class LightRendererImpl implements LightRenderer {
 
   public LightRendererImpl(PApplet p) {
     p.registerMethod("post", this);
+    p.registerMethod("pre", this);
     rendered = new ArrayList<Light>();
     this.p = p;
   }
@@ -58,6 +59,7 @@ public class LightRendererImpl implements LightRenderer {
   }
 
   public void render(SpotLight light) {
+    if (lightsOff) return;
     store(light);
     renderCommon(light.getColor(), light.getConcentration());
     p.spotLight(
@@ -75,6 +77,7 @@ public class LightRendererImpl implements LightRenderer {
   }
 
   public void render(PointLight light) {
+    if (lightsOff) return;
     store(light);
     renderCommon(light.getColor(), light.getIntensity());
 
@@ -101,6 +104,7 @@ public class LightRendererImpl implements LightRenderer {
   }
 
   public void render(DirectionalLight light) {
+    if (lightsOff) return;
     store(light);
     renderCommon(light.getColor(), light.getIntensity());
     p.directionalLight(
@@ -114,6 +118,7 @@ public class LightRendererImpl implements LightRenderer {
 
   @Override
   public void render(AmbientLight light) {
+    if (lightsOff) return;
     store(light);
     renderCommon(light.getColor(), 1);
     g.setAmbientColor(light.getColor());
@@ -123,18 +128,23 @@ public class LightRendererImpl implements LightRenderer {
     rendered.add(light);
   }
 
+  public void pre() {
+    lightsOff = false;
+  }
+
   public void post() {
     rendered.clear();
   }
 
   public void off() {
     if (lightsOff) return;
-    p.g.noLights();
     lightsOff = true;
+    p.g.noLights();
   }
 
   public void on() {
     if (!lightsOff) return;
+    lightsOff = false;
     // Re-render light
     // Processing does not provide this by default
     List<Light> toRerender = new ArrayList<Light>(rendered);
@@ -142,7 +152,6 @@ public class LightRendererImpl implements LightRenderer {
     for (Light light : toRerender) {
       light.render(this);
     }
-    lightsOff = false;
   }
 
   private void renderCommon(Color color, float intensity) {
