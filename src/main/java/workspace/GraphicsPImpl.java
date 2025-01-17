@@ -1,5 +1,6 @@
 package workspace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import engine.processing.LightGizmoRenderer;
@@ -11,6 +12,7 @@ import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Font;
 import engine.resources.Image;
+import engine.resources.Model;
 import engine.resources.Texture;
 import engine.resources.TextureWrapMode;
 import engine.scene.camera.Camera;
@@ -22,6 +24,7 @@ import math.Vector2f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.SubMesh;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
@@ -46,7 +49,7 @@ public class GraphicsPImpl implements Graphics {
 
   private Mesh3DRenderer renderer;
 
-  private LightRenderer lightRenderer;
+  private LightRendererImpl lightRenderer;
 
   private LightGizmoRenderer lightGizmoRenderer;
 
@@ -174,6 +177,49 @@ public class GraphicsPImpl implements Graphics {
     g.textFont(fontManager.loadFont(this.font));
   }
 
+  @Override
+  public void render(Model model) {
+    Mesh3D mesh = model.getMesh();
+    List<Vector3f> vertexNormals = mesh.getVertexNormals();
+    for (SubMesh subMesh : model.getSubMeshes()) {
+      String materialName = subMesh.getMaterialName();
+      Material subMaterial = model.getMaterial(materialName);
+      List<Face3D> subFaces = subMesh.getFaces();
+      subMaterial.apply(this);
+
+      for (Face3D f : subFaces) {
+        if (f.indices.length == 3) {
+          g.beginShape(PApplet.TRIANGLES);
+        } else if (f.indices.length == 4) {
+          g.beginShape(PApplet.QUADS);
+        } else {
+          g.beginShape(PApplet.POLYGON);
+        }
+
+        applyTexture();
+
+        int[] indices = f.indices;
+        for (int i = 0; i < indices.length; i++) {
+          Vector3f v = mesh.vertices.get(f.indices[i]);
+
+          if (f.indices[i] < vertexNormals.size()) {
+            Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
+            g.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
+          }
+
+          int uvIndex = f.getUvIndexAt(i);
+          if (uvIndex != -1) {
+            Vector2f uv = mesh.getUvAt(uvIndex);
+            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+          } else {
+            g.vertex(v.getX(), v.getY(), v.getZ());
+          }
+        }
+        g.endShape();
+      }
+    }
+  }
+
   /**
    * Applies the specified texture to the current rendering context with the appropriate sampling
    * mode.
@@ -257,6 +303,38 @@ public class GraphicsPImpl implements Graphics {
   }
 
   private void drawMeshFaces(Mesh3D mesh, boolean texture) {
+    if (mesh.hasVertexNormals()) {
+      drawWithNormals(mesh, texture);
+    } else {
+      for (Face3D f : mesh.getFaces()) {
+        if (f.indices.length == 3) {
+          g.beginShape(PApplet.TRIANGLES);
+        } else if (f.indices.length == 4) {
+          g.beginShape(PApplet.QUADS);
+        } else {
+          g.beginShape(PApplet.POLYGON);
+        }
+
+        if (texture) applyTexture();
+
+        int[] indices = f.indices;
+        for (int i = 0; i < indices.length; i++) {
+          Vector3f v = mesh.vertices.get(f.indices[i]);
+          int uvIndex = f.getUvIndexAt(i);
+          if (uvIndex != -1) {
+            Vector2f uv = mesh.getUvAt(uvIndex);
+            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+          } else {
+            g.vertex(v.getX(), v.getY(), v.getZ());
+          }
+        }
+        g.endShape();
+      }
+    }
+  }
+
+  private void drawWithNormals(Mesh3D mesh, boolean texture) {
+    ArrayList<Vector3f> vertexNormals = mesh.getVertexNormals();
     for (Face3D f : mesh.getFaces()) {
       if (f.indices.length == 3) {
         g.beginShape(PApplet.TRIANGLES);
@@ -271,6 +349,10 @@ public class GraphicsPImpl implements Graphics {
       int[] indices = f.indices;
       for (int i = 0; i < indices.length; i++) {
         Vector3f v = mesh.vertices.get(f.indices[i]);
+
+        Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
+        g.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
+
         int uvIndex = f.getUvIndexAt(i);
         if (uvIndex != -1) {
           Vector2f uv = mesh.getUvAt(uvIndex);
@@ -516,8 +598,10 @@ public class GraphicsPImpl implements Graphics {
     setColor(color != null ? color : math.Color.WHITE); // Default to white
 
     if (!material.isUseLighting()) {
-      g.noLights();
+      lightRenderer.off();
       return;
+    } else {
+      lightRenderer.on();
     }
 
     // Extract material properties

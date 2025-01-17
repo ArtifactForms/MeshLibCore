@@ -1,5 +1,8 @@
 package engine.processing;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import engine.scene.light.AmbientLight;
 import engine.scene.light.DirectionalLight;
 import engine.scene.light.Light;
@@ -19,7 +22,13 @@ public class LightRendererImpl implements LightRenderer {
 
   private Graphics g;
 
+  private List<Light> rendered;
+
+  private boolean lightsOff;
+
   public LightRendererImpl(PApplet p) {
+    p.registerMethod("post", this);
+    rendered = new ArrayList<Light>();
     this.p = p;
   }
 
@@ -49,6 +58,7 @@ public class LightRendererImpl implements LightRenderer {
   }
 
   public void render(SpotLight light) {
+    store(light);
     renderCommon(light.getColor(), light.getConcentration());
     p.spotLight(
         light.getColor().getRedInt(),
@@ -65,6 +75,7 @@ public class LightRendererImpl implements LightRenderer {
   }
 
   public void render(PointLight light) {
+    store(light);
     renderCommon(light.getColor(), light.getIntensity());
 
     float intensity = light.getIntensity();
@@ -90,6 +101,7 @@ public class LightRendererImpl implements LightRenderer {
   }
 
   public void render(DirectionalLight light) {
+    store(light);
     renderCommon(light.getColor(), light.getIntensity());
     p.directionalLight(
         light.getColor().getRedInt(),
@@ -102,8 +114,35 @@ public class LightRendererImpl implements LightRenderer {
 
   @Override
   public void render(AmbientLight light) {
+    store(light);
     renderCommon(light.getColor(), 1);
     g.setAmbientColor(light.getColor());
+  }
+
+  private void store(Light light) {
+    rendered.add(light);
+  }
+
+  public void post() {
+    rendered.clear();
+  }
+
+  public void off() {
+    if (lightsOff) return;
+    p.g.noLights();
+    lightsOff = true;
+  }
+
+  public void on() {
+    if (!lightsOff) return;
+    // Re-render light
+    // Processing does not provide this by default
+    List<Light> toRerender = new ArrayList<Light>(rendered);
+    rendered.clear();
+    for (Light light : toRerender) {
+      light.render(this);
+    }
+    lightsOff = false;
   }
 
   private void renderCommon(Color color, float intensity) {
