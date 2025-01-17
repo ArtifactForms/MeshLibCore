@@ -116,6 +116,45 @@ public class ControlWASD extends AbstractComponent {
   }
 
   /**
+   * Maps the movement keys to the arrow keys (Up, Down, Left, Right).
+   *
+   * <p>This method provides an alternative to the default WASD configuration, allowing movement to
+   * be controlled using the arrow keys. Specifically:
+   *
+   * <ul>
+   *   <li>Up Arrow - Moves forward
+   *   <li>Down Arrow - Moves backward
+   *   <li>Left Arrow - Moves left
+   *   <li>Right Arrow - Moves right
+   * </ul>
+   */
+  public void mapArrowKeys() {
+    leftKey = Key.ARROW_LEFT;
+    rightKey = Key.ARROW_RIGHT;
+    forwardKey = Key.ARROW_UP;
+    backwardKey = Key.ARROW_DOWN;
+  }
+
+  /**
+   * Maps the movement keys to the WASD configuration (W, A, S, D).
+   *
+   * <p>This method restores the default key mapping for movement, commonly used in many games:
+   *
+   * <ul>
+   *   <li>W - Moves forward
+   *   <li>A - Moves left
+   *   <li>S - Moves backward
+   *   <li>D - Moves right
+   * </ul>
+   */
+  public void mapWASDKeys() {
+    leftKey = Key.A;
+    rightKey = Key.D;
+    forwardKey = Key.W;
+    backwardKey = Key.S;
+  }
+
+  /**
    * Retrieves the current movement speed multiplier.
    *
    * @return The current speed value.
