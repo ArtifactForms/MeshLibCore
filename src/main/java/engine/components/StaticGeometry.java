@@ -29,6 +29,8 @@ public class StaticGeometry extends AbstractComponent implements RenderableCompo
 
   private VBO vbo;
 
+  private Material material;
+
   /**
    * Constructs a {@code StaticGeometry} with the specified mesh and a default material.
    *
@@ -51,6 +53,7 @@ public class StaticGeometry extends AbstractComponent implements RenderableCompo
     this.bounds = MeshBoundsCalculator.calculateBounds(mesh);
     this.vbo = VBOFactory.getInstance().create();
     this.vbo.create(mesh, material);
+    this.material = material;
   }
 
   /**
@@ -71,6 +74,7 @@ public class StaticGeometry extends AbstractComponent implements RenderableCompo
 
   @Override
   public void render(Graphics g) {
+    material.apply(g);
     g.draw(vbo);
   }
 
