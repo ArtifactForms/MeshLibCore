@@ -40,7 +40,7 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
   private float mouseSensitivity = DEFAULT_MOUSE_SENSITIVITY;
   private float smoothedMouseX = 0f;
   private float smoothedMouseY = 0f;
-  private float mouseSmoothingFactor = 0.7f;
+  private float mouseSmoothingFactor = 0.3f;
   private float moveSpeed = DEFAULT_MOVE_SPEED;
   private float acceleration = 10f;
   private float deceleration = 5f;
