@@ -11,7 +11,6 @@ import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import math.Color;
-import math.Vector3f;
 import workspace.GraphicsPImpl;
 import workspace.ui.Graphics;
 
@@ -112,13 +111,12 @@ public class Scene {
   }
 
   /**
-   * Perform parallel updates on all nodes in the scene graph.
+   * Updates all nodes in the scene graph.
    *
    * @param deltaTime The time step for simulation logic updates.
    */
   public void update(float deltaTime) {
     for (SceneNode node : rootNodes) {
-      //      updateExecutor.submit(() -> node.update(deltaTime));
       node.update(deltaTime);
     }
     updateAudio();
