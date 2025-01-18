@@ -74,6 +74,28 @@ public class SceneNode {
   }
 
   /**
+   * Creates a new {@code SceneNode} with the specified name and initial components.
+   *
+   * <p>This constructor initializes the node with the given name and attaches the provided
+   * components to it. The node's transformation and hierarchy management are also initialized. Any
+   * {@code null} components in the array are ignored.
+   *
+   * @param name The name to assign to the scene node. Must not be {@code null}.
+   * @param components An optional array of components to attach to the node. {@code null} elements
+   *     are ignored.
+   * @throws IllegalArgumentException if the name is {@code null}.
+   * @see Component
+   */
+  public SceneNode(String name, Component... components) {
+    this(name);
+    for (Component component : components) {
+      if (component != null) {
+        this.components.add(component);
+      }
+    }
+  }
+
+  /**
    * Constructs a new, empty {@code SceneNode} with default transformations, an empty list of
    * children, and an empty list of components.
    */
