@@ -22,14 +22,15 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private int lastPlayerChunkZ = Integer.MIN_VALUE;
 
   private boolean debugVisualsEnabled = false;
-  private Mesh3D debugBox = new BoxCreator(16, 16, 16).create();
+  private Mesh3D debugBox;
 
   private Player player;
   private Vector3f playerPosition;
   private HashMap<Long, Chunk> activeChunks;
 
   public ChunkManager(Player player) {
-    debugBox.apply(new SnapToGroundModifier());
+    this.debugBox = new BoxCreator(16, 16, 16).create();
+    this.debugBox.apply(new SnapToGroundModifier());
     this.player = player;
     this.playerPosition = new Vector3f(0, 0, 0);
     this.activeChunks = new HashMap<>();
@@ -57,15 +58,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     updateChunks();
   }
 
-  //  private void updateChunks() {
-  //    for (Chunk chunk : activeChunks.values()) {
-  //      if (isWithinRenderDistance(chunk)) {
-  //        chunk.updateMesh();
-  //      }
-  //    }
-  //  }
-
   private void updateChunks() {
+    // TODO: We can improve performance further by threading this too
     // Ensure data is ready for all active chunks
     for (Chunk chunk : activeChunks.values()) {
       if (!chunk.isDataReady()) {
@@ -73,11 +67,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
       }
     }
 
-    // Mesh generation for chunks with ready data
+    // Mesh generation for chunks within render distance and ready data
     for (Chunk chunk : activeChunks.values()) {
-      //      if (chunk.isDataReady() && !chunk.isMeshReady()) {
-      //        chunk.scheduleMeshGeneration(this);
-      //      }
       if (chunk.isDataReady() && isWithinRenderDistance(chunk)) {
         chunk.scheduleMeshGeneration(this);
       }
@@ -125,21 +116,12 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
         if (!activeChunks.containsKey(chunkKey)) {
           Vector3f chunkPos = new Vector3f(chunkX * Chunk.CHUNK_SIZE, 0, chunkZ * Chunk.CHUNK_SIZE);
           Chunk chunk = new Chunk(chunkPos);
-          //          chunk.scheduleMeshGeneration(this);
           newChunks.put(chunkKey, chunk);
         } else {
           newChunks.put(chunkKey, activeChunks.get(chunkKey));
         }
       }
     }
-
-    //    // Remove chunks outside the BUFFER_DISTANCE
-    //    for (Long chunkKey : activeChunks.keySet()) {
-    //      if (!newChunks.containsKey(chunkKey)) {
-    //        Chunk chunk = activeChunks.get(chunkKey);
-    //        // Optionally clean up resources for removed chunks
-    //      }
-    //    }
 
     activeChunks.clear();
     activeChunks.putAll(newChunks);
