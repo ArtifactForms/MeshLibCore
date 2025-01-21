@@ -21,8 +21,11 @@ public class TextureAtlas {
   public TextureAtlas() {
     createImage();
     createAllUVCoordinates();
+    createTexture();
+  }
+
+  private void createTexture() {
     texture = TextureManager.getInstance().createTexture(image);
-    //    texture = TextureManager.getInstance().loadTexture("atlas.png");
   }
 
   private void createAllUVCoordinates() {
