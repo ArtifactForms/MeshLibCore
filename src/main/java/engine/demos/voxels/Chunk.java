@@ -15,11 +15,10 @@ public class Chunk {
   private static final ExecutorService executorService =
       Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-  public static final int CHUNK_SIZE = 16;
+  public static final int WIDTH = 16;
+  public static final int DEPTH = 16;
+  public static final int HEIGHT = 255;
 
-  private int width = CHUNK_SIZE;
-  private int height = 255;
-  private int depth = CHUNK_SIZE;
   private int[] blockData;
   private int[] heightMap;
 
@@ -32,8 +31,8 @@ public class Chunk {
 
   public Chunk(Vector3f position) {
     this.position = position;
-    this.blockData = new int[width * depth * height];
-    this.heightMap = new int[width * depth];
+    this.blockData = new int[WIDTH * DEPTH * HEIGHT];
+    this.heightMap = new int[WIDTH * DEPTH];
   }
 
   public void generateData() {
@@ -43,8 +42,8 @@ public class Chunk {
     PerlinNoise noise = new PerlinNoise(0);
 
     // Precompute height map for the entire chunk
-    for (int x = 0; x < width; x++) {
-      for (int z = 0; z < depth; z++) {
+    for (int x = 0; x < WIDTH; x++) {
+      for (int z = 0; z < DEPTH; z++) {
         float wx = position.x + x;
         float wz = position.z + z;
 
@@ -52,7 +51,7 @@ public class Chunk {
         float noiseValue = (float) noise.noise(wx * scale, wz * scale);
         int heightValue = (int) Mathf.map(noiseValue, 0, 1, 0, 60) + baseHeight;
 
-        heightMap[x + z * width] = heightValue;
+        heightMap[x + z * WIDTH] = heightValue;
 
         // Fill blocks based on height value
         for (int y = 0; y <= heightValue; y++) {
@@ -134,11 +133,11 @@ public class Chunk {
   }
 
   public int getHeightValueAt(int x, int z) {
-    return heightMap[x + z * width];
+    return heightMap[x + z * WIDTH];
   }
 
   private int getIndex(int x, int y, int z) {
-    return x + width * (y + height * z);
+    return x + WIDTH * (y + HEIGHT * z);
   }
 
   public Vector3f getPosition() {
@@ -146,22 +145,22 @@ public class Chunk {
   }
 
   public int getWidth() {
-    return width;
+    return WIDTH;
   }
 
   public int getHeight() {
-    return height;
+    return HEIGHT;
   }
 
   public int getDepth() {
-    return depth;
+    return DEPTH;
   }
 
   public int getChunkX() {
-    return (int) position.x / width;
+    return (int) position.x / WIDTH;
   }
 
   public int getChunkZ() {
-    return (int) position.z / depth;
+    return (int) position.z / DEPTH;
   }
 }

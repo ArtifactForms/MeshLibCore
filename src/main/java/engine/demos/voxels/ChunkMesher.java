@@ -9,9 +9,6 @@ import mesh.Mesh3D;
 
 public class ChunkMesher {
 
-  private int width;
-  private int height;
-  private int depth;
   private Chunk chunk;
   private ChunkManager chunkManager;
   private Mesh3D blockMesh;
@@ -29,9 +26,6 @@ public class ChunkMesher {
   }
 
   public ChunkMesher(Chunk chunk, ChunkManager chunkManager) {
-    this.width = chunk.getWidth();
-    this.height = chunk.getHeight();
-    this.depth = chunk.getDepth();
     this.chunk = chunk;
     this.chunkManager = chunkManager;
     //    chunk.generateData();
@@ -48,8 +42,8 @@ public class ChunkMesher {
       blockMesh.setUvs(textureAtlas.getUVCoordinates());
     }
 
-    for (int x = 0; x < width; x++) {
-      for (int z = 0; z < depth; z++) {
+    for (int x = 0; x < Chunk.WIDTH; x++) {
+      for (int z = 0; z < Chunk.DEPTH; z++) {
         int heightValue = chunk.getHeightValueAt(x, z);
         // FIXME We can improve this by using max height value from the height map
         //        for (int y = 0; y < height; y++) {
@@ -68,18 +62,18 @@ public class ChunkMesher {
     if (y < 0) return true;
 
     // Check if the block is within the current chunk
-    if (x >= 0 && x < Chunk.CHUNK_SIZE && z >= 0 && z < Chunk.CHUNK_SIZE) {
+    if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) {
       return chunk.isBlockSolid(x, y, z);
     }
 
     // Handle neighbor chunks
-    int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.CHUNK_SIZE ? 1 : 0);
-    int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.CHUNK_SIZE ? 1 : 0);
+    int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0);
+    int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0);
     Chunk neighborChunk = chunkManager.getChunk(neighborChunkX, neighborChunkZ);
 
     if (neighborChunk != null) {
-      int neighborX = (x + Chunk.CHUNK_SIZE) % Chunk.CHUNK_SIZE;
-      int neighborZ = (z + Chunk.CHUNK_SIZE) % Chunk.CHUNK_SIZE;
+      int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
+      int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
       return neighborChunk.isBlockSolid(neighborX, y, neighborZ);
     }
 

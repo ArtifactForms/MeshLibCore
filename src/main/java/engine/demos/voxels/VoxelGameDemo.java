@@ -99,8 +99,8 @@ public class VoxelGameDemo extends BasicApplication {
     skyBox.getTransform().setPosition(camPosition);
 
     Vector3f playerPosition = player.getPosition();
-    int x = (int) (playerPosition.x / Chunk.CHUNK_SIZE) * Chunk.CHUNK_SIZE + Chunk.CHUNK_SIZE / 2;
-    int z = (int) (playerPosition.z / Chunk.CHUNK_SIZE) * Chunk.CHUNK_SIZE + Chunk.CHUNK_SIZE / 2;
+    int x = (int) (playerPosition.x / Chunk.WIDTH) * Chunk.WIDTH + Chunk.WIDTH / 2;
+    int z = (int) (playerPosition.z / Chunk.DEPTH) * Chunk.DEPTH + Chunk.DEPTH / 2;
     chunkBorders.getTransform().setPosition(x, 0, z);
   }
 

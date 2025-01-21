@@ -98,8 +98,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   }
 
   private void loadChunksAroundPlayer() {
-    int playerChunkX = (int) Math.floor(playerPosition.x / Chunk.CHUNK_SIZE);
-    int playerChunkZ = (int) Math.floor(playerPosition.z / Chunk.CHUNK_SIZE);
+    int playerChunkX = (int) Math.floor(playerPosition.x / Chunk.WIDTH);
+    int playerChunkZ = (int) Math.floor(playerPosition.z / Chunk.DEPTH);
 
     if (playerChunkX == lastPlayerChunkX && playerChunkZ == lastPlayerChunkZ) {
       return; // No need to update if the player hasn't moved to a new chunk
@@ -114,7 +114,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
         long chunkKey = toChunkKey(chunkX, chunkZ);
 
         if (!activeChunks.containsKey(chunkKey)) {
-          Vector3f chunkPos = new Vector3f(chunkX * Chunk.CHUNK_SIZE, 0, chunkZ * Chunk.CHUNK_SIZE);
+          Vector3f chunkPos = new Vector3f(chunkX * Chunk.WIDTH, 0, chunkZ * Chunk.DEPTH);
           Chunk chunk = new Chunk(chunkPos);
           newChunks.put(chunkKey, chunk);
         } else {
@@ -134,8 +134,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     int chunkX = chunk.getChunkX();
     int chunkZ = chunk.getChunkZ();
 
-    int playerChunkX = (int) Math.floor(playerPosition.x / Chunk.CHUNK_SIZE);
-    int playerChunkZ = (int) Math.floor(playerPosition.z / Chunk.CHUNK_SIZE);
+    int playerChunkX = (int) Math.floor(playerPosition.x / Chunk.WIDTH);
+    int playerChunkZ = (int) Math.floor(playerPosition.z / Chunk.DEPTH);
 
     int dx = Math.abs(chunkX - playerChunkX);
     int dz = Math.abs(chunkZ - playerChunkZ);
