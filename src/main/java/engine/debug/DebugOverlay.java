@@ -30,6 +30,9 @@ public class DebugOverlay {
   /** Spacing between categories in pixels (40px by default). */
   private int categorySpacing = 40;
 
+  /** Width for aligning values. */
+  private int columnWidth = 200;
+
   /**
    * Sets the visibility of the debug overlay.
    *
@@ -130,12 +133,26 @@ public class DebugOverlay {
       return;
     }
 
-    g.pushMatrix();
-    g.translate(10, 20);
+    g.setColor(Color.BLACK);
+    renderText(g, 11, 21);
+
     g.setColor(Color.WHITE);
+    renderText(g, 10, 20);
+  }
+
+  /**
+   * Renders the debug overlay's text content at the specified position. This method handles
+   * rendering the categories, their associated items, and applies spacing and alignment settings.
+   *
+   * @param g the {@code Graphics} context used for rendering.
+   * @param x the x-coordinate where rendering starts.
+   * @param y the y-coordinate where rendering starts.
+   */
+  private void renderText(Graphics g, int x, int y) {
+    g.pushMatrix();
+    g.translate(x, y);
 
     int yOffset = 0;
-    int columnWidth = 200; // Width for aligning values
 
     for (Map.Entry<String, Map<String, String>> category : debugItems.entrySet()) {
       if (!isCategoryVisible(category.getKey())) {
@@ -145,7 +162,7 @@ public class DebugOverlay {
       // Render category header
       g.text(category.getKey() + ":", 0, yOffset);
       yOffset += lineSpacing;
-      g.text("===========================", 0, yOffset);
+      g.text("==========================", 0, yOffset);
       yOffset += lineSpacing;
 
       // Render items
