@@ -5,21 +5,15 @@ package engine.demos.voxels;
  * unique ID.
  */
 public enum BlockType {
-
-  /** Represents an air block. Typically used for empty spaces. */
   AIR(0),
-
-  /** Represents a stone block. Commonly used for solid, hard surfaces. */
   STONE(1),
-
-  /** Represents a grass block. Typically used for surface terrain. */
-  GRASS(2),
-
-  /** Represents a dirt block. Commonly found beneath grass blocks. */
+  GRASS_BLOCK(2),
   DIRT(3),
-
-  /** Represents a glass block. Used for transparent surfaces. */
-  GLASS(4);
+  GLASS(4),
+  WOOD(5),
+  WATER(6),
+  LEAF(7),
+  GRASS(8);
 
   /** The unique ID associated with the block type. */
   private final int id;

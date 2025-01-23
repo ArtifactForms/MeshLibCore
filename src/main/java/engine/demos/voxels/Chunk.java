@@ -1,12 +1,11 @@
 package engine.demos.voxels;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import engine.components.StaticGeometry;
-import math.Mathf;
-import math.PerlinNoise;
 import math.Vector3f;
 import workspace.ui.Graphics;
 
@@ -17,10 +16,10 @@ public class Chunk {
 
   public static final int WIDTH = 16;
   public static final int DEPTH = 16;
-  public static final int HEIGHT = 255;
+  public static final int HEIGHT = 320;
 
   private int[] blockData;
-  private int[] heightMap;
+  private int[] heightMap; // Stores max block values for y
 
   private Vector3f position;
   private StaticGeometry geometry;
@@ -35,35 +34,19 @@ public class Chunk {
     this.heightMap = new int[WIDTH * DEPTH];
   }
 
+  public void setupForPooling() {
+    Arrays.fill(blockData, BlockType.AIR.getId());
+    Arrays.fill(heightMap, 0);
+    isMeshReady = false;
+    dataReady = false;
+    shedule = false;
+    meshFuture = null;
+    geometry = null;
+  }
+
   public void generateData() {
     if (dataReady) return;
-    int baseHeight = 0;
-    float scale = 0.01f;
-    PerlinNoise noise = new PerlinNoise(0);
-
-    // Precompute height map for the entire chunk
-    for (int x = 0; x < WIDTH; x++) {
-      for (int z = 0; z < DEPTH; z++) {
-        float wx = position.x + x;
-        float wz = position.z + z;
-
-        // Generate and scale noise value
-        float noiseValue = (float) noise.noise(wx * scale, wz * scale);
-        int heightValue = (int) Mathf.map(noiseValue, 0, 1, 0, 60) + baseHeight;
-
-        heightMap[x + z * WIDTH] = heightValue;
-
-        // Fill blocks based on height value
-        for (int y = 0; y <= heightValue; y++) {
-          if (y < 40 && y > 20) {
-            setBlockAt(BlockType.GRASS, x, y, z);
-          } else {
-            setBlockAt(BlockType.STONE, x, y, z);
-          }
-        }
-      }
-    }
-
+    new ChunkGenerator().generate(this);
     dataReady = true;
   }
 
@@ -111,7 +94,9 @@ public class Chunk {
     if (index < 0 || index >= blockData.length) {
       return false;
     } else {
-      return blockData[index] != BlockType.AIR.getId();
+      if (blockData[index] == BlockType.AIR.getId()) return false;
+      if (blockData[index] == BlockType.GRASS.getId()) return false;
+      return true;
     }
   }
 
@@ -121,7 +106,9 @@ public class Chunk {
   }
 
   public void setBlockAt(BlockType block, int x, int y, int z) {
-    blockData[getIndex(x, y, z)] = block.getId();
+    int index = getIndex(x, y, z);
+    if (index >= blockData.length || index < 0) return; // TODO print err?
+    blockData[index] = block.getId();
   }
 
   public int getBlockData(int x, int y, int z) {
@@ -136,12 +123,20 @@ public class Chunk {
     return heightMap[x + z * WIDTH];
   }
 
+  public int[] getHeightMap() {
+    return heightMap;
+  }
+
   private int getIndex(int x, int y, int z) {
     return x + WIDTH * (y + HEIGHT * z);
   }
 
   public Vector3f getPosition() {
     return position;
+  }
+
+  public void setPosition(Vector3f position) {
+    this.position = position;
   }
 
   public int getWidth() {

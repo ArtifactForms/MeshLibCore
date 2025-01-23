@@ -25,7 +25,7 @@ public class VoxelGameDemo extends BasicApplication {
   }
 
   private float speed = 30;
-  private boolean useDirectionalLight = true;
+  private boolean useDirectionalLight = false;
   private SkyBox skyBox;
   private Player player;
   private Scene scene;
@@ -52,18 +52,31 @@ public class VoxelGameDemo extends BasicApplication {
 
   private void setupCamera() {
     PerspectiveCamera camera = new PerspectiveCamera();
+    camera.setFarPlane(10000);
+
+    // Spawn
+    camera.getTransform().setPosition(-180, -17, -140);
+
     SmoothFlyByCameraControl control = new SmoothFlyByCameraControl(input, camera);
     control.setMoveSpeed(speed);
     SceneNode camNode = new SceneNode("Camera", control);
     scene.addNode(camNode);
     scene.setActiveCamera(camera);
+
+    Vector3f camPosition = camera.getTransform().getPosition();
+    player.setPosition(camPosition);
   }
 
   private void setupChunkManager() {
-    ChunkManager chunkManager = new ChunkManager(player);
+    ChunkManager chunkManager = new ChunkManager(scene, player);
     SceneNode managerNode = new SceneNode();
     managerNode.addComponent(chunkManager);
     scene.addNode(managerNode);
+
+    ChunkProfile profile = new ChunkProfile(chunkManager);
+    SceneNode profileNode = new SceneNode("Chunk Profile", profile);
+    profileNode.getTransform().setPosition(220, 0, 0);
+    rootUI.addChild(profileNode);
   }
 
   private void setupUI() {

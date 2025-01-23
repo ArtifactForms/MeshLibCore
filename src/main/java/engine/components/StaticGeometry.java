@@ -55,10 +55,10 @@ public class StaticGeometry extends AbstractComponent implements RenderableCompo
     this.vbo.create(mesh, material);
     this.material = material;
   }
-  
+
   public StaticGeometry(VBO vbo, Material material) {
-      this.vbo = vbo;
-      this.material = material;
+    this.vbo = vbo;
+    this.material = material;
   }
 
   /**
@@ -76,9 +76,9 @@ public class StaticGeometry extends AbstractComponent implements RenderableCompo
       throw new IllegalArgumentException("Material cannot be null.");
     }
   }
-  
+
   public VBO getVbo() {
-      return vbo;
+    return vbo;
   }
 
   @Override

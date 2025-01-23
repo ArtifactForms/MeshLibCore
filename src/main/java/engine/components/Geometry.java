@@ -3,6 +3,7 @@ package engine.components;
 import engine.render.Material;
 import math.Bounds;
 import math.Color;
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.util.MeshBoundsCalculator;
 import workspace.ui.Graphics;
@@ -114,21 +115,28 @@ public class Geometry extends AbstractComponent implements RenderableComponent {
     float maxZ = bounds.getMax().z;
 
     // Draw lines for each edge of the bounding box
-//    g.drawLine(minX, minY, minZ, maxX, minY, minZ);
-//    g.drawLine(minX, minY, minZ, minX, maxY, minZ);
-//    g.drawLine(minX, minY, minZ, minX, minY, maxZ);
-//
-//    g.drawLine(maxX, maxY, maxZ, minX, maxY, maxZ);
-//    g.drawLine(maxX, maxY, maxZ, maxX, minY, maxZ);
-//    g.drawLine(maxX, maxY, maxZ, maxX, maxY, minZ);
-//
-//    g.drawLine(minX, maxY, minZ, maxX, maxY, minZ);
-//    g.drawLine(maxX, minY, minZ, maxX, maxY, minZ);
-//    g.drawLine(maxX, minY, minZ, maxX, minY, maxZ);
-//
-//    g.drawLine(minX, maxY, maxZ, minX, minY, maxZ);
-//    g.drawLine(maxX, minY, maxZ, minX, minY, maxZ);
-//    g.drawLine(minX, maxY, maxZ, minX, maxY, minZ);
+    //    g.drawLine(minX, minY, minZ, maxX, minY, minZ);
+    //    g.drawLine(minX, minY, minZ, minX, maxY, minZ);
+    //    g.drawLine(minX, minY, minZ, minX, minY, maxZ);
+    //
+    //    g.drawLine(maxX, maxY, maxZ, minX, maxY, maxZ);
+    //    g.drawLine(maxX, maxY, maxZ, maxX, minY, maxZ);
+    //    g.drawLine(maxX, maxY, maxZ, maxX, maxY, minZ);
+    //
+    //    g.drawLine(minX, maxY, minZ, maxX, maxY, minZ);
+    //    g.drawLine(maxX, minY, minZ, maxX, maxY, minZ);
+    //    g.drawLine(maxX, minY, minZ, maxX, minY, maxZ);
+    //
+    //    g.drawLine(minX, maxY, maxZ, minX, minY, maxZ);
+    //    g.drawLine(maxX, minY, maxZ, minX, minY, maxZ);
+    //    g.drawLine(minX, maxY, maxZ, minX, maxY, minZ);
+  }
+
+  public Bounds getBounds() {
+    Vector3f position = getOwner().getTransform().getPosition();
+    Vector3f min = bounds.getMin().add(position);
+    Vector3f max = bounds.getMax().add(position);
+    return new Bounds(min, max);
   }
 
   /**

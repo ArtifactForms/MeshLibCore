@@ -22,6 +22,11 @@ public class VBOProcessing implements VBO {
   public VBOProcessing(PGraphics graphics) {
     this.graphics = graphics;
   }
+  
+  public VBOProcessing(PShape shape) {
+      this.shape = shape;
+      vertexCount = shape.getVertexCount();
+  }
 
   @Override
   public void create(Mesh3D mesh, Material material) {

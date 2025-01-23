@@ -1,19 +1,23 @@
 package engine.demos.voxels;
 
+import java.util.ArrayList;
+
 import engine.components.StaticGeometry;
+import engine.processing.BufferedShape;
 import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
-import mesh.Face3D;
-import mesh.Mesh3D;
+import math.Vector2f;
 
 public class ChunkMesher {
 
   private Chunk chunk;
   private ChunkManager chunkManager;
-  private Mesh3D blockMesh;
+  //  private Mesh3D blockMesh;
+  private BufferedShape shape;
   private StaticGeometry geometry;
-
+  
+  private static ArrayList<Vector2f> uvs;
   private static Material sharedMaterial;
   private static TextureAtlas textureAtlas;
 
@@ -23,12 +27,12 @@ public class ChunkMesher {
     Texture texture = textureAtlas.getTexture();
     texture.setFilterMode(FilterMode.POINT);
     sharedMaterial.setDiffuseTexture(texture);
+    uvs = textureAtlas.getUVCoordinates();
   }
 
   public ChunkMesher(Chunk chunk, ChunkManager chunkManager) {
     this.chunk = chunk;
     this.chunkManager = chunkManager;
-    //    chunk.generateData();
   }
 
   private int getBlockData(int x, int y, int z) {
@@ -36,12 +40,10 @@ public class ChunkMesher {
   }
 
   public StaticGeometry createMeshFromBlockData() {
-    blockMesh = new Mesh3D();
+    //    blockMesh = new Mesh3D();
+    shape = new BufferedShape(sharedMaterial);
 
-    synchronized (textureAtlas) {
-      blockMesh.setUvs(textureAtlas.getUVCoordinates());
-    }
-
+    shape.begin(BufferedShape.QUADS);
     for (int x = 0; x < Chunk.WIDTH; x++) {
       for (int z = 0; z < Chunk.DEPTH; z++) {
         int heightValue = chunk.getHeightValueAt(x, z);
@@ -52,7 +54,9 @@ public class ChunkMesher {
         }
       }
     }
-    geometry = new StaticGeometry(blockMesh, sharedMaterial);
+    shape.end();
+    
+    geometry = new StaticGeometry(shape.getVBO(), sharedMaterial);
 
     return geometry;
   }
@@ -81,81 +85,114 @@ public class ChunkMesher {
     return false;
   }
 
-  private void createBlock(int x, int y, int z) {
-    if (getBlockData(x, y, z) == 0) return;
-
-    int indexOffset = blockMesh.getVertexCount();
-    float blockSize = 1.0f;
-    float radius = blockSize * 0.5f;
-
-    boolean create = false;
-
-    //    int[] uvIndices2 = new int[] {0, 1, 2, 3};
-
+  private void createBaseBlock(int x, int y, int z) {
     int blockId = chunk.getBlockData(x, y, z);
     int[] uvIndices = textureAtlas.getUVIndices(blockId);
 
+    float blockSize = 1.0f;
+    float radius = blockSize * 0.5f;
+
+    Vector2f uv0 = uvs.get(uvIndices[0]);
+    Vector2f uv1 = uvs.get(uvIndices[1]);
+    Vector2f uv2 = uvs.get(uvIndices[2]);
+    Vector2f uv3 = uvs.get(uvIndices[3]);
+
+//    shape.vertex(+radius + x, +radius - y, -radius + z, uv0.x, uv0.y); // 0
+//    shape.vertex(+radius + x, +radius - y, +radius + z, uv0.x, uv0.y); // 1
+//    shape.vertex(-radius + x, +radius - y, +radius + z, uv0.x, uv0.y); // 2
+//    shape.vertex(-radius + x, +radius - y, -radius + z, uv0.x, uv0.y); // 3
+//    shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
+//    shape.vertex(+radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 5
+//    shape.vertex(-radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 6
+//    shape.vertex(-radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 7
+
     // Top Face
     if (!isSolid(x, y + 1, z)) {
-      int[] indices =
-          new int[] {4 + indexOffset, 7 + indexOffset, 6 + indexOffset, 5 + indexOffset};
-      blockMesh.add(new Face3D(indices, uvIndices));
-      create = true;
+      shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
+      shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 7
+      shape.vertex(-radius + x, -radius - y, +radius + z, uv2.x, uv2.y); // 6
+      shape.vertex(+radius + x, -radius - y, +radius + z, uv3.x, uv3.y); // 5
     }
 
     // Bottom Face
     if (!isSolid(x, y - 1, z)) {
-      int[] indices =
-          new int[] {0 + indexOffset, 1 + indexOffset, 2 + indexOffset, 3 + indexOffset};
-      blockMesh.add(new Face3D(indices, uvIndices));
-      create = true;
+      shape.vertex(+radius + x, +radius - y, -radius + z, uv0.x, uv0.y); // 0
+      shape.vertex(+radius + x, +radius - y, +radius + z, uv1.x, uv1.y); // 1
+      shape.vertex(-radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 2
+      shape.vertex(-radius + x, +radius - y, -radius + z, uv3.x, uv3.y); // 3
     }
 
     // Front Face (+z)
     if (!isSolid(x, y, z + 1)) {
-      int[] indices =
-          new int[] {5 + indexOffset, 6 + indexOffset, 2 + indexOffset, 1 + indexOffset};
-      blockMesh.add(new Face3D(indices, uvIndices));
-      create = true;
+      shape.vertex(+radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 5
+      shape.vertex(-radius + x, -radius - y, +radius + z, uv1.x, uv1.y); // 6
+      shape.vertex(-radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 2
+      shape.vertex(+radius + x, +radius - y, +radius + z, uv3.x, uv3.y); // 1
     }
 
     // Back Face (-z)
     if (!isSolid(x, y, z - 1)) {
-      int[] indices =
-          new int[] {7 + indexOffset, 4 + indexOffset, 0 + indexOffset, 3 + indexOffset};
-      blockMesh.add(new Face3D(indices, uvIndices));
-      create = true;
+      shape.vertex(-radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 7
+      shape.vertex(+radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 4
+      shape.vertex(+radius + x, +radius - y, -radius + z, uv2.x, uv2.y); // 0
+      shape.vertex(-radius + x, +radius - y, -radius + z, uv3.x, uv3.y); // 3
     }
 
     // Right Face (+x)
     if (!isSolid(x + 1, y, z)) {
-      int[] indices =
-          //          new int[] {5 + indexOffset, 1 + indexOffset, 0 + indexOffset, 4 +
-          // indexOffset};
-          new int[] {4 + indexOffset, 5 + indexOffset, 1 + indexOffset, 0 + indexOffset};
-
-      blockMesh.add(new Face3D(indices, uvIndices));
-      create = true;
+      shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
+      shape.vertex(+radius + x, -radius - y, +radius + z, uv1.x, uv1.y); // 5
+      shape.vertex(+radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 1
+      shape.vertex(+radius + x, +radius - y, -radius + z, uv3.x, uv3.y); // 0
     }
 
     // Left Face (-x)
     if (!isSolid(x - 1, y, z)) {
-      int[] indices =
-          new int[] {6 + indexOffset, 7 + indexOffset, 3 + indexOffset, 2 + indexOffset};
-      blockMesh.add(new Face3D(indices, uvIndices));
-      create = true;
-    }
-
-    if (create) {
-      // Add vertices for the block, flipping y to adapt to Processing's -y-up convention
-      blockMesh.addVertex(+radius + x, +radius - y, -radius + z); // 0
-      blockMesh.addVertex(+radius + x, +radius - y, +radius + z); // 1
-      blockMesh.addVertex(-radius + x, +radius - y, +radius + z); // 2
-      blockMesh.addVertex(-radius + x, +radius - y, -radius + z); // 3
-      blockMesh.addVertex(+radius + x, -radius - y, -radius + z); // 4
-      blockMesh.addVertex(+radius + x, -radius - y, +radius + z); // 5
-      blockMesh.addVertex(-radius + x, -radius - y, +radius + z); // 6
-      blockMesh.addVertex(-radius + x, -radius - y, -radius + z); // 7
+      shape.vertex(-radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 6
+      shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 7
+      shape.vertex(-radius + x, +radius - y, -radius + z, uv2.x, uv2.y); // 3
+      shape.vertex(-radius + x, +radius - y, +radius + z, uv3.x, uv3.y); // 2
     }
   }
+//
+//  private void addVertices(int x, int y, int z) {
+//    float blockSize = 1.0f;
+//    float radius = blockSize * 0.5f;
+//    // Add vertices for the block, flipping y to adapt to Processing's -y-up convention
+//    blockMesh.addVertex(+radius + x, +radius - y, -radius + z); // 0
+//    blockMesh.addVertex(+radius + x, +radius - y, +radius + z); // 1
+//    blockMesh.addVertex(-radius + x, +radius - y, +radius + z); // 2
+//    blockMesh.addVertex(-radius + x, +radius - y, -radius + z); // 3
+//    blockMesh.addVertex(+radius + x, -radius - y, -radius + z); // 4
+//    blockMesh.addVertex(+radius + x, -radius - y, +radius + z); // 5
+//    blockMesh.addVertex(-radius + x, -radius - y, +radius + z); // 6
+//    blockMesh.addVertex(-radius + x, -radius - y, -radius + z); // 7
+//  }
+
+  private void createBlock(int x, int y, int z) {
+    if (getBlockData(x, y, z) == 0) return;
+
+    int blockId = chunk.getBlockData(x, y, z);
+
+    if (blockId == BlockType.GRASS.getId()) {
+//      createBillBoard(x, y, z);
+    } else {
+      createBaseBlock(x, y, z);
+    }
+  }
+
+//  private void createBillBoard(int x, int y, int z) {
+//
+//    int indexOffset = blockMesh.getVertexCount();
+//    int blockId = chunk.getBlockData(x, y, z);
+//    int[] uvIndices = textureAtlas.getUVIndices(blockId);
+//
+//    int[] indices = new int[] {5 + indexOffset, 7 + indexOffset, 3 + indexOffset, 1 + indexOffset};
+//    blockMesh.add(new Face3D(indices, uvIndices));
+//
+//    indices = new int[] {4 + indexOffset, 6 + indexOffset, 2 + indexOffset, 0 + indexOffset};
+//    blockMesh.add(new Face3D(indices, uvIndices));
+//
+//    addVertices(x, y, z);
+//  }
 }

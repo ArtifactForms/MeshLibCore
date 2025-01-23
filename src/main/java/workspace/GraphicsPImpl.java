@@ -17,7 +17,6 @@ import engine.resources.Texture;
 import engine.resources.TextureWrapMode;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
-import engine.scene.light.LightRenderer;
 import engine.vbo.VBO;
 import math.Matrix4f;
 import math.Vector2f;
@@ -303,6 +302,26 @@ public class GraphicsPImpl implements Graphics {
   }
 
   private void drawMeshFaces(Mesh3D mesh, boolean texture) {
+
+    //      g.beginShape(PApplet.TRIANGLES);
+    //
+    //      for (Face3D f : mesh.getFaces()) {
+    ////	        if (texture) applyTexture();
+    //	        int[] indices = f.indices;
+    //	        for (int i = 0; i < indices.length; i++) {
+    //	          Vector3f v = mesh.vertices.get(f.indices[i]);
+    //	          int uvIndex = f.getUvIndexAt(i);
+    //	          if (uvIndex != -1) {
+    //	            Vector2f uv = mesh.getUvAt(uvIndex);
+    //	            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+    //	          } else {
+    //	            g.vertex(v.getX(), v.getY(), v.getZ());
+    //	          }
+    //	        }
+    //
+    //	      }
+    //      g.endShape();
+
     if (mesh.hasVertexNormals()) {
       drawWithNormals(mesh, texture);
     } else {
