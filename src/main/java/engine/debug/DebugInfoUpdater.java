@@ -139,6 +139,7 @@ public class DebugInfoUpdater {
   }
 
   private void updatePerformanceMetrics() {
+    setInfo(CATEGORY_SYSTEM, "Java Version", System.getProperty("java.version"));
     setInfo(CATEGORY_SYSTEM, "CPU Usage", performanceMetrics.getCpuUsage() + "%");
     setInfo(CATEGORY_SYSTEM, "Draw Calls", drawCallCounter.getCount());
     setInfo(CATEGORY_SYSTEM, "Memory", memoryMetrics.getMemoryInfo());
