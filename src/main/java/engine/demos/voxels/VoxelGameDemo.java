@@ -24,8 +24,8 @@ public class VoxelGameDemo extends BasicApplication {
     application.launch(settings);
   }
 
-  private float speed = 30;
-  private boolean useDirectionalLight = false;
+  private float speed = 32;
+  private boolean useDirectionalLight = true;
   private SkyBox skyBox;
   private Player player;
   private Scene scene;
@@ -45,7 +45,7 @@ public class VoxelGameDemo extends BasicApplication {
 
     chunkBorders = new SceneNode("Chunk-Borders");
     chunkBorders.addComponent(new ChunkVisualizer1());
-    //    scene.addNode(chunkBorders);
+    scene.addNode(chunkBorders);
 
     setActiveScene(scene);
   }
@@ -85,7 +85,7 @@ public class VoxelGameDemo extends BasicApplication {
 
   private void setupTestCube() {
     DefaultTestCube cube = new DefaultTestCube(20);
-    cube.getTransform().setPosition(0, -100, 0);
+    cube.getTransform().setPosition(-100, -200, 0);
     scene.addNode(cube);
   }
 
@@ -111,10 +111,10 @@ public class VoxelGameDemo extends BasicApplication {
     player.setPosition(camPosition);
     skyBox.getTransform().setPosition(camPosition);
 
-    Vector3f playerPosition = player.getPosition();
-    int x = (int) (playerPosition.x / Chunk.WIDTH) * Chunk.WIDTH + Chunk.WIDTH / 2;
-    int z = (int) (playerPosition.z / Chunk.DEPTH) * Chunk.DEPTH + Chunk.DEPTH / 2;
-    chunkBorders.getTransform().setPosition(x, 0, z);
+//    Vector3f playerPosition = player.getPosition();
+//    int x = (int) (playerPosition.x / Chunk.WIDTH) * Chunk.WIDTH + Chunk.WIDTH / 2;
+//    int z = (int) (playerPosition.z / Chunk.DEPTH) * Chunk.DEPTH + Chunk.DEPTH / 2;
+//    chunkBorders.getTransform().setPosition(x, 0, z);
   }
 
   @Override

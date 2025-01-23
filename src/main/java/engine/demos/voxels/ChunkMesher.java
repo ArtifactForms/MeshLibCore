@@ -11,14 +11,17 @@ import math.Vector2f;
 
 public class ChunkMesher {
 
+  private float blockSize = 1.0f;
+  private float radius = blockSize * 0.5f;
+
   private Chunk chunk;
   private ChunkManager chunkManager;
   //  private Mesh3D blockMesh;
   private BufferedShape shape;
   private StaticGeometry geometry;
-  
+
   private static ArrayList<Vector2f> uvs;
-  private static Material sharedMaterial;
+  public static Material sharedMaterial;
   private static TextureAtlas textureAtlas;
 
   static {
@@ -39,9 +42,9 @@ public class ChunkMesher {
     return chunk.getBlockData(x, y, z);
   }
 
-  public StaticGeometry createMeshFromBlockData() {
+  public StaticGeometry createMeshFromBlockData(BufferedShape shape) {
+    this.shape = shape;
     //    blockMesh = new Mesh3D();
-    shape = new BufferedShape(sharedMaterial);
 
     shape.begin(BufferedShape.QUADS);
     for (int x = 0; x < Chunk.WIDTH; x++) {
@@ -55,7 +58,7 @@ public class ChunkMesher {
       }
     }
     shape.end();
-    
+
     geometry = new StaticGeometry(shape.getVBO(), sharedMaterial);
 
     return geometry;
@@ -89,22 +92,10 @@ public class ChunkMesher {
     int blockId = chunk.getBlockData(x, y, z);
     int[] uvIndices = textureAtlas.getUVIndices(blockId);
 
-    float blockSize = 1.0f;
-    float radius = blockSize * 0.5f;
-
     Vector2f uv0 = uvs.get(uvIndices[0]);
     Vector2f uv1 = uvs.get(uvIndices[1]);
     Vector2f uv2 = uvs.get(uvIndices[2]);
     Vector2f uv3 = uvs.get(uvIndices[3]);
-
-//    shape.vertex(+radius + x, +radius - y, -radius + z, uv0.x, uv0.y); // 0
-//    shape.vertex(+radius + x, +radius - y, +radius + z, uv0.x, uv0.y); // 1
-//    shape.vertex(-radius + x, +radius - y, +radius + z, uv0.x, uv0.y); // 2
-//    shape.vertex(-radius + x, +radius - y, -radius + z, uv0.x, uv0.y); // 3
-//    shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
-//    shape.vertex(+radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 5
-//    shape.vertex(-radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 6
-//    shape.vertex(-radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 7
 
     // Top Face
     if (!isSolid(x, y + 1, z)) {
@@ -154,20 +145,6 @@ public class ChunkMesher {
       shape.vertex(-radius + x, +radius - y, +radius + z, uv3.x, uv3.y); // 2
     }
   }
-//
-//  private void addVertices(int x, int y, int z) {
-//    float blockSize = 1.0f;
-//    float radius = blockSize * 0.5f;
-//    // Add vertices for the block, flipping y to adapt to Processing's -y-up convention
-//    blockMesh.addVertex(+radius + x, +radius - y, -radius + z); // 0
-//    blockMesh.addVertex(+radius + x, +radius - y, +radius + z); // 1
-//    blockMesh.addVertex(-radius + x, +radius - y, +radius + z); // 2
-//    blockMesh.addVertex(-radius + x, +radius - y, -radius + z); // 3
-//    blockMesh.addVertex(+radius + x, -radius - y, -radius + z); // 4
-//    blockMesh.addVertex(+radius + x, -radius - y, +radius + z); // 5
-//    blockMesh.addVertex(-radius + x, -radius - y, +radius + z); // 6
-//    blockMesh.addVertex(-radius + x, -radius - y, -radius + z); // 7
-//  }
 
   private void createBlock(int x, int y, int z) {
     if (getBlockData(x, y, z) == 0) return;
@@ -175,24 +152,30 @@ public class ChunkMesher {
     int blockId = chunk.getBlockData(x, y, z);
 
     if (blockId == BlockType.GRASS.getId()) {
-//      createBillBoard(x, y, z);
+      createBillBoard(x, y, z);
     } else {
       createBaseBlock(x, y, z);
     }
   }
 
-//  private void createBillBoard(int x, int y, int z) {
-//
-//    int indexOffset = blockMesh.getVertexCount();
-//    int blockId = chunk.getBlockData(x, y, z);
-//    int[] uvIndices = textureAtlas.getUVIndices(blockId);
-//
-//    int[] indices = new int[] {5 + indexOffset, 7 + indexOffset, 3 + indexOffset, 1 + indexOffset};
-//    blockMesh.add(new Face3D(indices, uvIndices));
-//
-//    indices = new int[] {4 + indexOffset, 6 + indexOffset, 2 + indexOffset, 0 + indexOffset};
-//    blockMesh.add(new Face3D(indices, uvIndices));
-//
-//    addVertices(x, y, z);
-//  }
+  private void createBillBoard(int x, int y, int z) {
+    int blockId = chunk.getBlockData(x, y, z);
+    int[] uvIndices = textureAtlas.getUVIndices(blockId);
+    Vector2f uv0 = uvs.get(uvIndices[0]);
+    Vector2f uv1 = uvs.get(uvIndices[1]);
+    Vector2f uv2 = uvs.get(uvIndices[2]);
+    Vector2f uv3 = uvs.get(uvIndices[3]);
+
+    //
+    shape.vertex(+radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 5
+    shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 7
+    shape.vertex(-radius + x, +radius - y, -radius + z, uv2.x, uv2.y); // 3
+    shape.vertex(+radius + x, +radius - y, +radius + z, uv3.x, uv3.y); // 1
+
+    //
+    shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
+    shape.vertex(-radius + x, -radius - y, +radius + z, uv1.x, uv1.y); // 6
+    shape.vertex(-radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 2
+    shape.vertex(+radius + x, +radius - y, -radius + z, uv3.x, uv3.y); // 0
+  }
 }

@@ -18,11 +18,11 @@ public class BufferedShape {
     if (material == null) {
       throw new IllegalArgumentException("Material cannot be null.");
     }
-    this.shape = Processing.createShape(); // Exception handling if no context is available.
     this.material = material;
   }
 
   public void begin(int type) {
+    shape = Processing.createShape(); // Exception handling if no context is available.
     shape.beginShape(type);
     shape.noStroke();
     applyMaterial();

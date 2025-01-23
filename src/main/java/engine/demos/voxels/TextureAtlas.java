@@ -97,6 +97,11 @@ public class TextureAtlas {
     id = BlockType.WATER.getId();
     g2d.setColor(new Color(0, 0, 128, 128));
     g2d.fillRect(tileSize * id, 0, tileSize, tileSize);
+    
+    // Snow
+    id = BlockType.SNOW.getId();
+    g2d.setColor(new Color(253, 253, 253));
+    g2d.fillRect(tileSize * id, 0, tileSize, tileSize);
 
     // Info text
     g2d.setColor(new Color(255, 255, 255, 60));

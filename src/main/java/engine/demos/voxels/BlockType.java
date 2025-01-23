@@ -13,7 +13,8 @@ public enum BlockType {
   WOOD(5),
   WATER(6),
   LEAF(7),
-  GRASS(8);
+  GRASS(8),
+  SNOW(9);
 
   /** The unique ID associated with the block type. */
   private final int id;

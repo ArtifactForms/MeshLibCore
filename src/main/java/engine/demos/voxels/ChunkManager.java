@@ -34,6 +34,9 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private Map<Long, Chunk> activeChunks = new ConcurrentHashMap<>();
 
   private int recycledChunks;
+  
+  private ChunkGenerator chunkGenerator = new ChunkGenerator3();
+//  private ChunkGenerator chunkGenerator = new CaveChunkGenerator();
 
   public ChunkManager(Scene scene, Player player) {
     this.debugBox = new BoxCreator(16, 16, 16).create();
@@ -73,7 +76,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     // Ensure data is ready for all active chunks
     for (Chunk chunk : activeChunks.values()) {
       if (!chunk.isDataReady()) {
-        chunk.generateData();
+        chunk.generateData(chunkGenerator);
       }
     }
 

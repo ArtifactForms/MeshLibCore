@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import engine.components.StaticGeometry;
+import engine.processing.BufferedShape;
 import math.Vector3f;
 import workspace.ui.Graphics;
 
@@ -16,7 +17,7 @@ public class Chunk {
 
   public static final int WIDTH = 16;
   public static final int DEPTH = 16;
-  public static final int HEIGHT = 320;
+  public static final int HEIGHT = 384;
 
   private int[] blockData;
   private int[] heightMap; // Stores max block values for y
@@ -27,6 +28,7 @@ public class Chunk {
   private boolean isMeshReady = false;
   private boolean dataReady = false;
   private boolean shedule = false;
+  private BufferedShape shape = new BufferedShape(ChunkMesher.sharedMaterial);
 
   public Chunk(Vector3f position) {
     this.position = position;
@@ -44,9 +46,9 @@ public class Chunk {
     geometry = null;
   }
 
-  public void generateData() {
+  public void generateData(ChunkGenerator chunkGenerator) {
     if (dataReady) return;
-    new ChunkGenerator().generate(this);
+    chunkGenerator.generate(this);
     dataReady = true;
   }
 
@@ -57,7 +59,7 @@ public class Chunk {
         executorService.submit(
             () -> {
               ChunkMesher mesher = new ChunkMesher(this, chunkManager);
-              return mesher.createMeshFromBlockData();
+              return mesher.createMeshFromBlockData(shape);
             });
   }
 
@@ -109,6 +111,9 @@ public class Chunk {
     int index = getIndex(x, y, z);
     if (index >= blockData.length || index < 0) return; // TODO print err?
     blockData[index] = block.getId();
+    // Update height map if needed
+    int height = y > getHeightValueAt(x, z) ? y : getHeightValueAt(x, z);
+    setHeightValueAt(height, x, z);
   }
 
   public int getBlockData(int x, int y, int z) {
@@ -120,7 +125,19 @@ public class Chunk {
   }
 
   public int getHeightValueAt(int x, int z) {
-    return heightMap[x + z * WIDTH];
+    if (x < 0 || x >= 16) return 0;
+    if (z < 0 || z >= 16) return 0;
+    int index = x + z * WIDTH;
+    if (index >= heightMap.length) return -1;
+    return heightMap[index];
+  }
+
+  public void setHeightValueAt(int value, int x, int z) {
+    if (x < 0 || x >= 16) return;
+    if (z < 0 || z >= 16) return;
+    int index = x + z * WIDTH;
+    if (index >= heightMap.length) return;
+    heightMap[index] = value;
   }
 
   public int[] getHeightMap() {
@@ -129,6 +146,7 @@ public class Chunk {
 
   private int getIndex(int x, int y, int z) {
     return x + WIDTH * (y + HEIGHT * z);
+    //      return y * HEIGHT + z * WIDTH + x;
   }
 
   public Vector3f getPosition() {
