@@ -1,7 +1,6 @@
 package engine.application;
 
 import engine.Timer;
-import engine.components.FlyByCameraControl;
 import engine.components.SmoothFlyByCameraControl;
 import engine.debug.DebugInfoUpdater;
 import engine.debug.DebugOverlay;
@@ -14,9 +13,12 @@ import engine.resources.Font;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
+import math.Mathf;
 import workspace.ui.Graphics;
 
 public abstract class BasicApplication implements Application {
+
+  private static final float MAX_TPF = 1f / 60f;
 
   private boolean launched;
 
@@ -113,6 +115,8 @@ public abstract class BasicApplication implements Application {
     debugInfoUpdater.update(timer, activeScene, input);
 
     float tpf = timer.getTimePerFrame();
+    tpf = Mathf.clamp(tpf, 0, MAX_TPF);
+
     if (input != null) {
       input.update();
     }
