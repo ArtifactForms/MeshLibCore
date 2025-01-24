@@ -17,6 +17,8 @@ import workspace.ui.Graphics;
 
 public class ChunkManager extends AbstractComponent implements RenderableComponent {
 
+  private static final int DEFAULT_RENDER_DISTANCE = 16;
+
   private int renderDistance; // Visible range of chunks
   private int bufferDistance; // Preemptive loading range beyond visible chunks
 
@@ -34,9 +36,10 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private Map<Long, Chunk> activeChunks = new ConcurrentHashMap<>();
 
   private int recycledChunks;
-  
-  private ChunkGenerator chunkGenerator = new ChunkGenerator3();
-//  private ChunkGenerator chunkGenerator = new CaveChunkGenerator();
+
+  private ChunkGenerator chunkGenerator = new ChunkGenerator3(0);
+  //  private ChunkGenerator chunkGenerator = new CaveChunkGenerator();
+  //  private ChunkGenerator chunkGenerator = new ChunkGenerator2();
 
   public ChunkManager(Scene scene, Player player) {
     this.debugBox = new BoxCreator(16, 16, 16).create();
@@ -46,7 +49,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     this.playerPosition = new Vector3f(0, 0, 0);
     this.activeChunks = new HashMap<>();
     this.chunkPool = new Stack<Chunk>();
-    setRenderDistance(16);
+    setRenderDistance(DEFAULT_RENDER_DISTANCE);
     loadChunksAroundPlayer();
   }
 
@@ -57,11 +60,13 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   }
 
   private void renderChunks(Graphics g) {
+    g.enableFaceCulling();
     for (Chunk chunk : activeChunks.values()) {
       if (isWithinRenderDistance(chunk)) {
         chunk.render(g);
       }
     }
+    g.disableFaceCulling();
   }
 
   @Override

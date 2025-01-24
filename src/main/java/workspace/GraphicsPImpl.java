@@ -3,6 +3,8 @@ package workspace;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jogamp.opengl.GL;
+
 import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
 import engine.processing.ProcessingFontManager;
@@ -28,6 +30,7 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PImage;
+import processing.opengl.PGL;
 import processing.opengl.PGraphicsOpenGL;
 import processing.opengl.PShader;
 import workspace.render.Mesh3DRenderer;
@@ -217,6 +220,18 @@ public class GraphicsPImpl implements Graphics {
         g.endShape();
       }
     }
+  }
+
+  public void enableFaceCulling() {
+    PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
+    pgl.pgl.frontFace(PGL.CCW); // Counter-clockwise winding order for front faces
+    pgl.pgl.enable(PGL.CULL_FACE); // Enable face culling
+    pgl.pgl.cullFace(PGL.BACK); // Cull back faces
+  }
+
+  public void disableFaceCulling() {
+    PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
+    pgl.pgl.disable(PGL.CULL_FACE); // Disable face culling
   }
 
   /**

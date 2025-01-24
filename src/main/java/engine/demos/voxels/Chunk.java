@@ -12,14 +12,14 @@ import workspace.ui.Graphics;
 
 public class Chunk {
 
-  private static final ExecutorService executorService =
-      Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
   public static final int WIDTH = 16;
   public static final int DEPTH = 16;
   public static final int HEIGHT = 384;
 
-  private int[] blockData;
+  private static final ExecutorService executorService =
+      Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+  private short[] blockData;
   private int[] heightMap; // Stores max block values for y
 
   private Vector3f position;
@@ -32,7 +32,7 @@ public class Chunk {
 
   public Chunk(Vector3f position) {
     this.position = position;
-    this.blockData = new int[WIDTH * DEPTH * HEIGHT];
+    this.blockData = new short[WIDTH * DEPTH * HEIGHT];
     this.heightMap = new int[WIDTH * DEPTH];
   }
 
@@ -102,7 +102,7 @@ public class Chunk {
     }
   }
 
-  public void setBlockDataAt(int data, int x, int y, int z) {
+  public void setBlockDataAt(short data, int x, int y, int z) {
     int index = getIndex(x, y, z);
     blockData[index] = data;
   }
@@ -147,6 +147,10 @@ public class Chunk {
   private int getIndex(int x, int y, int z) {
     return x + WIDTH * (y + HEIGHT * z);
     //      return y * HEIGHT + z * WIDTH + x;
+  }
+
+  public boolean isWithinBounds(int x, int y, int z) {
+    return x >= 0 && x < Chunk.WIDTH && y >= 0 && y < Chunk.HEIGHT && z >= 0 && z < Chunk.DEPTH;
   }
 
   public Vector3f getPosition() {

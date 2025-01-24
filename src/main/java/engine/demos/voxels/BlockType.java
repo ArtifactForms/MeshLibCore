@@ -14,18 +14,21 @@ public enum BlockType {
   WATER(6),
   LEAF(7),
   GRASS(8),
-  SNOW(9);
+  SNOW(9),
+  SAND(10),
+  SAND_STONE(11),
+  CACTUS(12);
 
   /** The unique ID associated with the block type. */
-  private final int id;
+  private final short id;
 
   /**
    * Constructor for a block type.
    *
    * @param id the unique ID of the block type
    */
-  BlockType(int id) {
-    this.id = id;
+  private BlockType(int id) {
+    this.id = (short) id;
   }
 
   /**
@@ -33,7 +36,7 @@ public enum BlockType {
    *
    * @return the ID of the block type
    */
-  public int getId() {
+  public short getId() {
     return id;
   }
 
@@ -44,7 +47,7 @@ public enum BlockType {
    * @param id the ID to match
    * @return the corresponding {@code BlockType}, or {@code AIR} if the ID is invalid
    */
-  public static BlockType fromId(int id) {
+  public static BlockType fromId(short id) {
     for (BlockType type : values()) {
       if (type.id == id) {
         return type;

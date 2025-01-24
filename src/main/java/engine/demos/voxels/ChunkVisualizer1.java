@@ -7,7 +7,6 @@ import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.SnapToGroundModifier;
-import mesh.modifier.TranslateModifier;
 import workspace.ui.Graphics;
 
 /**
@@ -25,7 +24,6 @@ public class ChunkVisualizer1 extends AbstractComponent implements RenderableCom
     plane = new PlaneCreator(8).create();
     chunk = new BoxCreator(16, 384, 16).create();
     chunk.apply(new SnapToGroundModifier());
-//    chunk.apply(new TranslateModifier(0, 64, 0)); // Align chunk with ground
   }
 
   /**

@@ -25,7 +25,7 @@ public class VoxelGameDemo extends BasicApplication {
   }
 
   private float speed = 32;
-  private boolean useDirectionalLight = true;
+  private boolean useDirectionalLight = false;
   private SkyBox skyBox;
   private Player player;
   private Scene scene;
@@ -96,7 +96,7 @@ public class VoxelGameDemo extends BasicApplication {
 
   private void setupLights() {
     AmbientLight ambientLight = new AmbientLight();
-    scene.addLight(ambientLight);
+//    scene.addLight(ambientLight);
 
     if (!useDirectionalLight) return;
 

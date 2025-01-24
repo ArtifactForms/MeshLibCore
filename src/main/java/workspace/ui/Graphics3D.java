@@ -3,6 +3,7 @@ package workspace.ui;
 import java.util.List;
 
 import engine.render.Material;
+import engine.resources.Model;
 import engine.resources.Texture;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
@@ -27,9 +28,11 @@ public interface Graphics3D extends Graphics2D {
   void render(Light light);
 
   void drawFaces(Mesh3D mesh);
-  
+
   void fillFaces(Mesh3D mesh);
-  
+
+  void render(Model model);
+
   void draw(VBO vbo);
 
   void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms);
@@ -53,6 +56,10 @@ public interface Graphics3D extends Graphics2D {
   void bindTexture(Texture texture, int unit);
 
   void unbindTexture(int unit);
+  
+  void enableFaceCulling();
+  
+  void disableFaceCulling();
 
   /**
    * Sets the global ambient light color for the scene.
