@@ -3,8 +3,6 @@ package workspace;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jogamp.opengl.GL;
-
 import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
 import engine.processing.ProcessingFontManager;
@@ -222,6 +220,20 @@ public class GraphicsPImpl implements Graphics {
     }
   }
 
+  /**
+   * Enables backface culling in the current graphics context.
+   *
+   * <p>Backface culling is a technique that skips rendering of polygons whose back sides are facing
+   * the camera. This can significantly improve rendering performance by reducing the number of
+   * polygons sent to the GPU for processing, especially in scenes where many faces are not visible
+   * (e.g., inside voxel structures).
+   *
+   * <p>This method sets the winding order of front faces to counter-clockwise (CCW), enables face
+   * culling, and specifies that back faces should be culled.
+   *
+   * <p>Preconditions: - This method assumes that the current `PGraphics` object is an instance of
+   * `PGraphicsOpenGL`.
+   */
   public void enableFaceCulling() {
     PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
     pgl.pgl.frontFace(PGL.CCW); // Counter-clockwise winding order for front faces
@@ -229,6 +241,16 @@ public class GraphicsPImpl implements Graphics {
     pgl.pgl.cullFace(PGL.BACK); // Cull back faces
   }
 
+  /**
+   * Disables backface culling in the current graphics context.
+   *
+   * <p>This method turns off the face culling feature, ensuring that all polygons, regardless of
+   * their orientation relative to the camera, are rendered. Disabling face culling may be useful
+   * for debugging or for specific cases where both sides of polygons need to be visible.
+   *
+   * <p>Preconditions: - This method assumes that the current `PGraphics` object is an instance of
+   * `PGraphicsOpenGL`.
+   */
   public void disableFaceCulling() {
     PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
     pgl.pgl.disable(PGL.CULL_FACE); // Disable face culling
