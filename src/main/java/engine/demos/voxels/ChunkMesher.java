@@ -16,7 +16,6 @@ public class ChunkMesher {
 
   private Chunk chunk;
   private ChunkManager chunkManager;
-  //  private Mesh3D blockMesh;
   private BufferedShape shape;
   private StaticGeometry geometry;
 
@@ -44,7 +43,6 @@ public class ChunkMesher {
 
   public StaticGeometry createMeshFromBlockData(BufferedShape shape) {
     this.shape = shape;
-    //    blockMesh = new Mesh3D();
 
     shape.begin(BufferedShape.QUADS);
     for (int x = 0; x < Chunk.WIDTH; x++) {
@@ -90,22 +88,16 @@ public class ChunkMesher {
 
   private void createBaseBlock(int x, int y, int z) {
     int blockId = chunk.getBlockData(x, y, z);
-//    int[] uvIndices = textureAtlas.getUVIndices(blockId);
-//
-//    Vector2f uv0 = uvs.get(uvIndices[0]);
-//    Vector2f uv1 = uvs.get(uvIndices[1]);
-//    Vector2f uv2 = uvs.get(uvIndices[2]);
-//    Vector2f uv3 = uvs.get(uvIndices[3]);
 
     // Top Face
     if (!isSolid(x, y + 1, z)) {
-	    int[] uvIndices = textureAtlas.getUVIndices(blockId, 0);
+      int[] uvIndices = textureAtlas.getUVIndices(blockId, 0);
 
-	    Vector2f uv0 = uvs.get(uvIndices[0]);
-	    Vector2f uv1 = uvs.get(uvIndices[1]);
-	    Vector2f uv2 = uvs.get(uvIndices[2]);
-	    Vector2f uv3 = uvs.get(uvIndices[3]);
-	
+      Vector2f uv0 = uvs.get(uvIndices[0]);
+      Vector2f uv1 = uvs.get(uvIndices[1]);
+      Vector2f uv2 = uvs.get(uvIndices[2]);
+      Vector2f uv3 = uvs.get(uvIndices[3]);
+
       shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
       shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 7
       shape.vertex(-radius + x, -radius - y, +radius + z, uv2.x, uv2.y); // 6
@@ -114,12 +106,12 @@ public class ChunkMesher {
 
     // Bottom Face
     if (!isSolid(x, y - 1, z)) {
-	    int[] uvIndices = textureAtlas.getUVIndices(blockId, 5);
+      int[] uvIndices = textureAtlas.getUVIndices(blockId, 5);
 
-	    Vector2f uv0 = uvs.get(uvIndices[0]);
-	    Vector2f uv1 = uvs.get(uvIndices[1]);
-	    Vector2f uv2 = uvs.get(uvIndices[2]);
-	    Vector2f uv3 = uvs.get(uvIndices[3]);
+      Vector2f uv0 = uvs.get(uvIndices[0]);
+      Vector2f uv1 = uvs.get(uvIndices[1]);
+      Vector2f uv2 = uvs.get(uvIndices[2]);
+      Vector2f uv3 = uvs.get(uvIndices[3]);
       shape.vertex(+radius + x, +radius - y, -radius + z, uv0.x, uv0.y); // 0
       shape.vertex(+radius + x, +radius - y, +radius + z, uv1.x, uv1.y); // 1
       shape.vertex(-radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 2
@@ -128,12 +120,12 @@ public class ChunkMesher {
 
     // Front Face (+z)
     if (!isSolid(x, y, z + 1)) {
-	    int[] uvIndices = textureAtlas.getUVIndices(blockId, 1);
+      int[] uvIndices = textureAtlas.getUVIndices(blockId, 1);
 
-	    Vector2f uv0 = uvs.get(uvIndices[0]);
-	    Vector2f uv1 = uvs.get(uvIndices[1]);
-	    Vector2f uv2 = uvs.get(uvIndices[2]);
-	    Vector2f uv3 = uvs.get(uvIndices[3]);
+      Vector2f uv0 = uvs.get(uvIndices[0]);
+      Vector2f uv1 = uvs.get(uvIndices[1]);
+      Vector2f uv2 = uvs.get(uvIndices[2]);
+      Vector2f uv3 = uvs.get(uvIndices[3]);
       shape.vertex(+radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 5
       shape.vertex(-radius + x, -radius - y, +radius + z, uv1.x, uv1.y); // 6
       shape.vertex(-radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 2
@@ -142,12 +134,12 @@ public class ChunkMesher {
 
     // Back Face (-z)
     if (!isSolid(x, y, z - 1)) {
-	    int[] uvIndices = textureAtlas.getUVIndices(blockId, 4);
+      int[] uvIndices = textureAtlas.getUVIndices(blockId, 4);
 
-	    Vector2f uv0 = uvs.get(uvIndices[0]);
-	    Vector2f uv1 = uvs.get(uvIndices[1]);
-	    Vector2f uv2 = uvs.get(uvIndices[2]);
-	    Vector2f uv3 = uvs.get(uvIndices[3]);
+      Vector2f uv0 = uvs.get(uvIndices[0]);
+      Vector2f uv1 = uvs.get(uvIndices[1]);
+      Vector2f uv2 = uvs.get(uvIndices[2]);
+      Vector2f uv3 = uvs.get(uvIndices[3]);
       shape.vertex(-radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 7
       shape.vertex(+radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 4
       shape.vertex(+radius + x, +radius - y, -radius + z, uv2.x, uv2.y); // 0
@@ -156,12 +148,12 @@ public class ChunkMesher {
 
     // Right Face (+x)
     if (!isSolid(x + 1, y, z)) {
-	    int[] uvIndices = textureAtlas.getUVIndices(blockId, 2);
+      int[] uvIndices = textureAtlas.getUVIndices(blockId, 2);
 
-	    Vector2f uv0 = uvs.get(uvIndices[0]);
-	    Vector2f uv1 = uvs.get(uvIndices[1]);
-	    Vector2f uv2 = uvs.get(uvIndices[2]);
-	    Vector2f uv3 = uvs.get(uvIndices[3]);
+      Vector2f uv0 = uvs.get(uvIndices[0]);
+      Vector2f uv1 = uvs.get(uvIndices[1]);
+      Vector2f uv2 = uvs.get(uvIndices[2]);
+      Vector2f uv3 = uvs.get(uvIndices[3]);
       shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
       shape.vertex(+radius + x, -radius - y, +radius + z, uv1.x, uv1.y); // 5
       shape.vertex(+radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 1
@@ -170,12 +162,12 @@ public class ChunkMesher {
 
     // Left Face (-x)
     if (!isSolid(x - 1, y, z)) {
-	    int[] uvIndices = textureAtlas.getUVIndices(blockId, 3);
+      int[] uvIndices = textureAtlas.getUVIndices(blockId, 3);
 
-	    Vector2f uv0 = uvs.get(uvIndices[0]);
-	    Vector2f uv1 = uvs.get(uvIndices[1]);
-	    Vector2f uv2 = uvs.get(uvIndices[2]);
-	    Vector2f uv3 = uvs.get(uvIndices[3]);
+      Vector2f uv0 = uvs.get(uvIndices[0]);
+      Vector2f uv1 = uvs.get(uvIndices[1]);
+      Vector2f uv2 = uvs.get(uvIndices[2]);
+      Vector2f uv3 = uvs.get(uvIndices[3]);
       shape.vertex(-radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 6
       shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 7
       shape.vertex(-radius + x, +radius - y, -radius + z, uv2.x, uv2.y); // 3
