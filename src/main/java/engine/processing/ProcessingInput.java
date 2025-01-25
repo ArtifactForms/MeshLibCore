@@ -5,6 +5,7 @@ import java.util.Collection;
 import engine.input.Input;
 import engine.input.Key;
 import engine.input.KeyInput;
+import engine.input.KeyListener;
 import engine.input.MouseInput;
 
 public class ProcessingInput implements Input {
@@ -102,5 +103,15 @@ public class ProcessingInput implements Input {
   public void update() {
     updateKeyState();
     updateMouseState();
+  }
+
+  @Override
+  public void addKeyListener(KeyListener listener) {
+    keyInput.addKeyListener(listener);
+  }
+
+  @Override
+  public void removeKeyListener(KeyListener listener) {
+    keyInput.addKeyListener(listener);
   }
 }
