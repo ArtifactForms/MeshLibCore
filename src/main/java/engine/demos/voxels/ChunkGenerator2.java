@@ -60,7 +60,7 @@ public class ChunkGenerator2 implements ChunkGenerator {
 
           // Generate tree stem (trunk)
           for (int y = trunkBase; y < trunkBase + treeHeight; y++) {
-            chunk.setBlockAt(BlockType.WOOD, x, y, z);
+            chunk.setBlockAt(BlockType.BIRCH_WOOD, x, y, z);
           }
 
           // Generate tree stem (trunk)

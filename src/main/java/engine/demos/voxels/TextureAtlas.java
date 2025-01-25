@@ -11,9 +11,10 @@ import math.Mathf;
 import math.Vector2f;
 
 public class TextureAtlas {
-  private boolean useNoise = true;
-  private boolean drawDebugText = true;
-  private float epsilon = 0.0001f; // Small margin to prevent texture bleeding
+  private boolean useNoise = GameSettings.textureNoise;
+  private boolean drawDebugText = GameSettings.textureDebugText;
+  private boolean fillTextureBackground = GameSettings.textureBackground;
+  private float epsilon = 0.001f; // Small margin to prevent texture bleeding
   private int tileSize = 128;
   private int columns = 6; // 6 faces per block
   private int rows = BlockType.values().length;
@@ -71,19 +72,21 @@ public class TextureAtlas {
     Graphics2D g2d = (Graphics2D) image.getGraphics();
 
     g2d.setColor(Color.GRAY);
-    g2d.fillRect(0, 0, width, height);
+    if (fillTextureBackground) g2d.fillRect(0, 0, width, height);
 
     fill(g2d, BlockType.STONE, new Color(128, 128, 128));
     fill(g2d, BlockType.GRASS_BLOCK, new Color(117, 175, 74));
     fill(g2d, BlockType.GRASS, new Color(37, 82, 12));
     fill(g2d, BlockType.LEAF, new Color(66, 175, 29));
-    fill(g2d, BlockType.WOOD, new Color(111, 87, 51));
+    fill(g2d, BlockType.OAK_WOOD, new Color(111, 87, 51));
+    fill(g2d, BlockType.BIRCH_WOOD, new Color(255, 255, 255));
     fill(g2d, BlockType.DIRT, new Color(151, 109, 76));
-    fill(g2d, BlockType.WATER, new Color(0, 0, 128));
+    fill(g2d, BlockType.WATER, new Color(0, 0, 128, 128));
     fill(g2d, BlockType.SNOW, new Color(253, 253, 253));
     fill(g2d, BlockType.SAND, new Color(216, 207, 156));
     fill(g2d, BlockType.SAND, new Color(194, 189, 134));
     fill(g2d, BlockType.CACTUS, new Color(96, 142, 50));
+    fill(g2d, BlockType.GRAVEL, new Color(180, 180, 180));
 
     drawDebugText(g2d);
   }
@@ -96,7 +99,7 @@ public class TextureAtlas {
       for (int col = 0; col < columns; col++) {
         int x = col * tileSize;
         int y = row * tileSize;
-        g2d.drawRect(x, y, tileSize - 1, tileSize - 1);
+        //        g2d.drawRect(x, y, tileSize - 1, tileSize - 1);
         g2d.drawString("Row " + row + " Col " + col, x + 2, y + 12);
         g2d.drawString(BlockType.fromId((short) row) + "", x + 2, y + 24);
         g2d.drawString("Type Id: " + row, x + 2, y + 36);
@@ -140,8 +143,16 @@ public class TextureAtlas {
 
   public int[] getUVIndices(int blockId, int ordinal) {
     int index = (blockId * columns + ordinal) * 4;
-    //    return new int[] {index, index + 1, index + 2, index + 3};
     return new int[] {index + 3, index + 2, index + 1, index};
+  }
+
+  public Vector2f[] getUVCoordinates(int blockId, int ordinal) {
+    int[] uvIndices = getUVIndices(blockId, ordinal);
+    Vector2f uv0 = uvCoordinates.get(uvIndices[0]);
+    Vector2f uv1 = uvCoordinates.get(uvIndices[1]);
+    Vector2f uv2 = uvCoordinates.get(uvIndices[2]);
+    Vector2f uv3 = uvCoordinates.get(uvIndices[3]);
+    return new Vector2f[] {uv0, uv1, uv2, uv3};
   }
 
   public ArrayList<Vector2f> getUVCoordinates() {

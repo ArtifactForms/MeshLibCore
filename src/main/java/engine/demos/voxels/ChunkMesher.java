@@ -11,8 +11,16 @@ import math.Vector2f;
 
 public class ChunkMesher {
 
-  private float blockSize = 1.0f;
-  private float radius = blockSize * 0.5f;
+  // Ordinal constants
+  private static final int TOP = 0;
+  private static final int BOTTOM = 5;
+  private static final int FRONT = 1;
+  private static final int BACK = 4;
+  private static final int RIGHT = 2;
+  private static final int LEFT = 3;
+
+  private static float blockSize = 1.0f;
+  private static float radius = blockSize * 0.5f;
 
   private Chunk chunk;
   private ChunkManager chunkManager;
@@ -22,6 +30,22 @@ public class ChunkMesher {
   private static ArrayList<Vector2f> uvs;
   public static Material sharedMaterial;
   private static TextureAtlas textureAtlas;
+
+  //  private static Vector3f[] vertices;
+  //
+  //  static {
+  //    vertices = new Vector3f[8];
+  //
+  //    vertices[0] = new Vector3f(+radius, +radius, -radius);
+  //    vertices[1] = new Vector3f(+radius, +radius, +radius);
+  //    vertices[2] = new Vector3f(-radius, +radius, +radius);
+  //    vertices[3] = new Vector3f(-radius, +radius, -radius);
+  //
+  //    vertices[4] = new Vector3f(+radius, -radius, -radius);
+  //    vertices[5] = new Vector3f(+radius, -radius, +radius);
+  //    vertices[6] = new Vector3f(-radius, -radius, +radius);
+  //    vertices[7] = new Vector3f(-radius, -radius, -radius);
+  //  }
 
   static {
     sharedMaterial = new Material();
@@ -37,9 +61,9 @@ public class ChunkMesher {
     this.chunkManager = chunkManager;
   }
 
-  private int getBlockData(int x, int y, int z) {
-    return chunk.getBlockData(x, y, z);
-  }
+  //  private int getBlockData(int x, int y, int z) {
+  //    return chunk.getBlockData(x, y, z);
+  //  }
 
   public StaticGeometry createMeshFromBlockData(BufferedShape shape) {
     this.shape = shape;
@@ -86,92 +110,115 @@ public class ChunkMesher {
     return false;
   }
 
+  private int getBlockData(int x, int y, int z) {
+    if (chunk.isWithinBounds(x, y, z)) {
+      return chunk.getBlockData(x, y, z);
+    }
+
+    // Handle neighbor chunks
+    int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0);
+    int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0);
+    Chunk neighborChunk = chunkManager.getChunk(neighborChunkX, neighborChunkZ);
+
+    if (neighborChunk != null) {
+      int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
+      int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
+      if (neighborChunk.isWithinBounds(neighborX, y, neighborZ)) {
+        return neighborChunk.getBlockData(neighborX, y, neighborZ);
+      }
+    }
+
+    //    return chunk.getBlockData(x, y, z);
+    return BlockType.AIR.getId();
+  }
+
+  public boolean shouldRender(int id, int x, int y, int z) {
+
+    //    if (chunk.isWithinBounds(x, y, z)) {
+    int id2 = getBlockData(x, y + 1, z);
+    int id3 = getBlockData(x, y, z);
+
+    if (id != BlockType.WATER.getId() && id3 == BlockType.WATER.getId()) {
+      return true;
+    }
+
+//    if (id3 != BlockType.WATER.getId() && id == BlockType.WATER.getId()) {
+//      return true;
+//    }
+
+    //    if (id == BlockType.WATER.getId() && id3 != BlockType.WATER.getId()) {
+    //      return false;
+    //    }
+
+    if (id == BlockType.WATER.getId() && id2 == BlockType.WATER.getId()) {
+      return false;
+    }
+    //    }
+
+    return !isSolid(x, y, z);
+  }
+
   private void createBaseBlock(int x, int y, int z) {
     int blockId = chunk.getBlockData(x, y, z);
 
     // Top Face
-    if (!isSolid(x, y + 1, z)) {
-      int[] uvIndices = textureAtlas.getUVIndices(blockId, 0);
+    if (shouldRender(blockId, x, y + 1, z)) {
+      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, TOP);
 
-      Vector2f uv0 = uvs.get(uvIndices[0]);
-      Vector2f uv1 = uvs.get(uvIndices[1]);
-      Vector2f uv2 = uvs.get(uvIndices[2]);
-      Vector2f uv3 = uvs.get(uvIndices[3]);
-
-      shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
-      shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 7
-      shape.vertex(-radius + x, -radius - y, +radius + z, uv2.x, uv2.y); // 6
-      shape.vertex(+radius + x, -radius - y, +radius + z, uv3.x, uv3.y); // 5
+      shape.vertex(+radius + x, -radius - y, -radius + z, uvs[0].x, uvs[0].y); // 4
+      shape.vertex(-radius + x, -radius - y, -radius + z, uvs[1].x, uvs[1].y); // 7
+      shape.vertex(-radius + x, -radius - y, +radius + z, uvs[2].x, uvs[2].y); // 6
+      shape.vertex(+radius + x, -radius - y, +radius + z, uvs[3].x, uvs[3].y); // 5
     }
 
     // Bottom Face
-    if (!isSolid(x, y - 1, z)) {
-      int[] uvIndices = textureAtlas.getUVIndices(blockId, 5);
+    if (shouldRender(blockId, x, y - 1, z)) {
+      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, BOTTOM);
 
-      Vector2f uv0 = uvs.get(uvIndices[0]);
-      Vector2f uv1 = uvs.get(uvIndices[1]);
-      Vector2f uv2 = uvs.get(uvIndices[2]);
-      Vector2f uv3 = uvs.get(uvIndices[3]);
-      shape.vertex(+radius + x, +radius - y, -radius + z, uv0.x, uv0.y); // 0
-      shape.vertex(+radius + x, +radius - y, +radius + z, uv1.x, uv1.y); // 1
-      shape.vertex(-radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 2
-      shape.vertex(-radius + x, +radius - y, -radius + z, uv3.x, uv3.y); // 3
+      shape.vertex(+radius + x, +radius - y, -radius + z, uvs[0].x, uvs[0].y); // 0
+      shape.vertex(+radius + x, +radius - y, +radius + z, uvs[1].x, uvs[1].y); // 1
+      shape.vertex(-radius + x, +radius - y, +radius + z, uvs[2].x, uvs[2].y); // 2
+      shape.vertex(-radius + x, +radius - y, -radius + z, uvs[3].x, uvs[3].y); // 3
     }
 
     // Front Face (+z)
-    if (!isSolid(x, y, z + 1)) {
-      int[] uvIndices = textureAtlas.getUVIndices(blockId, 1);
+    if (shouldRender(blockId, x, y, z + 1)) {
+      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, FRONT);
 
-      Vector2f uv0 = uvs.get(uvIndices[0]);
-      Vector2f uv1 = uvs.get(uvIndices[1]);
-      Vector2f uv2 = uvs.get(uvIndices[2]);
-      Vector2f uv3 = uvs.get(uvIndices[3]);
-      shape.vertex(+radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 5
-      shape.vertex(-radius + x, -radius - y, +radius + z, uv1.x, uv1.y); // 6
-      shape.vertex(-radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 2
-      shape.vertex(+radius + x, +radius - y, +radius + z, uv3.x, uv3.y); // 1
+      shape.vertex(+radius + x, -radius - y, +radius + z, uvs[0].x, uvs[0].y); // 5
+      shape.vertex(-radius + x, -radius - y, +radius + z, uvs[1].x, uvs[1].y); // 6
+      shape.vertex(-radius + x, +radius - y, +radius + z, uvs[2].x, uvs[2].y); // 2
+      shape.vertex(+radius + x, +radius - y, +radius + z, uvs[3].x, uvs[3].y); // 1
     }
 
     // Back Face (-z)
-    if (!isSolid(x, y, z - 1)) {
-      int[] uvIndices = textureAtlas.getUVIndices(blockId, 4);
+    if (shouldRender(blockId, x, y, z - 1)) {
+      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, BACK);
 
-      Vector2f uv0 = uvs.get(uvIndices[0]);
-      Vector2f uv1 = uvs.get(uvIndices[1]);
-      Vector2f uv2 = uvs.get(uvIndices[2]);
-      Vector2f uv3 = uvs.get(uvIndices[3]);
-      shape.vertex(-radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 7
-      shape.vertex(+radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 4
-      shape.vertex(+radius + x, +radius - y, -radius + z, uv2.x, uv2.y); // 0
-      shape.vertex(-radius + x, +radius - y, -radius + z, uv3.x, uv3.y); // 3
+      shape.vertex(-radius + x, -radius - y, -radius + z, uvs[0].x, uvs[0].y); // 7
+      shape.vertex(+radius + x, -radius - y, -radius + z, uvs[1].x, uvs[1].y); // 4
+      shape.vertex(+radius + x, +radius - y, -radius + z, uvs[2].x, uvs[2].y); // 0
+      shape.vertex(-radius + x, +radius - y, -radius + z, uvs[3].x, uvs[3].y); // 3
     }
 
     // Right Face (+x)
-    if (!isSolid(x + 1, y, z)) {
-      int[] uvIndices = textureAtlas.getUVIndices(blockId, 2);
+    if (shouldRender(blockId, x + 1, y, z)) {
+      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, RIGHT);
 
-      Vector2f uv0 = uvs.get(uvIndices[0]);
-      Vector2f uv1 = uvs.get(uvIndices[1]);
-      Vector2f uv2 = uvs.get(uvIndices[2]);
-      Vector2f uv3 = uvs.get(uvIndices[3]);
-      shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
-      shape.vertex(+radius + x, -radius - y, +radius + z, uv1.x, uv1.y); // 5
-      shape.vertex(+radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 1
-      shape.vertex(+radius + x, +radius - y, -radius + z, uv3.x, uv3.y); // 0
+      shape.vertex(+radius + x, -radius - y, -radius + z, uvs[0].x, uvs[0].y); // 4
+      shape.vertex(+radius + x, -radius - y, +radius + z, uvs[1].x, uvs[1].y); // 5
+      shape.vertex(+radius + x, +radius - y, +radius + z, uvs[2].x, uvs[2].y); // 1
+      shape.vertex(+radius + x, +radius - y, -radius + z, uvs[3].x, uvs[3].y); // 0
     }
 
     // Left Face (-x)
-    if (!isSolid(x - 1, y, z)) {
-      int[] uvIndices = textureAtlas.getUVIndices(blockId, 3);
+    if (shouldRender(blockId, x - 1, y, z)) {
+      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, LEFT);
 
-      Vector2f uv0 = uvs.get(uvIndices[0]);
-      Vector2f uv1 = uvs.get(uvIndices[1]);
-      Vector2f uv2 = uvs.get(uvIndices[2]);
-      Vector2f uv3 = uvs.get(uvIndices[3]);
-      shape.vertex(-radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 6
-      shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 7
-      shape.vertex(-radius + x, +radius - y, -radius + z, uv2.x, uv2.y); // 3
-      shape.vertex(-radius + x, +radius - y, +radius + z, uv3.x, uv3.y); // 2
+      shape.vertex(-radius + x, -radius - y, +radius + z, uvs[0].x, uvs[0].y); // 6
+      shape.vertex(-radius + x, -radius - y, -radius + z, uvs[1].x, uvs[1].y); // 7
+      shape.vertex(-radius + x, +radius - y, -radius + z, uvs[2].x, uvs[2].y); // 3
+      shape.vertex(-radius + x, +radius - y, +radius + z, uvs[3].x, uvs[3].y); // 2
     }
   }
 

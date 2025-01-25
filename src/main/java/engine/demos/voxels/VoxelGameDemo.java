@@ -24,7 +24,7 @@ public class VoxelGameDemo extends BasicApplication {
     application.launch(settings);
   }
 
-  private float speed = 32;
+  private float speed = GameSettings.flySpeed;
   private boolean useDirectionalLight = false;
   private SkyBox skyBox;
   private Player player;

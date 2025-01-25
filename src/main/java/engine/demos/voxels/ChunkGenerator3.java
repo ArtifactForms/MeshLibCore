@@ -8,6 +8,9 @@ import java.util.Random;
 
 public class ChunkGenerator3 implements ChunkGenerator {
 
+  private int seaLevel = 63;
+  private int beachSize = 3;
+
   private long seed = 0; // Global seed
   private int baseHeight = 0;
   private float scale = 0.005f; // Base noise scale
@@ -53,25 +56,50 @@ public class ChunkGenerator3 implements ChunkGenerator {
 
         chunk.getHeightMap()[x + z * Chunk.WIDTH] = heightValue;
 
-        // Fill blocks based on height value with layered texturing
+        // Fill blocks based on height value
         for (int y = 0; y <= heightValue; y++) {
-          float wy = position.y + y;
-
           BlockType blockType = getBlockType(x, y, z, heightValue, biome);
           chunk.setBlockAt(blockType, x, y, z);
-
-//          float caveNoiseScale = 0.05f;
-//          if (y < 60) {
-//            if (caveNoise.noise(wx * caveNoiseScale, wy * caveNoiseScale, wz * caveNoiseScale)
-//                > 0.6f) {
-//              chunk.setBlockAt(BlockType.AIR, x, y, z);
-//            }
-//          }
         }
       }
     }
 
     createTrees(chunk);
+    createWater(chunk);
+    //    createCave(chunk);
+  }
+
+  private void createCave(Chunk chunk) {
+    Vector3f position = chunk.getPosition();
+    for (int x = 0; x < Chunk.WIDTH; x++) {
+      for (int z = 0; z < Chunk.DEPTH; z++) {
+        int heightValue = chunk.getHeightValueAt(x, z);
+        for (int y = 0; y <= heightValue; y++) {
+          if (y <= 20) {
+            float wY = position.y + y;
+            float wX = position.x + x;
+            float wZ = position.z + z;
+            float noise = (float) caveNoise.noise(wX * 0.05f, wY * 0.05f, wZ * 0.05f);
+            if (noise > 0.6f) {
+              chunk.setBlockAt(BlockType.AIR, x, y, z);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private void createWater(Chunk chunk) {
+    for (int x = 0; x < Chunk.WIDTH; x++) {
+      for (int z = 0; z < Chunk.DEPTH; z++) {
+        for (int y = 0; y < seaLevel; y++) {
+          BlockType type = chunk.getBlock(x, y, z);
+          if (type == BlockType.AIR) {
+            chunk.setBlockAt(BlockType.WATER, x, y, z);
+          }
+        }
+      }
+    }
   }
 
   private void createTrees(Chunk chunk) {
@@ -83,6 +111,7 @@ public class ChunkGenerator3 implements ChunkGenerator {
         float wz = position.z + z;
 
         int heightValue = chunk.getHeightValueAt(x, z);
+        if (heightValue <= seaLevel) continue;
 
         // Determine biome for this column
         BiomeType biome = getBiomeAt(wx, wz);
@@ -100,9 +129,11 @@ public class ChunkGenerator3 implements ChunkGenerator {
                   : rng.nextInt(4) + 4; // Taller trees in forests
           int trunkBase = heightValue;
 
+          BlockType treeType = rng.nextFloat() < 0.08f ? BlockType.BIRCH_WOOD : BlockType.OAK_WOOD;
+          
           // Generate tree trunk
           for (int y = trunkBase; y < trunkBase + treeHeight; y++) {
-            chunk.setBlockAt(BlockType.WOOD, x, y, z);
+            chunk.setBlockAt(treeType, x, y, z);
           }
 
           // Generate leaves based on biome
@@ -118,10 +149,11 @@ public class ChunkGenerator3 implements ChunkGenerator {
             return;
           }
 
-//          // Add vines or other features for specific biomes
-//          if (biome == BiomeType.FOREST && rng.nextFloat() < 0.1f) { // 10% chance for vines
-//            chunk.setBlockAt(BlockType.VINE, x, trunkBase + treeHeight - 1, z - 1);
-//          }
+          //          // Add vines or other features for specific biomes
+          //          if (biome == BiomeType.FOREST && rng.nextFloat() < 0.1f) { // 10% chance for
+          // vines
+          //            chunk.setBlockAt(BlockType.VINE, x, trunkBase + treeHeight - 1, z - 1);
+          //          }
         }
       }
     }
@@ -181,6 +213,15 @@ public class ChunkGenerator3 implements ChunkGenerator {
   }
 
   private BlockType getBlockType(int x, int y, int z, int heightValue, BiomeType biome) {
+
+    if (y < seaLevel - beachSize - 8) {
+      return BlockType.GRAVEL;
+    }
+
+    if (y < seaLevel + beachSize) {
+      return BlockType.SAND;
+    }
+
     if (y > 140) {
       return BlockType.SNOW;
     }

@@ -10,14 +10,16 @@ public enum BlockType {
   GRASS_BLOCK(2),
   DIRT(3),
   GLASS(4),
-  WOOD(5),
-  WATER(6),
-  LEAF(7),
-  GRASS(8),
-  SNOW(9),
-  SAND(10),
-  SAND_STONE(11),
-  CACTUS(12);
+  BIRCH_WOOD(5),
+  OAK_WOOD(6),
+  WATER(7),
+  LEAF(8),
+  GRASS(9),
+  SNOW(10),
+  SAND(11),
+  SAND_STONE(12),
+  CACTUS(13),
+  GRAVEL(14);
 
   /** The unique ID associated with the block type. */
   private final short id;
