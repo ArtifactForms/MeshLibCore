@@ -9,10 +9,12 @@ public enum Key {
   ARROW_LEFT,
   ARROW_RIGHT,
 
-  ESC,
+  ESCAPE,
   ENTER,
+  RETURN,
   TAB,
   BACKSPACE,
+  BACK_SLASH,
 
   A,
   B,
