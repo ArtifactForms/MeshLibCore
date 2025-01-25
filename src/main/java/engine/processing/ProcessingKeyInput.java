@@ -65,14 +65,14 @@ public class ProcessingKeyInput implements KeyInput {
     synchronized (keysDown) {
       if (e.getAction() == KeyEvent.PRESS) {
         keysDown.add(key);
-        fireKeyPressed(new engine.input.KeyEvent(key));
+        fireKeyPressed(new engine.input.KeyEvent(key, e.getKey()));
       }
       if (e.getAction() == KeyEvent.RELEASE) {
         keysDown.remove(key);
-        fireKeyReleased(new engine.input.KeyEvent(key));
+        fireKeyReleased(new engine.input.KeyEvent(key, e.getKey()));
       }
       if (e.getAction() == KeyEvent.TYPE) {
-        fireKeyTyped(new engine.input.KeyEvent(key));
+        fireKeyTyped(new engine.input.KeyEvent(key, e.getKey()));
       }
     }
   }
