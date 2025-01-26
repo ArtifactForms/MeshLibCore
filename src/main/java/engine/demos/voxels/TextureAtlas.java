@@ -7,10 +7,13 @@ import java.util.ArrayList;
 
 import engine.resources.Texture;
 import engine.resources.TextureManager;
-import math.Mathf;
+import math.PerlinNoise;
 import math.Vector2f;
 
 public class TextureAtlas {
+
+  private static final Color DIRT_COLOR = new Color(151, 109, 76);
+
   private boolean useNoise = GameSettings.textureNoise;
   private boolean drawDebugText = GameSettings.textureDebugText;
   private boolean fillTextureBackground = GameSettings.textureBackground;
@@ -74,13 +77,14 @@ public class TextureAtlas {
     g2d.setColor(Color.GRAY);
     if (fillTextureBackground) g2d.fillRect(0, 0, width, height);
 
-    fill(g2d, BlockType.STONE, new Color(128, 128, 128));
+    fill(g2d, BlockType.STONE, new Color(123, 123, 123));
+    fill(g2d, BlockType.COBBLE_STONE, new Color(108, 108, 108));
     fill(g2d, BlockType.GRASS_BLOCK, new Color(117, 175, 74));
     fill(g2d, BlockType.GRASS, new Color(37, 82, 12));
     fill(g2d, BlockType.LEAF, new Color(66, 175, 29));
     fill(g2d, BlockType.OAK_WOOD, new Color(111, 87, 51));
     fill(g2d, BlockType.BIRCH_WOOD, new Color(255, 255, 255));
-    fill(g2d, BlockType.DIRT, new Color(151, 109, 76));
+    fill(g2d, BlockType.DIRT, DIRT_COLOR);
     fill(g2d, BlockType.WATER, new Color(0, 0, 128, 128));
     fill(g2d, BlockType.SNOW, new Color(253, 253, 253));
     fill(g2d, BlockType.SAND, new Color(216, 207, 156));
@@ -99,7 +103,7 @@ public class TextureAtlas {
       for (int col = 0; col < columns; col++) {
         int x = col * tileSize;
         int y = row * tileSize;
-        //        g2d.drawRect(x, y, tileSize - 1, tileSize - 1);
+        if (GameSettings.textureBorder) g2d.drawRect(x, y, tileSize - 1, tileSize - 1);
         g2d.drawString("Row " + row + " Col " + col, x + 2, y + 12);
         g2d.drawString(BlockType.fromId((short) row) + "", x + 2, y + 24);
         g2d.drawString("Type Id: " + row, x + 2, y + 36);
@@ -112,9 +116,13 @@ public class TextureAtlas {
 
     if (!useNoise) return image;
 
+    PerlinNoise noise = new PerlinNoise(0);
+
     for (int x = 0; x < 16; x++) {
       for (int y = 0; y < 16; y++) {
-        int alpha = Mathf.random(0, 40);
+        float noise1 = (float) noise.noise(x * 0.6f, y * 0.6f);
+
+        int alpha = (int) (((noise1 * 2) + 1) * 20);
         image.setRGB(x, y, new Color(0, 0, 0, alpha).getRGB());
       }
     }
@@ -131,6 +139,12 @@ public class TextureAtlas {
       // Base color
       g2d.setColor(color);
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
+
+      if (blockType == BlockType.GRASS_BLOCK && col > 0) {
+        // Grass block sides
+        g2d.setColor(DIRT_COLOR);
+        g2d.fillRect(baseX, baseY + (tileSize / 4), tileSize, tileSize - (tileSize / 4));
+      }
 
       // Noise
       g2d.drawImage(overlay, baseX, baseY, tileSize, tileSize, null);

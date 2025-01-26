@@ -1,17 +1,14 @@
 package engine.demos.voxels;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.scene.Scene;
+import engine.demos.voxels.structure.ChunkCoordinate;
 import math.Color;
-import math.Vector2f;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
@@ -29,7 +26,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private boolean debugVisualsEnabled = false;
   private Mesh3D debugBox;
 
-  private Scene scene;
   private Player player;
   private Vector3f playerPosition;
 
@@ -38,14 +34,11 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   private int recycledChunks;
 
-  private ChunkGenerator chunkGenerator = new ChunkGenerator3(0);
-  //  private ChunkGenerator chunkGenerator = new CaveChunkGenerator();
-  //  private ChunkGenerator chunkGenerator = new ChunkGenerator2();
+  private World world;
 
-  public ChunkManager(Scene scene, Player player) {
+  public ChunkManager(Player player) {
     this.debugBox = new BoxCreator(16, 16, 16).create();
     this.debugBox.apply(new SnapToGroundModifier());
-    this.scene = scene;
     this.player = player;
     this.playerPosition = new Vector3f(0, 0, 0);
     this.activeChunks = new HashMap<>();
@@ -70,71 +63,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     g.disableFaceCulling();
   }
 
-  //  private void renderChunks(Graphics g) {
-  //      g.enableFaceCulling();
-  //
-  //      // Collect and sort chunks by their XZ order
-  //      List<Chunk> sortedChunks = activeChunks.values().stream()
-  //          .sorted((chunk1, chunk2) -> {
-  //              int dx1 = chunk1.getChunkX() - getPlayerChunkX();
-  //              int dz1 = chunk1.getChunkZ() - getPlayerChunkZ();
-  //              int dx2 = chunk2.getChunkX() - getPlayerChunkX();
-  //              int dz2 = chunk2.getChunkZ() - getPlayerChunkZ();
-  //
-  //              // Sort by Z first, then X for XZ ordering
-  //              if (dz1 != dz2) {
-  //                  return Integer.compare(dz1, dz2);
-  //              }
-  //              return Integer.compare(dx1, dx2);
-  //          })
-  //          .collect(Collectors.toList()); // Use Collectors.toList() for compatibility
-  //
-  //      // Render chunks after sorting
-  //      for (Chunk chunk : sortedChunks) {
-  //          if (isWithinRenderDistance(chunk)) {
-  //              chunk.render(g);
-  //          }
-  //      }
-  //
-  //      g.disableFaceCulling();
-  //  }
-
-  //  private void renderChunks(Graphics g) {
-  //    g.enableFaceCulling();
-  //
-  //    // Sort chunks based on distance from the camera (farthest first)
-  //    List<Chunk> sortedChunks =
-  //        activeChunks
-  //            .values()
-  //            .stream()
-  //            .filter(this::isWithinRenderDistance) // Only consider chunks within the render
-  // distance
-  //            .sorted(
-  //                (chunk1, chunk2) -> {
-  ////                  float dist1 = chunk1.getPosition().distanceSquared(playerPosition);
-  ////                  float dist2 = chunk2.getPosition().distanceSquared(playerPosition);
-  //
-  ////                  Vector3f c1 = chunk1.getPosition();
-  ////                  Vector3f c2 = chunk2.getPosition();
-  //                  Vector2f pos = new Vector2f(getPlayerChunkX(), getPlayerChunkZ());
-  //                  Vector2f c10 = new Vector2f(chunk1.getChunkX(), chunk1.getChunkZ());
-  //                  Vector2f c20 = new Vector2f(chunk1.getChunkX(), chunk1.getChunkZ());
-  //
-  //                  float dist1 = c10.distanceSquared(pos);
-  //                  float dist2 = c20.distanceSquared(pos);
-  //
-  //                  return Float.compare(dist2, dist1); // Sort by descending distance
-  //                })
-  //            .collect(Collectors.toList());
-  //
-  //    // Render chunks in sorted order
-  //    for (Chunk chunk : sortedChunks) {
-  //      chunk.render(g); // Let the chunk handle rendering, including water blocks
-  //    }
-  //
-  //    g.disableFaceCulling();
-  //  }
-
   @Override
   public void onUpdate(float tpf) {
     playerPosition.set(player.getPosition());
@@ -147,7 +75,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     // Ensure data is ready for all active chunks
     for (Chunk chunk : activeChunks.values()) {
       if (!chunk.isDataReady()) {
-        chunk.generateData(chunkGenerator);
+        //        chunk.generateData(chunkGenerator);
+        world.generate(chunk);
       }
     }
 
@@ -236,6 +165,10 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     }
   }
 
+  public void setWorld(World world) {
+    this.world = world;
+  }
+
   private boolean isWithinRenderDistance(Chunk chunk) {
     int playerChunkX = getPlayerChunkX();
     int playerChunkZ = getPlayerChunkZ();
@@ -255,7 +188,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   }
 
   private long toChunkKey(int x, int z) {
-    return ((long) x << 32) | (z & 0xFFFFFFFFL);
+    return ChunkCoordinate.toLong(x, z);
   }
 
   public void setRenderDistance(int renderDistance) {

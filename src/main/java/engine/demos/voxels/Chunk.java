@@ -121,9 +121,11 @@ public class Chunk {
   }
 
   public BlockType getBlock(int x, int y, int z) {
+    int index = getIndex(x, y, z);
+    if (index < 0 || index > blockData.length) return null;
     return BlockType.fromId(blockData[getIndex(x, y, z)]);
   }
-
+  
   public int getHeightValueAt(int x, int z) {
     if (x < 0 || x >= 16) return 0;
     if (z < 0 || z >= 16) return 0;

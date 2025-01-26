@@ -31,22 +31,6 @@ public class ChunkMesher {
   public static Material sharedMaterial;
   private static TextureAtlas textureAtlas;
 
-  //  private static Vector3f[] vertices;
-  //
-  //  static {
-  //    vertices = new Vector3f[8];
-  //
-  //    vertices[0] = new Vector3f(+radius, +radius, -radius);
-  //    vertices[1] = new Vector3f(+radius, +radius, +radius);
-  //    vertices[2] = new Vector3f(-radius, +radius, +radius);
-  //    vertices[3] = new Vector3f(-radius, +radius, -radius);
-  //
-  //    vertices[4] = new Vector3f(+radius, -radius, -radius);
-  //    vertices[5] = new Vector3f(+radius, -radius, +radius);
-  //    vertices[6] = new Vector3f(-radius, -radius, +radius);
-  //    vertices[7] = new Vector3f(-radius, -radius, -radius);
-  //  }
-
   static {
     sharedMaterial = new Material();
     textureAtlas = new TextureAtlas();
@@ -60,10 +44,6 @@ public class ChunkMesher {
     this.chunk = chunk;
     this.chunkManager = chunkManager;
   }
-
-  //  private int getBlockData(int x, int y, int z) {
-  //    return chunk.getBlockData(x, y, z);
-  //  }
 
   public StaticGeometry createMeshFromBlockData(BufferedShape shape) {
     this.shape = shape;
@@ -133,8 +113,6 @@ public class ChunkMesher {
   }
 
   public boolean shouldRender(int id, int x, int y, int z) {
-
-    //    if (chunk.isWithinBounds(x, y, z)) {
     int id2 = getBlockData(x, y + 1, z);
     int id3 = getBlockData(x, y, z);
 
@@ -142,19 +120,13 @@ public class ChunkMesher {
       return true;
     }
 
-//    if (id3 != BlockType.WATER.getId() && id == BlockType.WATER.getId()) {
-//      return true;
-//    }
-
-    //    if (id == BlockType.WATER.getId() && id3 != BlockType.WATER.getId()) {
-    //      return false;
-    //    }
+    if (id3 != BlockType.WATER.getId() && id == BlockType.WATER.getId()) {
+      return true;
+    }
 
     if (id == BlockType.WATER.getId() && id2 == BlockType.WATER.getId()) {
       return false;
     }
-    //    }
-
     return !isSolid(x, y, z);
   }
 

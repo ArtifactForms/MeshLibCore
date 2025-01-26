@@ -13,7 +13,7 @@ public class ChunkGenerator3 implements ChunkGenerator {
 
   private long seed = 0; // Global seed
   private int baseHeight = 0;
-  private float scale = 0.005f; // Base noise scale
+  private float scale = 0.003f; // Base noise scale
   private int heightMultiplier = 200;
 
   private int octaves = 4; // Number of octaves
@@ -24,12 +24,14 @@ public class ChunkGenerator3 implements ChunkGenerator {
   private PerlinNoise noise;
   private PerlinNoise biomeNoise;
   private PerlinNoise3 caveNoise;
+  private PerlinNoise noise3;
 
   public ChunkGenerator3(long seed) {
     this.seed = seed;
     noise = new PerlinNoise(seed);
     biomeNoise = new PerlinNoise(seed);
     caveNoise = new PerlinNoise3(seed);
+    noise3 = new PerlinNoise(seed);
   }
 
   public void generate(Chunk chunk) {
@@ -58,7 +60,7 @@ public class ChunkGenerator3 implements ChunkGenerator {
 
         // Fill blocks based on height value
         for (int y = 0; y <= heightValue; y++) {
-          BlockType blockType = getBlockType(x, y, z, heightValue, biome);
+          BlockType blockType = getBlockType(x, y, z, heightValue, biome, chunk);
           chunk.setBlockAt(blockType, x, y, z);
         }
       }
@@ -130,7 +132,7 @@ public class ChunkGenerator3 implements ChunkGenerator {
           int trunkBase = heightValue;
 
           BlockType treeType = rng.nextFloat() < 0.08f ? BlockType.BIRCH_WOOD : BlockType.OAK_WOOD;
-          
+
           // Generate tree trunk
           for (int y = trunkBase; y < trunkBase + treeHeight; y++) {
             chunk.setBlockAt(treeType, x, y, z);
@@ -212,8 +214,12 @@ public class ChunkGenerator3 implements ChunkGenerator {
     }
   }
 
-  private BlockType getBlockType(int x, int y, int z, int heightValue, BiomeType biome) {
+  private BlockType getBlockType(
+      int x, int y, int z, int heightValue, BiomeType biome, Chunk chunk) {
 
+      float wx = chunk.getPosition().x + x;
+      float wz = chunk.getPosition().z + z;
+      
     if (y < seaLevel - beachSize - 8) {
       return BlockType.GRAVEL;
     }
@@ -227,7 +233,12 @@ public class ChunkGenerator3 implements ChunkGenerator {
     }
 
     if (y > 110) {
-      return BlockType.STONE;
+
+      if (noise3.noise(
+              wx * 0.05f,
+              wz * 0.05f)
+          < 0.7f) return BlockType.STONE;
+      else return BlockType.COBBLE_STONE;
     }
 
     // Simulate layers: Grass on top, then dirt, then stone
