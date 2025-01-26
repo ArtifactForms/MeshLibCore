@@ -9,8 +9,11 @@ import java.util.List;
  */
 public class ChunkCoordinate {
 
-  private final int x; // The x-coordinate of the chunk
-  private final int z; // The z-coordinate of the chunk
+  /** The x-coordinate of the chunk. */
+  private final int x;
+
+  /** The z-coordinate of the chunk. */
+  private final int z;
 
   /**
    * Creates a new ChunkCoordinate with the specified x and z values.
