@@ -59,6 +59,19 @@ public class ChunkCoordinate {
   }
 
   /**
+   * Packs the given chunk coordinates (x, z) into a single {@code long} value. This allows
+   * efficient storage and retrieval of chunk coordinates by combining the two integers into a
+   * single 64-bit value.
+   *
+   * @param x the x-coordinate of the chunk
+   * @param z the z-coordinate of the chunk
+   * @return a packed {@code long} value representing the chunk coordinates
+   */
+  public static long toLong(int x, int z) {
+    return ((long) x << 32) | (z & 0xFFFFFFFFL);
+  }
+
+  /**
    * Reconstructs a ChunkCoordinate from a packed long value. The x coordinate is extracted from the
    * high 32 bits, and the z coordinate is extracted from the low 32 bits.
    *
