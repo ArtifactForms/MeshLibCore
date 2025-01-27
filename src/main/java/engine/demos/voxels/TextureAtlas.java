@@ -132,13 +132,44 @@ public class TextureAtlas {
   private void fill(Graphics2D g2d, BlockType blockType, Color color) {
     int row = blockType.getId();
     int baseY = row * tileSize;
+    int shadowMultiplier = 1;
 
     for (int col = 0; col < 6; col++) {
       int baseX = col * tileSize;
 
       // Base color with hue shifting
-      Color hueShiftedColor =
-          shiftHue(color, col * hueDegreePerCoulmn); // Adjust hue based on column index
+      Color hueShiftedColor;
+
+      // Adjust saturation based on column
+      float saturationAdjustment = 0.0f;
+      if (col < 3) {
+        // Shift towards yellow (columns 0, 1, 2) - lower saturation
+        saturationAdjustment = 1.0f - ((3 - col) * 0.2f); // Decrease saturation
+        hueShiftedColor = shiftHue(color, -(3 - col) * hueDegreePerCoulmn); // Shift towards yellow
+      } else {
+        // Shift towards purple (columns 3, 4, 5) - higher saturation
+        saturationAdjustment = 0.5f + ((col - 2) * 0.2f); // Increase saturation
+        hueShiftedColor =
+            shiftHue(
+                color, ((col - 2) * hueDegreePerCoulmn * shadowMultiplier)); // Shift towards purple
+      }
+
+      // Adjust saturation based on column
+      hueShiftedColor = adjustSaturation(hueShiftedColor, saturationAdjustment);
+
+      // Adjust brightness based on column
+      float brightnessAdjustment = 0.0f;
+      if (col < 3) {
+        // Increase brightness towards yellow (columns 0, 1, 2)
+        brightnessAdjustment = 1.0f + (0.02f * (3 - col)); // Increase brightness
+      } else {
+        // Decrease brightness towards purple (columns 3, 4, 5)
+        brightnessAdjustment = 1.0f - (0.02f * (col - 2)); // Decrease brightness
+      }
+
+      // Adjust brightness
+      hueShiftedColor = adjustBrightness(hueShiftedColor, brightnessAdjustment);
+
       g2d.setColor(hueShiftedColor);
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
 
@@ -155,6 +186,95 @@ public class TextureAtlas {
       g2d.setColor(new Color(0, 0, 0, 255 / 6 * col));
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
     }
+  }
+
+  private Color adjustSaturation(Color color, float saturation) {
+    // Convert to HSL
+    float[] hsl = RGBtoHSL(color);
+
+    // Adjust saturation
+    hsl[1] = Math.max(0, Math.min(1, hsl[1] * saturation)); // Clamp between 0 and 1
+
+    // Convert back to RGB
+    return HSLtoRGB(hsl);
+  }
+
+  private Color adjustBrightness(Color color, float brightness) {
+    // Convert to HSL
+    float[] hsl = RGBtoHSL(color);
+
+    // Adjust brightness (lightness)
+    hsl[2] = Math.max(0, Math.min(1, hsl[2] * brightness)); // Clamp between 0 and 1
+
+    // Convert back to RGB
+    return HSLtoRGB(hsl);
+  }
+
+  // Convert RGB to HSL
+  private float[] RGBtoHSL(Color color) {
+    float r = color.getRed() / 255.0f;
+    float g = color.getGreen() / 255.0f;
+    float b = color.getBlue() / 255.0f;
+
+    float max = Math.max(r, Math.max(g, b));
+    float min = Math.min(r, Math.min(g, b));
+    float h = 0, s = 0, l = (max + min) / 2;
+
+    if (max != min) {
+      float d = max - min;
+      s = (l > 0.5f) ? d / (2.0f - max - min) : d / (max + min);
+
+      if (max == r) {
+        h = (g - b) / d + (g < b ? 6 : 0);
+      } else if (max == g) {
+        h = (b - r) / d + 2;
+      } else {
+        h = (r - g) / d + 4;
+      }
+      h /= 6;
+    }
+
+    return new float[] {h * 360, s, l};
+  }
+
+  // Convert HSL back to RGB
+  private Color HSLtoRGB(float[] hsl) {
+    float h = hsl[0];
+    float s = hsl[1];
+    float l = hsl[2];
+
+    float c = (1 - Math.abs(2 * l - 1)) * s;
+    float x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    float m = l - c / 2;
+
+    float r = 0, g = 0, b = 0;
+    if (0 <= h && h < 60) {
+      r = c;
+      g = x;
+      b = 0;
+    } else if (60 <= h && h < 120) {
+      r = x;
+      g = c;
+      b = 0;
+    } else if (120 <= h && h < 180) {
+      r = 0;
+      g = c;
+      b = x;
+    } else if (180 <= h && h < 240) {
+      r = 0;
+      g = x;
+      b = c;
+    } else if (240 <= h && h < 300) {
+      r = x;
+      g = 0;
+      b = c;
+    } else {
+      r = c;
+      g = 0;
+      b = x;
+    }
+
+    return new Color((int) ((r + m) * 255), (int) ((g + m) * 255), (int) ((b + m) * 255));
   }
 
   private Color shiftHue(Color color, float shiftDegrees) {

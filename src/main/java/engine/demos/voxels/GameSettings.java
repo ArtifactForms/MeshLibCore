@@ -2,9 +2,9 @@ package engine.demos.voxels;
 
 public class GameSettings {
 
-  public static boolean textureNoise = true;
+  public static boolean textureNoise = false;
 
-  public static boolean textureDebugText = false;
+  public static boolean textureDebugText = true;
   
   public static boolean textureBackground = false;
   

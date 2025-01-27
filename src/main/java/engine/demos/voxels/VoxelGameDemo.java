@@ -12,9 +12,6 @@ import engine.demos.voxels.client.event.EventManager;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
-import engine.scene.light.AmbientLight;
-import engine.scene.light.DirectionalLight;
-import math.Color;
 import math.Vector3f;
 import workspace.ui.Graphics;
 
@@ -28,7 +25,6 @@ public class VoxelGameDemo extends BasicApplication {
   }
 
   private float speed = GameSettings.flySpeed;
-  private boolean useDirectionalLight = false;
   private SkyBox skyBox;
   private Player player;
   private Scene scene;
@@ -50,7 +46,6 @@ public class VoxelGameDemo extends BasicApplication {
     player = new Player();
     scene = new Scene();
 
-    setupLights();
     setupSkyBox();
     setupTestCube();
     setupChunkManager();
@@ -80,7 +75,8 @@ public class VoxelGameDemo extends BasicApplication {
 
     display = new TextDisplay();
     SceneNode displayNode = new SceneNode("Display", display);
-    rootUI.addChild(displayNode);
+//    rootUI.addChild(displayNode);
+    
     //    SceneNode rayNode = new SceneNode("Ray", new RayVisualizer(camera));
     SceneNode rayNode = new SceneNode("Ray", new RayBlockDetector(camera, world, display));
     //    scene.addNode(rayNode);
@@ -97,9 +93,6 @@ public class VoxelGameDemo extends BasicApplication {
   private void setupCamera() {
     camera = new PerspectiveCamera();
     camera.setFarPlane(10000);
-
-    // Spawn
-    //    camera.getTransform().setPosition(-180, -17, -140);
 
     SmoothFlyByCameraControl control = new SmoothFlyByCameraControl(input, camera);
     control.setMoveSpeed(speed);
@@ -148,17 +141,6 @@ public class VoxelGameDemo extends BasicApplication {
   private void setupSkyBox() {
     skyBox = new SkyBox(4000);
     scene.addNode(skyBox);
-  }
-
-  private void setupLights() {
-    AmbientLight ambientLight = new AmbientLight();
-    //    scene.addLight(ambientLight);
-
-    if (!useDirectionalLight) return;
-
-    DirectionalLight directionalLight =
-        new DirectionalLight(Color.WHITE, new Vector3f(0.5f, 1, 0.5f));
-    scene.addLight(directionalLight);
   }
 
   @Override
