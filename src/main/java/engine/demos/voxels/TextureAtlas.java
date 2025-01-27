@@ -1,7 +1,6 @@
 package engine.demos.voxels;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -14,6 +13,7 @@ public class TextureAtlas {
 
   private static final Color DIRT_COLOR = new Color(151, 109, 76);
 
+  private int hueDegreePerCoulmn = 15;
   private boolean useNoise = GameSettings.textureNoise;
   private boolean drawDebugText = GameSettings.textureDebugText;
   private boolean fillTextureBackground = GameSettings.textureBackground;
@@ -136,13 +136,15 @@ public class TextureAtlas {
     for (int col = 0; col < 6; col++) {
       int baseX = col * tileSize;
 
-      // Base color
-      g2d.setColor(color);
+      // Base color with hue shifting
+      Color hueShiftedColor =
+          shiftHue(color, col * hueDegreePerCoulmn); // Adjust hue based on column index
+      g2d.setColor(hueShiftedColor);
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
 
       if (blockType == BlockType.GRASS_BLOCK && col > 0) {
         // Grass block sides
-        g2d.setColor(DIRT_COLOR);
+        g2d.setColor(shiftHue(DIRT_COLOR, col * hueDegreePerCoulmn));
         g2d.fillRect(baseX, baseY + (tileSize / 4), tileSize, tileSize - (tileSize / 4));
       }
 
@@ -153,6 +155,12 @@ public class TextureAtlas {
       g2d.setColor(new Color(0, 0, 0, 255 / 6 * col));
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
     }
+  }
+
+  private Color shiftHue(Color color, float shiftDegrees) {
+    float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+    float shiftedHue = (hsb[0] + shiftDegrees / 360f) % 1f;
+    return Color.getHSBColor(shiftedHue, hsb[1], hsb[2]);
   }
 
   public int[] getUVIndices(int blockId, int ordinal) {
