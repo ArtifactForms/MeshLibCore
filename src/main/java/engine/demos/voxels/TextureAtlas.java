@@ -13,7 +13,7 @@ public class TextureAtlas {
 
   private static final Color DIRT_COLOR = new Color(151, 109, 76);
 
-  private int hueDegreePerCoulmn = 15;
+  private int hueDegreePerCoulmn = 5;
   private boolean useNoise = GameSettings.textureNoise;
   private boolean drawDebugText = GameSettings.textureDebugText;
   private boolean fillTextureBackground = GameSettings.textureBackground;
@@ -144,11 +144,11 @@ public class TextureAtlas {
       float saturationAdjustment = 0.0f;
       if (col < 3) {
         // Shift towards yellow (columns 0, 1, 2) - lower saturation
-        saturationAdjustment = 1.0f - ((3 - col) * 0.2f); // Decrease saturation
+        saturationAdjustment = 1.0f - ((3 - col) * 0.05f); // Decrease saturation
         hueShiftedColor = shiftHue(color, -(3 - col) * hueDegreePerCoulmn); // Shift towards yellow
       } else {
         // Shift towards purple (columns 3, 4, 5) - higher saturation
-        saturationAdjustment = 0.5f + ((col - 2) * 0.2f); // Increase saturation
+        saturationAdjustment = 0.5f + ((col - 2) * 0.05f); // Increase saturation
         hueShiftedColor =
             shiftHue(
                 color, ((col - 2) * hueDegreePerCoulmn * shadowMultiplier)); // Shift towards purple
@@ -161,10 +161,10 @@ public class TextureAtlas {
       float brightnessAdjustment = 0.0f;
       if (col < 3) {
         // Increase brightness towards yellow (columns 0, 1, 2)
-        brightnessAdjustment = 1.0f + (0.02f * (3 - col)); // Increase brightness
+        brightnessAdjustment = 1.0f + (0.005f * (3 - col)); // Increase brightness
       } else {
         // Decrease brightness towards purple (columns 3, 4, 5)
-        brightnessAdjustment = 1.0f - (0.02f * (col - 2)); // Decrease brightness
+        brightnessAdjustment = 1.0f - (0.005f * (col - 2)); // Decrease brightness
       }
 
       // Adjust brightness
