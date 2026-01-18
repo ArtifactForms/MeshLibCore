@@ -359,6 +359,8 @@ public class SceneNode {
    *     a scene
    */
   public Scene getScene() {
+    if (scene != null) return scene;
+    if (isRoot() && scene == null) return null;
     return getRoot().getScene();
   }
 
