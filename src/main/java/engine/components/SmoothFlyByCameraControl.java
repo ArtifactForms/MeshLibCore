@@ -22,6 +22,7 @@ import math.Vector3f;
  *   <li>D: Move right (strafe)
  *   <li>SPACE: Move up
  *   <li>SHIFT: Move down
+ *   <li>CTRL: speed boost
  * </ul>
  *
  * <p>The mouse controls the camera's yaw (left-right) and pitch (up-down) based on the mouse
@@ -120,21 +121,30 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
     camera.getTransform().setRotation(rotation);
   }
 
-  /** Updates the target velocity based on the current keyboard input. */
+  /** Updates the target velocity based on the current keyboard input and speed modifiers. */
   private void updateTargetVelocity() {
     targetVelocity.set(0, 0, 0);
 
     Vector3f forward = camera.getTransform().getForward();
     Vector3f right = camera.getTransform().getRight();
 
+    // Movement keys
     if (input.isKeyPressed(Key.W)) targetVelocity.addLocal(forward);
     if (input.isKeyPressed(Key.S)) targetVelocity.addLocal(forward.negate());
     if (input.isKeyPressed(Key.A)) targetVelocity.addLocal(right.negate());
     if (input.isKeyPressed(Key.D)) targetVelocity.addLocal(right);
-    if (input.isKeyPressed(Key.SPACE)) targetVelocity.addLocal(0, -1, 0);
-    if (input.isKeyPressed(Key.SHIFT)) targetVelocity.addLocal(0, 1, 0);
 
-    targetVelocity.normalizeLocal();
+    // Vertical movement (-Y is up)
+    if (input.isKeyPressed(Key.SPACE)) targetVelocity.addLocal(0, -1, 0); // up
+    if (input.isKeyPressed(Key.SHIFT)) targetVelocity.addLocal(0, 1, 0); // down
+
+    // Speed boost modifier (CTRL)
+    float speedMultiplier = input.isKeyPressed(Key.CTRL) ? 3f : 1f;
+
+    // Normalize to prevent faster diagonal movement and apply speed multiplier
+    if (!targetVelocity.isZero()) {
+      targetVelocity.normalizeLocal().multLocal(speedMultiplier);
+    }
   }
 
   /**
