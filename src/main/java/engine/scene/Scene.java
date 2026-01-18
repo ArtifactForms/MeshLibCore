@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import engine.components.Transform;
 import engine.scene.audio.AudioListener;
 import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
@@ -46,12 +47,14 @@ public class Scene {
   /** The currently active camera that determines the scene's view transformation. */
   private Camera activeCamera;
 
+  /** The global transform of the scene for scaling, panning, etc. */
+  private Transform transform;
+
   private AudioSystem audioSystem;
 
   /** Constructs a {@code Scene} with a default name. */
   public Scene() {
     this(DEFAULT_NAME);
-    audioSystem = new AudioSystem();
   }
 
   /**
@@ -66,6 +69,8 @@ public class Scene {
     }
     this.name = name;
     this.background = new Color(0, 0, 0, 1);
+    this.transform = new Transform();
+    this.audioSystem = new AudioSystem();
   }
 
   /**
@@ -74,9 +79,8 @@ public class Scene {
    * @param node The node to add to the root level.
    */
   public void addNode(SceneNode node) {
-    if (node == null) {
-      throw new IllegalArgumentException("Node cannot be null.");
-    }
+    if (node == null) throw new IllegalArgumentException("Node cannot be null.");
+    node.setScene(this);
     synchronized (rootNodes) {
       rootNodes.add(node);
     }
@@ -122,6 +126,14 @@ public class Scene {
     updateAudio();
   }
 
+  /**
+   * Updates the audio system for the current frame.
+   *
+   * <p>This method synchronizes the {@link AudioListener} with the active camera and propagates
+   * audio updates to all root-level {@link SceneNode}s.
+   *
+   * <p>If no active camera is set, audio updates are skipped.
+   */
   private void updateAudio() {
     if (activeCamera == null) return;
 
@@ -136,12 +148,22 @@ public class Scene {
   }
 
   /**
-   * Render lights and nodes concurrently. However, rendering must still run on the main thread for
-   * compatibility with most rendering APIs.
+   * Renders the scene using the provided graphics context.
+   *
+   * <p>This includes applying the active camera, scene transform, clearing the background,
+   * rendering lights, and finally rendering all root-level scene nodes.
+   *
+   * <p>Rendering is expected to run on the main thread due to graphics API constraints.
+   *
+   * @param g The graphics context used for rendering.
    */
   public void render(Graphics g) {
     if (activeCamera != null) {
       g.applyCamera(activeCamera);
+    }
+
+    if (transform != null) {
+      transform.apply(g);
     }
 
     g.clear(background);
@@ -346,5 +368,26 @@ public class Scene {
       throw new IllegalArgumentException("Background color cannot be null.");
     }
     this.background = background;
+  }
+
+  /**
+   * Retrieves the transform of the scene.
+   *
+   * @return The current global transform of the scene.
+   */
+  public Transform getTransform() {
+    return transform;
+  }
+
+  /**
+   * Sets the transform of the scene.
+   *
+   * @param transform The global transform to apply to the scene.
+   */
+  public void setTransform(Transform transform) {
+    if (transform == null) {
+      throw new IllegalArgumentException("Transform cannot be null.");
+    }
+    this.transform = transform;
   }
 }

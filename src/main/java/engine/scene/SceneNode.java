@@ -39,14 +39,19 @@ public class SceneNode {
   /** The default name assigned to a scene node if no name is provided. */
   private static final String DEFAULT_NAME = "Untitled-Node";
 
+  /** Whether this node is active and participates in update/render cycles. */
   private boolean active;
 
   /** The name of this node, primarily intended for debugging and identification purposes. */
   private String name;
 
-  /** The parent node in the scene graph hierarchy. */
+  /** The scene this node belongs to, or {@code null} if not attached to a scene. */
+  private Scene scene;
+
+  /** The parent node in the scene graph hierarchy, or {@code null} if this is a root node. */
   private SceneNode parent;
 
+  /** The local transform of this node (position, rotation, scale). */
   private Transform transform;
 
   /** List of child nodes attached to this node. */
@@ -158,6 +163,14 @@ public class SceneNode {
     updateChildren(tpf);
   }
 
+  /**
+   * Updates all {@link AudioSource} components attached to this node and its children.
+   *
+   * <p>This method propagates audio updates through the scene graph hierarchy, allowing spatial
+   * audio sources to be updated relative to the listener and scene state.
+   *
+   * @param audioSystem The {@link AudioSystem} responsible for processing audio sources.
+   */
   public void updateAudio(AudioSystem audioSystem) {
     if (!active) return;
     audioSystem.update(getComponents(AudioSource.class));
@@ -173,7 +186,7 @@ public class SceneNode {
    */
   protected void updateComponents(float tpf) {
     if (!active) return;
-    for (Component component : components) {
+    for (Component component : new ArrayList<>(components)) {
       component.update(tpf);
     }
   }
@@ -334,6 +347,50 @@ public class SceneNode {
   }
 
   /**
+   * Returns the {@link Scene} this node belongs to.
+   *
+   * <p>The scene reference is resolved by traversing to the root {@code SceneNode} of the
+   * hierarchy. All nodes within the same scene graph share the same {@link Scene} instance.
+   *
+   * <p>This method is useful for components or systems that need access to global scene
+   * functionality such as spawning nodes, querying lights, or interacting with the active camera.
+   *
+   * @return the {@link Scene} this node is part of, or {@code null} if the node is not attached to
+   *     a scene
+   */
+  public Scene getScene() {
+    return getRoot().getScene();
+  }
+
+  /**
+   * Assigns the scene this node belongs to.
+   *
+   * <p>This method is intended for internal use by the {@link Scene} when nodes are added or
+   * removed.
+   *
+   * @param scene The scene this node is part of.
+   */
+  protected void setScene(Scene scene) {
+    this.scene = scene;
+  }
+
+  /**
+   * Detaches this node from its parent or scene.
+   *
+   * <p>If the node has a parent, it will be removed from the parent's children list. If the node is
+   * a root-level node, it will be removed from the scene entirely. In both cases, cleanup is
+   * performed as needed.
+   */
+  public void detach() {
+    if (parent != null) {
+      parent.removeChild(this);
+    } else if (scene != null) {
+      scene.removeNode(this);
+      cleanup();
+    }
+  }
+
+  /**
    * Retrieves the root node in the scene graph hierarchy.
    *
    * @return The root {@code SceneNode} in the hierarchy.
@@ -363,7 +420,13 @@ public class SceneNode {
     return children.isEmpty();
   }
 
-  /** Retrieves the Transform component associated with this node. */
+  /**
+   * Retrieves the {@link Transform} component associated with this node.
+   *
+   * <p>The transform defines the node's position, rotation, and scale in the scene graph.
+   *
+   * @return The transform component.
+   */
   public Transform getTransform() {
     return transform;
   }
