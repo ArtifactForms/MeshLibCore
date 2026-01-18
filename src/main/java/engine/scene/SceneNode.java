@@ -95,7 +95,7 @@ public class SceneNode {
     this(name);
     for (Component component : components) {
       if (component != null) {
-        this.components.add(component);
+        addComponent(component);
       }
     }
   }
