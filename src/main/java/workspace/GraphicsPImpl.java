@@ -82,6 +82,16 @@ public class GraphicsPImpl implements Graphics {
     ambientColor = math.Color.WHITE;
   }
 
+  //  public void disableDepthMask() {
+  //      g.hint(PApplet.DISABLE_DEPTH_MASK);
+  //  }
+  //
+  //  public void enableDepthMask() {
+  //      g.hint(PApplet.ENABLE_ASYNC_SAVEFRAME);
+  //  }
+
+  public void alph() {}
+
   @Override
   public void setAmbientColor(math.Color ambientColor) {
     this.ambientColor = ambientColor;
@@ -118,6 +128,11 @@ public class GraphicsPImpl implements Graphics {
     g.noFill();
     stroke();
     drawMeshFaces(mesh, false);
+  }
+
+  @Override
+  public void drawLine(Vector3f from, Vector3f to) {
+      drawLine(from.x, from.y, from.z, to.x, to.y, to.z);
   }
 
   @Override
@@ -797,6 +812,9 @@ public class GraphicsPImpl implements Graphics {
     Vector3f target = camera.getTarget();
     Vector3f eye = camera.getTransform().getPosition();
     g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0);
+
+    //    Vector3f scale = camera.getTransform().getScale();
+    //    g.scale(scale.x, scale.y, scale.z);
   }
 
   @Override
