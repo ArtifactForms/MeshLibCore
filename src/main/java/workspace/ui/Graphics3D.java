@@ -9,7 +9,9 @@ import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.vbo.VBO;
 import math.Matrix4f;
+import math.Vector3f;
 import mesh.Mesh3D;
+import processing.core.PApplet;
 
 public interface Graphics3D extends Graphics2D {
 
@@ -46,6 +48,8 @@ public interface Graphics3D extends Graphics2D {
   void setMaterial(Material material);
 
   void drawLine(float x1, float y1, float z1, float x2, float y2, float z2);
+  
+  void drawLine(Vector3f from, Vector3f to);
 
   void camera();
 
