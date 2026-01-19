@@ -7,6 +7,7 @@ import engine.input.Key;
 import engine.input.KeyInput;
 import engine.input.KeyListener;
 import engine.input.MouseInput;
+import engine.input.MouseListener;
 
 public class ProcessingInput implements Input {
 
@@ -113,5 +114,15 @@ public class ProcessingInput implements Input {
   @Override
   public void removeKeyListener(KeyListener listener) {
     keyInput.addKeyListener(listener);
+  }
+
+  @Override
+  public void addMouseListener(MouseListener listener) {
+    mouseInput.addMouseListener(listener);
+  }
+
+  @Override
+  public void removeMouseListener(MouseListener listener) {
+    mouseInput.removeMouseListener(listener);
   }
 }

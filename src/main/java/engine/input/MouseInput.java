@@ -2,6 +2,12 @@ package engine.input;
 
 public interface MouseInput {
 
+  static final int LEFT = 0;
+
+  static final int RIGHT = 1;
+
+  static final int CENTER = 2;
+
   float getScreenWidth();
 
   float getScreenHeight();
@@ -25,6 +31,10 @@ public interface MouseInput {
   float getMouseDeltaY();
 
   void updateMouseState(); // To track mouse-specific states
-  
+
   void center();
+
+  void addMouseListener(MouseListener listener);
+
+  void removeMouseListener(MouseListener listener);
 }
