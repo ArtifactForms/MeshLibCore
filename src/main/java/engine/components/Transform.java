@@ -57,11 +57,11 @@ public class Transform extends AbstractComponent {
    * @param g The graphics context to which this transformation is applied.
    */
   public void apply(Graphics g) {
+    g.translate(position.x, position.y, position.z); // Translate last
     g.scale(scale.x, scale.y, scale.z); // Scale first
     g.rotateX(rotation.x); // Then rotate
     g.rotateY(rotation.y);
     g.rotateZ(rotation.z);
-    g.translate(position.x, position.y, position.z); // Translate last
   }
 
   /**
@@ -219,6 +219,17 @@ public class Transform extends AbstractComponent {
     this.scale.set(sx, sy, sz);
   }
 
+  /**
+   * Sets a uniform scale for this transform.
+   *
+   * <p>This method sets the same scale factor on all three axes (X, Y, and Z), resulting in uniform
+   * scaling of the object in all directions.
+   *
+   * @param scale The uniform scale factor to apply.
+   */
+  public void setScale(float scale) {
+    this.scale.set(scale, scale, scale);
+  }
   /**
    * Retrieves the forward direction of the transform, based on its current rotation.
    *
