@@ -40,6 +40,10 @@ public abstract class BasicApplication implements Application {
 
   protected FpsGraph fpsGraph;
 
+  private Viewport viewport;
+
+  private ApplicationSettings settings;
+
   public BasicApplication() {
     this.timer = new Timer();
   }
@@ -58,6 +62,7 @@ public abstract class BasicApplication implements Application {
     if (launched) {
       throw new IllegalStateException("Application already launched.");
     }
+    this.settings = settings;
     launched = true;
     ApplicationContainer container = new ApplicationContainer(this);
     ProcessingApplication.launchApplication(container, settings);
@@ -76,8 +81,8 @@ public abstract class BasicApplication implements Application {
 
   @Override
   public void initialize() {
+    viewport = new Viewport(0, 0, settings.getWidth(), settings.getHeight());
     rootUI = new SceneNode("RootUI");
-
     initializeDebugOverlay();
     fpsGraph = new FpsGraph(new FpsHistory());
     onInitialize();
@@ -195,5 +200,9 @@ public abstract class BasicApplication implements Application {
 
   public void setDisplayInfo(boolean displayInfo) {
     this.displayInfo = displayInfo;
+  }
+
+  public Viewport getViewport() {
+    return viewport;
   }
 }
