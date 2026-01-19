@@ -2,34 +2,6 @@ package math;
 
 public class Vector3f {
 
-  public static final Vector3f BACK = new Vector3f(0, 0, -1);
-
-  public static final Vector3f DOWN = new Vector3f(0, -1, 0);
-
-  public static final Vector3f FORWARD = new Vector3f(0, 0, 1);
-
-  public static final Vector3f LEFT = new Vector3f(-1, 0, 0);
-
-  public static final Vector3f MAX =
-      new Vector3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
-
-  public static final Vector3f MIN =
-      new Vector3f(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
-
-  public static final Vector3f NAN = new Vector3f(Float.NaN, Float.NaN, Float.NaN);
-
-  public static final Vector3f NEGATIVE_INFINITY =
-      new Vector3f(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
-
-  public static final Vector3f ONE = new Vector3f(1, 1, 1);
-
-  public static final Vector3f POSITIVE_INFINITY =
-      new Vector3f(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
-
-  public static final Vector3f RIGHT = new Vector3f(1, 0, 0);
-
-  public static final Vector3f UP = new Vector3f(0, 1, 0);
-
   public static final Vector3f ZERO = new Vector3f(0, 0, 0);
 
   public float x;
@@ -38,33 +10,87 @@ public class Vector3f {
 
   public float z;
 
+  /** Default constructor. Initializes the vector to (0, 0, 0). */
   public Vector3f() {
-    x = y = z = 0;
+    this(0, 0, 0);
   }
 
-  public Vector3f(float value) {
-    x = y = z = value;
-  }
-
-  public Vector3f(float x, float y) {
-    this(x, y, 0);
-  }
-
+  /**
+   * Constructs a vector with the specified x, y, and z components.
+   *
+   * @param x The x component of the vector.
+   * @param y The y component of the vector.
+   * @param z The z component of the vector.
+   */
   public Vector3f(float x, float y, float z) {
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
-  public Vector3f(float[] values) {
-    x = values[0];
-    y = values[1];
-    z = values[2];
+  /**
+   * Copy constructor. Creates a new vector that is a copy of the given vector.
+   *
+   * @param other The vector to copy.
+   */
+  public Vector3f(Vector3f other) {
+    this.x = other.x;
+    this.y = other.y;
+    this.z = other.z;
   }
 
-  public Vector3f(Vector3f v) {
-    set(v);
+  public Vector3f addLocal(float x, float y, float z) {
+    this.x += x;
+    this.y += y;
+    this.z += z;
+    return this;
   }
+
+  /**
+   * Adds the specified vector to this vector and returns the result.
+   *
+   * @param other The vector to add.
+   * @return A new vector representing the sum of the two vectors.
+   * @throws IllegalArgumentException If the given vector is null.
+   */
+  public Vector3f add(Vector3f other) {
+    if (other == null) {
+      throw new IllegalArgumentException("Other vector cannot be null.");
+    }
+    return new Vector3f(x + other.x, y + other.y, z + other.z);
+  }
+
+  public Vector3f addLocal(Vector3f other) {
+    x += other.x;
+    y += other.y;
+    z += other.z;
+    return this;
+  }
+
+  public Vector3f subtract(Vector3f v) {
+    return new Vector3f(x - v.x, y - v.y, z - v.z);
+  }
+
+  public Vector3f subtractLocal(Vector3f v) {
+    x -= v.x;
+    y -= v.y;
+    z -= v.z;
+    return this;
+  }
+
+  //  public Vector3f(float value) {
+  //    x = y = z = value;
+  //  }
+
+  //  public Vector3f(float x, float y) {
+  //    this(x, y, 0);
+  //  }
+
+  //  public Vector3f(float[] values) {
+  //    x = values[0];
+  //    y = values[1];
+  //    z = values[2];
+  //  }
 
   /**
    * Rounds the x, y, and z components of this vector to the specified number of decimal places.
@@ -208,36 +234,18 @@ public class Vector3f {
   }
 
   public Vector3f negate() {
-    return new Vector3f(-x, -y, -z);
+    return new Vector3f(x, y, z).negateLocal();
   }
 
   public Vector3f negateLocal() {
-    x = -x;
-    y = -y;
-    z = -z;
+    x = x == 0 ? 0 : -x;
+    y = y == 0 ? 0 : -y;
+    z = z == 0 ? 0 : -z;
     return this;
   }
 
   public Vector3f add(float x, float y, float z) {
     return new Vector3f(this.x + x, this.y + y, this.z + z);
-  }
-
-  public Vector3f addLocal(float x, float y, float z) {
-    this.x += x;
-    this.y += y;
-    this.z += z;
-    return this;
-  }
-
-  public Vector3f add(Vector3f v) {
-    return new Vector3f(x + v.x, y + v.y, z + v.z);
-  }
-
-  public Vector3f addLocal(Vector3f v) {
-    x += v.x;
-    y += v.y;
-    z += v.z;
-    return this;
   }
 
   public Vector3f add(Vector3f v, Vector3f result) {
@@ -253,17 +261,6 @@ public class Vector3f {
     this.x -= x;
     this.y -= y;
     this.z -= z;
-    return this;
-  }
-
-  public Vector3f subtract(Vector3f v) {
-    return new Vector3f(x - v.x, y - v.y, z - v.z);
-  }
-
-  public Vector3f subtractLocal(Vector3f v) {
-    x -= v.x;
-    y -= v.y;
-    z -= v.z;
     return this;
   }
 
@@ -412,9 +409,9 @@ public class Vector3f {
 
   public Vector3f reciprocal() {
     return new Vector3f(
-        (x != 0 ? 1.0f / x : Float.POSITIVE_INFINITY),
-        (y != 0 ? 1.0f / y : Float.POSITIVE_INFINITY),
-        (z != 0 ? 1.0f / z : Float.POSITIVE_INFINITY));
+        x != 0.0f ? 1.0f / x : Math.copySign(Float.POSITIVE_INFINITY, x),
+        y != 0.0f ? 1.0f / y : Math.copySign(Float.POSITIVE_INFINITY, y),
+        z != 0.0f ? 1.0f / z : Math.copySign(Float.POSITIVE_INFINITY, z));
   }
 
   public Vector3f lerpLocal(Vector3f finalVec, float changeAmnt) {
@@ -478,12 +475,12 @@ public class Vector3f {
     return this;
   }
 
-  public Vector3f set(float[] values) {
-    x = values[0];
-    y = values[1];
-    z = values[2];
-    return this;
-  }
+  //  public Vector3f set(float[] values) {
+  //    x = values[0];
+  //    y = values[1];
+  //    z = values[2];
+  //    return this;
+  //  }
 
   public float getX() {
     return x;
@@ -512,6 +509,7 @@ public class Vector3f {
     return this;
   }
 
+  // Used
   public float get(int i) {
     switch (i) {
       case 0:
@@ -525,6 +523,14 @@ public class Vector3f {
     }
   }
 
+  /**
+   * Computes and returns the hash code for this vector. The hash code is calculated based on the
+   * vector's components using the `Float.floatToIntBits()` method to avoid precision issues with
+   * floating-point numbers. This ensures that vectors with the same values produce the same hash
+   * code.
+   *
+   * @return The hash code for this vector.
+   */
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -535,6 +541,15 @@ public class Vector3f {
     return result;
   }
 
+  /**
+   * Compares this vector to another object for equality. Two vectors are considered equal if they
+   * have the same class type and their corresponding components (x, y, and z) are equal, taking
+   * into account floating-point precision. This method uses `Float.floatToIntBits()` to compare the
+   * components to avoid issues with floating-point comparison.
+   *
+   * @param obj The object to compare this vector with.
+   * @return {@code true} if the object is equal to this vector; {@code false} otherwise.
+   */
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -547,6 +562,11 @@ public class Vector3f {
     return true;
   }
 
+  /**
+   * Returns a string representation of this vector.
+   *
+   * @return A string representing the vector.".
+   */
   @Override
   public String toString() {
     return "Vector3f [x=" + x + ", y=" + y + ", z=" + z + "]";
