@@ -596,6 +596,18 @@ public class Vector4f {
   }
 
   /**
+   * Returns the x, y, z components of this vector as a Vector3f.
+   *
+   * <p>This method simply drops the w component. It assumes that the vector is already in Euclidean
+   * space (i.e. w == 1 after perspective divide).
+   *
+   * @return a new Vector3f containing x, y, z.
+   */
+  public Vector3f xyz() {
+    return new Vector3f(x, y, z);
+  }
+
+  /**
    * Creates and returns a new copy of this vector. The clone method creates a new instance of the
    * vector, with the same component values. This allows for independent modification of the cloned
    * vector without affecting the original.
