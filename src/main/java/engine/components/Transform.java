@@ -263,6 +263,21 @@ public class Transform extends AbstractComponent {
   }
 
   /**
+   * Retrieves the up direction of the transform, based on its current rotation.
+   *
+   * <p>The up vector is calculated as the cross product of the right and forward vectors, ensuring
+   * an orthonormal basis.
+   *
+   * @return A normalized {@link Vector3f} representing the up direction of the object.
+   */
+  public Vector3f getUp() {
+    Vector3f forward = getForward();
+    Vector3f right = getRight();
+
+    return right.cross(forward).normalizeLocal();
+  }
+
+  /**
    * Sets the forward direction of this transform.
    *
    * <p>This method calculates the rotation angles (pitch and yaw) needed to make the object face
