@@ -76,7 +76,8 @@ public abstract class BasicApplication implements Application {
 
   @Override
   public void initialize() {
-    rootUI = new SceneNode();
+    rootUI = new SceneNode("RootUI");
+
     initializeDebugOverlay();
     fpsGraph = new FpsGraph(new FpsHistory());
     onInitialize();
@@ -109,22 +110,22 @@ public abstract class BasicApplication implements Application {
 
       lastZ = input.isKeyPressed(Key.Z);
     }
+
     timer.update();
     input.update();
+
     fpsGraph.update(timer);
     debugInfoUpdater.update(timer, activeScene, input);
 
     float tpf = timer.getTimePerFrame();
     tpf = Mathf.clamp(tpf, 0, MAX_TPF);
 
-    if (input != null) {
-      input.update();
-    }
     if (!isPaused) {
       if (activeScene != null) {
         activeScene.update(tpf);
       }
     }
+
     rootUI.update(tpf);
     onUpdate(tpf);
   }
