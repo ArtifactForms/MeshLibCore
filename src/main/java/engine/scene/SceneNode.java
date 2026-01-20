@@ -228,6 +228,30 @@ public class SceneNode {
   }
 
   /**
+   * Accepts a {@link SceneNodeVisitor} and traverses this node and all of its children in
+   * depth-first order.
+   *
+   * <p>This method implements the Visitor pattern for the scene graph. It allows external systems
+   * (such as raycasting, culling, or editor queries) to traverse the scene hierarchy without
+   * coupling those systems directly to the {@code SceneNode} implementation.
+   *
+   * <p>The visitor is first applied to this node, then recursively to all child nodes.
+   *
+   * @param visitor the visitor to apply to this node and its descendants
+   * @throws IllegalArgumentException if {@code visitor} is {@code null}
+   */
+  public void accept(SceneNodeVisitor visitor) {
+    if (visitor == null) {
+      throw new IllegalArgumentException("Visitorc cannot be null.");
+    }
+
+    visitor.visit(this);
+    for (SceneNode child : children) {
+      child.accept(visitor);
+    }
+  }
+
+  /**
    * Adds a child node to this node's hierarchy.
    *
    * <p>Prevents the addition of null nodes and ensures no duplicate child is added.
