@@ -259,6 +259,26 @@ public class Bounds {
     return max;
   }
 
+  /** @return the size of the bounds along the x-axis */
+  public float getWidth() {
+    return max.x - min.x;
+  }
+
+  /** @return the size of the bounds along the y-axis */
+  public float getHeight() {
+    return max.y - min.y;
+  }
+
+  /** @return the size of the bounds along the z-axis */
+  public float getDepth() {
+    return max.z - min.z;
+  }
+
+  /** @return the size of the bounding box on all axes */
+  public Vector3f getSize() {
+    return new Vector3f(max.x - min.x, max.y - min.y, max.z - min.z);
+  }
+
   /**
    * Returns a string representation of the Bounds object. The string includes the minimum and
    * maximum points of the bounds.
