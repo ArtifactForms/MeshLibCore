@@ -1,8 +1,11 @@
 package engine.components;
 
+import engine.demos.mydemo.RaycastComponent;
+import engine.demos.mydemo.RaycastHit;
 import engine.render.Material;
 import math.Bounds;
 import math.Color;
+import math.Ray3f;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.util.MeshBoundsCalculator;
@@ -22,7 +25,7 @@ import workspace.ui.Graphics;
  * @see Mesh3D
  * @see Bounds
  */
-public class Geometry extends AbstractComponent implements RenderableComponent {
+public class Geometry extends AbstractComponent implements RenderableComponent, RaycastComponent {
 
   /** The mesh representing the geometry of the object. */
   private Mesh3D mesh;
@@ -84,59 +87,31 @@ public class Geometry extends AbstractComponent implements RenderableComponent {
     material.apply(g);
     g.fillFaces(mesh);
     material.release(g);
-    debugRenderBounds(g);
   }
 
-  /**
-   * Debugs the rendering by drawing the bounding box of the mesh using the specified graphics
-   * context. The bounding box is rendered in red to help visualize the mesh's extents. This method
-   * can be used for debugging purposes to ensure the mesh is properly positioned and scaled in the
-   * scene.
-   *
-   * <p>Beyond debugging, the bounding box is useful for spatial partitioning techniques like
-   * frustum culling, as well as for determining the overall size and position of the mesh in the 3D
-   * world.
-   *
-   * @param g The {@link Graphics} context used for rendering the debug bounding box.
-   */
-  public void debugRenderBounds(Graphics g) {
-    if (bounds == null) {
-      return;
-    }
-
-    g.setColor(Color.RED);
-
-    // Extract corner points for readability
-    float minX = bounds.getMin().x;
-    float minY = bounds.getMin().y;
-    float minZ = bounds.getMin().z;
-    float maxX = bounds.getMax().x;
-    float maxY = bounds.getMax().y;
-    float maxZ = bounds.getMax().z;
-
-    // Draw lines for each edge of the bounding box
-    //    g.drawLine(minX, minY, minZ, maxX, minY, minZ);
-    //    g.drawLine(minX, minY, minZ, minX, maxY, minZ);
-    //    g.drawLine(minX, minY, minZ, minX, minY, maxZ);
-    //
-    //    g.drawLine(maxX, maxY, maxZ, minX, maxY, maxZ);
-    //    g.drawLine(maxX, maxY, maxZ, maxX, minY, maxZ);
-    //    g.drawLine(maxX, maxY, maxZ, maxX, maxY, minZ);
-    //
-    //    g.drawLine(minX, maxY, minZ, maxX, maxY, minZ);
-    //    g.drawLine(maxX, minY, minZ, maxX, maxY, minZ);
-    //    g.drawLine(maxX, minY, minZ, maxX, minY, maxZ);
-    //
-    //    g.drawLine(minX, maxY, maxZ, minX, minY, maxZ);
-    //    g.drawLine(maxX, minY, maxZ, minX, minY, maxZ);
-    //    g.drawLine(minX, maxY, maxZ, minX, maxY, minZ);
+  public Bounds getLocalBounds() {
+    return new Bounds(bounds.getMin(), bounds.getMax());
   }
 
-  public Bounds getBounds() {
+  public Bounds getWorldBounds() {
     Vector3f position = getOwner().getTransform().getPosition();
     Vector3f min = bounds.getMin().add(position);
     Vector3f max = bounds.getMax().add(position);
     return new Bounds(min, max);
+  }
+
+  @Override
+  public RaycastHit raycast(Ray3f ray) {
+    Bounds worldBounds = getWorldBounds();
+
+    Float distance = worldBounds.intersectRayDistance(ray);
+    if (distance == null) {
+      return null;
+    }
+
+    Vector3f hitPoint = ray.getOrigin().add(ray.getDirection().mult(distance));
+
+    return new RaycastHit(getOwner(), hitPoint, distance);
   }
 
   /**
