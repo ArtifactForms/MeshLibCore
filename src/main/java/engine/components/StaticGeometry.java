@@ -126,11 +126,13 @@ public class StaticGeometry extends AbstractComponent
    * @return the world-space bounding box of this geometry
    */
   public Bounds getWorldBounds() {
-    Vector3f position = getOwner().getTransform().getPosition();
-    Vector3f min = bounds.getMin().add(position);
-    Vector3f max = bounds.getMax().add(position);
-    return new Bounds(min, max);
-  }
+      Vector3f worldPos = getOwner().getWorldPosition();
+
+      Vector3f min = bounds.getMin().add(worldPos);
+      Vector3f max = bounds.getMax().add(worldPos);
+
+      return new Bounds(min, max);
+    }
 
   /**
    * Performs a raycast against this geometry using its world-space bounding box.

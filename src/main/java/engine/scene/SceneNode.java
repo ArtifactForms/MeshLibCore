@@ -8,6 +8,7 @@ import engine.components.RenderableComponent;
 import engine.components.Transform;
 import engine.scene.audio.AudioSource;
 import engine.scene.audio.AudioSystem;
+import math.Vector3f;
 import workspace.ui.Graphics;
 
 /**
@@ -455,6 +456,33 @@ public class SceneNode {
    */
   public Transform getTransform() {
     return transform;
+  }
+
+  /**
+   * Computes and returns the world-space position of this {@link SceneNode}.
+   *
+   * <p>The world position is derived by recursively accumulating the local positions of this node
+   * and all of its parent nodes up the scene graph hierarchy.
+   *
+   * <p>If this node has no parent, its world position is identical to its local position.
+   * Otherwise, the world position is computed as:
+   *
+   * <pre>
+   * worldPosition = parent.worldPosition + localPosition
+   * </pre>
+   *
+   * <p>This method currently accounts for translation only. Rotation and scaling are not applied
+   * and may be incorporated in a future world-transform implementation.
+   *
+   * <p>A new {@link Vector3f} instance is returned on each call to avoid leaking internal state.
+   *
+   * @return the world-space position of this node
+   */
+  public Vector3f getWorldPosition() {
+    if (parent == null) {
+      return transform.getPosition();
+    }
+    return parent.getWorldPosition().add(transform.getPosition());
   }
 
   /**
