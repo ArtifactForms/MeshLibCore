@@ -28,6 +28,8 @@ public class Scene {
   /** List of root-level nodes in the scene hierarchy for rendering and updates. */
   private final ConcurrentLinkedQueue<SceneNode> rootNodes = new ConcurrentLinkedQueue<>();
 
+  private final ConcurrentLinkedQueue<SceneNode> rootOverlays = new ConcurrentLinkedQueue<>();
+
   /** List of lights in the scene that are used for lighting calculations. */
   private final List<Light> lights = new ArrayList<>();
 
@@ -83,6 +85,14 @@ public class Scene {
     node.setScene(this);
     synchronized (rootNodes) {
       rootNodes.add(node);
+    }
+  }
+
+  public void addOverlay(SceneNode node) {
+    if (node == null) throw new IllegalArgumentException("Node cannot be null.");
+    node.setScene(this);
+    synchronized (rootOverlays) {
+      rootOverlays.add(node);
     }
   }
 
@@ -178,6 +188,16 @@ public class Scene {
         node.render(g);
       }
     }
+
+    g.disableDepthTest();
+
+    synchronized (rootOverlays) {
+      for (SceneNode node : rootOverlays) {
+        node.render(g);
+      }
+    }
+
+    g.enableDepthTest();
   }
 
   /**
@@ -256,6 +276,27 @@ public class Scene {
   public List<SceneNode> getRootNodes() {
     synchronized (rootNodes) {
       return new ArrayList<>(rootNodes);
+    }
+  }
+
+  /**
+   * Applies the given {@link SceneNodeVisitor} to all root nodes of the scene.
+   *
+   * <p>This method serves as the entry point for traversing the entire scene graph. Each root node
+   * accepts the visitor and recursively propagates it to its descendants.
+   *
+   * @param visitor the visitor to apply to the scene graph
+   * @throws IllegalArgumentException if {@code visitor} is {@code null}
+   */
+  public void visitRootNodes(SceneNodeVisitor visitor) {
+    if (visitor == null) {
+      throw new IllegalArgumentException("Visitor cannot be null.");
+    }
+
+    synchronized (rootNodes) {
+      for (SceneNode node : rootNodes) {
+        node.accept(visitor);
+      }
     }
   }
 
