@@ -1,6 +1,7 @@
 package engine.vbo;
 
 import engine.render.Material;
+import math.Bounds;
 import mesh.Mesh3D;
 
 public interface VBO {
@@ -17,6 +18,8 @@ public interface VBO {
   void delete();
 
   int getVertexCount();
-  
+
   int getFaceCount();
+
+  Bounds getBounds();
 }
