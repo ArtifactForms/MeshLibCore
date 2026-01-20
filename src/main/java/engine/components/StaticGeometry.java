@@ -1,9 +1,13 @@
 package engine.components;
 
+import engine.demos.mydemo.RaycastComponent;
+import engine.demos.mydemo.RaycastHit;
 import engine.render.Material;
 import engine.vbo.VBO;
 import engine.vbo.VBOFactory;
 import math.Bounds;
+import math.Ray3f;
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.util.MeshBoundsCalculator;
 import workspace.ui.Graphics;
@@ -22,7 +26,8 @@ import workspace.ui.Graphics;
  * @see Mesh3D
  * @see Bounds
  */
-public class StaticGeometry extends AbstractComponent implements RenderableComponent {
+public class StaticGeometry extends AbstractComponent
+    implements RenderableComponent, RaycastComponent {
 
   /** The bounding box of the mesh used for culling, spatial partitioning, and debugging. */
   private Bounds bounds;
@@ -57,8 +62,19 @@ public class StaticGeometry extends AbstractComponent implements RenderableCompo
   }
 
   public StaticGeometry(VBO vbo, Material material) {
+    validate(vbo, material);
+    this.bounds = vbo.getBounds();
     this.vbo = vbo;
     this.material = material;
+  }
+
+  private void validate(VBO vbo, Material material) {
+    if (vbo == null) {
+      throw new IllegalArgumentException("VBO cannot be null.");
+    }
+    if (material == null) {
+      throw new IllegalArgumentException("Material cannot be null.");
+    }
   }
 
   /**
@@ -85,6 +101,61 @@ public class StaticGeometry extends AbstractComponent implements RenderableCompo
   public void render(Graphics g) {
     material.apply(g);
     g.draw(vbo);
+  }
+
+  /**
+   * Returns a copy of the mesh's axis-aligned bounding box in local space.
+   *
+   * <p>The returned bounds are independent of the owning node's transform and should be treated as
+   * immutable by callers.
+   *
+   * @return the local-space bounding box of this geometry
+   */
+  public Bounds getLocalBounds() {
+    return new Bounds(bounds.getMin(), bounds.getMax());
+  }
+
+  /**
+   * Computes and returns the axis-aligned bounding box of this geometry in world space.
+   *
+   * <p>The world bounds are derived by translating the local bounds using the owning node's world
+   * position. Rotation and scaling are currently not applied.
+   *
+   * <p>This method allocates a new {@link Bounds} instance on each call.
+   *
+   * @return the world-space bounding box of this geometry
+   */
+  public Bounds getWorldBounds() {
+    Vector3f position = getOwner().getTransform().getPosition();
+    Vector3f min = bounds.getMin().add(position);
+    Vector3f max = bounds.getMax().add(position);
+    return new Bounds(min, max);
+  }
+
+  /**
+   * Performs a raycast against this geometry using its world-space bounding box.
+   *
+   * <p>This method implements a coarse intersection test using an axis-aligned bounding box (AABB).
+   * If the ray intersects the bounds, a {@link RaycastHit} is returned containing the hit point and
+   * distance along the ray.
+   *
+   * <p>No triangle-level intersection testing is performed.
+   *
+   * @param ray the ray in world space
+   * @return a {@link RaycastHit} if the ray intersects this geometry, or {@code null} otherwise
+   */
+  @Override
+  public RaycastHit raycast(Ray3f ray) {
+    Bounds worldBounds = getWorldBounds();
+
+    Float distance = worldBounds.intersectRayDistance(ray);
+    if (distance == null) {
+      return null;
+    }
+
+    Vector3f hitPoint = ray.getOrigin().add(ray.getDirection().mult(distance));
+
+    return new RaycastHit(getOwner(), hitPoint, distance);
   }
 
   @Override
