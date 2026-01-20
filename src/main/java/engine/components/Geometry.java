@@ -20,6 +20,7 @@ import workspace.ui.Graphics;
  * render method to be invoked during the render loop of the engine.
  *
  * @see RenderableComponent
+ * @see RaycastComponent
  * @see Material
  * @see Mesh3D
  * @see Bounds
@@ -76,10 +77,11 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
   }
 
   /**
-   * Renders the geometry by applying the material and drawing the mesh using the specified graphics
-   * context.
+   * Renders the geometry by applying its material and issuing draw calls for the mesh.
    *
-   * @param g The {@link Graphics} context used for rendering.
+   * <p>This method is invoked during the scene's render traversal.
+   *
+   * @param g the graphics context used for rendering
    */
   @Override
   public void render(Graphics g) {
@@ -88,10 +90,28 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
     material.release(g);
   }
 
+  /**
+   * Returns a copy of the mesh's axis-aligned bounding box in local space.
+   *
+   * <p>The returned bounds are independent of the owning node's transform and should be treated as
+   * immutable by callers.
+   *
+   * @return the local-space bounding box of this geometry
+   */
   public Bounds getLocalBounds() {
     return new Bounds(bounds.getMin(), bounds.getMax());
   }
 
+  /**
+   * Computes and returns the axis-aligned bounding box of this geometry in world space.
+   *
+   * <p>The world bounds are derived by translating the local bounds using the owning node's world
+   * position. Rotation and scaling are currently not applied.
+   *
+   * <p>This method allocates a new {@link Bounds} instance on each call.
+   *
+   * @return the world-space bounding box of this geometry
+   */
   public Bounds getWorldBounds() {
     Vector3f position = getOwner().getTransform().getPosition();
     Vector3f min = bounds.getMin().add(position);
@@ -99,6 +119,18 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
     return new Bounds(min, max);
   }
 
+  /**
+   * Performs a raycast against this geometry using its world-space bounding box.
+   *
+   * <p>This method implements a coarse intersection test using an axis-aligned bounding box (AABB).
+   * If the ray intersects the bounds, a {@link RaycastHit} is returned containing the hit point and
+   * distance along the ray.
+   *
+   * <p>No triangle-level intersection testing is performed.
+   *
+   * @param ray the ray in world space
+   * @return a {@link RaycastHit} if the ray intersects this geometry, or {@code null} otherwise
+   */
   @Override
   public RaycastHit raycast(Ray3f ray) {
     Bounds worldBounds = getWorldBounds();
@@ -114,10 +146,12 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
   }
 
   /**
-   * Updates the state of the geometry. This method is a placeholder for potential updates to the
-   * mesh state over time.
+   * Updates the geometry component.
    *
-   * @param tpf The time per frame used for the update (in seconds).
+   * <p>This implementation is currently a no-op but exists as an extension point for future dynamic
+   * geometry behavior.
+   *
+   * @param tpf time per frame in seconds
    */
   @Override
   public void onUpdate(float tpf) {
