@@ -4,7 +4,6 @@ import engine.demos.mydemo.RaycastComponent;
 import engine.demos.mydemo.RaycastHit;
 import engine.render.Material;
 import math.Bounds;
-import math.Color;
 import math.Ray3f;
 import math.Vector3f;
 import mesh.Mesh3D;
