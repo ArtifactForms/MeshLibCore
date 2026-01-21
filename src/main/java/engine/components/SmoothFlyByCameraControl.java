@@ -100,7 +100,7 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
     }
 
     updateTarget();
-    input.center();
+//    input.center();
   }
 
   /**
