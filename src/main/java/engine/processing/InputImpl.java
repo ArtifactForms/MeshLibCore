@@ -11,6 +11,7 @@ import engine.input.KeyInput;
 import engine.input.KeyListener;
 import engine.input.MouseInput;
 import engine.input.MouseListener;
+import engine.input.action.InputActions;
 
 public class InputImpl implements Input {
 
@@ -20,10 +21,13 @@ public class InputImpl implements Input {
 
   private final GamepadInput gamepadInput;
 
+  private InputActions actions;
+
   public InputImpl(KeyInput keyInput, MouseInput mouseInput, GamepadInput gamepadInput) {
     this.keyInput = keyInput;
     this.mouseInput = mouseInput;
     this.gamepadInput = gamepadInput;
+    this.actions = new InputActions();
   }
 
   @Override
@@ -110,6 +114,9 @@ public class InputImpl implements Input {
   public void update() {
     updateKeyState();
     updateMouseState();
+    updateGamepadState();
+
+    actions.update(this);
   }
 
   @Override
@@ -155,5 +162,10 @@ public class InputImpl implements Input {
   @Override
   public void removeGamepadListener(GamepadListener listener) {
     gamepadInput.removeGamepadListener(listener);
+  }
+
+  @Override
+  public InputActions getActions() {
+    return actions;
   }
 }

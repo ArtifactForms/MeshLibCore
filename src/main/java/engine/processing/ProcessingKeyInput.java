@@ -72,25 +72,24 @@ public class ProcessingKeyInput implements KeyInput {
     applet.registerMethod("keyEvent", this);
   }
 
-  /**
-   * Returns whether the given key is currently held down.
-   *
-   * @param key the key to check
-   * @return {@code true} if the key is currently down
-   */
   @Override
   public boolean isKeyPressed(Key key) {
     return inputState.isDown(key);
   }
 
-  /**
-   * Returns a snapshot of all currently pressed keys.
-   *
-   * @return a collection of keys that are currently down
-   */
   @Override
   public Collection<Key> getPressedKeys() {
     return new ArrayList<>(inputState.getDownKeys());
+  }
+
+  @Override
+  public boolean wasKeyPressed(Key key) {
+    return inputState.wasPressed(key);
+  }
+
+  @Override
+  public boolean wasKeyReleased(Key key) {
+    return inputState.wasReleased(key);
   }
 
   /**
@@ -151,38 +150,25 @@ public class ProcessingKeyInput implements KeyInput {
     }
   }
 
-  /** Handles a key press event. */
   private void handlePress(Key key, KeyEvent e) {
     inputState.onKeyPressed(key);
     fireKeyPressed(new engine.input.KeyEvent(key, e.getKey()));
   }
 
-  /** Handles a key release event. */
   private void handleRelease(Key key, KeyEvent e) {
     inputState.onKeyReleased(key);
     fireKeyReleased(new engine.input.KeyEvent(key, e.getKey()));
   }
 
-  /** Handles a key typed event. */
   private void handleTyped(Key key, KeyEvent e) {
     fireKeyTyped(new engine.input.KeyEvent(key, e.getKey()));
   }
 
-  /**
-   * Registers a {@link KeyListener}.
-   *
-   * @param listener the listener to add
-   */
   @Override
   public void addKeyListener(KeyListener listener) {
     if (listener != null) listeners.add(listener);
   }
 
-  /**
-   * Removes a previously registered {@link KeyListener}.
-   *
-   * @param listener the listener to remove
-   */
   @Override
   public void removeKeyListener(KeyListener listener) {
     listeners.remove(listener);
