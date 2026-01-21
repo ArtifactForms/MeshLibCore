@@ -1,5 +1,7 @@
 package engine.processing;
 
+import java.util.ArrayList;
+
 import engine.render.Material;
 import engine.resources.Texture;
 import engine.vbo.VBO;
@@ -20,9 +22,16 @@ public class VBOProcessing implements VBO {
   public VBOProcessing(PGraphics graphics) {
     this.graphics = graphics;
   }
+  
+  public VBOProcessing(PShape shape) {
+      this.shape = shape;
+      vertexCount = shape.getVertexCount();
+  }
 
   @Override
   public void create(Mesh3D mesh, Material material) {
+    ArrayList<Vector3f> vertexNormals = mesh.getVertexNormals();
+
     faceCount = mesh.getFaceCount();
     vertexCount = mesh.getVertexCount();
 
@@ -44,6 +53,12 @@ public class VBOProcessing implements VBO {
       int[] indices = f.indices;
       for (int i = 0; i < indices.length; i++) {
         Vector3f v = mesh.vertices.get(f.indices[i]);
+
+        if (!vertexNormals.isEmpty()) {
+          Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
+          shape.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
+        }
+
         int uvIndex = f.getUvIndexAt(i);
         if (uvIndex != -1) {
           Vector2f uv = mesh.getUvAt(uvIndex);

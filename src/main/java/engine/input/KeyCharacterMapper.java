@@ -75,6 +75,13 @@ public class KeyCharacterMapper {
     keyMap.put('9', Key.NUM_9);
 
     keyMap.put(' ', Key.SPACE);
+    keyMap.put((char) 8, Key.BACKSPACE);
+    keyMap.put((char) 9, Key.TAB);
+    keyMap.put((char) 10, Key.ENTER);
+    keyMap.put((char) 13, Key.RETURN);
+    keyMap.put((char) 27, Key.ESCAPE);
+    keyMap.put((char) 47, Key.BACK_SLASH);
+    keyMap.put((char) 127, Key.DELETE);
   }
 
   public static Key getMappedKey(char character) {

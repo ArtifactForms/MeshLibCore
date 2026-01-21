@@ -16,6 +16,8 @@ public class ApplicationSettings {
 
   private String title;
 
+  private boolean useGamePadInput;
+
   /**
    * Constructs an ApplicationSettings instance with default values:
    *
@@ -31,6 +33,7 @@ public class ApplicationSettings {
     this.height = 768;
     this.fullscreen = false;
     this.title = DEFAULT_TITLE;
+    this.useGamePadInput = false;
   }
 
   /**
@@ -131,5 +134,13 @@ public class ApplicationSettings {
       throw new IllegalArgumentException("Title cannot be null or empty.");
     }
     this.title = title;
+  }
+
+  public boolean isUseGamePadInput() {
+    return useGamePadInput;
+  }
+
+  public void setUseGamePadInput(boolean useGamePadInput) {
+    this.useGamePadInput = useGamePadInput;
   }
 }

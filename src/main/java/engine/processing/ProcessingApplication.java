@@ -36,6 +36,7 @@ public class ProcessingApplication extends PApplet {
     TextureManager.getInstance().setTextureLoader(new ProcessingTextureLoader(this));
     VBOFactory.getInstance()
         .setVBOCreationStrategy(new ProcessingVBOCreationStrategy(getGraphics()));
+    Processing.parent = this;
     container.setGraphics(g);
     getSurface().setTitle(settings.getTitle());
     setupInput();

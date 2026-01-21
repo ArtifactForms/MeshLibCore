@@ -1,5 +1,6 @@
 package workspace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import engine.processing.LightGizmoRenderer;
@@ -11,21 +12,23 @@ import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Font;
 import engine.resources.Image;
+import engine.resources.Model;
 import engine.resources.Texture;
 import engine.resources.TextureWrapMode;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
-import engine.scene.light.LightRenderer;
 import engine.vbo.VBO;
 import math.Matrix4f;
 import math.Vector2f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.SubMesh;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PImage;
+import processing.opengl.PGL;
 import processing.opengl.PGraphicsOpenGL;
 import processing.opengl.PShader;
 import workspace.render.Mesh3DRenderer;
@@ -46,7 +49,7 @@ public class GraphicsPImpl implements Graphics {
 
   private Mesh3DRenderer renderer;
 
-  private LightRenderer lightRenderer;
+  private LightRendererImpl lightRenderer;
 
   private LightGizmoRenderer lightGizmoRenderer;
 
@@ -78,6 +81,16 @@ public class GraphicsPImpl implements Graphics {
     color = Color.BLACK;
     ambientColor = math.Color.WHITE;
   }
+
+  //  public void disableDepthMask() {
+  //      g.hint(PApplet.DISABLE_DEPTH_MASK);
+  //  }
+  //
+  //  public void enableDepthMask() {
+  //      g.hint(PApplet.ENABLE_ASYNC_SAVEFRAME);
+  //  }
+
+  public void alph() {}
 
   @Override
   public void setAmbientColor(math.Color ambientColor) {
@@ -115,6 +128,11 @@ public class GraphicsPImpl implements Graphics {
     g.noFill();
     stroke();
     drawMeshFaces(mesh, false);
+  }
+
+  @Override
+  public void drawLine(Vector3f from, Vector3f to) {
+      drawLine(from.x, from.y, from.z, to.x, to.y, to.z);
   }
 
   @Override
@@ -172,6 +190,85 @@ public class GraphicsPImpl implements Graphics {
       this.font = font;
     }
     g.textFont(fontManager.loadFont(this.font));
+  }
+
+  @Override
+  public void render(Model model) {
+    Mesh3D mesh = model.getMesh();
+    List<Vector3f> vertexNormals = mesh.getVertexNormals();
+    for (SubMesh subMesh : model.getSubMeshes()) {
+      String materialName = subMesh.getMaterialName();
+      Material subMaterial = model.getMaterial(materialName);
+      List<Face3D> subFaces = subMesh.getFaces();
+      subMaterial.apply(this);
+
+      for (Face3D f : subFaces) {
+        if (f.indices.length == 3) {
+          g.beginShape(PApplet.TRIANGLES);
+        } else if (f.indices.length == 4) {
+          g.beginShape(PApplet.QUADS);
+        } else {
+          g.beginShape(PApplet.POLYGON);
+        }
+
+        applyTexture();
+
+        int[] indices = f.indices;
+        for (int i = 0; i < indices.length; i++) {
+          Vector3f v = mesh.vertices.get(f.indices[i]);
+
+          if (f.indices[i] < vertexNormals.size()) {
+            Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
+            g.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
+          }
+
+          int uvIndex = f.getUvIndexAt(i);
+          if (uvIndex != -1) {
+            Vector2f uv = mesh.getUvAt(uvIndex);
+            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+          } else {
+            g.vertex(v.getX(), v.getY(), v.getZ());
+          }
+        }
+        g.endShape();
+      }
+    }
+  }
+
+  /**
+   * Enables backface culling in the current graphics context.
+   *
+   * <p>Backface culling is a technique that skips rendering of polygons whose back sides are facing
+   * the camera. This can significantly improve rendering performance by reducing the number of
+   * polygons sent to the GPU for processing, especially in scenes where many faces are not visible
+   * (e.g., inside voxel structures).
+   *
+   * <p>This method sets the winding order of front faces to counter-clockwise (CCW), enables face
+   * culling, and specifies that back faces should be culled.
+   *
+   * <p>Preconditions: - This method assumes that the current `PGraphics` object is an instance of
+   * `PGraphicsOpenGL`.
+   */
+  public void enableFaceCulling() {
+    PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
+    pgl.pgl.frontFace(PGL.CCW); // Counter-clockwise winding order for front faces
+    pgl.pgl.enable(PGL.CULL_FACE); // Enable face culling
+    pgl.pgl.cullFace(PGL.BACK); // Cull back faces
+  }
+
+  /**
+   * Disables backface culling in the current graphics context.
+   *
+   * <p>This method turns off the face culling feature, ensuring that all polygons, regardless of
+   * their orientation relative to the camera, are rendered. Disabling face culling may be useful
+   * for debugging or for specific cases where both sides of polygons need to be visible.
+   *
+   * <p>Preconditions: - This method assumes that the current `PGraphics` object is an instance of
+   * `PGraphicsOpenGL`.
+   */
+  public void disableFaceCulling() {
+    PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
+    pgl.pgl.disable(PGL.CULL_FACE); // Disable face culling
   }
 
   /**
@@ -257,6 +354,58 @@ public class GraphicsPImpl implements Graphics {
   }
 
   private void drawMeshFaces(Mesh3D mesh, boolean texture) {
+
+    //      g.beginShape(PApplet.TRIANGLES);
+    //
+    //      for (Face3D f : mesh.getFaces()) {
+    ////	        if (texture) applyTexture();
+    //	        int[] indices = f.indices;
+    //	        for (int i = 0; i < indices.length; i++) {
+    //	          Vector3f v = mesh.vertices.get(f.indices[i]);
+    //	          int uvIndex = f.getUvIndexAt(i);
+    //	          if (uvIndex != -1) {
+    //	            Vector2f uv = mesh.getUvAt(uvIndex);
+    //	            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+    //	          } else {
+    //	            g.vertex(v.getX(), v.getY(), v.getZ());
+    //	          }
+    //	        }
+    //
+    //	      }
+    //      g.endShape();
+
+    if (mesh.hasVertexNormals()) {
+      drawWithNormals(mesh, texture);
+    } else {
+      for (Face3D f : mesh.getFaces()) {
+        if (f.indices.length == 3) {
+          g.beginShape(PApplet.TRIANGLES);
+        } else if (f.indices.length == 4) {
+          g.beginShape(PApplet.QUADS);
+        } else {
+          g.beginShape(PApplet.POLYGON);
+        }
+
+        if (texture) applyTexture();
+
+        int[] indices = f.indices;
+        for (int i = 0; i < indices.length; i++) {
+          Vector3f v = mesh.vertices.get(f.indices[i]);
+          int uvIndex = f.getUvIndexAt(i);
+          if (uvIndex != -1) {
+            Vector2f uv = mesh.getUvAt(uvIndex);
+            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+          } else {
+            g.vertex(v.getX(), v.getY(), v.getZ());
+          }
+        }
+        g.endShape();
+      }
+    }
+  }
+
+  private void drawWithNormals(Mesh3D mesh, boolean texture) {
+    ArrayList<Vector3f> vertexNormals = mesh.getVertexNormals();
     for (Face3D f : mesh.getFaces()) {
       if (f.indices.length == 3) {
         g.beginShape(PApplet.TRIANGLES);
@@ -271,6 +420,10 @@ public class GraphicsPImpl implements Graphics {
       int[] indices = f.indices;
       for (int i = 0; i < indices.length; i++) {
         Vector3f v = mesh.vertices.get(f.indices[i]);
+
+        Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
+        g.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
+
         int uvIndex = f.getUvIndexAt(i);
         if (uvIndex != -1) {
           Vector2f uv = mesh.getUvAt(uvIndex);
@@ -515,9 +668,10 @@ public class GraphicsPImpl implements Graphics {
     // Apply material properties
     setColor(color != null ? color : math.Color.WHITE); // Default to white
 
-    if (!material.isUseLighting()) {
-      g.noLights();
-      return;
+    if (material.isUseLighting()) {
+      lightRenderer.on();
+    } else {
+      lightRenderer.off();
     }
 
     // Extract material properties
@@ -595,7 +749,8 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void lightsOff() {
-    g.noLights();
+    //    g.noLights();
+    lightRenderer.off();
   }
 
   @Override
@@ -657,6 +812,9 @@ public class GraphicsPImpl implements Graphics {
     Vector3f target = camera.getTarget();
     Vector3f eye = camera.getTransform().getPosition();
     g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0);
+
+    //    Vector3f scale = camera.getTransform().getScale();
+    //    g.scale(scale.x, scale.y, scale.z);
   }
 
   @Override

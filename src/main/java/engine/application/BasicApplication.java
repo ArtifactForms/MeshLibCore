@@ -1,7 +1,6 @@
 package engine.application;
 
 import engine.Timer;
-import engine.components.FlyByCameraControl;
 import engine.components.SmoothFlyByCameraControl;
 import engine.debug.DebugInfoUpdater;
 import engine.debug.DebugOverlay;
@@ -14,9 +13,12 @@ import engine.resources.Font;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
+import math.Mathf;
 import workspace.ui.Graphics;
 
 public abstract class BasicApplication implements Application {
+
+  private static final float MAX_TPF = 1f / 60f;
 
   private boolean launched;
 
@@ -38,6 +40,10 @@ public abstract class BasicApplication implements Application {
 
   protected FpsGraph fpsGraph;
 
+  private Viewport viewport;
+
+  private ApplicationSettings settings;
+
   public BasicApplication() {
     this.timer = new Timer();
   }
@@ -56,6 +62,7 @@ public abstract class BasicApplication implements Application {
     if (launched) {
       throw new IllegalStateException("Application already launched.");
     }
+    this.settings = settings;
     launched = true;
     ApplicationContainer container = new ApplicationContainer(this);
     ProcessingApplication.launchApplication(container, settings);
@@ -74,7 +81,8 @@ public abstract class BasicApplication implements Application {
 
   @Override
   public void initialize() {
-    rootUI = new SceneNode();
+    viewport = new Viewport(0, 0, settings.getWidth(), settings.getHeight());
+    rootUI = new SceneNode("RootUI");
     initializeDebugOverlay();
     fpsGraph = new FpsGraph(new FpsHistory());
     onInitialize();
@@ -107,20 +115,25 @@ public abstract class BasicApplication implements Application {
 
       lastZ = input.isKeyPressed(Key.Z);
     }
+
     timer.update();
     input.update();
+    input.updateKeyState();
+    if (settings.isUseGamePadInput())
+	input.updateGamepadState();
+
     fpsGraph.update(timer);
     debugInfoUpdater.update(timer, activeScene, input);
 
     float tpf = timer.getTimePerFrame();
-    if (input != null) {
-      input.update();
-    }
+    tpf = Mathf.clamp(tpf, 0, MAX_TPF);
+
     if (!isPaused) {
       if (activeScene != null) {
         activeScene.update(tpf);
       }
     }
+
     rootUI.update(tpf);
     onUpdate(tpf);
   }
@@ -190,5 +203,9 @@ public abstract class BasicApplication implements Application {
 
   public void setDisplayInfo(boolean displayInfo) {
     this.displayInfo = displayInfo;
+  }
+
+  public Viewport getViewport() {
+    return viewport;
   }
 }

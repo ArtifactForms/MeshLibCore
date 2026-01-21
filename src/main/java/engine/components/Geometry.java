@@ -1,8 +1,11 @@
 package engine.components;
 
+import engine.demos.mydemo.RaycastComponent;
+import engine.demos.mydemo.RaycastHit;
 import engine.render.Material;
 import math.Bounds;
-import math.Color;
+import math.Ray3f;
+import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.util.MeshBoundsCalculator;
 import workspace.ui.Graphics;
@@ -17,11 +20,12 @@ import workspace.ui.Graphics;
  * render method to be invoked during the render loop of the engine.
  *
  * @see RenderableComponent
+ * @see RaycastComponent
  * @see Material
  * @see Mesh3D
  * @see Bounds
  */
-public class Geometry extends AbstractComponent implements RenderableComponent {
+public class Geometry extends AbstractComponent implements RenderableComponent, RaycastComponent {
 
   /** The mesh representing the geometry of the object. */
   private Mesh3D mesh;
@@ -73,69 +77,83 @@ public class Geometry extends AbstractComponent implements RenderableComponent {
   }
 
   /**
-   * Renders the geometry by applying the material and drawing the mesh using the specified graphics
-   * context.
+   * Renders the geometry by applying its material and issuing draw calls for the mesh.
    *
-   * @param g The {@link Graphics} context used for rendering.
+   * <p>This method is invoked during the scene's render traversal.
+   *
+   * @param g the graphics context used for rendering
    */
   @Override
   public void render(Graphics g) {
     material.apply(g);
     g.fillFaces(mesh);
     material.release(g);
-    debugRenderBounds(g);
   }
 
   /**
-   * Debugs the rendering by drawing the bounding box of the mesh using the specified graphics
-   * context. The bounding box is rendered in red to help visualize the mesh's extents. This method
-   * can be used for debugging purposes to ensure the mesh is properly positioned and scaled in the
-   * scene.
+   * Returns a copy of the mesh's axis-aligned bounding box in local space.
    *
-   * <p>Beyond debugging, the bounding box is useful for spatial partitioning techniques like
-   * frustum culling, as well as for determining the overall size and position of the mesh in the 3D
-   * world.
+   * <p>The returned bounds are independent of the owning node's transform and should be treated as
+   * immutable by callers.
    *
-   * @param g The {@link Graphics} context used for rendering the debug bounding box.
+   * @return the local-space bounding box of this geometry
    */
-  public void debugRenderBounds(Graphics g) {
-    if (bounds == null) {
-      return;
+  public Bounds getLocalBounds() {
+    return new Bounds(bounds.getMin(), bounds.getMax());
+  }
+
+  /**
+   * Computes and returns the axis-aligned bounding box of this geometry in world space.
+   *
+   * <p>The world bounds are derived by translating the local bounds using the owning node's world
+   * position. Rotation and scaling are currently not applied.
+   *
+   * <p>This method allocates a new {@link Bounds} instance on each call.
+   *
+   * @return the world-space bounding box of this geometry
+   */
+  public Bounds getWorldBounds() {
+      Vector3f worldPos = getOwner().getWorldPosition();
+
+      Vector3f min = bounds.getMin().add(worldPos);
+      Vector3f max = bounds.getMax().add(worldPos);
+
+      return new Bounds(min, max);
     }
 
-    g.setColor(Color.RED);
+  /**
+   * Performs a raycast against this geometry using its world-space bounding box.
+   *
+   * <p>This method implements a coarse intersection test using an axis-aligned bounding box (AABB).
+   * If the ray intersects the bounds, a {@link RaycastHit} is returned containing the hit point and
+   * distance along the ray.
+   *
+   * <p>No triangle-level intersection testing is performed.
+   *
+   * @param ray the ray in world space
+   * @return a {@link RaycastHit} if the ray intersects this geometry, or {@code null} otherwise
+   */
+  @Override
+  public RaycastHit raycast(Ray3f ray) {
+    Bounds worldBounds = getWorldBounds();
 
-    // Extract corner points for readability
-    float minX = bounds.getMin().x;
-    float minY = bounds.getMin().y;
-    float minZ = bounds.getMin().z;
-    float maxX = bounds.getMax().x;
-    float maxY = bounds.getMax().y;
-    float maxZ = bounds.getMax().z;
+    Float distance = worldBounds.intersectRayDistance(ray);
+    if (distance == null) {
+      return null;
+    }
 
-    // Draw lines for each edge of the bounding box
-//    g.drawLine(minX, minY, minZ, maxX, minY, minZ);
-//    g.drawLine(minX, minY, minZ, minX, maxY, minZ);
-//    g.drawLine(minX, minY, minZ, minX, minY, maxZ);
-//
-//    g.drawLine(maxX, maxY, maxZ, minX, maxY, maxZ);
-//    g.drawLine(maxX, maxY, maxZ, maxX, minY, maxZ);
-//    g.drawLine(maxX, maxY, maxZ, maxX, maxY, minZ);
-//
-//    g.drawLine(minX, maxY, minZ, maxX, maxY, minZ);
-//    g.drawLine(maxX, minY, minZ, maxX, maxY, minZ);
-//    g.drawLine(maxX, minY, minZ, maxX, minY, maxZ);
-//
-//    g.drawLine(minX, maxY, maxZ, minX, minY, maxZ);
-//    g.drawLine(maxX, minY, maxZ, minX, minY, maxZ);
-//    g.drawLine(minX, maxY, maxZ, minX, maxY, minZ);
+    Vector3f hitPoint = ray.getOrigin().add(ray.getDirection().mult(distance));
+
+    return new RaycastHit(getOwner(), hitPoint, distance);
   }
 
   /**
-   * Updates the state of the geometry. This method is a placeholder for potential updates to the
-   * mesh state over time.
+   * Updates the geometry component.
    *
-   * @param tpf The time per frame used for the update (in seconds).
+   * <p>This implementation is currently a no-op but exists as an extension point for future dynamic
+   * geometry behavior.
+   *
+   * @param tpf time per frame in seconds
    */
   @Override
   public void onUpdate(float tpf) {

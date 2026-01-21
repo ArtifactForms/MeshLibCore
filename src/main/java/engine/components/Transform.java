@@ -57,11 +57,11 @@ public class Transform extends AbstractComponent {
    * @param g The graphics context to which this transformation is applied.
    */
   public void apply(Graphics g) {
+    g.translate(position.x, position.y, position.z); // Translate last
     g.scale(scale.x, scale.y, scale.z); // Scale first
     g.rotateX(rotation.x); // Then rotate
     g.rotateY(rotation.y);
     g.rotateZ(rotation.z);
-    g.translate(position.x, position.y, position.z); // Translate last
   }
 
   /**
@@ -220,6 +220,17 @@ public class Transform extends AbstractComponent {
   }
 
   /**
+   * Sets a uniform scale for this transform.
+   *
+   * <p>This method sets the same scale factor on all three axes (X, Y, and Z), resulting in uniform
+   * scaling of the object in all directions.
+   *
+   * @param scale The uniform scale factor to apply.
+   */
+  public void setScale(float scale) {
+    this.scale.set(scale, scale, scale);
+  }
+  /**
    * Retrieves the forward direction of the transform, based on its current rotation.
    *
    * <p>The forward direction is calculated using the rotation values and represents the vector that
@@ -249,6 +260,21 @@ public class Transform extends AbstractComponent {
     float sinY = (float) Math.sin(rotation.y);
 
     return new Vector3f(-sinY, 0, cosY).normalizeLocal();
+  }
+
+  /**
+   * Retrieves the up direction of the transform, based on its current rotation.
+   *
+   * <p>The up vector is calculated as the cross product of the right and forward vectors, ensuring
+   * an orthonormal basis.
+   *
+   * @return A normalized {@link Vector3f} representing the up direction of the object.
+   */
+  public Vector3f getUp() {
+    Vector3f forward = getForward();
+    Vector3f right = getRight();
+
+    return right.cross(forward).normalizeLocal();
   }
 
   /**

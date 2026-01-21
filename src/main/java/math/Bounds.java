@@ -92,59 +92,107 @@ public class Bounds {
   /**
    * Tests whether the given ray intersects this axis-aligned bounding box (AABB).
    *
-   * <p>The method uses the slab method to compute the intersection by checking the ray's position
-   * and direction relative to the box's bounds in each axis (x, y, z). It accounts for parallel
-   * rays and updates intersection intervals to determine if there is an overlap.
+   * <p>This method performs a standard slab-based ray–AABB intersection test. The ray is tested
+   * against the three axis-aligned slabs (x, y, z), and an intersection interval {@code [tmin,
+   * tmax]} is computed incrementally.
    *
-   * @param ray the {@link Ray3f} to test for intersection with this AABB. The ray must have its
-   *     inverse direction precomputed and accessible via {@code ray.getDirectionInv()} for optimal
-   *     performance.
-   * @return {@code true} if the ray intersects the AABB, {@code false} otherwise.
+   * <p>The method is designed for real-time use cases such as object picking and visibility tests.
+   * It correctly handles:
+   *
+   * <ul>
+   *   <li>Rays starting inside the box
+   *   <li>Rays starting outside and intersecting the box
+   *   <li>Rays pointing away from the box
+   *   <li>Negative ray directions
+   *   <li>Rays parallel to one or more box faces
+   * </ul>
+   *
+   * <p>Limitations and design decisions:
+   *
+   * <ul>
+   *   <li>Rays with a zero-length direction vector are considered invalid and will never intersect.
+   *   <li>Degenerate boxes (where {@code min == max}) are treated as a single point and are only
+   *       intersected if the ray origin lies exactly on that point.
+   *   <li>Grazing intersections (exact edge or corner contact) are not guaranteed to be detected in
+   *       all floating-point configurations.
+   * </ul>
+   *
+   * <p>This behavior is intentional and suitable for visual picking and gameplay logic, where
+   * robustness and performance are preferred over exhaustive geometric edge-case handling.
+   *
+   * @param ray the {@link Ray3f} to test for intersection; must have a non-zero direction vector
+   * @return {@code true} if the ray intersects this bounding box, {@code false} otherwise
    */
   public boolean intersectsRay(Ray3f ray) {
-    if (ray.getDirection().isZero()) {
-      return false; // A ray with zero direction cannot intersect anything
-    }
+    return intersectRayDistance(ray) != null;
+  }
 
-    if (min.equals(max)) {
-      return ray.getOrigin().equals(min);
-    }
+  /**
+   * Computes the distance along the ray at which it first intersects this axis-aligned bounding box
+   * (AABB).
+   *
+   * <p>The returned value {@code t} represents the parameter in the ray equation {@code P(t) =
+   * origin + direction * t}. A positive value indicates an intersection in front of the ray origin.
+   *
+   * <p>If the ray starts inside the box, the distance to the exit point ({@code tmax}) is returned.
+   *
+   * <p>If the ray does not intersect the box, or if the entire box lies behind the ray origin, this
+   * method returns {@code null}.
+   *
+   * <p>Special cases:
+   *
+   * <ul>
+   *   <li>Rays with a zero-length direction return {@code null}.
+   *   <li>Parallel rays outside the corresponding slab return {@code null}.
+   *   <li>Degenerate boxes are only intersected if the ray origin lies exactly on the box point.
+   * </ul>
+   *
+   * @param ray the {@link Ray3f} to test; must have a non-zero direction
+   * @return the distance to the first intersection point, or {@code null} if no intersection occurs
+   */
+  public Float intersectRayDistance(Ray3f ray) {
+    Vector3f o = ray.getOrigin();
+    Vector3f d = ray.getDirection();
 
-    float tmin = 0.0f;
+    if (d.isZero()) return null;
+
+    float tmin = Float.NEGATIVE_INFINITY;
     float tmax = Float.POSITIVE_INFINITY;
 
-    for (int d = 0; d < 3; ++d) {
-      float invDir = ray.getDirectionInv().get(d);
+    for (int i = 0; i < 3; i++) {
+      float origin = o.get(i);
+      float dir = d.get(i);
+      float minB = min.get(i);
+      float maxB = max.get(i);
 
-      // Handle zero direction component
-      if (invDir == 0.0f) {
-        if (ray.getOrigin().get(d) < min.get(d) || ray.getOrigin().get(d) > max.get(d)) {
-          return false;
+      if (Math.abs(dir) < 1e-6f) {
+        // Ray parallel to slab
+        if (origin < minB || origin > maxB) {
+          return null;
         }
-        continue;
-      }
-
-      float bmin, bmax;
-      if (invDir < 0.0f) {
-        bmin = max.get(d);
-        bmax = min.get(d);
       } else {
-        bmin = min.get(d);
-        bmax = max.get(d);
-      }
+        float invD = 1.0f / dir;
+        float t1 = (minB - origin) * invD;
+        float t2 = (maxB - origin) * invD;
 
-      float dmin = (bmin - ray.getOrigin().get(d)) * invDir;
-      float dmax = (bmax - ray.getOrigin().get(d)) * invDir;
+        if (t1 > t2) {
+          float tmp = t1;
+          t1 = t2;
+          t2 = tmp;
+        }
 
-      tmin = Math.max(tmin, dmin);
-      tmax = Math.min(tmax, dmax);
+        tmin = Math.max(tmin, t1);
+        tmax = Math.min(tmax, t2);
 
-      if (tmin > tmax) {
-        return false;
+        if (tmin > tmax) return null;
       }
     }
 
-    return true;
+    // If box is behind ray
+    if (tmax < 0) return null;
+
+    // If inside box → tmin < 0 → use tmax
+    return tmin >= 0 ? tmin : tmax;
   }
 
   /**
@@ -209,6 +257,26 @@ public class Bounds {
    */
   public Vector3f getMax() {
     return max;
+  }
+
+  /** @return the size of the bounds along the x-axis */
+  public float getWidth() {
+    return max.x - min.x;
+  }
+
+  /** @return the size of the bounds along the y-axis */
+  public float getHeight() {
+    return max.y - min.y;
+  }
+
+  /** @return the size of the bounds along the z-axis */
+  public float getDepth() {
+    return max.z - min.z;
+  }
+
+  /** @return the size of the bounding box on all axes */
+  public Vector3f getSize() {
+    return new Vector3f(max.x - min.x, max.y - min.y, max.z - min.z);
   }
 
   /**

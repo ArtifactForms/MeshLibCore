@@ -1,8 +1,12 @@
 package engine.processing;
 
 import java.awt.Robot;
+import java.util.ArrayList;
+import java.util.List;
 
+import engine.input.MouseEvent;
 import engine.input.MouseInput;
+import engine.input.MouseListener;
 import processing.core.PApplet;
 
 public class ProcessingMouseInput implements MouseInput {
@@ -10,13 +14,15 @@ public class ProcessingMouseInput implements MouseInput {
   private final PApplet applet;
 
   private float mouseWheelDelta = 0;
-  
+
   private float mouseX;
   private float mouseY;
   private float pMouseX;
   private float pMouseY;
 
   private Robot robot;
+
+  private List<MouseListener> listeners;
 
   public ProcessingMouseInput(PApplet applet) {
     this.applet = applet;
@@ -25,17 +31,106 @@ public class ProcessingMouseInput implements MouseInput {
       robot = new Robot();
     } catch (Throwable e) {
     }
+    listeners = new ArrayList<MouseListener>();
   }
 
   public void mouseEvent(processing.event.MouseEvent event) {
-    if (event.getAction() == processing.event.MouseEvent.WHEEL) {
-      mouseWheelDelta = event.getCount();
+    MouseEvent e = new MouseEvent(event.getX(), event.getY(), mapButton(event.getButton()));
+
+    int action = event.getAction();
+
+    switch (action) {
+      case processing.event.MouseEvent.CLICK:
+        fireMouseClicked(e);
+        break;
+      case processing.event.MouseEvent.PRESS:
+        fireMousePressed(e);
+        break;
+      case processing.event.MouseEvent.MOVE:
+        fireMouseMoved(e);
+        break;
+      case processing.event.MouseEvent.DRAG:
+        fireMouseDragged(e);
+        break;
+      case processing.event.MouseEvent.RELEASE:
+        fireMouseReleased(e);
+        break;
+      case processing.event.MouseEvent.WHEEL:
+        mouseWheelDelta = event.getCount();
+        break;
+    }
+  }
+
+  private int mapButton(int button) {
+    switch (button) {
+      case PApplet.LEFT:
+        return LEFT;
+      case PApplet.RIGHT:
+        return RIGHT;
+      case PApplet.CENTER:
+        return CENTER;
+      default:
+        return -1;
     }
   }
 
   @Override
   public boolean isMousePressed(int button) {
-    return applet.mousePressed && applet.mouseButton == button;
+    int pButton;
+    switch (button) {
+      case LEFT:
+        pButton = PApplet.LEFT;
+        break;
+      case RIGHT:
+        pButton = PApplet.RIGHT;
+        break;
+      case CENTER:
+        pButton = PApplet.CENTER;
+        break;
+      default:
+        return false;
+    }
+    return applet.mousePressed && applet.mouseButton == pButton;
+  }
+
+  protected void fireMouseClicked(MouseEvent e) {
+    for (MouseListener listener : listeners) {
+      listener.onMouseClicked(e);
+    }
+  }
+
+  protected void fireMousePressed(MouseEvent e) {
+    for (MouseListener listener : listeners) {
+      listener.onMousePressed(e);
+    }
+  }
+
+  protected void fireMouseMoved(MouseEvent e) {
+    for (MouseListener listener : listeners) {
+      listener.onMouseMoved(e);
+    }
+  }
+
+  protected void fireMouseDragged(MouseEvent e) {
+    for (MouseListener listener : listeners) {
+      listener.onMouseDragged(e);
+    }
+  }
+
+  protected void fireMouseReleased(MouseEvent e) {
+    for (MouseListener listener : listeners) {
+      listener.onMouseReleased(e);
+    }
+  }
+
+  @Override
+  public void addMouseListener(MouseListener listener) {
+    if (listener != null) listeners.add(listener);
+  }
+
+  @Override
+  public void removeMouseListener(MouseListener listener) {
+    if (listener != null) listeners.add(listener);
   }
 
   @Override
@@ -56,22 +151,22 @@ public class ProcessingMouseInput implements MouseInput {
 
   @Override
   public float getMouseX() {
-      return mouseX;
+    return mouseX;
   }
 
   @Override
   public float getMouseY() {
-      return mouseY;
+    return mouseY;
   }
 
   @Override
   public float getLastMouseX() {
-      return pMouseX;
+    return pMouseX;
   }
 
   @Override
   public float getLastMouseY() {
-      return pMouseY;
+    return pMouseY;
   }
 
   @Override
@@ -81,7 +176,7 @@ public class ProcessingMouseInput implements MouseInput {
 
   @Override
   public float getMouseDeltaY() {
-      return mouseY - pMouseY;
+    return mouseY - pMouseY;
   }
 
   @Override
@@ -93,10 +188,10 @@ public class ProcessingMouseInput implements MouseInput {
 
   @Override
   public void updateMouseState() {
-      this.mouseX = applet.mouseX;
-      this.mouseY = applet.mouseY;
-      this.pMouseX = applet.pmouseX;
-      this.pMouseY = applet.pmouseY;
+    this.mouseX = applet.mouseX;
+    this.mouseY = applet.mouseY;
+    this.pMouseX = applet.pmouseX;
+    this.pMouseY = applet.pmouseY;
   }
 
   @Override

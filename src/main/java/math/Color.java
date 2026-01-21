@@ -324,6 +324,65 @@ public class Color {
   }
 
   /**
+   * Linearly interpolates between two colors.
+   *
+   * <p>The interpolation factor {@code t} is expected to be in the range [0, 1], where 0 returns
+   * {@code a}, 1 returns {@code b}, and values in between return a linear blend of the two colors.
+   *
+   * <p>The interpolation is applied independently to all RGBA components.
+   *
+   * @param a the start color
+   * @param b the target color
+   * @param t the interpolation factor (0..1)
+   * @return a new {@link Color} representing the interpolated color
+   */
+  public static Color lerp(Color a, Color b, float t) {
+    return lerp(a, b, t, null);
+  }
+
+  /**
+   * Linearly interpolates between two colors and stores the result in the given result color.
+   *
+   * <p>If {@code result} is {@code null}, a new {@link Color} instance is created.
+   *
+   * @param a the start color
+   * @param b the target color
+   * @param t the interpolation factor (0..1)
+   * @param result the color to store the result in, or {@code null}
+   * @return the interpolated color
+   */
+  public static Color lerp(Color a, Color b, float t, Color result) {
+    if (result == null) result = new Color();
+
+    t = Mathf.clamp01(t);
+
+    result.r = a.r + (b.r - a.r) * t;
+    result.g = a.g + (b.g - a.g) * t;
+    result.b = a.b + (b.b - a.b) * t;
+    result.a = a.a + (b.a - a.a) * t;
+
+    return result;
+  }
+
+  /**
+   * Linearly interpolates this color towards the given target color internally.
+   *
+   * @param target the target color
+   * @param t the interpolation factor (0..1)
+   * @return this color
+   */
+  public Color lerpLocal(Color target, float t) {
+    t = Mathf.clamp01(t);
+
+    r += (target.r - r) * t;
+    g += (target.g - g) * t;
+    b += (target.b - b) * t;
+    a += (target.a - a) * t;
+
+    return this;
+  }
+
+  /**
    * Returns a new float array containing the r,g,b,a components of this color in that order.
    *
    * @return the components of this color as array

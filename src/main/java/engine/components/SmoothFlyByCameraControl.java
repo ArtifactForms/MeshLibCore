@@ -22,6 +22,7 @@ import math.Vector3f;
  *   <li>D: Move right (strafe)
  *   <li>SPACE: Move up
  *   <li>SHIFT: Move down
+ *   <li>CTRL: speed boost
  * </ul>
  *
  * <p>The mouse controls the camera's yaw (left-right) and pitch (up-down) based on the mouse
@@ -31,8 +32,8 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
 
   private static final float DEFAULT_MOUSE_SENSITIVITY = 10f;
   private static final float DEFAULT_MOVE_SPEED = 30f;
-  private static final float MAX_VERTICAL_ANGLE = 80f;
-  private static final float MIN_VERTICAL_ANGLE = -80f;
+  private static final float MAX_VERTICAL_ANGLE = 80f; // pitch clamp
+  private static final float MIN_VERTICAL_ANGLE = -80f; // pitch clamp
 
   private final Vector3f forward = new Vector3f();
   private final Vector3f target = new Vector3f();
@@ -40,10 +41,11 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
   private float mouseSensitivity = DEFAULT_MOUSE_SENSITIVITY;
   private float smoothedMouseX = 0f;
   private float smoothedMouseY = 0f;
-  private float mouseSmoothingFactor = 0.7f;
+  private float mouseSmoothingFactor = 0.25f;
   private float moveSpeed = DEFAULT_MOVE_SPEED;
   private float acceleration = 10f;
-  private float deceleration = 5f;
+  private float deceleration = 8f;
+  private float speedBoostMultiplier = 3;
 
   private Input input;
   private Camera camera;
@@ -120,21 +122,30 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
     camera.getTransform().setRotation(rotation);
   }
 
-  /** Updates the target velocity based on the current keyboard input. */
+  /** Updates the target velocity based on the current keyboard input and speed modifiers. */
   private void updateTargetVelocity() {
     targetVelocity.set(0, 0, 0);
 
     Vector3f forward = camera.getTransform().getForward();
     Vector3f right = camera.getTransform().getRight();
 
+    // Movement keys
     if (input.isKeyPressed(Key.W)) targetVelocity.addLocal(forward);
     if (input.isKeyPressed(Key.S)) targetVelocity.addLocal(forward.negate());
     if (input.isKeyPressed(Key.A)) targetVelocity.addLocal(right.negate());
     if (input.isKeyPressed(Key.D)) targetVelocity.addLocal(right);
-    if (input.isKeyPressed(Key.SPACE)) targetVelocity.addLocal(0, -1, 0);
-    if (input.isKeyPressed(Key.SHIFT)) targetVelocity.addLocal(0, 1, 0);
 
-    targetVelocity.normalizeLocal();
+    // Vertical movement (-Y is up)
+    if (input.isKeyPressed(Key.SPACE)) targetVelocity.addLocal(0, -1, 0); // up
+    if (input.isKeyPressed(Key.SHIFT)) targetVelocity.addLocal(0, 1, 0); // down
+
+    // Speed boost modifier (CTRL)
+    float speedMultiplier = input.isKeyPressed(Key.CTRL) ? speedBoostMultiplier : 1f;
+
+    // Normalize to prevent faster diagonal movement and apply speed multiplier
+    if (!targetVelocity.isZero()) {
+      targetVelocity.normalizeLocal().multLocal(speedMultiplier);
+    }
   }
 
   /**
@@ -265,5 +276,25 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
    */
   public void setMouseSmoothingFactor(float mouseSmoothingFactor) {
     this.mouseSmoothingFactor = mouseSmoothingFactor;
+  }
+
+  /**
+   * Returns the current speed boost multiplier applied when the speed boost key (CTRL) is held.
+   *
+   * @return the current speed boost multiplier
+   */
+  public float getSpeedBoostMultiplier() {
+    return speedBoostMultiplier;
+  }
+
+  /**
+   * Sets the speed boost multiplier applied when the speed boost key (CTRL) is held.
+   *
+   * <p>For example, a value of 3.0 will make the camera move three times faster while holding CTRL.
+   *
+   * @param speedBoostMultiplier the new speed boost multiplier to set
+   */
+  public void setSpeedBoostMultiplier(float speedBoostMultiplier) {
+    this.speedBoostMultiplier = speedBoostMultiplier;
   }
 }

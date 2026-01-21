@@ -48,8 +48,8 @@ public class Ray3f {
    * <p>This method calculates the perpendicular distance from the given point to the ray. If the
    * point lies behind the origin of the ray, the distance from the point to the ray's origin is
    * returned. If the point lies along the ray's path (in the direction of the ray), the
-   * perpendicular distance is calculated. The ray is considered to extend infinitely in both
-   * directions from the origin.
+   * perpendicular distance is calculated. The ray extends infinitely in the positive direction from
+   * its origin.
    *
    * @param point The point in 3D space to compute the distance to (non-null).
    * @return The shortest distance from the ray to the point. If the point is behind the ray's
