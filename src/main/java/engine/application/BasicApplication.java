@@ -117,10 +117,8 @@ public abstract class BasicApplication implements Application {
     }
 
     timer.update();
-    input.update();
-    input.updateKeyState();
-    if (settings.isUseGamePadInput())
-	input.updateGamepadState();
+
+    if (settings.isUseGamePadInput()) input.updateGamepadState();
 
     fpsGraph.update(timer);
     debugInfoUpdater.update(timer, activeScene, input);
@@ -136,6 +134,9 @@ public abstract class BasicApplication implements Application {
 
     rootUI.update(tpf);
     onUpdate(tpf);
+
+    // IMPORTANT! Called after scene update!
+    input.update();
   }
 
   @Override
