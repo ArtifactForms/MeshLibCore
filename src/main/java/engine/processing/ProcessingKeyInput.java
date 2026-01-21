@@ -3,9 +3,9 @@ package engine.processing;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
+import engine.input.InputState;
 import engine.input.Key;
 import engine.input.KeyCharacterMapper;
 import engine.input.KeyInput;
@@ -13,14 +13,37 @@ import engine.input.KeyListener;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 
+/**
+ * Processing-specific implementation of {@link KeyInput}.
+ *
+ * <p>This class bridges Processing's {@link processing.event.KeyEvent} system with the engine's
+ * internal, framework-agnostic input model.
+ *
+ * <p>Key states are tracked using an {@link InputState}, which provides deterministic, frame-based
+ * input handling (down / pressed / released).
+ *
+ * <p>The implementation supports:
+ *
+ * <ul>
+ *   <li>Coded keys (SHIFT, CTRL, ALT, arrow keys)
+ *   <li>Alphanumeric keys (A–Z, 0–9) via keyCode mapping
+ *   <li>Special character keys (SPACE, ENTER, TAB, etc.) via character mapping
+ * </ul>
+ *
+ * <p>{@link #updateKeyState()} must be called exactly once per frame to advance the internal input
+ * state.
+ */
 public class ProcessingKeyInput implements KeyInput {
 
-  private static final HashMap<Integer, Key> codedKeysMap;
-
-  private List<KeyListener> listeners;
+  /**
+   * Mapping of Processing "coded" key codes to engine {@link Key} values.
+   *
+   * <p>Coded keys are reported by Processing using {@link PApplet#CODED} and must be resolved via
+   * {@link KeyEvent#getKeyCode()}.
+   */
+  private static final HashMap<Integer, Key> codedKeysMap = new HashMap<>();
 
   static {
-    codedKeysMap = new HashMap<Integer, Key>();
     codedKeysMap.put(PApplet.SHIFT, Key.SHIFT);
     codedKeysMap.put(PApplet.ALT, Key.ALT);
     codedKeysMap.put(PApplet.CONTROL, Key.CTRL);
@@ -30,88 +53,150 @@ public class ProcessingKeyInput implements KeyInput {
     codedKeysMap.put(PApplet.RIGHT, Key.ARROW_RIGHT);
   }
 
-  private HashSet<Key> keysDown;
+  /** Reference to the Processing applet used for focus checks. */
+  private PApplet applet;
 
+  /** Centralized frame-based input state. */
+  private final InputState inputState = new InputState();
+
+  /** Registered key listeners. */
+  private final List<KeyListener> listeners = new ArrayList<>();
+
+  /**
+   * Creates a new Processing key input handler and registers it with the given {@link PApplet}.
+   *
+   * @param applet the Processing applet to receive key events from
+   */
   public ProcessingKeyInput(PApplet applet) {
+    this.applet = applet;
     applet.registerMethod("keyEvent", this);
-    this.keysDown = new HashSet<Key>();
-    this.listeners = new ArrayList<KeyListener>();
   }
 
+  /**
+   * Returns whether the given key is currently held down.
+   *
+   * @param key the key to check
+   * @return {@code true} if the key is currently down
+   */
   @Override
   public boolean isKeyPressed(Key key) {
-    return keysDown.contains(key);
+    return inputState.isDown(key);
   }
 
+  /**
+   * Returns a snapshot of all currently pressed keys.
+   *
+   * @return a collection of keys that are currently down
+   */
   @Override
   public Collection<Key> getPressedKeys() {
-    synchronized (keysDown) {
-      return new ArrayList<Key>(keysDown);
-    }
+    return new ArrayList<>(inputState.getDownKeys());
   }
 
+  /**
+   * Updates the internal input state.
+   *
+   * <p>This method must be called exactly once per frame.
+   *
+   * <p>If the Processing window is not focused, the input state is cleared to prevent stuck keys
+   * (e.g. after Alt-Tab).
+   */
   @Override
   public void updateKeyState() {
-    // Handle frame-specific key state updates if necessary
+    if (!applet.focused) {
+      inputState.clear();
+    }
+
+    inputState.nextFrame();
   }
 
-  private Key getCodedKey(int keyCode) {
-    return codedKeysMap.getOrDefault(keyCode, Key.UNKNOWN);
-  }
+  /**
+   * Receives Processing key events and translates them into engine-level key events.
+   *
+   * @param e the Processing key event
+   */
+  public void keyEvent(KeyEvent e) {
+    Key key = Key.UNKNOWN;
 
-  private void map(KeyEvent e, Key key) {
+    // SPACE explicit (important!)
+    if (e.getKey() == ' ') {
+      key = Key.SPACE;
+    }
+    // CODED keys (SHIFT, CTRL, ARROWS, ...)
+    else if (e.getKey() == PApplet.CODED) {
+      key = codedKeysMap.getOrDefault(e.getKeyCode(), Key.UNKNOWN);
+    }
+    // Normal Keys → keyCode (A–Z, 0–9)
+    else {
+      key = KeyCharacterMapper.getMappedKey(e.getKeyCode());
+
+      // Fallback → char (ENTER, TAB, etc.)
+      if (key == Key.UNKNOWN) {
+        key = KeyCharacterMapper.getMappedKey(e.getKey());
+      }
+    }
+
     if (key == Key.UNKNOWN) return;
 
-    synchronized (keysDown) {
-      if (e.getAction() == KeyEvent.PRESS) {
-        keysDown.add(key);
-        fireKeyPressed(new engine.input.KeyEvent(key, e.getKey()));
-      }
-      if (e.getAction() == KeyEvent.RELEASE) {
-        keysDown.remove(key);
-        fireKeyReleased(new engine.input.KeyEvent(key, e.getKey()));
-      }
-      if (e.getAction() == KeyEvent.TYPE) {
-        fireKeyTyped(new engine.input.KeyEvent(key, e.getKey()));
-      }
+    switch (e.getAction()) {
+      case KeyEvent.PRESS:
+        handlePress(key, e);
+        break;
+      case KeyEvent.RELEASE:
+        handleRelease(key, e);
+        break;
+      case KeyEvent.TYPE:
+        handleTyped(key, e);
+        break;
     }
   }
 
-  public void keyEvent(KeyEvent e) {
-    if (e.getKey() == PApplet.CODED) {
-      Key key = getCodedKey(e.getKeyCode());
-      map(e, key);
-    } else {
-      Key key = KeyCharacterMapper.getMappedKey(e.getKey());
-      map(e, key);
-    }
+  /** Handles a key press event. */
+  private void handlePress(Key key, KeyEvent e) {
+    inputState.onKeyPressed(key);
+    fireKeyPressed(new engine.input.KeyEvent(key, e.getKey()));
   }
 
-  protected void fireKeyPressed(engine.input.KeyEvent e) {
-    for (KeyListener listener : listeners) {
-      listener.onKeyPressed(e);
-    }
+  /** Handles a key release event. */
+  private void handleRelease(Key key, KeyEvent e) {
+    inputState.onKeyReleased(key);
+    fireKeyReleased(new engine.input.KeyEvent(key, e.getKey()));
   }
 
-  protected void fireKeyReleased(engine.input.KeyEvent e) {
-    for (KeyListener listener : listeners) {
-      listener.onKeyReleased(e);
-    }
+  /** Handles a key typed event. */
+  private void handleTyped(Key key, KeyEvent e) {
+    fireKeyTyped(new engine.input.KeyEvent(key, e.getKey()));
   }
 
-  protected void fireKeyTyped(engine.input.KeyEvent e) {
-    for (KeyListener listener : listeners) {
-      listener.onKeyTyped(e);
-    }
-  }
-
+  /**
+   * Registers a {@link KeyListener}.
+   *
+   * @param listener the listener to add
+   */
   @Override
   public void addKeyListener(KeyListener listener) {
     if (listener != null) listeners.add(listener);
   }
 
+  /**
+   * Removes a previously registered {@link KeyListener}.
+   *
+   * @param listener the listener to remove
+   */
   @Override
   public void removeKeyListener(KeyListener listener) {
-    if (listener != null) listeners.remove(listener);
+    listeners.remove(listener);
+  }
+
+  protected void fireKeyPressed(engine.input.KeyEvent e) {
+    for (KeyListener l : listeners) l.onKeyPressed(e);
+  }
+
+  protected void fireKeyReleased(engine.input.KeyEvent e) {
+    for (KeyListener l : listeners) l.onKeyReleased(e);
+  }
+
+  protected void fireKeyTyped(engine.input.KeyEvent e) {
+    for (KeyListener l : listeners) l.onKeyTyped(e);
   }
 }
