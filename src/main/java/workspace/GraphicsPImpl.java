@@ -132,7 +132,7 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void drawLine(Vector3f from, Vector3f to) {
-      drawLine(from.x, from.y, from.z, to.x, to.y, to.z);
+    drawLine(from.x, from.y, from.z, to.x, to.y, to.z);
   }
 
   @Override

@@ -2,6 +2,9 @@ package engine.processing;
 
 import java.util.Collection;
 
+import engine.input.Gamepad;
+import engine.input.GamepadInput;
+import engine.input.GamepadListener;
 import engine.input.Input;
 import engine.input.Key;
 import engine.input.KeyInput;
@@ -9,15 +12,18 @@ import engine.input.KeyListener;
 import engine.input.MouseInput;
 import engine.input.MouseListener;
 
-public class ProcessingInput implements Input {
+public class InputImpl implements Input {
 
   private final KeyInput keyInput;
 
   private final MouseInput mouseInput;
 
-  public ProcessingInput(KeyInput keyInput, MouseInput mouseInput) {
+  private final GamepadInput gamepadInput;
+
+  public InputImpl(KeyInput keyInput, MouseInput mouseInput, GamepadInput gamepadInput) {
     this.keyInput = keyInput;
     this.mouseInput = mouseInput;
+    this.gamepadInput = gamepadInput;
   }
 
   @Override
@@ -124,5 +130,30 @@ public class ProcessingInput implements Input {
   @Override
   public void removeMouseListener(MouseListener listener) {
     mouseInput.removeMouseListener(listener);
+  }
+
+  @Override
+  public void updateGamepadState() {
+    gamepadInput.updateGamepadState();
+  }
+
+  @Override
+  public Collection<Gamepad> getGamepads() {
+    return gamepadInput.getGamepads();
+  }
+
+  @Override
+  public Gamepad getGamepad(int index) {
+    return gamepadInput.getGamepad(index);
+  }
+
+  @Override
+  public void addGamepadListener(GamepadListener listener) {
+    gamepadInput.addGamepadListener(listener);
+  }
+
+  @Override
+  public void removeGamepadListener(GamepadListener listener) {
+    gamepadInput.removeGamepadListener(listener);
   }
 }

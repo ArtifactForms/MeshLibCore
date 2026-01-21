@@ -22,7 +22,7 @@ public class Hotbar extends AbstractComponent implements RenderableComponent {
 
   // Hotbar configuration
   private static final int SCALE = 4;
-  private static final int SIZE = 19;
+  private static final int SIZE = 16;
   private static final int BORDER = 1;
   private static final int MARGIN = 20;
   private static final int SLOTS = 9;
@@ -97,10 +97,15 @@ public class Hotbar extends AbstractComponent implements RenderableComponent {
       g2d.setColor(java.awt.Color.LIGHT_GRAY);
       g2d.drawRoundRect(x, 0, SIZE - 1, SIZE - 1, 2, 2);
 
-      // Slot decorations
+      // Slot highlights
       g2d.setColor(java.awt.Color.GRAY);
-      g2d.drawLine(x + 2, 1, x + SIZE - 2, 1); // Horizontal
-      g2d.drawLine(x + 1, 1, x + 1, SIZE - 2); // Vertical
+      g2d.drawLine(x + 2, 1, x + SIZE - 2, 1); // Horizontal top
+      g2d.drawLine(x + 1, 1, x + 1, SIZE - 2); // Vertical top
+
+      //      // Slot shadows
+      g2d.setColor(java.awt.Color.DARK_GRAY);
+      g2d.drawLine(x + 2, SIZE - 2, x + SIZE - 2, SIZE - 2); // Horizontal bottom
+      g2d.drawLine(x + SIZE - 2, 2, x + SIZE - 2, SIZE - 2); // Vertical bottom
     }
   }
 
@@ -136,5 +141,4 @@ public class Hotbar extends AbstractComponent implements RenderableComponent {
   public void onUpdate(float tpf) {
     // Optional: Add update logic (e.g., animations or interactions)
   }
-  
 }

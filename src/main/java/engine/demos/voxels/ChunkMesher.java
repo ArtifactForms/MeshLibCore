@@ -29,11 +29,11 @@ public class ChunkMesher {
 
   private static ArrayList<Vector2f> uvs;
   public static Material sharedMaterial;
-  private static TextureAtlas textureAtlas;
+  private static TextureAtlas2 textureAtlas;
 
   static {
     sharedMaterial = new Material();
-    textureAtlas = new TextureAtlas();
+    textureAtlas = new TextureAtlas2();
     Texture texture = textureAtlas.getTexture();
     texture.setFilterMode(FilterMode.POINT);
     sharedMaterial.setDiffuseTexture(texture);

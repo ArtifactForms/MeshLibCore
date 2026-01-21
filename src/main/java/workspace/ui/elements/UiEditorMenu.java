@@ -17,10 +17,10 @@ public class UiEditorMenu extends UiComponent {
 
   /** Constructs a new {@code UiEditorMenu} with default styles. */
   public UiEditorMenu() {
-    setText("");
-    setForeground(UiValues.getColor(UiConstants.KEY_MENU_FOREGROUND_COLOR));
-    setBackground(UiValues.getColor(UiConstants.KEY_MENU_BACKGROUND_COLOR));
-    setRenderer(new EditorMenuRenderer());
+//    setText("");
+//    setForeground(UiValues.getColor(UiConstants.KEY_MENU_FOREGROUND_COLOR));
+//    setBackground(UiValues.getColor(UiConstants.KEY_MENU_BACKGROUND_COLOR));
+//    setRenderer(new EditorMenuRenderer());
   }
 
   /**

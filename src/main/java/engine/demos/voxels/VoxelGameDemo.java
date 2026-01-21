@@ -5,13 +5,14 @@ import engine.application.BasicApplication;
 import engine.components.ControlWASD;
 import engine.components.CrossLineReticle;
 import engine.components.SmoothFlyByCameraControl;
-import engine.demos.skybox.DefaultTestCube;
 import engine.demos.skybox.SkyBox;
 import engine.demos.voxels.client.Client;
 import engine.demos.voxels.client.event.EventManager;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
+import engine.scene.nodes.DefaultTestCube;
+import math.Color;
 import math.Vector3f;
 import workspace.ui.Graphics;
 
@@ -42,9 +43,15 @@ public class VoxelGameDemo extends BasicApplication {
 
   @Override
   public void onInitialize() {
+    //    setDisplayInfo(false);
+
     client = new Client();
     player = new Player();
     scene = new Scene();
+
+    setupPlayer();
+
+    scene.setBackground(Color.DARK_GRAY);
 
     setupSkyBox();
     setupTestCube();
@@ -52,10 +59,9 @@ public class VoxelGameDemo extends BasicApplication {
     world = new World(chunkManager, seed);
     setupUI();
     setupCamera();
-    
+
     SceneNode hotbarNode = new SceneNode("Hotbar", new Hotbar());
     rootUI.addChild(hotbarNode);
-    
 
     chunkBorders = new SceneNode("Chunk-Borders");
     chunkBorders.addComponent(new ChunkVisualizer1());
@@ -75,12 +81,15 @@ public class VoxelGameDemo extends BasicApplication {
 
     display = new TextDisplay();
     SceneNode displayNode = new SceneNode("Display", display);
-//    rootUI.addChild(displayNode);
-    
+    rootUI.addChild(displayNode);
+
     //    SceneNode rayNode = new SceneNode("Ray", new RayVisualizer(camera));
     SceneNode rayNode = new SceneNode("Ray", new RayBlockDetector(camera, world, display));
     //    scene.addNode(rayNode);
 
+  }
+
+  private void setupPlayer() {
     ControlWASD control = new ControlWASD(input);
     control.mapArrowKeys();
     control.setSpeed(16);
@@ -93,15 +102,22 @@ public class VoxelGameDemo extends BasicApplication {
   private void setupCamera() {
     camera = new PerspectiveCamera();
     camera.setFarPlane(10000);
-
+    //
     SmoothFlyByCameraControl control = new SmoothFlyByCameraControl(input, camera);
     control.setMoveSpeed(speed);
     SceneNode camNode = new SceneNode("Camera", control);
+
+    camera.setTarget(new Vector3f(0, 0, 0));
+    camera.getTransform().setPosition(0, -200, 400);
+
+    //    SceneNode camNode = new SceneNode();
+    //    camNode.addComponent(new EditorControl(input, scene, rootUI));
+
     scene.addNode(camNode);
     scene.setActiveCamera(camera);
 
     Vector3f camPosition = camera.getTransform().getPosition();
-    player.setPosition(camPosition);
+    //    player.setPosition(camPosition);
 
     eventManager = new EventManager();
     //    NetworkListener networkListener = new NetworkListener();
@@ -134,7 +150,7 @@ public class VoxelGameDemo extends BasicApplication {
 
   private void setupTestCube() {
     DefaultTestCube cube = new DefaultTestCube(20);
-    cube.getTransform().setPosition(-100, -200, 0);
+    cube.getTransform().setPosition(0, -200, 0);
     scene.addNode(cube);
   }
 
@@ -164,13 +180,13 @@ public class VoxelGameDemo extends BasicApplication {
       BlockType type = chunk.getBlock(localX, yP, localZ);
 
       display.setText("Chunk: " + chunk.getChunkX() + "," + chunk.getChunkZ() + " Block: " + type);
-
+      
       playerNode.getTransform().setPosition(position.x, -yP, position.z);
     }
 
     Vector3f camPosition = getActiveScene().getActiveCamera().getTransform().getPosition();
     player.setPosition(camPosition);
-    skyBox.getTransform().setPosition(camPosition);
+    //    skyBox.getTransform().setPosition(camPosition);
 
     //    Vector3f playerPosition = player.getPosition();
     //    int x = (int) (playerPosition.x / Chunk.WIDTH) * Chunk.WIDTH + Chunk.WIDTH / 2;
@@ -179,7 +195,9 @@ public class VoxelGameDemo extends BasicApplication {
   }
 
   @Override
-  public void onRender(Graphics g) {}
+  public void onRender(Graphics g) {
+
+  }
 
   @Override
   public void onCleanup() {}

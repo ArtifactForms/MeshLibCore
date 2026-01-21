@@ -45,7 +45,7 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
   private float moveSpeed = DEFAULT_MOVE_SPEED;
   private float acceleration = 10f;
   private float deceleration = 8f;
-  private float speedBoostMultiplier = 3;
+  private float speedBoostMultiplier = 3f;
 
   private Input input;
   private Camera camera;

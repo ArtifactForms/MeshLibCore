@@ -2,6 +2,7 @@ package engine.processing;
 
 import engine.application.ApplicationContainer;
 import engine.application.ApplicationSettings;
+import engine.input.GamepadInput;
 import engine.input.Input;
 import engine.input.KeyInput;
 import engine.input.MouseInput;
@@ -47,7 +48,8 @@ public class ProcessingApplication extends PApplet {
   private void setupInput() {
     KeyInput keyInput = new ProcessingKeyInput(this);
     MouseInput mouseInput = new ProcessingMouseInput(this);
-    Input input = new ProcessingInput(keyInput, mouseInput);
+    GamepadInput gamepadInput = new JInputGamepadInput();
+    Input input = new InputImpl(keyInput, mouseInput, gamepadInput);
     container.setInput(input);
   }
 

@@ -33,7 +33,10 @@ public class Sound {
 
   public void play() {
     if (clip != null) {
-      clip.setFramePosition(0); // Rewind to the start
+      if (clip.isRunning()) {
+        clip.stop();
+      }
+      clip.setFramePosition(0);
       clip.start();
     }
   }

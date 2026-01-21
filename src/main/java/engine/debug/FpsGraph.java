@@ -53,7 +53,15 @@ public class FpsGraph {
     }
 
     // Draw axis labels
+    g.setColor(Color.BLACK);
+    renderAxisLabels(g, x + 1, y + 1, height);
     g.setColor(Color.WHITE);
+    renderAxisLabels(g, x, y, height);
+  }
+
+  private void renderAxisLabels(Graphics g, int x, int y, int height) {
+    float maxFps = fpsHistory.getMaxFps();
+
     g.text("0 FPS", x, y + height + 15); // Min FPS label
     g.text((int) maxFps + " FPS", x, y - 5); // Max FPS label
   }

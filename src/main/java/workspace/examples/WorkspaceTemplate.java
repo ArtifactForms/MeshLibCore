@@ -7,36 +7,36 @@ import workspace.Workspace;
 
 public class WorkspaceTemplate extends PApplet {
 
-    public static void main(String[] args) {
-        PApplet.main(WorkspaceTemplate.class.getName());
-    }
+	public static void main(String[] args) {
+		PApplet.main(WorkspaceTemplate.class.getName());
+	}
 
-    private Mesh3D mesh;
-    
-    private Workspace workspace;
+	private Mesh3D mesh;
 
-    @Override
-    public void settings() {
-        size(1000, 1000, P3D);
-        smooth(8);
-    }
+	private Workspace workspace;
 
-    @Override
-    public void setup() {
-        workspace = new Workspace(this);
-        workspace.setGridVisible(true);
-        workspace.setUiVisible(true);
-        createMesh();
-    }
+	@Override
+	public void settings() {
+		size(1000, 1000, P3D);
+		smooth(8);
+	}
 
-    @Override
-    public void draw() {
-        workspace.draw(mesh);
-    }
+	@Override
+	public void setup() {
+		workspace = new Workspace(this);
+		workspace.setGridVisible(true);
+		workspace.setUiVisible(true);
+		createMesh();
+	}
 
-    public void createMesh() {
-        CubeCreator creator = new CubeCreator();
-        mesh = creator.create();
-    }
-    
+	@Override
+	public void draw() {
+		workspace.draw(mesh);
+	}
+
+	public void createMesh() {
+		CubeCreator creator = new CubeCreator();
+		mesh = creator.create();
+	}
+
 }

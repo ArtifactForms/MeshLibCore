@@ -11,7 +11,6 @@ import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
 import engine.scene.light.DirectionalLight;
-import engine.ui.LoadingScreen;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
@@ -51,7 +50,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
   private Scene scene;
   //  private EndlessTerrain endlessTerrain;
 
-  private LoadingScreen loadingScreen;
+//  private LoadingScreen loadingScreen;
   private RoundReticle roundReticle;
 
   public static void main(String[] args) {
@@ -101,8 +100,8 @@ public class ProceduralLandmassDemo extends BasicApplication {
     rootUI.addChild(reticleNode);
 
     SceneNode loadingScreenNode = new SceneNode();
-    loadingScreen = new LoadingScreen();
-    loadingScreenNode.addComponent(loadingScreen);
+//    loadingScreen = new LoadingScreen();
+//    loadingScreenNode.addComponent(loadingScreen);
     rootUI.addChild(loadingScreenNode);
   }
 
@@ -143,7 +142,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
     scene.addNode(chunkDisplayNode);
 
     roundReticle.setActive(true);
-    loadingScreen.hide();
+//    loadingScreen.hide();
   }
 
   /** Sets up the camera with smooth fly-by controls. */

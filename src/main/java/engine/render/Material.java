@@ -83,6 +83,32 @@ public class Material {
    */
   private float shininess;
 
+  /**
+   * Represents the opacity (dissolve) of the material.
+   *
+   * <p>The opacity value determines how transparent or opaque the material is. It corresponds to
+   * the "d" property in the MTL file format.
+   *
+   * <p>The opacity value ranges from 0.0 to 1.0:
+   *
+   * <ul>
+   *   <li><strong>0.0</strong> - Fully transparent.
+   *   <li><strong>1.0</strong> - Fully opaque (default).
+   *   <li>Values between 0.0 and 1.0 represent varying levels of transparency.
+   * </ul>
+   *
+   * <p>If an opacity map (map_d) is present, it will override this value, allowing for per-pixel
+   * transparency control using a texture.
+   *
+   * <p>Example usage in MTL file:
+   *
+   * <pre>
+   * d 0.8                  # 80% visible, 20% transparent
+   * map_d opacity_map.png  # Opacity texture map
+   * </pre>
+   */
+  private float opacity;
+
   /** The diffuse texture map (map_Kd) of the material. */
   private Texture diffuseTexture;
 
@@ -111,6 +137,7 @@ public class Material {
     this.diffuse = new float[] {1.0f, 1.0f, 1.0f};
     this.specular = new float[] {1.0f, 1.0f, 1.0f};
     this.shininess = 10.0f;
+    this.opacity = 1.0f; // Fully opaque by default
   }
 
   /**
@@ -274,6 +301,41 @@ public class Material {
    */
   public void setShininess(float shininess) {
     this.shininess = shininess;
+  }
+
+  /**
+   * Returns the current opacity of the material.
+   *
+   * <p>The opacity determines how transparent or opaque the material is. A value of 1.0 means the
+   * material is fully opaque, while a value of 0.0 means it is fully transparent.
+   *
+   * @return the opacity value, ranging from 0.0 (fully transparent) to 1.0 (fully opaque)
+   */
+  public float getOpacity() {
+    return opacity;
+  }
+
+  /**
+   * Sets the opacity (dissolve) of the material.
+   *
+   * <p>The opacity value must be between 0.0 and 1.0, inclusive:
+   *
+   * <ul>
+   *   <li><strong>0.0</strong> - Fully transparent.
+   *   <li><strong>1.0</strong> - Fully opaque.
+   *   <li>Values between 0.0 and 1.0 represent varying levels of transparency.
+   * </ul>
+   *
+   * <p>If an opacity map (map_d) is present, this value will act as a multiplier for the map.
+   *
+   * @param opacity the opacity value to set, ranging from 0.0 to 1.0
+   * @throws IllegalArgumentException if the opacity value is outside the range [0.0, 1.0]
+   */
+  public void setOpacity(float opacity) {
+    if (opacity < 0 || opacity > 1) {
+      throw new IllegalArgumentException("Opacity must be between 0 and 1 inclusive.");
+    }
+    this.opacity = opacity;
   }
 
   /**
