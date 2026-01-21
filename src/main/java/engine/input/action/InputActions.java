@@ -10,24 +10,23 @@ import engine.input.Key;
 import math.Vector2f;
 
 /**
- * Resolves high-level input actions from the engine Input abstraction.
- * Similar in spirit to Unity's Input Actions system, but polling-based
- * and fully engine-controlled.
+ * Resolves high-level input actions from the engine Input abstraction. Similar in spirit to Unity's
+ * Input Actions system, but polling-based and fully engine-controlled.
  */
 public class InputActions {
 
   private Input input;
 
-  private final Map<Action, List<ButtonBinding>> buttonBindings =
-      new EnumMap<>(Action.class);
+  private final Map<Action, List<ButtonBinding>> buttonBindings = new EnumMap<>(Action.class);
 
-  private final Map<Action, List<Axis2DBinding>> axis2DBindings =
-      new EnumMap<>(Action.class);
+  private final Map<Action, List<Axis2DBinding>> axis2DBindings = new EnumMap<>(Action.class);
 
-  /** Called by the Input implementation once per frame */
-  public void update(Input input) {
+  public InputActions(Input input) {
     this.input = input;
   }
+
+  /** Called by the Input implementation once per frame */
+  public void update() {}
 
   public void bindButton(Action action, Key key) {
     buttonBindings
@@ -42,18 +41,15 @@ public class InputActions {
   }
 
   public boolean isDown(Action action) {
-    return getButtonBindings(action).stream()
-        .anyMatch(b -> input.isKeyPressed(b.key));
+    return getButtonBindings(action).stream().anyMatch(b -> input.isKeyPressed(b.key));
   }
 
   public boolean wasPressed(Action action) {
-    return getButtonBindings(action).stream()
-        .anyMatch(b -> input.wasKeyPressed(b.key));
+    return getButtonBindings(action).stream().anyMatch(b -> input.wasKeyPressed(b.key));
   }
 
   public boolean wasReleased(Action action) {
-    return getButtonBindings(action).stream()
-        .anyMatch(b -> input.wasKeyReleased(b.key));
+    return getButtonBindings(action).stream().anyMatch(b -> input.wasKeyReleased(b.key));
   }
 
   public Vector2f getVector(Action action) {

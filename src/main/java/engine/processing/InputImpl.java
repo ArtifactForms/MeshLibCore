@@ -11,6 +11,7 @@ import engine.input.KeyInput;
 import engine.input.KeyListener;
 import engine.input.MouseInput;
 import engine.input.MouseListener;
+import engine.input.action.DefaultInputBindings;
 import engine.input.action.InputActions;
 
 public class InputImpl implements Input {
@@ -27,7 +28,8 @@ public class InputImpl implements Input {
     this.keyInput = keyInput;
     this.mouseInput = mouseInput;
     this.gamepadInput = gamepadInput;
-    this.actions = new InputActions();
+    this.actions = new InputActions(this);
+    DefaultInputBindings.apply(actions);
   }
 
   @Override
@@ -38,6 +40,16 @@ public class InputImpl implements Input {
   @Override
   public boolean isKeyPressed(Key key) {
     return keyInput.isKeyPressed(key);
+  }
+
+  @Override
+  public boolean wasKeyPressed(Key key) {
+    return keyInput.wasKeyPressed(key);
+  }
+
+  @Override
+  public boolean wasKeyReleased(Key key) {
+    return keyInput.wasKeyReleased(key);
   }
 
   @Override
@@ -115,8 +127,7 @@ public class InputImpl implements Input {
     updateKeyState();
     updateMouseState();
     updateGamepadState();
-
-    actions.update(this);
+    actions.update();
   }
 
   @Override
