@@ -11,6 +11,7 @@ import engine.input.KeyInput;
 import engine.input.KeyListener;
 import engine.input.MouseInput;
 import engine.input.MouseListener;
+import engine.input.MouseMode;
 import engine.input.action.DefaultInputBindings;
 import engine.input.action.InputActions;
 
@@ -118,11 +119,6 @@ public class InputImpl implements Input {
   }
 
   @Override
-  public void center() {
-    mouseInput.center();
-  }
-
-  @Override
   public void update() {
     updateKeyState();
     updateMouseState();
@@ -178,5 +174,15 @@ public class InputImpl implements Input {
   @Override
   public InputActions getActions() {
     return actions;
+  }
+
+  @Override
+  public void setMouseMode(MouseMode mode) {
+    mouseInput.setMouseMode(mode);
+  }
+
+  @Override
+  public MouseMode getMouseMode() {
+    return mouseInput.getMouseMode();
   }
 }

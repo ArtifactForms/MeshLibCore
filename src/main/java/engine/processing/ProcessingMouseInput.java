@@ -7,6 +7,7 @@ import java.util.List;
 import engine.input.MouseEvent;
 import engine.input.MouseInput;
 import engine.input.MouseListener;
+import engine.input.MouseMode;
 import processing.core.PApplet;
 
 public class ProcessingMouseInput implements MouseInput {
@@ -19,6 +20,8 @@ public class ProcessingMouseInput implements MouseInput {
   private float mouseY;
   private float pMouseX;
   private float pMouseY;
+
+  private MouseMode mouseMode = MouseMode.ABSOLUTE;
 
   private Robot robot;
 
@@ -187,15 +190,25 @@ public class ProcessingMouseInput implements MouseInput {
   }
 
   @Override
+  public void setMouseMode(MouseMode mode) {
+    this.mouseMode = mode;
+  }
+
+  @Override
+  public MouseMode getMouseMode() {
+    return mouseMode;
+  }
+
+  @Override
   public void updateMouseState() {
+    if (mouseMode == MouseMode.RELATIVE) center();
     this.mouseX = applet.mouseX;
     this.mouseY = applet.mouseY;
     this.pMouseX = applet.pmouseX;
     this.pMouseY = applet.pmouseY;
   }
 
-  @Override
-  public void center() {
+  private void center() {
     applet.mouseX = applet.width / 2;
     applet.mouseY = applet.height / 2;
     applet.pmouseX = applet.width / 2;
