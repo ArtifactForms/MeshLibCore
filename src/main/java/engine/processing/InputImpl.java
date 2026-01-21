@@ -119,7 +119,7 @@ public class InputImpl implements Input {
 
   @Override
   public void removeKeyListener(KeyListener listener) {
-    keyInput.addKeyListener(listener);
+    keyInput.removeKeyListener(listener);
   }
 
   @Override
