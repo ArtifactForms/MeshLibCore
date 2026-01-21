@@ -11,6 +11,9 @@ import engine.input.KeyInput;
 import engine.input.KeyListener;
 import engine.input.MouseInput;
 import engine.input.MouseListener;
+import engine.input.MouseMode;
+import engine.input.action.DefaultInputBindings;
+import engine.input.action.InputActions;
 
 public class InputImpl implements Input {
 
@@ -20,10 +23,14 @@ public class InputImpl implements Input {
 
   private final GamepadInput gamepadInput;
 
+  private InputActions actions;
+
   public InputImpl(KeyInput keyInput, MouseInput mouseInput, GamepadInput gamepadInput) {
     this.keyInput = keyInput;
     this.mouseInput = mouseInput;
     this.gamepadInput = gamepadInput;
+    this.actions = new InputActions(this);
+    DefaultInputBindings.apply(actions);
   }
 
   @Override
@@ -34,6 +41,16 @@ public class InputImpl implements Input {
   @Override
   public boolean isKeyPressed(Key key) {
     return keyInput.isKeyPressed(key);
+  }
+
+  @Override
+  public boolean wasKeyPressed(Key key) {
+    return keyInput.wasKeyPressed(key);
+  }
+
+  @Override
+  public boolean wasKeyReleased(Key key) {
+    return keyInput.wasKeyReleased(key);
   }
 
   @Override
@@ -102,14 +119,11 @@ public class InputImpl implements Input {
   }
 
   @Override
-  public void center() {
-    mouseInput.center();
-  }
-
-  @Override
   public void update() {
     updateKeyState();
     updateMouseState();
+    updateGamepadState();
+    actions.update();
   }
 
   @Override
@@ -119,7 +133,7 @@ public class InputImpl implements Input {
 
   @Override
   public void removeKeyListener(KeyListener listener) {
-    keyInput.addKeyListener(listener);
+    keyInput.removeKeyListener(listener);
   }
 
   @Override
@@ -155,5 +169,20 @@ public class InputImpl implements Input {
   @Override
   public void removeGamepadListener(GamepadListener listener) {
     gamepadInput.removeGamepadListener(listener);
+  }
+
+  @Override
+  public InputActions getActions() {
+    return actions;
+  }
+
+  @Override
+  public void setMouseMode(MouseMode mode) {
+    mouseInput.setMouseMode(mode);
+  }
+
+  @Override
+  public MouseMode getMouseMode() {
+    return mouseInput.getMouseMode();
   }
 }

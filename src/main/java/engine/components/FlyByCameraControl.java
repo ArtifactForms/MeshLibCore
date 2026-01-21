@@ -2,6 +2,7 @@ package engine.components;
 
 import engine.input.Input;
 import engine.input.Key;
+import engine.input.MouseMode;
 import engine.scene.camera.Camera;
 import engine.scene.camera.PerspectiveCamera;
 import math.Mathf;
@@ -84,7 +85,6 @@ public class FlyByCameraControl extends AbstractComponent {
       applyMovement(velocity, tpf);
     }
     updateTarget();
-    input.center();
   }
 
   /**
@@ -170,13 +170,13 @@ public class FlyByCameraControl extends AbstractComponent {
   /** This method is called when the component is attached to an entity. Currently not used. */
   @Override
   public void onAttach() {
-    // Not used yet
+      input.setMouseMode(MouseMode.RELATIVE);
   }
 
   /** This method is called when the component is detached from an entity. Currently not used. */
   @Override
   public void onDetach() {
-    // Not used yet
+      input.setMouseMode(MouseMode.ABSOLUTE);
   }
 
   /**

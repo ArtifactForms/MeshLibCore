@@ -32,9 +32,11 @@ public interface MouseInput {
 
   void updateMouseState(); // To track mouse-specific states
 
-  void center();
-
   void addMouseListener(MouseListener listener);
 
   void removeMouseListener(MouseListener listener);
+
+  void setMouseMode(MouseMode mode);
+
+  MouseMode getMouseMode();
 }

@@ -1,6 +1,18 @@
 package engine.input;
 
-public interface Input extends KeyInput, MouseInput, GamepadInput{
+import engine.input.action.InputActions;
 
-  void update(); // Calls both `updateKeyState` and `updateMouseState`
+public interface Input extends KeyInput, MouseInput, GamepadInput {
+
+  /**
+   * Updates all input devices and advances the input state by one frame. Must be called exactly
+   * once per frame.
+   */
+  void update();
+
+  /**
+   * Provides access to high-level, semantic input actions. Actions are resolved from the current
+   * input state.
+   */
+  InputActions getActions();
 }
