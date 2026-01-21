@@ -167,16 +167,16 @@ public class FlyByCameraControl extends AbstractComponent {
     camera.setTarget(target);
   }
 
-  /** This method is called when the component is attached to an entity. Currently not used. */
+  /** This method is called when the component is attached to an entity. */
   @Override
   public void onAttach() {
-      input.setMouseMode(MouseMode.RELATIVE);
+    input.setMouseMode(MouseMode.RELATIVE);
   }
 
-  /** This method is called when the component is detached from an entity. Currently not used. */
+  /** This method is called when the component is detached from an entity. */
   @Override
   public void onDetach() {
-      input.setMouseMode(MouseMode.ABSOLUTE);
+    input.setMouseMode(MouseMode.ABSOLUTE);
   }
 
   /**

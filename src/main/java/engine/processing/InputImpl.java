@@ -123,6 +123,7 @@ public class InputImpl implements Input {
     updateKeyState();
     updateMouseState();
     updateGamepadState();
+    
     actions.update();
   }
 
