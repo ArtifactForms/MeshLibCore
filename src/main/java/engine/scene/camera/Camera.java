@@ -75,6 +75,10 @@ public interface Camera {
    * @param fov The desired field of view in degrees.
    */
   void setFieldOfView(float fov);
+  
+  float getHorizontalFOV();
+  
+  float getVerticalFOV();
 
   /**
    * Retrieves the near clipping plane distance for the camera.

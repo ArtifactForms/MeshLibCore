@@ -55,6 +55,10 @@ public class World {
     if (blockType == BlockType.AIR) return false;
     return true;
   }
+  
+  public boolean isSolid(int x, int y, int z) {
+      return isBlockAt(x, y, z);
+  }
 
   public long getSeed() {
     return seed;

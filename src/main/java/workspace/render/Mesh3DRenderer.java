@@ -10,6 +10,7 @@ import mesh.modifier.UpdateFaceNormalsModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.VertexNormals;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.opengl.PGraphics3D;
 
 public class Mesh3DRenderer {
@@ -191,6 +192,29 @@ public class Mesh3DRenderer {
       context.endShape(PApplet.CLOSE); // Ensure the shape is closed
     }
   }
+  
+  public void drawFace(Mesh3D mesh, Face3D f) {
+      	PGraphics context = this.context.g;
+        Vector3f v;
+
+        // Use specific shape types based on face vertex count
+        if (f.indices.length == 3) {
+          context.beginShape(PApplet.TRIANGLES);
+        } else if (f.indices.length == 4) {
+          context.beginShape(PApplet.QUADS);
+        } else {
+          context.beginShape(PApplet.POLYGON); // Handle polygons directly
+        }
+
+        // Add vertices
+        for (int index : f.indices) {
+          v = mesh.vertices.get(index);
+          context.vertex(v.getX(), v.getY(), v.getZ());
+        }
+
+        context.endShape(PApplet.CLOSE); // Ensure the shape is closed
+  
+    }
 
   public void drawFacesColored(Mesh3D mesh) {
     context.pushMatrix();

@@ -41,6 +41,35 @@ public class PerspectiveCamera implements Camera {
   }
 
   /**
+   * Calculates and returns the horizontal field of view (FOV) of the camera in radians.
+   *
+   * <p>The horizontal FOV is derived from the vertical FOV and the aspect ratio of the camera. It
+   * is calculated using the following formula:
+   *
+   * <pre>
+   * horizontalFOV = 2 * atan(tan(verticalFOV / 2) * aspectRatio)
+   * </pre>
+   *
+   * This ensures that the horizontal FOV is consistent with the perspective projection defined by
+   * the vertical FOV and the screen's aspect ratio.
+   *
+   * @return The horizontal field of view in radians.
+   */
+  public float getHorizontalFOV() {
+    float verticalFOV = getVerticalFOV();
+    return 2.0f * (float) Math.atan(Math.tan(verticalFOV / 2.0f) * aspectRatio);
+  }
+
+  /**
+   * Gets the vertical field of view (FOV) of the camera in radians.
+   *
+   * @return The vertical FOV.
+   */
+  public float getVerticalFOV() {
+    return fov;
+  }
+
+  /**
    * Gets the target point the camera is currently looking at.
    *
    * @return The target point.
@@ -152,9 +181,8 @@ public class PerspectiveCamera implements Camera {
 
   @Override
   public Matrix4f getViewMatrix() {
-    Matrix4f view = new Matrix4f();
-    view.setViewMatrix(transform.getPosition(), transform.getRotation());
-    // FIXME
+    Matrix4f view =
+        Matrix4f.lookAt(getTransform().getPosition(), getTarget(), new Vector3f(0, -1, 0));
     return view;
   }
 
@@ -162,7 +190,6 @@ public class PerspectiveCamera implements Camera {
   public Matrix4f getProjectionMatrix() {
     Matrix4f projection = new Matrix4f();
     Matrix4 m = Matrix4.perspective(fov, aspectRatio, nearPlane, farPlane);
-    ;
     projection = new Matrix4f(m.getValues());
     return projection;
   }

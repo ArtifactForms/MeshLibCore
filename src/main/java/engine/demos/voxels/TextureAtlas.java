@@ -17,7 +17,7 @@ public class TextureAtlas {
   private boolean useNoise = GameSettings.textureNoise;
   private boolean drawDebugText = GameSettings.textureDebugText;
   private boolean fillTextureBackground = GameSettings.textureBackground;
-  private float epsilon = 0.001f; // Small margin to prevent texture bleeding
+  private float epsilon = 0.002f; // Small margin to prevent texture bleeding
   private int tileSize = 128;
   private int columns = 6; // 6 faces per block
   private int rows = BlockType.values().length;

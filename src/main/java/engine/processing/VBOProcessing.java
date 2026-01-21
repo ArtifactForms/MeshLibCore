@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import engine.render.Material;
 import engine.resources.Texture;
 import engine.vbo.VBO;
+import math.Bounds;
 import math.Vector2f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.util.MeshBoundsCalculator;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PShape;
@@ -18,18 +20,21 @@ public class VBOProcessing implements VBO {
   private PGraphics graphics;
   private int faceCount;
   private int vertexCount;
+  private Bounds bounds;
 
   public VBOProcessing(PGraphics graphics) {
     this.graphics = graphics;
   }
-  
+
   public VBOProcessing(PShape shape) {
-      this.shape = shape;
-      vertexCount = shape.getVertexCount();
+    this.shape = shape;
+    vertexCount = shape.getVertexCount();
   }
 
   @Override
   public void create(Mesh3D mesh, Material material) {
+    bounds = MeshBoundsCalculator.calculateBounds(mesh);
+
     ArrayList<Vector3f> vertexNormals = mesh.getVertexNormals();
 
     faceCount = mesh.getFaceCount();
@@ -80,17 +85,18 @@ public class VBOProcessing implements VBO {
 
   @Override
   public void create(float[] vertices, int[] indices) {
-    // TODO Full implementation
-    // Create a PShape object for the mesh
-    shape = new PShape();
-    // Load vertices into the PShape
-    shape.beginShape();
-    for (int i = 0; i < vertices.length; i += 3) {
-      shape.vertex(vertices[i], vertices[i + 1], vertices[i + 2]);
-    }
-    shape.endShape();
-    // Optional: store indices if using indexed rendering
-    vertexCount = vertices.length / 3; // Assuming vertices are in 3D (x, y, z)
+    throw new UnsupportedOperationException("ProcessingVBO requires Mesh3D");
+    //    // TODO Full implementation
+    //    // Create a PShape object for the mesh
+    //    shape = new PShape();
+    //    // Load vertices into the PShape
+    //    shape.beginShape();
+    //    for (int i = 0; i < vertices.length; i += 3) {
+    //      shape.vertex(vertices[i], vertices[i + 1], vertices[i + 2]);
+    //    }
+    //    shape.endShape();
+    //    // Optional: store indices if using indexed rendering
+    //    vertexCount = vertices.length / 3; // Assuming vertices are in 3D (x, y, z)
   }
 
   @Override
@@ -133,5 +139,13 @@ public class VBOProcessing implements VBO {
   public void draw(PGraphics graphics) {
     // Use Processing's drawing methods to render the shape
     graphics.shape(shape, 0, 0);
+  }
+
+  @Override
+  public Bounds getBounds() {
+    if (bounds == null)
+      return new Bounds(
+          new Vector3f(), new Vector3f()); // Hack in case of not created via constructor mesh
+    return new Bounds(bounds.getMin(), bounds.getMax());
   }
 }
