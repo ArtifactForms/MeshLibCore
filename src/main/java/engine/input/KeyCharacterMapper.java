@@ -84,7 +84,17 @@ public class KeyCharacterMapper {
     keyMap.put((char) 127, Key.DELETE);
   }
 
-  public static Key getMappedKey(char character) {
-    return keyMap.getOrDefault(character, Key.UNKNOWN);
+  public static Key getMappedKey(int keyCode) {
+    // ASCII A–Z
+    if (keyCode >= 65 && keyCode <= 90) {
+      return Key.values()[Key.A.ordinal() + (keyCode - 65)];
+    }
+
+    // ASCII 0–9
+    if (keyCode >= 48 && keyCode <= 57) {
+      return Key.values()[Key.NUM_0.ordinal() + (keyCode - 48)];
+    }
+
+    return Key.UNKNOWN;
   }
 }
