@@ -1,7 +1,7 @@
 package engine.components;
 
-import engine.demos.mydemo.RaycastComponent;
-import engine.demos.mydemo.RaycastHit;
+import engine.demos.ray.RaycastComponent;
+import engine.demos.ray.RaycastHit;
 import engine.render.Material;
 import engine.vbo.VBO;
 import engine.vbo.VBOFactory;
