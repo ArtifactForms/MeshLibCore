@@ -2,6 +2,7 @@ package engine.components;
 
 import engine.input.Input;
 import engine.input.Key;
+import engine.input.MouseMode;
 import engine.scene.camera.Camera;
 import engine.scene.camera.PerspectiveCamera;
 import math.Mathf;
@@ -179,13 +180,13 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
   /** Called when the component is attached to a scene node. */
   @Override
   public void onAttach() {
-    // TODO Auto-generated method stub
+      input.setMouseMode(MouseMode.RELATIVE);
   }
 
   /** Called when the component is detached from a scene node. */
   @Override
   public void onDetach() {
-    // TODO Auto-generated method stub
+      input.setMouseMode(MouseMode.ABSOLUTE);
   }
 
   /**

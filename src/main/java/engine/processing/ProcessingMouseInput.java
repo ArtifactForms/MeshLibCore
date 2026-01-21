@@ -201,11 +201,12 @@ public class ProcessingMouseInput implements MouseInput {
 
   @Override
   public void updateMouseState() {
-    if (mouseMode == MouseMode.RELATIVE) center();
     this.mouseX = applet.mouseX;
     this.mouseY = applet.mouseY;
     this.pMouseX = applet.pmouseX;
     this.pMouseY = applet.pmouseY;
+
+    if (mouseMode == MouseMode.RELATIVE) center();
   }
 
   private void center() {
