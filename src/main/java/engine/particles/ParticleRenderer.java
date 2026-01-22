@@ -8,8 +8,6 @@ import workspace.ui.Graphics;
  * Interface for rendering particles in a particle system. Implementations of this interface define
  * how particles are visually represented, such as using sprites, points, or other rendering
  * techniques.
- *
- * @author Simon Dietz
  */
 public interface ParticleRenderer {
 

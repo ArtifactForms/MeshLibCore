@@ -21,8 +21,6 @@ import math.Vector3f;
  *       defined ranges.
  *   <li>Handles particle cleanup by removing expired particles from the queue.
  * </ul>
- *
- * @author Simon Dietz
  */
 public class ParticleEmitter {
 

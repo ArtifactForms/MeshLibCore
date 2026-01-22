@@ -15,8 +15,6 @@ import workspace.ui.Graphics;
  *
  * <p>The ParticleComponent ensures proper lifecycle management by handling initialization, updates,
  * rendering, and cleanup for both the emitter and renderer components.
- *
- * @author Simon Dietz
  */
 public class ParticleComponent extends AbstractComponent implements RenderableComponent {
 

@@ -9,8 +9,6 @@ import math.Vector3f;
  *
  * <p>Designed to support effects like trails, smoke, explosions, or other particle effects by
  * integrating old and new positions for rendering purposes.
- *
- * @author Simon Dietz
  */
 public class Particle {
 
