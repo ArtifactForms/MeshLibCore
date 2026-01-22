@@ -9,18 +9,18 @@ import workspace.ui.Graphics;
  * and renderer.
  *
  * <p>This class implements the {@link RenderableComponent} interface, allowing it to integrate
- * seamlessly with the rendering system. It uses a {@link ParticleEmitter} to handle the logic of
+ * seamlessly with the rendering system. It uses a {@link LegacyParticleEmitter} to handle the logic of
  * particle spawning and updates, while delegating rendering operations to a {@link
- * ParticleRenderer}.
+ * LegacyParticleRenderer}.
  *
  * <p>The ParticleComponent ensures proper lifecycle management by handling initialization, updates,
  * rendering, and cleanup for both the emitter and renderer components.
  */
-public class ParticleComponent extends AbstractComponent implements RenderableComponent {
+public class LegacyParticleComponent extends AbstractComponent implements RenderableComponent {
 
-  private ParticleEmitter emitter;
+  private LegacyParticleEmitter emitter;
 
-  private ParticleRenderer renderer;
+  private LegacyParticleRenderer renderer;
 
   /**
    * Creates a new ParticleComponent with the given particle emitter and renderer.
@@ -29,7 +29,7 @@ public class ParticleComponent extends AbstractComponent implements RenderableCo
    * @param renderer The particle renderer responsible for drawing particles on the provided
    *     graphics context.
    */
-  public ParticleComponent(ParticleEmitter emitter, ParticleRenderer renderer) {
+  public LegacyParticleComponent(LegacyParticleEmitter emitter, LegacyParticleRenderer renderer) {
     this.emitter = emitter;
     this.renderer = renderer;
   }
@@ -69,7 +69,7 @@ public class ParticleComponent extends AbstractComponent implements RenderableCo
    *
    * @return The ParticleEmitter instance used for spawning and updating particles.
    */
-  public ParticleEmitter getEmitter() {
+  public LegacyParticleEmitter getEmitter() {
     return emitter;
   }
 
@@ -79,7 +79,7 @@ public class ParticleComponent extends AbstractComponent implements RenderableCo
    *
    * @param emitter The new ParticleEmitter instance.
    */
-  public void setEmitter(ParticleEmitter emitter) {
+  public void setEmitter(LegacyParticleEmitter emitter) {
     this.emitter = emitter;
   }
 
@@ -88,7 +88,7 @@ public class ParticleComponent extends AbstractComponent implements RenderableCo
    *
    * @return The ParticleRenderer responsible for drawing particles.
    */
-  public ParticleRenderer getRenderer() {
+  public LegacyParticleRenderer getRenderer() {
     return renderer;
   }
 
@@ -98,7 +98,7 @@ public class ParticleComponent extends AbstractComponent implements RenderableCo
    *
    * @param renderer The new ParticleRenderer instance.
    */
-  public void setRenderer(ParticleRenderer renderer) {
+  public void setRenderer(LegacyParticleRenderer renderer) {
     this.renderer = renderer;
   }
 }

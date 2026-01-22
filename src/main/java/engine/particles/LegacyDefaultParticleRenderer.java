@@ -8,18 +8,18 @@ import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
 import workspace.ui.Graphics;
 
-public class DefaultParticleRenderer implements ParticleRenderer {
+public class LegacyDefaultParticleRenderer implements LegacyParticleRenderer {
 
   private Mesh3D mesh;
 
-  public DefaultParticleRenderer() {
+  public LegacyDefaultParticleRenderer() {
     mesh = new CubeCreator(0.1f).create();
   }
 
   @Override
-  public void render(Graphics g, Collection<Particle> particles) {
+  public void render(Graphics g, Collection<LegacyParticle> particles) {
     g.setColor(Color.WHITE);
-    for (Particle particle : particles) {
+    for (LegacyParticle particle : particles) {
       Vector3f position = particle.getPosition();
       g.pushMatrix();
       g.translate(position.x, position.y, position.z);

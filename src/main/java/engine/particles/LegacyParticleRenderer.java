@@ -9,7 +9,7 @@ import workspace.ui.Graphics;
  * how particles are visually represented, such as using sprites, points, or other rendering
  * techniques.
  */
-public interface ParticleRenderer {
+public interface LegacyParticleRenderer {
 
   /**
    * Renders a batch of particles using the provided graphics context.
@@ -17,7 +17,7 @@ public interface ParticleRenderer {
    * @param g The graphics context used for rendering.
    * @param particles The collection of particles to render.
    */
-  void render(Graphics g, Collection<Particle> particles);
+  void render(Graphics g, Collection<LegacyParticle> particles);
 
   /**
    * Initializes any resources or setup required for rendering particles. This could include

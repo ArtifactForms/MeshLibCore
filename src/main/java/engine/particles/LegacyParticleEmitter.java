@@ -22,7 +22,7 @@ import math.Vector3f;
  *   <li>Handles particle cleanup by removing expired particles from the queue.
  * </ul>
  */
-public class ParticleEmitter {
+public class LegacyParticleEmitter {
 
   /** The world-space origin of the particle emitter. */
   private Vector3f position;
@@ -49,7 +49,7 @@ public class ParticleEmitter {
   private float timeSinceLastEmission = 0f;
 
   /** A thread-safe queue storing active particles. */
-  private ConcurrentLinkedQueue<Particle> particles;
+  private ConcurrentLinkedQueue<LegacyParticle> particles;
 
   /**
    * Constructs a new ParticleEmitter with a specified position and emission rate.
@@ -58,7 +58,7 @@ public class ParticleEmitter {
    * @param particlesPerSecond The rate at which particles are emitted in continuous mode (particles
    *     per second).
    */
-  public ParticleEmitter(Vector3f position, int particlesPerSecond) {
+  public LegacyParticleEmitter(Vector3f position, int particlesPerSecond) {
     this.position = position;
     this.particlesPerSecond = particlesPerSecond;
     this.velocityRange = new Vector3f(1f, 1f, 1f);
@@ -90,7 +90,7 @@ public class ParticleEmitter {
     }
 
     // Update and clean expired particles
-    for (Particle particle : particles) {
+    for (LegacyParticle particle : particles) {
       particle.update(deltaTime);
       if (!particle.isAlive()) {
         particles.remove(particle);
@@ -108,8 +108,8 @@ public class ParticleEmitter {
     Vector3f initialAcceleration = randomizeVector(accelerationRange);
     float lifetime = randomizeFloat(lifetimeRange);
 
-    Particle particle =
-        new Particle(initialPosition, initialVelocity, initialAcceleration, lifetime);
+    LegacyParticle particle =
+        new LegacyParticle(initialPosition, initialVelocity, initialAcceleration, lifetime);
     particles.add(particle);
   }
 
@@ -190,7 +190,7 @@ public class ParticleEmitter {
    *
    * @return A concurrent queue containing the currently active particles.
    */
-  public ConcurrentLinkedQueue<Particle> getParticles() {
+  public ConcurrentLinkedQueue<LegacyParticle> getParticles() {
     return particles;
   }
 }

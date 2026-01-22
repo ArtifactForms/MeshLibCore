@@ -10,7 +10,7 @@ import math.Vector3f;
  * <p>Designed to support effects like trails, smoke, explosions, or other particle effects by
  * integrating old and new positions for rendering purposes.
  */
-public class Particle {
+public class LegacyParticle {
 
   /** The current position of the particle in world-space coordinates. */
   private Vector3f position;
@@ -42,7 +42,7 @@ public class Particle {
    * @param acceleration Acceleration vector affecting the particle.
    * @param lifetime Total time (seconds) this particle will live.
    */
-  public Particle(Vector3f position, Vector3f velocity, Vector3f acceleration, float lifetime) {
+  public LegacyParticle(Vector3f position, Vector3f velocity, Vector3f acceleration, float lifetime) {
     this.position = new Vector3f(position);
     this.oldPosition = new Vector3f(position);
     this.velocity = velocity;
