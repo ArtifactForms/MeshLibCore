@@ -1,4 +1,4 @@
-package engine.render.effects;
+package engine.particles;
 
 import math.Vector3f;
 

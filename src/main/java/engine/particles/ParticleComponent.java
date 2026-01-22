@@ -1,4 +1,4 @@
-package engine.render.effects;
+package engine.particles;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
