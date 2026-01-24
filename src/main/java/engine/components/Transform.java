@@ -77,6 +77,20 @@ public class Transform extends AbstractComponent {
   }
 
   /**
+   * Translates this transformation by the given delta vector.
+   *
+   * <p>This modifies the position of the transform by adding the provided vector to the current
+   * position.
+   *
+   * @param deltaX x component of the delta vector
+   * @param deltaY y component of the delta vector
+   * @param deltaZ z component of the delta vector
+   */
+  public void translate(float deltaX, float deltaY, float deltaZ) {
+    this.position.addLocal(deltaX, deltaY, deltaZ);
+  }
+
+  /**
    * Rotates this transformation by the given delta vector (in radians).
    *
    * <p>This modifies the rotation of the transform by adding the provided vector's values to the
