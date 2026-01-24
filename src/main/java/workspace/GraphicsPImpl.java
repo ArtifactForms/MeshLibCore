@@ -756,7 +756,7 @@ public class GraphicsPImpl implements Graphics {
   @Override
   public void render(Light light) {
     light.render(lightRenderer);
-    light.render(lightGizmoRenderer);
+//    light.render(lightGizmoRenderer);
   }
 
   @Override
