@@ -40,6 +40,16 @@ public class ProcessingApplication extends PApplet {
     Processing.parent = this;
     container.setGraphics(g);
     getSurface().setTitle(settings.getTitle());
+
+    // Ensure the viewport matches the actual window size.
+    // This is required in fullscreen mode where settings dimensions
+    // may differ from the real framebuffer size.
+    if (settings.isFullscreen()) {
+      settings.setWidth(width);
+      settings.setHeight(height);
+      container.resize(width, height);
+    }
+
     setupInput();
     container.initialize();
     noCursor();
