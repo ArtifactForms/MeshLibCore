@@ -221,11 +221,34 @@ public interface Graphics2D {
   /**
    * Renders text at the given screen coordinates.
    *
+   * <p>The position refers to the baseline of the text, as defined by the current font metrics.
+   *
    * @param text The text to render.
-   * @param x The x-coordinate to start rendering the text.
-   * @param y The y-coordinate to start rendering the text.
+   * @param x The x-coordinate in screen space where the text starts.
+   * @param y The y-coordinate (baseline) in screen space.
    */
   void text(String text, float x, float y);
+
+  /**
+   * Renders text horizontally centered on the screen at the given vertical position.
+   *
+   * <p>The text will be centered along the X-axis based on the current screen width and font
+   * metrics. The Y position is not centered and must be provided explicitly.
+   *
+   * @param text The text to render.
+   * @param yOffset The y-coordinate (baseline) in screen space.
+   */
+  void textCentered(String text, float yOffset);
+
+  /**
+   * Renders text centered both horizontally and vertically on the screen.
+   *
+   * <p>The text is centered along both axes using the current screen dimensions and font metrics.
+   * This is useful for titles, splash screens, and modal UI elements.
+   *
+   * @param text The text to render.
+   */
+  void textCenteredBoth(String text);
 
   /**
    * Sets the current font used for text rendering operations.

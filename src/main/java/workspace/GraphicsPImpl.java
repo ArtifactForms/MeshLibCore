@@ -3,6 +3,7 @@ package workspace;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.demos.texture.TitleTextComponent;
 import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
 import engine.processing.ProcessingFontManager;
@@ -180,6 +181,11 @@ public class GraphicsPImpl implements Graphics {
         matrix[13],
         matrix[14],
         matrix[15]);
+  }
+
+  @Override
+  public void resetMatrix() {
+    g.resetMatrix();
   }
 
   @Override
@@ -615,6 +621,23 @@ public class GraphicsPImpl implements Graphics {
   }
 
   @Override
+  public void textCentered(String text, float y) {
+    float x = (getWidth() - textWidth(text)) * 0.5f;
+    text(text, x, y);
+  }
+
+  @Override
+  public void textCenteredBoth(String text) {
+    float x = (getWidth() - textWidth(text)) * 0.5f;
+
+    float ascent = textAscent();
+    float descent = textDescent();
+    float y = (getHeight() + ascent - descent) * 0.5f;
+
+    text(text, x, y);
+  }
+
+  @Override
   public void enableDepthTest() {
     g.hint(PApplet.ENABLE_DEPTH_TEST);
   }
@@ -756,7 +779,7 @@ public class GraphicsPImpl implements Graphics {
   @Override
   public void render(Light light) {
     light.render(lightRenderer);
-//    light.render(lightGizmoRenderer);
+    //    light.render(lightGizmoRenderer);
   }
 
   @Override
