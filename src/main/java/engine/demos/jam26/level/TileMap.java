@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import engine.demos.dungeon.Level;
 import engine.demos.jam26.assets.AssetRefs;
 
 public class TileMap {
@@ -52,8 +51,8 @@ public class TileMap {
   }
 
   public boolean isBlockedAtWorld(float worldX, float worldZ) {
-    int tileX = Math.floorDiv((int) worldX, Level.TILE_SIZE);
-    int tileY = Math.floorDiv((int) worldZ, Level.TILE_SIZE);
+    int tileX = Math.floorDiv((int) worldX, TILE_SIZE);
+    int tileY = Math.floorDiv((int) worldZ, TILE_SIZE);
 
     return getTileTypeAt(tileX, tileY) == TileType.WALL;
   }
