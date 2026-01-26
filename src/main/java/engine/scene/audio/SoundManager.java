@@ -3,49 +3,62 @@ package engine.scene.audio;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SoundManager {
-  private static final Map<String, Sound> sounds = new HashMap<>();
+public final class SoundManager {
 
-  public static void addSound(String name, String filePath) {
-    sounds.put(name, SoundLoader.load(filePath));
+  private static final Map<String, Sound> sounds = new HashMap<>();
+  private static final Map<String, SoundEffect> effects = new HashMap<>();
+
+  private SoundManager() {}
+
+  /* ================= MUSIC / LOOPING ================= */
+
+  public static void addSound(String key, String filePath) {
+    sounds.put(key, SoundLoader.load(filePath));
   }
 
-  public static void playSound(String name) {
-    Sound sound = sounds.get(name);
+  public static void playSound(String key) {
+    Sound sound = sounds.get(key);
     if (sound != null) {
       sound.play();
     } else {
-      sendErrorMessage(name);
+      error(key);
     }
   }
 
-  public static void loopSound(String name) {
-    Sound sound = sounds.get(name);
+  public static void loopSound(String key) {
+    Sound sound = sounds.get(key);
     if (sound != null) {
       sound.loop();
     } else {
-      sendErrorMessage(name);
+      error(key);
     }
   }
 
-  public static void stopSound(String name) {
-    Sound sound = sounds.get(name);
+  public static void stopSound(String key) {
+    Sound sound = sounds.get(key);
     if (sound != null) {
       sound.stop();
     } else {
-      sendErrorMessage(name);
+      error(key);
     }
   }
 
-  public static Sound getSound(String name) {
-    Sound sound = sounds.get(name);
-    if (sound == null) {
-      sendErrorMessage(name);
-    }
-    return sound;
+  /* ================= ONE-SHOT EFFECTS ================= */
+
+  public static void addEffect(String key, String filePath, int poolSize) {
+    effects.put(key, new SoundEffect(filePath, poolSize));
   }
 
-  private static void sendErrorMessage(String name) {
-    System.err.println("Sound '" + name + "' not found!");
+  public static void playEffect(String key) {
+    SoundEffect effect = effects.get(key);
+    if (effect != null) {
+      effect.play();
+    } else {
+      error(key);
+    }
+  }
+
+  private static void error(String key) {
+    System.err.println("Sound '" + key + "' not found!");
   }
 }

@@ -6,6 +6,8 @@ import engine.debug.DebugInfoUpdater;
 import engine.debug.DebugOverlay;
 import engine.debug.FpsGraph;
 import engine.debug.FpsHistory;
+import engine.debug.core.DebugContext;
+import engine.debug.core.DebugDraw;
 import engine.input.Input;
 import engine.input.Key;
 import engine.processing.ProcessingApplication;
@@ -43,6 +45,8 @@ public abstract class BasicApplication implements Application {
   private Viewport viewport;
 
   private ApplicationSettings settings;
+
+  private DebugContext debugContext;
 
   public BasicApplication() {
     this.timer = new Timer();
@@ -84,6 +88,7 @@ public abstract class BasicApplication implements Application {
     viewport = new Viewport(0, 0, settings.getWidth(), settings.getHeight());
     rootUI = new SceneNode("RootUI");
     initializeDebugOverlay();
+    setupDebug();
     fpsGraph = new FpsGraph(new FpsHistory());
     onInitialize();
     setupDefaultCamera();
@@ -103,6 +108,11 @@ public abstract class BasicApplication implements Application {
   private void initializeDebugOverlay() {
     debugOverlay = new DebugOverlay();
     debugInfoUpdater = new DebugInfoUpdater(debugOverlay);
+  }
+
+  private void setupDebug() {
+    debugContext = new DebugContext();
+    DebugDraw.initialize(debugContext);
   }
 
   @Override
@@ -135,6 +145,8 @@ public abstract class BasicApplication implements Application {
     rootUI.update(tpf);
     onUpdate(tpf);
 
+    debugContext.update(tpf);
+
     // IMPORTANT! Called after scene update!
     input.update();
   }
@@ -147,11 +159,16 @@ public abstract class BasicApplication implements Application {
 
     onRender(g);
 
-    g.disableDepthTest();
     g.lightsOff();
-    g.camera();
 
+    debugContext.render(g);
+    debugContext.clearFrameCommands();
+
+    g.disableDepthTest();
+
+    g.camera();
     g.strokeWeight(1);
+
     renderUi(g);
     renderDebugUi(g);
 
@@ -206,7 +223,24 @@ public abstract class BasicApplication implements Application {
     this.displayInfo = displayInfo;
   }
 
+  public void setDebugDrawVisible(boolean visible) {
+    debugContext.setVisible(visible);
+  }
+
+  public boolean isDebugDrawVisible() {
+    return debugContext.isVisible();
+  }
+
   public Viewport getViewport() {
     return viewport;
+  }
+
+  public Timer getTimer() {
+    return timer;
+  }
+
+  @Override
+  public void onResize(int width, int height) {
+    viewport = new Viewport(0, 0, width, height);
   }
 }

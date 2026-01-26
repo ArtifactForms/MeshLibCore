@@ -60,4 +60,8 @@ public class ApplicationContainer {
     }
     this.graphics = g;
   }
+  
+  public void resize(int width, int height) {
+      application.onResize(width, height);
+  }
 }

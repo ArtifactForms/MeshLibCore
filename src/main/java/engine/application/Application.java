@@ -14,4 +14,6 @@ public interface Application {
   void cleanup();
 
   void setInput(Input input);
+  
+  void onResize(int width, int height);
 }

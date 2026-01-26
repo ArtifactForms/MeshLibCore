@@ -242,6 +242,59 @@ public class Bounds {
   }
 
   /**
+   * Copies the minimum and maximum corners from the given {@code Bounds} into this instance.
+   *
+   * <p>This method performs a deep copy of the bounds data, meaning the internal {@link Vector3f}
+   * instances of this {@code Bounds} are updated to match the values of the provided {@code other}
+   * bounds, without sharing references.
+   *
+   * <p>This is useful for reusing an existing {@code Bounds} instance without creating a new
+   * object, for example in update loops, spatial queries, or bounds aggregation systems.
+   *
+   * @param other the {@code Bounds} instance to copy the values from
+   * @throws IllegalArgumentException if {@code other} is {@code null}
+   */
+  public void set(Bounds other) {
+    if (other == null) {
+      throw new IllegalArgumentException("Other cannot be null.");
+    }
+    this.min.set(other.min);
+    this.max.set(other.max);
+  }
+
+  /**
+   * Creates a new axis-aligned bounding box (AABB) from a center point and a size vector.
+   *
+   * <p>The resulting {@code Bounds} will be centered at the given {@code center} position, with its
+   * dimensions defined by the {@code size} vector. The size represents the full width, height, and
+   * depth of the bounding box (not half-extents).
+   *
+   * <p>Internally, the minimum and maximum corners are computed by subtracting and adding half of
+   * the size vector from the center:
+   *
+   * <pre>
+   * min = center - (size * 0.5)
+   * max = center + (size * 0.5)
+   * </pre>
+   *
+   * <p>This factory method is commonly used for constructing bounds for objects defined by a
+   * position and dimensions, such as trigger volumes, collision boxes, and procedurally generated
+   * geometry.
+   *
+   * @param center the center point of the bounding box
+   * @param size the full size of the bounding box along each axis
+   * @return a new {@code Bounds} instance defined by the given center and size
+   * @throws IllegalArgumentException if {@code center} or {@code size} is {@code null}
+   */
+  public static Bounds fromCenterSize(Vector3f center, Vector3f size) {
+    if (center == null || size == null) {
+      throw new IllegalArgumentException("Center and Size cannot be null.");
+    }
+    Vector3f half = size.mult(0.5f);
+    return new Bounds(center.subtract(half), center.add(half));
+  }
+
+  /**
    * Returns the minimum corner of the bounding box.
    *
    * @return the minimum corner of the bounding box

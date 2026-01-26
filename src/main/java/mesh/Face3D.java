@@ -11,7 +11,7 @@ public class Face3D {
 
   public int[] indices;
 
-  private int[] uvIndices;
+  public int[] uvIndices;
 
   public Vector3f normal;
 
@@ -26,8 +26,11 @@ public class Face3D {
   }
 
   public Face3D(Face3D f) {
-    this(f.indices);
-    this.tag = new String(f.tag);
+    this.color = new Color(f.color);
+    this.indices = Arrays.copyOf(f.indices, f.indices.length);
+    this.uvIndices = f.uvIndices != null ? Arrays.copyOf(f.uvIndices, f.uvIndices.length) : null;
+    this.normal = new Vector3f(f.normal);
+    this.tag = f.tag != null ? new String(f.tag) : "";
   }
 
   public Face3D(int[] indices, int[] uvIndices) {

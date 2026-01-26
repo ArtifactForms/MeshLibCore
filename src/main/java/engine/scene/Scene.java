@@ -168,18 +168,19 @@ public class Scene {
    * @param g The graphics context used for rendering.
    */
   public void render(Graphics g) {
+    g.clear(background);
+    
     if (activeCamera != null) {
       g.applyCamera(activeCamera);
     }
-
+    
+    renderLights(g);
+    
     if (transform != null) {
       transform.apply(g);
     }
 
-    g.clear(background);
-
     g.setWireframeMode(wireframeMode);
-    renderLights(g);
 
     synchronized (rootNodes) {
       GraphicsPImpl.faceCount = 0;
