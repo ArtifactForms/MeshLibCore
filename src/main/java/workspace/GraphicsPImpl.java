@@ -3,7 +3,6 @@ package workspace;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.demos.texture.TitleTextComponent;
 import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
 import engine.processing.ProcessingFontManager;
