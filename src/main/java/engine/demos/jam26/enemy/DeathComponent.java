@@ -87,8 +87,7 @@ public class DeathComponent extends AbstractComponent {
         );
 
         if (timer <= 0f) {
-//          getOwner().destroy(); // or disable
-            getOwner().getScene().removeNode(getOwner());
+            getOwner().destroy();
           state = State.NONE;
         }
       }
