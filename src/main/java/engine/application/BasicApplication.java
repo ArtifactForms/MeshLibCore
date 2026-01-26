@@ -165,9 +165,10 @@ public abstract class BasicApplication implements Application {
     debugContext.clearFrameCommands();
 
     g.disableDepthTest();
-    g.camera();
 
+    g.camera();
     g.strokeWeight(1);
+
     renderUi(g);
     renderDebugUi(g);
 
