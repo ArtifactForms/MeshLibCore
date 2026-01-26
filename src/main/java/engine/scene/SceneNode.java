@@ -250,6 +250,24 @@ public class SceneNode {
   }
 
   /**
+   * Accepts a {@link SceneNodeVisitor} and traverses this node and its children in depth-first
+   * order.
+   *
+   * @param visitor the visitor to apply
+   * @throws IllegalArgumentException if visitor is {@code null}
+   */
+  public void accept(SceneNodeVisitor visitor) {
+    if (visitor == null) {
+      throw new IllegalArgumentException("Visitor cannot be null.");
+    }
+
+    visitor.visit(this);
+    for (SceneNode child : children) {
+      child.accept(visitor);
+    }
+  }
+
+  /**
    * Adds a child node to this node.
    *
    * @param child the child node
