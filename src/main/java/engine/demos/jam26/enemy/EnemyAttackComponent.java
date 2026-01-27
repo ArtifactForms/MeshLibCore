@@ -1,7 +1,9 @@
 package engine.demos.jam26.enemy;
 
 import engine.components.AbstractComponent;
+import engine.demos.jam26.assets.AssetRefs;
 import engine.demos.jam26.player.PlayerHealthComponent;
+import engine.scene.audio.SoundManager;
 import engine.scene.camera.Camera;
 import math.Vector3f;
 
@@ -41,6 +43,7 @@ public class EnemyAttackComponent extends AbstractComponent {
 
   private void attack(Vector3f playerPos) {
     if (health != null) {
+      SoundManager.playEffect(AssetRefs.SOUND_PLAYER_HIT_KEY);
       health.damage(damage);
     }
   }
