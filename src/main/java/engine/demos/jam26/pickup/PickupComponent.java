@@ -48,7 +48,7 @@ public abstract class PickupComponent extends AbstractComponent {
     getOwner().getTransform().rotate(0, tpf * 6f, 0);
 
     if (timer <= 0f) {
-      getOwner().setActive(false); // oder destroy()
+      getOwner().destroy();
     }
   }
 
