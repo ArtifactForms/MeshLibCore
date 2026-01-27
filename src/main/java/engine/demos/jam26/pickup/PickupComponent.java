@@ -28,7 +28,9 @@ public abstract class PickupComponent extends AbstractComponent {
     Vector3f pos = getOwner().getTransform().getPosition();
 
     if (pos.distanceSquared(p) <= pickupRadius * pickupRadius) {
-      onPickup();
+      if (canPickUp()) {
+        onPickup();
+      }
     }
   }
 
@@ -54,4 +56,6 @@ public abstract class PickupComponent extends AbstractComponent {
 
   /** Game logic (health, ammo, key, etc.) */
   protected abstract void applyEffect();
+
+  protected abstract boolean canPickUp();
 }
