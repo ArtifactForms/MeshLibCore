@@ -49,8 +49,8 @@ public class DungeonCrawlerGame extends BasicApplication {
     game.launch(settings);
   }
 
-  private boolean debug = true;
-  private boolean drawDebugNormals = true;
+  private boolean debug = false;
+  private boolean drawDebugNormals = false;
 
   private float eyeHeight = 40;
 
