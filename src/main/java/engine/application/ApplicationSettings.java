@@ -9,13 +9,9 @@ public class ApplicationSettings {
   private static final String DEFAULT_TITLE = "Untitled-Application";
 
   private int width;
-
   private int height;
-
   private boolean fullscreen;
-
   private String title;
-
   private boolean useGamePadInput;
 
   /**
@@ -39,24 +35,13 @@ public class ApplicationSettings {
   /**
    * Creates and returns an ApplicationSettings instance with default values.
    *
-   * <ul>
-   *   <li>Width: 1024
-   *   <li>Height: 768
-   *   <li>Fullscreen: false
-   *   <li>Title: "Untitled-Application"
-   * </ul>
-   *
    * @return A new {@link ApplicationSettings} instance with default values.
    */
   public static ApplicationSettings defaultSettings() {
     return new ApplicationSettings();
   }
 
-  /**
-   * Gets the width of the application window.
-   *
-   * @return The width in pixels.
-   */
+  /** @return The width in pixels. */
   public int getWidth() {
     return width;
   }
@@ -65,20 +50,18 @@ public class ApplicationSettings {
    * Sets the width of the application window.
    *
    * @param width The width in pixels. Must be greater than 0.
+   * @return this {@link ApplicationSettings} instance for chaining.
    * @throws IllegalArgumentException if the width is less than or equal to 0.
    */
-  public void setWidth(int width) {
+  public ApplicationSettings setWidth(int width) {
     if (width <= 0) {
       throw new IllegalArgumentException("Width must be greater than 0.");
     }
     this.width = width;
+    return this;
   }
 
-  /**
-   * Gets the height of the application window.
-   *
-   * @return The height in pixels.
-   */
+  /** @return The height in pixels. */
   public int getHeight() {
     return height;
   }
@@ -87,20 +70,18 @@ public class ApplicationSettings {
    * Sets the height of the application window.
    *
    * @param height The height in pixels. Must be greater than 0.
+   * @return this {@link ApplicationSettings} instance for chaining.
    * @throws IllegalArgumentException if the height is less than or equal to 0.
    */
-  public void setHeight(int height) {
+  public ApplicationSettings setHeight(int height) {
     if (height <= 0) {
       throw new IllegalArgumentException("Height must be greater than 0.");
     }
     this.height = height;
+    return this;
   }
 
-  /**
-   * Checks if the application is set to fullscreen mode.
-   *
-   * @return {@code true} if fullscreen mode is enabled, {@code false} otherwise.
-   */
+  /** @return {@code true} if fullscreen mode is enabled. */
   public boolean isFullscreen() {
     return fullscreen;
   }
@@ -109,16 +90,14 @@ public class ApplicationSettings {
    * Sets whether the application should run in fullscreen mode.
    *
    * @param fullscreen {@code true} to enable fullscreen mode, {@code false} to disable it.
+   * @return this {@link ApplicationSettings} instance for chaining.
    */
-  public void setFullscreen(boolean fullscreen) {
+  public ApplicationSettings setFullscreen(boolean fullscreen) {
     this.fullscreen = fullscreen;
+    return this;
   }
 
-  /**
-   * Gets the title of the application window.
-   *
-   * @return The title as a {@link String}.
-   */
+  /** @return The title of the application window. */
   public String getTitle() {
     return title;
   }
@@ -127,20 +106,30 @@ public class ApplicationSettings {
    * Sets the title of the application window.
    *
    * @param title The title of the application window. Cannot be {@code null} or empty.
+   * @return this {@link ApplicationSettings} instance for chaining.
    * @throws IllegalArgumentException if the title is {@code null} or empty.
    */
-  public void setTitle(String title) {
+  public ApplicationSettings setTitle(String title) {
     if (title == null || title.isEmpty()) {
       throw new IllegalArgumentException("Title cannot be null or empty.");
     }
     this.title = title;
+    return this;
   }
 
+  /** @return {@code true} if gamepad input is enabled. */
   public boolean isUseGamePadInput() {
     return useGamePadInput;
   }
 
-  public void setUseGamePadInput(boolean useGamePadInput) {
+  /**
+   * Enables or disables gamepad input.
+   *
+   * @param useGamePadInput {@code true} to enable gamepad input.
+   * @return this {@link ApplicationSettings} instance for chaining.
+   */
+  public ApplicationSettings setUseGamePadInput(boolean useGamePadInput) {
     this.useGamePadInput = useGamePadInput;
+    return this;
   }
 }
