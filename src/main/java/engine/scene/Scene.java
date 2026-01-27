@@ -3,8 +3,6 @@ package engine.scene;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import engine.components.Transform;
 import engine.scene.audio.AudioListener;
@@ -33,13 +31,6 @@ public class Scene {
   /** List of lights in the scene that are used for lighting calculations. */
   private final List<Light> lights = new ArrayList<>();
 
-  /** Thread pool used to parallelize updates for performance optimization. */
-  private final ExecutorService updateExecutor =
-      Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
-  /** Flag indicating whether the scene is rendered in wireframe mode. */
-  private boolean wireframeMode;
-
   /** Name of the scene. Used for identification or debugging purposes. */
   private final String name;
 
@@ -53,6 +44,8 @@ public class Scene {
   private Transform transform;
 
   private AudioSystem audioSystem;
+
+  private SceneNode uiRoot;
 
   /** Constructs a {@code Scene} with a default name. */
   public Scene() {
@@ -73,6 +66,8 @@ public class Scene {
     this.background = new Color(0, 0, 0, 1);
     this.transform = new Transform();
     this.audioSystem = new AudioSystem();
+    this.uiRoot = new SceneNode("UI-Root");
+    this.uiRoot.setScene(this);
   }
 
   /**
@@ -134,6 +129,11 @@ public class Scene {
       node.update(deltaTime);
     }
     updateAudio();
+    updateUI(deltaTime);
+  }
+
+  private void updateUI(float deltaTime) {
+    uiRoot.update(deltaTime);
   }
 
   /**
@@ -169,18 +169,16 @@ public class Scene {
    */
   public void render(Graphics g) {
     g.clear(background);
-    
+
     if (activeCamera != null) {
       g.applyCamera(activeCamera);
     }
-    
+
     renderLights(g);
-    
+
     if (transform != null) {
       transform.apply(g);
     }
-
-    g.setWireframeMode(wireframeMode);
 
     synchronized (rootNodes) {
       GraphicsPImpl.faceCount = 0;
@@ -217,14 +215,13 @@ public class Scene {
 
   /** Cleans up resources and shuts down the executor safely. */
   public void cleanup() {
-    // Shutdown thread pool properly
-    updateExecutor.shutdown();
     synchronized (rootNodes) {
       for (SceneNode node : rootNodes) {
         node.cleanup();
       }
       rootNodes.clear();
     }
+    uiRoot.cleanup();
   }
 
   /**
@@ -253,7 +250,6 @@ public class Scene {
       }
       rootNodes.clear();
     }
-    updateExecutor.shutdown();
   }
 
   /**
@@ -369,24 +365,6 @@ public class Scene {
   }
 
   /**
-   * Checks if the scene is in wireframe rendering mode.
-   *
-   * @return {@code true} if wireframe mode is enabled, {@code false} otherwise.
-   */
-  public boolean isWireframeMode() {
-    return wireframeMode;
-  }
-
-  /**
-   * Enables or disables wireframe rendering mode for the scene.
-   *
-   * @param wireframeMode {@code true} to enable wireframe mode, {@code false} to disable it.
-   */
-  public void setWireframeMode(boolean wireframeMode) {
-    this.wireframeMode = wireframeMode;
-  }
-
-  /**
    * Retrieves the background color of the scene.
    *
    * <p>The background color is used to clear the rendering surface before drawing the scene.
@@ -431,5 +409,13 @@ public class Scene {
       throw new IllegalArgumentException("Transform cannot be null.");
     }
     this.transform = transform;
+  }
+
+  public void renderUI(Graphics g) {
+    uiRoot.render(g);
+  }
+
+  public SceneNode getUIRoot() {
+    return uiRoot;
   }
 }
