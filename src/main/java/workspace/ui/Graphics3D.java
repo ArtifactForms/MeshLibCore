@@ -49,6 +49,8 @@ public interface Graphics3D extends Graphics2D {
   void drawLine(float x1, float y1, float z1, float x2, float y2, float z2);
 
   void drawLine(Vector3f from, Vector3f to);
+  
+  void drawLines(Vector3f[] vertices, math.Color[] colors);
 
   void camera();
 

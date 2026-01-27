@@ -22,8 +22,11 @@ public final class DebugContext {
     Iterator<DebugCommand> it = commands.iterator();
     while (it.hasNext()) {
       DebugCommand c = it.next();
-      if (c.ttl > 0f && (c.ttl -= tpf) <= 0f) {
-        it.remove();
+      if (c.ttl > 0f) {
+        c.ttl -= tpf;
+        if (c.ttl <= 0f) {
+          it.remove();
+        }
       }
     }
   }
@@ -33,8 +36,15 @@ public final class DebugContext {
     renderer.render(g, commands);
   }
 
+  /**
+   * ttl == 0 → exakt 1 Frame
+   *
+   * <p>ttl > 0 → korrekt zeitbasiert
+   *
+   * <p>ttl < 0 → lebt ewig
+   */
   public void clearFrameCommands() {
-    commands.removeIf(c -> c.ttl <= 0f);
+    commands.removeIf(c -> c.ttl == DebugCommand.ONE_FRAME);
   }
 
   public boolean isVisible() {
