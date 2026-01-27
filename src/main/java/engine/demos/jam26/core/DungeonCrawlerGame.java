@@ -50,7 +50,7 @@ public class DungeonCrawlerGame extends BasicApplication {
   }
 
   private boolean debug = true;
-  private boolean drawDebugNormals;
+  private boolean drawDebugNormals = true;
 
   private float eyeHeight = 40;
 
@@ -157,7 +157,6 @@ public class DungeonCrawlerGame extends BasicApplication {
   private void setupDebug() {
     setDisplayInfo(debug);
     setDebugDrawVisible(debug);
-    drawDebugNormals = false;
   }
 
   private void teleportPlayerToSpawn() {
@@ -202,7 +201,8 @@ public class DungeonCrawlerGame extends BasicApplication {
     SoundManager.addSound(AssetRefs.SOUND_EXIT_KEY, AssetRefs.SOUND_EXIT_PATH);
     SoundManager.addSound(AssetRefs.SOUND_BACKGROUND_KEY, AssetRefs.SOUND_BACKGROUND_PATH);
     SoundManager.addSound(AssetRefs.SOUND_PLAYER_DEAD_KEY, AssetRefs.SOUND_PLAYER_DEAD_PATH);
-    SoundManager.addEffect(AssetRefs.SOUND_HEALTH_PICK_UP_KEY, AssetRefs.SOUND_HEALTH_PICK_UP_PATH, 6);
+    SoundManager.addEffect(
+        AssetRefs.SOUND_HEALTH_PICK_UP_KEY, AssetRefs.SOUND_HEALTH_PICK_UP_PATH, 6);
     SoundManager.addEffect(
         AssetRefs.SOUND_ENEMY_HIT_SHRIEK_KEY, AssetRefs.SOUND_ENEMY_HIT_SHRIEK_PATH, 6);
   }
@@ -310,6 +310,8 @@ public class DungeonCrawlerGame extends BasicApplication {
   private void debugRenderNormals(Graphics g) {
     if (!drawDebugNormals) return;
 
+    float maxDistance = 1000;
+
     g.setColor(Color.RED);
     float normalLength = 5;
 
@@ -321,9 +323,10 @@ public class DungeonCrawlerGame extends BasicApplication {
       }
       center.divideLocal(f.indices.length);
 
-      Vector3f end = new Vector3f(center).addLocal(new Vector3f(f.normal).multLocal(normalLength));
+      if (center.distance(camera.getTransform().getPosition()) >= maxDistance) continue;
 
-      g.drawLine(center, end);
+      Vector3f end = new Vector3f(center).addLocal(new Vector3f(f.normal).multLocal(normalLength));
+      DebugDraw.drawLine(center, end, Color.RED);
     }
   }
 
