@@ -121,7 +121,8 @@ public class LightRendererImpl implements LightRenderer {
     if (lightsOff) return;
     store(light);
     renderCommon(light.getColor(), 1);
-    g.setAmbientColor(light.getColor());
+    Color c = light.getColor();
+    p.ambientLight(c.getRedInt(), c.getGreenInt(), c.getBlueInt());
   }
 
   private void store(Light light) {
