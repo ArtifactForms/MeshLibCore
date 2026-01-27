@@ -205,6 +205,7 @@ public class DungeonCrawlerGame extends BasicApplication {
         AssetRefs.SOUND_HEALTH_PICK_UP_KEY, AssetRefs.SOUND_HEALTH_PICK_UP_PATH, 6);
     SoundManager.addEffect(
         AssetRefs.SOUND_ENEMY_HIT_SHRIEK_KEY, AssetRefs.SOUND_ENEMY_HIT_SHRIEK_PATH, 6);
+    SoundManager.addEffect(AssetRefs.SOUND_PLAYER_HIT_KEY, AssetRefs.SOUND_PLAYER_HIT_PATH, 6);
   }
 
   private void setupOverlayLayerEntities() {
