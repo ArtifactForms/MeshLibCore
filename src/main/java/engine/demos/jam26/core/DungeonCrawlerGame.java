@@ -49,7 +49,7 @@ public class DungeonCrawlerGame extends BasicApplication {
     game.launch(settings);
   }
 
-  private boolean debug = false;
+  private boolean debug = true;
   private boolean drawDebugNormals;
 
   private float eyeHeight = 40;
@@ -237,7 +237,7 @@ public class DungeonCrawlerGame extends BasicApplication {
 
   private void attachEnemyComponents(Billboard b) {
     b.addComponent(new EnemyComponent());
-    b.addComponent(new HitReactionComponent(getTimer()));
+    b.addComponent(new HitReactionComponent());
     b.addComponent(new DeathAnimationComponent());
     b.addComponent(new EnemyChaseComponent());
     b.addComponent(new EnemyAttackComponent(health));
