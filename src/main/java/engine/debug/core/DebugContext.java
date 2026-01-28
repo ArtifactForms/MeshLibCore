@@ -36,13 +36,6 @@ public final class DebugContext {
     renderer.render(g, commands);
   }
 
-  /**
-   * ttl == 0 → exakt 1 Frame
-   *
-   * <p>ttl > 0 → korrekt zeitbasiert
-   *
-   * <p>ttl < 0 → lebt ewig
-   */
   public void clearFrameCommands() {
     commands.removeIf(c -> c.ttl == DebugCommand.ONE_FRAME);
   }
