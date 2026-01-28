@@ -109,6 +109,7 @@ public class LevelBuilder {
       case WALL:
         return 1;
       case FLOOR:
+        //        return Mathf.random(0, 6);
         return 2;
       case PLAYER_SPAWN:
         return 3;

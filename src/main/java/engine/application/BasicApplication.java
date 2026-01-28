@@ -9,7 +9,6 @@ import engine.debug.FpsHistory;
 import engine.debug.core.DebugContext;
 import engine.debug.core.DebugDraw;
 import engine.input.Input;
-import engine.input.Key;
 import engine.processing.ProcessingApplication;
 import engine.resources.Font;
 import engine.scene.Scene;
@@ -33,8 +32,6 @@ public abstract class BasicApplication implements Application {
   protected Input input;
 
   protected Scene activeScene;
-
-  protected SceneNode rootUI;
 
   protected DebugOverlay debugOverlay;
 
@@ -60,8 +57,6 @@ public abstract class BasicApplication implements Application {
 
   public abstract void onCleanup();
 
-  private boolean lastZ;
-
   public void launch(ApplicationSettings settings) {
     if (launched) {
       throw new IllegalStateException("Application already launched.");
@@ -86,7 +81,6 @@ public abstract class BasicApplication implements Application {
   @Override
   public void initialize() {
     viewport = new Viewport(0, 0, settings.getWidth(), settings.getHeight());
-    rootUI = new SceneNode("RootUI");
     initializeDebugOverlay();
     setupDebug();
     fpsGraph = new FpsGraph(new FpsHistory());
@@ -117,15 +111,6 @@ public abstract class BasicApplication implements Application {
 
   @Override
   public void update() {
-    if (activeScene != null) {
-
-      if (input.isKeyPressed(Key.Z) && !lastZ) {
-        activeScene.setWireframeMode(!activeScene.isWireframeMode());
-      }
-
-      lastZ = input.isKeyPressed(Key.Z);
-    }
-
     timer.update();
 
     if (settings.isUseGamePadInput()) input.updateGamepadState();
@@ -142,7 +127,6 @@ public abstract class BasicApplication implements Application {
       }
     }
 
-    rootUI.update(tpf);
     onUpdate(tpf);
 
     debugContext.update(tpf);
@@ -169,14 +153,13 @@ public abstract class BasicApplication implements Application {
     g.camera();
     g.strokeWeight(1);
 
-    renderUi(g);
+    if (activeScene != null) {
+      activeScene.renderUI(g);
+    }
+
     renderDebugUi(g);
 
     g.enableDepthTest();
-  }
-
-  private void renderUi(Graphics g) {
-    rootUI.render(g);
   }
 
   private void renderDebugUi(Graphics g) {
@@ -191,7 +174,6 @@ public abstract class BasicApplication implements Application {
     if (activeScene != null) {
       activeScene.cleanup();
     }
-    rootUI.cleanup();
     onCleanup();
   }
 

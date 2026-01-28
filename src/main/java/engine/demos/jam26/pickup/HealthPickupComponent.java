@@ -19,4 +19,9 @@ public class HealthPickupComponent extends PickupComponent {
     SoundManager.playEffect(AssetRefs.SOUND_HEALTH_PICK_UP_KEY);
     health.heal(amount);
   }
+
+  @Override
+  protected boolean canPickUp() {
+    return health.getHealth() < health.getMaxHealth();
+  }
 }

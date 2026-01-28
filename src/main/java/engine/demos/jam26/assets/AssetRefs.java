@@ -21,6 +21,10 @@ public final class AssetRefs {
 
   public static final String SOUND_PLAYER_DEAD_KEY = "Dead";
   public static final String SOUND_PLAYER_DEAD_PATH = "/dungeon/dead.wav";
+  
+  public static final String SOUND_PLAYER_HIT_KEY = "Player-Hit";
+  public static final String SOUND_PLAYER_HIT_PATH = "/dungeon/ough.wav";
+
 
   public static final String SOUND_HEALTH_PICK_UP_KEY = "PickupHealth";
   public static final String SOUND_HEALTH_PICK_UP_PATH = "/dungeon/powerUp.wav";
@@ -36,6 +40,7 @@ public final class AssetRefs {
    * ========================= */
 
   public static final String IMAGE_WEAPON_CROSS_BOW_HUD_PATH = "/dungeon/weapon3.png";
+  public static final String IMAGE_WEAPON_CLAW_HUD_PATH = "/dungeon/weapon5.png";
   public static final String IMAGE_MENU_PATH = "/dungeon/menu2.png";
   public static final String IMAGE_LEVEL_PATH = "/images/dungeon/level-test.png";
   public static final String IMAGE_LEVEL_OVERLAY_PATH = "/images/dungeon/level-test-overlay.png";

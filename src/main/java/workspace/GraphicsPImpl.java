@@ -136,6 +136,28 @@ public class GraphicsPImpl implements Graphics {
   }
 
   @Override
+  public void drawLines(Vector3f[] vertices, math.Color[] colors) {
+
+    g.beginShape(PApplet.LINES);
+
+    math.Color last = null;
+
+    for (int i = 0; i < vertices.length; i++) {
+
+      math.Color c = colors[i];
+      if (last == null || !c.equals(last)) {
+        g.stroke(c.getRedInt(), c.getGreenInt(), c.getBlueInt(), c.getAlphaInt());
+        last = c;
+      }
+
+      Vector3f v = vertices[i];
+      g.vertex(v.x, v.y, v.z);
+    }
+
+    g.endShape();
+  }
+
+  @Override
   public void draw(VBO vbo) {
     faceCount += vbo.getFaceCount();
     vertexCount += vbo.getVertexCount();

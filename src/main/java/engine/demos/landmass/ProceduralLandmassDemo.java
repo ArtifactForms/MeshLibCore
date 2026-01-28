@@ -50,7 +50,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
   private Scene scene;
   //  private EndlessTerrain endlessTerrain;
 
-//  private LoadingScreen loadingScreen;
+  //  private LoadingScreen loadingScreen;
   private RoundReticle roundReticle;
 
   public static void main(String[] args) {
@@ -63,8 +63,8 @@ public class ProceduralLandmassDemo extends BasicApplication {
   /** Initializes the demo scene, including terrain generation, lighting, and UI components. */
   @Override
   public void onInitialize() {
-    setupUI();
     setupScene();
+    setupUI();
     createCamera();
     runTerrainCreation();
     //    endlessTerrain = new EndlessTerrain(scene, chunkSize * chunkScale);
@@ -97,12 +97,12 @@ public class ProceduralLandmassDemo extends BasicApplication {
     roundReticle = new RoundReticle();
     roundReticle.setActive(false);
     reticleNode.addComponent(roundReticle);
-    rootUI.addChild(reticleNode);
+    scene.getUIRoot().addChild(reticleNode);
 
     SceneNode loadingScreenNode = new SceneNode();
-//    loadingScreen = new LoadingScreen();
-//    loadingScreenNode.addComponent(loadingScreen);
-    rootUI.addChild(loadingScreenNode);
+    //    loadingScreen = new LoadingScreen();
+    //    loadingScreenNode.addComponent(loadingScreen);
+    scene.getUIRoot().addChild(loadingScreenNode);
   }
 
   /** Creates the terrain based on the selected draw mode and level of detail. */
@@ -142,7 +142,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
     scene.addNode(chunkDisplayNode);
 
     roundReticle.setActive(true);
-//    loadingScreen.hide();
+    //    loadingScreen.hide();
   }
 
   /** Sets up the camera with smooth fly-by controls. */

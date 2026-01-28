@@ -6,7 +6,7 @@ import math.Vector3f;
 
 public class EnemyChaseComponent extends AbstractComponent {
 
-  private float moveSpeed = 30f;
+  private float moveSpeed = 64f;
   private float stopDistance = 20f;
   private float sightDistance = 300f; // Aggro-Range
 

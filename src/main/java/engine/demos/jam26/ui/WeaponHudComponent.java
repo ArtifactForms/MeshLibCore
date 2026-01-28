@@ -14,6 +14,8 @@ public class WeaponHudComponent extends AbstractComponent implements RenderableC
 
   private int width = 256;
   private int height = 62;
+//private int width = 512;
+//private int height = 245;
 
   private Image image;
 

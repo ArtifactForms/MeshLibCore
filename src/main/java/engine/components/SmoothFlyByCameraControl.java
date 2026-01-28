@@ -101,7 +101,6 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
     }
 
     updateTarget();
-//    input.center();
   }
 
   /**
@@ -180,13 +179,13 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
   /** Called when the component is attached to a scene node. */
   @Override
   public void onAttach() {
-      input.setMouseMode(MouseMode.RELATIVE);
+    input.setMouseMode(MouseMode.RELATIVE);
   }
 
   /** Called when the component is detached from a scene node. */
   @Override
   public void onDetach() {
-      input.setMouseMode(MouseMode.ABSOLUTE);
+    input.setMouseMode(MouseMode.ABSOLUTE);
   }
 
   /**
