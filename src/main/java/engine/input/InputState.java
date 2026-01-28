@@ -142,4 +142,13 @@ public class InputState {
   public Set<Key> getDownKeys() {
     return Set.copyOf(down);
   }
+
+  /**
+   * Returns an immutable snapshot of all currently released keys.
+   *
+   * @return a read-only set of keys that are currently released
+   */
+  public Set<Key> getReleasedKeys() {
+    return Set.copyOf(released);
+  }
 }
