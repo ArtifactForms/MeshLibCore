@@ -40,6 +40,7 @@ public class VoxelGameDemo extends BasicApplication {
 
   private SceneNode playerNode;
   private TextDisplay display;
+  private SceneNode uiRoot;
 
   @Override
   public void onInitialize() {
@@ -48,6 +49,7 @@ public class VoxelGameDemo extends BasicApplication {
     client = new Client();
     player = new Player();
     scene = new Scene();
+    uiRoot = scene.getUIRoot();
 
     setupPlayer();
 
@@ -61,7 +63,7 @@ public class VoxelGameDemo extends BasicApplication {
     setupCamera();
 
     SceneNode hotbarNode = new SceneNode("Hotbar", new Hotbar());
-    rootUI.addChild(hotbarNode);
+    uiRoot.addChild(hotbarNode);
 
     chunkBorders = new SceneNode("Chunk-Borders");
     chunkBorders.addComponent(new ChunkVisualizer1());
@@ -81,7 +83,7 @@ public class VoxelGameDemo extends BasicApplication {
 
     display = new TextDisplay();
     SceneNode displayNode = new SceneNode("Display", display);
-    rootUI.addChild(displayNode);
+    uiRoot.addChild(displayNode);
 
     //    SceneNode rayNode = new SceneNode("Ray", new RayVisualizer(camera));
     SceneNode rayNode = new SceneNode("Ray", new RayBlockDetector(camera, world, display));
@@ -129,7 +131,7 @@ public class VoxelGameDemo extends BasicApplication {
     ChatComponent chatComponent = new ChatComponent(input, camera, eventManager);
 
     SceneNode chatNode = new SceneNode("Test", chatComponent);
-    rootUI.addChild(chatNode);
+    uiRoot.addChild(chatNode);
   }
 
   private void setupChunkManager() {
@@ -141,11 +143,11 @@ public class VoxelGameDemo extends BasicApplication {
     ChunkProfile profile = new ChunkProfile(chunkManager);
     SceneNode profileNode = new SceneNode("Chunk Profile", profile);
     profileNode.getTransform().setPosition(220, 0, 0);
-    rootUI.addChild(profileNode);
+    uiRoot.addChild(profileNode);
   }
 
   private void setupUI() {
-    rootUI.addChild(new SceneNode("Cross-Hair", new CrossLineReticle()));
+    uiRoot.addChild(new SceneNode("Cross-Hair", new CrossLineReticle()));
   }
 
   private void setupTestCube() {
