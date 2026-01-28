@@ -125,7 +125,6 @@ public class DebugInfoUpdater {
     setInfo(CATEGORY_SCENE, "Scene", activeScene.getName());
     setInfo(CATEGORY_SCENE, "Root count", activeScene.getRootCount());
     setInfo(CATEGORY_SCENE, "Lights count", activeScene.getLightCount());
-    setInfo(CATEGORY_SCENE, "Wireframe mode", activeScene.isWireframeMode());
     setInfo(CATEGORY_SCENE, "Faces", GraphicsPImpl.faceCount);
     setInfo(CATEGORY_SCENE, "Vertices", GraphicsPImpl.vertexCount);
   }
