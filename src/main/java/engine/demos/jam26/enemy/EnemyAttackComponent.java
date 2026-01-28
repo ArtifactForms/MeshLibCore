@@ -18,7 +18,7 @@ public class EnemyAttackComponent extends AbstractComponent {
   private float cooldownTimer = 0f;
 
   public EnemyAttackComponent(PlayerHealthComponent health) {
-    this.attackRange = 48;
+    this.attackRange = 64;
     this.damage = 10;
     this.attackCooldown = 1.0f;
     this.health = health;

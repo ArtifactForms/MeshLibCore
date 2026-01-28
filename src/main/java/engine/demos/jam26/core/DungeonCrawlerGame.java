@@ -49,7 +49,7 @@ public class DungeonCrawlerGame extends BasicApplication {
     game.launch(settings);
   }
 
-  private boolean debug = false;
+  private boolean debug = true;
   private boolean drawDebugNormals = false;
 
   private float eyeHeight = 40;
@@ -60,10 +60,11 @@ public class DungeonCrawlerGame extends BasicApplication {
   private TileMap tileMap;
   private PlayerHealthComponent health;
   private PerspectiveCamera camera;
+  
+  private SceneNode uiRoot;
 
   @Override
-  public void onInitialize() {
-
+  public void onInitialize() {      
     setupDebug();
     setupAudio();
 
@@ -89,7 +90,7 @@ public class DungeonCrawlerGame extends BasicApplication {
     playerNode.addComponent(hitFlashComponent);
 
     SceneNode hitFlash = new SceneNode("Hit-Flash", hitFlashComponent);
-    rootUI.addChild(hitFlash);
+    uiRoot.addChild(hitFlash);
 
     scene.addNode(playerNode);
     teleportPlayerToSpawn();
@@ -112,6 +113,7 @@ public class DungeonCrawlerGame extends BasicApplication {
 
   private void setupScene() {
     scene = new Scene();
+    uiRoot = scene.getUIRoot();
     setActiveScene(scene);
   }
 
@@ -136,7 +138,7 @@ public class DungeonCrawlerGame extends BasicApplication {
         SceneNode titleNode = new SceneNode();
         TitleTextComponent titleComp = new TitleTextComponent(title);
         titleNode.addComponent(titleComp);
-        rootUI.addChild(titleNode);
+        uiRoot.addChild(titleNode);
       }
     };
   }
@@ -178,22 +180,22 @@ public class DungeonCrawlerGame extends BasicApplication {
   private void setupHealthBar() {
     SceneNode healthUI = new SceneNode("Health-Bar");
     healthUI.addComponent(new HealthBarUIComponent(health));
-    rootUI.addChild(healthUI);
+    uiRoot.addChild(healthUI);
   }
 
   private void setupWeaponHud() {
     SceneNode weaponHud = new SceneNode("Weapon-Hud", new WeaponHudComponent());
-    rootUI.addChild(weaponHud);
+    uiRoot.addChild(weaponHud);
   }
 
   private void setupReticle() {
-    rootUI.addChild(new SceneNode("Reticle", new RoundReticle()));
+    uiRoot.addChild(new SceneNode("Reticle", new RoundReticle()));
   }
 
   private void setupStartScreen() {
     StartScreenComponent startScreenComponent = new StartScreenComponent(input);
     SceneNode startScreenNode = new SceneNode("Start-Screen", startScreenComponent);
-    rootUI.addChild(startScreenNode);
+    uiRoot.addChild(startScreenNode);
   }
 
   private void setupAudio() {
@@ -260,7 +262,7 @@ public class DungeonCrawlerGame extends BasicApplication {
     SceneNode miniMapNode = new SceneNode("MiniMap");
     miniMapNode.addComponent(miniMapComponent);
 
-    rootUI.addChild(miniMapNode);
+    uiRoot.addChild(miniMapNode);
   }
 
   private void setupExit() {
@@ -277,7 +279,7 @@ public class DungeonCrawlerGame extends BasicApplication {
     TitleTextComponent titleComp = new TitleTextComponent(title);
     titleNode.addComponent(titleComp);
     titleNode.setActive(false);
-    rootUI.addChild(titleNode);
+    uiRoot.addChild(titleNode);
 
     Billboard billboard = new Billboard(AssetRefs.EXIT_TEXTURE, 16);
     billboard.setUvRect(AssetRefs.EXIT_UV);
