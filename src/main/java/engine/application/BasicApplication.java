@@ -153,9 +153,12 @@ public abstract class BasicApplication implements Application {
     g.camera();
     g.strokeWeight(1);
 
+
     if (activeScene != null) {
       activeScene.renderUI(g);
     }
+    
+    g.lightsOff();
 
     renderDebugUi(g);
 
