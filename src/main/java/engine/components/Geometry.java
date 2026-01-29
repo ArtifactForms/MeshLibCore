@@ -113,13 +113,13 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
    * @return the world-space bounding box of this geometry
    */
   public Bounds getWorldBounds() {
-      Vector3f worldPos = getOwner().getWorldPosition();
+    Vector3f worldPos = getOwner().getWorldPosition();
 
-      Vector3f min = bounds.getMin().add(worldPos);
-      Vector3f max = bounds.getMax().add(worldPos);
+    Vector3f min = bounds.getMin().add(worldPos);
+    Vector3f max = bounds.getMax().add(worldPos);
 
-      return new Bounds(min, max);
-    }
+    return new Bounds(min, max);
+  }
 
   /**
    * Performs a raycast against this geometry using its world-space bounding box.
@@ -145,6 +145,18 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
     Vector3f hitPoint = ray.getOrigin().add(ray.getDirection().mult(distance));
 
     return new RaycastHit(getOwner(), hitPoint, distance);
+  }
+
+  /**
+   * Returns the material applied to this geometry.
+   *
+   * <p>The returned {@link Material} is the actual instance used for rendering. Modifying it will
+   * immediately affect this geometry.
+   *
+   * @return the material instance applied to this geometry
+   */
+  public Material getMaterial() {
+    return material;
   }
 
   /**
