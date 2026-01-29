@@ -9,57 +9,94 @@ import math.Mathf;
 import math.Vector3f;
 
 /**
- * The {@code SmoothFlyByCameraControl} class provides first-person camera control functionality,
- * allowing the user to move the camera smoothly in all directions and adjust its orientation using
- * mouse and keyboard input. This control simulates a "fly-by" movement with acceleration and
- * deceleration, while smoothing rapid mouse movements for a better experience.
+ * Provides smooth first-person / fly-by camera controls.
  *
- * <p>The movement is controlled by the following keys:
+ * <p>This component enables free camera movement and mouse-look behavior similar to FPS or editor
+ * cameras. Movement is frame-rate independent and supports acceleration, deceleration, and speed
+ * boosting.
+ *
+ * <h2>Coordinate System</h2>
  *
  * <ul>
- *   <li>W: Move forward
- *   <li>S: Move backward
- *   <li>A: Move left (strafe)
- *   <li>D: Move right (strafe)
- *   <li>SPACE: Move up
- *   <li>SHIFT: Move down
- *   <li>CTRL: speed boost
+ *   <li>Right-handed coordinate system
+ *   <li>Forward direction is derived from {@link engine.components.Transform#getForward()}
+ *   <li>Up direction is derived from {@link engine.components.Transform#getUp()}
+ *   <li>The engine assumes a <b>Y-down world</b> (negative Y is up)
  * </ul>
  *
- * <p>The mouse controls the camera's yaw (left-right) and pitch (up-down) based on the mouse
- * movement, with smoothing applied to reduce sudden, erratic movements.
+ * <h2>Controls</h2>
+ *
+ * <ul>
+ *   <li><b>W / S</b> – Move forward / backward
+ *   <li><b>A / D</b> – Strafe left / right
+ *   <li><b>SPACE</b> – Move up (world up)
+ *   <li><b>SHIFT</b> – Move down
+ *   <li><b>CTRL</b> – Speed boost
+ *   <li><b>Mouse</b> – Look around (yaw & pitch)
+ * </ul>
+ *
+ * <p>Mouse movement is smoothed using linear interpolation to reduce jitter. Pitch rotation is
+ * clamped to prevent flipping.
  */
 public class SmoothFlyByCameraControl extends AbstractComponent {
 
+  /** Default mouse sensitivity multiplier */
   private static final float DEFAULT_MOUSE_SENSITIVITY = 10f;
+
+  /** Default camera movement speed */
   private static final float DEFAULT_MOVE_SPEED = 30f;
-  private static final float MAX_VERTICAL_ANGLE = 80f; // pitch clamp
-  private static final float MIN_VERTICAL_ANGLE = -80f; // pitch clamp
 
-  private final Vector3f forward = new Vector3f();
-  private final Vector3f target = new Vector3f();
+  /** Maximum upward pitch angle in degrees */
+  private static final float MAX_VERTICAL_ANGLE = 80f;
 
+  /** Maximum downward pitch angle in degrees */
+  private static final float MIN_VERTICAL_ANGLE = -80f;
+
+  /** Mouse sensitivity factor */
   private float mouseSensitivity = DEFAULT_MOUSE_SENSITIVITY;
+
+  /** Smoothed mouse delta for yaw */
   private float smoothedMouseX = 0f;
+
+  /** Smoothed mouse delta for pitch */
   private float smoothedMouseY = 0f;
+
+  /** Interpolation factor for mouse smoothing */
   private float mouseSmoothingFactor = 0.25f;
+
+  /** Base movement speed */
   private float moveSpeed = DEFAULT_MOVE_SPEED;
+
+  /** Acceleration factor when movement input is applied */
   private float acceleration = 10f;
+
+  /** Deceleration factor when movement input stops */
   private float deceleration = 8f;
+
+  /** Multiplier applied when speed boost key is pressed */
   private float speedBoostMultiplier = 3f;
 
-  private Input input;
-  private Camera camera;
+  /** Current interpolated movement velocity */
+  private final Vector3f currentVelocity = new Vector3f();
 
-  private Vector3f currentVelocity = new Vector3f();
-  private Vector3f targetVelocity = new Vector3f();
+  /** Target velocity derived from input */
+  private final Vector3f targetVelocity = new Vector3f();
+
+  /** Cached camera target position */
+  private final Vector3f target = new Vector3f();
+
+  /** Input provider */
+  private final Input input;
+
+  /** Controlled camera instance */
+  private final Camera camera;
 
   /**
-   * Constructs a new {@code SmoothFlyByCameraControl} with the specified input and camera.
+   * Creates a new smooth fly-by camera controller.
    *
-   * @param input The {@link Input} instance to capture user input.
-   * @param camera The {@link PerspectiveCamera} to control.
-   * @throws IllegalArgumentException if either input or camera is null.
+   * @param input input system used to query keyboard and mouse state
+   * @param camera camera to control
+   * @throws IllegalArgumentException if input or camera is {@code null}
    */
   public SmoothFlyByCameraControl(Input input, PerspectiveCamera camera) {
     if (input == null || camera == null) {
@@ -70,16 +107,19 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
   }
 
   /**
-   * Updates the camera's position and orientation based on user input.
+   * Updates camera rotation and movement.
    *
-   * @param tpf Time per frame, used to adjust movement and smoothing.
+   * <p>This method should be called once per frame. Mouse input controls yaw and pitch, while
+   * keyboard input controls movement. Velocity is smoothly interpolated using acceleration and
+   * deceleration.
+   *
+   * @param tpf time per frame (delta time in seconds)
    */
   @Override
   public void onUpdate(float tpf) {
     float rawMouseX = input.getMouseDeltaX() * mouseSensitivity * tpf;
     float rawMouseY = input.getMouseDeltaY() * mouseSensitivity * tpf;
 
-    // Smooth mouse input using linear interpolation (lerp)
     smoothedMouseX = Mathf.lerp(smoothedMouseX, rawMouseX, mouseSmoothingFactor);
     smoothedMouseY = Mathf.lerp(smoothedMouseY, rawMouseY, mouseSmoothingFactor);
 
@@ -96,7 +136,7 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
 
     currentVelocity.lerpLocal(targetVelocity, acceleration * tpf);
 
-    if (currentVelocity.length() > 0) {
+    if (!currentVelocity.isZero()) {
       applyMovement(currentVelocity, tpf);
     }
 
@@ -104,55 +144,61 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
   }
 
   /**
-   * Handles the camera's yaw and pitch rotation based on mouse movement.
+   * Applies mouse-based rotation to the camera.
    *
-   * @param mouseX The smoothed mouse movement in the X direction.
-   * @param mouseY The smoothed mouse movement in the Y direction.
+   * <p>Yaw is applied around the Y-axis, pitch around the X-axis. Pitch rotation is clamped to
+   * avoid camera flipping.
+   *
+   * @param mouseX smoothed horizontal mouse delta
+   * @param mouseY smoothed vertical mouse delta
    */
   private void handleRotation(float mouseX, float mouseY) {
-    float yaw = mouseX;
-    camera.getTransform().rotate(0, Mathf.toRadians(yaw), 0);
+    camera.getTransform().rotate(0, Mathf.toRadians(mouseX), 0);
 
     Vector3f rotation = camera.getTransform().getRotation();
-    float currentPitch = rotation.x + Mathf.toRadians(mouseY);
-    currentPitch =
+
+    rotation.x =
         Mathf.clamp(
-            currentPitch, Mathf.toRadians(MIN_VERTICAL_ANGLE), Mathf.toRadians(MAX_VERTICAL_ANGLE));
-    rotation.x = currentPitch;
+            rotation.x - Mathf.toRadians(mouseY), // Changed + to - for intuitive Y-down look
+            Mathf.toRadians(MIN_VERTICAL_ANGLE),
+            Mathf.toRadians(MAX_VERTICAL_ANGLE));
+
     camera.getTransform().setRotation(rotation);
   }
 
-  /** Updates the target velocity based on the current keyboard input and speed modifiers. */
+  /**
+   * Computes the desired movement direction based on keyboard input.
+   *
+   * <p>Movement directions are derived from the camera's local forward, right, and up vectors to
+   * ensure consistent behavior regardless of camera orientation.
+   */
   private void updateTargetVelocity() {
     targetVelocity.set(0, 0, 0);
 
     Vector3f forward = camera.getTransform().getForward();
     Vector3f right = camera.getTransform().getRight();
+    Vector3f worldUp = new Vector3f(0, -1, 0);
 
-    // Movement keys
     if (input.isKeyPressed(Key.W)) targetVelocity.addLocal(forward);
     if (input.isKeyPressed(Key.S)) targetVelocity.addLocal(forward.negate());
     if (input.isKeyPressed(Key.A)) targetVelocity.addLocal(right.negate());
     if (input.isKeyPressed(Key.D)) targetVelocity.addLocal(right);
 
-    // Vertical movement (-Y is up)
-    if (input.isKeyPressed(Key.SPACE)) targetVelocity.addLocal(0, -1, 0); // up
-    if (input.isKeyPressed(Key.SHIFT)) targetVelocity.addLocal(0, 1, 0); // down
+    if (input.isKeyPressed(Key.SPACE)) targetVelocity.addLocal(worldUp);
+    if (input.isKeyPressed(Key.SHIFT)) targetVelocity.addLocal(worldUp.negate());
 
-    // Speed boost modifier (CTRL)
     float speedMultiplier = input.isKeyPressed(Key.CTRL) ? speedBoostMultiplier : 1f;
 
-    // Normalize to prevent faster diagonal movement and apply speed multiplier
     if (!targetVelocity.isZero()) {
       targetVelocity.normalizeLocal().multLocal(speedMultiplier);
     }
   }
 
   /**
-   * Applies the calculated movement to the camera's position based on the current velocity.
+   * Applies the calculated movement to the camera position.
    *
-   * @param velocity The current velocity vector.
-   * @param tpf Time per frame, used to adjust movement speed.
+   * @param velocity movement direction (normalized)
+   * @param tpf time per frame
    */
   private void applyMovement(Vector3f velocity, float tpf) {
     Vector3f position = camera.getTransform().getPosition();
@@ -160,140 +206,82 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
     camera.getTransform().setPosition(position);
   }
 
-  /** Updates the camera's target position based on its forward direction. */
+  /** Updates the camera target so it always looks forward. */
   private void updateTarget() {
     Vector3f position = camera.getTransform().getPosition();
-    Vector3f rotation = camera.getTransform().getRotation();
-
-    forward
-        .set(
-            Mathf.cos(rotation.y) * Mathf.cos(rotation.x),
-            Mathf.sin(rotation.x),
-            Mathf.sin(rotation.y) * Mathf.cos(rotation.x))
-        .normalizeLocal();
-
+    Vector3f forward = camera.getTransform().getForward();
     target.set(position).addLocal(forward);
     camera.setTarget(target);
   }
 
-  /** Called when the component is attached to a scene node. */
+  /** Enables relative mouse mode when the component is attached. */
   @Override
   public void onAttach() {
     input.setMouseMode(MouseMode.RELATIVE);
   }
 
-  /** Called when the component is detached from a scene node. */
+  /** Restores absolute mouse mode when the component is detached. */
   @Override
   public void onDetach() {
     input.setMouseMode(MouseMode.ABSOLUTE);
   }
 
-  /**
-   * Returns the current movement speed of the camera.
-   *
-   * @return The movement speed.
-   */
+  /** @return current movement speed */
   public float getMoveSpeed() {
     return moveSpeed;
   }
 
-  /**
-   * Sets the movement speed of the camera.
-   *
-   * @param moveSpeed The new movement speed to set.
-   */
+  /** @param moveSpeed new movement speed */
   public void setMoveSpeed(float moveSpeed) {
     this.moveSpeed = moveSpeed;
   }
 
-  /**
-   * Returns the current mouse sensitivity.
-   *
-   * @return The mouse sensitivity.
-   */
+  /** @return mouse sensitivity factor */
   public float getMouseSensitivity() {
     return mouseSensitivity;
   }
 
-  /**
-   * Sets the mouse sensitivity.
-   *
-   * @param mouseSensitivity The new mouse sensitivity to set.
-   */
+  /** @param mouseSensitivity new mouse sensitivity */
   public void setMouseSensitivity(float mouseSensitivity) {
     this.mouseSensitivity = mouseSensitivity;
   }
 
-  /**
-   * Returns the current acceleration factor.
-   *
-   * @return The acceleration factor.
-   */
+  /** @return acceleration factor */
   public float getAcceleration() {
     return acceleration;
   }
 
-  /**
-   * Sets the acceleration factor for the camera's movement.
-   *
-   * @param acceleration The new acceleration factor to set.
-   */
+  /** @param acceleration new acceleration factor */
   public void setAcceleration(float acceleration) {
     this.acceleration = acceleration;
   }
 
-  /**
-   * Returns the current deceleration factor.
-   *
-   * @return The deceleration factor.
-   */
+  /** @return deceleration factor */
   public float getDeceleration() {
     return deceleration;
   }
 
-  /**
-   * Sets the deceleration factor for the camera's movement.
-   *
-   * @param deceleration The new deceleration factor to set.
-   */
+  /** @param deceleration new deceleration factor */
   public void setDeceleration(float deceleration) {
     this.deceleration = deceleration;
   }
 
-  /**
-   * Returns the current mouse smoothing factor.
-   *
-   * @return The mouse smoothing factor.
-   */
+  /** @return mouse smoothing factor */
   public float getMouseSmoothingFactor() {
     return mouseSmoothingFactor;
   }
 
-  /**
-   * Sets the mouse smoothing factor, which controls how much the mouse input is smoothed.
-   *
-   * @param mouseSmoothingFactor The new smoothing factor to set.
-   */
+  /** @param mouseSmoothingFactor new smoothing factor */
   public void setMouseSmoothingFactor(float mouseSmoothingFactor) {
     this.mouseSmoothingFactor = mouseSmoothingFactor;
   }
 
-  /**
-   * Returns the current speed boost multiplier applied when the speed boost key (CTRL) is held.
-   *
-   * @return the current speed boost multiplier
-   */
+  /** @return speed boost multiplier */
   public float getSpeedBoostMultiplier() {
     return speedBoostMultiplier;
   }
 
-  /**
-   * Sets the speed boost multiplier applied when the speed boost key (CTRL) is held.
-   *
-   * <p>For example, a value of 3.0 will make the camera move three times faster while holding CTRL.
-   *
-   * @param speedBoostMultiplier the new speed boost multiplier to set
-   */
+  /** @param speedBoostMultiplier new speed boost multiplier */
   public void setSpeedBoostMultiplier(float speedBoostMultiplier) {
     this.speedBoostMultiplier = speedBoostMultiplier;
   }

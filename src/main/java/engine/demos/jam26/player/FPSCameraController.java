@@ -10,19 +10,11 @@ import engine.scene.camera.PerspectiveCamera;
 import math.Mathf;
 import math.Vector3f;
 
-/**
- * Classic FPS-style camera controller.
- *
- * <p>- WASD movement on XZ plane only - Mouse controls yaw + pitch - No vertical fly movement -
- * Pitch is clamped - Smooth acceleration/deceleration
- *
- * <p>Coordinate system: -Y = up
- */
+/** Classic FPS-style camera controller. Fixed for Y-down coordinate systems where -Y is up. */
 public class FPSCameraController extends AbstractComponent {
 
   private static final float DEFAULT_MOUSE_SENSITIVITY = 10f;
   private static final float DEFAULT_MOVE_SPEED = 20f;
-
   private static final float MAX_PITCH = 80f;
   private static final float MIN_PITCH = -80f;
 
@@ -31,10 +23,8 @@ public class FPSCameraController extends AbstractComponent {
 
   private float mouseSensitivity = DEFAULT_MOUSE_SENSITIVITY;
   private float moveSpeed = DEFAULT_MOVE_SPEED;
-
   private float acceleration = 12f;
   private float deceleration = 10f;
-
   private float speedBoostMultiplier = 2.5f;
 
   private float smoothedMouseX = 0f;
@@ -50,6 +40,7 @@ public class FPSCameraController extends AbstractComponent {
   private float bobAmount = 0.015f;
   private float sideAmount = 0.0025f;
   private float bobFade = 0f;
+  private boolean headBob = true;
 
   public FPSCameraController(Input input, PerspectiveCamera camera) {
     if (input == null || camera == null) {
@@ -64,6 +55,7 @@ public class FPSCameraController extends AbstractComponent {
     handleMouseLook(tpf);
     updateTargetVelocity();
 
+    // Handle deceleration/interpolation
     if (targetVelocity.isZero()) {
       if (currentVelocity.length() > 0.01f) {
         currentVelocity.lerpLocal(Vector3f.ZERO, deceleration * tpf);
@@ -79,7 +71,6 @@ public class FPSCameraController extends AbstractComponent {
     }
 
     updateCameraTarget();
-
     applyHeadBob(tpf);
   }
 
@@ -90,12 +81,15 @@ public class FPSCameraController extends AbstractComponent {
     smoothedMouseX = Mathf.lerp(smoothedMouseX, rawX, mouseSmoothingFactor);
     smoothedMouseY = Mathf.lerp(smoothedMouseY, rawY, mouseSmoothingFactor);
 
-    // Yaw (around global up)
+    // Yaw (Rotation around global Y-axis)
     camera.getTransform().rotate(0, Mathf.toRadians(smoothedMouseX), 0);
 
-    // Pitch (local X)
+    // Pitch (Local X-axis)
     Vector3f rotation = camera.getTransform().getRotation();
-    rotation.x += Mathf.toRadians(smoothedMouseY);
+
+    // FIX: Subtracting mouse delta to align with the corrected Y-down Forward vector math.
+    // Moving mouse "up" (negative deltaY) now correctly looks up.
+    rotation.x -= Mathf.toRadians(smoothedMouseY);
     rotation.x = Mathf.clamp(rotation.x, Mathf.toRadians(MIN_PITCH), Mathf.toRadians(MAX_PITCH));
 
     camera.getTransform().setRotation(rotation);
@@ -104,7 +98,7 @@ public class FPSCameraController extends AbstractComponent {
   private void updateTargetVelocity() {
     targetVelocity.set(0, 0, 0);
 
-    // Forward direction WITHOUT pitch
+    // Calculate movement vectors flattened to the XZ plane
     Vector3f forward = camera.getTransform().getForward();
     forward.y = 0;
     forward.normalizeLocal();
@@ -113,6 +107,7 @@ public class FPSCameraController extends AbstractComponent {
     right.y = 0;
     right.normalizeLocal();
 
+    // Keyboard Input
     if (input.isKeyPressed(Key.W)) targetVelocity.addLocal(forward);
     if (input.isKeyPressed(Key.S)) targetVelocity.subtractLocal(forward);
     if (input.isKeyPressed(Key.A)) targetVelocity.subtractLocal(right);
@@ -127,10 +122,10 @@ public class FPSCameraController extends AbstractComponent {
 
   private void applyMovement(Vector3f velocity, float tpf) {
     Vector3f delta = velocity.mult(moveSpeed * tpf);
-
     Transform transform = camera.getTransform();
-    MovementFilter filter = getOwner().getComponent(MovementFilter.class);
 
+    // Optional movement filtering (collision, etc.)
+    MovementFilter filter = getOwner().getComponent(MovementFilter.class);
     if (filter != null) {
       delta = filter.filter(transform, delta, tpf);
     }
@@ -139,9 +134,9 @@ public class FPSCameraController extends AbstractComponent {
   }
 
   private void applyHeadBob(float tpf) {
+    if (!headBob) return;
 
     float speed = currentVelocity.length();
-
     if (speed > 0.05f) {
       bobFade = Mathf.lerp(bobFade, 1f, tpf * 6f);
       bobTime += tpf * bobSpeed * speed;
@@ -153,13 +148,13 @@ public class FPSCameraController extends AbstractComponent {
     float bobY = Mathf.sin(bobTime) * bobAmount * bobFade;
     float bobX = Mathf.cos(bobTime * 0.5f) * sideAmount * bobFade;
 
+    // Apply translation directly to the transform
     camera.getTransform().translate(bobX, bobY, 0f);
   }
 
   private void updateCameraTarget() {
     Vector3f position = camera.getTransform().getPosition();
     Vector3f forward = camera.getTransform().getForward();
-
     camera.setTarget(new Vector3f(position).addLocal(forward));
   }
 
@@ -195,5 +190,9 @@ public class FPSCameraController extends AbstractComponent {
 
   public void setSpeedBoostMultiplier(float speedBoostMultiplier) {
     this.speedBoostMultiplier = speedBoostMultiplier;
+  }
+
+  public void setHeadBob(boolean headBob) {
+    this.headBob = headBob;
   }
 }
