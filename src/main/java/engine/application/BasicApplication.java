@@ -153,11 +153,11 @@ public abstract class BasicApplication implements Application {
     g.camera();
     g.strokeWeight(1);
 
-
     if (activeScene != null) {
       activeScene.renderUI(g);
     }
-    
+
+    // lights off here in case scene UI uses light in materials
     g.lightsOff();
 
     renderDebugUi(g);
