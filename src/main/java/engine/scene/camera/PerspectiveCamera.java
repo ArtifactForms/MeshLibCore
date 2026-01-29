@@ -182,7 +182,7 @@ public class PerspectiveCamera implements Camera {
   @Override
   public Matrix4f getViewMatrix() {
     Matrix4f view =
-        Matrix4f.lookAt(getTransform().getPosition(), getTarget(), new Vector3f(0, -1, 0));
+        Matrix4f.lookAt(getTransform().getPosition(), getTarget(), getTransform().getUp());
     return view;
   }
 
