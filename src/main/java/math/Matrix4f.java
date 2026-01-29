@@ -96,53 +96,53 @@ public class Matrix4f {
     return new Matrix4f(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1);
   }
 
-  public Matrix4f invert() {
-    float[] inv = new float[16];
-    float det;
-
-    // Calculate the determinant of the 4x4 matrix and compute its inverse
-    inv[0] =
-        values[5] * values[10] * values[15]
-            - values[5] * values[11] * values[14]
-            - values[9] * values[6] * values[15]
-            + values[9] * values[7] * values[14]
-            + values[13] * values[6] * values[11]
-            - values[13] * values[7] * values[10];
-
-    if (Math.abs(inv[0]) < 1e-6) {
-      throw new IllegalStateException("Matrix is singular and cannot be inverted.");
-    }
-
-    det = 1.0f / inv[0];
-
-    inv[4] =
-        -(values[4] * values[10] * values[15]
-            - values[4] * values[11] * values[14]
-            - values[8] * values[6] * values[15]
-            + values[8] * values[7] * values[14]
-            + values[12] * values[6] * values[11]
-            - values[12] * values[7] * values[10]);
-
-    inv[8] =
-        values[0] * values[11] * values[14]
-            - values[0] * values[10] * values[15]
-            - values[2] * values[7] * values[15]
-            + values[2] * values[5] * values[15]
-            + values[3] * values[6] * values[11]
-            - values[3] * values[5] * values[14];
-
-    inv[12] =
-        -(values[0] * values[9] * values[14]
-            - values[0] * values[11] * values[13]
-            - values[2] * values[8] * values[15]
-            + values[2] * values[12] * values[13]
-            + values[3] * values[8] * values[13]
-            - values[3] * values[9] * values[12]);
-
-    // Add the remaining matrix inversion logic similarly
-
-    return new Matrix4f(inv);
-  }
+//  public Matrix4f invert() {
+//    float[] inv = new float[16];
+//    float det;
+//
+//    // Calculate the determinant of the 4x4 matrix and compute its inverse
+//    inv[0] =
+//        values[5] * values[10] * values[15]
+//            - values[5] * values[11] * values[14]
+//            - values[9] * values[6] * values[15]
+//            + values[9] * values[7] * values[14]
+//            + values[13] * values[6] * values[11]
+//            - values[13] * values[7] * values[10];
+//
+//    if (Math.abs(inv[0]) < 1e-6) {
+//      throw new IllegalStateException("Matrix is singular and cannot be inverted.");
+//    }
+//
+//    det = 1.0f / inv[0];
+//
+//    inv[4] =
+//        -(values[4] * values[10] * values[15]
+//            - values[4] * values[11] * values[14]
+//            - values[8] * values[6] * values[15]
+//            + values[8] * values[7] * values[14]
+//            + values[12] * values[6] * values[11]
+//            - values[12] * values[7] * values[10]);
+//
+//    inv[8] =
+//        values[0] * values[11] * values[14]
+//            - values[0] * values[10] * values[15]
+//            - values[2] * values[7] * values[15]
+//            + values[2] * values[5] * values[15]
+//            + values[3] * values[6] * values[11]
+//            - values[3] * values[5] * values[14];
+//
+//    inv[12] =
+//        -(values[0] * values[9] * values[14]
+//            - values[0] * values[11] * values[13]
+//            - values[2] * values[8] * values[15]
+//            + values[2] * values[12] * values[13]
+//            + values[3] * values[8] * values[13]
+//            - values[3] * values[9] * values[12]);
+//
+//    // Add the remaining matrix inversion logic similarly
+//
+//    return new Matrix4f(inv);
+//  }
 
   /**
    * Constructs a view matrix based on the camera's position, look direction, and an up vector.

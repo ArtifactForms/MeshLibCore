@@ -7,13 +7,13 @@ package math;
  */
 public class Vector4f {
 
-  private float x;
+  public float x;
 
-  private float y;
+  public float y;
 
-  private float z;
+  public float z;
 
-  private float w;
+  public float w;
 
   /** Default constructor. Initializes the vector to (0, 0, 0, 0). */
   public Vector4f() {
