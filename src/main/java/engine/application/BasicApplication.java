@@ -157,7 +157,9 @@ public abstract class BasicApplication implements Application {
       activeScene.renderUI(g);
     }
 
-    // lights off here in case scene UI uses light in materials
+    // Hack: Disable lighting calculations to ensure UI elements are rendered
+    // with full unlit intensity, preventing material-based shading
+    // FIXME lightsOff() -> graphics context
     g.lightsOff();
 
     renderDebugUi(g);
