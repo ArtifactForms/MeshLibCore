@@ -82,9 +82,9 @@ public class Transform extends AbstractComponent {
    * @param g The graphics context to which this transformation is applied.
    */
   public void apply(Graphics g) {
-    g.translate(position.x, position.y, position.z); // Translate last
-    g.scale(scale.x, scale.y, scale.z); // Scale first
-    g.rotateX(rotation.x); // Then rotate
+    g.translate(position.x, position.y, position.z);
+    g.scale(scale.x, scale.y, scale.z);
+    g.rotateX(rotation.x);
     g.rotateY(rotation.y);
     g.rotateZ(rotation.z);
   }
