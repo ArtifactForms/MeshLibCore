@@ -757,6 +757,17 @@ public class GraphicsPImpl implements Graphics {
     // Set specular and shininess properties
     g.specular(specular[0] * 255, specular[1] * 255, specular[2] * 255);
     g.shininess(shininess);
+
+    // Depth test
+    setDepthTest(material.isDepthTest());
+  }
+
+  private void setDepthTest(boolean depthTest) {
+    if (depthTest) {
+      enableDepthTest();
+    } else {
+      disableDepthTest();
+    }
   }
 
   @Override
