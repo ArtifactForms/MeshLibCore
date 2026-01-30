@@ -159,6 +159,18 @@ public class StaticGeometry extends AbstractComponent
 
     return new RaycastHit(getOwner(), hitPoint, distance);
   }
+  
+  /**
+   * Returns the material applied to this geometry.
+   *
+   * <p>The returned {@link Material} is the actual instance used for rendering. Modifying it will
+   * immediately affect this geometry.
+   *
+   * @return the material instance applied to this geometry
+   */
+  public Material getMaterial() {
+      return material;
+  }
 
   @Override
   public void onUpdate(float tpf) {}
