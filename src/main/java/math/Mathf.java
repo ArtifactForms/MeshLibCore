@@ -859,20 +859,21 @@ public class Mathf {
   /**
    * Maps a value from one range to another using linear interpolation.
    *
+   * <p>This is the <b>strict</b> variant of {@link #map(float, float, float, float, float)}. In
+   * addition to validating the input ranges, this method also validates the result and throws an
+   * exception if the mapped value is {@code NaN} or infinite.
+   *
    * @param value The value to be mapped.
    * @param from0 The lower bound of the input range.
    * @param to0 The upper bound of the input range.
    * @param from1 The lower bound of the output range.
    * @param to1 The upper bound of the output range.
    * @return The mapped value.
-   * @throws IllegalArgumentException if `from0 == to0` or `from1 == to1`.
+   * @throws IllegalArgumentException if {@code from0 == to0} or {@code from1 == to1}.
+   * @throws IllegalArgumentException if the mapped result is {@code NaN} or infinite.
    */
-  public static float map(float value, float from0, float to0, float from1, float to1) {
-    if (from0 == to0 || from1 == to1) {
-      throw new IllegalArgumentException("Invalid input ranges");
-    }
-
-    float result = from1 + (to1 - from1) * ((value - from0) / (to0 - from0));
+  public static float mapStrict(float value, float from0, float to0, float from1, float to1) {
+    float result = map(value, from0, to0, from1, to1);
 
     if (Float.isNaN(result)) {
       throw new IllegalArgumentException("Result is NaN");
@@ -881,6 +882,28 @@ public class Mathf {
     }
 
     return result;
+  }
+
+  /**
+   * Maps a value from one range to another using linear interpolation.
+   *
+   * <p>This method performs no validation on the resulting value. If the input parameters lead to
+   * {@code NaN} or infinite results (e.g. due to extreme values), those results are returned as-is.
+   *
+   * @param value The value to be mapped.
+   * @param from0 The lower bound of the input range.
+   * @param to0 The upper bound of the input range.
+   * @param from1 The lower bound of the output range.
+   * @param to1 The upper bound of the output range.
+   * @return The mapped value, which may be {@code NaN} or infinite.
+   * @throws IllegalArgumentException if {@code from0 == to0} or {@code from1 == to1}.
+   */
+  public static float map(float value, float from0, float to0, float from1, float to1) {
+    if (from0 == to0 || from1 == to1) {
+      throw new IllegalArgumentException("Invalid input ranges");
+    }
+
+    return from1 + (to1 - from1) * ((value - from0) / (to0 - from0));
   }
 
   /**
