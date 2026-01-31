@@ -135,10 +135,13 @@ public class Mathf {
    * Returns the minimum value in the given array.
    *
    * @param values The array of integers.
-   * @return The minimum value in the array, or 0 if the array is empty.
+   * @return The minimum value in the array
+   * @throws IllegalArgumentException if values is null
+   * @throws IllegalArgumentException if values is empty
    */
   public static int min(int[] values) {
-    if (values.length == 0) return 0;
+    if (values == null) throw new IllegalArgumentException("Values cannot be null.");
+    if (values.length == 0) throw new IllegalArgumentException("Values connot be empty.");
 
     int min = values[0];
     for (int i = 1; i < values.length; i++) min = Math.min(min, values[i]);
@@ -149,10 +152,13 @@ public class Mathf {
    * Returns the maximum value in the given array.
    *
    * @param values The array of integers.
-   * @return The maximum value in the array, or 0 if the array is empty.
+   * @return The maximum value in the array
+   * @throws IllegalArgumentException if values is null
+   * @throws IllegalArgumentException if values is empty
    */
   public static int max(int[] values) {
-    if (values.length == 0) return 0;
+    if (values == null) throw new IllegalArgumentException("Values cannot be null.");
+    if (values.length == 0) throw new IllegalArgumentException("Values connot be empty.");
 
     int max = values[0];
     for (int i = 1; i < values.length; i++) max = Math.max(max, values[i]);
@@ -766,20 +772,6 @@ public class Mathf {
   }
 
   /**
-   * Normalizes an angle to a specific range centered around a given center angle.
-   *
-   * <p>This method ensures that the returned angle is within a specific range, typically between -π
-   * and π or 0 and 2π.
-   *
-   * @param a The angle to be normalized.
-   * @param center The center angle of the desired range.
-   * @return The normalized angle.
-   */
-  public static float normalizeAngle(float a, float center) {
-    return a - TWO_PI * floor((a + PI - center) / TWO_PI);
-  }
-
-  /**
    * Wraps a value cyclically within a specified range.
    *
    * <p>This method takes a value `t` and maps it to a value within the interval [0, length). The
@@ -919,6 +911,20 @@ public class Mathf {
   }
 
   /**
+   * Normalizes an angle to a specific range centered around a given center angle.
+   *
+   * <p>This method ensures that the returned angle is within a specific range, typically between -π
+   * and π or 0 and 2π.
+   *
+   * @param a The angle to be normalized.
+   * @param center The center angle of the desired range.
+   * @return The normalized angle.
+   */
+  public static float normalizeAngleCentered(float a, float center) {
+    return a - TWO_PI * floor((a + PI - center) / TWO_PI);
+  }
+
+  /**
    * Normalizes the input angle to the range [0, 2π] in radians.
    *
    * <p>Small values close to zero (less than 1e-6) are snapped to zero to handle floating-point
@@ -927,7 +933,7 @@ public class Mathf {
    * @param angle The input angle in radians.
    * @return The normalized angle in the range [0, 2π].
    */
-  public static float normalizeAngle(float angle) {
+  public static float normalizeAnglePositive(float angle) {
     float smallAngleThreshold = 1e-6f;
 
     angle = angle % (2 * Mathf.PI);
