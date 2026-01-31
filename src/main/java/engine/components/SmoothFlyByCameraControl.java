@@ -217,7 +217,7 @@ public class SmoothFlyByCameraControl extends AbstractComponent {
   /** Enables relative mouse mode when the component is attached. */
   @Override
   public void onAttach() {
-    input.setMouseMode(MouseMode.RELATIVE);
+    input.setMouseMode(MouseMode.LOCKED);
   }
 
   /** Restores absolute mouse mode when the component is detached. */

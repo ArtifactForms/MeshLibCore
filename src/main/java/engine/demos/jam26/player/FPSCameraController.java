@@ -160,7 +160,7 @@ public class FPSCameraController extends AbstractComponent {
 
   @Override
   public void onAttach() {
-    input.setMouseMode(MouseMode.RELATIVE);
+    input.setMouseMode(MouseMode.LOCKED);
   }
 
   @Override
