@@ -1,6 +1,6 @@
 package math;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This class provides a collection of mathematical utility functions that are commonly used in
@@ -9,9 +9,6 @@ import java.util.Random;
  * generation.
  */
 public class Mathf {
-
-  /** A random number generator used to generate random values. */
-  private static Random random = new Random();
 
   /** A float representation of the golden ratio, approximately 1.618. */
   public static final float GOLDEN_RATIO = (1f + sqrt(5f)) / 2f;
@@ -78,6 +75,9 @@ public class Mathf {
    * - 1 = 0. It is approximately equal to 1.83928675521416.
    */
   public static final float TRIBONACCI_CONSTANT = 1.83928675521416f;
+
+  // private constructor -> following utility pattern
+  private Mathf() {}
 
   /**
    * Converts a 2D index (row, column) into a 1D index for a matrix or array.
@@ -718,7 +718,7 @@ public class Mathf {
    * @return A random float value between min and max, inclusive.
    */
   public static float random(float min, float max) {
-    return random.nextFloat() * (max - min) + min;
+    return ThreadLocalRandom.current().nextFloat() * (max - min) + min;
   }
 
   /**
@@ -729,16 +729,7 @@ public class Mathf {
    * @return A random integer value between min and max, inclusive.
    */
   public static int random(int min, int max) {
-    return random.nextInt(max - min + 1) + min;
-  }
-
-  /**
-   * Sets the seed for the random number generator. This allows for reproducible random sequences.
-   *
-   * @param seed The seed value.
-   */
-  public static void setSeed(long seed) {
-    random.setSeed(seed);
+    return ThreadLocalRandom.current().nextInt(max - min + 1) + min;
   }
 
   /**
@@ -749,7 +740,7 @@ public class Mathf {
    * @return A random float value between 0.0 (inclusive) and 1.0 (exclusive).
    */
   public static float randomFloat() {
-    return random.nextFloat();
+    return ThreadLocalRandom.current().nextFloat();
   }
 
   /**
