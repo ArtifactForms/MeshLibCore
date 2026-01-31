@@ -135,13 +135,13 @@ public class Mathf {
    * Returns the minimum value in the given array.
    *
    * @param values The array of integers.
-   * @return The minimum value in the array
+   * @return minimum value in the array
    * @throws IllegalArgumentException if values is null
    * @throws IllegalArgumentException if values is empty
    */
   public static int min(int[] values) {
     if (values == null) throw new IllegalArgumentException("Values cannot be null.");
-    if (values.length == 0) throw new IllegalArgumentException("Values connot be empty.");
+    if (values.length == 0) throw new IllegalArgumentException("Values cannot be empty.");
 
     int min = values[0];
     for (int i = 1; i < values.length; i++) min = Math.min(min, values[i]);
@@ -151,14 +151,14 @@ public class Mathf {
   /**
    * Returns the maximum value in the given array.
    *
-   * @param values The array of integers.
-   * @return The maximum value in the array
+   * @param values array of integers.
+   * @return maximum value in the array
    * @throws IllegalArgumentException if values is null
    * @throws IllegalArgumentException if values is empty
    */
   public static int max(int[] values) {
     if (values == null) throw new IllegalArgumentException("Values cannot be null.");
-    if (values.length == 0) throw new IllegalArgumentException("Values connot be empty.");
+    if (values.length == 0) throw new IllegalArgumentException("Values cannot be empty.");
 
     int max = values[0];
     for (int i = 1; i < values.length; i++) max = Math.max(max, values[i]);
@@ -288,8 +288,8 @@ public class Mathf {
 
   /**
    * Converts an angle measured in radians to an approximately equivalent angle measured in degrees.
-   * The conversion from radians to degreees is generally inexact; users should not expect
-   * cos(toRadians(90.0)) to exactlyequal 0.0.
+   * The conversion from radians to degrees is generally inexact; users should not expect
+   * cos(toRadians(90.0)) to exactly equal 0.0.
    *
    * @param angrad The angle, in radians.
    * @return The angle in degrees.
