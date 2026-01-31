@@ -14,13 +14,13 @@ public class Mathf {
   private static Random random = new Random();
 
   /** A float representation of the golden ratio, approximately 1.618. */
-  public static final float GOLDEN_RATIO = (1 + sqrt(5)) / 2.0f;
+  public static final float GOLDEN_RATIO = (1f + sqrt(5f)) / 2f;
 
   /**
    * A float representation of the reciprocal of the golden ratio, , which is exactly 1 less than
    * the golden ratio itself; approximately 0.618.
    */
-  public static final float GOLDEN_RATIO_RECIPROCAL = 2 / (1 + sqrt(5));
+  public static final float GOLDEN_RATIO_RECIPROCAL = 2f / (1f + sqrt(5f));
 
   /** Euler's number, the base of the natural logarithm, approximately 2.718. */
   public static final float E = (float) Math.E;
