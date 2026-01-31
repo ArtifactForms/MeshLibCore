@@ -1,6 +1,7 @@
 package engine.demos.ray;
 
 import engine.components.Transform;
+import engine.input.Input;
 import engine.scene.camera.Camera;
 import math.Ray3f;
 import math.Vector3f;
@@ -33,5 +34,13 @@ public class Raycaster {
             .normalizeLocal();
 
     return new Ray3f(t.getPosition(), direction);
+  }
+
+  public static Ray3f screenPointToRay(Camera camera, Input input) {
+    float mouseX = input.getMouseX();
+    float mouseY = input.getLastMouseY();
+    float width = input.getScreenWidth();
+    float height = input.getScreenHeight();
+    return screenPointToRay(camera, mouseX, mouseY, width, height);
   }
 }
