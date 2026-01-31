@@ -367,7 +367,7 @@ public class Mathf {
    * @param max The maximum value for a.
    * @return true if the value is in range of [min,max], false otherwise.
    */
-  public static boolean isInRange(float a, int min, int max) {
+  public static boolean isInRange(float a, float min, float max) {
     return a >= min && a <= max;
   }
 
