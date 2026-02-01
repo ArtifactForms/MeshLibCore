@@ -112,6 +112,7 @@ public class Workspace extends Editor implements ModelListener {
     resize(0, 0, p.width, p.height);
     vertices = 0;
     faces = 0;
+    p.colorMode(PApplet.RGB, 1);
     p.background(getBackground().getRGBA());
     p.lights();
     applyTransformations();
