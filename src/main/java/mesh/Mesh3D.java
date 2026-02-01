@@ -329,6 +329,10 @@ public class Mesh3D {
   public int getUvCount() {
     return uvs.size();
   }
+  
+  public ArrayList<Vector2f> getUVCoordinates() {
+      return uvs;
+  }
 
   /**
    * Retrieves the UV coordinates at the specified index.
