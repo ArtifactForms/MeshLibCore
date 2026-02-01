@@ -20,6 +20,7 @@ import mesh.creator.primitives.CubeCreatorUV;
 public class SkyBox extends SceneNode {
 
   private float radius;
+
   /**
    * Constructs a {@code SkyBox} with the specified radius and uses the default skybox texture.
    *
