@@ -40,6 +40,7 @@ public class SkyBox extends SceneNode {
    * @param texturePath the path to the texture to be applied to the skybox
    */
   public SkyBox(float radius, String texturePath) {
+    super("Sky-Box");
     this.radius = radius;
     createGeometry(texturePath);
   }
