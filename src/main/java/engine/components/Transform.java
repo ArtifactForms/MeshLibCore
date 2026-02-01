@@ -4,28 +4,53 @@ import math.Vector3f;
 import workspace.ui.Graphics;
 
 /**
- * Represents a transformation in 3D space, encapsulating position, rotation, and scale. Implements
- * the Component interface.
+ * Represents a transformation in 3D space, encapsulating position, rotation, and scale.
  *
- * <p>The {@code Transform} class provides functionality to manipulate and apply transformations
- * such as translation, rotation, and scaling to objects or nodes in a 3D scene. It acts as a helper
- * utility to represent and modify the spatial properties of a 3D object or a scene node.
+ * <h2>Coordinate System Convention</h2>
  *
- * <p>The transformations are defined by:
+ * <p>This engine uses a <b>right-handed coordinate system</b> with a <b>Y-down world
+ * convention</b>, aligned with Processing's default screen space.
+ *
+ * <pre>
+ * +X → right
+ * -Y → up
+ * +Y → down
+ * -Z → forward
+ * </pre>
+ *
+ * <p>As a consequence:
  *
  * <ul>
- *   <li><b>Position:</b> The location of the object in 3D space.
- *   <li><b>Rotation:</b> The orientation of the object around the X, Y, and Z axes.
- *   <li><b>Scale:</b> The size multiplier along the X, Y, and Z axes.
+ *   <li>The global world-up vector is {@code (0, -1, 0)}
+ *   <li>{@link #getUp()} returns a vector pointing in negative Y direction
+ *   <li>Movement, camera logic, and look-at calculations rely exclusively on the orientation
+ *       vectors derived from this transform
  * </ul>
  *
- * <p>This class provides methods for applying transformations to a rendering context, modifying
- * transformations incrementally, and setting transformation properties explicitly.
+ * <p><b>Important:</b> This convention is used consistently throughout the engine. Hard-coded up
+ * vectors such as {@code (0, 1, 0)} or {@code (0, -1, 0)} must not be used outside this class. All
+ * directional queries must go through {@link #getForward()}, {@link #getRight()}, and {@link
+ * #getUp()}.
  *
  * @see Vector3f
  * @see Graphics
  */
 public class Transform extends AbstractComponent {
+
+  /**
+   * Global world-up vector for the engine.
+   *
+   * <p>This engine uses a Y-down coordinate system, therefore the world-up direction points along
+   * negative Y.
+   *
+   * <pre>
+   * WORLD_UP = (0, -1, 0)
+   * </pre>
+   *
+   * <p>This vector is used as the stable reference for computing the local right and up vectors via
+   * cross products.
+   */
+  private static final Vector3f WORLD_UP = new Vector3f(0, -1, 0);
 
   /** The position of this transform in 3D space. */
   private Vector3f position;
@@ -57,9 +82,9 @@ public class Transform extends AbstractComponent {
    * @param g The graphics context to which this transformation is applied.
    */
   public void apply(Graphics g) {
-    g.translate(position.x, position.y, position.z); // Translate last
-    g.scale(scale.x, scale.y, scale.z); // Scale first
-    g.rotateX(rotation.x); // Then rotate
+    g.translate(position.x, position.y, position.z);
+    g.scale(scale.x, scale.y, scale.z);
+    g.rotateX(rotation.x);
     g.rotateY(rotation.y);
     g.rotateZ(rotation.z);
   }
@@ -244,73 +269,127 @@ public class Transform extends AbstractComponent {
   public void setScale(float scale) {
     this.scale.set(scale, scale, scale);
   }
+
   /**
-   * Retrieves the forward direction of the transform, based on its current rotation.
+   * Calculates the normalized forward direction vector based on the current rotation. *
    *
-   * <p>The forward direction is calculated using the rotation values and represents the vector that
-   * points in the direction the object is facing.
+   * <p>This implementation is designed for a <b>Y-down coordinate system</b>. To maintain intuitive
+   * movement and raycasting, the pitch component (Y) is inverted. This ensures that a positive
+   * pitch rotation results in a downward-pointing vector in world space.
    *
-   * @return A normalized {@link Vector3f} representing the forward direction of the object.
+   * <p>The vector is derived using spherical coordinates:
+   *
+   * <ul>
+   *   <li><b>X:</b> {@code sin(yaw) * cos(pitch)}
+   *   <li><b>Y:</b> {@code -sin(pitch)} (Inverted for Y-down consistency)
+   *   <li><b>Z:</b> {@code -cos(yaw) * cos(pitch)} (Standard right-handed forward)
+   * </ul>
+   *
+   * @return A normalized {@link Vector3f} representing the direction the transform is facing.
    */
   public Vector3f getForward() {
-    float cosY = (float) Math.cos(rotation.y);
-    float sinY = (float) Math.sin(rotation.y);
-    float cosX = (float) Math.cos(rotation.x);
-    float sinX = (float) Math.sin(rotation.x);
+    float cosPitch = (float) Math.cos(rotation.x);
+    float sinPitch = (float) Math.sin(rotation.x);
+    float cosYaw = (float) Math.cos(rotation.y);
+    float sinYaw = (float) Math.sin(rotation.y);
 
-    return new Vector3f(cosY * cosX, sinX, sinY * cosX).normalizeLocal();
+    return new Vector3f(sinYaw * cosPitch, -sinPitch, -cosYaw * cosPitch).normalizeLocal();
   }
 
   /**
-   * Retrieves the right direction of the transform, based on its current rotation.
+   * Returns the right direction vector of this transform.
    *
-   * <p>The right direction is calculated using the rotation values and represents the vector that
-   * points to the right of the object.
+   * <p>The right vector is computed using the cross product:
    *
-   * @return A normalized {@link Vector3f} representing the right direction of the object.
+   * <pre>
+   * Right = WORLD_UP × Forward
+   * </pre>
+   *
+   * <p>This formulation is consistent with a right-handed coordinate system and the engine's Y-down
+   * world convention.
+   *
+   * @return A normalized right direction vector.
    */
   public Vector3f getRight() {
-    float cosY = (float) Math.cos(rotation.y);
-    float sinY = (float) Math.sin(rotation.y);
-
-    return new Vector3f(-sinY, 0, cosY).normalizeLocal();
+    return WORLD_UP.cross(getForward()).normalizeLocal();
   }
 
   /**
-   * Retrieves the up direction of the transform, based on its current rotation.
+   * Returns the up direction vector of this transform.
    *
-   * <p>The up vector is calculated as the cross product of the right and forward vectors, ensuring
-   * an orthonormal basis.
+   * <p>The up vector is derived from the orthonormal basis:
    *
-   * @return A normalized {@link Vector3f} representing the up direction of the object.
+   * <pre>
+   * Up = Forward × Right
+   * </pre>
+   *
+   * <p>Due to the Y-down world convention, this vector points in the negative Y direction when the
+   * transform has no rotation.
+   *
+   * <p>This method must be used for all vertical movement and camera up-vector queries.
+   *
+   * @return A normalized up direction vector.
    */
   public Vector3f getUp() {
-    Vector3f forward = getForward();
-    Vector3f right = getRight();
-
-    return right.cross(forward).normalizeLocal();
+    return getForward().cross(getRight()).normalizeLocal();
   }
 
   /**
    * Sets the forward direction of this transform.
    *
-   * <p>This method calculates the rotation angles (pitch and yaw) needed to make the object face
-   * the given forward direction and updates the rotation vector accordingly.
+   * <p>This method computes the required pitch and yaw rotations to align the transform with the
+   * given forward direction, assuming a Y-down coordinate system.
    *
-   * @param forward The desired forward direction as a normalized vector.
+   * <p>The provided vector must be normalized and must not be collinear with the world-up
+   * direction.
+   *
+   * @param forward The desired forward direction.
+   * @throws IllegalArgumentException if the vector is null or zero-length.
    */
   public void setForward(Vector3f forward) {
-    if (forward == null || forward.length() == 0) {
+    if (forward == null || forward.lengthSquared() == 0f) {
       throw new IllegalArgumentException("Forward vector cannot be null or zero-length.");
     }
 
-    // Calculate yaw (rotation around the Y-axis) and pitch (rotation around the X-axis)
-    float yaw = (float) Math.atan2(forward.z, forward.x);
-    float pitch =
-        (float) Math.atan2(forward.y, Math.sqrt(forward.x * forward.x + forward.z * forward.z));
+    Vector3f f = new Vector3f(forward).normalizeLocal();
 
-    // Update the rotation vector
-    this.rotation.set(pitch, yaw, 0);
+    // y-down: pitch negative
+    float yaw = (float) Math.atan2(f.x, -f.z);
+    float pitch = (float) -Math.asin(f.y);
+
+    rotation.set(pitch, yaw, 0f);
+  }
+
+  /**
+   * Rotates this transform so that its forward direction points at the given target.
+   *
+   * <p>This method respects the engine's coordinate system:
+   *
+   * <pre>
+   * +X → right
+   * -Y → up
+   * +Y → down
+   * -Z → forward
+   * </pre>
+   *
+   * <p>The rotation is applied by computing the forward direction and delegating to {@link
+   * #setForward(Vector3f)}.
+   *
+   * @param target The world-space point to look at.
+   * @throws IllegalArgumentException if target is null or coincides with position.
+   */
+  public void lookAt(Vector3f target) {
+    if (target == null) {
+      throw new IllegalArgumentException("Target cannot be null.");
+    }
+
+    Vector3f forward = target.subtract(position);
+
+    if (forward.lengthSquared() == 0f) {
+      throw new IllegalArgumentException("Target must not be equal to position.");
+    }
+
+    setForward(forward.normalizeLocal());
   }
 
   @Override

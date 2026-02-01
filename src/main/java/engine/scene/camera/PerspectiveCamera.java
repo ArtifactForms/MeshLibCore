@@ -180,13 +180,6 @@ public class PerspectiveCamera implements Camera {
   }
 
   @Override
-  public Matrix4f getViewMatrix() {
-    Matrix4f view =
-        Matrix4f.lookAt(getTransform().getPosition(), getTarget(), new Vector3f(0, -1, 0));
-    return view;
-  }
-
-  @Override
   public Matrix4f getProjectionMatrix() {
     Matrix4f projection = new Matrix4f();
     Matrix4 m = Matrix4.perspective(fov, aspectRatio, nearPlane, farPlane);
@@ -199,5 +192,17 @@ public class PerspectiveCamera implements Camera {
     Matrix4f view = getViewMatrix();
     Matrix4f projection = getProjectionMatrix();
     return projection.multiply(view); // Assuming Matrix4f.multiply() is column-major
+  }
+
+  @Override
+  public Matrix4f getViewMatrix() {
+    Transform t = getTransform();
+    Vector3f pos = t.getPosition();
+    Vector3f fwd = t.getForward();
+
+    Vector3f right = fwd.cross(new Vector3f(0, -1, 0)).normalizeLocal();
+    Vector3f up = right.cross(fwd).normalizeLocal();
+
+    return Matrix4f.lookAt(pos, pos.add(fwd), up);
   }
 }

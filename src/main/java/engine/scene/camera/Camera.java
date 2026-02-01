@@ -61,7 +61,7 @@ public interface Camera {
    * much of the 3D scene is visible at any given time. This property is only relevant for
    * perspective cameras.
    *
-   * @return The current field of view in degrees.
+   * @return The current field of view in radians.
    */
   float getFieldOfView();
 
@@ -72,7 +72,7 @@ public interface Camera {
    * the perception of depth in the scene. This property only applies to perspective cameras and has
    * no effect on orthographic cameras.
    *
-   * @param fov The desired field of view in degrees.
+   * @param fov The desired field of view in radians.
    */
   void setFieldOfView(float fov);
   

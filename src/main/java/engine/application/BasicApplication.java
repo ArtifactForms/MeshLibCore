@@ -157,6 +157,11 @@ public abstract class BasicApplication implements Application {
       activeScene.renderUI(g);
     }
 
+    // Hack: Disable lighting calculations to ensure UI elements are rendered
+    // with full unlit intensity, preventing material-based shading
+    // FIXME lightsOff() -> graphics context
+    g.lightsOff();
+
     renderDebugUi(g);
 
     g.enableDepthTest();

@@ -206,7 +206,7 @@ public class ProcessingMouseInput implements MouseInput {
     this.pMouseX = applet.pmouseX;
     this.pMouseY = applet.pmouseY;
 
-    if (mouseMode == MouseMode.RELATIVE) center();
+    if (mouseMode == MouseMode.LOCKED) center();
   }
 
   private void center() {

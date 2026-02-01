@@ -1,6 +1,6 @@
 package math;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This class provides a collection of mathematical utility functions that are commonly used in
@@ -10,17 +10,14 @@ import java.util.Random;
  */
 public class Mathf {
 
-  /** A random number generator used to generate random values. */
-  private static Random random = new Random();
-
   /** A float representation of the golden ratio, approximately 1.618. */
-  public static final float GOLDEN_RATIO = (1 + sqrt(5)) / 2.0f;
+  public static final float GOLDEN_RATIO = (1f + sqrt(5f)) / 2f;
 
   /**
    * A float representation of the reciprocal of the golden ratio, , which is exactly 1 less than
    * the golden ratio itself; approximately 0.618.
    */
-  public static final float GOLDEN_RATIO_RECIPROCAL = 2 / (1 + sqrt(5));
+  public static final float GOLDEN_RATIO_RECIPROCAL = 2f / (1f + sqrt(5f));
 
   /** Euler's number, the base of the natural logarithm, approximately 2.718. */
   public static final float E = (float) Math.E;
@@ -79,6 +76,9 @@ public class Mathf {
    */
   public static final float TRIBONACCI_CONSTANT = 1.83928675521416f;
 
+  // private constructor -> following utility pattern
+  private Mathf() {}
+
   /**
    * Converts a 2D index (row, column) into a 1D index for a matrix or array.
    *
@@ -135,10 +135,13 @@ public class Mathf {
    * Returns the minimum value in the given array.
    *
    * @param values The array of integers.
-   * @return The minimum value in the array, or 0 if the array is empty.
+   * @return minimum value in the array
+   * @throws IllegalArgumentException if values is null
+   * @throws IllegalArgumentException if values is empty
    */
   public static int min(int[] values) {
-    if (values.length == 0) return 0;
+    if (values == null) throw new IllegalArgumentException("Values cannot be null.");
+    if (values.length == 0) throw new IllegalArgumentException("Values cannot be empty.");
 
     int min = values[0];
     for (int i = 1; i < values.length; i++) min = Math.min(min, values[i]);
@@ -148,11 +151,14 @@ public class Mathf {
   /**
    * Returns the maximum value in the given array.
    *
-   * @param values The array of integers.
-   * @return The maximum value in the array, or 0 if the array is empty.
+   * @param values array of integers.
+   * @return maximum value in the array
+   * @throws IllegalArgumentException if values is null
+   * @throws IllegalArgumentException if values is empty
    */
   public static int max(int[] values) {
-    if (values.length == 0) return 0;
+    if (values == null) throw new IllegalArgumentException("Values cannot be null.");
+    if (values.length == 0) throw new IllegalArgumentException("Values cannot be empty.");
 
     int max = values[0];
     for (int i = 1; i < values.length; i++) max = Math.max(max, values[i]);
@@ -282,8 +288,8 @@ public class Mathf {
 
   /**
    * Converts an angle measured in radians to an approximately equivalent angle measured in degrees.
-   * The conversion from radians to degreees is generally inexact; users should not expect
-   * cos(toRadians(90.0)) to exactlyequal 0.0.
+   * The conversion from radians to degrees is generally inexact; users should not expect
+   * cos(toRadians(90.0)) to exactly equal 0.0.
    *
    * @param angrad The angle, in radians.
    * @return The angle in degrees.
@@ -367,7 +373,7 @@ public class Mathf {
    * @param max The maximum value for a.
    * @return true if the value is in range of [min,max], false otherwise.
    */
-  public static boolean isInRange(float a, int min, int max) {
+  public static boolean isInRange(float a, float min, float max) {
     return a >= min && a <= max;
   }
 
@@ -712,7 +718,7 @@ public class Mathf {
    * @return A random float value between min and max, inclusive.
    */
   public static float random(float min, float max) {
-    return random.nextFloat() * (max - min) + min;
+    return ThreadLocalRandom.current().nextFloat() * (max - min) + min;
   }
 
   /**
@@ -723,16 +729,7 @@ public class Mathf {
    * @return A random integer value between min and max, inclusive.
    */
   public static int random(int min, int max) {
-    return random.nextInt(max - min + 1) + min;
-  }
-
-  /**
-   * Sets the seed for the random number generator. This allows for reproducible random sequences.
-   *
-   * @param seed The seed value.
-   */
-  public static void setSeed(long seed) {
-    random.setSeed(seed);
+    return ThreadLocalRandom.current().nextInt(max - min + 1) + min;
   }
 
   /**
@@ -743,7 +740,7 @@ public class Mathf {
    * @return A random float value between 0.0 (inclusive) and 1.0 (exclusive).
    */
   public static float randomFloat() {
-    return random.nextFloat();
+    return ThreadLocalRandom.current().nextFloat();
   }
 
   /**
@@ -763,20 +760,6 @@ public class Mathf {
   public static float pingPong(float t, float length) {
     t = repeat(t, length * 2f);
     return length - abs(t - length);
-  }
-
-  /**
-   * Normalizes an angle to a specific range centered around a given center angle.
-   *
-   * <p>This method ensures that the returned angle is within a specific range, typically between -π
-   * and π or 0 and 2π.
-   *
-   * @param a The angle to be normalized.
-   * @param center The center angle of the desired range.
-   * @return The normalized angle.
-   */
-  public static float normalizeAngle(float a, float center) {
-    return a - TWO_PI * floor((a + PI - center) / TWO_PI);
   }
 
   /**
@@ -859,20 +842,21 @@ public class Mathf {
   /**
    * Maps a value from one range to another using linear interpolation.
    *
+   * <p>This is the <b>strict</b> variant of {@link #map(float, float, float, float, float)}. In
+   * addition to validating the input ranges, this method also validates the result and throws an
+   * exception if the mapped value is {@code NaN} or infinite.
+   *
    * @param value The value to be mapped.
    * @param from0 The lower bound of the input range.
    * @param to0 The upper bound of the input range.
    * @param from1 The lower bound of the output range.
    * @param to1 The upper bound of the output range.
    * @return The mapped value.
-   * @throws IllegalArgumentException if `from0 == to0` or `from1 == to1`.
+   * @throws IllegalArgumentException if {@code from0 == to0} or {@code from1 == to1}.
+   * @throws IllegalArgumentException if the mapped result is {@code NaN} or infinite.
    */
-  public static float map(float value, float from0, float to0, float from1, float to1) {
-    if (from0 == to0 || from1 == to1) {
-      throw new IllegalArgumentException("Invalid input ranges");
-    }
-
-    float result = from1 + (to1 - from1) * ((value - from0) / (to0 - from0));
+  public static float mapStrict(float value, float from0, float to0, float from1, float to1) {
+    float result = map(value, from0, to0, from1, to1);
 
     if (Float.isNaN(result)) {
       throw new IllegalArgumentException("Result is NaN");
@@ -881,6 +865,28 @@ public class Mathf {
     }
 
     return result;
+  }
+
+  /**
+   * Maps a value from one range to another using linear interpolation.
+   *
+   * <p>This method performs no validation on the resulting value. If the input parameters lead to
+   * {@code NaN} or infinite results (e.g. due to extreme values), those results are returned as-is.
+   *
+   * @param value The value to be mapped.
+   * @param from0 The lower bound of the input range.
+   * @param to0 The upper bound of the input range.
+   * @param from1 The lower bound of the output range.
+   * @param to1 The upper bound of the output range.
+   * @return The mapped value, which may be {@code NaN} or infinite.
+   * @throws IllegalArgumentException if {@code from0 == to0} or {@code from1 == to1}.
+   */
+  public static float map(float value, float from0, float to0, float from1, float to1) {
+    if (from0 == to0 || from1 == to1) {
+      throw new IllegalArgumentException("Invalid input ranges");
+    }
+
+    return from1 + (to1 - from1) * ((value - from0) / (to0 - from0));
   }
 
   /**
@@ -896,6 +902,20 @@ public class Mathf {
   }
 
   /**
+   * Normalizes an angle to a specific range centered around a given center angle.
+   *
+   * <p>This method ensures that the returned angle is within a specific range, typically between -π
+   * and π or 0 and 2π.
+   *
+   * @param a The angle to be normalized.
+   * @param center The center angle of the desired range.
+   * @return The normalized angle.
+   */
+  public static float normalizeAngleCentered(float a, float center) {
+    return a - TWO_PI * floor((a + PI - center) / TWO_PI);
+  }
+
+  /**
    * Normalizes the input angle to the range [0, 2π] in radians.
    *
    * <p>Small values close to zero (less than 1e-6) are snapped to zero to handle floating-point
@@ -904,7 +924,7 @@ public class Mathf {
    * @param angle The input angle in radians.
    * @return The normalized angle in the range [0, 2π].
    */
-  public static float normalizeAngle(float angle) {
+  public static float normalizeAnglePositive(float angle) {
     float smallAngleThreshold = 1e-6f;
 
     angle = angle % (2 * Mathf.PI);

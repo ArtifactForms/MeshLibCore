@@ -49,9 +49,9 @@ public class Billboard extends SceneNode {
     Mesh3D mesh = new PlaneCreatorUV(size).create();
 
     // Rotate plane upright for billboard usage
-    new RotateXModifier(-Mathf.HALF_PI).modify(mesh);
+    new RotateXModifier(Mathf.HALF_PI).modify(mesh);
     new RotateZModifier(Mathf.HALF_PI).modify(mesh);
-    new RotateYModifier(Mathf.HALF_PI).modify(mesh);
+    new RotateYModifier(-Mathf.PI).modify(mesh);
 
     applyUv(mesh, uv);
     return mesh;

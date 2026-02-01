@@ -84,6 +84,20 @@ public class Material {
   private float shininess;
 
   /**
+   * Controls whether depth testing is enabled for this material.
+   *
+   * <p>If depth testing is enabled, fragments will be depth-tested against the depth buffer and may
+   * be discarded if they are occluded by previously rendered geometry.
+   *
+   * <p>If disabled, the geometry will be rendered without depth comparison, causing it to appear on
+   * top of other objects regardless of depth. This is commonly used for editor gizmos, debug
+   * visuals, UI overlays, and helper geometry.
+   *
+   * <p>Default value is {@code true}.
+   */
+  private boolean depthTest;
+
+  /**
    * Represents the opacity (dissolve) of the material.
    *
    * <p>The opacity value determines how transparent or opaque the material is. It corresponds to
@@ -138,6 +152,7 @@ public class Material {
     this.specular = new float[] {1.0f, 1.0f, 1.0f};
     this.shininess = 10.0f;
     this.opacity = 1.0f; // Fully opaque by default
+    this.depthTest = true; // Depth test enabled by default
   }
 
   /**
@@ -372,5 +387,26 @@ public class Material {
    */
   public void setOpacityMap(Texture opacityMap) {
     this.opacityMap = opacityMap;
+  }
+
+  /**
+   * Returns whether depth testing is enabled for this material.
+   *
+   * @return {@code true} if depth testing is enabled, {@code false} otherwise
+   */
+  public boolean isDepthTest() {
+    return depthTest;
+  }
+
+  /**
+   * Enables or disables depth testing for this material.
+   *
+   * <p>This flag only describes the desired render state. The actual graphics API state change is
+   * performed by the {@link workspace.ui.Graphics} implementation when the material is applied.
+   *
+   * @param depthTest {@code true} to enable depth testing, {@code false} to disable it
+   */
+  public void setDepthTest(boolean depthTest) {
+    this.depthTest = depthTest;
   }
 }

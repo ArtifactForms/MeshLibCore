@@ -288,6 +288,10 @@ public class Mesh3D {
     return vertexNormals;
   }
 
+  public boolean hasUvCoordinates() {
+    return !uvs.isEmpty();
+  }
+
   /**
    * Adds a UV coordinate to the mesh.
    *
