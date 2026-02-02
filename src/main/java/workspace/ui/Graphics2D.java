@@ -2,6 +2,7 @@ package workspace.ui;
 
 import engine.resources.Font;
 import engine.resources.Image;
+import math.Color;
 
 /**
  * Defines the 2D rendering context and operations for a 2D rendering system.
@@ -31,18 +32,11 @@ public interface Graphics2D {
   int getHeight();
 
   /**
-   * Sets the current drawing color using a {@link Color}.
-   *
-   * @param color The color to set for rendering operations.
-   */
-  void setColor(Color color);
-
-  /**
    * Sets the current drawing color using a math-defined {@link math.Color}.
    *
    * @param color The math-defined color to use for rendering operations.
    */
-  void setColor(math.Color color);
+  void setColor(Color color);
 
   /**
    * Sets the current drawing color using RGB integer values.

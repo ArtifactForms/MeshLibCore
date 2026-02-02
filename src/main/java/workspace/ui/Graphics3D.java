@@ -28,6 +28,24 @@ public interface Graphics3D extends Graphics2D {
 
   void render(Light light);
 
+  // -------------------------------------------------
+  // SHADOW PASS
+  // -------------------------------------------------
+
+  void beginShadowPass(Light light, Camera camera);
+
+  void endShadowPass();
+
+  void drawShadowMapDebug();
+
+  boolean isShadowPass();
+
+  void beginLightingPass();
+
+  void endLightingPass();
+
+  // -------------------------------------------------
+
   void drawFaces(Mesh3D mesh);
 
   void fillFaces(Mesh3D mesh);
@@ -49,7 +67,7 @@ public interface Graphics3D extends Graphics2D {
   void drawLine(float x1, float y1, float z1, float x2, float y2, float z2);
 
   void drawLine(Vector3f from, Vector3f to);
-  
+
   void drawLines(Vector3f[] vertices, math.Color[] colors);
 
   void camera();
@@ -65,20 +83,6 @@ public interface Graphics3D extends Graphics2D {
   void enableFaceCulling();
 
   void disableFaceCulling();
-
-  /**
-   * Sets the global ambient light color for the scene.
-   *
-   * @param color The color of the ambient light. Must not be null.
-   */
-  void setAmbientColor(math.Color color);
-
-  /**
-   * Gets the current global ambient light color.
-   *
-   * @return The current ambient light color.
-   */
-  math.Color getAmbientColor();
 
   void applyMatrix(Matrix4f matrix);
 
