@@ -39,6 +39,7 @@ public class CrateCreator implements IMeshCreator {
     this.radius = radius;
     this.inset = inset;
     this.insetDepth = insetDepth;
+    this.crossBeamType = CrossBeamType.NOTHING;
   }
 
   @Override
