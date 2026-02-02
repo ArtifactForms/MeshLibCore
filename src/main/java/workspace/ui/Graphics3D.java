@@ -1,7 +1,5 @@
 package workspace.ui;
 
-import java.util.List;
-
 import engine.render.Material;
 import engine.resources.Model;
 import engine.resources.Texture;
@@ -28,24 +26,6 @@ public interface Graphics3D extends Graphics2D {
 
   void render(Light light);
 
-  // -------------------------------------------------
-  // SHADOW PASS
-  // -------------------------------------------------
-
-  void beginShadowPass(Light light, Camera camera);
-
-  void endShadowPass();
-
-  void drawShadowMapDebug();
-
-  boolean isShadowPass();
-
-  void beginLightingPass();
-
-  void endLightingPass();
-
-  // -------------------------------------------------
-
   void drawFaces(Mesh3D mesh);
 
   void fillFaces(Mesh3D mesh);
@@ -53,8 +33,6 @@ public interface Graphics3D extends Graphics2D {
   void render(Model model);
 
   void draw(VBO vbo);
-
-  void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms);
 
   void setShader(String vertexShaderName, String fragmentShaderName);
 
@@ -73,8 +51,6 @@ public interface Graphics3D extends Graphics2D {
   void camera();
 
   void lightsOff();
-
-  void setWireframeMode(boolean wireframeMode);
 
   void bindTexture(Texture texture, int unit);
 

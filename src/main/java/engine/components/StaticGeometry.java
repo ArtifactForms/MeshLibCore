@@ -99,7 +99,7 @@ public class StaticGeometry extends AbstractComponent
 
   @Override
   public void render(Graphics g) {
-    material.apply(g);
+    g.setMaterial(material);
     g.draw(vbo);
   }
 
@@ -126,13 +126,13 @@ public class StaticGeometry extends AbstractComponent
    * @return the world-space bounding box of this geometry
    */
   public Bounds getWorldBounds() {
-      Vector3f worldPos = getOwner().getWorldPosition();
+    Vector3f worldPos = getOwner().getWorldPosition();
 
-      Vector3f min = bounds.getMin().add(worldPos);
-      Vector3f max = bounds.getMax().add(worldPos);
+    Vector3f min = bounds.getMin().add(worldPos);
+    Vector3f max = bounds.getMax().add(worldPos);
 
-      return new Bounds(min, max);
-    }
+    return new Bounds(min, max);
+  }
 
   /**
    * Performs a raycast against this geometry using its world-space bounding box.
@@ -159,7 +159,7 @@ public class StaticGeometry extends AbstractComponent
 
     return new RaycastHit(getOwner(), hitPoint, distance);
   }
-  
+
   /**
    * Returns the material applied to this geometry.
    *
@@ -169,7 +169,7 @@ public class StaticGeometry extends AbstractComponent
    * @return the material instance applied to this geometry
    */
   public Material getMaterial() {
-      return material;
+    return material;
   }
 
   @Override

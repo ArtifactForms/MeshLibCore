@@ -38,15 +38,19 @@ public class World {
     return chunk.getBlock(localX, y % CHUNK_HEIGHT, localZ);
   }
 
+  public void generate(Chunk chunk) {
+    chunk.generateData(chunkGenerator);
+  }
+
+  public void setChunkGenerator(ChunkGenerator chunkGenerator) {
+    this.chunkGenerator = chunkGenerator;
+  }
+
   public Chunk getChunkAt(int x, int y, int z) {
     int chunkXIndex = (int) Math.floor(x / Chunk.WIDTH);
     int chunkZIndex = (int) Math.floor(z / Chunk.DEPTH);
     Chunk chunk = chunkManager.getChunk(chunkXIndex, chunkZIndex);
     return chunk;
-  }
-
-  public void generate(Chunk chunk) {
-    chunk.generateData(chunkGenerator);
   }
 
   public boolean isBlockAt(int x, int y, int z) {
@@ -55,9 +59,9 @@ public class World {
     if (blockType == BlockType.AIR) return false;
     return true;
   }
-  
+
   public boolean isSolid(int x, int y, int z) {
-      return isBlockAt(x, y, z);
+    return isBlockAt(x, y, z);
   }
 
   public long getSeed() {

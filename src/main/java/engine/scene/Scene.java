@@ -10,7 +10,6 @@ import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import math.Color;
-import workspace.GraphicsPImpl;
 import workspace.ui.Graphics;
 
 /**
@@ -168,12 +167,12 @@ public class Scene {
    * @param g The graphics context used for rendering.
    */
   public void render(Graphics g) {
+
     g.clear(background);
 
     if (activeCamera != null) {
       g.applyCamera(activeCamera);
     }
-
     renderLights(g);
 
     if (transform != null) {
@@ -181,8 +180,6 @@ public class Scene {
     }
 
     synchronized (rootNodes) {
-      GraphicsPImpl.faceCount = 0;
-      GraphicsPImpl.vertexCount = 0;
       for (SceneNode node : rootNodes) {
         node.render(g);
       }

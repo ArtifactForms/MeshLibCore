@@ -119,7 +119,7 @@ public class SceneNode {
 
     g.popMatrix();
   }
-
+  
   /**
    * Renders all {@link RenderableComponent}s attached to this node.
    *

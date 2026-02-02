@@ -11,6 +11,7 @@ import engine.scene.light.LightType;
 import engine.scene.light.PointLight;
 import engine.scene.light.SpotLight;
 import math.Color;
+import math.Mathf;
 import processing.core.PApplet;
 import workspace.ui.Graphics;
 
@@ -63,9 +64,9 @@ public class LightRendererImpl implements LightRenderer {
     store(light);
     renderCommon(light.getColor(), light.getConcentration());
     p.spotLight(
-        light.getColor().getRedInt(),
-        light.getColor().getGreenInt(),
-        light.getColor().getBlueInt(),
+        light.getColor().getRed(),
+        light.getColor().getGreen(),
+        light.getColor().getBlue(),
         light.getPosition().getX(),
         light.getPosition().getY(),
         light.getPosition().getZ(),
@@ -89,15 +90,14 @@ public class LightRendererImpl implements LightRenderer {
     float blue = light.getColor().getBlue(); // Same for blue
 
     // Apply intensity to each color component
-    red *= intensity;
-    green *= intensity;
-    blue *= intensity;
+    red = Mathf.clamp01(red * intensity);
+    green = Mathf.clamp01(green * intensity);
+    blue = Mathf.clamp01(blue * intensity);
 
-    // Call pointLight() with adjusted color
     p.pointLight(
-        red * 255, // Scale back to 0-255 range for Processing's pointLight
-        green * 255, // Same for green
-        blue * 255, // Same for blue
+        red,
+        green,
+        blue,
         light.getPosition().getX(),
         light.getPosition().getY(),
         light.getPosition().getZ());
@@ -108,9 +108,9 @@ public class LightRendererImpl implements LightRenderer {
     store(light);
     renderCommon(light.getColor(), light.getIntensity());
     p.directionalLight(
-        light.getColor().getRedInt(),
-        light.getColor().getGreenInt(),
-        light.getColor().getBlueInt(),
+        light.getColor().getRed(),
+        light.getColor().getGreen(),
+        light.getColor().getBlue(),
         light.getDirection().getX(),
         light.getDirection().getY(),
         light.getDirection().getZ());
@@ -122,7 +122,7 @@ public class LightRendererImpl implements LightRenderer {
     store(light);
     renderCommon(light.getColor(), 1);
     Color c = light.getColor();
-    p.ambientLight(c.getRedInt(), c.getGreenInt(), c.getBlueInt());
+    p.ambientLight(c.getRed(), c.getGreen(), c.getBlue());
   }
 
   private void store(Light light) {
@@ -157,9 +157,9 @@ public class LightRendererImpl implements LightRenderer {
 
   private void renderCommon(Color color, float intensity) {
     if (!debug) return;
-    float scaledRed = color.getRedInt() * intensity;
-    float scaledGreen = color.getGreenInt() * intensity;
-    float scaledBlue = color.getBlueInt() * intensity;
+    float scaledRed = color.getRed() * intensity;
+    float scaledGreen = color.getGreen() * intensity;
+    float scaledBlue = color.getBlue() * intensity;
 
     System.out.println(
         "Rendering light with values - R: "

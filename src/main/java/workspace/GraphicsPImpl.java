@@ -3,12 +3,13 @@ package workspace;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.processing.LightGizmoRenderer;
 import engine.processing.LightRendererImpl;
 import engine.processing.ProcessingFontManager;
 import engine.processing.ProcessingTexture;
 import engine.processing.VBOProcessing;
 import engine.render.Material;
+import engine.render.MaterialResolver;
+import engine.render.MaterialState;
 import engine.resources.FilterMode;
 import engine.resources.Font;
 import engine.resources.Image;
@@ -18,6 +19,8 @@ import engine.resources.TextureWrapMode;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.vbo.VBO;
+import math.Color;
+import math.Mathf;
 import math.Matrix4f;
 import math.Vector2f;
 import math.Vector3f;
@@ -25,198 +28,181 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.SubMesh;
 import processing.core.PApplet;
-import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.opengl.PGL;
 import processing.opengl.PGraphicsOpenGL;
 import processing.opengl.PShader;
-import workspace.render.Mesh3DRenderer;
-import workspace.ui.Color;
 import workspace.ui.Graphics;
 
 public class GraphicsPImpl implements Graphics {
 
-  private boolean wireframeMode;
-
   private Color color;
-
-  private math.Color ambientColor;
 
   private PGraphics g;
 
-  private PApplet p;
-
-  private Mesh3DRenderer renderer;
-
   private LightRendererImpl lightRenderer;
-
-  private LightGizmoRenderer lightGizmoRenderer;
-
-  public static int faceCount = 0;
-
-  public static int vertexCount = 0;
 
   private ProcessingTexture texture;
 
   private Font font;
 
-  private PFont pFont;
-
   private ProcessingFontManager fontManager;
 
   public GraphicsPImpl(PApplet p) {
     this.g = p.g;
-    this.p = p;
-    renderer = new Mesh3DRenderer(p);
 
     lightRenderer = new LightRendererImpl(p);
     lightRenderer.setGraphics(this);
 
-    lightGizmoRenderer = new LightGizmoRenderer(p);
-    lightGizmoRenderer.setGraphics(this);
-
     fontManager = new ProcessingFontManager(p);
 
     color = Color.BLACK;
-    ambientColor = math.Color.WHITE;
-  }
-
-  //  public void disableDepthMask() {
-  //      g.hint(PApplet.DISABLE_DEPTH_MASK);
-  //  }
-  //
-  //  public void enableDepthMask() {
-  //      g.hint(PApplet.ENABLE_ASYNC_SAVEFRAME);
-  //  }
-
-  public void alph() {}
-
-  @Override
-  public void setAmbientColor(math.Color ambientColor) {
-    this.ambientColor = ambientColor;
   }
 
   @Override
-  public math.Color getAmbientColor() {
-    return ambientColor;
+  public int getWidth() {
+    return g.width;
   }
 
   @Override
-  public void setWireframeMode(boolean wireframeMode) {
-    this.wireframeMode = wireframeMode;
+  public int getHeight() {
+    return g.height;
   }
+
+  @Override
+  public void setShader(String vertexShaderName, String fragmentShaderName) {
+    try {
+      // Correctly load the shader using Processing's loadShader
+      PShader shader = g.loadShader("shaders/" + vertexShaderName, "shaders/" + fragmentShaderName);
+
+      if (shader == null) {
+        System.err.println(
+            "Failed to load shader: " + vertexShaderName + ", " + fragmentShaderName);
+      } else {
+        g.shader(shader); // Apply shader to PGraphics
+        System.out.println("Shader applied successfully.");
+      }
+    } catch (Exception e) {
+      System.err.println("Error while loading shader: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void lightsOff() {
+    //    g.noLights();
+    lightRenderer.off();
+  }
+
+  @Override
+  public void render(Light light) {
+    light.render(lightRenderer);
+  }
+
+  // -------------------------------------------------
+  // MATERIAL / TEXTURE
+  // -------------------------------------------------
+
+  @Override
+  public void setMaterial(Material material) {
+    if (material == null) {
+      System.err.println("Warning: Null material passed to setMaterial().");
+      return;
+    }
+
+    MaterialState state = MaterialResolver.resolve(material);
+    Color base = state.baseColor;
+
+    if (state.useLighting) {
+      lightRenderer.on();
+    } else {
+      lightRenderer.off();
+    }
+
+    float r = Mathf.clamp01(state.diffuseR * base.getRed());
+    float g = Mathf.clamp01(state.diffuseG * base.getGreen());
+    float b = Mathf.clamp01(state.diffuseB * base.getBlue());
+    setColor(new Color(r, g, b));
+
+    this.texture = null;
+
+    if (state.diffuseTexture != null) {
+      bindTexture(state.diffuseTexture, 0); // Bind to texture unit 0
+    }
+
+    this.g.specular(state.specularR, state.specularG, state.specularB);
+    this.g.shininess(state.shininess);
+  }
+
+  @Override
+  public void bindTexture(Texture texture, int unit) {
+    // FIXME 1. unit not needed cause we are only using normal mode for textures
+    // FIXME 2  bind texture should not be exposed by the graphics context
+    //      if (unit == 1) {
+    //	  g.textureMode(PApplet.NORMAL);
+    //      }
+    ProcessingTexture texture2 = (ProcessingTexture) texture.getBackendTexture();
+    this.texture = texture2;
+  }
+
+  @Override
+  public void unbindTexture(int unit) {}
+
+  // -------------------------------------------------
+  // MESH
+  // -------------------------------------------------
 
   @Override
   public void fillFaces(Mesh3D mesh) {
-    faceCount += mesh.faces.size();
-    vertexCount += mesh.vertices.size();
-    if (wireframeMode) {
-      g.noFill();
-      stroke();
-      //      renderer.drawFaces(mesh);
-      drawMeshFaces(mesh, true);
-    } else {
-      g.noStroke();
-      fill();
-      drawMeshFaces(mesh, true);
-    }
+    boolean texture = true;
+    g.noStroke();
+    fill();
+    drawMeshFaces(mesh, texture);
   }
 
   @Override
   public void drawFaces(Mesh3D mesh) {
+    boolean texture = false;
     g.noFill();
     stroke();
-    drawMeshFaces(mesh, false);
+    drawMeshFaces(mesh, texture);
   }
 
-  @Override
-  public void drawLine(Vector3f from, Vector3f to) {
-    drawLine(from.x, from.y, from.z, to.x, to.y, to.z);
-  }
+  private void drawMeshFaces(Mesh3D mesh, boolean texture) {
+    final boolean hasNormals = mesh.hasVertexNormals();
+    final ArrayList<Vector3f> vertexNormals = hasNormals ? mesh.getVertexNormals() : null;
 
-  @Override
-  public void drawLines(Vector3f[] vertices, math.Color[] colors) {
-
-    g.beginShape(PApplet.LINES);
-
-    math.Color last = null;
-
-    for (int i = 0; i < vertices.length; i++) {
-
-      math.Color c = colors[i];
-      if (last == null || !c.equals(last)) {
-        g.stroke(c.getRedInt(), c.getGreenInt(), c.getBlueInt(), c.getAlphaInt());
-        last = c;
+    for (Face3D f : mesh.getFaces()) {
+      if (f.indices.length == 3) {
+        g.beginShape(PApplet.TRIANGLES);
+      } else if (f.indices.length == 4) {
+        g.beginShape(PApplet.QUADS);
+      } else {
+        g.beginShape(PApplet.POLYGON);
       }
 
-      Vector3f v = vertices[i];
-      g.vertex(v.x, v.y, v.z);
+      if (texture) applyTexture();
+
+      int[] indices = f.indices;
+      for (int i = 0; i < indices.length; i++) {
+        Vector3f v = mesh.vertices.get(f.indices[i]);
+
+        if (hasNormals) {
+          Vector3f normal = vertexNormals.get(f.indices[i]);
+          g.normal(normal.getX(), normal.getY(), normal.getZ());
+        }
+
+        int uvIndex = f.getUvIndexAt(i);
+        if (uvIndex != -1) {
+          Vector2f uv = mesh.getUvAt(uvIndex);
+          g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+        } else {
+          g.vertex(v.getX(), v.getY(), v.getZ());
+        }
+      }
+      g.endShape();
     }
-
-    g.endShape();
-  }
-
-  @Override
-  public void draw(VBO vbo) {
-    faceCount += vbo.getFaceCount();
-    vertexCount += vbo.getVertexCount();
-    applyTexture();
-    VBOProcessing vboProcessing = (VBOProcessing) vbo;
-    vboProcessing.draw(g);
-  }
-
-  @Override // TODO remove or fix
-  public void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms) {
-    if (mesh.getFaces().isEmpty() || mesh.getVertices().isEmpty()) {
-      return;
-    }
-
-    setColor(Color.WHITE);
-
-    for (Matrix4f transform : instanceTransforms) {
-      g.pushMatrix();
-      applyTransform(transform);
-      drawMeshFaces(mesh, true);
-      g.popMatrix();
-    }
-  }
-
-  private void applyTransform(Matrix4f transform) {
-    float[] matrix = transform.getValues();
-
-    g.applyMatrix(
-        matrix[0],
-        matrix[1],
-        matrix[2],
-        matrix[3],
-        matrix[4],
-        matrix[5],
-        matrix[6],
-        matrix[7],
-        matrix[8],
-        matrix[9],
-        matrix[10],
-        matrix[11],
-        matrix[12],
-        matrix[13],
-        matrix[14],
-        matrix[15]);
-  }
-
-  @Override
-  public void resetMatrix() {
-    g.resetMatrix();
-  }
-
-  @Override
-  public void setFont(Font font) {
-    if (font == null) {
-      this.font = new Font("Lucida Sans", 12, Font.PLAIN);
-    } else {
-      this.font = font;
-    }
-    g.textFont(fontManager.loadFont(this.font));
   }
 
   @Override
@@ -227,7 +213,7 @@ public class GraphicsPImpl implements Graphics {
       String materialName = subMesh.getMaterialName();
       Material subMaterial = model.getMaterial(materialName);
       List<Face3D> subFaces = subMesh.getFaces();
-      subMaterial.apply(this);
+      //      subMaterial.apply(this);
 
       for (Face3D f : subFaces) {
         if (f.indices.length == 3) {
@@ -262,6 +248,371 @@ public class GraphicsPImpl implements Graphics {
     }
   }
 
+  @Override
+  public void draw(VBO vbo) {
+    applyTexture();
+    VBOProcessing vboProcessing = (VBOProcessing) vbo;
+    vboProcessing.draw(g);
+  }
+
+  // -------------------------------------------------
+  // COLOR
+  // -------------------------------------------------
+
+  @Override
+  public void clear(Color color) {
+    g.background(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+  }
+
+  @Override
+  public void setColor(int red, int green, int blue) {
+    color = Color.getColorFromInt(red, green, blue);
+  }
+
+  @Override
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
+  // -------------------------------------------------
+  // STYLE
+  // -------------------------------------------------
+
+  private void stroke() {
+    g.stroke(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+  }
+
+  private void fill() {
+    g.fill(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+  }
+
+  @Override
+  public void strokeWeight(float weight) {
+    g.strokeWeight(weight);
+  }
+
+  // -------------------------------------------------
+  // TRANSFORM
+  // -------------------------------------------------
+
+  @Override
+  public void scale(float sx, float sy, float sz) {
+    g.scale(sx, sy, sz);
+  }
+
+  @Override
+  public void scale(float sx, float sy) {
+    g.scale(sx, sy);
+  }
+
+  @Override
+  public void translate(float x, float y) {
+    g.translate(x, y, 0);
+  }
+
+  @Override
+  public void translate(float x, float y, float z) {
+    g.translate(x, y, z);
+  }
+
+  @Override
+  public void rotate(float angle) {
+    g.rotate(angle);
+  }
+
+  @Override
+  public void rotateX(float angle) {
+    g.rotateX(angle);
+  }
+
+  @Override
+  public void rotateY(float angle) {
+    g.rotateY(angle);
+  }
+
+  @Override
+  public void rotateZ(float angle) {
+    g.rotateZ(angle);
+  }
+
+  @Override
+  public void rotate(float rx, float ry, float rz) {
+    g.rotateX(rx);
+    g.rotateY(ry);
+    g.rotateZ(rz);
+  }
+
+  // -------------------------------------------------
+  // MATRIX
+  // -------------------------------------------------
+
+  @Override
+  public void pushMatrix() {
+    g.pushMatrix();
+  }
+
+  @Override
+  public void popMatrix() {
+    g.popMatrix();
+  }
+
+  @Override
+  public void resetMatrix() {
+    g.resetMatrix();
+  }
+
+  @Override
+  public void applyMatrix(Matrix4f matrix) {
+    if (matrix == null) return;
+
+    float[] values = matrix.getValues();
+
+    g.applyMatrix(
+        values[0],
+        values[1],
+        values[2],
+        values[3],
+        values[4],
+        values[5],
+        values[6],
+        values[7],
+        values[8],
+        values[9],
+        values[10],
+        values[11],
+        values[12],
+        values[13],
+        values[14],
+        values[15]);
+  }
+
+  // -------------------------------------------------
+  // CAMERA
+  // -------------------------------------------------
+
+  public void camera() {
+    g.camera();
+  }
+
+  @Override
+  public void applyCamera(Camera camera) {
+    if (camera == null) {
+      throw new IllegalArgumentException("Camera instance cannot be null.");
+    }
+
+    Matrix4f m = camera.getProjectionMatrix();
+    ((PGraphicsOpenGL) g).projection.set(m.getValues());
+
+    Vector3f target = camera.getTarget();
+    Vector3f eye = camera.getTransform().getPosition();
+    g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0);
+  }
+
+  // -------------------------------------------------
+  // LINE
+  // -------------------------------------------------
+
+  @Override
+  public void drawLine(float x1, float y1, float x2, float y2) {
+    g.pushStyle();
+    g.noFill();
+    stroke();
+    g.line(x1, y1, x2, y2);
+    g.popStyle();
+  }
+
+  @Override
+  public void drawLine(float x1, float y1, float z1, float x2, float y2, float z2) {
+    g.pushStyle();
+    g.noFill();
+    stroke();
+    g.line(x1, y1, z1, x2, y2, z2);
+    g.popStyle();
+  }
+
+  @Override
+  public void drawLine(Vector3f from, Vector3f to) {
+    drawLine(from.x, from.y, from.z, to.x, to.y, to.z);
+  }
+
+  @Override
+  public void drawLines(Vector3f[] vertices, Color[] colors) {
+
+    g.beginShape(PApplet.LINES);
+
+    Color last = null;
+
+    for (int i = 0; i < vertices.length; i++) {
+
+      Color c = colors[i];
+      if (last == null || !c.equals(last)) {
+        g.stroke(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+        last = c;
+      }
+
+      Vector3f v = vertices[i];
+      g.vertex(v.x, v.y, v.z);
+    }
+
+    g.endShape();
+  }
+
+  // -------------------------------------------------
+  // RECT
+  // -------------------------------------------------
+
+  @Override
+  public void drawRect(float x, float y, float width, float height) {
+    g.pushStyle();
+    g.noFill();
+    stroke();
+    g.rectMode(PApplet.CORNER);
+    g.rect(x, y, width, height);
+    g.popStyle();
+  }
+
+  @Override
+  public void fillRect(float x, float y, float width, float height) {
+    g.pushStyle();
+    g.noStroke();
+    fill();
+    g.rectMode(PApplet.CORNER);
+    g.rect(x, y, width, height);
+    g.popStyle();
+  }
+
+  @Override
+  public void drawRoundRect(float x, float y, float width, float height, float radii) {
+    g.pushStyle();
+    g.noFill();
+    stroke();
+    g.rectMode(PApplet.CORNER);
+    g.rect(x, y, width, height, radii);
+    g.popStyle();
+  }
+
+  @Override
+  public void fillRoundRect(float x, float y, float width, float height, float radii) {
+    g.pushStyle();
+    g.noStroke();
+    fill();
+    g.rectMode(PApplet.CORNER);
+    g.rect(x, y, width, height, radii);
+    g.popStyle();
+  }
+
+  // -------------------------------------------------
+  // OVAL
+  // -------------------------------------------------
+
+  @Override
+  public void drawOval(float x, float y, float width, float height) {
+    g.pushStyle();
+    g.noFill();
+    stroke();
+    g.ellipseMode(PApplet.CORNER);
+    g.ellipse(x, y, width, height);
+    g.popStyle();
+  }
+
+  @Override
+  public void fillOval(float x, float y, float width, float height) {
+    g.pushStyle();
+    g.noStroke();
+    fill();
+    g.ellipseMode(PApplet.CORNER);
+    g.ellipse(x, y, width, height);
+    g.popStyle();
+  }
+
+  // -------------------------------------------------
+  // TEXT & FONT
+  // -------------------------------------------------
+
+  @Override
+  public void setFont(Font font) {
+    if (font == null) {
+      this.font = new Font("SansSerif", 12, Font.PLAIN);
+    } else {
+      this.font = font;
+    }
+    g.textFont(fontManager.loadFont(this.font));
+  }
+
+  @Override
+  public void textSize(float size) {
+    g.textSize(size);
+  }
+
+  @Override
+  public float getTextSize() {
+    return g.textSize;
+  }
+
+  @Override
+  public float textWidth(String text) {
+    return g.textWidth(text);
+  }
+
+  @Override
+  public float textAscent() {
+    return g.textAscent();
+  }
+
+  @Override
+  public float textDescent() {
+    return g.textDescent();
+  }
+
+  @Override
+  public void text(String text, float x, float y) {
+    fill();
+    g.text(text, x, y);
+  }
+
+  @Override
+  public void textCentered(String text, float y) {
+    float x = (getWidth() - textWidth(text)) * 0.5f;
+    text(text, x, y);
+  }
+
+  @Override
+  public void textCenteredBoth(String text) {
+    float x = (getWidth() - textWidth(text)) * 0.5f;
+
+    float ascent = textAscent();
+    float descent = textDescent();
+    float y = (getHeight() + ascent - descent) * 0.5f;
+
+    text(text, x, y);
+  }
+
+  // -------------------------------------------------
+  // IMAGE
+  // -------------------------------------------------
+
+  @Override
+  public void drawImage(Image image, float x, float y) {
+    if (!isPImage(image)) throw new IllegalArgumentException("Unsupported backend image.");
+
+    g.image((PImage) image.getBackendImage(), x, y);
+  }
+
+  @Override
+  public void drawImage(Image image, float x, float y, float width, float height) {
+    if (!isPImage(image)) throw new IllegalArgumentException("Unsupported backend image.");
+
+    g.image((PImage) image.getBackendImage(), x, y, width, height);
+  }
+
+  private boolean isPImage(Image image) {
+    return image.getBackendImage() instanceof PImage;
+  }
+
+  // -------------------------------------------------
+  // BACKFACE CULLING
+  // -------------------------------------------------
+
   /**
    * Enables backface culling in the current graphics context.
    *
@@ -276,6 +627,7 @@ public class GraphicsPImpl implements Graphics {
    * <p>Preconditions: - This method assumes that the current `PGraphics` object is an instance of
    * `PGraphicsOpenGL`.
    */
+  @Override
   public void enableFaceCulling() {
     PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
     pgl.pgl.frontFace(PGL.CCW); // Counter-clockwise winding order for front faces
@@ -293,10 +645,43 @@ public class GraphicsPImpl implements Graphics {
    * <p>Preconditions: - This method assumes that the current `PGraphics` object is an instance of
    * `PGraphicsOpenGL`.
    */
+  @Override
   public void disableFaceCulling() {
     PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
     pgl.pgl.disable(PGL.CULL_FACE); // Disable face culling
   }
+
+  // -------------------------------------------------
+  // DEPTH TEST
+  // -------------------------------------------------
+
+  @Override
+  public void enableDepthTest() {
+    g.hint(PApplet.ENABLE_DEPTH_TEST);
+  }
+
+  @Override
+  public void disableDepthTest() {
+    g.hint(PApplet.DISABLE_DEPTH_TEST);
+  }
+
+  private void setDepthTest(boolean depthTest) {
+    if (depthTest) {
+      enableDepthTest();
+    } else {
+      disableDepthTest();
+    }
+  }
+
+  //  public void disableDepthMask() {
+  //      g.hint(PApplet.DISABLE_DEPTH_MASK);
+  //  }
+
+  //  public void enableDepthMask() {
+  //      g.hint(PApplet.ENABLE_ASYNC_SAVEFRAME);
+  //  }
+
+  // -------------------------------------------------
 
   /**
    * Applies the specified texture to the current rendering context with the appropriate sampling
@@ -378,520 +763,5 @@ public class GraphicsPImpl implements Graphics {
         System.err.println("Warning: Unexpected filter mode value: " + filterMode);
         return 4; // Default to BILINEAR
     }
-  }
-
-  private void drawMeshFaces(Mesh3D mesh, boolean texture) {
-
-    //      g.beginShape(PApplet.TRIANGLES);
-    //
-    //      for (Face3D f : mesh.getFaces()) {
-    ////	        if (texture) applyTexture();
-    //	        int[] indices = f.indices;
-    //	        for (int i = 0; i < indices.length; i++) {
-    //	          Vector3f v = mesh.vertices.get(f.indices[i]);
-    //	          int uvIndex = f.getUvIndexAt(i);
-    //	          if (uvIndex != -1) {
-    //	            Vector2f uv = mesh.getUvAt(uvIndex);
-    //	            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
-    //	          } else {
-    //	            g.vertex(v.getX(), v.getY(), v.getZ());
-    //	          }
-    //	        }
-    //
-    //	      }
-    //      g.endShape();
-
-    if (mesh.hasVertexNormals()) {
-      drawWithNormals(mesh, texture);
-    } else {
-      for (Face3D f : mesh.getFaces()) {
-        if (f.indices.length == 3) {
-          g.beginShape(PApplet.TRIANGLES);
-        } else if (f.indices.length == 4) {
-          g.beginShape(PApplet.QUADS);
-        } else {
-          g.beginShape(PApplet.POLYGON);
-        }
-
-        if (texture) applyTexture();
-
-        int[] indices = f.indices;
-        for (int i = 0; i < indices.length; i++) {
-          Vector3f v = mesh.vertices.get(f.indices[i]);
-          int uvIndex = f.getUvIndexAt(i);
-          if (uvIndex != -1) {
-            Vector2f uv = mesh.getUvAt(uvIndex);
-            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
-          } else {
-            g.vertex(v.getX(), v.getY(), v.getZ());
-          }
-        }
-        g.endShape();
-      }
-    }
-  }
-
-  private void drawWithNormals(Mesh3D mesh, boolean texture) {
-    ArrayList<Vector3f> vertexNormals = mesh.getVertexNormals();
-    for (Face3D f : mesh.getFaces()) {
-      if (f.indices.length == 3) {
-        g.beginShape(PApplet.TRIANGLES);
-      } else if (f.indices.length == 4) {
-        g.beginShape(PApplet.QUADS);
-      } else {
-        g.beginShape(PApplet.POLYGON);
-      }
-
-      if (texture) applyTexture();
-
-      int[] indices = f.indices;
-      for (int i = 0; i < indices.length; i++) {
-        Vector3f v = mesh.vertices.get(f.indices[i]);
-
-        Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
-        g.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
-
-        int uvIndex = f.getUvIndexAt(i);
-        if (uvIndex != -1) {
-          Vector2f uv = mesh.getUvAt(uvIndex);
-          g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
-        } else {
-          g.vertex(v.getX(), v.getY(), v.getZ());
-        }
-      }
-      g.endShape();
-    }
-  }
-
-  @Override
-  public int getWidth() {
-    return g.width;
-  }
-
-  @Override
-  public int getHeight() {
-    return g.height;
-  }
-
-  private void stroke() {
-    g.stroke(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-  }
-
-  private void fill() {
-    g.fill(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-  }
-
-  @Override
-  public void pushMatrix() {
-    g.pushMatrix();
-  }
-
-  @Override
-  public void popMatrix() {
-    g.popMatrix();
-  }
-
-  @Override
-  public void scale(float sx, float sy, float sz) {
-    g.scale(sx, sy, sz);
-  }
-
-  @Override
-  public void scale(float sx, float sy) {
-    g.scale(sx, sy);
-  }
-
-  @Override
-  public void translate(float x, float y) {
-    g.translate(x, y, 0);
-  }
-
-  @Override
-  public void translate(float x, float y, float z) {
-    g.translate(x, y, z);
-  }
-
-  @Override
-  public void strokeWeight(float weight) {
-    g.strokeWeight(weight);
-  }
-
-  @Override
-  public void setColor(Color color) {
-    this.color = color;
-  }
-
-  @Override
-  public void setColor(int red, int green, int blue) {
-    color = new Color(red, green, blue);
-  }
-
-  @Override
-  public void setColor(math.Color color) {
-    this.color =
-        new Color(color.getRedInt(), color.getGreenInt(), color.getBlueInt(), color.getAlphaInt());
-  }
-
-  @Override
-  public void drawRect(float x, float y, float width, float height) {
-    g.pushStyle();
-    g.noFill();
-    stroke();
-    g.rectMode(PApplet.CORNER);
-    g.rect(x, y, width, height);
-    g.popStyle();
-  }
-
-  @Override
-  public void fillRect(float x, float y, float width, float height) {
-    g.pushStyle();
-    g.noStroke();
-    fill();
-    g.rectMode(PApplet.CORNER);
-    g.rect(x, y, width, height);
-    g.popStyle();
-  }
-
-  @Override
-  public void drawRoundRect(float x, float y, float width, float height, float radii) {
-    g.pushStyle();
-    g.noFill();
-    stroke();
-    g.rectMode(PApplet.CORNER);
-    g.rect(x, y, width, height, radii);
-    g.popStyle();
-  }
-
-  @Override
-  public void fillRoundRect(float x, float y, float width, float height, float radii) {
-    g.pushStyle();
-    g.noStroke();
-    fill();
-    g.rectMode(PApplet.CORNER);
-    g.rect(x, y, width, height, radii);
-    g.popStyle();
-  }
-
-  @Override
-  public void drawLine(float x1, float y1, float x2, float y2) {
-    g.pushStyle();
-    g.noFill();
-    stroke();
-    g.line(x1, y1, x2, y2);
-    g.popStyle();
-  }
-
-  @Override
-  public void drawLine(float x1, float y1, float z1, float x2, float y2, float z2) {
-    g.pushStyle();
-    g.noFill();
-    stroke();
-    g.line(x1, y1, z1, x2, y2, z2);
-    g.popStyle();
-  }
-
-  @Override
-  public void drawOval(float x, float y, float width, float height) {
-    g.pushStyle();
-    g.noFill();
-    stroke();
-    g.ellipseMode(PApplet.CORNER);
-    g.ellipse(x, y, height, width);
-    g.popStyle();
-  }
-
-  @Override
-  public void fillOval(float x, float y, float width, float height) {
-    g.pushStyle();
-    g.noStroke();
-    fill();
-    g.ellipseMode(PApplet.CORNER);
-    g.ellipse(x, y, height, width);
-    g.popStyle();
-  }
-
-  @Override
-  public void textSize(float size) {
-    g.textSize(size);
-  }
-
-  @Override
-  public float getTextSize() {
-    return g.textSize;
-  }
-
-  @Override
-  public float textWidth(String text) {
-    return g.textWidth(text);
-  }
-
-  @Override
-  public float textAscent() {
-    return g.textAscent();
-  }
-
-  @Override
-  public float textDescent() {
-    return g.textDescent();
-  }
-
-  @Override
-  public void text(String text, float x, float y) {
-    fill();
-    g.text(text, x, y);
-  }
-
-  @Override
-  public void textCentered(String text, float y) {
-    float x = (getWidth() - textWidth(text)) * 0.5f;
-    text(text, x, y);
-  }
-
-  @Override
-  public void textCenteredBoth(String text) {
-    float x = (getWidth() - textWidth(text)) * 0.5f;
-
-    float ascent = textAscent();
-    float descent = textDescent();
-    float y = (getHeight() + ascent - descent) * 0.5f;
-
-    text(text, x, y);
-  }
-
-  @Override
-  public void enableDepthTest() {
-    g.hint(PApplet.ENABLE_DEPTH_TEST);
-  }
-
-  @Override
-  public void disableDepthTest() {
-    g.hint(PApplet.DISABLE_DEPTH_TEST);
-  }
-
-  @Override
-  public void rotate(float angle) {
-    g.rotate(angle);
-  }
-
-  @Override
-  public void rotateX(float angle) {
-    g.rotateX(angle);
-  }
-
-  @Override
-  public void rotateY(float angle) {
-    g.rotateY(angle);
-  }
-
-  @Override
-  public void rotateZ(float angle) {
-    g.rotate(angle);
-  }
-
-  @Override
-  public void rotate(float rx, float ry, float rz) {
-    g.rotateX(rx);
-    g.rotateY(ry);
-    g.rotateZ(rz);
-  }
-
-  public void camera() {
-    g.camera();
-  }
-
-  @Override
-  public void setMaterial(Material material) {
-    if (material == null) {
-      System.err.println("Warning: Null material passed to setMaterial().");
-      return;
-    }
-
-    this.texture = null;
-
-    math.Color color = material.getColor();
-    // Apply material properties
-    setColor(color != null ? color : math.Color.WHITE); // Default to white
-
-    if (material.isUseLighting()) {
-      lightRenderer.on();
-    } else {
-      lightRenderer.off();
-    }
-
-    // Extract material properties
-
-    float[] ambient = material.getAmbient();
-    float[] diffuse = material.getDiffuse();
-    float[] specular = material.getSpecular();
-    float shininess = material.getShininess();
-
-    // Validate and set defaults for ambient, diffuse, and specular arrays
-    if (ambient == null || ambient.length < 3) {
-      ambient = new float[] {0.2f, 0.2f, 0.2f}; // Default ambient
-      System.err.println(
-          "Warning: Material ambient property is null or incomplete. Using default.");
-    }
-    if (diffuse == null || diffuse.length < 3) {
-      diffuse = new float[] {1.0f, 1.0f, 1.0f}; // Default diffuse
-      System.err.println(
-          "Warning: Material diffuse property is null or incomplete. Using default.");
-    }
-    if (specular == null || specular.length < 3) {
-      specular = new float[] {1.0f, 1.0f, 1.0f}; // Default specular
-      System.err.println(
-          "Warning: Material specular property is null or incomplete. Using default.");
-    }
-
-    // Calculate and apply ambient color
-    math.Color ambientColor = new math.Color(this.ambientColor);
-    ambientColor.multLocal(ambient[0], ambient[1], ambient[2], 1.0f);
-    ambientColor.clampLocal();
-    g.ambient(ambientColor.getRedInt(), ambientColor.getGreenInt(), ambientColor.getBlueInt());
-
-    // Set diffuse color
-    math.Color diffuseColor = new math.Color(color != null ? color : math.Color.WHITE);
-    diffuseColor.multLocal(diffuse[0], diffuse[1], diffuse[2], 1.0f);
-    diffuseColor.clampLocal();
-    g.fill(diffuseColor.getRedInt(), diffuseColor.getGreenInt(), diffuseColor.getBlueInt());
-
-    // Set specular and shininess properties
-    g.specular(specular[0] * 255, specular[1] * 255, specular[2] * 255);
-    g.shininess(shininess);
-
-    // Depth test
-    setDepthTest(material.isDepthTest());
-  }
-
-  private void setDepthTest(boolean depthTest) {
-    if (depthTest) {
-      enableDepthTest();
-    } else {
-      disableDepthTest();
-    }
-  }
-
-  @Override
-  public void bindTexture(Texture texture, int unit) { // TODO Auto-generated method stub
-    //      if (unit == 1) {
-    //	  g.textureMode(PApplet.NORMAL);
-    //      }
-    ProcessingTexture texture2 = (ProcessingTexture) texture.getBackendTexture();
-    this.texture = texture2;
-  }
-
-  @Override
-  public void unbindTexture(int unit) { // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void setShader(String vertexShaderName, String fragmentShaderName) {
-    try {
-      // Correctly load the shader using Processing's loadShader
-      PShader shader = g.loadShader("shaders/" + vertexShaderName, "shaders/" + fragmentShaderName);
-
-      if (shader == null) {
-        System.err.println(
-            "Failed to load shader: " + vertexShaderName + ", " + fragmentShaderName);
-      } else {
-        g.shader(shader); // Apply shader to PGraphics
-        System.out.println("Shader applied successfully.");
-      }
-    } catch (Exception e) {
-      System.err.println("Error while loading shader: " + e.getMessage());
-      e.printStackTrace();
-    }
-  }
-
-  @Override
-  public void lightsOff() {
-    //    g.noLights();
-    lightRenderer.off();
-  }
-
-  @Override
-  public void render(Light light) {
-    light.render(lightRenderer);
-    //    light.render(lightGizmoRenderer);
-  }
-
-  @Override
-  public void applyMatrix(Matrix4f matrix) {
-    if (matrix == null) return;
-    float[] values = matrix.getValues();
-    g.applyMatrix(
-        values[0],
-        values[1],
-        values[2],
-        values[3],
-        values[4],
-        values[5],
-        values[6],
-        values[7],
-        values[8],
-        values[9],
-        values[10],
-        values[11],
-        values[12],
-        values[13],
-        values[14],
-        values[15]);
-  }
-
-  @Override
-  public void applyCamera(Camera camera) {
-    if (camera == null) {
-      throw new IllegalArgumentException("Camera instance cannot be null.");
-    }
-
-    //    g.resetMatrix();
-    //    Matrix4f  m = camera.getViewProjectionMatrix();
-    //
-    //
-    //  Vector3f target = camera.getTarget();
-    //  Vector3f eye = camera.getTransform().getPosition();
-    //    Matrix4f look = Matrix4f.lookAt(eye, target, new Vector3f(0, 1, 0));
-    //
-    //    m = m.multiply(look);
-
-    //    g.getMatrix().set(m.getValues());
-
-    float fov = camera.getFieldOfView();
-    float aspect = camera.getAspectRatio();
-    float near = camera.getNearPlane();
-    float far = camera.getFarPlane();
-    //    g.perspective(fov, aspect, near, far);
-
-    Matrix4f m = camera.getProjectionMatrix();
-    ((PGraphicsOpenGL) g).projection.set(m.getValues());
-
-    Vector3f target = camera.getTarget();
-    Vector3f eye = camera.getTransform().getPosition();
-    g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0);
-
-    //    Vector3f scale = camera.getTransform().getScale();
-    //    g.scale(scale.x, scale.y, scale.z);
-  }
-
-  @Override
-  public void drawImage(Image image, float x, float y) {
-    if (image.getBackendImage() instanceof PImage) {
-      g.image((PImage) image.getBackendImage(), x, y);
-    } else {
-      throw new IllegalArgumentException("Unsupported image backend.");
-    }
-  }
-
-  @Override
-  public void drawImage(Image image, float x, float y, float width, float height) {
-    if (image.getBackendImage() instanceof PImage) {
-      g.image((PImage) image.getBackendImage(), x, y, width, height);
-    } else {
-      throw new IllegalArgumentException("Unsupported image backend.");
-    }
-  }
-
-  @Override
-  public void clear(math.Color color) {
-    g.background(color.getRedInt(), color.getGreenInt(), color.getBlueInt(), color.getAlphaInt());
   }
 }
