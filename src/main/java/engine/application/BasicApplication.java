@@ -13,7 +13,9 @@ import engine.processing.ProcessingApplication;
 import engine.resources.Font;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
+import engine.scene.camera.Camera;
 import engine.scene.camera.PerspectiveCamera;
+import engine.scene.light.DirectionalLight;
 import math.Mathf;
 import workspace.ui.Graphics;
 
@@ -137,6 +139,7 @@ public abstract class BasicApplication implements Application {
 
   @Override
   public void render(Graphics g) {
+
     if (activeScene != null) {
       activeScene.render(g);
     }

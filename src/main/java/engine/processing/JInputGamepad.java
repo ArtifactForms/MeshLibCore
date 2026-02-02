@@ -15,8 +15,7 @@ public class JInputGamepad implements Gamepad {
 
   private final Controller controller;
 
-  private final Set<GamepadButton> pressedButtons =
-      EnumSet.noneOf(GamepadButton.class);
+  private final Set<GamepadButton> pressedButtons = EnumSet.noneOf(GamepadButton.class);
 
   public JInputGamepad(Controller controller) {
     this.controller = controller;
@@ -49,7 +48,7 @@ public class JInputGamepad implements Gamepad {
   private void handleAxis(Component component, float value) {
     if (Math.abs(value) < DEADZONE) return;
 
-    // Axes werden direkt beim Abfragen gelesen
+    // Axes are read directly at query time (no state is stored)
   }
 
   @Override

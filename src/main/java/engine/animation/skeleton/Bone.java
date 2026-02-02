@@ -3,16 +3,17 @@ package engine.animation.skeleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import math.Matrix4;
+
+import math.Matrix4f;
 
 public class Bone {
 
   private final String name;
   private Bone parent;
   private final List<Bone> children;
-  private Matrix4 localTransform;
-  private Matrix4 globalTransform;
-  private Matrix4 inverseBindPose;
+  private Matrix4f localTransform;
+  private Matrix4f globalTransform;
+  private Matrix4f inverseBindPose;
   private boolean transformDirty = true;
   private float weight;
   private int index;
@@ -23,8 +24,8 @@ public class Bone {
     }
     this.name = name;
     this.children = new ArrayList<>();
-    this.localTransform = new Matrix4().identity();
-    this.globalTransform = new Matrix4().identity();
+    this.localTransform = new Matrix4f().identity();
+    this.globalTransform = new Matrix4f().identity();
     this.weight = 1.0f;
   }
 
@@ -95,11 +96,11 @@ public class Bone {
     return Collections.unmodifiableList(children);
   }
 
-  public Matrix4 getLocalTransform() {
-    return new Matrix4(localTransform);
+  public Matrix4f getLocalTransform() {
+    return new Matrix4f(localTransform);
   }
 
-  public void setLocalTransform(Matrix4 localTransform) {
+  public void setLocalTransform(Matrix4f localTransform) {
     if (localTransform == null) {
       throw new IllegalArgumentException("LocalTransform cannot be null.");
     }
@@ -107,16 +108,16 @@ public class Bone {
     markDirty();
   }
 
-  public Matrix4 getGlobalTransform() {
-    return new Matrix4(globalTransform);
+  public Matrix4f getGlobalTransform() {
+    return new Matrix4f(globalTransform);
   }
 
-  public Matrix4 getInverseBindPose() {
-    return new Matrix4(inverseBindPose);
+  public Matrix4f getInverseBindPose() {
+    return new Matrix4f(inverseBindPose);
   }
 
-  public void setInverseBindPose(Matrix4 bindPose) {
-    this.inverseBindPose = bindPose.invert();
+  public void setInverseBindPose(Matrix4f bindPose) {
+//    this.inverseBindPose = bindPose.invert();
   }
 
   public float getWeight() {

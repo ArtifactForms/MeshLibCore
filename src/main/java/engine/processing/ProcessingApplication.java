@@ -65,7 +65,7 @@ public class ProcessingApplication extends PApplet {
 
   @Override
   public void draw() {
-    colorMode(RGB);
+    colorMode(RGB, 1.0f);
     background(0);
     noLights();
     container.update();

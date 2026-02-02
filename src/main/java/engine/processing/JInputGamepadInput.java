@@ -50,10 +50,8 @@ public class JInputGamepadInput implements GamepadInput {
   }
 
   @Override
-  public void addGamepadListener(GamepadListener listener) { // TODO Auto-generated method stub
-  }
+  public void addGamepadListener(GamepadListener listener) {}
 
   @Override
-  public void removeGamepadListener(GamepadListener listener) { // TODO Auto-generated method stub
-  }
+  public void removeGamepadListener(GamepadListener listener) {}
 }

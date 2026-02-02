@@ -1,4 +1,4 @@
-package mesh.modifier.uv;
+package mesh.uv;
 
 import java.util.ArrayList;
 
@@ -51,8 +51,35 @@ public class BoxUVModifier implements IMeshModifier {
    */
   private float scale;
 
+  /**
+   * Creates a new {@code BoxUVModifier} with the given UV scale.
+   *
+   * <p>The scale defines how object-space distances are mapped into UV space. A value of {@code
+   * 1.0} maps one world unit to one texture unit. Larger values result in denser texture tiling,
+   * while smaller values stretch the texture across a larger area.
+   *
+   * @param scale Scale factor used to convert object-space coordinates into UV space
+   * @throws IllegalArgumentException if the UV scale is zero, a zero scale would result in invalid
+   *     texture coordinates
+   */
   public BoxUVModifier(float scale) {
+    validate(scale);
     this.scale = scale;
+  }
+
+  /**
+   * Validates the given UV scale value.
+   *
+   * <p>The scale must be non-zero, as a zero scale would result in invalid texture coordinates
+   * during UV generation.
+   *
+   * @param scale The UV scale value to validate
+   * @throws IllegalArgumentException if {@code scale} is zero
+   */
+  private void validate(float scale) {
+    if (scale == 0f) {
+      throw new IllegalArgumentException("UV scale must not be zero");
+    }
   }
 
   /**
@@ -65,14 +92,9 @@ public class BoxUVModifier implements IMeshModifier {
    *
    * @param mesh The mesh to modify
    * @return The modified mesh instance
-   * @throws IllegalArgumentException if the UV scale is zero
    */
   @Override
   public Mesh3D modify(Mesh3D mesh) {
-    if (scale == 0f) {
-      throw new IllegalArgumentException("UV scale must not be zero");
-    }
-
     ArrayList<Vector2f> uvs = new ArrayList<Vector2f>();
 
     for (Face3D face : mesh.faces) {

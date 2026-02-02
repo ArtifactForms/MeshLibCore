@@ -46,7 +46,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     setRenderDistance(GameSettings.renderDistance);
     loadChunksAroundPlayer();
   }
-
+  
   @Override
   public void render(Graphics g) {
     debugRenderActiveChunks(g);

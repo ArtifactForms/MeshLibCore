@@ -28,7 +28,6 @@ public class VBOProcessing implements VBO {
 
   public VBOProcessing(PShape shape) {
     this.shape = shape;
-    vertexCount = shape.getVertexCount();
   }
 
   @Override
@@ -86,17 +85,6 @@ public class VBOProcessing implements VBO {
   @Override
   public void create(float[] vertices, int[] indices) {
     throw new UnsupportedOperationException("ProcessingVBO requires Mesh3D");
-    //    // TODO Full implementation
-    //    // Create a PShape object for the mesh
-    //    shape = new PShape();
-    //    // Load vertices into the PShape
-    //    shape.beginShape();
-    //    for (int i = 0; i < vertices.length; i += 3) {
-    //      shape.vertex(vertices[i], vertices[i + 1], vertices[i + 2]);
-    //    }
-    //    shape.endShape();
-    //    // Optional: store indices if using indexed rendering
-    //    vertexCount = vertices.length / 3; // Assuming vertices are in 3D (x, y, z)
   }
 
   @Override

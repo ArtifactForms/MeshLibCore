@@ -2,7 +2,6 @@ package engine.render;
 
 import engine.resources.Texture;
 import math.Color;
-import workspace.ui.Graphics;
 
 /**
  * Represents a material with lighting and shader properties for 3D rendering.
@@ -129,6 +128,10 @@ public class Material {
   /** The opacity texture map (map_d) of the material */
   private Texture opacityMap;
 
+  private boolean receiveShadows = false;
+
+  private boolean castShadows = true;
+
   /** Default constructor that initializes the material with a base white color. */
   public Material() {
     this(Color.WHITE);
@@ -153,35 +156,6 @@ public class Material {
     this.shininess = 10.0f;
     this.opacity = 1.0f; // Fully opaque by default
     this.depthTest = true; // Depth test enabled by default
-  }
-
-  /**
-   * Applies this material's properties to the provided rendering context.
-   *
-   * <p>This method sets the material's color, lighting properties, and binds any associated
-   * textures to the rendering context.
-   *
-   * @param g The {@link Graphics} instance to apply this material to.
-   */
-  public void apply(Graphics g) {
-    g.setMaterial(this);
-
-    if (diffuseTexture != null) {
-      g.bindTexture(diffuseTexture, 0); // Bind to texture unit 0
-    }
-  }
-
-  /**
-   * Releases this material's properties from the rendering context, useful for cleaning up shaders
-   * or material-specific settings.
-   *
-   * <p>This method unbinds textures and resets any material properties set during the rendering
-   * process to ensure the rendering context is restored to a neutral state.
-   *
-   * @param g The {@link Graphics} instance from which this material will be unbound.
-   */
-  public void release(Graphics g) {
-    // Logic for releasing or resetting rendering context goes here
   }
 
   /**
@@ -408,5 +382,21 @@ public class Material {
    */
   public void setDepthTest(boolean depthTest) {
     this.depthTest = depthTest;
+  }
+
+  public boolean isReceiveShadows() {
+    return receiveShadows;
+  }
+
+  public void setReceiveShadows(boolean receiveShadows) {
+    this.receiveShadows = receiveShadows;
+  }
+
+  public boolean isCastShadows() {
+    return castShadows;
+  }
+
+  public void setCastShadows(boolean castShadows) {
+    this.castShadows = castShadows;
   }
 }

@@ -6,12 +6,15 @@ import java.util.Collection;
 import com.sun.management.OperatingSystemMXBean;
 
 import engine.Timer;
+import engine.components.Geometry;
+import engine.components.StaticGeometry;
 import engine.input.Input;
 import engine.input.Key;
 import engine.scene.Scene;
+import engine.scene.SceneNode;
+import engine.scene.SceneNodeVisitor;
 import engine.scene.camera.Camera;
 import math.Mathf;
-import workspace.GraphicsPImpl;
 
 /**
  * The {@code DebugInfoUpdater} class is responsible for updating debug information displayed by a
@@ -39,6 +42,10 @@ public class DebugInfoUpdater {
   private final MemoryMetrics memoryMetrics = new MemoryMetrics();
 
   private final DrawCallCounter drawCallCounter = new DrawCallCounter();
+
+  private int faceCount = 0;
+
+  private int vertexCount = 0;
 
   private final OperatingSystemMXBean osBean =
       (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
@@ -125,8 +132,32 @@ public class DebugInfoUpdater {
     setInfo(CATEGORY_SCENE, "Scene", activeScene.getName());
     setInfo(CATEGORY_SCENE, "Root count", activeScene.getRootCount());
     setInfo(CATEGORY_SCENE, "Lights count", activeScene.getLightCount());
-    setInfo(CATEGORY_SCENE, "Faces", GraphicsPImpl.faceCount);
-    setInfo(CATEGORY_SCENE, "Vertices", GraphicsPImpl.vertexCount);
+
+    faceCount = 0;
+    vertexCount = 0;
+
+    SceneNodeVisitor visitor =
+        new SceneNodeVisitor() {
+
+          @Override
+          public void visit(SceneNode node) {
+            Geometry geometry = node.getComponent(Geometry.class);
+            if (geometry != null) {
+              faceCount += geometry.getMesh().getFaceCount();
+              vertexCount += geometry.getMesh().getVertexCount();
+            }
+            StaticGeometry geometry2 = node.getComponent(StaticGeometry.class);
+            if (geometry2 != null) {
+              faceCount += geometry2.getVbo().getFaceCount();
+              vertexCount += geometry2.getVbo().getVertexCount();
+            }
+          }
+        };
+
+    activeScene.visitRootNodes(visitor);
+
+    setInfo(CATEGORY_SCENE, "Faces", faceCount);
+    setInfo(CATEGORY_SCENE, "Vertices", vertexCount);
   }
 
   private void updateTimeMetrics(Timer timer) {

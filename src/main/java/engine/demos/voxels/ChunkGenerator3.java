@@ -217,9 +217,9 @@ public class ChunkGenerator3 implements ChunkGenerator {
   private BlockType getBlockType(
       int x, int y, int z, int heightValue, BiomeType biome, Chunk chunk) {
 
-      float wx = chunk.getPosition().x + x;
-      float wz = chunk.getPosition().z + z;
-      
+    float wx = chunk.getPosition().x + x;
+    float wz = chunk.getPosition().z + z;
+
     if (y < seaLevel - beachSize - 8) {
       return BlockType.GRAVEL;
     }
@@ -234,10 +234,7 @@ public class ChunkGenerator3 implements ChunkGenerator {
 
     if (y > 110) {
 
-      if (noise3.noise(
-              wx * 0.05f,
-              wz * 0.05f)
-          < 0.7f) return BlockType.STONE;
+      if (noise3.noise(wx * 0.05f, wz * 0.05f) < 0.7f) return BlockType.STONE;
       else return BlockType.COBBLE_STONE;
     }
 
@@ -278,5 +275,45 @@ public class ChunkGenerator3 implements ChunkGenerator {
     }
 
     return total / maxValue; // Normalize to -1..1
+  }
+
+  public int getOctaves() {
+    return octaves;
+  }
+
+  public void setOctaves(int octaves) {
+    this.octaves = octaves;
+  }
+
+  public float getPersistence() {
+    return persistence;
+  }
+
+  public void setPersistence(float persistence) {
+    this.persistence = persistence;
+  }
+
+  public float getLacunarity() {
+    return lacunarity;
+  }
+
+  public void setLacunarity(float lacunarity) {
+    this.lacunarity = lacunarity;
+  }
+
+  public float getScale() {
+    return scale;
+  }
+
+  public void setScale(float scale) {
+    this.scale = scale;
+  }
+
+  public int getHeightMultiplier() {
+    return heightMultiplier;
+  }
+
+  public void setHeightMultiplier(int heightMultiplier) {
+    this.heightMultiplier = heightMultiplier;
   }
 }

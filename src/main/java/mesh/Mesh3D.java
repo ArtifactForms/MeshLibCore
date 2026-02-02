@@ -208,9 +208,17 @@ public class Mesh3D {
     vertices.clear();
   }
 
-  public void addVertex(float x, float y, float z) {
+  public int addVertex(float x, float y, float z) {
+    int index = vertices.size();
     vertices.add(new Vector3f(x, y, z));
+    return index;
   }
+  
+  public int addVertex(Vector3f v) {
+      int index = vertices.size();
+      vertices.add(v);
+      return index;
+    }
 
   public void addFace(int... indices) {
     faces.add(new Face3D(indices));
@@ -328,6 +336,10 @@ public class Mesh3D {
 
   public int getUvCount() {
     return uvs.size();
+  }
+  
+  public ArrayList<Vector2f> getUVCoordinates() {
+      return uvs;
   }
 
   /**

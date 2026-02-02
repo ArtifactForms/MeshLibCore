@@ -1,5 +1,6 @@
 package workspace;
 
+import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.util.VertexNormals;
@@ -11,7 +12,6 @@ import workspace.laf.UiValues;
 import workspace.render.Mesh3DRenderer;
 import workspace.render.ObjectSelectionRender;
 import workspace.render.Shading;
-import workspace.ui.Color;
 import workspace.ui.ui3d.Axis3D;
 import workspace.ui.ui3d.Grid3D;
 
@@ -112,6 +112,7 @@ public class Workspace extends Editor implements ModelListener {
     resize(0, 0, p.width, p.height);
     vertices = 0;
     faces = 0;
+    p.colorMode(PApplet.RGB, 1);
     p.background(getBackground().getRGBA());
     p.lights();
     applyTransformations();

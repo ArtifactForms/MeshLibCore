@@ -85,9 +85,8 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
    */
   @Override
   public void render(Graphics g) {
-    material.apply(g);
+    g.setMaterial(material);
     g.fillFaces(mesh);
-    material.release(g);
   }
 
   /**
@@ -157,6 +156,10 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
    */
   public Material getMaterial() {
     return material;
+  }
+
+  public Mesh3D getMesh() {
+    return mesh;
   }
 
   /**

@@ -30,7 +30,15 @@ public class Skeleton {
 
   public void update() {
     if (rootBone != null) {
-      rootBone.updateGlobalTransform();
+      // recursion from top to bottom
+      updateBoneRecursively(rootBone);
+    }
+  }
+
+  private void updateBoneRecursively(Bone bone) {
+    bone.updateGlobalTransform(); // global = parent.global * local
+    for (Bone child : bone.getChildren()) {
+      updateBoneRecursively(child);
     }
   }
 

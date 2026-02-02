@@ -480,7 +480,7 @@ public class Color {
    * @return the red component of this color (0 to 255)
    */
   public int getRedInt() {
-    return (int) (r * 255 + 0.5);
+      return (int) (Math.max(0, Math.min(1, r)) * 255 + 0.5);
   }
 
   /**
@@ -489,7 +489,7 @@ public class Color {
    * @return the green component of this color (0 to 255)
    */
   public int getGreenInt() {
-    return (int) (g * 255 + 0.5);
+      return (int) (Math.max(0, Math.min(1, g)) * 255 + 0.5);
   }
 
   /**
@@ -498,7 +498,7 @@ public class Color {
    * @return the blue component of this color (0 to 255)
    */
   public int getBlueInt() {
-    return (int) (b * 255 + 0.5);
+      return (int) (Math.max(0, Math.min(1, b)) * 255 + 0.5);
   }
 
   /**
@@ -507,7 +507,7 @@ public class Color {
    * @return the alpha component of this color (0 to 255)
    */
   public int getAlphaInt() {
-    return (int) (a * 255 + 0.5);
+      return (int) (Math.max(0, Math.min(1, a)) * 255 + 0.5);
   }
 
   /**

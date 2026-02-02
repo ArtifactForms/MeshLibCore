@@ -1,7 +1,5 @@
 package workspace.ui;
 
-import java.util.List;
-
 import engine.render.Material;
 import engine.resources.Model;
 import engine.resources.Texture;
@@ -36,8 +34,6 @@ public interface Graphics3D extends Graphics2D {
 
   void draw(VBO vbo);
 
-  void renderInstances(Mesh3D mesh, List<Matrix4f> instanceTransforms);
-
   void setShader(String vertexShaderName, String fragmentShaderName);
 
   void enableDepthTest();
@@ -49,14 +45,12 @@ public interface Graphics3D extends Graphics2D {
   void drawLine(float x1, float y1, float z1, float x2, float y2, float z2);
 
   void drawLine(Vector3f from, Vector3f to);
-  
+
   void drawLines(Vector3f[] vertices, math.Color[] colors);
 
   void camera();
 
   void lightsOff();
-
-  void setWireframeMode(boolean wireframeMode);
 
   void bindTexture(Texture texture, int unit);
 
@@ -65,20 +59,6 @@ public interface Graphics3D extends Graphics2D {
   void enableFaceCulling();
 
   void disableFaceCulling();
-
-  /**
-   * Sets the global ambient light color for the scene.
-   *
-   * @param color The color of the ambient light. Must not be null.
-   */
-  void setAmbientColor(math.Color color);
-
-  /**
-   * Gets the current global ambient light color.
-   *
-   * @return The current ambient light color.
-   */
-  math.Color getAmbientColor();
 
   void applyMatrix(Matrix4f matrix);
 
