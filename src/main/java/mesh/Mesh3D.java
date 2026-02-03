@@ -293,6 +293,10 @@ public class Mesh3D {
     this.vertexNormals.addAll(vertexNormals);
   }
 
+  public void clearVertexNormals() {
+    this.vertexNormals.clear();
+  }
+
   public ArrayList<Vector3f> getVertexNormals() {
     return vertexNormals;
   }
