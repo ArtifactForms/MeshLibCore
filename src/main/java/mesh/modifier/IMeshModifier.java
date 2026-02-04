@@ -17,6 +17,7 @@ import mesh.Mesh3D;
  * the same reference as the one passed in. This ensures that changes are directly applied to the
  * provided instance, avoiding unnecessary object creation and improving performance.
  */
+@FunctionalInterface
 public interface IMeshModifier {
 
   /**
