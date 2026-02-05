@@ -86,7 +86,11 @@ Throwing some conway operations on a cube seed.
 
 ## Coordinate System
 
-The library is build up on a left-handed coordinate system.
+ * +X → right
+ * -Y → up
+ * +Y → down
+ * -Z → forward
+
 The decision was justified by using the 'Processing' rendering pipeline in the
 first place. But the core library is highly decoupled from the 'Processing'
 environment. So the library could be used independently.
