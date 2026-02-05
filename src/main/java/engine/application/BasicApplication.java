@@ -1,6 +1,7 @@
 package engine.application;
 
 import engine.Timer;
+import engine.collision.CollisionSystem;
 import engine.components.SmoothFlyByCameraControl;
 import engine.debug.DebugInfoUpdater;
 import engine.debug.DebugOverlay;
@@ -45,8 +46,11 @@ public abstract class BasicApplication implements Application {
 
   private DebugContext debugContext;
 
+  private CollisionSystem collisionSystem;
+
   public BasicApplication() {
     this.timer = new Timer();
+    this.collisionSystem = new CollisionSystem();
   }
 
   public abstract void onInitialize();
@@ -129,6 +133,8 @@ public abstract class BasicApplication implements Application {
 
     onUpdate(tpf);
 
+    if (activeScene != null) collisionSystem.update(activeScene);
+
     debugContext.update(tpf);
 
     // IMPORTANT! Called after scene update!
@@ -204,7 +210,22 @@ public abstract class BasicApplication implements Application {
   }
 
   public void setActiveScene(Scene activeScene) {
+    if (activeScene == null) {
+      throw new IllegalArgumentException("Active scene cannot be null.");
+    }
+
+    // TODO: warn if same scene is set again (debug only)
+    if (this.activeScene == activeScene) {
+      return;
+    }
+
+    if (this.activeScene != null) {
+      this.activeScene.exit();
+    }
+
     this.activeScene = activeScene;
+
+    activeScene.enter();
   }
 
   public void setDisplayInfo(boolean displayInfo) {
