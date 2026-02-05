@@ -295,6 +295,17 @@ public class Bounds {
   }
 
   /**
+   * Returns the center point of the bounding box. *
+   *
+   * <p>The center is calculated as the average of the minimum and maximum corners.
+   *
+   * @return a new {@link Vector3f} representing the center of the bounding box
+   */
+  public Vector3f getCenter() {
+    return new Vector3f((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
+  }
+
+  /**
    * Returns the minimum corner of the bounding box.
    *
    * @return the minimum corner of the bounding box

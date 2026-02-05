@@ -210,10 +210,13 @@ public class ProcessingMouseInput implements MouseInput {
   }
 
   private void center() {
+    if (!applet.focused) return;
+
     applet.mouseX = applet.width / 2;
     applet.mouseY = applet.height / 2;
     applet.pmouseX = applet.width / 2;
     applet.pmouseY = applet.height / 2;
+
     robot.mouseMove((int) getScreenWidth() / 2, (int) getScreenHeight() / 2);
   }
 }

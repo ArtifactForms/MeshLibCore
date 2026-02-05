@@ -2,6 +2,8 @@ package math;
 
 import java.util.Random;
 
+import math.noise.Noise2D;
+
 /**
  * The {@code PerlinNoise} class generates smooth procedural noise using Perlin Noise, a popular
  * algorithm in procedural terrain generation and other computer graphics applications.
@@ -11,7 +13,7 @@ import java.util.Random;
  *
  * <p>The noise output is normalized to the range [0, 1].
  */
-public class PerlinNoise {
+public class PerlinNoise implements Noise2D {
 
   /** Permutation table used to generate pseudo-random gradients for the noise function. */
   private final int[] permutationTable;
@@ -126,5 +128,10 @@ public class PerlinNoise {
     double u = h < 2 ? x : -x;
     double v = h < 1 || h == 2 ? y : -y;
     return u + v;
+  }
+
+  @Override
+  public float sample(float x, float y) {
+    return (float) noise(x, y);
   }
 }

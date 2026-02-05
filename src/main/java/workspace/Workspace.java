@@ -142,7 +142,7 @@ public class Workspace extends Editor implements ModelListener {
     drawSceneObjects();
 
     if (selectedObject != null) {
-      p.fill(255);
+      p.fill(1);
       renderer.drawFaces(selectedObject.getMesh());
     }
 
@@ -193,12 +193,12 @@ public class Workspace extends Editor implements ModelListener {
     //        }
 
     if (isFaceNormalsVisible()) {
-      p.stroke(255);
+      p.stroke(1);
       renderer.drawFaceNormals(mesh);
     }
 
     if (isVertexNormalsVisible()) {
-      p.stroke(35, 97, 221);
+      p.stroke(35 / 255f, 97 / 255f, 221 / 255f);
       VertexNormals normals = new VertexNormals(mesh);
       renderer.drawVertexNormals(mesh, normals.getVertexNormals());
     }
@@ -207,15 +207,15 @@ public class Workspace extends Editor implements ModelListener {
 
   public void drawVertices(Mesh3D mesh) {
     p.pushStyle();
-    p.stroke(255);
-    p.fill(255);
+    p.stroke(1);
+    p.fill(1);
     p.strokeWeight(0.08f);
     renderer.drawVertices(mesh);
     p.popStyle();
   }
 
   public void draw(Mesh3D mesh) {
-    draw(mesh, new Color(220, 220, 220));
+    draw(mesh, new Color(220 / 255f, 220 / 255f, 220 / 255f));
   }
 
   public void post() {

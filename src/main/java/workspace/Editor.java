@@ -153,7 +153,7 @@ public class Editor implements ModelListener {
 
   private void updateGizmo(int width, int height) {
     gizmo.setX(width - 80);
-    gizmo.setY(130);
+    gizmo.setY(80);
   }
 
   public void add(UiComponent component) {

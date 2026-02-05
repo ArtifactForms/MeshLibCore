@@ -20,13 +20,13 @@ public interface Texture {
    */
   int getHeight();
 
-  /**
-   * Updates the texture's pixel data.
-   *
-   * @param pixels an array of pixel data, typically in ARGB or RGBA format, depending on the
-   *     engine's requirements.
-   */
+  /** Replaces the entire pixel buffer */
   void setPixels(int[] pixels);
+
+  /** Updates a sub-region */
+  default void setPixels(int x, int y, int width, int height, int[] pixels) {
+    throw new UnsupportedOperationException("Partial update not supported");
+  }
 
   /**
    * Binds the texture to a specific texture unit for rendering.

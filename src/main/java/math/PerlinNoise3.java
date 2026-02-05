@@ -2,7 +2,9 @@ package math;
 
 import java.util.Random;
 
-public class PerlinNoise3 {
+import math.noise.Noise3D;
+
+public class PerlinNoise3 implements Noise3D {
 
   private final int[] permutationTable;
 
@@ -90,5 +92,10 @@ public class PerlinNoise3 {
     double u = h < 8 ? x : y;
     double v = h < 4 ? y : (h == 12 || h == 14 ? x : z);
     return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
+  }
+
+  @Override
+  public float sample(float x, float y, float z) {
+    return (float) noise(x, y, z);
   }
 }

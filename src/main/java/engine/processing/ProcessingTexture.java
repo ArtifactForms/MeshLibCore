@@ -46,8 +46,29 @@ public class ProcessingTexture implements Texture {
 
   @Override
   public void setPixels(int[] pixels) {
+    if (pixels.length != image.width * image.height) {
+      throw new IllegalArgumentException("Pixel array size mismatch");
+    }
+
     image.loadPixels();
-    image.pixels = pixels;
+    System.arraycopy(pixels, 0, image.pixels, 0, pixels.length);
+    image.updatePixels();
+  }
+
+  @Override
+  public void setPixels(int x, int y, int w, int h, int[] pixels) {
+    if (pixels.length != w * h) {
+      throw new IllegalArgumentException("Pixel array size mismatch");
+    }
+
+    image.loadPixels();
+
+    for (int row = 0; row < h; row++) {
+      int srcOffset = row * w;
+      int dstOffset = (y + row) * image.width + x;
+      System.arraycopy(pixels, srcOffset, image.pixels, dstOffset, w);
+    }
+
     image.updatePixels();
   }
 

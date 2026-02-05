@@ -210,10 +210,11 @@ public class GraphicsPImpl implements Graphics {
     Mesh3D mesh = model.getMesh();
     List<Vector3f> vertexNormals = mesh.getVertexNormals();
     for (SubMesh subMesh : model.getSubMeshes()) {
+      List<Face3D> subFaces = subMesh.getFaces();
+
       String materialName = subMesh.getMaterialName();
       Material subMaterial = model.getMaterial(materialName);
-      List<Face3D> subFaces = subMesh.getFaces();
-      //      subMaterial.apply(this);
+      setMaterial(subMaterial);
 
       for (Face3D f : subFaces) {
         if (f.indices.length == 3) {

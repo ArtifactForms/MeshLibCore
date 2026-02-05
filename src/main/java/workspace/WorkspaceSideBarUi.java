@@ -11,9 +11,9 @@ import workspace.ui.event.IActionListener;
 
 public class WorkspaceSideBarUi extends UiComponent implements ModelListener {
 
-  private int xOffset = 10;
+  private int xOffset = 20;
 
-  private int yOffset = 65;
+  private int yOffset = 20;
 
   private UiCheckBox gridCheckBox;
 

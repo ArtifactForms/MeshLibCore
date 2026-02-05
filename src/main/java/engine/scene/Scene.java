@@ -197,6 +197,78 @@ public class Scene {
   }
 
   /**
+   * Called when this scene becomes the active scene.
+   *
+   * <p>This method is invoked automatically by the application when the scene is set as the current
+   * active scene via {@code setActiveScene(Scene)}.
+   *
+   * <p>Typical use cases include:
+   *
+   * <ul>
+   *   <li>Initializing runtime-only resources
+   *   <li>Starting background music or ambient sounds
+   *   <li>Resetting timers or stateful components
+   *   <li>Enabling input handling specific to this scene
+   * </ul>
+   *
+   * <p>This method is guaranteed to be called exactly once per activation and always before the
+   * first {@link #update(float)} call.
+   *
+   * <p>Subclasses may override {@link #onEnter()} to implement custom behavior.
+   */
+  public final void enter() {
+    onEnter();
+  }
+
+  /**
+   * Scene-specific enter hook.
+   *
+   * <p>This method is intended to be overridden by subclasses to implement scene-specific
+   * activation logic.
+   *
+   * <p>The default implementation performs no action.
+   */
+  public void onEnter() {
+    // Do nothing
+  }
+
+  /**
+   * Hook method called when this scene is no longer the active scene.
+   *
+   * <p>This method is invoked automatically before another scene becomes active or when the
+   * application is shutting down.
+   *
+   * <p>Typical use cases include:
+   *
+   * <ul>
+   *   <li>Stopping audio playback
+   *   <li>Releasing or pausing transient resources
+   *   <li>Disabling input listeners
+   *   <li>Saving scene-specific state
+   * </ul>
+   *
+   * <p>This method is guaranteed to be called exactly once per deactivation and always after the
+   * final {@link #update(float)} call.
+   *
+   * <p>Subclasses may override {@link #onExit()} to implement custom behavior.
+   */
+  public final void exit() {
+    onExit();
+  }
+
+  /**
+   * Scene-specific exit hook.
+   *
+   * <p>This method is intended to be overridden by subclasses to implement scene-specific
+   * deactivation logic.
+   *
+   * <p>The default implementation performs no action.
+   */
+  public void onExit() {
+    // Do nothing
+  }
+
+  /**
    * Renders all lights in the scene safely by synchronizing access to the lights list. This ensures
    * thread-safe iteration and rendering, especially when lights are added or removed concurrently.
    *
@@ -408,10 +480,33 @@ public class Scene {
     this.transform = transform;
   }
 
+  /**
+   * Renders the UI layer of the scene.
+   *
+   * <p>This method renders all UI-related {@link SceneNode}s that are attached to the scene's
+   * dedicated UI root. UI rendering is performed separately from the main 3D scene graph and is
+   * typically executed with depth testing disabled.
+   *
+   * <p>The UI root is rendered after the main scene and is not affected by the scene's active
+   * camera or lighting setup.
+   *
+   * @param g the graphics context used for rendering UI elements
+   */
   public void renderUI(Graphics g) {
     uiRoot.render(g);
   }
 
+  /**
+   * Returns the root {@link SceneNode} for all UI elements in this scene.
+   *
+   * <p>The UI root acts as a separate scene graph for user interface components such as HUDs,
+   * menus, cursors, and overlays. Nodes attached to this root are updated and rendered
+   * independently from the main 3D scene graph.
+   *
+   * <p>This node is always present and is automatically managed by the scene.
+   *
+   * @return the root node of the UI scene graph
+   */
   public SceneNode getUIRoot() {
     return uiRoot;
   }

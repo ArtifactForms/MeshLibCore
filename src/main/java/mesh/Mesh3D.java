@@ -213,12 +213,12 @@ public class Mesh3D {
     vertices.add(new Vector3f(x, y, z));
     return index;
   }
-  
+
   public int addVertex(Vector3f v) {
-      int index = vertices.size();
-      vertices.add(v);
-      return index;
-    }
+    int index = vertices.size();
+    vertices.add(v);
+    return index;
+  }
 
   public void addFace(int... indices) {
     faces.add(new Face3D(indices));
@@ -289,7 +289,12 @@ public class Mesh3D {
   }
 
   public void setVertexNormals(List<Vector3f> vertexNormals) {
+    this.vertexNormals.clear();
     this.vertexNormals.addAll(vertexNormals);
+  }
+
+  public void clearVertexNormals() {
+    this.vertexNormals.clear();
   }
 
   public ArrayList<Vector3f> getVertexNormals() {
@@ -337,9 +342,9 @@ public class Mesh3D {
   public int getUvCount() {
     return uvs.size();
   }
-  
+
   public ArrayList<Vector2f> getUVCoordinates() {
-      return uvs;
+    return uvs;
   }
 
   /**
