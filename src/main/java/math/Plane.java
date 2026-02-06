@@ -1,110 +1,95 @@
 package math;
 
 /**
- * Represents a geometric plane in 3D space defined by a normal vector and a distance from the
- * origin.
+ * Represents a geometric plane in 3D space using the equation:
  *
- * <p>The equation of the plane is represented as: <br>
- * <code>Ax + By + Cz + D = 0</code>, where:
+ * <pre>
+ *   dot(normal, point) + distance = 0
+ * </pre>
  *
- * <ul>
- *   <li><code>(A, B, C)</code> is the normalized normal vector of the plane.
- *   <li><code>D</code> is the distance of the plane from the origin, along the normal direction.
- * </ul>
+ * The normal vector is always normalized. This class is designed for high-performance use cases
+ * such as frustum culling and collision tests.
  */
-public class Plane {
+public final class Plane {
 
-  /** The normal vector of the plane, representing its orientation. */
-  private Vector3f normal;
+  /** Normalized plane normal */
+  private final Vector3f normal = new Vector3f();
 
-  /** The distance of the plane from the origin along the normal vector. */
+  /** Plane distance (D) in the plane equation */
   private float distance;
 
-  /**
-   * Constructs a plane with a default normal vector (0, 0, 0) and a distance of 0.
-   *
-   * <p>The resulting plane is uninitialized and must be configured using the {@link #set(float,
-   * float, float, float)} method.
-   */
+  /** Creates an uninitialized plane (normal = 0, distance = 0). */
   public Plane() {
-    this.normal = new Vector3f();
-    this.distance = 0;
+    // intentionally empty
   }
 
-  /**
-   * Constructs a plane with a given normal vector and distance.
-   *
-   * <p>The normal vector is automatically normalized during this operation.
-   *
-   * @param normal the normal vector of the plane.
-   * @param distance the distance of the plane from the origin along its normal vector.
-   */
+  /** Creates a plane from a normal and distance. The normal is automatically normalized. */
   public Plane(Vector3f normal, float distance) {
-    this.normal = new Vector3f(normal);
-    this.normal.normalizeLocal();
-    this.distance = distance;
-  }
-
-  /** Flips the orientation of the plane by inverting its normal and distance. */
-  public void flip() {
-      normal.negateLocal();
-      normal.normalizeLocal();  // Ensure the normal vector is normalized after negation
-      distance = distance == 0 ? 0 : -distance; // Avoid -0
+    set(normal, distance);
   }
 
   /**
-   * Sets the plane parameters using its coefficients.
+   * Sets the plane using raw plane coefficients.
    *
-   * <p>The coefficients (A, B, C, D) define the plane equation <code>Ax + By + Cz + D = 0</code>.
-   * The normal vector is automatically normalized during this operation.
+   * <p>The plane equation is:
    *
-   * @param a the x-component of the normal vector.
-   * @param b the y-component of the normal vector.
-   * @param c the z-component of the normal vector.
-   * @param d the distance from the origin along the plane's normal vector.
+   * <pre>
+   *   Ax + By + Cz + D = 0
+   * </pre>
+   *
+   * The normal (A,B,C) is normalized internally.
    */
   public void set(float a, float b, float c, float d) {
     float length = (float) Math.sqrt(a * a + b * b + c * c);
-    if (length == 0) throw new IllegalArgumentException("Plane normal cannot be zero.");
-    this.normal.set(a / length, b / length, c / length);
-    this.distance = d / length; // Normalize the distance as well
+    if (length == 0f) {
+      throw new IllegalArgumentException("Plane normal cannot be zero.");
+    }
+
+    float invLen = 1.0f / length;
+    normal.set(a * invLen, b * invLen, c * invLen);
+    distance = d * invLen;
+  }
+
+  /** Sets the plane from a normal vector and distance. The normal is normalized internally. */
+  public void set(Vector3f n, float d) {
+    float len = n.length();
+    if (len == 0f) {
+      throw new IllegalArgumentException("Plane normal cannot be zero.");
+    }
+
+    float invLen = 1.0f / len;
+    normal.set(n).multLocal(invLen);
+    distance = d * invLen;
   }
 
   /**
-   * Calculates the signed distance from a given point to the plane.
+   * Flips the plane orientation. After calling this method, the plane represents the same geometric
+   * plane but with inverted facing.
+   */
+  public void flip() {
+    normal.negateLocal();
+    distance = -distance;
+  }
+
+  /**
+   * Computes the signed distance from a point to the plane.
    *
-   * <p>The signed distance is computed as: <br>
-   * <code>distance = dot(normal, point) + D</code>, where:
-   *
-   * <ul>
-   *   <li><code>normal</code> is the plane's normal vector.
-   *   <li><code>point</code> is the 3D point to test.
-   *   <li><code>D</code> is the distance parameter of the plane.
-   * </ul>
-   *
-   * @param point the point to calculate the distance from.
-   * @return the signed distance from the point to the plane. A positive value indicates the point
-   *     is in the direction of the normal vector, and a negative value indicates it is on the
-   *     opposite side.
+   * <p>> 0 : point is in front of the plane = 0 : point lies on the plane < 0 : point is behind the
+   * plane
    */
   public float distanceToPoint(Vector3f point) {
     return normal.dot(point) + distance;
   }
 
   /**
-   * Gets the normal vector of the plane.
-   *
-   * @return the normal vector of the plane.
+   * Copies the plane normal into the provided vector. This method avoids allocations and is safe
+   * for hot paths.
    */
-  public Vector3f getNormal() {
-    return new Vector3f(normal);
+  public Vector3f getNormal(Vector3f out) {
+    return out.set(normal);
   }
 
-  /**
-   * Gets the distance of the plane from the origin along its normal vector.
-   *
-   * @return the distance of the plane from the origin.
-   */
+  /** @return the plane distance (D) */
   public float getDistance() {
     return distance;
   }

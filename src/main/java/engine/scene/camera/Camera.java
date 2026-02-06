@@ -75,9 +75,43 @@ public interface Camera {
    * @param fov The desired field of view in radians.
    */
   void setFieldOfView(float fov);
-  
+
+  /**
+   * Retrieves the horizontal field of view (FOV) of the camera.
+   *
+   * <p>The horizontal FOV represents the angular extent of the visible scene along the camera's
+   * local X axis. It defines how wide the camera sees from left to right.
+   *
+   * <p>For perspective cameras, the horizontal FOV is typically derived from the vertical FOV and
+   * the current aspect ratio:
+   *
+   * <pre>
+   * horizontalFOV = 2 * atan( tan(verticalFOV / 2) * aspectRatio )
+   * </pre>
+   *
+   * <p>This value is expressed in radians.
+   *
+   * <p>For orthographic cameras, this value may be undefined or implementation- specific.
+   *
+   * @return the horizontal field of view in radians
+   */
   float getHorizontalFOV();
-  
+
+  /**
+   * Retrieves the vertical field of view (FOV) of the camera.
+   *
+   * <p>The vertical FOV represents the angular extent of the visible scene along the camera's local
+   * Y axis. It defines how wide the camera sees from top to bottom.
+   *
+   * <p>This is the primary FOV parameter for perspective cameras and is commonly used to construct
+   * the projection matrix.
+   *
+   * <p>The value is expressed in radians.
+   *
+   * <p>For orthographic cameras, this value may be undefined or implementation- specific.
+   *
+   * @return the vertical field of view in radians
+   */
   float getVerticalFOV();
 
   /**

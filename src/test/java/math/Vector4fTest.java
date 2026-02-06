@@ -2819,14 +2819,14 @@ public class Vector4fTest {
   }
 
   // ----------------------------------------------------------------------------------------------
-  // Multiply Matrix4
+  // Multiply Matrix4f
   // ----------------------------------------------------------------------------------------------
 
   @Test
   void testMultiplyWithIdentityMatrix() {
     Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
-    Matrix4 identityMatrix =
-        new Matrix4(
+    Matrix4f identityMatrix =
+        new Matrix4f(
             new float[] {
               1.0f, 0.0f, 0.0f, 0.0f,
               0.0f, 1.0f, 0.0f, 0.0f,
@@ -2845,8 +2845,8 @@ public class Vector4fTest {
   @Test
   void testMultiplyWithZeroMatrix() {
     Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
-    Matrix4 zeroMatrix =
-        new Matrix4(
+    Matrix4f zeroMatrix =
+        new Matrix4f(
             new float[] {
               0.0f, 0.0f, 0.0f, 0.0f,
               0.0f, 0.0f, 0.0f, 0.0f,
@@ -2865,8 +2865,8 @@ public class Vector4fTest {
   @Test
   void testMultiplyWithTranslationMatrix() {
     Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
-    Matrix4 translationMatrix =
-        new Matrix4(
+    Matrix4f translationMatrix =
+        new Matrix4f(
             new float[] {
               1.0f, 0.0f, 0.0f, 5.0f,
               0.0f, 1.0f, 0.0f, 10.0f,
@@ -2885,8 +2885,8 @@ public class Vector4fTest {
   @Test
   void testMultiplyWithScalingMatrix() {
     Vector4f vector = new Vector4f(1.0f, 2.0f, 3.0f, 1.0f);
-    Matrix4 scalingMatrix =
-        new Matrix4(
+    Matrix4f scalingMatrix =
+        new Matrix4f(
             new float[] {
               2.0f, 0.0f, 0.0f, 0.0f,
               0.0f, 3.0f, 0.0f, 0.0f,
@@ -2905,8 +2905,8 @@ public class Vector4fTest {
   @Test
   void testMultiplyWithRotationMatrix() {
     Vector4f vector = new Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
-    Matrix4 rotationMatrix =
-        new Matrix4(
+    Matrix4f rotationMatrix =
+        new Matrix4f(
             new float[] {
               0.0f, -1.0f, 0.0f, 0.0f,
               1.0f, 0.0f, 0.0f, 0.0f,

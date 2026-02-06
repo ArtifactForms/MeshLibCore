@@ -490,7 +490,7 @@ public class Vector4f {
    * @return a new {@code Vector4f} instance representing the transformed vector.
    * @throws NullPointerException if {@code m} is {@code null}.
    */
-  public Vector4f multiply(Matrix4 m) {
+  public Vector4f multiply(Matrix4f m) {
     float newX = m.get(0, 0) * x + m.get(0, 1) * y + m.get(0, 2) * z + m.get(0, 3) * w;
     float newY = m.get(1, 0) * x + m.get(1, 1) * y + m.get(1, 2) * z + m.get(1, 3) * w;
     float newZ = m.get(2, 0) * x + m.get(2, 1) * y + m.get(2, 2) * z + m.get(2, 3) * w;
