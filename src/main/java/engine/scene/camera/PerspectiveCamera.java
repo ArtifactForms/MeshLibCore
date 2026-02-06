@@ -2,7 +2,6 @@ package engine.scene.camera;
 
 import engine.components.Transform;
 import math.Mathf;
-import math.Matrix4;
 import math.Matrix4f;
 import math.Vector3f;
 
@@ -181,9 +180,7 @@ public class PerspectiveCamera implements Camera {
 
   @Override
   public Matrix4f getProjectionMatrix() {
-    Matrix4f projection = new Matrix4f();
-    Matrix4 m = Matrix4.perspective(fov, aspectRatio, nearPlane, farPlane);
-    projection = new Matrix4f(m.getValues());
+    Matrix4f projection = Matrix4f.perspective(fov, aspectRatio, nearPlane, farPlane);
     return projection;
   }
 
@@ -198,11 +195,9 @@ public class PerspectiveCamera implements Camera {
   public Matrix4f getViewMatrix() {
     Transform t = getTransform();
     Vector3f pos = t.getPosition();
-    Vector3f fwd = t.getForward();
+    Vector3f forward = t.getForward().normalize();
+    Vector3f up = t.getUp().normalize();
 
-    Vector3f right = fwd.cross(new Vector3f(0, -1, 0)).normalizeLocal();
-    Vector3f up = right.cross(fwd).normalizeLocal();
-
-    return Matrix4f.lookAt(pos, pos.add(fwd), up);
+    return Matrix4f.lookAt(pos, pos.add(forward), up);
   }
 }
