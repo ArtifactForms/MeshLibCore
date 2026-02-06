@@ -89,6 +89,10 @@ public final class Plane {
     return out.set(normal);
   }
 
+  public Vector3f getNormal() {
+    return normal;
+  }
+
   /** @return the plane distance (D) */
   public float getDistance() {
     return distance;
