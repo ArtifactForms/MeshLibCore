@@ -55,6 +55,13 @@ public interface Graphics2D {
   void strokeWeight(float weight);
 
   /**
+   * Returns the thickness of strokes (lines) currently used in subsequent drawing commands.
+   *
+   * @return The currently set stroke weight.
+   */
+  float getStrokeWeight();
+
+  /**
    * Saves the current transformation matrix onto a stack for future restoration.
    *
    * <p>This allows temporary transformations without permanently altering the rendering state.

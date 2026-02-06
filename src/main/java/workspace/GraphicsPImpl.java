@@ -292,6 +292,11 @@ public class GraphicsPImpl implements Graphics {
     g.strokeWeight(weight);
   }
 
+  @Override
+  public float getStrokeWeight() {
+    return g.strokeWeight;
+  }
+
   // -------------------------------------------------
   // TRANSFORM
   // -------------------------------------------------
