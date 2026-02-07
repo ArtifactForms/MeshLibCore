@@ -5,6 +5,8 @@
 
 # Artifact Forms
 
+![](documentation/images/banner-1.png)
+
 ## Project Overview
 
 **Artifact Forms** is a long-running personal Java project focused on
@@ -562,12 +564,6 @@ The workspace provides the following features:
 - toggle smooth and flat shading (S),
 - switch to first-person mode and back (4),
 - toggle the rendering loop via the UI.
-
-## Planed features
-
-- Convex Hull
-- Poisson-Disc Sampling
-- Marching Cubes
 
 ## Contributing
 
