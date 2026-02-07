@@ -361,18 +361,40 @@ See also: [Mesh Creators](documentation/documentation.md)
 
 ## Workspace
 
-The workspace serves as a simple mesh viewer, providing a convenient way to
-visualize and inspect 3D models. It offers basic functionalities without aiming to be
-a full-fledged modeling software. Currently, its sole purpose is to support the work
-with the mesh library.
+The workspace is a **minimal, Processing-based mesh viewer** intended exclusively as a
+**developer tool** for working on mesh creators and modifiers.
 
-In its current version, the viewer is tightly coupled to the Processing environment,
-which is used as the rendering pipeline. The workspace exists within a PApplet and
-requires a reference to this PApplet to function.
+Its purpose is to:
+- visualize meshes
+- inspect topology (faces, edges, vertices)
+- display face and vertex normals
+- support debugging and experimentation during development
 
-![workspace-screenshot](documentation/images/workspace-example.png)
+### Design Intent
 
-A simple template can be found within the package **src/main/java/workspace/examples**, ready to fire up and give it a first try:
+The workspace is intentionally:
+- **highly dependent on Processing**
+- **not backend-agnostic**
+- **not a full editor**
+- **not part of the engine core**
+- **not intended to evolve into a production tool**
+
+It exists to enable fast iteration and visual feedback while developing the mesh
+library. Architectural purity is explicitly **not** a goal here.
+
+A detailed design rationale can be found in:
+`docs/design/workspace-design.md`
+
+### Technical Notes
+
+- The workspace runs inside a `PApplet`
+- It requires a Processing rendering context
+- Direct Processing API usage is expected and accepted
+
+### Example Usage
+
+A simple template can be found under  
+**`src/main/java/workspace/examples`**:
 
 ```java
 import mesh.Mesh3D;
@@ -383,11 +405,10 @@ import workspace.Workspace;
 public class WorkspaceTemplate extends PApplet {
 
     public static void main(String[] args) {
-        PApplet.main(WorkspaceTemplate .class.getName());
+        PApplet.main(WorkspaceTemplate.class.getName());
     }
 
     private Mesh3D mesh;
-
     private Workspace workspace;
 
     @Override
@@ -401,19 +422,13 @@ public class WorkspaceTemplate extends PApplet {
         workspace = new Workspace(this);
         workspace.setGridVisible(true);
         workspace.setUiVisible(true);
-        createMesh();
+        mesh = new CubeCreator().create();
     }
 
     @Override
     public void draw() {
         workspace.draw(mesh);
     }
-
-    public void createMesh() {
-        CubeCreator creator = new CubeCreator();
-        mesh = creator.create();
-    }
-
 }
 ```
 
