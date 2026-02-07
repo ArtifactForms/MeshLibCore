@@ -1,4 +1,4 @@
-package demos.ray;
+package engine.demos.ray;
 
 import engine.scene.SceneNode;
 import math.Vector3f;
