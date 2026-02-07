@@ -1,4 +1,4 @@
-package engine.demos.ray;
+package demos.ray;
 
 import engine.components.Component;
 import math.Ray3f;

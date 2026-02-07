@@ -1,7 +1,7 @@
 package engine.components;
 
-import engine.demos.ray.RaycastComponent;
-import engine.demos.ray.RaycastHit;
+import demos.ray.RaycastComponent;
+import demos.ray.RaycastHit;
 import engine.render.Material;
 import math.Bounds;
 import math.Ray3f;

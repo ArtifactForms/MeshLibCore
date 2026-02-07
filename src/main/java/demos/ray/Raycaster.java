@@ -1,4 +1,4 @@
-package engine.demos.ray;
+package demos.ray;
 
 import engine.components.Transform;
 import engine.input.Input;
