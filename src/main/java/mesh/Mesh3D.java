@@ -37,7 +37,10 @@ public class Mesh3D {
    *
    * @param modifier The modifier to apply to this mesh.
    * @return this
+   * @deprecated Modifiers must be applied via {@link ModifierStackr}. This method bypasses
+   *     validation and pipeline control.
    */
+  @Deprecated
   public Mesh3D apply(IMeshModifier modifier) {
     return modifier.modify(this);
   }
