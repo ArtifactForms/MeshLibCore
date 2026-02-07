@@ -5,63 +5,170 @@
 
 # Artifact Forms
 
-A _JAVA_ library to construct and manipulate geometry in Three-dimensional space.
+## Project Overview
 
-![](documentation/images/banner-1.png)
+**Artifact Forms** is a long-running personal Java project focused on
+**3D mesh creation, modification, and procedural geometry**, combined with
+ongoing exploration of **engine architecture**, **rendering pipelines**, and
+**creative coding workflows**.
 
-## Background / Intension
+The project has grown organically over many years and serves as a **learning
+platform**, a **research playground**, and a **toolbox for experimentation**
+across multiple technical and artistic domains.
 
-This Java library began as a hobby project in 2015/2016. I started it to
-deepen my understanding of creating and manipulating 3D geometry. This built
-upon knowledge I gained from an earlier internship with product design students.
-During that time, I was introduced to the programming language Processing.
+This repository reflects **learning over time** rather than a fixed product
+vision.
 
-Processing captivated me from the start. Designed for visual learners,
-Processing is a great tool to get started with programming. You can learn more
-at processing.org. While Processing isn't strictly necessary, the library's
-core functionality is independent of the Processing environment. However,
-Processing offers a convenient way to visualize constructed meshes through its
-rendering pipeline, which leverages JAVA, JAVA2D, and OPENGL.
+---
 
-## Status Quo
+## Background
 
-Currently, my primary focus is on refining the user documentation. As my
-understanding of code structure and architecture has evolved, I've been
-actively refactoring the codebase to maintain its cleanliness and organization.
-Smaller additions are made periodically.
+This project began around **2015 / 2016** as a hobby project to deepen my
+understanding of **3D geometry construction and manipulation**.
 
-In essence, this codebase serves as a platform for learning and working with
-legacy code. I've embraced the challenge of working with existing code, viewing
-it as an opportunity to explore new testing approaches. Constructing tests
-around legacy code for refactoring purposes is a fascinating and valuable
-endeavor, in my opinion, an essential practice.
+At that time, I had recently completed an internship with product design
+students, where I was introduced to **Processing**. Processing immediately
+resonated with me as a tool for visual thinking and rapid experimentation.
+Designed for visual learners, it provides an accessible entry point into
+programming and graphics. More information can be found at
+[processing.org](https://processing.org).
 
-## Future
+Early versions of Artifact Forms were therefore **strongly Processing-oriented**.
+Over time, as my understanding of software architecture, abstraction, and
+long-term maintainability evolved, so did the structure and scope of the
+project.
 
-The scope of related topics is vast, and my list of potential features is
-accordingly expansive. Some of these are outlined under 'Planned Features'.
+---
 
-## What It Is:
+## What This Project Is
 
-- **A Personal Playground for 3D Exploration:** Experiment with 3D shapes and coding techniques to create your own virtual worlds.
-- **Tool for Creative Programmers:** Build procedural meshes and generate simple game assets with ease.
-- **Customizable and Extensible:** Craft unique shapes using a variety of mesh creation tools and modifiers. Even add new functionalities to the library itself.
+* A **personal learning platform** for graphics, geometry, and engine design
+* A **3D mesh library** focused on creation and modification of geometry
+* A space to explore **procedural modeling** and **generative techniques**
+* A long-term experiment in evolving and maintaining a non-trivial codebase
+* A place to practice refactoring, documentation, and architectural design
 
-## What It Is Not:
+---
 
-- **A Full-Featured 3D Modeling Software:** This library is designed for exploration and learning, not professional-grade modeling. While it offers powerful features, it doesn't aim to replace industry-standard software.
-- **A High-Performance Rendering Engine:** The library primarily focuses on mesh creation and manipulation, and doesn't prioritize real-time rendering for large scenes.
+## What This Project Is Not
 
-## Core Features
+* ❌ A finished product
+* ❌ A professional 3D modeling application
+* ❌ A production-ready or performance-optimized engine
+* ❌ A stable API with strict backward compatibility guarantees
 
-- **3D Geometry Creation and Manipulation** Build a wide range of 3D shapes and
-  modify them using various operations.
-- **Customizable Mesh Creation:** Create custom shapes using a variety of mesh
-  creation tools and modifiers.
-- **Extensible Framework:** Easily add new features and functionalities to the
-  library.
-- **OBJ File Import and Export:** Import and export 3D models in the OBJ file
-  format.
+Some modules are experimental by design. Others are intentionally simple.
+Stability and polish vary depending on the area of the project.
+
+---
+
+## Current Focus and Modular Structure
+
+The project is currently being **restructured into clearer conceptual modules**.
+This reflects a shift away from a single, Processing-centric scope toward a
+more modular and intentional architecture.
+
+### Core Modules
+
+#### `math`
+
+A standalone mathematics module providing:
+
+* vectors and matrices
+* geometric primitives
+* transformations
+* noise and sampling utilities
+
+The `math` module is intended to have **no external dependencies** and to
+remain reusable across different environments.
+
+---
+
+#### `mesh`
+
+The core mesh module contains:
+
+* mesh data structures
+* mesh creators
+* mesh modifiers
+
+This module represents the **core focus** of the project: constructing,
+transforming, and analyzing geometry.
+
+---
+
+#### `engine`
+
+An experimental engine layer used to explore:
+
+* scene graphs and hierarchies
+* component-based design
+* rendering abstractions
+* input handling
+* resource and asset management
+
+The engine exists primarily for **learning and experimentation**, not as a
+finished or general-purpose engine.
+
+---
+
+#### `demos`
+
+An experimental playground used for:
+
+* game jam prototypes
+* rapid experimentation
+* testing current engine or mesh features in real scenarios
+
+Code in this module prioritizes **iteration speed and experimentation** over
+structure or long-term maintainability.
+
+---
+
+### Tooling
+
+#### `workspace`
+
+A **minimal, Processing-based mesh viewer** used to visualize:
+
+* meshes
+* face and vertex normals
+* edges
+* mesh modifiers during development
+
+The workspace is:
+
+* intentionally **Processing-dependent**
+* intentionally **limited in scope**
+* **not** intended to evolve into a full editor
+
+Its purpose is to support development and debugging of the mesh module, not
+to serve as a general-purpose tool.
+
+---
+
+## Long-Term Direction
+
+There is **no rigid roadmap**.
+
+The long-term goals are intentionally loose:
+
+* continue learning and refining geometry and engine concepts
+* improve structure, documentation, and testability over time
+* extract stable ideas from experiments into cleaner modules
+* keep the project enjoyable and sustainable
+
+The project is allowed to change direction, simplify, or pause as needed.
+
+---
+
+## Philosophy
+
+> This project values learning, clarity, and curiosity over completeness.
+
+Artifact Forms exists because it is enjoyable to work on and because it
+provides a meaningful space to explore complex technical and creative topics
+over the long term.
 
 ## Showcase
 
