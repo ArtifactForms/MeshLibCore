@@ -10,10 +10,14 @@ import mesh.modifier.CenterAtModifier;
 import mesh.modifier.ExtrudeModifier;
 import mesh.modifier.RotateYModifier;
 import mesh.modifier.SolidifyModifier;
+import mesh.modifier.TranslateModifier;
 import mesh.selection.FaceSelection;
-import mesh.util.Bounds3;
 import mesh.util.MeshBoundsCalculator;
 
+/**
+ * Procedural mesh creator for hexagonal honeycomb structures. Uses modifiers internally as
+ * construction steps.
+ */
 public class HoneyCombCreator implements IMeshCreator {
 
   private int rowCount;
@@ -53,7 +57,7 @@ public class HoneyCombCreator implements IMeshCreator {
   }
 
   private void centerAtOrigin() {
-    mesh.apply(new CenterAtModifier());
+    new CenterAtModifier().modify(mesh);
   }
 
   private void createInsets() {
@@ -71,13 +75,18 @@ public class HoneyCombCreator implements IMeshCreator {
   private void createSegments() {
     for (int i = 0; i < colCount; i++) {
       for (int j = 0; j < rowCount; j++) {
+
         Mesh3D segment = createHexSegment();
-        Bounds3 bounds = segment.calculateBounds();
+        Bounds bounds = MeshBoundsCalculator.calculateBounds(segment);
+
         float width = bounds.getWidth();
         float depth = bounds.getDepth();
-        segment.translateX(i * width);
-        segment.translateZ(j * (depth - cellRadius / 2f));
-        if (j % 2 == 1) segment.translateX(width / 2.0f);
+
+        float tx = j % 2 == 1 ? (i * width) + (width / 2.0f) : i * width;
+        float tz = j * (depth - cellRadius / 2f);
+
+        new TranslateModifier(tx, 0, tz).modify(segment);
+
         mesh.append(segment);
       }
     }
@@ -93,7 +102,7 @@ public class HoneyCombCreator implements IMeshCreator {
 
   private Mesh3D createHexSegment() {
     Mesh3D segment = createCircleCreator().create();
-    segment.apply(new RotateYModifier(Mathf.HALF_PI));
+    new RotateYModifier(Mathf.HALF_PI).modify(segment);
     return segment;
   }
 
