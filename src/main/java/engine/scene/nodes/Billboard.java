@@ -8,11 +8,11 @@ import engine.scene.SceneNode;
 import math.Color;
 import math.Mathf;
 import mesh.Mesh3D;
-import mesh.UVRect;
 import mesh.creator.primitives.PlaneCreatorUV;
 import mesh.modifier.RotateXModifier;
 import mesh.modifier.RotateYModifier;
 import mesh.modifier.RotateZModifier;
+import mesh.uv.UVRect;
 
 public class Billboard extends SceneNode {
 

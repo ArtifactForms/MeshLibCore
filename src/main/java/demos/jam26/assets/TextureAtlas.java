@@ -1,7 +1,7 @@
 package demos.jam26.assets;
 
 import engine.resources.Texture;
-import mesh.UVRect;
+import mesh.uv.UVRect;
 
 public class TextureAtlas {
 

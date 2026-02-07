@@ -1,4 +1,4 @@
-package mesh;
+package mesh.uv;
 
 /**
  * Represents a rectangular region in normalized UV texture space.

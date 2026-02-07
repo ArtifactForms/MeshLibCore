@@ -5,7 +5,7 @@ import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
 import engine.resources.TextureWrapMode;
-import mesh.UVRect;
+import mesh.uv.UVRect;
 
 public final class AssetRefs {
 
