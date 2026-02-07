@@ -361,6 +361,8 @@ See also: [Mesh Creators](documentation/documentation.md)
 
 ## Workspace
 
+![workspace-screenshot](documentation/images/workspace-example.png)
+
 The workspace is a **minimal, Processing-based mesh viewer** intended exclusively as a
 **developer tool** for working on mesh creators and modifiers.
 
