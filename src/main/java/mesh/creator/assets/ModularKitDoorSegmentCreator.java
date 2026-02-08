@@ -2,7 +2,7 @@ package mesh.creator.assets;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.SolidifyModifier;
 
 public class ModularKitDoorSegmentCreator implements IMeshCreator {
 

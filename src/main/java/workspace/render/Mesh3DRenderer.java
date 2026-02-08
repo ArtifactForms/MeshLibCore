@@ -6,7 +6,7 @@ import java.util.List;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.modifier.UpdateFaceNormalsModifier;
+import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.VertexNormals;
 import processing.core.PApplet;

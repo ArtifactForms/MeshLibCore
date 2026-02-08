@@ -14,8 +14,8 @@ import engine.scene.light.DirectionalLight;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
-import mesh.modifier.CenterAtModifier;
-import mesh.modifier.ScaleModifier;
+import mesh.modifier.transform.CenterAtModifier;
+import mesh.modifier.transform.ScaleModifier;
 import workspace.ui.Graphics;
 
 /**

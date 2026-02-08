@@ -8,8 +8,8 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
-import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
+import mesh.modifier.topology.SolidifyModifier;
 import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
 

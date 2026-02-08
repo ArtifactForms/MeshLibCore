@@ -17,7 +17,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.RippleModifier;
+import mesh.modifier.deform.RippleModifier;
 
 public class RippleModifierTest {
 

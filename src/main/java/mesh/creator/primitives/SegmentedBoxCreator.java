@@ -3,7 +3,7 @@ package mesh.creator.primitives;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.RotateXModifier;
+import mesh.modifier.transform.RotateXModifier;
 
 public class SegmentedBoxCreator implements IMeshCreator {
 

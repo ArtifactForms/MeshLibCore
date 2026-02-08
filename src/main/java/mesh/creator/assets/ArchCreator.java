@@ -4,8 +4,8 @@ import math.Mathf;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.SolidifyModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class ArchCreator implements IMeshCreator {
 

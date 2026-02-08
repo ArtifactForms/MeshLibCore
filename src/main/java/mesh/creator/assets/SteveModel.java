@@ -4,7 +4,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.RotateXModifier;
+import mesh.modifier.transform.RotateXModifier;
 
 public class SteveModel {
 

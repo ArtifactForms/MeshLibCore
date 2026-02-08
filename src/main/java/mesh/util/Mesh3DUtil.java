@@ -5,7 +5,7 @@ import math.Matrix3f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.modifier.ExtrudeModifier;
+import mesh.modifier.topology.ExtrudeModifier;
 
 @Deprecated
 public class Mesh3DUtil {

@@ -6,10 +6,10 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.IcoSphereCreator;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.SolidifyModifier;
-import mesh.modifier.SpherifyModifier;
+import mesh.modifier.deform.SpherifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
+import mesh.modifier.topology.FlipFacesModifier;
+import mesh.modifier.topology.SolidifyModifier;
 import mesh.util.Mesh3DUtil;
 
 public class TessellationSphereCreator implements IMeshCreator {

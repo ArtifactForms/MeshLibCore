@@ -16,7 +16,7 @@ import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.IcoSphereCreator;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.NoiseModifier;
+import mesh.modifier.deform.NoiseModifier;
 
 public class NoiseModifierTest {
 

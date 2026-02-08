@@ -3,9 +3,9 @@ package mesh.creator.creative;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.TorusCreator;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.SolidifyModifier;
 
 public class TorusCageCreator implements IMeshCreator {
 

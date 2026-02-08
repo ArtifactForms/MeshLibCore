@@ -8,10 +8,10 @@ import java.util.List;
 import math.Vector2f;
 import math.Vector3f;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.RemoveDoubleVerticesModifier;
-import mesh.modifier.RotateYModifier;
-import mesh.modifier.RotateZModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.repair.RemoveDoubleVerticesModifier;
+import mesh.modifier.transform.RotateYModifier;
+import mesh.modifier.transform.RotateZModifier;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.util.Bounds3;
 
 public class Mesh3D {

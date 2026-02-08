@@ -8,10 +8,10 @@ import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CylinderCreator;
 import mesh.creator.primitives.PlaneCreator;
-import mesh.modifier.FitToAABBModifier;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.RotateXModifier;
-import mesh.modifier.ScaleModifier;
+import mesh.modifier.topology.FlipFacesModifier;
+import mesh.modifier.transform.FitToAABBModifier;
+import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.ScaleModifier;
 import mesh.selection.FaceSelection;
 
 public class SciFiFloorCreator implements IMeshCreator {

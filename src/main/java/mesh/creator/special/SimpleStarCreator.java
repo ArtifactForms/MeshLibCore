@@ -3,7 +3,7 @@ package mesh.creator.special;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.SolidifyModifier;
 
 public class SimpleStarCreator implements IMeshCreator {
 

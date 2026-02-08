@@ -15,7 +15,7 @@ import mesh.creator.platonic.IcosahedronCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.QuadSphereCreator;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.ScaleModifier;
+import mesh.modifier.transform.ScaleModifier;
 
 public class ScaleModifierTest {
 

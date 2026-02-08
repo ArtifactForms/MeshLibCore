@@ -2,8 +2,8 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.ScaleModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.transform.ScaleModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class SquareBasedPyramidCreator implements IMeshCreator {
 

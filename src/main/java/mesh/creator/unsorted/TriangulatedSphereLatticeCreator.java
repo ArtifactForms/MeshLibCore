@@ -3,12 +3,12 @@ package mesh.creator.unsorted;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.HolesModifier;
-import mesh.modifier.SolidifyModifier;
-import mesh.modifier.SpherifyModifier;
+import mesh.modifier.deform.SpherifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
+import mesh.modifier.topology.FlipFacesModifier;
+import mesh.modifier.topology.HolesModifier;
+import mesh.modifier.topology.SolidifyModifier;
 
 public class TriangulatedSphereLatticeCreator implements IMeshCreator {
 

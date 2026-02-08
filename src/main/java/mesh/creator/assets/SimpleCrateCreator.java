@@ -3,8 +3,8 @@ package mesh.creator.assets;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.InsetModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.InsetModifier;
 import mesh.selection.FaceSelection;
 
 public class SimpleCrateCreator implements IMeshCreator {

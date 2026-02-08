@@ -6,10 +6,10 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.special.QuadStripCreator;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.ScaleModifier;
-import mesh.modifier.SolidifyModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.topology.FlipFacesModifier;
+import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.ScaleModifier;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.selection.FaceSelection;
 
 public class ProfileWallCreator implements IMeshCreator {

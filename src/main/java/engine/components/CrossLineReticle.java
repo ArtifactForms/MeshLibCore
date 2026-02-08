@@ -18,7 +18,7 @@ import math.Color;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreatorUV;
-import mesh.modifier.RotateXModifier;
+import mesh.modifier.transform.RotateXModifier;
 import workspace.ui.Graphics;
 
 public class CrossLineReticle extends AbstractComponent implements RenderableComponent {

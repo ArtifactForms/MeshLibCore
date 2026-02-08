@@ -4,11 +4,11 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.HolesModifier;
-import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
+import mesh.modifier.topology.FlipFacesModifier;
+import mesh.modifier.topology.HolesModifier;
+import mesh.modifier.topology.SolidifyModifier;
 import mesh.util.FaceBridging;
 
 public class TessellationRingCreator implements IMeshCreator {

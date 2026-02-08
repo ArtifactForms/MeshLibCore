@@ -10,7 +10,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreator;
-import mesh.modifier.UpdateFaceNormalsModifier;
+import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import util.MeshTestUtil;
 

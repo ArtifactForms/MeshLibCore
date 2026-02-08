@@ -3,8 +3,8 @@ package mesh.creator.assets;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.PlaneCreator;
-import mesh.modifier.ScaleModifier;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.ScaleModifier;
 
 public class ModularKitFloorSegmentCreator implements IMeshCreator {
 

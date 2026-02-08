@@ -7,8 +7,8 @@ import math.Mathf;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.SpherifyModifier;
+import mesh.modifier.deform.SpherifyModifier;
+import mesh.modifier.topology.FlipFacesModifier;
 import mesh.util.FaceBridging;
 
 public class QuadCapCylinderCreator implements IMeshCreator {

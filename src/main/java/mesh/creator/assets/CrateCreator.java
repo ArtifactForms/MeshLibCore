@@ -7,11 +7,11 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.RotateXModifier;
-import mesh.modifier.RotateYModifier;
-import mesh.modifier.ScaleModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.RotateYModifier;
+import mesh.modifier.transform.ScaleModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class CrateCreator implements IMeshCreator {
 

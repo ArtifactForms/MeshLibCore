@@ -6,8 +6,8 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.ExtrudeModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
+import mesh.modifier.topology.ExtrudeModifier;
 import mesh.selection.FaceSelection;
 
 public class SimpleSciFiCrateCreator implements IMeshCreator {

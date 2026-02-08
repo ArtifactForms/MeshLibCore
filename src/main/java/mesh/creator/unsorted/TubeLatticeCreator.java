@@ -3,9 +3,9 @@ package mesh.creator.unsorted;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.SegmentedTubeCreator;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.FlipFacesModifier;
+import mesh.modifier.topology.SolidifyModifier;
 import mesh.selection.FaceSelection;
 
 public class TubeLatticeCreator implements IMeshCreator {

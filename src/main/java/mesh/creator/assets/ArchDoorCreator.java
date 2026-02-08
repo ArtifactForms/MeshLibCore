@@ -5,9 +5,9 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.ArcCreator;
-import mesh.modifier.RotateXModifier;
-import mesh.modifier.SolidifyModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class ArchDoorCreator implements IMeshCreator {
 

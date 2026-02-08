@@ -2,9 +2,9 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.ScaleModifier;
-import mesh.modifier.SpherifyModifier;
+import mesh.modifier.deform.SpherifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeCenterModifier;
+import mesh.modifier.transform.ScaleModifier;
 
 public class QuadSphereCreator implements IMeshCreator {
 

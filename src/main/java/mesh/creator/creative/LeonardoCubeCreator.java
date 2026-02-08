@@ -5,7 +5,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.RotateXModifier;
+import mesh.modifier.transform.RotateXModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 

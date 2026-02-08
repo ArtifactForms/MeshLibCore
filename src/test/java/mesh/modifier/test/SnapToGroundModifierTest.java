@@ -17,8 +17,8 @@ import mesh.creator.primitives.IcoSphereCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.creator.primitives.QuadSphereCreator;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.SnapToGroundModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.transform.SnapToGroundModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class SnapToGroundModifierTest {
 

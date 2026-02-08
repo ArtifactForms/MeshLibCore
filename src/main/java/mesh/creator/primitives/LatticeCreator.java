@@ -2,8 +2,8 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.SolidifyModifier;
 
 public class LatticeCreator implements IMeshCreator {
 

@@ -4,11 +4,11 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.CenterAtModifier;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.SolidifyModifier;
-import mesh.modifier.TranslateModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.CenterAtModifier;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.selection.FaceSelection;
 
 public class CubicLatticeCreator implements IMeshCreator {

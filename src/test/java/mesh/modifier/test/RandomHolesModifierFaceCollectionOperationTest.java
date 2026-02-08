@@ -17,8 +17,8 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.RandomHolesModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.RandomHolesModifier;
 
 public class RandomHolesModifierFaceCollectionOperationTest {
 

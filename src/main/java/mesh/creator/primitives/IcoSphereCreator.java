@@ -3,7 +3,7 @@ package mesh.creator.primitives;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.platonic.IcosahedronCreator;
-import mesh.modifier.SpherifyModifier;
+import mesh.modifier.deform.SpherifyModifier;
 import mesh.modifier.subdivision.PlanarMidEdgeModifier;
 
 public class IcoSphereCreator implements IMeshCreator {

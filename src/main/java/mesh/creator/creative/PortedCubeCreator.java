@@ -10,10 +10,10 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.SegmentedCubeCreator;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.ScaleModifier;
-import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.ScaleModifier;
 import mesh.selection.FaceSelection;
 
 public class PortedCubeCreator implements IMeshCreator {

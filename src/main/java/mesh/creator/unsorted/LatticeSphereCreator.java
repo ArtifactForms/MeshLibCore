@@ -7,7 +7,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.QuadSphereCreator;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.SolidifyModifier;
 import mesh.util.Mesh3DUtil;
 
 public class LatticeSphereCreator implements IMeshCreator {

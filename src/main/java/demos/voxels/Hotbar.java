@@ -14,8 +14,8 @@ import math.Color;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreatorUV;
-import mesh.modifier.RotateXModifier;
-import mesh.modifier.ScaleModifier;
+import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.ScaleModifier;
 import workspace.ui.Graphics;
 
 public class Hotbar extends AbstractComponent implements RenderableComponent {

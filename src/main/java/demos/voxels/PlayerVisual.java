@@ -5,8 +5,8 @@ import engine.components.RenderableComponent;
 import math.Color;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
-import mesh.modifier.SnapToGroundModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.transform.SnapToGroundModifier;
+import mesh.modifier.transform.TranslateModifier;
 import workspace.ui.Graphics;
 
 public class PlayerVisual extends AbstractComponent implements RenderableComponent {

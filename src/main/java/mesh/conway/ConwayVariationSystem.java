@@ -5,7 +5,7 @@ import java.util.List;
 
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.FitToAABBModifier;
+import mesh.modifier.transform.FitToAABBModifier;
 
 public class ConwayVariationSystem {
 

@@ -8,8 +8,8 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 import mesh.creator.primitives.CylinderCreator;
 import mesh.creator.special.VariableCylinderCreator;
-import mesh.modifier.RotateXModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class FlangePipeCreator implements IMeshCreator {
 

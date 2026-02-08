@@ -4,7 +4,7 @@ import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.FitToAABBModifier;
+import mesh.modifier.transform.FitToAABBModifier;
 
 public class RandomConwayCreator implements IMeshCreator {
 

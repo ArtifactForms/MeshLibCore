@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.platonic.IcosahedronCreator;
-import mesh.modifier.BevelEdgesModifier;
+import mesh.modifier.topology.BevelEdgesModifier;
 import util.MeshTestUtil;
 
 /**

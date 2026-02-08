@@ -4,7 +4,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.FlipFacesModifier;
+import mesh.modifier.topology.FlipFacesModifier;
 import mesh.util.FaceBridging;
 
 public class CylinderCreator implements IMeshCreator {

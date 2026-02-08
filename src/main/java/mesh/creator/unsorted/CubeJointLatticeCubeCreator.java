@@ -6,8 +6,8 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.topology.FlipFacesModifier;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
 

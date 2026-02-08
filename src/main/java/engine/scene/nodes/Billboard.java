@@ -9,9 +9,9 @@ import math.Color;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreatorUV;
-import mesh.modifier.RotateXModifier;
-import mesh.modifier.RotateYModifier;
-import mesh.modifier.RotateZModifier;
+import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.RotateYModifier;
+import mesh.modifier.transform.RotateZModifier;
 import mesh.uv.UVRect;
 
 public class Billboard extends SceneNode {

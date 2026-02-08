@@ -5,7 +5,7 @@ import java.io.File;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.io.SimpleObjectReader;
-import mesh.modifier.ScaleModifier;
+import mesh.modifier.transform.ScaleModifier;
 
 public class FromObjectCreator implements IMeshCreator {
 

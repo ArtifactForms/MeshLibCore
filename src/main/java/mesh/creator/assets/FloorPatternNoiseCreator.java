@@ -5,8 +5,8 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.GridCreator;
-import mesh.modifier.ExtrudeModifier;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.SolidifyModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 

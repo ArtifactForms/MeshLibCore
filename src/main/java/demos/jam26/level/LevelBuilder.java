@@ -9,8 +9,8 @@ import engine.scene.SceneNode;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
-import mesh.modifier.FlipFacesModifier;
-import mesh.modifier.UpdateFaceNormalsModifier;
+import mesh.modifier.repair.UpdateFaceNormalsModifier;
+import mesh.modifier.topology.FlipFacesModifier;
 
 public class LevelBuilder {
 

@@ -6,7 +6,7 @@ import math.Color;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
 import mesh.creator.primitives.PlaneCreator;
-import mesh.modifier.SnapToGroundModifier;
+import mesh.modifier.transform.SnapToGroundModifier;
 import workspace.ui.Graphics;
 
 /**

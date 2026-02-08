@@ -5,7 +5,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.SolidArcCreator;
 import mesh.creator.primitives.TubeCreator;
-import mesh.modifier.RotateXModifier;
+import mesh.modifier.transform.RotateXModifier;
 
 /**
  * Creates a 3D arch shape, inspired by Unity's ProBuilder.

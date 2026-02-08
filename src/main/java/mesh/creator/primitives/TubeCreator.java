@@ -4,7 +4,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.SolidifyModifier;
 
 public class TubeCreator implements IMeshCreator {
 

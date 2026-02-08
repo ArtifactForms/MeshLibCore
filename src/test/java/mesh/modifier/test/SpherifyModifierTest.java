@@ -19,7 +19,7 @@ import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.IcoSphereCreator;
 import mesh.creator.primitives.SegmentedCubeCreator;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.SpherifyModifier;
+import mesh.modifier.deform.SpherifyModifier;
 
 public class SpherifyModifierTest {
 

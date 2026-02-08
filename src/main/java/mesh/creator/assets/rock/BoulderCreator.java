@@ -8,7 +8,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.IcoSphereCreator;
-import mesh.modifier.SnapToGroundModifier;
+import mesh.modifier.transform.SnapToGroundModifier;
 import mesh.util.VertexNormals;
 
 /**

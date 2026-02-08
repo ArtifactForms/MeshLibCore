@@ -9,7 +9,7 @@ import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
-import mesh.modifier.RotateXModifier;
+import mesh.modifier.transform.RotateXModifier;
 
 public class VariableCylinderCreator implements IMeshCreator {
 

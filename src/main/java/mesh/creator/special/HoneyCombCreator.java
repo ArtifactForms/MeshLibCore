@@ -7,7 +7,7 @@ import math.Mathf;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.CenterAtModifier;
+import mesh.modifier.transform.CenterAtModifier;
 
 /**
  * Procedural creator for a 3D Honeycomb (hexagonal) grid. This creator generates a hollowed-out

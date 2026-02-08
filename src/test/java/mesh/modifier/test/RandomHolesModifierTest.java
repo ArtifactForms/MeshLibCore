@@ -15,9 +15,9 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
-import mesh.modifier.ExtrudeModifier;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.RandomHolesModifier;
+import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.RandomHolesModifier;
 
 public class RandomHolesModifierTest {
 

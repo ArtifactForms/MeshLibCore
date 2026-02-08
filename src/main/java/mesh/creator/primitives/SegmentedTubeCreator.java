@@ -3,7 +3,7 @@ package mesh.creator.primitives;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.SolidifyModifier;
+import mesh.modifier.topology.SolidifyModifier;
 
 public class SegmentedTubeCreator implements IMeshCreator {
 

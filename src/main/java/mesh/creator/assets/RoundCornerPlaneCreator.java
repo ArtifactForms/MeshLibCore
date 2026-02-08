@@ -5,9 +5,9 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.ArcCreator;
-import mesh.modifier.CenterAtModifier;
-import mesh.modifier.SolidifyModifier;
 import mesh.modifier.subdivision.QuadsToTrianglesModifier;
+import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.CenterAtModifier;
 
 public class RoundCornerPlaneCreator implements IMeshCreator {
 

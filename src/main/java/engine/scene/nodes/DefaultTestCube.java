@@ -8,7 +8,7 @@ import engine.resources.TextureManager;
 import engine.scene.SceneNode;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreatorUV;
-import mesh.modifier.SnapToGroundModifier;
+import mesh.modifier.transform.SnapToGroundModifier;
 
 public class DefaultTestCube extends SceneNode {
 

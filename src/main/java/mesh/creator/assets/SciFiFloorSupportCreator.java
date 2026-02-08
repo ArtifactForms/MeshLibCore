@@ -3,7 +3,7 @@ package mesh.creator.assets;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.selection.CompareType;
 import mesh.selection.FaceSelection;
 import mesh.selection.FaceSelectionRules;

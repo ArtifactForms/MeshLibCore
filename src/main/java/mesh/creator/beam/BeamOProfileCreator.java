@@ -3,8 +3,8 @@ package mesh.creator.beam;
 import math.Mathf;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.modifier.SolidifyModifier;
-import mesh.modifier.TranslateModifier;
+import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class BeamOProfileCreator implements IBeamCreator {
 
