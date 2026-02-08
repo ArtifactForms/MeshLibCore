@@ -72,7 +72,7 @@ public class FitToAABBModifier implements IMeshModifier {
    * @param scale the scale factor to apply.
    */
   private void applyScale(float scale) {
-    mesh.apply(new ScaleModifier(scale));
+    new ScaleModifier(scale).modify(mesh);
   }
 
   /**
