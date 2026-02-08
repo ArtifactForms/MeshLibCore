@@ -68,7 +68,7 @@ public class CenterAtModifier implements IMeshModifier {
   /** Translates the mesh to align its center with the target center. */
   private void centerMesh() {
     Vector3f distance = center.subtract(bounds.getCenter());
-    mesh.apply(new TranslateModifier(distance));
+    new TranslateModifier(distance).modify(mesh);
   }
 
   /**
