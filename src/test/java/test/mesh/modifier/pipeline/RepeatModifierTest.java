@@ -1,4 +1,4 @@
-package mesh.modifier.pipeline;
+package test.mesh.modifier.pipeline;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
