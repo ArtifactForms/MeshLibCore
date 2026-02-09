@@ -1,4 +1,4 @@
-package mesh.pipeline;
+package mesh.modifier.pipeline;
 
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
