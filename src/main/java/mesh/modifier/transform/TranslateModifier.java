@@ -5,7 +5,7 @@ import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
 /**
- * TranslateModifier applies a translation (offset) to all vertices of a given 3D mesh.
+ * {@link TranslateModifier} applies a translation (offset) to all vertices of a given 3D mesh.
  *
  * <p>This modifier translates each vertex in the provided mesh by a given 3D vector (delta). The
  * operation can be performed efficiently in parallel using Java's parallel streams for improved
@@ -18,22 +18,39 @@ public class TranslateModifier implements IMeshModifier {
 
   /** Default constructor initializes translation delta to (0, 0, 0). */
   public TranslateModifier() {
-    this.delta = new Vector3f(0, 0, 0);
+    this(new Vector3f());
   }
 
   /**
-   * Constructs a TranslateModifier with specified translation offsets along each axis.
+   * Constructs a {@link TranslateModifier} with specified translation offset along a the specified
+   * axis.
+   *
+   * @param delta offset along the specified axis
+   * @param axis the axis to translate along
+   */
+  public TranslateModifier(float delta, TransformAxis axis) {
+    if (axis == null) {
+      throw new IllegalArgumentException("TransformAxis cannot be null.");
+    }
+    this.delta = new Vector3f();
+    if (axis == TransformAxis.X) this.delta.set(delta, 0, 0);
+    if (axis == TransformAxis.Y) this.delta.set(0, delta, 0);
+    if (axis == TransformAxis.Z) this.delta.set(0, 0, delta);
+  }
+
+  /**
+   * Constructs a {@link TranslateModifier} with specified translation offsets along each axis.
    *
    * @param deltaX Offset along the X-axis.
    * @param deltaY Offset along the Y-axis.
    * @param deltaZ Offset along the Z-axis.
    */
   public TranslateModifier(float deltaX, float deltaY, float deltaZ) {
-    this.delta = new Vector3f(deltaX, deltaY, deltaZ);
+    this(new Vector3f(deltaX, deltaY, deltaZ));
   }
 
   /**
-   * Constructs a TranslateModifier using a Vector3f for the specified translation delta.
+   * Constructs a {@link TranslateModifier} using a Vector3f for the specified translation delta.
    *
    * @param delta The 3D translation vector to apply to the mesh's vertices.
    * @throws IllegalArgumentException if the provided delta is null.
@@ -61,10 +78,32 @@ public class TranslateModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    if (!mesh.vertices.isEmpty()) {
-      mesh.vertices.parallelStream().forEach(vertex -> vertex.addLocal(delta));
+
+    if (deltaIsEmpty()) {
+      return mesh;
     }
+
+    if (mesh.vertices.isEmpty()) {
+      return mesh;
+    }
+
+    for (Vector3f vertex : mesh.vertices) {
+      vertex.addLocal(delta);
+    }
+
     return mesh;
+  }
+
+  /**
+   * Checks if the translation delta is effectively zero across all axes. *
+   *
+   * <p>This is used as a performance optimization to skip the parallel stream processing if no
+   * actual movement would occur.
+   *
+   * @return true if the translation vector is (0, 0, 0), false otherwise.
+   */
+  private boolean deltaIsEmpty() {
+    return delta.x == 0 && delta.y == 0 && delta.z == 0;
   }
 
   /**
