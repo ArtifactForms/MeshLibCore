@@ -368,4 +368,8 @@ public class Mesh3D {
     }
     return uvs.get(index);
   }
+
+  public void setUvCoordinate(int index, float u, float v) {
+    uvs.get(index).set(u, v);
+  }
 }
