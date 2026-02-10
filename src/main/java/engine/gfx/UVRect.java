@@ -1,4 +1,4 @@
-package mesh.uv;
+package engine.gfx;
 
 /**
  * Represents a rectangular region in normalized UV texture space.

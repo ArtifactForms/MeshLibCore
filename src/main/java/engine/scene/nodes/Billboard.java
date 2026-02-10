@@ -2,6 +2,7 @@ package engine.scene.nodes;
 
 import engine.components.BillboardComponent;
 import engine.components.Geometry;
+import engine.gfx.UVRect;
 import engine.render.Material;
 import engine.resources.Texture;
 import engine.scene.SceneNode;
@@ -12,7 +13,6 @@ import mesh.creator.primitives.PlaneCreatorUV;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
-import mesh.uv.UVRect;
 
 public class Billboard extends SceneNode {
 

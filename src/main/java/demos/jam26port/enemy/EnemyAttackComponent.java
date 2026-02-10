@@ -1,10 +1,8 @@
 package demos.jam26port.enemy;
 
-import demos.jam26port.assets.AssetRefs;
-import demos.jam26port.player.PlayerHealthComponent;
+import demos.jam26port.game.event.PlayerDamageEvent;
+import demos.jam26port.game.world.WorldContext;
 import engine.components.AbstractComponent;
-import engine.scene.audio.SoundManager;
-import engine.scene.camera.Camera;
 import math.Vector3f;
 
 public class EnemyAttackComponent extends AbstractComponent {
@@ -12,16 +10,15 @@ public class EnemyAttackComponent extends AbstractComponent {
   private float attackRange;
   private float damage;
   private float attackCooldown;
-
-  private PlayerHealthComponent health;
-
   private float cooldownTimer = 0f;
 
-  public EnemyAttackComponent(PlayerHealthComponent health) {
+  private WorldContext world;
+
+  public EnemyAttackComponent(WorldContext world) {
     this.attackRange = 64;
     this.damage = 10;
     this.attackCooldown = 1.0f;
-    this.health = health;
+    this.world = world;
   }
 
   @Override
@@ -29,22 +26,17 @@ public class EnemyAttackComponent extends AbstractComponent {
     cooldownTimer -= tpf;
     if (cooldownTimer > 0) return;
 
-    Camera cam = getOwner().getScene().getActiveCamera();
-    if (cam == null) return;
-
     Vector3f enemyPos = getOwner().getTransform().getPosition();
-    Vector3f playerPos = cam.getTransform().getPosition();
+    Vector3f playerPos = world.getPlayer().getPosition();
 
     if (enemyPos.distanceSquared(playerPos) <= attackRange * attackRange) {
-      attack(playerPos);
+      attackPlayer(this.damage);
       cooldownTimer = attackCooldown;
     }
   }
 
-  private void attack(Vector3f playerPos) {
-    if (health != null) {
-      SoundManager.playEffect(AssetRefs.SOUND_PLAYER_HIT_KEY);
-      health.damage(damage);
-    }
+  private void attackPlayer(float damage) {
+    PlayerDamageEvent event = new PlayerDamageEvent(damage);
+    world.perform(event);
   }
 }

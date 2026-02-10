@@ -1,11 +1,12 @@
 package demos.jam26.assets;
 
 import demos.jam26.level.TileMap;
+import engine.gfx.TextureAtlas;
+import engine.gfx.UVRect;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
 import engine.resources.TextureWrapMode;
-import mesh.uv.UVRect;
 
 public final class AssetRefs {
 

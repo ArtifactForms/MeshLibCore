@@ -47,6 +47,8 @@ public class DebugInfoUpdater {
 
   private int vertexCount = 0;
 
+  private int nodeCount;
+
   private final OperatingSystemMXBean osBean =
       (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
@@ -130,17 +132,18 @@ public class DebugInfoUpdater {
 
   private void updateSceneMetrics(Scene activeScene) {
     setInfo(CATEGORY_SCENE, "Scene", activeScene.getName());
-    setInfo(CATEGORY_SCENE, "Root count", activeScene.getRootCount());
     setInfo(CATEGORY_SCENE, "Lights count", activeScene.getLightCount());
 
     faceCount = 0;
     vertexCount = 0;
+    nodeCount = 0;
 
     SceneNodeVisitor visitor =
         new SceneNodeVisitor() {
 
           @Override
           public void visit(SceneNode node) {
+            nodeCount++;
             Geometry geometry = node.getComponent(Geometry.class);
             if (geometry != null) {
               faceCount += geometry.getMesh().getFaceCount();
@@ -158,6 +161,7 @@ public class DebugInfoUpdater {
 
     setInfo(CATEGORY_SCENE, "Faces", faceCount);
     setInfo(CATEGORY_SCENE, "Vertices", vertexCount);
+    setInfo(CATEGORY_SCENE, "Nodes", nodeCount);
   }
 
   private void updateTimeMetrics(Timer timer) {

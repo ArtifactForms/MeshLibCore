@@ -1,11 +1,12 @@
 package demos.jam26port.assets;
 
 import demos.jam26port.level.TileMap;
+import engine.gfx.TextureAtlas;
+import engine.gfx.UVRect;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
 import engine.resources.TextureWrapMode;
-import mesh.uv.UVRect;
 
 public final class AssetRefs {
 
@@ -51,6 +52,7 @@ public final class AssetRefs {
 
   public static final String TITLE_TEXT_GAME_OVER = "GAME OVER";
   public static final String TITLE_TEXT_LEVEL_COMPLETE = "LEVEL COMPLETE";
+  public static final String TITLE_TEXT_LEVEL_START = "LEVEL START";
 
   /* =========================
    * Texture Atlas

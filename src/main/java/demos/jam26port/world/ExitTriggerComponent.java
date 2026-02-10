@@ -1,35 +1,27 @@
 package demos.jam26port.world;
 
-import demos.jam26port.assets.AssetRefs;
+import demos.jam26port.game.world.WorldContext;
 import engine.components.AbstractComponent;
-import engine.scene.SceneNode;
-import engine.scene.audio.SoundManager;
-import engine.scene.camera.Camera;
 import math.Vector3f;
 
 public class ExitTriggerComponent extends AbstractComponent {
 
   private float triggerRadius;
   private boolean triggered;
-  private SceneNode title;
-  private Vector3f lobbySpawn;
+  private WorldContext world;
 
-  public ExitTriggerComponent(SceneNode title, Vector3f lobbySpawn) {
+  public ExitTriggerComponent(WorldContext world) {
     this.triggerRadius = 64;
     this.triggered = false;
-    this.title = title;
-    this.lobbySpawn = lobbySpawn;
+    this.world = world;
   }
 
   @Override
   public void onUpdate(float tpf) {
     if (triggered) return;
 
-    Camera cam = getOwner().getScene().getActiveCamera();
-    if (cam == null) return;
-
     Vector3f exitPos = getOwner().getTransform().getPosition();
-    Vector3f playerPos = cam.getTransform().getPosition();
+    Vector3f playerPos = world.getPlayer().getPosition();
 
     float distSq = exitPos.distanceSquared(playerPos);
     if (distSq <= triggerRadius * triggerRadius) {
@@ -39,17 +31,6 @@ public class ExitTriggerComponent extends AbstractComponent {
   }
 
   private void onExit() {
-    SoundManager.stopSound(AssetRefs.SOUND_BACKGROUND_KEY);
-    SoundManager.playSound(AssetRefs.SOUND_EXIT_KEY);
-    displayLevelCompleteTitle();
-    sendPlayerToLobby();
-  }
-
-  private void displayLevelCompleteTitle() {
-    title.setActive(true);
-  }
-
-  private void sendPlayerToLobby() {
-    getOwner().getScene().getActiveCamera().getTransform().setPosition(lobbySpawn);
+    world.requestLevelExit();
   }
 }

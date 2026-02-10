@@ -2,37 +2,29 @@ package demos.jam26port.core;
 
 import demos.jam26port.assets.AssetRefs;
 import demos.jam26port.combat.ShootComponent;
-import demos.jam26port.enemy.DeathAnimationComponent;
-import demos.jam26port.enemy.EnemyAttackComponent;
-import demos.jam26port.enemy.EnemyChaseComponent;
-import demos.jam26port.enemy.EnemyComponent;
-import demos.jam26port.enemy.HitReactionComponent;
+import demos.jam26port.game.ui.GameUi;
+import demos.jam26port.game.ui.StartScreenComponent;
+import demos.jam26port.game.world.GameWorldContext;
 import demos.jam26port.level.LevelBuilder;
 import demos.jam26port.level.TileMap;
 import demos.jam26port.level.TileType;
 import demos.jam26port.pickup.HealthPickupComponent;
 import demos.jam26port.player.FPSCameraController;
-import demos.jam26port.player.PlayerHealthComponent;
-import demos.jam26port.ui.HealthBarUIComponent;
-import demos.jam26port.ui.HitFlashComponent;
-import demos.jam26port.ui.MiniMapComponent;
-import demos.jam26port.ui.StartScreenComponent;
-import demos.jam26port.ui.WeaponHudComponent;
+import demos.jam26port.player.HealthComponent;
+import demos.jam26port.player.PlayerContext;
 import demos.jam26port.world.ExitTriggerComponent;
 import demos.jam26port.world.GridCollisionComponent;
 import demos.jam26port.world.SphereCollider;
-import demos.texture.Title;
-import demos.texture.TitleTextComponent;
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
-import engine.application.Viewport;
-import engine.components.RoundReticle;
 import engine.debug.core.DebugDraw;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.SceneNodeVisitor;
 import engine.scene.audio.SoundManager;
 import engine.scene.camera.PerspectiveCamera;
+import engine.scene.light.AmbientLight;
+import engine.scene.light.PointLight;
 import engine.scene.nodes.Billboard;
 import math.Color;
 import math.Vector3f;
@@ -52,48 +44,82 @@ public class DungeonCrawlerGame extends BasicApplication {
   private boolean debug = true;
   private boolean drawDebugNormals = false;
 
-  private float eyeHeight = 40;
-
   private Scene scene;
   private Mesh3D levelMesh;
   private LevelBuilder levelBuilder;
   private TileMap tileMap;
-  private PlayerHealthComponent health;
+  private HealthComponent health;
   private PerspectiveCamera camera;
-  
+
   private SceneNode uiRoot;
 
+  private PlayerContext player;
+  private GameWorldContext world;
+
+  private PointLight light;
+  private SceneNode lightNode;
+
   @Override
-  public void onInitialize() {      
+  public void onInitialize() {
     setupDebug();
     setupAudio();
 
     setupScene();
+
+    uiRoot = scene.getUIRoot();
+
     setupLevel();
     setupCamera();
     setupPlayer();
+
+    setupContext();
+
     setupWorldEntities();
-    setupUI();
+
+    setupStartScreen();
+
+//    scene.addLight(new AmbientLight(Color.BLUE));
 
     SoundManager.loopSound(AssetRefs.SOUND_BACKGROUND_KEY);
+  }
+
+  private void setupStartScreen() {
+    StartScreenComponent startScreenComponent = new StartScreenComponent(world, input);
+    SceneNode startScreenNode = new SceneNode("Start-Screen", startScreenComponent);
+    uiRoot.addChild(startScreenNode);
+  }
+
+  private void setupContext() {
+    GameUi ui = new GameUi(scene.getUIRoot(), tileMap);
+
+    world = new GameWorldContext(player, scene, tileMap, ui);
+
+    world.setLobbySpawn(levelBuilder.getLobbySpawn());
+    world.setLevelSpawn(levelBuilder.getPlayerSpawn());
   }
 
   private void setupPlayer() {
     SceneNode playerNode = new SceneNode("Player");
     playerNode.addComponent(new ShootComponent(input));
 
-    health = createHealthComponent();
+    HealthComponent health =
+        new HealthComponent(100) {
+          @Override
+          protected void onPlayerDeath() {
+            world.requestPlayerDeath();
+          }
+
+          @Override
+          protected void onPlayerDamaged() {
+            world.requestPlayerDamage();
+          }
+        };
+
     playerNode.addComponent(health);
 
-    HitFlashComponent hitFlashComponent = new HitFlashComponent();
-
-    playerNode.addComponent(hitFlashComponent);
-
-    SceneNode hitFlash = new SceneNode("Hit-Flash", hitFlashComponent);
-    uiRoot.addChild(hitFlash);
+    player = new PlayerContext(health, camera);
 
     scene.addNode(playerNode);
-    teleportPlayerToSpawn();
   }
 
   private void setupCamera() {
@@ -113,34 +139,12 @@ public class DungeonCrawlerGame extends BasicApplication {
 
   private void setupScene() {
     scene = new Scene();
+    light = new PointLight(Color.WHITE, new Vector3f(384, -30, 256), 3, 0.001f);
+//    lightNode = new SceneNode("Light", new LightComponent(light));
+//    scene.addLight(light);
+//    scene.addNode(lightNode);
     uiRoot = scene.getUIRoot();
     setActiveScene(scene);
-  }
-
-  private PlayerHealthComponent createHealthComponent() {
-    return new PlayerHealthComponent() {
-      @Override
-      protected void onDeath() {
-        teleportPlayerToLobbySpawn();
-
-        SoundManager.stopSound(AssetRefs.SOUND_BACKGROUND_KEY);
-        SoundManager.playSound(AssetRefs.SOUND_PLAYER_DEAD_KEY);
-
-        Title title =
-            new Title.Builder()
-                .text(AssetRefs.TITLE_TEXT_GAME_OVER)
-                .size(200)
-                .stayTime(4)
-                .fadeInTime(1)
-                .fadeOutTime(1)
-                .color(Color.WHITE)
-                .build();
-        SceneNode titleNode = new SceneNode();
-        TitleTextComponent titleComp = new TitleTextComponent(title);
-        titleNode.addComponent(titleComp);
-        uiRoot.addChild(titleNode);
-      }
-    };
   }
 
   private void setupWorldEntities() {
@@ -161,43 +165,6 @@ public class DungeonCrawlerGame extends BasicApplication {
     setDebugDrawVisible(debug);
   }
 
-  private void teleportPlayerToSpawn() {
-    camera.getTransform().setPosition(levelBuilder.getPlayerSpawn().subtract(0, eyeHeight, 0));
-  }
-
-  private void teleportPlayerToLobbySpawn() {
-    camera.getTransform().setPosition(levelBuilder.getLobbySpawn().subtract(0, eyeHeight, 0));
-  }
-
-  private void setupUI() {
-    setupHealthBar();
-    setupWeaponHud();
-    setupMiniMap();
-    setupReticle();
-    setupStartScreen();
-  }
-
-  private void setupHealthBar() {
-    SceneNode healthUI = new SceneNode("Health-Bar");
-    healthUI.addComponent(new HealthBarUIComponent(health));
-    uiRoot.addChild(healthUI);
-  }
-
-  private void setupWeaponHud() {
-    SceneNode weaponHud = new SceneNode("Weapon-Hud", new WeaponHudComponent());
-    uiRoot.addChild(weaponHud);
-  }
-
-  private void setupReticle() {
-    uiRoot.addChild(new SceneNode("Reticle", new RoundReticle()));
-  }
-
-  private void setupStartScreen() {
-    StartScreenComponent startScreenComponent = new StartScreenComponent(input);
-    SceneNode startScreenNode = new SceneNode("Start-Screen", startScreenComponent);
-    uiRoot.addChild(startScreenNode);
-  }
-
   private void setupAudio() {
     SoundManager.addEffect(AssetRefs.SOUND_SHOOT_KEY, AssetRefs.SOUND_SHOOT_PATH, 6);
     SoundManager.addSound(AssetRefs.SOUND_EXIT_KEY, AssetRefs.SOUND_EXIT_PATH);
@@ -216,7 +183,7 @@ public class DungeonCrawlerGame extends BasicApplication {
         TileType tileType = tileMap.getOverlayTypeAt(x, y);
 
         if (tileType == TileType.ENEMY_SPAWN) {
-          spawnEnemyAt(x, y);
+          world.spawnEnemyAtTile(x, y);
         }
 
         if (tileType == TileType.HEALTH) {
@@ -226,73 +193,26 @@ public class DungeonCrawlerGame extends BasicApplication {
     }
   }
 
-  private void spawnEnemyAt(int x, int y) {
-    Billboard enemy = createEnemyBillboard(x, y);
-    attachEnemyComponents(enemy);
-    scene.addNode(enemy);
-  }
-
-  private Billboard createEnemyBillboard(int x, int y) {
-    Billboard b = new Billboard(AssetRefs.ENEMY_EYE_IDLE_TEXTURE, AssetRefs.ENEMY_EYE_IDLE_UV, 16);
-    b.at(x * TileMap.TILE_SIZE, -32, y * TileMap.TILE_SIZE);
-    return b;
-  }
-
-  private void attachEnemyComponents(Billboard b) {
-    b.addComponent(new EnemyComponent());
-    b.addComponent(new HitReactionComponent());
-    b.addComponent(new DeathAnimationComponent());
-    b.addComponent(new EnemyChaseComponent());
-    b.addComponent(new EnemyAttackComponent(health));
-    b.addComponent(new SphereCollider(16));
-  }
-
   private void spawnHealthPickUpAt(int x, int y) {
     Billboard pickup = new Billboard(AssetRefs.HEALTH_TEXTURE, AssetRefs.HEALTH_UV, 16);
     pickup.at(x * TileMap.TILE_SIZE, -24, y * TileMap.TILE_SIZE);
-    pickup.addComponent(new HealthPickupComponent(health, 10));
+    pickup.addComponent(new HealthPickupComponent(player, 10));
     scene.addNode(pickup);
   }
 
-  private void setupMiniMap() {
-    Viewport viewport = getViewport();
-    MiniMapComponent miniMapComponent = new MiniMapComponent(tileMap, scene);
-    miniMapComponent.setPosition(viewport.getWidth() - 320, 20);
-
-    SceneNode miniMapNode = new SceneNode("MiniMap");
-    miniMapNode.addComponent(miniMapComponent);
-
-    uiRoot.addChild(miniMapNode);
-  }
-
   private void setupExit() {
-    Title title =
-        new Title.Builder()
-            .text(AssetRefs.TITLE_TEXT_LEVEL_COMPLETE)
-            .size(200)
-            .stayTime(4)
-            .fadeInTime(1)
-            .fadeOutTime(1)
-            .color(Color.WHITE)
-            .build();
-    SceneNode titleNode = new SceneNode();
-    TitleTextComponent titleComp = new TitleTextComponent(title);
-    titleNode.addComponent(titleComp);
-    titleNode.setActive(false);
-    uiRoot.addChild(titleNode);
-
     Billboard billboard = new Billboard(AssetRefs.EXIT_TEXTURE, 16);
     billboard.setUvRect(AssetRefs.EXIT_UV);
     billboard.getTransform().setPosition(levelBuilder.getExit());
     billboard.getTransform().translate(0, -32, 0);
-    billboard.addComponent(
-        new ExitTriggerComponent(
-            titleNode, levelBuilder.getLobbySpawn().subtract(0, eyeHeight, 0)));
+    billboard.addComponent(new ExitTriggerComponent(world));
     scene.addNode(billboard);
   }
 
   @Override
   public void onUpdate(float tpf) {
+//    light.setPosition(player.getPosition().subtract(0, 32, 0));
+    world.update(tpf);
     debugColliders();
   }
 

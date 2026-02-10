@@ -1,27 +1,37 @@
 package demos.jam26port.pickup;
 
 import demos.jam26port.assets.AssetRefs;
-import demos.jam26port.player.PlayerHealthComponent;
+import demos.jam26port.player.PlayerContext;
 import engine.scene.audio.SoundManager;
 
 public class HealthPickupComponent extends PickupComponent {
 
   private int amount;
-  private PlayerHealthComponent health;
 
-  public HealthPickupComponent(PlayerHealthComponent health, int amount) {
+  public HealthPickupComponent(PlayerContext player, int amount) {
+    super(player);
     this.amount = amount;
-    this.health = health;
   }
 
   @Override
   protected void applyEffect() {
+    player.getHealth().heal(amount);
     SoundManager.playEffect(AssetRefs.SOUND_HEALTH_PICK_UP_KEY);
-    health.heal(amount);
   }
 
   @Override
   protected boolean canPickUp() {
-    return health.getHealth() < health.getMaxHealth();
+    /*
+     * Why NOT: return player.getHealth().getCurrentHealth() < player.getHealth().getMaxHealth();
+     *
+     * and why this matters Pickups shouldn’t care why health is capped
+     *
+     * Later we might add:
+     *  - overheal rules
+     *  - difficulty modifiers
+     *  - status effects
+     *  And nothing in pickup code changes.
+     */
+    return player.canReceiveHealth();
   }
 }
