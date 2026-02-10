@@ -1,6 +1,7 @@
 package demos.jam26port.assets;
 
 import demos.jam26port.level.TileMap;
+import engine.gfx.TextureAtlas;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
