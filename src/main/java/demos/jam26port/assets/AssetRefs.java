@@ -51,6 +51,7 @@ public final class AssetRefs {
 
   public static final String TITLE_TEXT_GAME_OVER = "GAME OVER";
   public static final String TITLE_TEXT_LEVEL_COMPLETE = "LEVEL COMPLETE";
+  public static final String TITLE_TEXT_LEVEL_START = "LEVEL START";
 
   /* =========================
    * Texture Atlas

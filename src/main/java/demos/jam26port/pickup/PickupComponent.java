@@ -1,7 +1,7 @@
 package demos.jam26port.pickup;
 
+import demos.jam26port.player.PlayerContext;
 import engine.components.AbstractComponent;
-import engine.scene.camera.Camera;
 import math.Mathf;
 import math.Vector3f;
 
@@ -10,9 +10,15 @@ public abstract class PickupComponent extends AbstractComponent {
   protected float pickupRadius = 32f;
   protected boolean collected = false;
 
+  protected final PlayerContext player;
+
   // juice
   private float popTime = 0.15f;
   private float timer = 0f;
+
+  protected PickupComponent(PlayerContext player) {
+    this.player = player;
+  }
 
   @Override
   public void onUpdate(float tpf) {
@@ -21,13 +27,10 @@ public abstract class PickupComponent extends AbstractComponent {
       return;
     }
 
-    Camera cam = getOwner().getScene().getActiveCamera();
-    if (cam == null) return;
-
-    Vector3f p = cam.getTransform().getPosition();
+    Vector3f playerPos = player.getPosition();
     Vector3f pos = getOwner().getTransform().getPosition();
 
-    if (pos.distanceSquared(p) <= pickupRadius * pickupRadius) {
+    if (pos.distanceSquared(playerPos) <= pickupRadius * pickupRadius) {
       if (canPickUp()) {
         onPickup();
       }
