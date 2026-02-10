@@ -130,7 +130,6 @@ public class DebugInfoUpdater {
 
   private void updateSceneMetrics(Scene activeScene) {
     setInfo(CATEGORY_SCENE, "Scene", activeScene.getName());
-    setInfo(CATEGORY_SCENE, "Root count", activeScene.getRootCount());
     setInfo(CATEGORY_SCENE, "Lights count", activeScene.getLightCount());
 
     faceCount = 0;
