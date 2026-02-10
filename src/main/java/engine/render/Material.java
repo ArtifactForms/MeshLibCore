@@ -132,6 +132,17 @@ public class Material {
 
   private boolean castShadows = true;
 
+  /**
+   * The shading mode used for rendering this material.
+   *
+   * <p>Shading defines how surface normals are evaluated during lighting calculations (e.g. flat or
+   * smooth shading). This affects the visual appearance of the material without altering the
+   * underlying mesh geometry.
+   *
+   * <p>The default shading mode is {@link Shading#FLAT}.
+   */
+  private Shading shading = Shading.FLAT;
+
   /** Default constructor that initializes the material with a base white color. */
   public Material() {
     this(Color.WHITE);
@@ -398,5 +409,30 @@ public class Material {
 
   public void setCastShadows(boolean castShadows) {
     this.castShadows = castShadows;
+  }
+
+  /**
+   * Returns the shading mode used by this material.
+   *
+   * @return the current shading mode
+   */
+  public Shading getShading() {
+    return shading;
+  }
+
+  /**
+   * Sets the shading mode for this material.
+   *
+   * <p>Changing the shading mode influences how lighting is computed for surfaces rendered with
+   * this material, but does not modify mesh data such as vertex positions or normals.
+   *
+   * @param shading the shading mode to use
+   * @throws IllegalArgumentException if {@code shading} is {@code null}
+   */
+  public void setShading(Shading shading) {
+    if (shading == null) {
+      throw new IllegalArgumentException("Shading cannot be null.");
+    }
+    this.shading = shading;
   }
 }

@@ -11,6 +11,7 @@ public final class MaterialState {
   public boolean useLighting;
   public boolean depthTest;
   public boolean receiveShadows;
+  public boolean smoothShading;
   public Texture diffuseTexture;
   public Color baseColor;
 }

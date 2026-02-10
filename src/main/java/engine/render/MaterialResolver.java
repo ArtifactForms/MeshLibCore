@@ -32,6 +32,8 @@ public final class MaterialResolver {
     s.receiveShadows = m.isReceiveShadows();
     s.diffuseTexture = m.getDiffuseTexture();
 
+    s.smoothShading = m.getShading() == Shading.SMOOTH;
+
     return s;
   }
 

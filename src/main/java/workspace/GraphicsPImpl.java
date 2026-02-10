@@ -49,6 +49,8 @@ public class GraphicsPImpl implements Graphics {
 
   private ProcessingFontManager fontManager;
 
+  private boolean smoothShading;
+
   public GraphicsPImpl(PApplet p) {
     this.g = p.g;
 
@@ -113,6 +115,8 @@ public class GraphicsPImpl implements Graphics {
 
     MaterialState state = MaterialResolver.resolve(material);
     Color base = state.baseColor;
+
+    this.smoothShading = state.smoothShading;
 
     if (state.useLighting) {
       lightRenderer.on();
@@ -188,7 +192,7 @@ public class GraphicsPImpl implements Graphics {
       for (int i = 0; i < indices.length; i++) {
         Vector3f v = mesh.vertices.get(f.indices[i]);
 
-        if (hasNormals) {
+        if (hasNormals && smoothShading) {
           Vector3f normal = vertexNormals.get(f.indices[i]);
           g.normal(normal.getX(), normal.getY(), normal.getZ());
         }
