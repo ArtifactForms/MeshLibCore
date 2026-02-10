@@ -1,7 +1,6 @@
-package demos.jam26port.assets;
+package engine.gfx;
 
 import engine.resources.Texture;
-import mesh.uv.UVRect;
 
 public class TextureAtlas {
 
@@ -29,6 +28,10 @@ public class TextureAtlas {
   }
 
   public TextureAtlas(Texture texture, int rows, int cols, int tileSizePx, float epsPx) {
+    if (texture == null) throw new IllegalArgumentException("texture must not be null");
+    if (rows <= 0 || cols <= 0) throw new IllegalArgumentException("rows/cols must be > 0");
+    if (tileSizePx <= 0) throw new IllegalArgumentException("tileSizePx must be > 0");
+
     this.texture = texture;
     this.rows = rows;
     this.cols = cols;
