@@ -59,6 +59,10 @@ public abstract class BasicApplication implements Application {
 
   public abstract void onRender(Graphics g);
 
+  public void onRenderUI(Graphics g) {
+    // Do nothing
+  }
+
   public abstract void onCleanup();
 
   public void launch(ApplicationSettings settings) {
@@ -163,6 +167,8 @@ public abstract class BasicApplication implements Application {
     if (activeScene != null) {
       activeScene.renderUI(g);
     }
+
+    onRenderUI(g);
 
     // Hack: Disable lighting calculations to ensure UI elements are rendered
     // with full unlit intensity, preventing material-based shading

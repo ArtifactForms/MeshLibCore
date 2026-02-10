@@ -10,6 +10,7 @@ import engine.processing.VBOProcessing;
 import engine.render.Material;
 import engine.render.MaterialResolver;
 import engine.render.MaterialState;
+import engine.render.Shading;
 import engine.resources.FilterMode;
 import engine.resources.Font;
 import engine.resources.Image;
@@ -51,6 +52,8 @@ public class GraphicsPImpl implements Graphics {
 
   private boolean smoothShading;
 
+  private PShader activeShader;
+
   public GraphicsPImpl(PApplet p) {
     this.g = p.g;
 
@@ -60,6 +63,8 @@ public class GraphicsPImpl implements Graphics {
     fontManager = new ProcessingFontManager(p);
 
     color = Color.BLACK;
+
+    setShader("toon.vert", "toon.frag");
   }
 
   @Override
@@ -75,15 +80,12 @@ public class GraphicsPImpl implements Graphics {
   @Override
   public void setShader(String vertexShaderName, String fragmentShaderName) {
     try {
-      // Correctly load the shader using Processing's loadShader
-      PShader shader = g.loadShader("shaders/" + vertexShaderName, "shaders/" + fragmentShaderName);
+      activeShader = g.loadShader("shaders/" + fragmentShaderName, "shaders/" + vertexShaderName);
 
-      if (shader == null) {
-        System.err.println(
-            "Failed to load shader: " + vertexShaderName + ", " + fragmentShaderName);
+      if (activeShader == null) {
+        System.err.println("Failed to load shader.");
       } else {
-        g.shader(shader); // Apply shader to PGraphics
-        System.out.println("Shader applied successfully.");
+        System.out.println("Shader loaded successfully.");
       }
     } catch (Exception e) {
       System.err.println("Error while loading shader: " + e.getMessage());
@@ -137,6 +139,20 @@ public class GraphicsPImpl implements Graphics {
 
     this.g.specular(state.specularR, state.specularG, state.specularB);
     this.g.shininess(state.shininess);
+
+//    if (material.getShading() == Shading.TOON && activeShader != null) {
+//      this.g.shader(activeShader);
+//
+//      // ---- Toon shader uniforms ----
+//      activeShader.set("baseColor", color.getRed(), color.getGreen(), color.getBlue());
+//
+//      activeShader.set("steps", 3);
+//
+//      // Example directional light (view space)
+//      activeShader.set("lightDirection", 0f, -1f, 0f);
+//    } else {
+//      this.g.resetShader();
+//    }
   }
 
   @Override
@@ -207,6 +223,8 @@ public class GraphicsPImpl implements Graphics {
       }
       g.endShape();
     }
+
+    g.resetShader();
   }
 
   @Override
@@ -251,6 +269,8 @@ public class GraphicsPImpl implements Graphics {
         g.endShape();
       }
     }
+
+    g.resetShader();
   }
 
   @Override

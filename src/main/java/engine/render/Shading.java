@@ -25,5 +25,7 @@ public enum Shading {
    * <p>Lighting is evaluated per vertex and interpolated across the surface, producing a smooth
    * appearance between adjacent faces.
    */
-  SMOOTH
+  SMOOTH,
+
+  TOON
 }
