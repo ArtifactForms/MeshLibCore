@@ -27,9 +27,6 @@ import workspace.ui.Graphics;
  *   <li><b>Cleanup</b> – final resource release
  * </ul>
  *
- * <p>This separation allows safe multithreaded updates, editor tooling, and predictable scene
- * management.
- *
  * @see Transform
  * @see Component
  */
@@ -119,7 +116,7 @@ public class SceneNode {
 
     g.popMatrix();
   }
-  
+
   /**
    * Renders all {@link RenderableComponent}s attached to this node.
    *
@@ -142,7 +139,7 @@ public class SceneNode {
   public void update(float tpf) {
     if (!active || destroyed) return;
     updateComponents(tpf);
-    for (SceneNode child : children) {
+    for (SceneNode child : new ArrayList<SceneNode>(children)) {
       child.update(tpf);
     }
   }

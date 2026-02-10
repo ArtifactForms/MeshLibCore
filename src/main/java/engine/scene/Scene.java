@@ -2,7 +2,6 @@ package engine.scene;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import engine.components.Transform;
 import engine.scene.audio.AudioListener;
@@ -22,9 +21,6 @@ public class Scene {
   /** Default name assigned to a newly created scene if no name is provided. */
   private static final String DEFAULT_NAME = "Untitled-Scene";
 
-  /** List of root-level nodes in the scene hierarchy for rendering and updates. */
-  private final ConcurrentLinkedQueue<SceneNode> rootNodes = new ConcurrentLinkedQueue<>();
-
   /** List of lights in the scene that are used for lighting calculations. */
   private final List<Light> lights = new ArrayList<>();
 
@@ -43,6 +39,8 @@ public class Scene {
   private AudioSystem audioSystem;
 
   private SceneNode uiRoot;
+
+  private SceneNode worldRoot;
 
   /** Constructs a {@code Scene} with a default name. */
   public Scene() {
@@ -65,6 +63,8 @@ public class Scene {
     this.audioSystem = new AudioSystem();
     this.uiRoot = new SceneNode("UI-Root");
     this.uiRoot.setScene(this);
+    this.worldRoot = new SceneNode();
+    this.worldRoot.setScene(this);
   }
 
   /**
@@ -75,9 +75,7 @@ public class Scene {
   public void addNode(SceneNode node) {
     if (node == null) throw new IllegalArgumentException("Node cannot be null.");
     node.setScene(this);
-    synchronized (rootNodes) {
-      rootNodes.add(node);
-    }
+    worldRoot.addChild(node);
   }
 
   /**
@@ -103,9 +101,7 @@ public class Scene {
    */
   public void removeNode(SceneNode node) {
     if (node == null) return;
-    synchronized (rootNodes) {
-      rootNodes.remove(node);
-    }
+    worldRoot.removeChild(node);
   }
 
   /**
@@ -114,9 +110,7 @@ public class Scene {
    * @param deltaTime The time step for simulation logic updates.
    */
   public void update(float deltaTime) {
-    for (SceneNode node : rootNodes) {
-      node.update(deltaTime);
-    }
+    worldRoot.update(deltaTime);
     updateAudio();
     updateUI(deltaTime);
   }
@@ -141,9 +135,7 @@ public class Scene {
     listener.setForward(activeCamera.getTransform().getForward());
 
     audioSystem.setListener(listener);
-    for (SceneNode node : rootNodes) {
-      node.updateAudio(audioSystem);
-    }
+    worldRoot.updateAudio(audioSystem);
   }
 
   /**
@@ -169,11 +161,7 @@ public class Scene {
       transform.apply(g);
     }
 
-    synchronized (rootNodes) {
-      for (SceneNode node : rootNodes) {
-        node.render(g);
-      }
-    }
+    worldRoot.render(g);
   }
 
   /**
@@ -264,24 +252,8 @@ public class Scene {
 
   /** Cleans up resources and shuts down the executor safely. */
   public void cleanup() {
-    synchronized (rootNodes) {
-      for (SceneNode node : rootNodes) {
-        node.cleanup();
-      }
-      rootNodes.clear();
-    }
+    worldRoot.cleanup();
     uiRoot.cleanup();
-  }
-
-  /**
-   * Retrieves the number of root nodes in the scene.
-   *
-   * @return The count of root nodes currently present in the scene graph.
-   */
-  public int getRootCount() {
-    synchronized (rootNodes) {
-      return rootNodes.size();
-    }
   }
 
   /**
@@ -293,12 +265,7 @@ public class Scene {
     synchronized (lights) {
       lights.clear();
     }
-    synchronized (rootNodes) {
-      for (SceneNode node : rootNodes) {
-        node.cleanup();
-      }
-      rootNodes.clear();
-    }
+    worldRoot.cleanup();
   }
 
   /**
@@ -310,18 +277,6 @@ public class Scene {
   public List<Light> getAllLights() {
     synchronized (lights) {
       return new ArrayList<>(lights);
-    }
-  }
-
-  /**
-   * Fetches all the nodes at the root level in a thread-safe way. Useful for debugging,
-   * visualization, or debugging purposes to monitor scene nodes in real-time.
-   *
-   * @return A list of root SceneNodes currently in the scene graph.
-   */
-  public List<SceneNode> getRootNodes() {
-    synchronized (rootNodes) {
-      return new ArrayList<>(rootNodes);
     }
   }
 
@@ -339,32 +294,7 @@ public class Scene {
       throw new IllegalArgumentException("Visitor cannot be null.");
     }
 
-    synchronized (rootNodes) {
-      for (SceneNode node : rootNodes) {
-        node.accept(visitor);
-      }
-    }
-  }
-
-  /**
-   * Finds and removes all SceneNodes matching a particular condition. For example, it can remove
-   * nodes based on type or other predicates.
-   *
-   * @param predicate The condition to test nodes against.
-   * @return The number of nodes removed.
-   */
-  public int removeNodesIf(java.util.function.Predicate<SceneNode> predicate) {
-    int count = 0;
-    synchronized (rootNodes) {
-      for (SceneNode node : new ArrayList<>(rootNodes)) {
-        if (predicate.test(node)) {
-          node.cleanup();
-          rootNodes.remove(node);
-          count++;
-        }
-      }
-    }
-    return count;
+    worldRoot.accept(visitor);
   }
 
   /**
