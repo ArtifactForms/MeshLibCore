@@ -110,7 +110,11 @@ public class Scene {
    * @param deltaTime The time step for simulation logic updates.
    */
   public void update(float deltaTime) {
+
     worldRoot.update(deltaTime);
+
+    worldRoot.pruneDestroyedChildren();
+
     updateAudio();
     updateUI(deltaTime);
   }

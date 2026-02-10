@@ -163,7 +163,7 @@ public class SceneNode {
    * @param tpf time per frame
    */
   protected void updateComponents(float tpf) {
-    for (Component component : new ArrayList<>(components)) {
+    for (Component component : components) {
       component.update(tpf);
     }
   }
@@ -210,29 +210,54 @@ public class SceneNode {
   public void destroy() {
     if (destroyed) return;
     destroyed = true;
-
-    for (SceneNode child : new ArrayList<>(children)) {
+    setActive(false);
+    for (SceneNode child : children) {
       child.destroy();
     }
+  }
 
-    for (Component component : new ArrayList<>(components)) {
-      try {
-        component.onDetach();
-        component.setOwner(null);
-      } catch (Exception e) {
-        System.err.println("Error destroying component: " + e.getMessage());
-      }
+  /**
+   * Removes and cleans up all child nodes that have been marked as destroyed.
+   *
+   * <p>This method performs a <b>post-order traversal</b> of the scene graph: child nodes are
+   * processed first, followed by the current node. This ensures that entire subtrees are safely and
+   * completely removed before their parents are modified.
+   *
+   * <p>For each child node where {@code destroyed == true}, the following steps are executed:
+   *
+   * <ol>
+   *   <li>{@link #cleanup()} is called to release all resources and detach components
+   *   <li>The parent reference of the child is cleared
+   *   <li>The child is removed from this node's children list
+   * </ol>
+   *
+   * <p>This method is intended to be called <b>after</b> update traversal has completed. It must
+   * not be invoked while the scene graph is being iterated for update or render operations, as it
+   * performs structural modifications.
+   *
+   * <p>Typical usage is within a dedicated "prune" phase at the scene level, allowing {@link
+   * #destroy()} to remain a lightweight, non-structural operation.
+   *
+   * <p>This design avoids {@link java.util.ConcurrentModificationException}, enables deterministic
+   * lifecycle management, and supports safe future extensions such as multithreaded updates or
+   * editor tooling.
+   */
+  protected void pruneDestroyedChildren() {
+    // children first (post-order traversal)
+    for (SceneNode child : new ArrayList<>(children)) {
+      child.pruneDestroyedChildren();
     }
-    components.clear();
 
-    if (parent != null) {
-      parent.children.remove(this);
-      parent = null;
-    } else if (scene != null) {
-      scene.removeNode(this);
-    }
-
-    scene = null;
+    // remove destroyed children locally
+    children.removeIf(
+        child -> {
+          if (child.destroyed) {
+            child.cleanup();
+            child.parent = null;
+            return true;
+          }
+          return false;
+        });
   }
 
   /** Detaches this node from its parent or scene without destroying it. */
