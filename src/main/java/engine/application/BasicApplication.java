@@ -28,6 +28,8 @@ public abstract class BasicApplication implements Application {
 
   private boolean isPaused = false;
 
+  private boolean autoUpdateAspectRatio = true;
+
   private Timer timer;
 
   protected Input input;
@@ -113,8 +115,17 @@ public abstract class BasicApplication implements Application {
     DebugDraw.initialize(debugContext);
   }
 
+  private void updateAspectRatio() {
+    if (!autoUpdateAspectRatio) return;
+    if (activeScene != null && activeScene.getActiveCamera() != null) {
+      activeScene.getActiveCamera().setAspectRatio((float) viewport.getWidth() / (float) viewport.getHeight());
+    }
+  }
+
   @Override
   public void update() {
+    updateAspectRatio();
+
     timer.update();
 
     if (settings.isUseGamePadInput()) input.updateGamepadState();
