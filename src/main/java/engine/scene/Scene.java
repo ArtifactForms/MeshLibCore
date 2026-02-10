@@ -25,8 +25,6 @@ public class Scene {
   /** List of root-level nodes in the scene hierarchy for rendering and updates. */
   private final ConcurrentLinkedQueue<SceneNode> rootNodes = new ConcurrentLinkedQueue<>();
 
-  private final ConcurrentLinkedQueue<SceneNode> rootOverlays = new ConcurrentLinkedQueue<>();
-
   /** List of lights in the scene that are used for lighting calculations. */
   private final List<Light> lights = new ArrayList<>();
 
@@ -79,14 +77,6 @@ public class Scene {
     node.setScene(this);
     synchronized (rootNodes) {
       rootNodes.add(node);
-    }
-  }
-
-  public void addOverlay(SceneNode node) {
-    if (node == null) throw new IllegalArgumentException("Node cannot be null.");
-    node.setScene(this);
-    synchronized (rootOverlays) {
-      rootOverlays.add(node);
     }
   }
 
@@ -184,16 +174,6 @@ public class Scene {
         node.render(g);
       }
     }
-
-    g.disableDepthTest();
-
-    synchronized (rootOverlays) {
-      for (SceneNode node : rootOverlays) {
-        node.render(g);
-      }
-    }
-
-    g.enableDepthTest();
   }
 
   /**
