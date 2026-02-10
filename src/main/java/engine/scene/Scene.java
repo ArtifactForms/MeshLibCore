@@ -168,11 +168,15 @@ public class Scene {
    */
   public void render(Graphics g) {
 
-    g.clear(background);
+    g.disableDepthTest();
+    g.setColor(background);
+    g.fillRect(0, 0, g.getWidth(), g.getHeight());
+    g.enableDepthTest();
 
     if (activeCamera != null) {
       g.applyCamera(activeCamera);
     }
+
     renderLights(g);
 
     if (transform != null) {
