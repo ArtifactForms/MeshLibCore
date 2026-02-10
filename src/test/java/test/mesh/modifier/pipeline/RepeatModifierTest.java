@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import mesh.Mesh3D;
 import mesh.creator.primitives.UVSphereCreator;
 import mesh.modifier.IMeshModifier;
-import mesh.pipeline.RepeatModifier;
+import mesh.modifier.pipeline.RepeatModifier;
 
 class RepeatModifierTest {
 
