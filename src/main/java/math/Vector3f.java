@@ -115,46 +115,107 @@ public class Vector3f {
     return (diffX <= threshold && diffY <= threshold && diffZ <= threshold);
   }
 
+  /**
+   * Computes the angle in radians between this vector and {@code v}.
+   *
+   * @param v The other vector.
+   * @return The unsigned angle in radians in the range [0, PI].
+   * @throws IllegalArgumentException If one of the vectors has zero length.
+   */
   public float angle(Vector3f v) {
-    return (float) Math.acos(dot(v));
+    float denominator = length() * v.length();
+    if (denominator == 0.0f) {
+      throw new IllegalArgumentException("Angle is undefined for zero-length vectors.");
+    }
+    float cosine = dot(v) / denominator;
+    cosine = Math.max(-1.0f, Math.min(1.0f, cosine));
+    return (float) Math.acos(cosine);
   }
 
+  /**
+   * Computes the signed angle between this vector and {@code v} around a plane normal.
+   *
+   * @param v The target vector.
+   * @param normal The normal that defines the orientation of the signed angle.
+   * @return Signed angle in radians.
+   */
   public float signedAngle(Vector3f v, Vector3f normal) {
-    float unsignedAngle = (float) Math.acos(dot(v));
-    return unsignedAngle * Math.signum(normal.dot(cross(v)));
+    float unsignedAngle = angle(v);
+    return unsignedAngle * Math.signum(cross(v).dot(normal));
   }
 
+  /**
+   * Projects this vector onto {@code v}.
+   *
+   * @param v The vector to project onto.
+   * @return Projected vector.
+   */
   public Vector3f project(Vector3f v) {
     float scalar = dot(v) / v.lengthSquared();
     return v.mult(scalar);
   }
 
+  /**
+   * Projects this vector onto {@code v} and stores the result in this vector.
+   *
+   * @param v The vector to project onto.
+   * @return This vector after projection.
+   */
   public Vector3f projectLocal(Vector3f v) {
     float scalar = dot(v) / v.lengthSquared();
     set(v.mult(scalar));
     return this;
   }
 
+  /**
+   * Projects this vector onto the plane defined by {@code planeNormal}.
+   *
+   * @param planeNormal The plane normal.
+   * @return Projected vector on the plane.
+   */
   public Vector3f projectOnPlane(Vector3f planeNormal) {
-    // FIXME Check if this implementation is correct.
     float scalar = dot(planeNormal) / planeNormal.lengthSquared();
     return subtract(planeNormal.mult(scalar));
   }
 
+  /**
+   * Projects this vector onto the plane defined by {@code planeNormal} and stores it locally.
+   *
+   * @param planeNormal The plane normal.
+   * @return This vector after projection on the plane.
+   */
   public Vector3f projectOnPlaneLocal(Vector3f planeNormal) {
-    // FIXME Check if this implementation is correct.
     float scalar = dot(planeNormal) / planeNormal.lengthSquared();
     subtractLocal(planeNormal.mult(scalar));
     return this;
   }
 
+  /**
+   * Returns a vector whose length is at most {@code maxLength}.
+   *
+   * @param maxLength Maximum allowed length.
+   * @return New vector clamped to the requested maximum length.
+   */
   public Vector3f clampLength(float maxLength) {
-    return normalize().mult(maxLength);
+    float currentLength = length();
+    if (currentLength > maxLength && currentLength != 0.0f) {
+      return divide(currentLength).mult(maxLength);
+    }
+    return new Vector3f(this);
   }
 
+  /**
+   * Clamps this vector's length so it is at most {@code maxLength}.
+   *
+   * @param maxLength Maximum allowed length.
+   * @return This vector.
+   */
   public Vector3f clampLengthLocal(float maxLength) {
-    normalizeLocal();
-    multLocal(maxLength);
+    float currentLength = length();
+    if (currentLength > maxLength && currentLength != 0.0f) {
+      divideLocal(currentLength);
+      multLocal(maxLength);
+    }
     return this;
   }
 
@@ -211,9 +272,12 @@ public class Vector3f {
   }
 
   public Vector3f crossLocal(float x, float y, float z) {
-    this.x = (this.y * z) - (this.z * y);
-    this.y = (this.z * x) - (this.x * z);
-    this.z = (this.x * y) - (this.y * x);
+    float oldX = this.x;
+    float oldY = this.y;
+    float oldZ = this.z;
+    this.x = (oldY * z) - (oldZ * y);
+    this.y = (oldZ * x) - (oldX * z);
+    this.z = (oldX * y) - (oldY * x);
     return this;
   }
 
@@ -222,9 +286,12 @@ public class Vector3f {
   }
 
   public Vector3f crossLocal(Vector3f v) {
-    x = (y * v.z) - (z * v.y);
-    y = (z * v.x) - (x * v.z);
-    z = (x * v.y) - (y * v.x);
+    float oldX = x;
+    float oldY = y;
+    float oldZ = z;
+    x = (oldY * v.z) - (oldZ * v.y);
+    y = (oldZ * v.x) - (oldX * v.z);
+    z = (oldX * v.y) - (oldY * v.x);
     return this;
   }
 
