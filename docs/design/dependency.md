@@ -34,6 +34,27 @@ workspace (tooling, side-module)
 * No cyclic dependencies are allowed
 * Tooling modules are explicitly separated
 
+## Intended Dependency Structure
+
+```mermaid
+graph TD
+    math["math<br/>deterministic core"]
+
+    mesh["mesh<br/>geometry logic"]
+
+    engine["engine<br/>systems & abstractions"]
+
+    demos["demos<br/>unsafe experiments"]
+
+    workspace["workspace<br/>tooling & visualization"]
+
+    mesh -->|uses| math
+    engine -->|builds on| mesh
+    engine -->|uses| math
+    demos -->|tests| engine
+    workspace -->|visualizes| mesh
+```
+
 ---
 
 ## `math` Module
