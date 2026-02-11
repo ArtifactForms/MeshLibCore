@@ -10,7 +10,7 @@ import math.Matrix4f;
 import math.Vector3f;
 import mesh.Mesh3D;
 
-public interface Graphics3D extends Graphics2D {
+public interface Graphics3D {
 
   void translate(float x, float y, float z);
 
