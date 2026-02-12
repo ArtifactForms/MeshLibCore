@@ -3,7 +3,7 @@ package util;
 import java.util.HashSet;
 import java.util.List;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import math.Vector3f;
 import mesh.Edge3D;
@@ -120,7 +120,7 @@ public class MeshTestUtil {
   }
 
   public static void assertEdgeCountEquals(Mesh3D mesh, int expectedEdgeCount) {
-    Assert.assertEquals(calculateEdgeCount(mesh), expectedEdgeCount);
+    Assertions.assertEquals(calculateEdgeCount(mesh), expectedEdgeCount);
   }
 
   public static void assertEveryEdgeHasALengthOf(
@@ -129,7 +129,7 @@ public class MeshTestUtil {
       for (int i = 0; i < face.indices.length; i++) {
         Vector3f v0 = mesh.vertices.get(face.indices[i]);
         Vector3f v1 = mesh.vertices.get(face.indices[(i + 1) % face.indices.length]);
-        Assert.assertEquals(expectedEdgeLength, v0.distance(v1), delta);
+        Assertions.assertEquals(expectedEdgeLength, v0.distance(v1), delta);
       }
     }
   }
