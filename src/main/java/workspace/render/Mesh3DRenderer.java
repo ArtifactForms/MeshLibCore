@@ -91,8 +91,8 @@ public class Mesh3DRenderer {
 
   private void drawFacesSmooth(Mesh3D mesh, Collection<Face3D> faces) {
     context.pushMatrix();
-
-    mesh.apply(new UpdateFaceNormalsModifier());
+    
+    new UpdateFaceNormalsModifier().modify(mesh);
 
     VertexNormals normals = new VertexNormals(mesh);
 
@@ -130,41 +130,6 @@ public class Mesh3DRenderer {
 
     context.popMatrix();
   }
-
-  //	private void drawFacesFlat(PGraphics3D context, Mesh3D mesh,
-  //	    Collection<Face3D> faces) {
-  //		context.pushMatrix();
-  //
-  //		for (Face3D f : faces) {
-  //			Vector3f v;
-  //
-  //			if (f.indices.length == 3) {
-  //				context.beginShape(PApplet.TRIANGLES);
-  //			}
-  //
-  //			if (f.indices.length == 4) {
-  //				context.beginShape(PApplet.QUADS);
-  //			}
-  //
-  //			if (f.indices.length > 4) {
-  //				context.beginShape();
-  //			}
-  //
-  //			for (int i = 0; i < f.indices.length; i++) {
-  //				v = mesh.vertices.get(f.indices[i]);
-  //				context.vertex(v.getX(), v.getY(), v.getZ());
-  //			}
-  //
-  //			if (f.indices.length > 4) {
-  //				context.endShape(PApplet.CLOSE);
-  //			} else {
-  //				context.endShape();
-  //			}
-  //
-  //		}
-  //
-  //		context.popMatrix();
-  //	}
 
   private void drawFacesFlat(PGraphics3D context, Mesh3D mesh, Collection<Face3D> faces) {
     for (Face3D f : faces) {
