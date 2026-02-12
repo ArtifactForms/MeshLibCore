@@ -17,7 +17,6 @@ import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.topology.ExtrudeModifier;
-import mesh.modifier.topology.HolesModifier;
 import mesh.modifier.topology.RandomHolesModifier;
 
 public class RandomHolesModifierTest {
