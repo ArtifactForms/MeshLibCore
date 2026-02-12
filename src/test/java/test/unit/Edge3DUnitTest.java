@@ -211,4 +211,42 @@ public class Edge3DUnitTest {
   public void constructor_rejectsNegativeToIndex() {
     assertThrows(IllegalArgumentException.class, () -> new Edge3D(32, -12));
   }
+
+  @Test
+  public void edge_isNotEqualToDifferentClass() {
+    Edge3D edge = new Edge3D(1, 2);
+
+    assertNotEquals(edge, "not an edge");
+  }
+
+  @Test
+  public void edgesWithDifferentIndices_areNotEqual() {
+    Edge3D edge0 = new Edge3D(1, 2);
+    Edge3D edge1 = new Edge3D(2, 3);
+
+    assertNotEquals(edge0, edge1);
+  }
+
+  @Test
+  public void toString_returnsExpectedFormat() {
+    Edge3D edge = new Edge3D(3, 7);
+
+    assertEquals("Edge3D[from=3, to=7]", edge.toString());
+  }
+  
+  @Test
+  public void edgesWithSameFromIndexButDifferentToIndex_areNotEqual() {
+    Edge3D edge0 = new Edge3D(1, 2);
+    Edge3D edge1 = new Edge3D(1, 3);
+
+    assertNotEquals(edge0, edge1);
+  }
+  
+  @Test
+  public void edgesWithDifferentFromIndexButSameToIndex_areNotEqual() {
+    Edge3D edge0 = new Edge3D(1, 2);
+    Edge3D edge1 = new Edge3D(3, 2);
+
+    assertNotEquals(edge0, edge1);
+  }
 }
