@@ -2387,7 +2387,7 @@ public class Vector4fTest {
     Vector4f reflected = v1.reflect(normal);
 
     // Assert that the returned instance is a new object
-    assertNotSame("The method should return a new Vector4f instance.", v1, reflected);
+    assertNotSame(v1, reflected, "The method should return a new Vector4f instance.");
 
     // Assert the original vector remains unchanged
     assertEquals(originalV1, v1, "The original vector should remain unchanged.");
