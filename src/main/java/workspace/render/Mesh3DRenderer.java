@@ -216,40 +216,6 @@ public class Mesh3DRenderer {
   
     }
 
-  public void drawFacesColored(Mesh3D mesh) {
-    context.pushMatrix();
-    for (Face3D f : mesh.faces) {
-      context.fill(f.color.getRedInt(), f.color.getGreenInt(), f.color.getBlueInt());
-
-      Vector3f v;
-
-      if (f.indices.length == 3) {
-        context.beginShape(PApplet.TRIANGLES);
-      }
-
-      if (f.indices.length == 4) {
-        context.beginShape(PApplet.QUADS);
-      }
-
-      if (f.indices.length > 4) {
-        context.beginShape();
-      }
-
-      for (int i = 0; i < f.indices.length; i++) {
-        v = mesh.vertices.get(f.indices[i]);
-        context.vertex(v.getX(), v.getY(), v.getZ());
-      }
-
-      if (f.indices.length > 4) {
-        context.endShape(PApplet.CLOSE);
-      } else {
-        context.endShape();
-      }
-    }
-
-    context.popMatrix();
-  }
-
   public void drawFaces(Mesh3D mesh, Collection<Face3D> faces) {
     drawFaces(mesh, faces, Shading.FLAT);
   }

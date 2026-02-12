@@ -2,12 +2,9 @@ package mesh;
 
 import java.util.Arrays;
 
-import math.Color;
 import math.Vector3f;
 
 public class Face3D {
-
-  public Color color;
 
   public int[] indices;
 
@@ -26,7 +23,6 @@ public class Face3D {
   }
 
   public Face3D(Face3D f) {
-    this.color = new Color(f.color);
     this.indices = Arrays.copyOf(f.indices, f.indices.length);
     this.uvIndices = f.uvIndices != null ? Arrays.copyOf(f.uvIndices, f.uvIndices.length) : null;
     this.normal = new Vector3f(f.normal);
@@ -34,7 +30,6 @@ public class Face3D {
   }
 
   public Face3D(int[] indices, int[] uvIndices) {
-    this.color = new Color();
     this.indices = new int[indices.length];
     this.normal = new Vector3f();
     this.tag = "";
