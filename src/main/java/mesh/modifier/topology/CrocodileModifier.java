@@ -101,7 +101,7 @@ public class CrocodileModifier implements IMeshModifier {
       int toIndex = face.indices[(i + 1) % face.indices.length];
       int centerIndex = nextIndex;
       Face3D triangle = new Face3D(fromIndex, toIndex, centerIndex);
-      triangle.tag = "spikes";
+      triangle.setTag("spikes");
       mesh.add(triangle);
     }
   }

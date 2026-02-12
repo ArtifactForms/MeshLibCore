@@ -12,11 +12,7 @@ public class Face3D {
 
   public Vector3f normal;
 
-  public String tag;
-
-  public Face3D() {
-    this(new int[0], new int[0]);
-  }
+  private String tag;
 
   public Face3D(int... indices) {
     this(indices, new int[0]);
@@ -68,5 +64,13 @@ public class Face3D {
   @Override
   public String toString() {
     return "Face3D [indices=" + Arrays.toString(indices) + "]";
+  }
+
+  public String getTag() {
+    return tag;
+  }
+
+  public void setTag(String tag) {
+    this.tag = tag;
   }
 }

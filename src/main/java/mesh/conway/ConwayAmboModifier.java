@@ -85,7 +85,7 @@ public class ConwayAmboModifier implements IMeshModifier {
                 edge = helper.getPairNext(edge.getFromIndex(), edge.getToIndex());
             } while (!outgoingEdge.equals(edge));
             Face3D face = new Face3D(toReverseArray(indices));
-            face.tag = "ambo";
+            face.setTag("ambo");
             facesToAdd.add(face);
         }
     }

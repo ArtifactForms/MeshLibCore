@@ -182,7 +182,7 @@ public class FaceSelection {
 
     public void selectByTag(String tag) {
         for (Face3D face : mesh.faces) {
-            if (face.tag.equals(tag))
+            if (face.getTag().equals(tag))
                 faceSet.add(face);
         }
     }
