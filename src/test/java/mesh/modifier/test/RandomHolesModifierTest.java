@@ -1,10 +1,10 @@
 package mesh.modifier.test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +17,7 @@ import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.topology.HolesModifier;
 import mesh.modifier.topology.RandomHolesModifier;
 
 public class RandomHolesModifierTest {
@@ -97,6 +98,8 @@ public class RandomHolesModifierTest {
           new Vector3f(-0.6847742f, 0.0f, -0.6847742f)
         };
     Mesh3D mesh = new PlaneCreator().create();
+    RandomHolesModifier modifier = new RandomHolesModifier();
+    modifier.setSeed(0);
     modifier.modify(mesh);
     assertArrayEquals(expected, mesh.vertices.toArray());
   }
