@@ -134,10 +134,10 @@ public class SolidifyModifier implements IMeshModifier {
    * @param forwardEdge The edge of the face to bridge.
    */
   private void bridgeHole(Edge3D forwardEdge) {
-    Vector3f v0 = innerMesh.getVertexAt(forwardEdge.fromIndex);
-    Vector3f v1 = innerMesh.getVertexAt(forwardEdge.toIndex);
-    Vector3f v2 = mesh.getVertexAt(forwardEdge.fromIndex);
-    Vector3f v3 = mesh.getVertexAt(forwardEdge.toIndex);
+    Vector3f v0 = innerMesh.getVertexAt(forwardEdge.getFromIndex());
+    Vector3f v1 = innerMesh.getVertexAt(forwardEdge.getToIndex());
+    Vector3f v2 = mesh.getVertexAt(forwardEdge.getFromIndex());
+    Vector3f v3 = mesh.getVertexAt(forwardEdge.getToIndex());
     FaceBridging.bridge(mesh, v0, v1, v2, v3);
   }
 

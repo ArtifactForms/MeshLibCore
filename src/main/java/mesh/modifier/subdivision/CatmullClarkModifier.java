@@ -102,8 +102,8 @@ public class CatmullClarkModifier implements IMeshModifier {
     }
 
     private Vector3f calculateMidPoint(Edge3D edge) {
-        Vector3f from = mesh.getVertexAt(edge.fromIndex);
-        Vector3f to = mesh.getVertexAt(edge.toIndex);
+        Vector3f from = mesh.getVertexAt(edge.getFromIndex());
+        Vector3f to = mesh.getVertexAt(edge.getToIndex());
         return from.add(to).mult(0.5f);
     }
 

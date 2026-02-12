@@ -94,8 +94,8 @@ public class PlanarMidEdgeModifier implements IMeshModifier {
     }
 
     private Vector3f calculateMidPoint(Edge3D edge) {
-        Vector3f from = mesh.getVertexAt(edge.fromIndex);
-        Vector3f to = mesh.getVertexAt(edge.toIndex);
+        Vector3f from = mesh.getVertexAt(edge.getFromIndex());
+        Vector3f to = mesh.getVertexAt(edge.getToIndex());
         Vector3f midPoint = from.subtract(to).mult(0.5f).add(to);
         return midPoint;
     }

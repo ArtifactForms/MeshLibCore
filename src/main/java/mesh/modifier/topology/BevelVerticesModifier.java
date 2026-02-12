@@ -175,7 +175,7 @@ public class BevelVerticesModifier implements IMeshModifier {
     do {
       int index = edgeToEdgePointIndex.get(edge);
       indices.add(index);
-      edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
+      edge = helper.getPairNext(edge.getFromIndex(), edge.getToIndex());
     } while (!outgoingEdge.equals(edge));
 
     return indices;

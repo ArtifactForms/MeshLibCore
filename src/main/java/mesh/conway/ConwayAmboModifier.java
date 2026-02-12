@@ -77,12 +77,12 @@ public class ConwayAmboModifier implements IMeshModifier {
             Edge3D edge = outgoingEdge;
             Vector<Integer> indices = new Vector<Integer>();
             do {
-                Vector3f from = getOriginalVertexAt(edge.fromIndex);
-                Vector3f to = getOriginalVertexAt(edge.toIndex);
+                Vector3f from = getOriginalVertexAt(edge.getFromIndex());
+                Vector3f to = getOriginalVertexAt(edge.getToIndex());
                 Vector3f edgePoint = calculateEdgePoint(from, to);
                 int index = verticesToAdd.indexOf(edgePoint);
                 indices.add(index);
-                edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
+                edge = helper.getPairNext(edge.getFromIndex(), edge.getToIndex());
             } while (!outgoingEdge.equals(edge));
             Face3D face = new Face3D(toReverseArray(indices));
             face.tag = "ambo";

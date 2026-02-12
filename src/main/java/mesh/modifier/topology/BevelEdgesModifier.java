@@ -76,9 +76,9 @@ public class BevelEdgesModifier implements IMeshModifier {
 	    List<Integer> indices = new ArrayList<Integer>();
 	    do {
 		Edge3D newEdge = edgeProcessor.getMappedEdge(edge);
-		int index = newEdge.fromIndex;
+		int index = newEdge.getFromIndex();
 		indices.add(index);
-		edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
+		edge = helper.getPairNext(edge.getFromIndex(), edge.getToIndex());
 	    } while (!outgoingEdge.equals(edge));
 	    facesToAdd.add(new Face3D(toReverseArray(indices)));
 	}
@@ -105,7 +105,7 @@ public class BevelEdgesModifier implements IMeshModifier {
     }
 
     private void createFaceForEdge(Edge3D edge, Edge3D pair) {
-	addNewFace(edge.toIndex, edge.fromIndex, pair.toIndex, pair.fromIndex);
+	addNewFace(edge.getToIndex(), edge.getFromIndex(), pair.getToIndex(), pair.getFromIndex());
     }
 
     private int[] toReverseArray(List<Integer> values) {

@@ -94,12 +94,12 @@ public class DooSabinModifier implements IMeshModifier {
             Edge3D edge = outgoingEdge;
             Vector<Integer> indices = new Vector<Integer>();
             do {
-                Face3D face = helper.getFaceByEdge(edge.fromIndex,
-                        edge.toIndex);
+                Face3D face = helper.getFaceByEdge(edge.getFromIndex(),
+                        edge.getToIndex());
                 int index = vertexFaceMap
                         .get(new VertexFacePair(source.getVertexAt(i), face));
                 indices.add(index);
-                edge = helper.getPairNext(edge.fromIndex, edge.toIndex);
+                edge = helper.getPairNext(edge.getFromIndex(), edge.getToIndex());
             } while (!outgoingEdge.equals(edge));
             addFace(indices);
         }
@@ -113,8 +113,8 @@ public class DooSabinModifier implements IMeshModifier {
         for (Edge3D edge : edges) {
             Face3D face0 = edgeToFaceMap.get(edge);
             Face3D face1 = edgeToFaceMap.get(edge.createPair());
-            Vector3f v0 = source.getVertexAt(edge.fromIndex);
-            Vector3f v1 = source.getVertexAt(edge.toIndex);
+            Vector3f v0 = source.getVertexAt(edge.getFromIndex());
+            Vector3f v1 = source.getVertexAt(edge.getToIndex());
             int idx0 = vertexFaceMap.get(new VertexFacePair(v1, face0));
             int idx1 = vertexFaceMap.get(new VertexFacePair(v0, face0));
             int idx2 = vertexFaceMap.get(new VertexFacePair(v0, face1));
