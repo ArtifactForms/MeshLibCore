@@ -120,6 +120,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
       new Vector3f(-0.6847742f, 0.0f, -0.6847742f)
     };
     Mesh3D plane = new PlaneCreator().create();
+    modifier.setSeed(0);
     modifier.modify(plane, plane.getFaceAt(0));
     assertArrayEquals(expected, plane.vertices.toArray());
   }
