@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import math.Vector3f;
 import mesh.Face3D;
@@ -21,7 +21,7 @@ public class PokeFacesModifierTest {
 
     private PokeFacesModifier modifier;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         modifier = new PokeFacesModifier();
     }

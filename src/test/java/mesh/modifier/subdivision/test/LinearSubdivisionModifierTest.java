@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import math.Vector3f;
 import mesh.Face3D;
@@ -28,7 +28,7 @@ public class LinearSubdivisionModifierTest {
 
     private Mesh3D cubeMesh;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         modifier = new LinearSubdivisionModifier();
         cubeMesh = new CubeCreator().create();
