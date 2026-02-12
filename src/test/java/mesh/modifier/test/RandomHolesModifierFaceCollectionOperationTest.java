@@ -144,6 +144,7 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     ArrayList<Face3D> faces = new ArrayList<Face3D>();
     Mesh3D plane = new PlaneCreator().create();
     faces.add(plane.getFaceAt(0));
+    modifier.setSeed(0);
     modifier.modify(plane, faces);
     assertArrayEquals(expected, plane.vertices.toArray());
   }
@@ -262,7 +263,7 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     extrudeModifier.setRemoveFaces(true);
     extrudeModifier.setScale(amount);
     extrudeModifier.setAmount(0);
-    expected.apply(extrudeModifier);
+    extrudeModifier.modify(expected);
 
     Mesh3D actual = new PlaneCreator().create();
     ArrayList<Face3D> faces = new ArrayList<Face3D>();
