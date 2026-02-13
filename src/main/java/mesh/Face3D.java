@@ -8,7 +8,7 @@ public class Face3D {
 
   public int[] indices;
 
-  public int[] uvIndices;
+  private int[] uvIndices;
 
   public Vector3f normal;
 
