@@ -45,7 +45,7 @@ public class ArchDoorCreator implements IMeshCreator {
 
   private void createBottomVertices() {
     Mesh3D bottom = createArcCreator().create();
-    bottom.apply(new RotateXModifier(Mathf.HALF_PI));
+    new RotateXModifier(Mathf.HALF_PI).modify(bottom);
     for (Vector3f v : bottom.vertices) v.setY(0);
     mesh.append(bottom);
   }
@@ -55,7 +55,7 @@ public class ArchDoorCreator implements IMeshCreator {
   }
 
   private void translate() {
-    mesh.apply(new TranslateModifier(radius / 2, 0, depth / 2));
+    new TranslateModifier(radius / 2, 0, depth / 2).modify(mesh);
   }
 
   private void createFaces() {
@@ -65,8 +65,8 @@ public class ArchDoorCreator implements IMeshCreator {
   private void createTopVertices() {
     Mesh3D top = createArcCreator().create();
 
-    top.apply(new RotateXModifier(Mathf.HALF_PI));
-    top.apply(new TranslateModifier(0, -extendBottom, 0));
+    new RotateXModifier(Mathf.HALF_PI).modify(top);
+    new TranslateModifier(0, -extendBottom, 0).modify(top);
 
     mesh.append(top);
   }
