@@ -1,4 +1,4 @@
-package mesh.uv;
+package mesh.modifiers.uv;
 
 import math.Vector2f;
 import mesh.Mesh3D;
