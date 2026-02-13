@@ -1,0 +1,6 @@
+o ModularKitFloorSegmentCreator
+v 2.0 0.0 -2.0
+v 2.0 0.0 2.0
+v -2.0 0.0 2.0
+v -2.0 0.0 -2.0
+f 1 2 3 4 
