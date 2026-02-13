@@ -85,7 +85,7 @@ public class ProArchCreator implements IMeshCreator {
     creator.setCapEnd(capEnd);
 
     Mesh3D mesh = creator.create();
-    mesh.apply(new RotateXModifier(Mathf.HALF_PI));
+    new RotateXModifier(Mathf.HALF_PI).modify(mesh);
 
     return mesh;
   }
@@ -108,7 +108,7 @@ public class ProArchCreator implements IMeshCreator {
     creator.setTopInnerRadius(innerRadius);
 
     Mesh3D mesh = creator.create();
-    mesh.apply(new RotateXModifier(Mathf.HALF_PI));
+    new RotateXModifier(Mathf.HALF_PI).modify(mesh);
 
     return mesh;
   }
