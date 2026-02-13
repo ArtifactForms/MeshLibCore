@@ -1,4 +1,4 @@
-package mesh.modifiers.uv;
+package mesh.modifier.uv;
 
 import java.util.ArrayList;
 
