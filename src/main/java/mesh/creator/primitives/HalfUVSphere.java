@@ -6,6 +6,7 @@ import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class HalfUVSphere implements IMeshCreator {
 
@@ -115,7 +116,7 @@ public class HalfUVSphere implements IMeshCreator {
     }
 
     private void translate() {
-        mesh.translateY(-radius / 2f);
+        new TranslateModifier(0, -radius * 0.5f, 0).modify(mesh);
     }
 
     private void initializeMesh() {
