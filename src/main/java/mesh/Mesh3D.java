@@ -181,6 +181,10 @@ public class Mesh3D {
     vertices.clear();
   }
 
+  public void clearFaces() {
+    faces.clear();
+  }
+
   public int addVertex(float x, float y, float z) {
     int index = vertices.size();
     vertices.add(new Vector3f(x, y, z));
