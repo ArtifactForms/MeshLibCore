@@ -5,90 +5,85 @@ import java.util.List;
 
 public class Animation {
 
-    private boolean finished;
+  private boolean finished;
 
-    private float timePerFrame;
+  private float timePerFrame;
 
-    private long lastTime;
+  private long lastTime;
 
-    private boolean running;
+  private boolean running;
 
-    private List<IAnimator> animators;
+  private List<Animater> animators;
 
-    public Animation() {
-        animators = new ArrayList<IAnimator>();
+  public Animation() {
+    animators = new ArrayList<Animater>();
+  }
+
+  public void start() {
+    if (running) return;
+    running = true;
+    lastTime = System.currentTimeMillis();
+  }
+
+  public void stop() {
+    if (!running) return;
+    running = false;
+  }
+
+  public void update() {
+    if (!running) return;
+    updateTime();
+    updateAnimators(timePerFrame);
+  }
+
+  public void restore() {
+    finished = false;
+    for (Animater animator : animators) {
+      animator.restore();
     }
+  }
 
-    public void start() {
-        if (running)
-            return;
-        running = true;
-        lastTime = System.currentTimeMillis();
-    }
+  private void updateTime() {
+    long time = System.currentTimeMillis();
+    long delta = time - lastTime;
+    lastTime = time;
+    timePerFrame = delta / 1000f;
+  }
 
-    public void stop() {
-        if (!running)
-            return;
-        running = false;
+  private void updateAnimators(float tpf) {
+    if (finished) return;
+    int finishedAnimatorsCount = 0;
+    for (Animater animator : animators) {
+      if (!animator.isFinished()) {
+        animator.update(tpf);
+      } else {
+        finishedAnimatorsCount++;
+      }
     }
+    this.finished = finishedAnimatorsCount == animators.size();
+  }
 
-    public void update() {
-        if (!running)
-            return;
-        updateTime();
-        updateAnimators(timePerFrame);
-    }
+  public void addAnimator(Animater animator) {
+    animators.add(animator);
+  }
 
-    public void restore() {
-        finished = false;
-        for (IAnimator animator : animators) {
-            animator.restore();
-        }
-    }
+  public void removeAnimator(Animater animator) {
+    animators.add(animator);
+  }
 
-    private void updateTime() {
-        long time = System.currentTimeMillis();
-        long delta = time - lastTime;
-        lastTime = time;
-        timePerFrame = delta / 1000f;
-    }
+  public void setFinished(boolean finished) {
+    this.finished = finished;
+  }
 
-    private void updateAnimators(float tpf) {
-        if (finished)
-            return;
-        int finishedAnimatorsCount = 0;
-        for (IAnimator animator : animators) {
-            if (!animator.isFinished()) {
-                animator.update(tpf);
-            } else {
-                finishedAnimatorsCount++;
-            }
-        }
-        this.finished = finishedAnimatorsCount == animators.size();
-    }
+  public boolean isFinished() {
+    return finished;
+  }
 
-    public void addAnimator(IAnimator animator) {
-        animators.add(animator);
-    }
+  public boolean isRunning() {
+    return running;
+  }
 
-    public void removeAnimator(IAnimator animator) {
-        animators.add(animator);
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-    
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void clear() {
-        animators.clear();
-    }
-
+  public void clear() {
+    animators.clear();
+  }
 }
