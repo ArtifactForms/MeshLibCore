@@ -89,7 +89,7 @@ public class ArchCreator implements IMeshCreator {
   }
 
   private void snapToGroundAndCenterZ() {
-    mesh.apply(new TranslateModifier(0, -extendBottom, depth / 2f));
+    new TranslateModifier(0, -extendBottom, depth / 2f).modify(mesh);
   }
 
   private void initializeMesh() {
