@@ -1,7 +1,9 @@
 package util;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 
@@ -11,49 +13,149 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.util.TraverseHelper;
 
+/**
+ * Utility class providing structural validation helpers for {@link Mesh3D}.
+ *
+ * <p>All methods in this class are intended for test-side mesh validation and characterization.
+ * They are not part of the core mesh API contract.
+ *
+ * <p>The checks focus on structural integrity, topological consistency, and geometric sanity of
+ * generated meshes.
+ */
 public class MeshTestUtil {
 
   /**
-   * Running this test is very time expensive.
+   * Checks whether the given mesh contains structurally duplicated faces.
    *
-   * <p>Checks if the given mesh has any duplicated faces.
+   * <p>A face is considered a duplicate if:
    *
-   * <p>This method iterates over all pairs of faces in the mesh and compares their indices. If two
-   * faces share the same indices, they are considered duplicates.
+   * <ul>
+   *   <li>It has the same number of vertex indices
+   *   <li>It references exactly the same set of vertex indices
+   *   <li>The order of indices is irrelevant
+   * </ul>
    *
-   * <p>**Time Complexity:** O(N^2), where N is the number of faces in the mesh. This quadratic time
-   * complexity arises from the nested loop structure, which can become inefficient for large
-   * meshes.
+   * <p>This method performs a canonicalization step by sorting the indices of each face and uses a
+   * {@link HashSet} to detect duplicates in linear time.
    *
-   * @param mesh The 3D mesh to check.
-   * @return `true` if the mesh has no duplicated faces, `false` otherwise.
+   * <p><b>Time Complexity:</b> O(N), where N is the number of faces. Each face is normalized once
+   * and inserted into a hash-based set.
+   *
+   * <p>This is a structural integrity check intended for test validation and mesh consistency
+   * verification.
+   *
+   * @param mesh the mesh to validate
+   * @return {@code true} if no duplicated faces exist, {@code false} otherwise
    */
   public static boolean meshHasNoDuplicatedFaces(Mesh3D mesh) {
-    int duplicatedFaces = 0;
+    Set<FaceKey> seen = new HashSet<>();
 
-    for (Face3D face0 : mesh.getFaces()) {
-      for (Face3D face1 : mesh.getFaces()) {
-        if (face0 != face1 && face0.sharesSameIndices(face1)) duplicatedFaces++;
+    for (Face3D face : mesh.getFaces()) {
+      FaceKey key = FaceKey.of(face);
+
+      if (!seen.add(key)) {
+        return false; // duplicate found
       }
     }
-    return duplicatedFaces == 0;
+
+    return true;
   }
 
+  /**
+   * Canonical key representation of a face used for duplicate detection.
+   *
+   * <p>The indices of a face are copied and sorted to create a stable, order-independent
+   * representation. Two faces are considered equal if their sorted index arrays are equal.
+   *
+   * <p>This class is used exclusively for structural validation and does not modify the original
+   * {@link Face3D}.
+   */
+  private static final class FaceKey {
+
+    private final int[] sortedIndices;
+
+    private FaceKey(int[] sortedIndices) {
+      this.sortedIndices = sortedIndices;
+    }
+
+    static FaceKey of(Face3D face) {
+      int[] copy = Arrays.copyOf(face.indices, face.indices.length);
+      Arrays.sort(copy); // canonical representation
+      return new FaceKey(copy);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof FaceKey)) return false;
+      FaceKey other = (FaceKey) o;
+      return Arrays.equals(this.sortedIndices, other.sortedIndices);
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.hashCode(sortedIndices);
+    }
+  }
+
+  /**
+   * Checks whether the mesh contains duplicated vertex instances.
+   *
+   * <p>Vertices are compared using their {@code equals()} and {@code hashCode()} implementations.
+   * This method assumes that {@link Vector3f} correctly implements structural equality.
+   *
+   * <p><b>Time Complexity:</b> O(V), where V is the number of vertices.
+   *
+   * @param mesh the mesh to validate
+   * @return {@code true} if all vertices are unique, {@code false} otherwise
+   */
   public static boolean meshHasNoDuplicatedVertices(Mesh3D mesh) {
     HashSet<Vector3f> map = new HashSet<Vector3f>(mesh.vertices);
     return map.size() == mesh.vertices.size();
   }
 
+  /**
+   * Checks whether the mesh contains any loose (unreferenced) vertices.
+   *
+   * <p>A vertex is considered <i>loose</i> if it is not referenced by any face index in the mesh.
+   *
+   * <p>This method operates purely on vertex indices and does not mutate the mesh or rely on
+   * defensive copies. It marks all indices referenced by faces and verifies that every vertex index
+   * in the range {@code [0, vertexCount)} is used at least once.
+   *
+   * <p><b>Time Complexity:</b> O(V + F), where
+   *
+   * <ul>
+   *   <li>V = number of vertices
+   *   <li>F = total number of face indices
+   * </ul>
+   *
+   * <p>This is a structural integrity check intended for test-side validation and mesh consistency
+   * verification.
+   *
+   * @param mesh the mesh to validate
+   * @return {@code true} if every vertex is referenced by at least one face, {@code false} if one
+   *     or more loose vertices are found
+   */
   public static boolean meshHasNoLooseVertices(Mesh3D mesh) {
-    List<Vector3f> vertices = mesh.getVertices();
+    int vertexCount = mesh.getVertexCount();
+    boolean[] used = new boolean[vertexCount];
 
     for (Face3D face : mesh.getFaces()) {
-      for (int i = 0; i < face.indices.length; i++) {
-        Vector3f v = mesh.getVertexAt(face.indices[i]);
-        vertices.remove(v);
+      for (int index : face.indices) {
+        if (index >= 0 && index < vertexCount) {
+          used[index] = true;
+        }
       }
     }
-    return vertices.isEmpty();
+
+    for (boolean isUsed : used) {
+      if (!isUsed) {
+        return false; // found loose vertex
+      }
+    }
+
+    return true;
   }
 
   public static boolean normalsPointOutwards(Mesh3D mesh) {
@@ -87,6 +189,32 @@ public class MeshTestUtil {
     return edges.size();
   }
 
+  /**
+   * Verifies whether the mesh satisfies the Euler characteristic for closed, genus-0 manifold
+   * meshes.
+   *
+   * <p>The Euler characteristic is defined as:
+   *
+   * <pre>
+   * V - E + F = 2
+   * </pre>
+   *
+   * where:
+   *
+   * <ul>
+   *   <li>V = number of vertices
+   *   <li>E = number of edges
+   *   <li>F = number of faces
+   * </ul>
+   *
+   * <p>This condition holds for closed convex polyhedra (topological spheres).
+   *
+   * <p><b>Note:</b> This check is only valid for closed manifold meshes without holes or
+   * boundaries.
+   *
+   * @param mesh the mesh to validate
+   * @return {@code true} if the Euler characteristic equals 2, {@code false} otherwise
+   */
   public static boolean fulfillsEulerCharacteristic(Mesh3D mesh) {
     int edgeCount = MeshTestUtil.calculateEdgeCount(mesh);
     int faceCount = mesh.getFaceCount();
