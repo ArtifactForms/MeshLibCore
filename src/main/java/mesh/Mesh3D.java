@@ -12,7 +12,6 @@ import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.TranslateModifier;
-import mesh.util.Bounds3;
 
 public class Mesh3D {
 
@@ -89,35 +88,6 @@ public class Mesh3D {
    */
   public Mesh3D translateZ(float tz) {
     return new TranslateModifier(0, 0, tz).modify(this);
-  }
-
-  /**
-   * Calculates the axis-aligned bounding box (AABB) for the 3D mesh based on its vertices.
-   *
-   * <p>The bounding box is defined by the minimum and maximum extents of the vertices along the X,
-   * Y, and Z axes. If there are no vertices in the mesh, an empty `Bounds3` is returned.
-   *
-   * @return A {@link Bounds3} object representing the calculated bounding box of the mesh. The
-   *     bounding box extends from the minimum vertex coordinate to the maximum vertex coordinate.
-   */
-  public Bounds3 calculateBounds() {
-    if (vertices.isEmpty()) return new Bounds3();
-
-    Vector3f min = new Vector3f(getVertexAt(0));
-    Vector3f max = new Vector3f(getVertexAt(0));
-    Bounds3 bounds = new Bounds3();
-    for (Vector3f v : vertices) {
-      float minX = v.getX() < min.getX() ? v.getX() : min.getX();
-      float minY = v.getY() < min.getY() ? v.getY() : min.getY();
-      float minZ = v.getZ() < min.getZ() ? v.getZ() : min.getZ();
-      float maxX = v.getX() > max.getX() ? v.getX() : max.getX();
-      float maxY = v.getY() > max.getY() ? v.getY() : max.getY();
-      float maxZ = v.getZ() > max.getZ() ? v.getZ() : max.getZ();
-      min.set(minX, minY, minZ);
-      max.set(maxX, maxY, maxZ);
-    }
-    bounds.setMinMax(min, max);
-    return bounds;
   }
 
   public Vector3f calculateFaceNormal(Face3D face) {

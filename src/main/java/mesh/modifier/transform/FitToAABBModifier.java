@@ -1,10 +1,11 @@
 package mesh.modifier.transform;
 
+import math.Bounds;
 import math.Mathf;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
-import mesh.util.Bounds3;
+import mesh.util.MeshBoundsCalculator;
 
 /**
  * A modifier that scales a 3D mesh uniformly to fit within a specified axis-aligned bounding box
@@ -103,7 +104,7 @@ public class FitToAABBModifier implements IMeshModifier {
    * @return the largest source dimension.
    */
   private float getMaximumSourceDimension() {
-    Bounds3 bounds = mesh.calculateBounds();
+    Bounds bounds = MeshBoundsCalculator.calculateBounds(mesh);
     return Mathf.max(bounds.getWidth(), bounds.getHeight(), bounds.getDepth());
   }
 

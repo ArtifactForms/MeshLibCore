@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import math.Bounds;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
@@ -19,7 +20,7 @@ import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.subdivision.LinearSubdivisionModifier;
-import mesh.util.Bounds3;
+import mesh.util.MeshBoundsCalculator;
 import util.MeshTestUtil;
 
 public class LinearSubdivisionModifierTest {
@@ -169,7 +170,7 @@ public class LinearSubdivisionModifierTest {
     @Test
     public void subdividedCubeIsWithinBounds() {
         modifier.modify(cubeMesh);
-        Bounds3 bounds = cubeMesh.calculateBounds();
+        Bounds bounds = MeshBoundsCalculator.calculateBounds(cubeMesh);
         assertEquals(2, bounds.getWidth(), 0);
         assertEquals(2, bounds.getHeight(), 0);
         assertEquals(2, bounds.getDepth(), 0);

@@ -1,9 +1,10 @@
 package mesh.modifier.transform;
 
+import math.Bounds;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
-import mesh.util.Bounds3;
+import mesh.util.MeshBoundsCalculator;
 
 /**
  * A modifier that centers a 3D mesh at a specified point in space.
@@ -24,7 +25,7 @@ public class CenterAtModifier implements IMeshModifier {
   private Mesh3D mesh;
 
   /** The calculated bounding box of the mesh. */
-  private Bounds3 bounds;
+  private Bounds bounds;
 
   /** Constructs a new {@code CenterAtModifier} with the default center at the origin (0, 0, 0). */
   public CenterAtModifier() {
@@ -83,7 +84,7 @@ public class CenterAtModifier implements IMeshModifier {
 
   /** Calculates the bounds of the current mesh. */
   private void calculateBounds() {
-    this.bounds = mesh.calculateBounds();
+    this.bounds = MeshBoundsCalculator.calculateBounds(mesh);
   }
 
   /**
