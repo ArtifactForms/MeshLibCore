@@ -37,6 +37,8 @@ public class SolidArcCreator implements IMeshCreator {
     outerRadius = 3;
     innerRadius = 2;
     height = 1;
+    capStart = true;
+    capEnd = true;
   }
 
   @Override
