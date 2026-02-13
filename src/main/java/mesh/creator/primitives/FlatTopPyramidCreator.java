@@ -2,45 +2,62 @@ package mesh.creator.primitives;
 
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-import mesh.util.Mesh3DUtil;
 
 public class FlatTopPyramidCreator implements IMeshCreator {
 
-    private float size;
+  private float halfExtent;
 
-    private float topScale;
+  private float topScale;
 
-    public FlatTopPyramidCreator() {
-        size = 1f;
-        topScale = 0.5f;
-    }
+  public FlatTopPyramidCreator() {
+    halfExtent = 1f;
+    topScale = 0.5f;
+  }
 
-    public FlatTopPyramidCreator(float size, float topScale) {
-        this.size = size;
-        this.topScale = topScale;
-    }
+  public FlatTopPyramidCreator(float halfExtent, float topScale) {
+    this.halfExtent = halfExtent;
+    this.topScale = topScale;
+  }
 
-    @Override
-    public Mesh3D create() {
-        Mesh3D mesh = new CubeCreator(size).create();
-        Mesh3DUtil.scaleFaceAt(mesh, 0, topScale);
-        return mesh;
-    }
+  @Override
+  public Mesh3D create() {
+    Mesh3D mesh = new Mesh3D();
 
-    public float getSize() {
-        return size;
-    }
+    float top = halfExtent * topScale;
 
-    public void setSize(float size) {
-        this.size = size;
-    }
+    mesh.addVertex(+top, -halfExtent, -top);
+    mesh.addVertex(+top, -halfExtent, +top);
+    mesh.addVertex(-top, -halfExtent, +top);
+    mesh.addVertex(-top, -halfExtent, -top);
 
-    public float getTopScale() {
-        return topScale;
-    }
+    mesh.addVertex(+halfExtent, +halfExtent, -halfExtent);
+    mesh.addVertex(+halfExtent, +halfExtent, +halfExtent);
+    mesh.addVertex(-halfExtent, +halfExtent, +halfExtent);
+    mesh.addVertex(-halfExtent, +halfExtent, -halfExtent);
 
-    public void setTopScale(float topScale) {
-        this.topScale = topScale;
-    }
+    mesh.addFace(3, 0, 1, 2); // top
+    mesh.addFace(6, 5, 4, 7);
+    mesh.addFace(1, 0, 4, 5);
+    mesh.addFace(1, 5, 6, 2);
+    mesh.addFace(6, 7, 3, 2);
+    mesh.addFace(3, 7, 4, 0);
 
+    return mesh;
+  }
+
+  public float getHalfExtent() {
+    return halfExtent;
+  }
+
+  public void setHalfExtent(float halfExtent) {
+    this.halfExtent = halfExtent;
+  }
+
+  public float getTopScale() {
+    return topScale;
+  }
+
+  public void setTopScale(float topScale) {
+    this.topScale = topScale;
+  }
 }
