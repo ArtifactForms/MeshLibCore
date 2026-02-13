@@ -1,6 +1,6 @@
 package mesh.animator;
 
-public interface Animater {
+public interface Animator {
 
   void update(float tpf);
 

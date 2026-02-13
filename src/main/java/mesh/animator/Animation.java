@@ -13,10 +13,10 @@ public class Animation {
 
   private boolean running;
 
-  private List<Animater> animators;
+  private List<Animator> animators;
 
   public Animation() {
-    animators = new ArrayList<Animater>();
+    animators = new ArrayList<Animator>();
   }
 
   public void start() {
@@ -38,7 +38,7 @@ public class Animation {
 
   public void restore() {
     finished = false;
-    for (Animater animator : animators) {
+    for (Animator animator : animators) {
       animator.restore();
     }
   }
@@ -53,7 +53,7 @@ public class Animation {
   private void updateAnimators(float tpf) {
     if (finished) return;
     int finishedAnimatorsCount = 0;
-    for (Animater animator : animators) {
+    for (Animator animator : animators) {
       if (!animator.isFinished()) {
         animator.update(tpf);
       } else {
@@ -63,11 +63,11 @@ public class Animation {
     this.finished = finishedAnimatorsCount == animators.size();
   }
 
-  public void addAnimator(Animater animator) {
+  public void addAnimator(Animator animator) {
     animators.add(animator);
   }
 
-  public void removeAnimator(Animater animator) {
+  public void removeAnimator(Animator animator) {
     animators.add(animator);
   }
 

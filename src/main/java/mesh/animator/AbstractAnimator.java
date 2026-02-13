@@ -1,6 +1,6 @@
 package mesh.animator;
 
-public abstract class AbstractAnimator implements Animater {
+public abstract class AbstractAnimator implements Animator {
 
   private boolean enabled;
 
