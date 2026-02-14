@@ -57,7 +57,7 @@ public class DiscCreator implements IMeshCreator {
     }
 
     private void createTriangleFan() {
-        int idx = mesh.vertices.size();
+        int idx = mesh.getVertexCount();
         mesh.addVertex(0, 0, 0);
         for (int i = 0; i < rotationSegments; i++) {
             mesh.addFace(idx, i, (i + 1) % rotationSegments);
