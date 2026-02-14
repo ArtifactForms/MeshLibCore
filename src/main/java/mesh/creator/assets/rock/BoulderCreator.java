@@ -202,7 +202,7 @@ public class BoulderCreator implements IMeshCreator {
     long base = seed;
     PerlinNoise3 noise3D = new PerlinNoise3(base);
 
-    for (int i = 0; i < mesh.vertices.size(); i++) {
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
       Vector3f vertexNormal = vertexNormals.get(i);
       Vector3f vertex = mesh.getVertexAt(i);
 
@@ -219,7 +219,7 @@ public class BoulderCreator implements IMeshCreator {
     long base = seed ^ SEED_OFFSET;
     PerlinNoise3 noise3D = new PerlinNoise3(base);
 
-    for (int i = 0; i < mesh.vertices.size(); i++) {
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
       Vector3f n = vertexNormals.get(i);
       Vector3f v = mesh.getVertexAt(i);
 
@@ -237,13 +237,15 @@ public class BoulderCreator implements IMeshCreator {
 
     float maxY = -Float.MAX_VALUE;
 
-    for (Vector3f v : mesh.vertices) {
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
       maxY = Math.max(maxY, v.y);
     }
 
     float threshold = maxY - bottomFlatness;
 
-    for (Vector3f v : mesh.vertices) {
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
       if (v.y > threshold) {
         float t = Mathf.clamp01((v.y - threshold) / bottomFlatness);
         v.y = Mathf.lerp(v.y, threshold, t);
