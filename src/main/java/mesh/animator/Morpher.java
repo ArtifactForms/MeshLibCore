@@ -27,7 +27,7 @@ public class Morpher extends AbstractAnimator {
   }
 
   private void calculateDistanceValues() {
-    for (int i = 0; i < source.vertices.size(); i++) {
+    for (int i = 0; i < source.getVertexCount(); i++) {
       Vector3f v0 = mesh.getVertexAt(i);
       Vector3f v1 = target.getVertexAt(i);
       float distance = v0.distance(v1);
@@ -45,9 +45,9 @@ public class Morpher extends AbstractAnimator {
 
   @Override
   public void onUpdate(float tpf) {
-    for (int i = 0; i < source.vertices.size(); i++) {
+    for (int i = 0; i < source.getVertexCount(); i++) {
       Vector3f v0 = mesh.getVertexAt(i);
-      Vector3f target = this.target.vertices.get(i);
+      Vector3f target = this.target.getVertexAt(i);
 
       float speed = getSpeedForVertexAt(i) * tpf;
 
@@ -78,7 +78,7 @@ public class Morpher extends AbstractAnimator {
         count++;
       }
 
-      if (count == source.vertices.size()) {
+      if (count == source.getVertexCount()) {
         setFinished(true);
       }
     }
