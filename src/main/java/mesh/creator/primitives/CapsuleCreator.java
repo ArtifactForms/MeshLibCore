@@ -130,7 +130,7 @@ public class CapsuleCreator implements IMeshCreator {
     }
 
     private void triangleFan(int indexOffset, float centerY) {
-        int centerIndex = mesh.vertices.size();
+        int centerIndex = mesh.getVertexCount();
         addVertex(0, centerY, 0);
         for (int i = 0; i < rotationSegments; i++) {
             int idx0 = i + indexOffset;
