@@ -270,7 +270,7 @@ public class MeshTestUtil {
     }
     return count == expected;
   }
-
+  
   public static boolean isTriangleCountEquals(Mesh3D mesh, int expectedTriangleCount) {
     return hasCorrectNumberOfFacesWithVertexCount(mesh, 3, expectedTriangleCount);
   }
