@@ -91,14 +91,14 @@ public class UVSphereCreator implements IMeshCreator {
         int d = getIndex(row, col);
         addFace(a, b, c, d);
         if (row == 0)
-            addFace(d, mesh.vertices.size() - 1, a);
+            addFace(d, mesh.getVertexCount() - 1, a);
         if (row == rings - 3)
-            addFace(c, b, mesh.vertices.size() - 2);
+            addFace(c, b, mesh.getVertexCount()- 2);
     }
 
     private int getIndex(int row, int col) {
         int idx = segments * row + col;
-        return idx % mesh.vertices.size();
+        return idx % mesh.getVertexCount();
     }
 
     private void addVertex(float x, float y, float z) {
