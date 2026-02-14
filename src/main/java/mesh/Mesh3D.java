@@ -106,11 +106,6 @@ public class Mesh3D {
     return faceNormal.normalize();
   }
 
-  public void removeDoubles(int decimalPlaces) {
-    for (Vector3f v : vertices) v.roundLocalDecimalPlaces(decimalPlaces);
-    removeDoubles();
-  }
-
   /**
    * Removes duplicated vertices.
    *

@@ -3,6 +3,7 @@ package mesh.creator.primitives;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.ScaleModifier;
 
@@ -76,7 +77,8 @@ public class SegmentedCubeCreator implements IMeshCreator {
     }
 
     private void removeDoubles() {
-        mesh.removeDoubles(2);
+        int roundToDecimalPlaces = 2;
+        new RemoveDoubleVerticesModifier(roundToDecimalPlaces).modify(mesh);
     }
 
     private void scale() {

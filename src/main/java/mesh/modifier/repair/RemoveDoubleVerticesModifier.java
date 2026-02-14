@@ -9,15 +9,30 @@ import mesh.modifier.IMeshModifier;
 
 public class RemoveDoubleVerticesModifier implements IMeshModifier {
 
+  private Integer decimalPlaces; // null = no rounding
+
   private Mesh3D temporaryMesh;
 
   private Mesh3D mesh;
 
   private LinkedHashSet<Vector3f> vertexSet;
 
+  public RemoveDoubleVerticesModifier() {}
+
+  public RemoveDoubleVerticesModifier(int decimalPlaces) {
+    this.decimalPlaces = decimalPlaces;
+  }
+
   @Override
   public Mesh3D modify(Mesh3D mesh) {
     setMesh(mesh);
+
+    if (decimalPlaces != null) {
+      for (int i = 0; i < mesh.getVertexCount(); i++) {
+        mesh.getVertexAt(i).roundLocalDecimalPlaces(decimalPlaces);
+      }
+    }
+
     initializeTmpMesh();
     initializeVertexSet();
     hashVertices();

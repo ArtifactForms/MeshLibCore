@@ -5,6 +5,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
@@ -47,7 +48,7 @@ public class LeonardoCubeCreator implements IMeshCreator {
     }
 
     private void removeDoubleVertices() {
-        mesh.removeDoubles(2);
+        new RemoveDoubleVerticesModifier(2).modify(mesh);
     }
 
     private void removeDoubleFaces() {
