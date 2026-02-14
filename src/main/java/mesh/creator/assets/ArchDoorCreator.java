@@ -1,7 +1,6 @@
 package mesh.creator.assets;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.ArcCreator;
@@ -46,7 +45,9 @@ public class ArchDoorCreator implements IMeshCreator {
   private void createBottomVertices() {
     Mesh3D bottom = createArcCreator().create();
     new RotateXModifier(Mathf.HALF_PI).modify(bottom);
-    for (Vector3f v : bottom.vertices) v.setY(0);
+    for (int i = 0; i < bottom.getVertexCount(); i++) {
+    	bottom.getVertexAt(i).setY(0);
+    }
     mesh.append(bottom);
   }
 
