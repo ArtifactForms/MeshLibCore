@@ -1,6 +1,6 @@
 package mesh.modifier.repair;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import math.Vector3f;
 import mesh.Face3D;
@@ -13,7 +13,7 @@ public class RemoveDoubleVerticesModifier implements IMeshModifier {
 
   private Mesh3D mesh;
 
-  private HashSet<Vector3f> vertexSet;
+  private LinkedHashSet<Vector3f> vertexSet;
 
   @Override
   public Mesh3D modify(Mesh3D mesh) {
@@ -62,7 +62,7 @@ public class RemoveDoubleVerticesModifier implements IMeshModifier {
   }
 
   private void initializeVertexSet() {
-    vertexSet = new HashSet<Vector3f>();
+    vertexSet = new LinkedHashSet<Vector3f>();
   }
 
   private void initializeTmpMesh() {

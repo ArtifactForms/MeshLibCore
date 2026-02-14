@@ -3,6 +3,7 @@ package mesh.selection;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 
 import math.Mathf;
 import math.Vector3f;
@@ -15,11 +16,11 @@ public class FaceSelection {
 
     private Mesh3D mesh;
 
-    private HashSet<Face3D> faceSet;
+    private LinkedHashSet<Face3D> faceSet;
 
     public FaceSelection(Mesh3D mesh) {
         this.mesh = mesh;
-        this.faceSet = new HashSet<Face3D>();
+        this.faceSet = new LinkedHashSet<Face3D>();
     }
 
     /**
@@ -337,7 +338,7 @@ public class FaceSelection {
     }
 
     public void invert() {
-        HashSet<Face3D> faceSet = new HashSet<>();
+    	LinkedHashSet<Face3D> faceSet = new LinkedHashSet<>();
         faceSet.addAll(mesh.faces);
         faceSet.removeAll(this.faceSet);
         this.faceSet.clear();
@@ -346,7 +347,7 @@ public class FaceSelection {
 
     public FaceSelection getInvertedSelection() {
         FaceSelection selection = new FaceSelection(mesh);
-        HashSet<Face3D> faceSet = new HashSet<>();
+        LinkedHashSet<Face3D> faceSet = new LinkedHashSet<>();
         faceSet.addAll(mesh.faces);
         faceSet.removeAll(this.faceSet);
         selection.faceSet = faceSet;
