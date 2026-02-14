@@ -177,7 +177,7 @@ public class SolidifyModifier implements IMeshModifier {
 
   /** Reverses the direction of the faces in the inner mesh. */
   private void flipDirectionOfInnerMesh() {
-    innerMesh.apply(new FlipFacesModifier());
+    new FlipFacesModifier().modify(innerMesh);
   }
 
   /**

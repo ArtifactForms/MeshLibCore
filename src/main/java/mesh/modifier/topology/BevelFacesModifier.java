@@ -20,7 +20,7 @@ public class BevelFacesModifier implements IMeshModifier {
   public Mesh3D modify(Mesh3D mesh) {
     float scale = 1f - size;
     float amount = size;
-    mesh.apply(new ExtrudeModifier(scale, amount));
+    new ExtrudeModifier(scale, amount).modify(mesh);
     return mesh;
   }
 

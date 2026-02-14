@@ -71,7 +71,7 @@ public class PseudoWireframeModifier implements IMeshModifier {
    * "hole-creation" operation.
    */
   private void createHoles() {
-    mesh.apply(createExtrudeModifier());
+    createExtrudeModifier().modify(mesh);
   }
 
   /**
@@ -92,7 +92,7 @@ public class PseudoWireframeModifier implements IMeshModifier {
    * modifier with the defined thickness.
    */
   private void solidify() {
-    mesh.apply(new SolidifyModifier(thickness));
+    new SolidifyModifier(thickness).modify(mesh);
   }
 
   /**
