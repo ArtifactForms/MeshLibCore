@@ -92,7 +92,7 @@ public class SolidArcCreator implements IMeshCreator {
 
   private void capEnd() {
     if (!capEnd) return;
-    int index = mesh.vertices.size();
+    int index = mesh.getVertexCount();
     mesh.addFace(index - 1, index - 2, index - 3, index - 4);
   }
 
