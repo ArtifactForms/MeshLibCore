@@ -58,7 +58,7 @@ public class QuadCapCylinderCreator implements IMeshCreator {
         List<Vector3f> vertices2 = new ArrayList<Vector3f>();
         List<Vector3f> vertices3 = new ArrayList<Vector3f>();
 
-        for (int i = 0; i < grid.vertices.size(); i++) {
+        for (int i = 0; i < grid.getVertexCount(); i++) {
             Vector3f v = grid.getVertexAt(i);
             if (v.getZ() == -valueZ) {
                 vertices0.add(v);
@@ -90,8 +90,9 @@ public class QuadCapCylinderCreator implements IMeshCreator {
     }
 
     private void flatten(Mesh3D mesh, float y) {
-        for (Vector3f v : mesh.vertices) {
-            v.setY(y);
+        for (int i = 0; i < mesh.getVertexCount(); i++) {
+        	Vector3f v = mesh.getVertexAt(i);
+        	v.setY(y);
         }
     }
 
@@ -169,10 +170,10 @@ public class QuadCapCylinderCreator implements IMeshCreator {
             Mesh3D mesh0 = meshes.get(j);
             Mesh3D mesh1 = meshes.get(j + 1);
             for (int i = 0; i < vertices; i++) {
-                Vector3f v0 = mesh0.vertices.get(i);
-                Vector3f v1 = mesh1.vertices.get(i);
-                Vector3f v2 = mesh0.vertices.get((i + 1) % vertices);
-                Vector3f v3 = mesh1.vertices.get((i + 1) % vertices);
+                Vector3f v0 = mesh0.getVertexAt(i);
+                Vector3f v1 = mesh1.getVertexAt(i);
+                Vector3f v2 = mesh0.getVertexAt((i + 1) % vertices);
+                Vector3f v3 = mesh1.getVertexAt((i + 1) % vertices);
                 FaceBridging.bridge(mesh, v0, v1, v2, v3);
             }
         }
