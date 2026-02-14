@@ -100,7 +100,7 @@ public class RandomHolesModifierTest {
     RandomHolesModifier modifier = new RandomHolesModifier();
     modifier.setSeed(0);
     modifier.modify(mesh);
-    assertArrayEquals(expected, mesh.vertices.toArray());
+    assertArrayEquals(expected, mesh.getVertices().toArray());
   }
 
   @Test
@@ -120,7 +120,7 @@ public class RandomHolesModifierTest {
     Mesh3D mesh = new PlaneCreator().create();
     modifier.setSeed(1321441);
     modifier.modify(mesh);
-    assertArrayEquals(expected, mesh.vertices.toArray());
+    assertArrayEquals(expected, mesh.getVertices().toArray());
   }
 
   @Test
@@ -140,7 +140,7 @@ public class RandomHolesModifierTest {
     Mesh3D mesh = new PlaneCreator().create();
     modifier.setSeed(-133221441);
     modifier.modify(mesh);
-    assertArrayEquals(expected, mesh.vertices.toArray());
+    assertArrayEquals(expected, mesh.getVertices().toArray());
   }
 
   @Test
@@ -160,7 +160,7 @@ public class RandomHolesModifierTest {
     modifier = new RandomHolesModifier(0.24f, 0.9872f);
     modifier.setSeed(2323424);
     modifier.modify(mesh);
-    assertArrayEquals(expected, mesh.vertices.toArray());
+    assertArrayEquals(expected, mesh.getVertices().toArray());
   }
 
   @Test
@@ -180,7 +180,7 @@ public class RandomHolesModifierTest {
     modifier = new RandomHolesModifier(0.2344f, 0.87f);
     modifier.setSeed(2323424);
     modifier.modify(mesh);
-    assertArrayEquals(expected, mesh.vertices.toArray());
+    assertArrayEquals(expected, mesh.getVertices().toArray());
   }
 
   @Test
@@ -202,7 +202,7 @@ public class RandomHolesModifierTest {
     modifier = new RandomHolesModifier(minAmount, maxAmount);
     modifier.setSeed(2323424);
     modifier.modify(mesh);
-    assertArrayEquals(expected, mesh.vertices.toArray());
+    assertArrayEquals(expected, mesh.getVertices().toArray());
   }
 
   @Test
@@ -285,6 +285,6 @@ public class RandomHolesModifierTest {
     modifier.setSeed(234);
     modifier.modify(actual);
 
-    assertArrayEquals(expected.vertices.toArray(), actual.vertices.toArray());
+    assertArrayEquals(expected.getVertices().toArray(), actual.getVertices().toArray());
   }
 }

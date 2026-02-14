@@ -155,7 +155,7 @@ public class PokeFacesModifierTest {
         Mesh3D modifiedMesh = new CubeCreator(radius).create();
         modifier.setPokeOffset(randomPokeOffset);
         modifier.modify(modifiedMesh);
-        modifiedMesh.vertices.removeAll(mesh.getVertices());
+        modifiedMesh.remove(mesh.getVertices());
         for (Vector3f v : modifiedMesh.getVertices()) {
             float distance = v.distance(Vector3f.ZERO);
             assertEquals(expectedDistance, distance, 0);

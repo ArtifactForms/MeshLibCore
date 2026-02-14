@@ -175,7 +175,7 @@ public class SpherifyModifierTest {
     Mesh3D mesh = creator.create();
     modifier.setRadius(expectedRadius);
     modifier.modify(mesh);
-    for (Vector3f vertex : mesh.vertices) {
+    for (Vector3f vertex : mesh.getVertices()) {
       float distance = vertex.distance(Vector3f.ZERO);
       assertEquals(expectedRadius, distance, 0.001f);
     }

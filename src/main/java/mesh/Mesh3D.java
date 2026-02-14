@@ -26,11 +26,9 @@ import mesh.modifier.transform.TranslateModifier;
  */
 public class Mesh3D implements Mesh {
 
-  // TODO: make private and enforce encapsulation
-  public ArrayList<Vector3f> vertices;
+  private ArrayList<Vector3f> vertices;
 
-  // TODO: make private and enforce encapsulation
-  public ArrayList<Face3D> faces;
+  private ArrayList<Face3D> faces;
 
   private ArrayList<Vector3f> vertexNormals;
 
@@ -77,7 +75,7 @@ public class Mesh3D implements Mesh {
   // -------------------------------------------------------------------
   // Deprecated
   // -------------------------------------------------------------------
-
+  
   /**
    * Applies the provided {@link IMeshModifier} to this mesh. This is congruent to {@link
    * IMeshModifier#modify(Mesh3D)}.
@@ -371,6 +369,14 @@ public class Mesh3D implements Mesh {
   public List<Face3D> getFaces() {
     return new ArrayList<Face3D>(faces);
   }
+  
+  public void remove(Vector3f v) {
+	  vertices.remove(v);
+  }
+  
+  public void remove(Collection<Vector3f> vertices) {
+	  this.vertices.removeAll(vertices);
+  }
 
   // -------------------------------------------------------------------
   // Remove early
@@ -388,5 +394,9 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public List<Face3D> getFaces(int from, int to) {
     return new ArrayList<>(faces.subList(from, to));
+  }
+  
+  public int indexOf(Vector3f v) {
+	  return vertices.indexOf(v);
   }
 }

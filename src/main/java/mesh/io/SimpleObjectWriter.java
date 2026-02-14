@@ -27,8 +27,10 @@ public class SimpleObjectWriter {
     }
 
     private void writeVerticesToBuffer() {
-        for (Vector3f vertex : mesh.vertices)
-            writeVertex(vertex);
+    	for (int i = 0; i < mesh.getVertexCount(); i++) {
+    		Vector3f v = mesh.getVertexAt(i);
+            writeVertex(v);
+    	}
     }
 
     private void writeVertex(Vector3f vertex) {
@@ -48,7 +50,7 @@ public class SimpleObjectWriter {
     }
 
     private void writeFacesToBuffer() {
-        for (Face3D f : mesh.faces) {
+        for (Face3D f : mesh.getFaces()) {
             buffer.append("f ");
             for (int i = 0; i < f.indices.length; i++) {
                 append(f.indices[i] + 1 + vertexOffset);

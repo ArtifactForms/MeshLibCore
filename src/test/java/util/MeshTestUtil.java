@@ -110,8 +110,8 @@ public class MeshTestUtil {
    * @return {@code true} if all vertices are unique, {@code false} otherwise
    */
   public static boolean meshHasNoDuplicatedVertices(Mesh3D mesh) {
-    HashSet<Vector3f> map = new HashSet<Vector3f>(mesh.vertices);
-    return map.size() == mesh.vertices.size();
+    HashSet<Vector3f> map = new HashSet<Vector3f>(mesh.getVertices());
+    return map.size() == mesh.getVertexCount();
   }
 
   /**
@@ -175,7 +175,7 @@ public class MeshTestUtil {
   public static int calculateEdgeCount(Mesh3D mesh) {
     HashSet<Edge3D> edges = new HashSet<Edge3D>();
 
-    for (Face3D face : mesh.faces) {
+    for (Face3D face : mesh.getFaces()) {
       for (int i = 0; i < face.indices.length; i++) {
         int fromIndex = face.indices[i];
         int toIndex = face.indices[(i + 1) % face.indices.length];
@@ -253,10 +253,10 @@ public class MeshTestUtil {
 
   public static void assertEveryEdgeHasALengthOf(
       Mesh3D mesh, float expectedEdgeLength, float delta) {
-    for (Face3D face : mesh.faces) {
+    for (Face3D face : mesh.getFaces()) {
       for (int i = 0; i < face.indices.length; i++) {
-        Vector3f v0 = mesh.vertices.get(face.indices[i]);
-        Vector3f v1 = mesh.vertices.get(face.indices[(i + 1) % face.indices.length]);
+        Vector3f v0 = mesh.getVertexAt(face.indices[i]);
+        Vector3f v1 = mesh.getVertexAt(face.indices[(i + 1) % face.indices.length]);
         Assert.assertEquals(expectedEdgeLength, v0.distance(v1), delta);
       }
     }
@@ -265,7 +265,7 @@ public class MeshTestUtil {
   private static boolean hasCorrectNumberOfFacesWithVertexCount(
       Mesh3D mesh, int vertices, int expected) {
     int count = 0;
-    for (Face3D face : mesh.faces) {
+    for (Face3D face : mesh.getFaces()) {
       if (face.getVertexCount() == vertices) count++;
     }
     return count == expected;

@@ -86,7 +86,7 @@ public class ObjectSelectionRender {
 
     context.pushMatrix();
 
-    for (int i = 0; i < mesh.faces.size(); i++) {
+    for (int i = 0; i < mesh.getFaceCount(); i++) {
       Face3D f = mesh.getFaceAt(i);
       Vector3f v;
 
@@ -103,7 +103,7 @@ public class ObjectSelectionRender {
       }
 
       for (int j = 0; j < f.indices.length; j++) {
-        v = mesh.vertices.get(f.indices[j]);
+        v = mesh.getVertexAt(f.indices[j]);
         context.vertex(v.getX(), v.getY(), v.getZ());
       }
 

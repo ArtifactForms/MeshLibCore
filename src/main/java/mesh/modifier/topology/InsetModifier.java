@@ -71,7 +71,7 @@ public class InsetModifier implements IMeshModifier, FaceModifier {
   @Override
   public Mesh3D modify(Mesh3D mesh) {
     validateMesh(mesh);
-    if (mesh.faces.isEmpty()) {
+    if (mesh.getFaceCount() == 0) {
       return mesh;
     }
     modify(mesh, mesh.getFaces());
@@ -91,9 +91,7 @@ public class InsetModifier implements IMeshModifier, FaceModifier {
     validateMesh(mesh);
     validateFaces(faces);
     Collection<Face3D> facesToModify = faces;
-    if (faces == mesh.faces) {
-      facesToModify = new ArrayList<Face3D>(mesh.faces);
-    }
+    facesToModify = new ArrayList<Face3D>(mesh.getFaces());
     setMesh(mesh);
     for (Face3D face : facesToModify) {
       insetFace(face);
@@ -145,8 +143,8 @@ public class InsetModifier implements IMeshModifier, FaceModifier {
       int index0 = face.indices[i];
       int index1 = face.indices[(i + 1) % face.indices.length];
 
-      Vector3f v0 = mesh.vertices.get(index0);
-      Vector3f v1 = mesh.vertices.get(index1);
+      Vector3f v0 = mesh.getVertexAt(index0);
+      Vector3f v1 = mesh.getVertexAt(index1);
 
       float edgeLength = v0.distance(v1);
       float insetFactor = calculateInsetFactor(edgeLength);
@@ -249,7 +247,7 @@ public class InsetModifier implements IMeshModifier, FaceModifier {
 
   /** Updates the next available vertex index. */
   private void updateNextIndex() {
-    nextIndex = mesh.vertices.size();
+    nextIndex = mesh.getVertexCount();
   }
 
   /**

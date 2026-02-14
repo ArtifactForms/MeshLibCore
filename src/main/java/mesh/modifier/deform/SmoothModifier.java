@@ -62,7 +62,7 @@ public class SmoothModifier implements IMeshModifier {
 
   // Pre-processes the mesh to identify neighboring vertices.
   private void mapNeighboringVertices() {
-    for (Face3D face : mesh.faces) {
+    for (Face3D face : mesh.getFaces()) {
       int n = face.indices.length;
       for (int i = 0; i < face.indices.length; i++) {
         int edgeFrom = face.indices[i];

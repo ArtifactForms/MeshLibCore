@@ -82,7 +82,7 @@ public class RandomHolesModifier implements IMeshModifier, FaceModifier {
   @Override
   public Mesh3D modify(Mesh3D mesh) {
     validateMesh(mesh);
-    return modify(mesh, new ArrayList<Face3D>(mesh.faces));
+    return modify(mesh, new ArrayList<Face3D>(mesh.getFaces()));
   }
 
   /**
@@ -114,8 +114,8 @@ public class RandomHolesModifier implements IMeshModifier, FaceModifier {
     validateMesh(mesh);
     validateFaces(faces);
     Collection<Face3D> facesToModify = faces;
-    if (faces == mesh.faces) {
-      facesToModify = new ArrayList<Face3D>(mesh.faces);
+    if (faces == mesh.getFaces()) {
+      facesToModify = new ArrayList<Face3D>(mesh.getFaceCount());
     }
     for (Face3D face : facesToModify) {
       makeHole(mesh, face);

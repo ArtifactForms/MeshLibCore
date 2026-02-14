@@ -66,7 +66,7 @@ public class ScaleModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     setMesh(mesh);
@@ -74,11 +74,12 @@ public class ScaleModifier implements IMeshModifier {
     return mesh;
   }
 
-  /**
-   * Scales all vertices of the associated mesh using parallel processing for improved performance.
-   */
+  /** Scales all vertices of the associated mesh. */
   private void scaleMesh() {
-    mesh.vertices.parallelStream().forEach(this::applyScaleToVertex);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      applyScaleToVertex(v);
+    }
   }
 
   /**

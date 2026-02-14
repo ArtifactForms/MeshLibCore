@@ -10,265 +10,259 @@ import mesh.selection.FaceSelectionRules;
 
 public class SciFiFloorSupportCreator implements IMeshCreator {
 
-    private int supportCount;
+  private int supportCount;
 
-    private int segments;
+  private int segments;
 
-    private float gap;
+  private float gap;
 
-    private float width;
+  private float width;
 
-    private float radius;
+  private float radius;
 
-    private float extendBottom;
+  private float extendBottom;
 
-    private float extendTop;
+  private float extendTop;
 
-    private float extendFront;
+  private float extendFront;
 
-    private float extendBack;
+  private float extendBack;
 
-    private float mirrorGap;
+  private float mirrorGap;
 
-    private boolean capBack;
+  private boolean capBack;
 
-    private boolean capBottom;
+  private boolean capBottom;
 
-    private boolean capTop;
+  private boolean capTop;
 
-    private boolean mirror;
+  private boolean mirror;
 
-    private Mesh3D mesh;
+  private Mesh3D mesh;
 
-    private Mesh3D support;
+  private Mesh3D support;
 
-    public SciFiFloorSupportCreator() {
-        supportCount = 1;
-        segments = 5;
-        gap = 0;
-        width = 0.7f;
-        radius = 2;
-        extendBottom = 0.5f;
-        extendTop = 0.2f;
-        extendFront = 0.1f;
-        extendBack = 0.1f;
-        mirrorGap = 0;
-        capBack = true;
-        capBottom = true;
-        capTop = true;
-        mirror = false;
+  public SciFiFloorSupportCreator() {
+    supportCount = 1;
+    segments = 5;
+    gap = 0;
+    width = 0.7f;
+    radius = 2;
+    extendBottom = 0.5f;
+    extendTop = 0.2f;
+    extendFront = 0.1f;
+    extendBack = 0.1f;
+    mirrorGap = 0;
+    capBack = true;
+    capBottom = true;
+    capTop = true;
+    mirror = false;
+  }
+
+  @Override
+  public Mesh3D create() {
+    initializeMesh();
+    createSupport();
+    createSupports();
+    centerOnAxisX();
+    mirror();
+    return mesh;
+  }
+
+  private void mirror() {
+    if (!mirror) return;
+    mesh.translateZ(-getSupportDepth() / 2f - getMirrorGap() / 2f);
+    Mesh3D mirrorMesh = mesh.copy();
+    mirrorMesh.rotateY(Mathf.PI);
+    mesh.append(mirrorMesh);
+  }
+
+  private void centerOnAxisX() {
+    float deltaX = -(getTotalWidth() / 2f) + (getWidth() / 2f);
+    mesh.apply(new TranslateModifier(deltaX, 0, 0));
+  }
+
+  private void processCapBack() {
+    if (capBack) return;
+    FaceSelection selection = new FaceSelection(support);
+    FaceSelectionRules rules = new FaceSelectionRules();
+    rules.centerZ(CompareType.LESS_OR_EQUALS, -getSupportDepth() / 2f);
+    rules.apply(selection);
+    support.removeFaces(selection.getFaces());
+  }
+
+  private void processCapBottom() {
+    if (capBottom) return;
+    FaceSelection selection = new FaceSelection(support);
+    FaceSelectionRules rules = new FaceSelectionRules();
+    rules.centerY(CompareType.EQUALS, 0);
+    rules.apply(selection);
+    support.removeFaces(selection.getFaces());
+  }
+
+  private void processCapTop() {
+    if (capTop) return;
+    FaceSelection selection = new FaceSelection(support);
+    FaceSelectionRules rules = new FaceSelectionRules();
+    rules.centerY(CompareType.LESS_OR_EQUALS, -getSupportHeight());
+    rules.apply(selection);
+    support.removeFaces(selection.getFaces());
+  }
+
+  private void createSupports() {
+    for (int i = 0; i < supportCount; i++) {
+      Mesh3D support = this.support.copy();
+      float deltaX = i * (width + gap);
+      support.apply(new TranslateModifier(deltaX, 0, 0));
+      mesh.append(support);
     }
+  }
 
-    @Override
-    public Mesh3D create() {
-        initializeMesh();
-        createSupport();
-        createSupports();
-        centerOnAxisX();
-        mirror();
-        return mesh;
-    }
+  private void createSupport() {
+    float deltaX = getSupportDepth() / 2f;
+    float deltaY = -radius - extendBottom;
+    ArchCreator creator = new ArchCreator();
+    creator.setRadius(radius);
+    creator.setExtendLeft(extendBottom);
+    creator.setExtendRight(extendTop);
+    creator.setExtendBottom(extendFront);
+    creator.setExtendTop(extendBack);
+    creator.setDepth(width);
+    creator.setSegments(segments);
+    support = creator.create();
+    support.rotateZ(-Mathf.HALF_PI);
+    support.apply(new TranslateModifier(deltaX, deltaY, 0));
+    support.rotateY(-Mathf.HALF_PI);
+    processCapBack();
+    processCapTop();
+    processCapBottom();
+  }
 
-    private void mirror() {
-        if (!mirror)
-            return;
-        mesh.translateZ(-getSupportDepth() / 2f - getMirrorGap() / 2f);
-        Mesh3D mirrorMesh = mesh.copy();
-        mirrorMesh.rotateY(Mathf.PI);
-        mesh.append(mirrorMesh);
-    }
+  private void initializeMesh() {
+    mesh = new Mesh3D();
+  }
 
-    private void centerOnAxisX() {
-        float deltaX = -(getTotalWidth() / 2f) + (getWidth() / 2f);
-        mesh.apply(new TranslateModifier(deltaX, 0, 0));
-    }
+  private float getTotalWidth() {
+    return (getSupportCount() * getWidth()) + ((getSupportCount() - 1) * getGap());
+  }
 
-    private void processCapBack() {
-        if (capBack)
-            return;
-        FaceSelection selection = new FaceSelection(support);
-        FaceSelectionRules rules = new FaceSelectionRules();
-        rules.centerZ(CompareType.LESS_OR_EQUALS, -getSupportDepth() / 2f);
-        rules.apply(selection);
-        support.faces.removeAll(selection.getFaces());
-    }
+  private float getSupportDepth() {
+    return radius + extendFront + extendBack;
+  }
 
-    private void processCapBottom() {
-        if (capBottom)
-            return;
-        FaceSelection selection = new FaceSelection(support);
-        FaceSelectionRules rules = new FaceSelectionRules();
-        rules.centerY(CompareType.EQUALS, 0);
-        rules.apply(selection);
-        support.faces.removeAll(selection.getFaces());
-    }
+  private float getSupportHeight() {
+    return radius + radius + extendBottom + extendTop;
+  }
 
-    private void processCapTop() {
-        if (capTop)
-            return;
-        FaceSelection selection = new FaceSelection(support);
-        FaceSelectionRules rules = new FaceSelectionRules();
-        rules.centerY(CompareType.LESS_OR_EQUALS, -getSupportHeight());
-        rules.apply(selection);
-        support.faces.removeAll(selection.getFaces());
-    }
+  public float getGap() {
+    return gap;
+  }
 
-    private void createSupports() {
-        for (int i = 0; i < supportCount; i++) {
-            Mesh3D support = this.support.copy();
-            float deltaX = i * (width + gap);
-            support.apply(new TranslateModifier(deltaX, 0, 0));
-            mesh.append(support);
-        }
-    }
+  public void setGap(float gap) {
+    this.gap = gap;
+  }
 
-    private void createSupport() {
-        float deltaX = getSupportDepth() / 2f;
-        float deltaY = -radius - extendBottom;
-        ArchCreator creator = new ArchCreator();
-        creator.setRadius(radius);
-        creator.setExtendLeft(extendBottom);
-        creator.setExtendRight(extendTop);
-        creator.setExtendBottom(extendFront);
-        creator.setExtendTop(extendBack);
-        creator.setDepth(width);
-        creator.setSegments(segments);
-        support = creator.create();
-        support.rotateZ(-Mathf.HALF_PI);
-        support.apply(new TranslateModifier(deltaX, deltaY, 0));
-        support.rotateY(-Mathf.HALF_PI);
-        processCapBack();
-        processCapTop();
-        processCapBottom();
-    }
+  public int getSupportCount() {
+    return supportCount;
+  }
 
-    private void initializeMesh() {
-        mesh = new Mesh3D();
-    }
+  public void setSupportCount(int supportCount) {
+    this.supportCount = supportCount;
+  }
 
-    private float getTotalWidth() {
-        return (getSupportCount() * getWidth())
-                + ((getSupportCount() - 1) * getGap());
-    }
+  public float getWidth() {
+    return width;
+  }
 
-    private float getSupportDepth() {
-        return radius + extendFront + extendBack;
-    }
+  public void setWidth(float width) {
+    this.width = width;
+  }
 
-    private float getSupportHeight() {
-        return radius + radius + extendBottom + extendTop;
-    }
+  public int getSegments() {
+    return segments;
+  }
 
-    public float getGap() {
-        return gap;
-    }
+  public void setSegments(int segments) {
+    this.segments = segments;
+  }
 
-    public void setGap(float gap) {
-        this.gap = gap;
-    }
+  public float getRadius() {
+    return radius;
+  }
 
-    public int getSupportCount() {
-        return supportCount;
-    }
+  public void setRadius(float radius) {
+    this.radius = radius;
+  }
 
-    public void setSupportCount(int supportCount) {
-        this.supportCount = supportCount;
-    }
+  public float getExtendBottom() {
+    return extendBottom;
+  }
 
-    public float getWidth() {
-        return width;
-    }
+  public void setExtendBottom(float extendBottom) {
+    this.extendBottom = extendBottom;
+  }
 
-    public void setWidth(float width) {
-        this.width = width;
-    }
+  public float getExtendTop() {
+    return extendTop;
+  }
 
-    public int getSegments() {
-        return segments;
-    }
+  public void setExtendTop(float extendTop) {
+    this.extendTop = extendTop;
+  }
 
-    public void setSegments(int segments) {
-        this.segments = segments;
-    }
+  public float getExtendFront() {
+    return extendFront;
+  }
 
-    public float getRadius() {
-        return radius;
-    }
+  public void setExtendFront(float extendFront) {
+    this.extendFront = extendFront;
+  }
 
-    public void setRadius(float radius) {
-        this.radius = radius;
-    }
+  public float getExtendBack() {
+    return extendBack;
+  }
 
-    public float getExtendBottom() {
-        return extendBottom;
-    }
+  public void setExtendBack(float extendBack) {
+    this.extendBack = extendBack;
+  }
 
-    public void setExtendBottom(float extendBottom) {
-        this.extendBottom = extendBottom;
-    }
+  public boolean isCapBack() {
+    return capBack;
+  }
 
-    public float getExtendTop() {
-        return extendTop;
-    }
+  public void setCapBack(boolean capBack) {
+    this.capBack = capBack;
+  }
 
-    public void setExtendTop(float extendTop) {
-        this.extendTop = extendTop;
-    }
+  public boolean isCapBottom() {
+    return capBottom;
+  }
 
-    public float getExtendFront() {
-        return extendFront;
-    }
+  public void setCapBottom(boolean capBottom) {
+    this.capBottom = capBottom;
+  }
 
-    public void setExtendFront(float extendFront) {
-        this.extendFront = extendFront;
-    }
+  public boolean isCapTop() {
+    return capTop;
+  }
 
-    public float getExtendBack() {
-        return extendBack;
-    }
+  public void setCapTop(boolean capTop) {
+    this.capTop = capTop;
+  }
 
-    public void setExtendBack(float extendBack) {
-        this.extendBack = extendBack;
-    }
+  public boolean isMirror() {
+    return mirror;
+  }
 
-    public boolean isCapBack() {
-        return capBack;
-    }
+  public void setMirror(boolean mirror) {
+    this.mirror = mirror;
+  }
 
-    public void setCapBack(boolean capBack) {
-        this.capBack = capBack;
-    }
+  public float getMirrorGap() {
+    return mirrorGap;
+  }
 
-    public boolean isCapBottom() {
-        return capBottom;
-    }
-
-    public void setCapBottom(boolean capBottom) {
-        this.capBottom = capBottom;
-    }
-
-    public boolean isCapTop() {
-        return capTop;
-    }
-
-    public void setCapTop(boolean capTop) {
-        this.capTop = capTop;
-    }
-
-    public boolean isMirror() {
-        return mirror;
-    }
-
-    public void setMirror(boolean mirror) {
-        this.mirror = mirror;
-    }
-
-    public float getMirrorGap() {
-        return mirrorGap;
-    }
-
-    public void setMirrorGap(float mirrorGap) {
-        this.mirrorGap = mirrorGap;
-    }
-
+  public void setMirrorGap(float mirrorGap) {
+    this.mirrorGap = mirrorGap;
+  }
 }

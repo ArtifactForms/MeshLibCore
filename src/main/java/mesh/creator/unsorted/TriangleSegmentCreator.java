@@ -50,7 +50,7 @@ public class TriangleSegmentCreator implements IMeshCreator {
         for (Face3D face : faces) {
             Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0f);
         }
-        mesh.faces.removeAll(faces);
+        mesh.removeFaces(faces);
     }
 
     @Override

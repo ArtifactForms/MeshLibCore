@@ -54,7 +54,7 @@ public class LeonardoCubeCreator implements IMeshCreator {
     private void removeDoubleFaces() {
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectDoubles();
-        mesh.faces.removeAll(selection.getFaces());
+        mesh.removeFaces(selection.getFaces());
     }
 
     private void createTopConnector() {

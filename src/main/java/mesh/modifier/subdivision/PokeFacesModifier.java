@@ -68,7 +68,7 @@ public class PokeFacesModifier implements IMeshModifier {
     }
 
     private void removeOriginalFaces() {
-        mesh.faces.removeAll(originalFaces);
+        mesh.removeFaces(originalFaces);
     }
 
     private void addFace(int... indices) {

@@ -55,7 +55,7 @@ public class PushPullModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     setMesh(mesh);
@@ -65,7 +65,10 @@ public class PushPullModifier implements IMeshModifier {
 
   /** Displaces each vertex radially relative to the center point. */
   private void pushPullVertices() {
-    mesh.vertices.parallelStream().forEach(this::pushPullVertex);
+	  for (int i = 0; i < mesh.getVertexCount(); i++) {
+		  Vector3f v = mesh.getVertexAt(i);
+		  pushPullVertex(v);
+	  }
   }
 
   /**

@@ -96,7 +96,7 @@ public class HalfUVSphere implements IMeshCreator {
     }
 
     private void splitCapIntoTriangleFan() {
-        Face3D faceToSplit = mesh.getFaceAt(mesh.faces.size() - 1);
+        Face3D faceToSplit = mesh.getFaceAt(mesh.getFaceCount() - 1);
         new PlanarVertexCenterModifier().modify(mesh, faceToSplit);
     }
 

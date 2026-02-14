@@ -52,7 +52,7 @@ public class CatmullClarkModifier implements IMeshModifier {
     }
 
     private void clearOriginalFaces() {
-        mesh.faces.clear();
+        mesh.clearFaces();
     }
 
     private void initialize() {

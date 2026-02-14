@@ -32,7 +32,7 @@ public class FlipFacesModifier implements IMeshModifier, FaceModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    return modify(mesh, mesh.faces);
+    return modify(mesh, mesh.getFaces());
   }
 
   /**

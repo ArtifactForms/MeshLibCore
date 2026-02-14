@@ -65,7 +65,7 @@ public class RotateYModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     setMesh(mesh);
@@ -87,9 +87,12 @@ public class RotateYModifier implements IMeshModifier {
         Mathf.cos(angle), 0, Mathf.sin(angle), 0, 1, 0, -Mathf.sin(angle), 0, Mathf.cos(angle));
   }
 
-  /** Applies the rotation transformation to all vertices of the mesh using parallel execution. */
+  /** Applies the rotation transformation to all vertices of the mesh. */
   private void rotateMesh() {
-    mesh.vertices.parallelStream().forEach(this::applyRotationToVertex);
+	  for (int i = 0; i < mesh.getVertexCount(); i++) {
+		  Vector3f v = mesh.getVertexAt(i);
+		  applyRotationToVertex(v);
+	  }
   }
 
   /**

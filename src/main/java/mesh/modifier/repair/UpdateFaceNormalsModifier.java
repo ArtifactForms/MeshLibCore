@@ -37,7 +37,9 @@ public class UpdateFaceNormalsModifier implements IMeshModifier {
    * is used to enhance performance for large meshes.
    */
   private void updateFaceNormals() {
-    mesh.faces.parallelStream().forEach(this::updateFaceNormal);
+    for (Face3D f : mesh.getFaces()) {
+    	updateFaceNormal(f);
+    }
   }
 
   /**

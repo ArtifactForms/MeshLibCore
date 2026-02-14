@@ -69,7 +69,7 @@ public class PlanarVertexCenterModifier implements IMeshModifier {
     }
 
     private void addNewFaces() {
-        mesh.faces.addAll(newFaces);
+        mesh.addFaces(newFaces);
     }
 
     private int addVertexToMesh(Vector3f vertex) {

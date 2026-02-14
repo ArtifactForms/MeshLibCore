@@ -48,8 +48,8 @@ public class PlanarMidEdgeModifier implements IMeshModifier {
     }
 
     private void subdivideFaces() {
-        nextIndex = mesh.vertices.size();
-        for (Face3D face : mesh.faces) {
+        nextIndex = mesh.getVertexCount();
+        for (Face3D face : mesh.getFaces()) {
             subdivide(face);
         }
     }
@@ -101,11 +101,11 @@ public class PlanarMidEdgeModifier implements IMeshModifier {
     }
 
     private void removeOldFaces() {
-        mesh.faces.clear();
+        mesh.clearFaces();
     }
 
     private void addNewFaces() {
-        mesh.faces.addAll(facesToAdd);
+        mesh.addFaces(facesToAdd);
     }
 
     private void addTriangle(int... indices) {

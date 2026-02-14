@@ -31,7 +31,6 @@ public class PlanarVertexCenterPlaneTest {
   public void resultMeshHasFourFaces() {
     int expectedFaceCount = 4;
     assertEquals(expectedFaceCount, plane.getFaceCount());
-    assertEquals(expectedFaceCount, plane.faces.size());
     assertEquals(expectedFaceCount, plane.getFaces().size());
     assertEquals(expectedFaceCount, plane.getFaces(0, plane.getFaceCount()).size());
   }
@@ -50,7 +49,6 @@ public class PlanarVertexCenterPlaneTest {
   public void resultMeshHasFiveVertices() {
     int expectedVertexCount = 5;
     assertEquals(expectedVertexCount, plane.getVertexCount());
-    assertEquals(expectedVertexCount, plane.vertices.size());
     assertEquals(expectedVertexCount, plane.getVertices().size());
   }
 
@@ -67,7 +65,7 @@ public class PlanarVertexCenterPlaneTest {
   @Test
   public void resultMeshContainsPlanerVertices() {
     Mesh3D original = new PlaneCreator().create();
-    for (Vector3f v : original.getVertices()) assertTrue(plane.vertices.contains(v));
+    for (Vector3f v : original.getVertices()) assertTrue(plane.getVertices().contains(v));
   }
 
   @Test
@@ -75,7 +73,7 @@ public class PlanarVertexCenterPlaneTest {
     Mesh3D original = new PlaneCreator().create();
     Face3D face = original.getFaceAt(0);
     Vector3f faceCenter = original.calculateFaceCenter(face);
-    assertTrue(plane.vertices.contains(faceCenter));
+    assertTrue(plane.getVertices().contains(faceCenter));
   }
 
   @Test

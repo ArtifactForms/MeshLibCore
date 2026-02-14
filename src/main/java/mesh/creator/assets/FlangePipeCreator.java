@@ -98,16 +98,16 @@ public class FlangePipeCreator implements IMeshCreator {
         creator.setRotationSegments(rotationSegments);
         creator.setCapBottomFillType(FillType.NOTHING);
         creator.setCapTopFillType(FillType.NOTHING);
-        creator.add(pipeRadius, 0);
-        creator.add(pipeRadius, flangeGrooveWidth);
-        creator.add(pipeRadius, 0);
-        creator.add(flangeOuterRadius, 0);
-        creator.add(flangeOuterRadius, flangeDepth);
-        creator.add(pipeRadius, 0);
-        creator.add(pipeRadius, pipeSegmentLength);
-        creator.add(flangeOuterRadius, 0);
-        creator.add(flangeOuterRadius, flangeDepth);
-        creator.add(pipeRadius, 0);
+        creator.addRingSegment(pipeRadius, 0);
+        creator.addRingSegment(pipeRadius, flangeGrooveWidth);
+        creator.addRingSegment(pipeRadius, 0);
+        creator.addRingSegment(flangeOuterRadius, 0);
+        creator.addRingSegment(flangeOuterRadius, flangeDepth);
+        creator.addRingSegment(pipeRadius, 0);
+        creator.addRingSegment(pipeRadius, pipeSegmentLength);
+        creator.addRingSegment(flangeOuterRadius, 0);
+        creator.addRingSegment(flangeOuterRadius, flangeDepth);
+        creator.addRingSegment(pipeRadius, 0);
         segment.append(creator.create());
     }
 

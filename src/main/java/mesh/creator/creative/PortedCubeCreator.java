@@ -92,7 +92,7 @@ public class PortedCubeCreator implements IMeshCreator {
         modifier.setScale(1);
         modifier.setAmount(-1);
         modifier.modify(mesh, centerFaces);
-        mesh.faces.removeAll(centerFaces);
+        mesh.removeFaces(centerFaces);
     }
 
     private void removeDoubles() {

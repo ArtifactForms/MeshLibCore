@@ -38,7 +38,7 @@ public class LatticeSphereCreator implements IMeshCreator {
         for (Face3D f : faces) {
             Mesh3DUtil.extrudeFace(mesh, f, scale, 0);
         }
-        mesh.faces.removeAll(faces);
+        mesh.removeFaces(faces);
     }
 
     private void solidify() {

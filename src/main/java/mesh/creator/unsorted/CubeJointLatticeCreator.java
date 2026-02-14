@@ -82,14 +82,14 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 	}
 
 	private void connectBottomTop(int i, int j) {
-		Face3D bottom = cubes[i][j].faces.get(1);
-		Face3D top = cubes[i + 1][j].faces.get(0);
+		Face3D bottom = cubes[i][j].getFaceAt(1);
+		Face3D top = cubes[i + 1][j].getFaceAt(0);
 		connect(bottom, top, scaleY);
 	}
 
 	private void connectRightLeft(int i, int j) {
-		Face3D right = cubes[i][j].faces.get(2);
-		Face3D left = cubes[i][j + 1].faces.get(4);
+		Face3D right = cubes[i][j].getFaceAt(2);
+		Face3D left = cubes[i][j + 1].getFaceAt(4);
 		connect(right, left, scaleX);
 	}
 

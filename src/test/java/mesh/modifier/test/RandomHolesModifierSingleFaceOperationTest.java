@@ -122,7 +122,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
     Mesh3D plane = new PlaneCreator().create();
     modifier.setSeed(0);
     modifier.modify(plane, plane.getFaceAt(0));
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -140,7 +140,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
     Mesh3D plane = new PlaneCreator().create();
     modifier.setSeed(13424);
     modifier.modify(plane, plane.getFaceAt(0));
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -158,7 +158,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
     Mesh3D plane = new PlaneCreator().create();
     modifier.setSeed(-3244324);
     modifier.modify(plane, plane.getFaceAt(0));
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -176,7 +176,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
     Mesh3D plane = new PlaneCreator().create();
     modifier.setSeed(Long.MAX_VALUE);
     modifier.modify(plane, plane.getFaceAt(0));
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -194,7 +194,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
     Mesh3D plane = new PlaneCreator().create();
     modifier.setSeed(Long.MIN_VALUE);
     modifier.modify(plane, plane.getFaceAt(0));
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -219,7 +219,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
     modifier = new RandomHolesModifier(0.1f, 0.3f);
     modifier.setSeed(234453);
     modifier.modify(mesh, mesh.getFaceAt(4));
-    assertArrayEquals(expected, mesh.vertices.toArray());
+    assertArrayEquals(expected, mesh.getVertices().toArray());
   }
 
   @Test
@@ -280,6 +280,6 @@ public class RandomHolesModifierSingleFaceOperationTest {
     modifier.setSeed(234);
     modifier.modify(actual, actual.getFaceAt(0));
 
-    assertArrayEquals(expected.vertices.toArray(), actual.vertices.toArray());
+    assertArrayEquals(expected.getVertices().toArray(), actual.getVertices().toArray());
   }
 }

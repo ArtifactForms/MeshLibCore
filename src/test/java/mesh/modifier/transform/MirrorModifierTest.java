@@ -114,7 +114,7 @@ class MirrorModifierTest {
     Mesh3D mesh = new UVSphereCreator(20, 41, 2.43f).create();
     new MirrorModifier().modify(mesh);
 
-    for (Face3D face : mesh.faces) {
+    for (Face3D face : mesh.getFaces()) {
       Vector3f recalculated = mesh.calculateFaceNormal(face);
       assertEquals(recalculated, face.normal);
     }
@@ -140,7 +140,7 @@ class MirrorModifierTest {
     Mesh3D mesh = new UVSphereCreator().create();
     new MirrorModifier().modify(mesh);
 
-    for (Face3D face : mesh.faces) {
+    for (Face3D face : mesh.getFaces()) {
       assertEquals(1f, face.normal.length(), EPSILON);
     }
   }

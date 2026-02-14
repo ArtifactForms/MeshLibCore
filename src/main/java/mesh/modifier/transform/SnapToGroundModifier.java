@@ -64,7 +64,7 @@ public class SnapToGroundModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     setMesh(mesh);
@@ -85,7 +85,10 @@ public class SnapToGroundModifier implements IMeshModifier {
   /** Translates the entire mesh vertically to align its highest point with the ground level. */
   private void translateMesh() {
     Vector3f delta = new Vector3f(0, distanceToGround, 0);
-    mesh.vertices.parallelStream().forEach(vertex -> vertex.addLocal(delta));
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      v.addLocal(delta);
+    }
   }
 
   /**
@@ -95,8 +98,9 @@ public class SnapToGroundModifier implements IMeshModifier {
    */
   private float findHighestPoint() {
     float max = mesh.getVertexAt(0).y;
-    for (Vector3f vertex : mesh.getVertices()) {
-      max = vertex.y > max ? vertex.y : max;
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+    	Vector3f vertex = mesh.getVertexAt(i);
+        max = vertex.y > max ? vertex.y : max;
     }
     return max;
   }

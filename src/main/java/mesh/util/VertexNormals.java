@@ -27,7 +27,7 @@ public class VertexNormals {
     }
 
     private void calculateFaceNormals() {
-        for (Face3D face : mesh.faces) {
+        for (Face3D face : mesh.getFaces()) {
             Vector3f faceNormal = mesh.calculateFaceNormal(face);
             faceNormals.put(face, faceNormal);
             for (int i = 0; i < face.indices.length; i++) {
@@ -43,7 +43,8 @@ public class VertexNormals {
     }
 
     private void calculateVertexNormals() {
-        for (Vector3f v : mesh.vertices) {
+        for (int i = 0; i < mesh.getVertexCount(); i++) {
+        	Vector3f v = mesh.getVertexAt(i);
             Vector3f normal = new Vector3f();
             List<Face3D> faces = vectorToFace.get(v);
             if (faces == null)

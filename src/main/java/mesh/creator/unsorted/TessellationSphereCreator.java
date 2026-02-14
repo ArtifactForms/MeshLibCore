@@ -36,7 +36,7 @@ public class TessellationSphereCreator implements IMeshCreator {
 		for (Face3D face : faces) {
 			Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0.0f);
 		}
-		mesh.faces.removeAll(faces);
+		mesh.removeFaces(faces);
 	}
 
 	private void tessellate() {

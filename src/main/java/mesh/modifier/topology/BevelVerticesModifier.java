@@ -112,7 +112,7 @@ public class BevelVerticesModifier implements IMeshModifier {
 
   /** Generates edge points for all faces in the mesh. */
   private void generateEdgePointsForFaces() {
-    for (Face3D face : mesh.faces) {
+    for (Face3D face : mesh.getFaces()) {
       generateEdgePointsForFace(face);
     }
   }
@@ -197,14 +197,14 @@ public class BevelVerticesModifier implements IMeshModifier {
 
   /** Clears out old faces and vertices from the mesh. */
   private void removeOldFacesAndVertices() {
-    mesh.faces.clear();
-    mesh.vertices.clear();
+    mesh.clearFaces();
+    mesh.clearVertices();
   }
 
   /** Adds newly computed vertices and faces to the mesh. */
   private void addNewVerticesAndFaces() {
-    mesh.vertices.addAll(verticesToAdd);
-    mesh.faces.addAll(facesToAdd);
+    mesh.addVertices(verticesToAdd);
+    mesh.addFaces(facesToAdd);
   }
 
   /**

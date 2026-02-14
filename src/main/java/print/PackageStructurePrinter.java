@@ -18,7 +18,7 @@ public class PackageStructurePrinter {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Path sourceRoot = Paths.get("src/main/java");
+		Path sourceRoot = Paths.get("src/main/java/mesh/modifier");
 		Node root = new Node(sourceRoot.getFileName().toString(), false);
 
 		try (var paths = Files.walk(sourceRoot)) {

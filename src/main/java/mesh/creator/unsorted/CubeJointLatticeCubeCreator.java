@@ -97,8 +97,8 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 		Mesh3DUtil.extrudeFace(mesh, b, extrude, 0.0f);
 		flipFacesModifier.modify(mesh, b);
 		FaceBridging.bridge(mesh, a, b);
-		mesh.faces.remove(a);
-		mesh.faces.remove(b);
+		mesh.removeFace(a);
+		mesh.removeFace(b);
 	}
 
 	private void connectRightLeft(int x, int y, int z) {
@@ -120,7 +120,7 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 	}
 
 	private List<Face3D> getFacesOfCubeAt(int x, int y, int z) {
-		return cubes[y][x][z].faces;
+		return cubes[y][x][z].getFaces();
 	}
 
 	private Face3D getTopFaceOfCubeAt(int x, int y, int z) {

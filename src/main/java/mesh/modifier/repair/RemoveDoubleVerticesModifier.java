@@ -49,7 +49,7 @@ public class RemoveDoubleVerticesModifier implements IMeshModifier {
     for (Face3D face : mesh.getFaces()) {
       for (int i = 0; i < face.indices.length; i++) {
         Vector3f v = getVertexAt(face.indices[i]);
-        int index = temporaryMesh.vertices.indexOf(v);
+        int index = temporaryMesh.indexOf(v);
         face.indices[i] = index;
       }
       temporaryMesh.add(face);
@@ -65,15 +65,15 @@ public class RemoveDoubleVerticesModifier implements IMeshModifier {
   }
 
   private void addVertices() {
-    mesh.addVertices(temporaryMesh.vertices);
+    mesh.addVertices(temporaryMesh.getVertices());
   }
 
   private void addFaces() {
-    mesh.addFaces(temporaryMesh.faces);
+    mesh.addFaces(temporaryMesh.getFaces());
   }
 
   private void addAllVerticesFromSetToTmpMesh() {
-    temporaryMesh.vertices.addAll(vertexSet);
+    temporaryMesh.addVertices(vertexSet);
   }
 
   private void initializeVertexSet() {
@@ -97,6 +97,6 @@ public class RemoveDoubleVerticesModifier implements IMeshModifier {
   }
 
   private void clearOldFaces() {
-    mesh.faces.clear();
+    mesh.clearFaces();
   }
 }

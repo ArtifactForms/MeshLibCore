@@ -24,8 +24,8 @@ public class Mesh3DRenderer {
   public void drawVertices(Mesh3D mesh) {
     context.pushMatrix();
     context.beginShape(PApplet.POINTS);
-    for (int i = 0; i < mesh.vertices.size(); i++) {
-      Vector3f v = mesh.vertices.get(i);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
       context.vertex(v.getX(), v.getY(), v.getZ());
     }
     context.endShape();
@@ -37,8 +37,8 @@ public class Mesh3DRenderer {
     context.pushMatrix();
     context.strokeWeight(size);
     context.beginShape(PApplet.POINTS);
-    for (int i = 0; i < mesh.vertices.size(); i++) {
-      Vector3f v = mesh.vertices.get(i);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
       context.vertex(v.getX(), v.getY(), v.getZ());
     }
     context.endShape();
@@ -49,7 +49,7 @@ public class Mesh3DRenderer {
   public void drawFaceNormals(Mesh3D mesh, float length) {
     context.pushMatrix();
     context.beginShape(PApplet.LINES);
-    for (Face3D f : mesh.faces) {
+    for (Face3D f : mesh.getFaces()) {
       Vector3f c = mesh.calculateFaceCenter(f);
       Vector3f n = mesh.calculateFaceNormal(f);
       Vector3f v = c.add(n.mult(length));
@@ -68,8 +68,8 @@ public class Mesh3DRenderer {
     float length = 0.1f;
     context.pushMatrix();
     context.beginShape(PApplet.LINES);
-    for (int i = 0; i < mesh.vertices.size(); i++) {
-      Vector3f v0 = mesh.vertices.get(i);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v0 = mesh.getVertexAt(i);
       Vector3f v1 = v0.add(normals.get(i).mult(length));
       context.vertex(v0.getX(), v0.getY(), v0.getZ());
       context.vertex(v1.getX(), v1.getY(), v1.getZ());
@@ -91,7 +91,7 @@ public class Mesh3DRenderer {
 
   private void drawFacesSmooth(Mesh3D mesh, Collection<Face3D> faces) {
     context.pushMatrix();
-    
+
     new UpdateFaceNormalsModifier().modify(mesh);
 
     VertexNormals normals = new VertexNormals(mesh);
@@ -116,7 +116,7 @@ public class Mesh3DRenderer {
 
       for (int i = 0; i < f.indices.length; i++) {
         Vector3f vn = normals.getVertexNormals().get(f.indices[i]);
-        v = mesh.vertices.get(f.indices[i]);
+        v = mesh.getVertexAt(f.indices[i]);
         context.normal(vn.getX(), vn.getY(), vn.getZ());
         context.vertex(v.getX(), v.getY(), v.getZ());
       }
@@ -150,36 +150,35 @@ public class Mesh3DRenderer {
 
       // Add vertices
       for (int index : f.indices) {
-        v = mesh.vertices.get(index);
+        v = mesh.getVertexAt(index);
         context.vertex(v.getX(), v.getY(), v.getZ());
       }
 
       context.endShape(PApplet.CLOSE); // Ensure the shape is closed
     }
   }
-  
+
   public void drawFace(Mesh3D mesh, Face3D f) {
-      	PGraphics context = this.context.g;
-        Vector3f v;
+    PGraphics context = this.context.g;
+    Vector3f v;
 
-        // Use specific shape types based on face vertex count
-        if (f.indices.length == 3) {
-          context.beginShape(PApplet.TRIANGLES);
-        } else if (f.indices.length == 4) {
-          context.beginShape(PApplet.QUADS);
-        } else {
-          context.beginShape(PApplet.POLYGON); // Handle polygons directly
-        }
-
-        // Add vertices
-        for (int index : f.indices) {
-          v = mesh.vertices.get(index);
-          context.vertex(v.getX(), v.getY(), v.getZ());
-        }
-
-        context.endShape(PApplet.CLOSE); // Ensure the shape is closed
-  
+    // Use specific shape types based on face vertex count
+    if (f.indices.length == 3) {
+      context.beginShape(PApplet.TRIANGLES);
+    } else if (f.indices.length == 4) {
+      context.beginShape(PApplet.QUADS);
+    } else {
+      context.beginShape(PApplet.POLYGON); // Handle polygons directly
     }
+
+    // Add vertices
+    for (int index : f.indices) {
+      v = mesh.getVertexAt(index);
+      context.vertex(v.getX(), v.getY(), v.getZ());
+    }
+
+    context.endShape(PApplet.CLOSE); // Ensure the shape is closed
+  }
 
   public void drawFaces(Mesh3D mesh, Collection<Face3D> faces) {
     drawFaces(mesh, faces, Shading.FLAT);
@@ -190,14 +189,15 @@ public class Mesh3DRenderer {
   }
 
   public void drawFaces(Mesh3D mesh) {
-    drawFaces(mesh, mesh.faces, Shading.FLAT);
+    drawFaces(mesh, mesh.getFaces(), Shading.FLAT);
   }
 
   public void drawEdges(Mesh3D mesh) {
-    for (Face3D f : mesh.faces) {
+    for (int j = 0; j < mesh.getFaceCount(); j++) {
+      Face3D f = mesh.getFaceAt(j);
       for (int i = 0; i <= f.indices.length; i++) {
-        Vector3f v0 = mesh.vertices.get(f.indices[i % f.indices.length]);
-        Vector3f v1 = mesh.vertices.get(f.indices[(i + 1) % f.indices.length]);
+        Vector3f v0 = mesh.getVertexAt(f.indices[i % f.indices.length]);
+        Vector3f v1 = mesh.getVertexAt(f.indices[(i + 1) % f.indices.length]);
         context.line(v0.getX(), v0.getY(), v0.getZ(), v1.getX(), v1.getY(), v1.getZ());
       }
     }

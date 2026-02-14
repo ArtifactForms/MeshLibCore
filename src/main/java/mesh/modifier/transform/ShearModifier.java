@@ -64,7 +64,7 @@ public class ShearModifier implements IMeshModifier {
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
 		validateMesh(mesh);
-		if (mesh.vertices.isEmpty()) {
+		if (mesh.getVertexCount() == 0) {
 			return mesh;
 		}
 		applyShear(mesh);
@@ -73,10 +73,7 @@ public class ShearModifier implements IMeshModifier {
 
 	/**
 	 * Applies the shear transformation to all vertices in the given mesh.
-	 * 
-	 * This method uses a parallel stream to process the vertices, applying the
-	 * shear transformation in a concurrent manner for improved performance on
-	 * large meshes. The shear transformation is determined by the specified shear
+	 * The shear transformation is determined by the specified shear
 	 * axis and factor.
 	 * 
 	 * @param mesh the mesh whose vertices will be sheared
@@ -84,7 +81,10 @@ public class ShearModifier implements IMeshModifier {
 	 *                                  vertices
 	 */
 	private void applyShear(Mesh3D mesh) {
-		mesh.vertices.parallelStream().forEach(this::applyShearToVertex);
+		for (int i = 0; i < mesh.getVertexCount(); i++) {
+			Vector3f v = mesh.getVertexAt(i);
+			applyShearToVertex(v);
+		}
 	}
 
 	/**

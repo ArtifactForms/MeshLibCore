@@ -49,7 +49,7 @@ public class FitToAABBModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     setMesh(mesh);

@@ -70,24 +70,24 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
     }
 
     private void subdivideFaces() {
-        for (Face3D f : mesh.faces) {
+        for (Face3D f : mesh.getFaces()) {
             int n = f.indices.length;
             int[] idxs = new int[f.indices.length + 1];
             Vector3f center = mesh.calculateFaceCenter(f);
-            mesh.vertices.add(center);
+            mesh.addVertex(center.x, center.y, center.z);
             idxs[0] = nextIndex;
             nextIndex++;
 
             // Create edge points
             for (int i = 0; i < f.indices.length; i++) {
-                Vector3f from = mesh.vertices.get(f.indices[i % n]);
-                Vector3f to = mesh.vertices.get(f.indices[(i + 1) % n]);
+                Vector3f from = mesh.getVertexAt(f.indices[i % n]);
+                Vector3f to = mesh.getVertexAt(f.indices[(i + 1) % n]);
                 Vector3f edgePoint = from.add(to).mult(0.5f);
-                int idx = mesh.vertices.indexOf(edgePoint);
+                int idx = mesh.indexOf(edgePoint);
                 if (idx > -1) {
                     idxs[i + 1] = idx;
                 } else {
-                    mesh.vertices.add(edgePoint);
+                    mesh.addVertex(edgePoint.x, edgePoint.y, edgePoint.z);
                     idxs[i + 1] = nextIndex;
                     nextIndex++;
                 }
@@ -114,7 +114,7 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
     }
 
     private void initializeNextIndex() {
-        nextIndex = mesh.vertices.size();
+        nextIndex = mesh.getVertexCount();
     }
 
     private void clear() {
@@ -122,11 +122,11 @@ public class PlanarMidEdgeCenterModifier implements IMeshModifier {
     }
 
     private void addNewFaces() {
-        mesh.faces.addAll(newFaces);
+        mesh.addFaces(newFaces);
     }
 
     private void removeOldFaces() {
-        mesh.faces.clear();
+        mesh.clearFaces();
     }
 
     private void setMesh(Mesh3D mesh) {

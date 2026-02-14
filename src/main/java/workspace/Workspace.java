@@ -171,8 +171,8 @@ public class Workspace extends Editor implements ModelListener {
 
   public void draw(Mesh3D mesh, Color color) {
     p.pushStyle();
-    vertices = mesh.vertices.size();
-    faces = mesh.faces.size();
+    vertices = mesh.getVertexCount();
+    faces = mesh.getFaceCount();
 
     if (!isWireframe()) {
       if (isEdgesVisible()) {
@@ -181,7 +181,7 @@ public class Workspace extends Editor implements ModelListener {
         p.noStroke();
       }
       p.fill(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-      renderer.drawFaces(mesh, mesh.faces, getShading());
+      renderer.drawFaces(mesh, mesh.getFaces(), getShading());
     } else {
       p.stroke(UiValues.getColor(UiConstants.KEY_EDITOR_WIREFRAME_COLOR).getRGBA());
       renderer.drawEdges(mesh);

@@ -81,9 +81,10 @@ public class MirrorModifier implements IMeshModifier {
 
   /** Mirrors all vertices of the mesh along the configured axis. */
   private void mirror(Mesh3D mesh) {
-    for (Vector3f v : mesh.vertices) {
-      mirrorAlongAxis(v);
-    }
+	  for (int i = 0; i < mesh.getVertexCount(); i++) {
+		  Vector3f v = mesh.getVertexAt(i);
+		  mirrorAlongAxis(v);
+	  }
   }
 
   /** Inverts the winding order of all faces to restore correct orientation. */
