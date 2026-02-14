@@ -108,7 +108,7 @@ public class ConeCreator implements IMeshCreator {
     }
 
     private void splitFace(int faceIndex, float offsetY) {
-        int index = mesh.vertices.size();
+        int index = mesh.getVertexCount();
         Face3D face = mesh.getFaceAt(faceIndex);
         new PlanarVertexCenterModifier().modify(mesh, face);
         mesh.getVertexAt(index).addLocal(0, offsetY, 0);
