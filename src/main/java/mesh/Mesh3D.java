@@ -191,12 +191,6 @@ public class Mesh3D {
     return index;
   }
 
-  public int addVertex(Vector3f v) {
-    int index = vertices.size();
-    vertices.add(v);
-    return index;
-  }
-
   public void addFace(int... indices) {
     faces.add(new Face3D(indices));
   }
@@ -205,6 +199,7 @@ public class Mesh3D {
     faces.add(new Face3D(indices, indices));
   }
 
+  @Deprecated
   public void addVertices(Collection<Vector3f> vertices) {
     this.vertices.addAll(vertices);
   }
@@ -245,10 +240,6 @@ public class Mesh3D {
     return new ArrayList<>(faces.subList(from, to));
   }
 
-  public List<Vector3f> getVertices(int from, int to) {
-    return new ArrayList<>(vertices.subList(from, to));
-  }
-
   public List<Vector3f> getVertices() {
     return new ArrayList<>(vertices);
   }
@@ -270,18 +261,10 @@ public class Mesh3D {
     this.vertexNormals.addAll(vertexNormals);
   }
 
-  public void clearVertexNormals() {
-    this.vertexNormals.clear();
-  }
-
   public ArrayList<Vector3f> getVertexNormals() {
     return vertexNormals;
   }
-
-  public boolean hasUvCoordinates() {
-    return !uvs.isEmpty();
-  }
-
+  
   /**
    * Adds a UV coordinate to the mesh.
    *
