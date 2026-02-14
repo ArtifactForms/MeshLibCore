@@ -107,7 +107,7 @@ public class NubCreator implements IMeshCreator {
     private void capBottom() {
         int[] indices = new int[rotationSegments];
         for (int i = 0; i < rotationSegments; i++) {
-            indices[i] = mesh.vertices.size() - 1 - i;
+            indices[i] = mesh.getVertexCount() - 1 - i;
         }
         mesh.addFace(indices);
     }
