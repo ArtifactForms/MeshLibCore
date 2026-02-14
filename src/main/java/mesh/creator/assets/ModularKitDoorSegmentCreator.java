@@ -27,7 +27,7 @@ public class ModularKitDoorSegmentCreator implements IMeshCreator {
         doorHeight = 2.0f;
         segmentWidth = 2.0f;
         segmentHeight = 3.0f;
-        segmentDepth = 0.0f;
+        segmentDepth = 0.1f;
     }
 
     @Override
