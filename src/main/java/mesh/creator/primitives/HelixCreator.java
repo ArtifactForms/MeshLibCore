@@ -107,7 +107,7 @@ public class HelixCreator implements IMeshCreator {
         if (!cap)
             return;
 
-        int n = mesh.vertices.size() - 1;
+        int n = mesh.getVertexCount() - 1;
         int m = minorSegments - 1;
         Face3D endCapFace = new Face3D(new int[minorSegments]);
         Face3D startCapFace = new Face3D(new int[minorSegments]);
