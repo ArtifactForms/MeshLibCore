@@ -10,6 +10,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.SegmentedCubeCreator;
+import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
 import mesh.modifier.topology.ExtrudeModifier;
 import mesh.modifier.topology.SolidifyModifier;
@@ -61,8 +62,8 @@ public class PortedCubeCreator implements IMeshCreator {
     }
 
     private void scale() {
-        mesh.apply(new ScaleModifier(Mathf.ONE_THIRD));
-        mesh.apply(new ScaleModifier(radius * 2));
+        new ScaleModifier(Mathf.ONE_THIRD).modify(mesh);
+        new ScaleModifier(radius * 2).modify(mesh);
     }
 
     private void removeCornerFaces() {
@@ -71,9 +72,12 @@ public class PortedCubeCreator implements IMeshCreator {
 
         FaceSelection selection = new FaceSelection(mesh);
         Mesh3D cube = new CubeCreator(1.5f).create();
-        for (Vector3f v : cube.vertices)
-            selection.selectByVertex(v);
-
+        
+        for (int i = 0; i < cube.getVertexCount(); i++) {
+        	Vector3f v = cube.getVertexAt(i);
+        	selection.selectByVertex(v);
+        }
+        
         mesh.removeFaces(selection.getFaces());
     }
 
@@ -92,7 +96,7 @@ public class PortedCubeCreator implements IMeshCreator {
     }
 
     private void removeDoubles() {
-        mesh.removeDoubles();
+        new RemoveDoubleVerticesModifier().modify(mesh);
     }
 
     private void solidify() {
