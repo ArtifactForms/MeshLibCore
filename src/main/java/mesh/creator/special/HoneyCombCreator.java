@@ -128,11 +128,11 @@ public class HoneyCombCreator implements IMeshCreator {
 
       // Manage vertex sharing for outer boundary
       outerTop[i] = getOrCreateOuterTopVertex(ox, oz, yTop);
-      innerTop[i] = mesh.addVertex(new Vector3f(ix, yTop, iz));
+      innerTop[i] = mesh.addVertex(ix, yTop, iz);
 
       if (hasHeight) {
         outerBottom[i] = getOrCreateOuterBottomVertex(ox, oz, yBottom);
-        innerBottom[i] = mesh.addVertex(new Vector3f(ix, yBottom, iz));
+        innerBottom[i] = mesh.addVertex(ix, yBottom, iz);
       }
     }
 
@@ -241,7 +241,7 @@ public class HoneyCombCreator implements IMeshCreator {
       return index;
     }
 
-    int newIndex = mesh.addVertex(new Vector3f(qx, y, qz));
+    int newIndex = mesh.addVertex(qx, y, qz);
     map.put(key, newIndex);
     return newIndex;
   }
