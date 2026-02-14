@@ -135,8 +135,8 @@ public class VariableCylinderCreator implements IMeshCreator {
   }
 
   private void removeDoubles() {
-    for (Vector3f v : mesh.vertices) v.roundLocalDecimalPlaces(4);
-    new RemoveDoubleVerticesModifier().modify(mesh);
+    int decimalPlaces = 4;
+    new RemoveDoubleVerticesModifier(decimalPlaces).modify(mesh);
   }
 
   private void capBottom() {
