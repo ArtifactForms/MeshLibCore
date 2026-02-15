@@ -7,7 +7,6 @@ import java.util.List;
 
 import math.Vector2f;
 import math.Vector3f;
-import mesh.modifier.IMeshModifier;
 import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.TranslateModifier;
