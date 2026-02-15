@@ -375,9 +375,4 @@ public class Mesh3D implements Mesh {
   public void add(Face3D... faces) {
     this.faces.addAll(Arrays.asList(faces));
   }
-
-//  @Deprecated
-//  public List<Face3D> getFaces(int from, int to) {
-//    return new ArrayList<>(faces.subList(from, to));
-//  }
 }
