@@ -55,7 +55,7 @@ public class CrossLineReticle extends AbstractComponent implements RenderableCom
     this.color = color;
     this.thickness = thickness;
     this.mesh = new PlaneCreatorUV(radius).create();
-    this.mesh.apply(new RotateXModifier(-Mathf.HALF_PI));
+    new RotateXModifier(-Mathf.HALF_PI).modify(mesh);
     this.texture = createTexture();
   }
 

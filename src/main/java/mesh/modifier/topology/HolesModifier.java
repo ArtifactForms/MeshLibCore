@@ -85,9 +85,7 @@ public class HolesModifier implements IMeshModifier, FaceModifier {
       return mesh;
     }
     Collection<Face3D> facesToModify = faces;
-    if (faces == mesh.faces) {
-      facesToModify = new ArrayList<Face3D>(mesh.faces);
-    }
+    facesToModify = new ArrayList<Face3D>(mesh.getFaces());
     createExtrudeModifier().modify(mesh, facesToModify);
     return mesh;
   }
@@ -137,7 +135,7 @@ public class HolesModifier implements IMeshModifier, FaceModifier {
    *     hole percentage is zero), {@code false} otherwise.
    */
   private boolean canExitEarly(Mesh3D mesh) {
-    return mesh.faces.isEmpty() || holePercentage == 0;
+    return mesh.getFaceCount() == 0 || holePercentage == 0;
   }
 
   /**

@@ -20,7 +20,7 @@ public class LoopSelect {
     }
 
     public void select(int index) {
-        if (selection.getMesh().faces.isEmpty())
+        if (selection.getMesh().getFaceCount() == 0)
             return;
         Face3D start = selection.getMesh().getFaceAt(index);
         loop(start);

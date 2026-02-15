@@ -2,6 +2,7 @@ package mesh.modifier.repair;
 
 import math.Vector3f;
 import mesh.Face3D;
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
@@ -37,7 +38,9 @@ public class UpdateFaceNormalsModifier implements IMeshModifier {
    * is used to enhance performance for large meshes.
    */
   private void updateFaceNormals() {
-    mesh.faces.parallelStream().forEach(this::updateFaceNormal);
+    for (Face3D f : mesh.getFaces()) {
+      updateFaceNormal(f);
+    }
   }
 
   /**
@@ -56,7 +59,7 @@ public class UpdateFaceNormalsModifier implements IMeshModifier {
    * @param mesh The mesh to validate.
    * @throws IllegalArgumentException If the mesh is null.
    */
-  private void validateMesh(Mesh3D mesh) {
+  private void validateMesh(Mesh mesh) {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }

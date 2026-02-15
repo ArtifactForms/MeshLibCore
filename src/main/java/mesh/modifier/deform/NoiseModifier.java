@@ -39,7 +39,7 @@ public class NoiseModifier implements IMeshModifier {
   @Override
   public Mesh3D modify(Mesh3D mesh) {
     validate(mesh);
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     setMesh(mesh);
@@ -70,7 +70,7 @@ public class NoiseModifier implements IMeshModifier {
   }
 
   private int getVertexCount() {
-    return mesh.vertices.size();
+    return mesh.getVertexCount();
   }
 
   private void calculateVertexNormals() {

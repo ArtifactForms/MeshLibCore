@@ -97,7 +97,8 @@ public class BoxUVModifier implements IMeshModifier {
   public Mesh3D modify(Mesh3D mesh) {
     ArrayList<Vector2f> uvs = new ArrayList<Vector2f>();
 
-    for (Face3D face : mesh.faces) {
+    for (int j = 0; j < mesh.getFaceCount(); j++) {
+      Face3D face = mesh.getFaceAt(j);
       int vc = face.getVertexCount();
       int[] uvIndices = new int[vc];
 
@@ -107,7 +108,7 @@ public class BoxUVModifier implements IMeshModifier {
       Axis axis = axisFromNormal(n);
 
       for (int i = 0; i < vc; i++) {
-        Vector3f p = mesh.vertices.get(face.getIndexAt(i));
+        Vector3f p = mesh.getVertexAt(face.getIndexAt(i));
 
         float u, v;
 

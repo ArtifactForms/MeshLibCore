@@ -40,7 +40,7 @@ public class IcoSphereCreator implements IMeshCreator {
     }
 
     private void spherifyIcosahedron() {
-        mesh.apply(new SpherifyModifier(radius));
+        new SpherifyModifier(radius).modify(mesh);
     }
 
     public float getRadius() {

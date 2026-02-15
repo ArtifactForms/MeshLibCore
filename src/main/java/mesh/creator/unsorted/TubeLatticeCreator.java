@@ -79,7 +79,7 @@ public class TubeLatticeCreator implements IMeshCreator {
 	}
 
 	private void flipFaceNormals() {
-		mesh.apply(new FlipFacesModifier());
+		new FlipFacesModifier().modify(mesh);
 	}
 
 	public float getThickness() {

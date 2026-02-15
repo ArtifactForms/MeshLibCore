@@ -107,7 +107,7 @@ public class DiamondCreatorTest {
   public void testCreatedMeshContainsVertexAtCenterPavillionHeight() {
     Vector3f expected = new Vector3f(0, 0.8f, 0);
     Mesh3D mesh = new DiamondCreator().create();
-    assertTrue(mesh.vertices.contains(expected));
+    assertTrue(mesh.getVertices().contains(expected));
   }
 
   @Test
@@ -117,7 +117,7 @@ public class DiamondCreatorTest {
     DiamondCreator creator = new DiamondCreator();
     creator.setPavillionHeight(pavillionHeight);
     Mesh3D mesh = creator.create();
-    assertTrue(mesh.vertices.contains(expected));
+    assertTrue(mesh.getVertices().contains(expected));
   }
 
   @Test
@@ -129,8 +129,8 @@ public class DiamondCreatorTest {
     creator.setVertices(vertices);
     Mesh3D circle = creator.create();
     Mesh3D mesh = new DiamondCreator().create();
-    for (Vector3f v : circle.vertices) {
-      assertTrue(mesh.vertices.contains(v));
+    for (Vector3f v : circle.getVertices()) {
+      assertTrue(mesh.getVertices().contains(v));
     }
   }
 
@@ -146,8 +146,8 @@ public class DiamondCreatorTest {
     creator2.setGirdleRadius(radius);
     creator2.setSegments(vertices);
     Mesh3D mesh = creator2.create();
-    for (Vector3f v : circle.vertices) {
-      assertTrue(mesh.vertices.contains(v));
+    for (Vector3f v : circle.getVertices()) {
+      assertTrue(mesh.getVertices().contains(v));
     }
   }
 
@@ -278,7 +278,7 @@ public class DiamondCreatorTest {
     for (Face3D face : selection.getFaces()) {
       for (int i = 0; i < face.indices.length; i++) {
         Vector3f v = mesh.getVertexAt(face.indices[i]);
-        circle.vertices.remove(v);
+        circle.remove(v);
       }
     }
     assertEquals(0, circle.getVertexCount());
@@ -297,7 +297,7 @@ public class DiamondCreatorTest {
     for (Face3D face : selection.getFaces()) {
       for (int i = 0; i < face.indices.length; i++) {
         Vector3f v = mesh.getVertexAt(face.indices[i]);
-        circle.vertices.remove(v);
+        circle.remove(v);
       }
     }
     assertEquals(0, circle.getVertexCount());
@@ -306,7 +306,7 @@ public class DiamondCreatorTest {
   @Test
   public void testSecondVertexIndexOfEachTriangleIsPavillionIndex() {
     Mesh3D mesh = new DiamondCreator().create();
-    int pavillionIndex = mesh.vertices.indexOf(new Vector3f(0, 0.8f, 0));
+    int pavillionIndex = mesh.indexOf(new Vector3f(0, 0.8f, 0));
     FaceSelection selection = new FaceSelection(mesh);
     selection.selectTriangles();
     for (Face3D face : selection.getFaces()) {
@@ -327,9 +327,9 @@ public class DiamondCreatorTest {
     for (Face3D face : selection.getFaces()) {
       int index = face.indices[0];
       Vector3f v = mesh.getVertexAt(index);
-      circle.vertices.remove(v);
+      circle.remove(v);
     }
-    assertEquals(0, circle.vertices.size());
+    assertEquals(0, circle.getVertexCount());
   }
 
   @Test
@@ -345,9 +345,9 @@ public class DiamondCreatorTest {
     for (Face3D face : selection.getFaces()) {
       int index = face.indices[2];
       Vector3f v = mesh.getVertexAt(index);
-      circle.vertices.remove(v);
+      circle.remove(v);
     }
-    assertEquals(0, circle.vertices.size());
+    assertEquals(0, circle.getVertices().size());
   }
 
   @Test

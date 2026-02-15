@@ -38,7 +38,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   public ChunkManager(Player player) {
     this.debugBox = new BoxCreator(16, 16, 16).create();
-    this.debugBox.apply(new SnapToGroundModifier());
+    new SnapToGroundModifier().modify(debugBox);
     this.player = player;
     this.playerPosition = new Vector3f(0, 0, 0);
     this.activeChunks = new HashMap<>();

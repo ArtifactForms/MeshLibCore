@@ -42,10 +42,10 @@ public class SteveModel {
 
         head.rotateZ(-rotationHead.getZ());
         head.rotateY(-rotationHead.getY());
-        head.apply(new RotateXModifier(-rotationHead.getX()));
+        new RotateXModifier(-rotationHead.getX()).modify(head);
         
 
-        head.apply(new RotateXModifier(x));
+        new RotateXModifier(x).modify(head);
         head.rotateY(y);
         head.rotateZ(z);
 
@@ -57,11 +57,11 @@ public class SteveModel {
     public void rotateLeftArm(float x, float y, float z) {
         leftArm.translateY(24 * unit);
 
-        leftArm.apply(new RotateXModifier(-rotationLeftArm.getZ()));
+        new RotateXModifier(-rotationLeftArm.getZ()).modify(leftArm);
         leftArm.rotateY(-rotationLeftArm.getY());
-        leftArm.apply(new RotateXModifier(-rotationLeftArm.getX()));
+        new RotateXModifier(-rotationLeftArm.getX()).modify(leftArm);
 
-        rightArm.apply(new RotateXModifier(x));
+        new RotateXModifier(x).modify(leftArm);
         leftArm.rotateY(y);
         leftArm.rotateY(z);
 
@@ -73,11 +73,11 @@ public class SteveModel {
     public void rotateRightArm(float x, float y, float z) {
         rightArm.translateY(24 * unit);
 
-        rightArm.apply(new RotateXModifier(-rotationRightArm.getZ()));
+        new RotateXModifier(-rotationRightArm.getZ()).modify(rightArm);
         rightArm.rotateY(-rotationRightArm.getY());
-        rightArm.apply(new RotateXModifier(-rotationRightArm.getX()));
+        new RotateXModifier(-rotationRightArm.getX()).modify(rightArm);
 
-        rightArm.apply(new RotateXModifier(x));
+        new RotateXModifier(x).modify(rightArm);
         rightArm.rotateY(y);
         rightArm.rotateY(z);
 

@@ -26,14 +26,14 @@ public class Mesh3DUtil {
 	private static void scaleFace(Mesh3D mesh, Face3D face, float scale) {
 		Vector3f center = mesh.calculateFaceCenter(face);
 		for (int i = 0; i < face.indices.length; i++) {
-			Vector3f v = mesh.vertices.get(face.indices[i]);
+			Vector3f v = mesh.getVertexAt(face.indices[i]);
 			v.subtractLocal(center).multLocal(scale).addLocal(center);
 		}
 	}
 
 	@Deprecated
 	public static void scaleFaceAt(Mesh3D mesh, int index, float scale) {
-		Face3D f = mesh.faces.get(index);
+		Face3D f = mesh.getFaceAt(index);
 		scaleFace(mesh, f, scale);
 	}
 
@@ -42,7 +42,7 @@ public class Mesh3DUtil {
 		Matrix3f m = new Matrix3f(1, 0, 0, 0, Mathf.cos(a), -Mathf.sin(a), 0, Mathf.sin(a), Mathf.cos(a));
 
 		for (int i = 0; i < face.indices.length; i++) {
-			Vector3f v = mesh.vertices.get(face.indices[i]);
+			Vector3f v = mesh.getVertexAt(face.indices[i]);
 			Vector3f v0 = v.mult(m);
 			v.set(v.getX(), v0.getY(), v0.getZ());
 		}
@@ -53,7 +53,7 @@ public class Mesh3DUtil {
 		Matrix3f m = new Matrix3f(Mathf.cos(a), 0, Mathf.sin(a), 0, 1, 0, -Mathf.sin(a), 0, Mathf.cos(a));
 
 		for (int i = 0; i < face.indices.length; i++) {
-			Vector3f v = mesh.vertices.get(face.indices[i]);
+			Vector3f v = mesh.getVertexAt(face.indices[i]);
 			Vector3f v0 = v.mult(m);
 			v.set(v0.getX(), v.getY(), v0.getZ());
 		}
@@ -64,7 +64,7 @@ public class Mesh3DUtil {
 		Matrix3f m = new Matrix3f(Mathf.cos(a), -Mathf.sin(a), 0, Mathf.sin(a), Mathf.cos(a), 0, 0, 0, 1);
 
 		for (int i = 0; i < face.indices.length; i++) {
-			Vector3f v = mesh.vertices.get(face.indices[i]);
+			Vector3f v = mesh.getVertexAt(face.indices[i]);
 			Vector3f v0 = v.mult(m);
 			v.set(v0.getX(), v0.getY(), v.getZ());
 		}

@@ -120,7 +120,7 @@ public class FlangePipeCreator implements IMeshCreator {
 
     private void createTopBoltHeads() {
         Mesh3D bottom = createBoltHeads();
-        bottom.apply(new RotateXModifier(Mathf.PI));;
+        new RotateXModifier(Mathf.PI).modify(bottom);
         bottom.translateY(-flangeDepth - flangeGrooveWidth - pipeSegmentLength
                 + (boltHeadHeight / 2f));
         segment.append(bottom);
@@ -146,7 +146,7 @@ public class FlangePipeCreator implements IMeshCreator {
         for (int i = 0; i < boltCount; i++) {
             Mesh3D bolt = creator.create();
             Vector3f center = circle.getVertexAt(i);
-            bolt.apply(new TranslateModifier(center));
+            new TranslateModifier(center).modify(bolt);
             bolts.append(bolt);
         }
 
@@ -173,7 +173,7 @@ public class FlangePipeCreator implements IMeshCreator {
         for (int i = 0; i < boltCount; i++) {
             Mesh3D bolt = creator.create();
             Vector3f center = circle.getVertexAt(i);
-            bolt.apply(new TranslateModifier(center));
+            new TranslateModifier(center).modify(bolt);
             bolt.translateY(-flangeGrooveWidth / 2f);
             bolts.append(bolt);
         }

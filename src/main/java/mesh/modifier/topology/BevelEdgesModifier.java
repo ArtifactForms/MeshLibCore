@@ -85,7 +85,7 @@ public class BevelEdgesModifier implements IMeshModifier {
     }
 
     private void createFacesForOldEdges() {
-	for (Face3D face : mesh.faces)
+	for (Face3D face : mesh.getFaces())
 	    for (int i = 0; i < face.indices.length; i++)
 		createFaceForOldEdgeAt(face, i);
     }
@@ -114,7 +114,7 @@ public class BevelEdgesModifier implements IMeshModifier {
     }
 
     private void insetFaces() {
-	for (Face3D face : mesh.faces)
+	for (Face3D face : mesh.getFaces())
 	    insetFace(mesh, face);
     }
 
@@ -193,7 +193,7 @@ public class BevelEdgesModifier implements IMeshModifier {
     }
 
     private boolean canExitEarly(Mesh3D mesh) {
-	return amount == 0 || mesh.faces.isEmpty();
+	return amount == 0 || mesh.getFaceCount() == 0;
     }
 
     private void validateMesh(Mesh3D mesh) {
@@ -223,19 +223,19 @@ public class BevelEdgesModifier implements IMeshModifier {
     }
 
     private void addNewVertices() {
-	mesh.vertices.addAll(verticesToAdd);
+	mesh.addVertices(verticesToAdd);
     }
 
     private void addNewFaces() {
-	mesh.faces.addAll(facesToAdd);
+	mesh.addFaces(facesToAdd);
     }
 
     private void clearOriginalVertices() {
-	mesh.vertices.clear();
+	mesh.clearVertices();
     }
 
     private void clearOriginalFaces() {
-	mesh.faces.clear();
+	mesh.clearFaces();
     }
 
     private void addNewFace(int... indices) {

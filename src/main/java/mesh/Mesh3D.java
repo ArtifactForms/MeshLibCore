@@ -7,8 +7,6 @@ import java.util.List;
 
 import math.Vector2f;
 import math.Vector3f;
-import mesh.modifier.IMeshModifier;
-import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.TranslateModifier;
@@ -26,11 +24,9 @@ import mesh.modifier.transform.TranslateModifier;
  */
 public class Mesh3D implements Mesh {
 
-  // TODO: make private and enforce encapsulation
-  public ArrayList<Vector3f> vertices;
+  private ArrayList<Vector3f> vertices;
 
-  // TODO: make private and enforce encapsulation
-  public ArrayList<Face3D> faces;
+  private ArrayList<Face3D> faces;
 
   private ArrayList<Vector3f> vertexNormals;
 
@@ -75,22 +71,8 @@ public class Mesh3D implements Mesh {
   }
 
   // -------------------------------------------------------------------
-  // Deprecated
+  // Deprecated transform operations
   // -------------------------------------------------------------------
-
-  /**
-   * Applies the provided {@link IMeshModifier} to this mesh. This is congruent to {@link
-   * IMeshModifier#modify(Mesh3D)}.
-   *
-   * @param modifier The modifier to apply to this mesh.
-   * @return this
-   * @deprecated Modifiers must be applied via {@link ModifierStackr}. This method bypasses
-   *     validation and pipeline control.
-   */
-  @Deprecated
-  public Mesh3D apply(IMeshModifier modifier) {
-    return modifier.modify(this);
-  }
 
   /**
    * Rotates the mesh around the Y-axis.
@@ -142,15 +124,44 @@ public class Mesh3D implements Mesh {
     return new TranslateModifier(0, 0, tz).modify(this);
   }
 
-  /**
-   * Removes duplicated vertices.
-   *
-   * @deprecated Use {@link RemoveDoubleVerticesModifier} instead.
-   */
+  // -------------------------------------------------------------------
+  // Deprecated vertex access
+  // -------------------------------------------------------------------
+
   @Deprecated
-  public void removeDoubles() {
-    new RemoveDoubleVerticesModifier().modify(this);
+  public List<Vector3f> getVertices() {
+    return new ArrayList<>(vertices);
   }
+
+  @Deprecated
+  public int indexOf(Vector3f v) {
+    return vertices.indexOf(v);
+  }
+
+  public void remove(Vector3f v) {
+    vertices.remove(v);
+  }
+
+  public void remove(Collection<Vector3f> vertices) {
+    this.vertices.removeAll(vertices);
+  }
+
+  @Deprecated
+  public void clearVertices() {
+    vertices.clear();
+  }
+
+  @Deprecated
+  public void addVertices(Collection<Vector3f> vertices) {
+    this.vertices.addAll(vertices);
+  }
+
+  @Deprecated
+  public void add(Vector3f... vertices) {
+    this.vertices.addAll(Arrays.asList(vertices));
+  }
+
+  // -------------------------------------------------------------------
 
   @Deprecated
   public Vector3f calculateFaceNormal(Face3D face) {
@@ -176,11 +187,6 @@ public class Mesh3D implements Mesh {
       center.addLocal(vertices.get(face.indices[i]));
     }
     return center.divideLocal(face.indices.length);
-  }
-
-  @Deprecated
-  public List<Vector3f> getVertices() {
-    return new ArrayList<>(vertices);
   }
 
   @Deprecated
@@ -328,11 +334,6 @@ public class Mesh3D implements Mesh {
   }
 
   @Deprecated
-  public void clearVertices() {
-    vertices.clear();
-  }
-
-  @Deprecated
   public void clearFaces() {
     faces.clear();
   }
@@ -343,11 +344,6 @@ public class Mesh3D implements Mesh {
   }
 
   @Deprecated
-  public void addVertices(Collection<Vector3f> vertices) {
-    this.vertices.addAll(vertices);
-  }
-
-  @Deprecated
   public void addFaces(Collection<Face3D> faces) {
     this.faces.addAll(faces);
   }
@@ -355,11 +351,6 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public void removeFaces(Collection<Face3D> faces) {
     this.faces.removeAll(faces);
-  }
-
-  @Deprecated
-  public void add(Vector3f... vertices) {
-    this.vertices.addAll(Arrays.asList(vertices));
   }
 
   @Deprecated
@@ -383,10 +374,5 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public void add(Face3D... faces) {
     this.faces.addAll(Arrays.asList(faces));
-  }
-
-  @Deprecated
-  public List<Face3D> getFaces(int from, int to) {
-    return new ArrayList<>(faces.subList(from, to));
   }
 }

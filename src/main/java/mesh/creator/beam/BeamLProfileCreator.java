@@ -1,7 +1,6 @@
 package mesh.creator.beam;
 
 import math.Mathf;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.modifier.topology.SolidifyModifier;
 import mesh.modifier.transform.TranslateModifier;
@@ -63,7 +62,7 @@ public class BeamLProfileCreator implements IBeamCreator {
 	}
 
 	private void addFace(int... indices) {
-		mesh.add(new Face3D(indices));
+		mesh.addFace(indices);
 	}
 
 	private void solidify() {
@@ -71,7 +70,7 @@ public class BeamLProfileCreator implements IBeamCreator {
 	}
 
 	private void center() {
-		mesh.apply(new TranslateModifier(0, height / 2f, depth / 2f));
+		new TranslateModifier(0, height / 2f, depth / 2f).modify(mesh);
 	}
 
 	public float getWidth() {

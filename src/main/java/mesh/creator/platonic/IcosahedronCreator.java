@@ -107,7 +107,7 @@ public class IcosahedronCreator implements IMeshCreator {
     }
 
     private void scaleMesh() {
-        mesh.apply(new ScaleModifier(size));
+        new ScaleModifier(size).modify(mesh);
     }
 
     public float getSize() {

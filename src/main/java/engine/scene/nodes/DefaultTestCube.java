@@ -16,7 +16,7 @@ public class DefaultTestCube extends SceneNode {
 
   public DefaultTestCube(float radius) {
     Mesh3D cubeMesh = new CubeCreatorUV(radius).create();
-    cubeMesh.apply(new SnapToGroundModifier());
+    new SnapToGroundModifier().modify(cubeMesh);
     Texture texture = TextureManager.getInstance().loadTexture(Resources.DEFAULT_TEST_CUBE_TEXTURE);
     material = new Material();
     material.setUseLighting(false);

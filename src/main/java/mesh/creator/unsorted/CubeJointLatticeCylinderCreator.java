@@ -64,7 +64,7 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 				float y = radius * Mathf.sin(angle);
 				cubes[i][j] = new CubeCreator(jointSize).create();
 				cubes[i][j].rotateY(-angle);
-				cubes[i][j].apply(new TranslateModifier(x, i * dy, y));
+			    new TranslateModifier(x, i * dy, y).modify(cubes[i][j]);
 				mesh.append(cubes[i][j]);
 				angle += step;
 			}
@@ -81,25 +81,25 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 	}
 
 	private void connectJointsAt(int i, int j) {
-		Face3D f0 = cubes[i][j].faces.get(3);
-		Face3D f1 = cubes[i][(j + 1) % cubes[0].length].faces.get(5);
+		Face3D f0 = cubes[i][j].getFaceAt(3);
+		Face3D f1 = cubes[i][(j + 1) % cubes[0].length].getFaceAt(5);
 		Mesh3DUtil.extrudeFace(mesh, f0, scale0, 0.0f);
 		Mesh3DUtil.extrudeFace(mesh, f1, scale0, 0.0f);
 		flipFacesModifier.modify(mesh, f1);
 
 		FaceBridging.bridge(mesh, f0, f1);
-		mesh.faces.remove(f0);
-		mesh.faces.remove(f1);
+		mesh.removeFace(f0);
+		mesh.removeFace(f1);
 
 		if ((i + 1) < cubes.length) {
-			Face3D f2 = cubes[i][j].faces.get(1);
-			Face3D f3 = cubes[i + 1][j].faces.get(0);
+			Face3D f2 = cubes[i][j].getFaceAt(1);
+			Face3D f3 = cubes[i + 1][j].getFaceAt(0);
 			Mesh3DUtil.extrudeFace(mesh, f2, scale1, 0.0f);
 			Mesh3DUtil.extrudeFace(mesh, f3, scale1, 0.0f);
 			flipFacesModifier.modify(mesh, f3);
 			FaceBridging.bridge(mesh, f2, f3);
-			mesh.faces.remove(f2);
-			mesh.faces.remove(f3);
+			mesh.removeFace(f2);
+			mesh.removeFace(f3);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 
 	private void centerOnAxisY() {
 		float ty = -subdivisionsY * (height / subdivisionsY) / 2f;
-		mesh.apply(new TranslateModifier(0, ty, 0));
+		new TranslateModifier(0, ty, 0).modify(mesh);
 	}
 
 	public int getVertices() {

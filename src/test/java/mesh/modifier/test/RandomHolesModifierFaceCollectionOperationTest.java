@@ -146,7 +146,7 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     faces.add(plane.getFaceAt(0));
     modifier.setSeed(0);
     modifier.modify(plane, faces);
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -166,7 +166,7 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     faces.add(plane.getFaceAt(0));
     modifier.setSeed(13424);
     modifier.modify(plane, faces);
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -186,7 +186,7 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     faces.add(plane.getFaceAt(0));
     modifier.setSeed(-3244324);
     modifier.modify(plane, faces);
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -206,7 +206,7 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     faces.add(plane.getFaceAt(0));
     modifier.setSeed(Long.MAX_VALUE);
     modifier.modify(plane, faces);
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -226,7 +226,7 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     faces.add(plane.getFaceAt(0));
     modifier.setSeed(Long.MIN_VALUE);
     modifier.modify(plane, faces);
-    assertArrayEquals(expected, plane.vertices.toArray());
+    assertArrayEquals(expected, plane.getVertices().toArray());
   }
 
   @Test
@@ -252,7 +252,7 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     modifier = new RandomHolesModifier(0.1f, 0.3f);
     modifier.setSeed(234453);
     modifier.modify(mesh, faces);
-    assertArrayEquals(expected, mesh.vertices.toArray());
+    assertArrayEquals(expected, mesh.getVertices().toArray());
   }
 
   @ParameterizedTest
@@ -271,6 +271,6 @@ public class RandomHolesModifierFaceCollectionOperationTest {
     modifier = new RandomHolesModifier(amount, amount);
     modifier.setSeed(234);
     modifier.modify(actual, faces);
-    assertArrayEquals(expected.vertices.toArray(), actual.vertices.toArray());
+    assertArrayEquals(expected.getVertices().toArray(), actual.getVertices().toArray());
   }
 }

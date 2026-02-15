@@ -56,7 +56,7 @@ public class VBOProcessing implements VBO {
       }
       int[] indices = f.indices;
       for (int i = 0; i < indices.length; i++) {
-        Vector3f v = mesh.vertices.get(f.indices[i]);
+        Vector3f v = mesh.getVertexAt(f.indices[i]);
 
         if (!vertexNormals.isEmpty()) {
           Vector3f vertexNormal = vertexNormals.get(f.indices[i]);

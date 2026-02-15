@@ -299,7 +299,7 @@ public class LinearSubdivisionModifierTest {
         CuboctahedronCreator creator = new CuboctahedronCreator();
         Mesh3D mesh = creator.create();
         modifier.modify(mesh);
-        for (Vector3f v : mesh.vertices)
+        for (Vector3f v : mesh.getVertices())
             v.roundLocalDecimalPlaces(2);
         HashSet<Vector3f> vertices = new HashSet<>();
         vertices.addAll(mesh.getVertices());

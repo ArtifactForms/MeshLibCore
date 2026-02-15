@@ -61,7 +61,7 @@ public class BendModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     if (isFactorValid()) bend(mesh);
@@ -69,12 +69,15 @@ public class BendModifier implements IMeshModifier {
   }
 
   /**
-   * Performs the bending operation on all vertices of the provided mesh using parallel processing.
+   * Performs the bending operation on all vertices of the provided mesh.
    *
    * @param mesh the 3D mesh whose vertices are to be deformed.
    */
   private void bend(Mesh3D mesh) {
-    mesh.vertices.parallelStream().forEach(this::simpleDeformBend);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      simpleDeformBend(v);
+    }
   }
 
   /**

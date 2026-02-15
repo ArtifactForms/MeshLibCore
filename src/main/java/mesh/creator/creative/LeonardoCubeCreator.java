@@ -6,7 +6,10 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.repair.RemoveDoubleVerticesModifier;
+import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.TransformAxis;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 
@@ -54,7 +57,7 @@ public class LeonardoCubeCreator implements IMeshCreator {
     private void removeDoubleFaces() {
         FaceSelection selection = new FaceSelection(mesh);
         selection.selectDoubles();
-        mesh.faces.removeAll(selection.getFaces());
+        mesh.removeFaces(selection.getFaces());
     }
 
     private void createTopConnector() {
@@ -85,14 +88,14 @@ public class LeonardoCubeCreator implements IMeshCreator {
 
     private void createBackConnector() {
         Mesh3D back = createConnector(true, true);
-        back.apply(new RotateXModifier(-Mathf.HALF_PI));
+        new RotateXModifier(-Mathf.HALF_PI).modify(back);
         back.translateZ(-outerRadius + connectorRadius);
         mesh.append(back);
     }
 
     private void createFrontConnector() {
         Mesh3D front = createConnector(true, true);
-        front.apply(new RotateXModifier(-Mathf.HALF_PI));
+        new RotateXModifier(-Mathf.HALF_PI).modify(front);
         front.translateZ(outerRadius - connectorRadius);
         mesh.append(front);
     }

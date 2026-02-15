@@ -49,7 +49,7 @@ public class CrocodileModifier implements IMeshModifier {
   @Override
   public Mesh3D modify(Mesh3D mesh) {
     validateMesh(mesh);
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     setMesh(mesh);
@@ -65,7 +65,7 @@ public class CrocodileModifier implements IMeshModifier {
    * faces.
    */
   private void createSpikes() {
-    int nextIndex = mesh.vertices.size();
+    int nextIndex = mesh.getVertexCount();
     for (Face3D face : selection.getFaces()) {
       mesh.add(calculateSpikeTip(face));
       createSpikeFaces(face, nextIndex);
@@ -133,7 +133,7 @@ public class CrocodileModifier implements IMeshModifier {
    * transformation process.
    */
   private void removeSelectedAmboFaces() {
-    mesh.faces.removeAll(selection.getFaces());
+    mesh.removeFaces(selection.getFaces());
   }
 
   /**

@@ -31,7 +31,7 @@ public class ConwayAmboModifier implements IMeshModifier {
     }
 
     private void processFaces() {
-        for (Face3D face : mesh.faces) {
+        for (Face3D face : mesh.getFaces()) {
             addNewFace(createEdgePoints(face));
         }
     }
@@ -119,11 +119,11 @@ public class ConwayAmboModifier implements IMeshModifier {
     }
 
     private void removeOriginalVerices() {
-        mesh.vertices.clear();
+        mesh.clearVertices();
     }
 
     private void addNewlyVertices() {
-        mesh.vertices.addAll(verticesToAdd);
+        mesh.addVertices(verticesToAdd);
     }
 
     private void initializeFaceList() {
@@ -147,11 +147,11 @@ public class ConwayAmboModifier implements IMeshModifier {
     }
 
     private void addNewlyCreatedFaces() {
-        mesh.faces.addAll(facesToAdd);
+        mesh.addFaces(facesToAdd);
     }
 
     private void removeOriginalFaces() {
-        mesh.faces.clear();
+        mesh.clearFaces();
     }
 
     private void addNewFace(int[] indices) {

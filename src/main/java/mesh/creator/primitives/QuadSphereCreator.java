@@ -37,15 +37,15 @@ public class QuadSphereCreator implements IMeshCreator {
     }
 
     private void subdivide() {
-        mesh.apply(new PlanarMidEdgeCenterModifier(subdivisions));
+        new PlanarMidEdgeCenterModifier(subdivisions).modify(mesh);
     }
 
     private void scale() {
-        mesh.apply(new ScaleModifier(radius));
+        new ScaleModifier(radius).modify(mesh);
     }
 
     private void pushToSphere() {
-        mesh.apply(new SpherifyModifier(radius));
+        new SpherifyModifier(radius).modify(mesh);
     }
 
     public float getRadius() {

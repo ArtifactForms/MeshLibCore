@@ -97,7 +97,10 @@ public class WaveModifier implements IMeshModifier {
    * it directly modifies the vertex positions of the mesh in place.
    */
   private void applyWaveToVertices() {
-    mesh.vertices.parallelStream().forEach(this::applyWaveToVertex);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      applyWaveToVertex(v);
+    }
   }
 
   /**

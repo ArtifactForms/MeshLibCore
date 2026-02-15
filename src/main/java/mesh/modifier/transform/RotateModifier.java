@@ -1,10 +1,11 @@
 package mesh.modifier.transform;
 
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
 /**
- * A mesh modifier that applies a rotation to a {@link Mesh3D} around a given {@link TransformAxis}.
+ * A mesh modifier that applies a rotation to a {@link Mesh} around a given {@link TransformAxis}.
  *
  * <p>This modifier acts as a convenience wrapper that delegates the actual rotation logic to
  * axis-specific rotation modifiers (e.g. {@code RotateXModifier}, {@code RotateYModifier}, {@code
@@ -46,7 +47,7 @@ public class RotateModifier implements IMeshModifier {
   public Mesh3D modify(Mesh3D mesh) {
     if (axis == TransformAxis.X) return new RotateXModifier(angle).modify(mesh);
     if (axis == TransformAxis.Y) return new RotateYModifier(angle).modify(mesh);
-    if (axis == TransformAxis.Z) return new RotateYModifier(angle).modify(mesh);
+    if (axis == TransformAxis.Z) return new RotateZModifier(angle).modify(mesh);
 
     return mesh;
   }

@@ -109,7 +109,10 @@ public class RippleModifier implements IMeshModifier {
 
   /** Applies the ripple effect formula to all vertices of the mesh. */
   private void applyRippleToVertices() {
-    mesh.vertices.parallelStream().forEach(this::applyRippleToVertex);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      applyRippleToVertex(v);
+    }
   }
 
   /**

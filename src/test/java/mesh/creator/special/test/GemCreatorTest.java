@@ -167,8 +167,8 @@ public class GemCreatorTest {
     Mesh3D circle = circleCreator.create();
     new RotateModifier(-Mathf.TWO_PI / 8.0f, TransformAxis.Y).modify(circle);
     Mesh3D gem = new GemCreator().create();
-    for (Vector3f v : circle.vertices) {
-      assertTrue(gem.vertices.contains(v));
+    for (Vector3f v : circle.getVertices()) {
+      assertTrue(gem.getVertices().contains(v));
     }
   }
 
@@ -180,8 +180,8 @@ public class GemCreatorTest {
     circleCreator.setCenterY(-0.35f);
     Mesh3D circle = circleCreator.create();
     Mesh3D gem = new GemCreator().create();
-    for (Vector3f v : circle.vertices) {
-      assertTrue(gem.vertices.contains(v));
+    for (Vector3f v : circle.getVertices()) {
+      assertTrue(gem.getVertices().contains(v));
     }
   }
 
@@ -190,7 +190,7 @@ public class GemCreatorTest {
     float pavillionHeight = 0.8f;
     Vector3f v = new Vector3f(0, pavillionHeight, 0);
     Mesh3D gem = new GemCreator().create();
-    assertTrue(gem.vertices.contains(v));
+    assertTrue(gem.getVertices().contains(v));
   }
 
   @Test
@@ -198,7 +198,7 @@ public class GemCreatorTest {
     float tableHeight = 0.35f;
     Vector3f v = new Vector3f(0, -tableHeight, 0);
     Mesh3D gem = new GemCreator().create();
-    assertTrue(gem.vertices.contains(v));
+    assertTrue(gem.getVertices().contains(v));
   }
 
   @Test
@@ -220,8 +220,8 @@ public class GemCreatorTest {
 
     Mesh3D circle = circleCreator.create();
 
-    for (Vector3f v : circle.vertices) {
-      assertTrue(gem.vertices.contains(v));
+    for (Vector3f v : circle.getVertices()) {
+      assertTrue(gem.getVertices().contains(v));
     }
   }
 
@@ -238,8 +238,8 @@ public class GemCreatorTest {
     circleCreator.setVertices(segments);
     Mesh3D circle = circleCreator.create();
     new RotateModifier(-Mathf.TWO_PI / segments, TransformAxis.Y).modify(circle);
-    for (Vector3f v : circle.vertices) {
-      assertTrue(gem.vertices.contains(v));
+    for (Vector3f v : circle.getVertices()) {
+      assertTrue(gem.getVertices().contains(v));
     }
   }
 
@@ -262,8 +262,8 @@ public class GemCreatorTest {
 
     Mesh3D gem = new GemCreator().create();
 
-    for (Vector3f v : circle.vertices) {
-      assertTrue(gem.vertices.contains(v));
+    for (Vector3f v : circle.getVertices()) {
+      assertTrue(gem.getVertices().contains(v));
     }
   }
 
@@ -291,8 +291,8 @@ public class GemCreatorTest {
     creator.setTableHeight(tableHeight);
     Mesh3D gem = creator.create();
 
-    for (Vector3f v : circle.vertices) {
-      assertTrue(gem.vertices.contains(v));
+    for (Vector3f v : circle.getVertices()) {
+      assertTrue(gem.getVertices().contains(v));
     }
   }
 

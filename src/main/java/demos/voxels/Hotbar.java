@@ -59,8 +59,8 @@ public class Hotbar extends AbstractComponent implements RenderableComponent {
 
   private Mesh3D createAndTransformPlane() {
     Mesh3D mesh = new PlaneCreatorUV(0.5f).create();
-    mesh.apply(new ScaleModifier(scaledWidth, 1, scaledHeight));
-    mesh.apply(new RotateXModifier(-Mathf.HALF_PI));
+    new ScaleModifier(scaledWidth, 1, scaledHeight).modify(mesh);
+    new RotateXModifier(-Mathf.HALF_PI).modify(mesh);
     return mesh;
   }
 

@@ -86,7 +86,7 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
   @Override
   public Mesh3D modify(Mesh3D mesh) {
     validateMesh(mesh);
-    if (mesh.faces.isEmpty()) {
+    if (mesh.getFaceCount() == 0) {
       return mesh;
     }
     return modify(mesh, mesh.getFaces());
@@ -107,7 +107,7 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
       return mesh;
     }
     for (Face3D face : faces) extrudeFace(mesh, face);
-    if (removeFaces) mesh.faces.removeAll(faces);
+    if (removeFaces) mesh.removeFaces(faces);
     return mesh;
   }
 
@@ -168,13 +168,13 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
    */
   private void extrudeFace(Mesh3D mesh, Face3D face) {
     int n = face.indices.length;
-    int nextIndex = mesh.vertices.size();
+    int nextIndex = mesh.getVertexCount();
     Vector3f normal = mesh.calculateFaceNormal(face);
     Vector3f center = mesh.calculateFaceCenter(face);
 
     for (int i = 0; i < n; i++) {
       Vector3f vertex =
-          mesh.vertices
+          mesh.getVertices()
               .get(face.indices[i])
               .subtract(center)
               .mult(scale)

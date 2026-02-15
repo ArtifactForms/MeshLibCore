@@ -108,15 +108,15 @@ public class ProfileWallCreator implements IMeshCreator {
 	private void createSecondSegment() {
 		Mesh3D mesh2 = createSegment();
 		mesh2.rotateY(-Mathf.HALF_PI);
-		mesh2.apply(new ScaleModifier(1, 1, -1));
-		mesh2.apply(new FlipFacesModifier());
+		new ScaleModifier(1, 1, -1).modify(mesh2);
+		new FlipFacesModifier().modify(mesh2);
 		mesh.append(mesh2);
 	}
 
 	private Mesh3D createSegment() {
 		Mesh3D mesh = creator.create();
 		new SolidifyModifier(calculateWidth()).modify(mesh);
-		mesh.apply(new TranslateModifier(width / 2, 0, 0));
+		new TranslateModifier(width / 2, 0, 0).modify(mesh);
 
 		if (corner) {
 			FaceSelection selection = new FaceSelection(mesh);

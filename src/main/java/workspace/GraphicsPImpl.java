@@ -10,7 +10,6 @@ import engine.processing.VBOProcessing;
 import engine.render.Material;
 import engine.render.MaterialResolver;
 import engine.render.MaterialState;
-import engine.render.Shading;
 import engine.resources.FilterMode;
 import engine.resources.Font;
 import engine.resources.Image;
@@ -206,7 +205,7 @@ public class GraphicsPImpl implements Graphics {
 
       int[] indices = f.indices;
       for (int i = 0; i < indices.length; i++) {
-        Vector3f v = mesh.vertices.get(f.indices[i]);
+        Vector3f v = mesh.getVertexAt(f.indices[i]);
 
         if (hasNormals && smoothShading) {
           Vector3f normal = vertexNormals.get(f.indices[i]);
@@ -251,7 +250,7 @@ public class GraphicsPImpl implements Graphics {
 
         int[] indices = f.indices;
         for (int i = 0; i < indices.length; i++) {
-          Vector3f v = mesh.vertices.get(f.indices[i]);
+          Vector3f v = mesh.getVertexAt(f.indices[i]);
 
           if (f.indices[i] < vertexNormals.size()) {
             Vector3f vertexNormal = vertexNormals.get(f.indices[i]);

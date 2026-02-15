@@ -31,7 +31,7 @@ public class QuadsToTrianglesModifier implements IMeshModifier {
     }
 
     private void subdivideFaces() {
-        for (Face3D face : mesh.faces)
+        for (Face3D face : mesh.getFaces())
             subdivideFace(face);
     }
 
@@ -49,11 +49,11 @@ public class QuadsToTrianglesModifier implements IMeshModifier {
     }
 
     private void removeOldFaces() {
-        mesh.faces.removeAll(facesToRemove);
+        mesh.removeFaces(facesToRemove);
     }
 
     private void addNewFaces() {
-        mesh.faces.addAll(facesToAdd);
+        mesh.addFaces(facesToAdd);
     }
 
     private void setMesh(Mesh3D mesh) {

@@ -79,11 +79,11 @@ public class ScaleModifierTest {
   @Test
   public void testScalesOriginalVertices() {
     Mesh3D mesh = new IcosahedronCreator().create();
-    List<Vector3f> vertices = new ArrayList<Vector3f>(mesh.vertices);
-    mesh.apply(new ScaleModifier(2.3f));
+    List<Vector3f> vertices = new ArrayList<Vector3f>(mesh.getVertices());
+    new ScaleModifier(2.3f).modify(mesh);
     for (int i = 0; i < vertices.size(); i++) {
       Vector3f expected = vertices.get(i);
-      Vector3f actual = mesh.vertices.get(i);
+      Vector3f actual = mesh.getVertexAt(i);
       assertTrue(expected == actual);
     }
   }
@@ -93,7 +93,7 @@ public class ScaleModifierTest {
     float scale = 134.3f;
     Mesh3D mesh = new QuadSphereCreator().create();
     List<Vector3f> unscaledVertices = new ArrayList<Vector3f>();
-    for (Vector3f v : mesh.vertices) {
+    for (Vector3f v : mesh.getVertices()) {
       unscaledVertices.add(new Vector3f(v));
     }
     ScaleModifier modifier = new ScaleModifier(scale);
@@ -101,7 +101,7 @@ public class ScaleModifierTest {
     for (int i = 0; i < unscaledVertices.size(); i++) {
       Vector3f unscaled = unscaledVertices.get(i);
       Vector3f expected = unscaled.mult(scale);
-      Vector3f actual = mesh.vertices.get(i);
+      Vector3f actual = mesh.getVertexAt(i);
       assertEquals(expected, actual);
     }
   }
@@ -113,7 +113,7 @@ public class ScaleModifierTest {
     float scaleZ = 1234.3f;
     Mesh3D mesh = new QuadSphereCreator().create();
     List<Vector3f> unscaledVertices = new ArrayList<Vector3f>();
-    for (Vector3f v : mesh.vertices) {
+    for (Vector3f v : mesh.getVertices()) {
       unscaledVertices.add(new Vector3f(v));
     }
     ScaleModifier modifier = new ScaleModifier(scaleX, scaleY, scaleZ);
@@ -121,7 +121,7 @@ public class ScaleModifierTest {
     for (int i = 0; i < unscaledVertices.size(); i++) {
       Vector3f unscaled = unscaledVertices.get(i);
       Vector3f expected = unscaled.mult(scaleX, scaleY, scaleZ);
-      Vector3f actual = mesh.vertices.get(i);
+      Vector3f actual = mesh.getVertexAt(i);
       assertEquals(expected, actual);
     }
   }
@@ -131,7 +131,7 @@ public class ScaleModifierTest {
     float scaleX = 234.3f;
     Mesh3D mesh = new QuadSphereCreator().create();
     List<Vector3f> unscaledVertices = new ArrayList<Vector3f>();
-    for (Vector3f v : mesh.vertices) {
+    for (Vector3f v : mesh.getVertices()) {
       unscaledVertices.add(new Vector3f(v));
     }
     ScaleModifier modifier = new ScaleModifier();
@@ -140,7 +140,7 @@ public class ScaleModifierTest {
     for (int i = 0; i < unscaledVertices.size(); i++) {
       Vector3f unscaled = unscaledVertices.get(i);
       Vector3f expected = unscaled.mult(scaleX, 1, 1);
-      Vector3f actual = mesh.vertices.get(i);
+      Vector3f actual = mesh.getVertexAt(i);
       assertEquals(expected, actual);
     }
   }
@@ -150,7 +150,7 @@ public class ScaleModifierTest {
     float scaleY = 234.323f;
     Mesh3D mesh = new QuadSphereCreator().create();
     List<Vector3f> unscaledVertices = new ArrayList<Vector3f>();
-    for (Vector3f v : mesh.vertices) {
+    for (Vector3f v : mesh.getVertices()) {
       unscaledVertices.add(new Vector3f(v));
     }
     ScaleModifier modifier = new ScaleModifier();
@@ -159,7 +159,7 @@ public class ScaleModifierTest {
     for (int i = 0; i < unscaledVertices.size(); i++) {
       Vector3f unscaled = unscaledVertices.get(i);
       Vector3f expected = unscaled.mult(1, scaleY, 1);
-      Vector3f actual = mesh.vertices.get(i);
+      Vector3f actual = mesh.getVertexAt(i);
       assertEquals(expected, actual);
     }
   }
@@ -169,7 +169,7 @@ public class ScaleModifierTest {
     float scaleZ = 21.34f;
     Mesh3D mesh = new QuadSphereCreator().create();
     List<Vector3f> unscaledVertices = new ArrayList<Vector3f>();
-    for (Vector3f v : mesh.vertices) {
+    for (Vector3f v : mesh.getVertices()) {
       unscaledVertices.add(new Vector3f(v));
     }
     ScaleModifier modifier = new ScaleModifier();
@@ -178,7 +178,7 @@ public class ScaleModifierTest {
     for (int i = 0; i < unscaledVertices.size(); i++) {
       Vector3f unscaled = unscaledVertices.get(i);
       Vector3f expected = unscaled.mult(1, 1, scaleZ);
-      Vector3f actual = mesh.vertices.get(i);
+      Vector3f actual = mesh.getVertexAt(i);
       assertEquals(expected, actual);
     }
   }

@@ -65,7 +65,7 @@ public class DooSabinModifier implements IMeshModifier {
      * that have been generated for each original vertex of the face.
      */
     private void createAndConnectNewVertices() {
-        List<Face3D> faces = source.getFaces(0, source.getFaceCount());
+        List<Face3D> faces = source.getFaces();
         for (Face3D face : faces) {
             Vector3f center = source.calculateFaceCenter(face);
             int[] indices = new int[face.indices.length];
@@ -167,7 +167,7 @@ public class DooSabinModifier implements IMeshModifier {
     }
 
     private void mapEdgesToFaces() {
-        for (Face3D face : source.faces) {
+        for (Face3D face : source.getFaces()) {
             for (int i = 0; i < face.indices.length; i++) {
                 int a = face.indices[i];
                 int b = face.indices[(i + 1) % face.indices.length];
@@ -192,10 +192,10 @@ public class DooSabinModifier implements IMeshModifier {
         createFacesFromAdjacentVertices();
         createFacesAdjacentToEdge();
 
-        this.source.faces.clear();
-        this.source.vertices.clear();
-        this.source.faces.addAll(target.faces);
-        this.source.vertices.addAll(target.vertices);
+        this.source.clearFaces();
+        this.source.clearVertices();
+        this.source.addFaces(target.getFaces());
+        this.source.addVertices(target.getVertices());
     }
 
     private void clear() {

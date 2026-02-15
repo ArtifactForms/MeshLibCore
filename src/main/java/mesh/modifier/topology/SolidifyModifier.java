@@ -143,7 +143,7 @@ public class SolidifyModifier implements IMeshModifier {
 
   /** Maps all edges of the mesh and stores them in a hash set. */
   private void mapEdges() {
-    for (Face3D face : mesh.faces) {
+    for (Face3D face : mesh.getFaces()) {
       for (int i = 0; i < face.indices.length; i++) {
         edges.add(createEdgeAt(face, i));
       }
@@ -165,7 +165,7 @@ public class SolidifyModifier implements IMeshModifier {
 
   /** Moves the vertices of the inner mesh along their normals by the specified thickness. */
   private void moveInnerMeshAlongVertexNormals() {
-    IntStream.range(0, innerMesh.vertices.size())
+    IntStream.range(0, innerMesh.getVertexCount())
         .parallel()
         .forEach(
             i -> {
@@ -198,7 +198,7 @@ public class SolidifyModifier implements IMeshModifier {
    * @return True if the modification can be skipped, false otherwise.
    */
   private boolean canExitEarly() {
-    return (thickness == 0 || mesh.vertices.isEmpty() || mesh.faces.isEmpty());
+    return (thickness == 0 || mesh.getVertexCount() == 0 || mesh.getFaceCount() == 0);
   }
 
   /** Initializes the inner mesh by creating a copy of the original mesh. */
@@ -213,7 +213,7 @@ public class SolidifyModifier implements IMeshModifier {
 
   /** Initializes the list of original faces of the mesh. */
   private void initializeOriginalFaces() {
-    originalFaces = mesh.getFaces(0, mesh.getFaceCount());
+    originalFaces = mesh.getFaces();
   }
 
   /** Computes the vertex normals for the mesh. */

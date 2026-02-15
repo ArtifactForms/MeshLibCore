@@ -128,8 +128,8 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
     // Generate the terrain mesh, apply transformations, and create a geometry node
     Mesh3D terrainMesh = new TerrainMeshLOD(noiseMap, levelOfDetail).getMesh();
-    terrainMesh.apply(new ScaleModifier(chunkScale));
-    terrainMesh.apply(new CenterAtModifier());
+    new ScaleModifier(chunkScale).modify(terrainMesh);
+    new CenterAtModifier().modify(terrainMesh);
 
     StaticGeometry terrainGeometry = new StaticGeometry(terrainMesh, mapMaterial);
     SceneNode terrainNode = new SceneNode();

@@ -1,10 +1,8 @@
 package mesh.util;
 
-import java.util.List;
-
 import math.Bounds;
 import math.Vector3f;
-import mesh.Mesh3D;
+import mesh.Mesh;
 
 public class MeshBoundsCalculator {
 
@@ -14,16 +12,14 @@ public class MeshBoundsCalculator {
    * @param mesh The mesh object whose bounding box needs to be calculated.
    * @return A {@link Bounds} object representing the calculated bounding box.
    */
-  public static Bounds calculateBounds(Mesh3D mesh) {
-    List<Vector3f> vertices = mesh.getVertices();
-    if (vertices.isEmpty()) {
-      return new Bounds(Vector3f.ZERO, Vector3f.ZERO);
-    }
+  public static Bounds calculateBounds(Mesh mesh) {
+    if (mesh.getVertexCount() == 0) return new Bounds(Vector3f.ZERO, Vector3f.ZERO);
 
-    Vector3f min = new Vector3f(vertices.get(0));
-    Vector3f max = new Vector3f(vertices.get(0));
+    Vector3f min = new Vector3f(mesh.getVertexAt(0));
+    Vector3f max = new Vector3f(mesh.getVertexAt(0));
 
-    for (Vector3f vertex : vertices) {
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f vertex = mesh.getVertexAt(i);
       min.set(
           Math.min(min.getX(), vertex.getX()),
           Math.min(min.getY(), vertex.getY()),

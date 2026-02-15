@@ -43,21 +43,21 @@ public class SegmentedCubeCreator implements IMeshCreator {
 
     private void createBottom() {
         Mesh3D bottom = createSide();
-        bottom.apply(new RotateXModifier(Mathf.PI));
+        new RotateXModifier(Mathf.PI).modify(bottom);
         bottom.translateY(creationSize);
         append(bottom);
     }
 
     private void createFront() {
         Mesh3D front = createSide();
-        front.apply(new RotateXModifier(Mathf.HALF_PI));
+        new RotateXModifier(Mathf.HALF_PI).modify(front);
         front.translateZ(-creationSize);
         append(front);
     }
 
     private void createBack() {
         Mesh3D back = createSide();
-        back.apply(new RotateXModifier(-Mathf.HALF_PI));
+        new RotateXModifier(-Mathf.HALF_PI).modify(back);
         back.translateZ(creationSize);
         append(back);
     }
@@ -83,8 +83,8 @@ public class SegmentedCubeCreator implements IMeshCreator {
 
     private void scale() {
         float scale = 1.0f / creationSize;
-        mesh.apply(new ScaleModifier(scale));
-        mesh.apply(new ScaleModifier(size));
+        new ScaleModifier(scale).modify(mesh);
+        new ScaleModifier(size).modify(mesh);
     }
 
     private void initializeMesh() {

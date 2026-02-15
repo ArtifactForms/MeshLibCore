@@ -14,7 +14,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.ICOSIDODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new IcosidodecahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -22,7 +22,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_CUBOCTAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedCuboctahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -30,7 +30,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.RHOMBICUBOCTAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new RhombicuboctahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -38,7 +38,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_ICOSIDODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedIcosidodecahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -46,7 +46,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.CUBOCTAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new CuboctahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -54,7 +54,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.SNUB_CUBE;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new SnubCubeCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -62,7 +62,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.RHOMBISOSIDODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new RhombicosidodecahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -70,7 +70,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.SNUB_DODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new SnubDodecahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -78,7 +78,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_TETRAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedTetrahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -86,7 +86,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_OCTAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedOctahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -94,7 +94,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_CUBE;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedCubeCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -102,7 +102,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_ICOSAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedIcosahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -110,7 +110,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_DODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedDodecahedronCreator().create();
-    assertEquals(expectedMesh.vertices, actualMesh.vertices);
+    assertEquals(expectedMesh.getVertices(), actualMesh.getVertices());
   }
 
   @Test
@@ -118,7 +118,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.ICOSIDODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new IcosidodecahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -130,7 +130,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_CUBOCTAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedCuboctahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -142,7 +142,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.RHOMBICUBOCTAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new RhombicuboctahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -154,7 +154,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_ICOSIDODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedIcosidodecahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -166,7 +166,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.CUBOCTAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new CuboctahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -178,7 +178,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.SNUB_CUBE;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new SnubCubeCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -190,7 +190,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.RHOMBISOSIDODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new RhombicosidodecahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -202,7 +202,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.SNUB_DODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new SnubDodecahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -214,7 +214,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_TETRAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedTetrahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -226,7 +226,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_OCTAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedOctahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -238,7 +238,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_CUBE;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedCubeCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -250,7 +250,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_ICOSAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedIcosahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);
@@ -262,7 +262,7 @@ public class ArchimedianSolidCreatorTest {
     ArchimedianSolid type = ArchimedianSolid.TRUNCATED_DODECAHEDRON;
     Mesh3D actualMesh = new ArchimedianSolidCreator(type).create();
     Mesh3D expectedMesh = new TruncatedDodecahedronCreator().create();
-    for (int i = 0; i < actualMesh.faces.size(); i++) {
+    for (int i = 0; i < actualMesh.getFaceCount(); i++) {
       int[] expected = expectedMesh.getFaceAt(i).indices;
       int[] actual = actualMesh.getFaceAt(i).indices;
       assertArrayEquals(expected, actual);

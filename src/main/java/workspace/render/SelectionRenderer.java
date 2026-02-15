@@ -52,7 +52,7 @@ public class SelectionRenderer {
     g3d.noLights();
     g3d.background(0, 0, 0, 0);
     g3d.noStroke();
-    drawFacesBuffer(mesh, mesh.faces);
+    drawFacesBuffer(mesh, mesh.getFaces());
     g3d.endDraw();
   }
 
@@ -69,7 +69,7 @@ public class SelectionRenderer {
     ColorGenerator generator = new ColorGenerator();
     this.colorToFaceMap.clear();
 
-    for (int i = 0; i < mesh.faces.size(); i++) {
+    for (int i = 0; i < mesh.getFaceCount(); i++) {
       Face3D f = mesh.getFaceAt(i);
       Vector3f v;
       int c = generator.next().getRGBA();
@@ -89,7 +89,7 @@ public class SelectionRenderer {
       }
 
       for (int j = 0; j < f.indices.length; j++) {
-        v = mesh.vertices.get(f.indices[j]);
+        v = mesh.getVertexAt(f.indices[j]);
         context.vertex(v.getX(), v.getY(), v.getZ());
       }
 

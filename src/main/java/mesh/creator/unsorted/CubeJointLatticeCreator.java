@@ -64,7 +64,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 				cubes[i][j] = new CubeCreator(jointSize).create();
-				cubes[i][j].apply(new TranslateModifier(j * tileSizeX, i * tileSizeY, 0));
+				new TranslateModifier(j * tileSizeX, i * tileSizeY, 0).modify(cubes[i][j]);
 				mesh.append(cubes[i][j]);
 			}
 		}
@@ -82,14 +82,14 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 	}
 
 	private void connectBottomTop(int i, int j) {
-		Face3D bottom = cubes[i][j].faces.get(1);
-		Face3D top = cubes[i + 1][j].faces.get(0);
+		Face3D bottom = cubes[i][j].getFaceAt(1);
+		Face3D top = cubes[i + 1][j].getFaceAt(0);
 		connect(bottom, top, scaleY);
 	}
 
 	private void connectRightLeft(int i, int j) {
-		Face3D right = cubes[i][j].faces.get(2);
-		Face3D left = cubes[i][j + 1].faces.get(4);
+		Face3D right = cubes[i][j].getFaceAt(2);
+		Face3D left = cubes[i][j + 1].getFaceAt(4);
 		connect(right, left, scaleX);
 	}
 
@@ -121,7 +121,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 	private void centerOnAxisXY() {
 		float tx = -subdivisionsX * tileSizeX / 2f;
 		float ty = -subdivisionsY * tileSizeY / 2f;
-		mesh.apply(new TranslateModifier(tx, ty, 0));
+		new TranslateModifier(tx, ty, 0).modify(mesh);
 	}
 
 	public int getSubdivisionsX() {

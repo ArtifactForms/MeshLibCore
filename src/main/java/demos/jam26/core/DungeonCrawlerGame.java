@@ -318,11 +318,11 @@ public class DungeonCrawlerGame extends BasicApplication {
     g.setColor(Color.RED);
     float normalLength = 5;
 
-    for (Face3D f : levelMesh.faces) {
+    for (Face3D f : levelMesh.getFaces()) {
 
       Vector3f center = new Vector3f();
       for (int idx : f.indices) {
-        center.addLocal(levelMesh.vertices.get(idx));
+        center.addLocal(levelMesh.getVertexAt(idx));
       }
       center.divideLocal(f.indices.length);
 

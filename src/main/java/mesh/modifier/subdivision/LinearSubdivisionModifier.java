@@ -64,7 +64,7 @@ public class LinearSubdivisionModifier implements IMeshModifier {
             Vector3f from = mesh.getVertexAt(face.indices[i % n]);
             Vector3f to = mesh.getVertexAt(face.indices[(i + 1) % n]);
             Vector3f edgePoint = from.add(to).mult(0.5f);
-            int idx = mesh.vertices.indexOf(edgePoint);
+            int idx = mesh.indexOf(edgePoint);
             if (idx > -1) {
                 indices[i + 1] = idx;
             } else {
@@ -104,7 +104,7 @@ public class LinearSubdivisionModifier implements IMeshModifier {
     }
 
     private void applyFaces() {
-        mesh.faces.clear();
+        mesh.clearFaces();
         mesh.addFaces(newFaces);
         newFaces.clear();
     }

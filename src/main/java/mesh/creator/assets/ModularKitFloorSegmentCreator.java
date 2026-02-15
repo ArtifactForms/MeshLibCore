@@ -28,7 +28,7 @@ public class ModularKitFloorSegmentCreator implements IMeshCreator {
     @Override
     public Mesh3D create() {
         Mesh3D mesh = new PlaneCreator(0.5f).create();
-        mesh.apply(new ScaleModifier(floorWidth, 1, floorDepth));
+        new ScaleModifier(floorWidth, 1, floorDepth).modify(mesh);
         if (floorHeight > 0) {
             new SolidifyModifier(floorHeight).modify(mesh);
             mesh.translateY(-floorHeight);

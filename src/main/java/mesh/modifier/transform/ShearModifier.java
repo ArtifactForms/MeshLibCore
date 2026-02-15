@@ -1,6 +1,7 @@
 package mesh.modifier.transform;
 
 import math.Vector3f;
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
@@ -64,7 +65,7 @@ public class ShearModifier implements IMeshModifier {
 	@Override
 	public Mesh3D modify(Mesh3D mesh) {
 		validateMesh(mesh);
-		if (mesh.vertices.isEmpty()) {
+		if (mesh.getVertexCount() == 0) {
 			return mesh;
 		}
 		applyShear(mesh);
@@ -73,10 +74,7 @@ public class ShearModifier implements IMeshModifier {
 
 	/**
 	 * Applies the shear transformation to all vertices in the given mesh.
-	 * 
-	 * This method uses a parallel stream to process the vertices, applying the
-	 * shear transformation in a concurrent manner for improved performance on
-	 * large meshes. The shear transformation is determined by the specified shear
+	 * The shear transformation is determined by the specified shear
 	 * axis and factor.
 	 * 
 	 * @param mesh the mesh whose vertices will be sheared
@@ -84,7 +82,10 @@ public class ShearModifier implements IMeshModifier {
 	 *                                  vertices
 	 */
 	private void applyShear(Mesh3D mesh) {
-		mesh.vertices.parallelStream().forEach(this::applyShearToVertex);
+		for (int i = 0; i < mesh.getVertexCount(); i++) {
+			Vector3f v = mesh.getVertexAt(i);
+			applyShearToVertex(v);
+		}
 	}
 
 	/**
@@ -112,7 +113,7 @@ public class ShearModifier implements IMeshModifier {
 	 * @param mesh the mesh to validate.
 	 * @throws IllegalArgumentException if the mesh is null.
 	 */
-	private void validateMesh(Mesh3D mesh) {
+	private void validateMesh(Mesh mesh) {
 		if (mesh == null) {
 			throw new IllegalArgumentException("Mesh cannot be null.");
 		}

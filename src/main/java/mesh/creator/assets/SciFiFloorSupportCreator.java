@@ -1,6 +1,7 @@
 package mesh.creator.assets;
 
 import math.Mathf;
+import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.transform.TranslateModifier;
@@ -80,7 +81,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
 
     private void centerOnAxisX() {
         float deltaX = -(getTotalWidth() / 2f) + (getWidth() / 2f);
-        mesh.apply(new TranslateModifier(deltaX, 0, 0));
+        new TranslateModifier(deltaX, 0, 0).modify(mesh);
     }
 
     private void processCapBack() {
@@ -90,7 +91,10 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
         FaceSelectionRules rules = new FaceSelectionRules();
         rules.centerZ(CompareType.LESS_OR_EQUALS, -getSupportDepth() / 2f);
         rules.apply(selection);
-        support.faces.removeAll(selection.getFaces());
+        
+        for (Face3D face : selection.getFaces()) {
+        	support.removeFace(face);
+        }
     }
 
     private void processCapBottom() {
@@ -100,7 +104,10 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
         FaceSelectionRules rules = new FaceSelectionRules();
         rules.centerY(CompareType.EQUALS, 0);
         rules.apply(selection);
-        support.faces.removeAll(selection.getFaces());
+        
+        for (Face3D face : selection.getFaces()) {
+        	support.removeFace(face);
+        }
     }
 
     private void processCapTop() {
@@ -110,14 +117,17 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
         FaceSelectionRules rules = new FaceSelectionRules();
         rules.centerY(CompareType.LESS_OR_EQUALS, -getSupportHeight());
         rules.apply(selection);
-        support.faces.removeAll(selection.getFaces());
+        
+        for (Face3D face : selection.getFaces()) {
+        	support.removeFace(face);
+        }
     }
 
     private void createSupports() {
         for (int i = 0; i < supportCount; i++) {
             Mesh3D support = this.support.copy();
             float deltaX = i * (width + gap);
-            support.apply(new TranslateModifier(deltaX, 0, 0));
+            new TranslateModifier(deltaX, 0, 0).modify(support);
             mesh.append(support);
         }
     }
@@ -135,7 +145,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
         creator.setSegments(segments);
         support = creator.create();
         support.rotateZ(-Mathf.HALF_PI);
-        support.apply(new TranslateModifier(deltaX, deltaY, 0));
+        new TranslateModifier(deltaX, deltaY, 0).modify(support);
         support.rotateY(-Mathf.HALF_PI);
         processCapBack();
         processCapTop();

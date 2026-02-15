@@ -104,8 +104,8 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
     }
 
     private Vector3f calculateMidPoint() {
-        Vector3f from = mesh.vertices.get(fromIndex);
-        Vector3f to = mesh.vertices.get(toIndex);
+        Vector3f from = mesh.getVertexAt(fromIndex);
+        Vector3f to = mesh.getVertexAt(toIndex);
         return from.add(to).mult(0.5f);
     }
 
@@ -114,11 +114,11 @@ public class PlanarVertexMidEdgeCenterModifier implements IMeshModifier {
     }
 
     private void clearOldFaces() {
-        mesh.faces.clear();
+        mesh.clearFaces();
     }
 
     private void addNewFaces() {
-        mesh.faces.addAll(newlyCreatedFaces);
+        mesh.addFaces(newlyCreatedFaces);
     }
 
     private void map(int fromIndex, int toIndex, int index) {

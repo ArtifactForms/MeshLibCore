@@ -23,11 +23,11 @@ public class ManifoldTest {
 
   public boolean isManifold() {
 
-    if (meshUnderTest.faces.isEmpty()) {
+    if (meshUnderTest.getFaceCount() == 0) {
       return false;
     }
 
-    if (meshUnderTest.vertices.size() < 3) {
+    if (meshUnderTest.getVertexCount() < 3) {
       return false;
     }
 

@@ -83,12 +83,13 @@ public class TranslateModifier implements IMeshModifier {
       return mesh;
     }
 
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
 
-    for (Vector3f vertex : mesh.vertices) {
-      vertex.addLocal(delta);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+    	Vector3f vertex = mesh.getVertexAt(i);
+        vertex.addLocal(delta);
     }
 
     return mesh;

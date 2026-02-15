@@ -1,6 +1,7 @@
 package mesh.modifier.transform;
 
 import math.Vector3f;
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
@@ -23,7 +24,7 @@ public class ScaleModifier implements IMeshModifier {
   private float scaleZ;
 
   /** The 3D mesh currently being operated on by the modifier. */
-  private Mesh3D mesh;
+  private Mesh mesh;
 
   /** Default constructor that initializes uniform scaling with factors (1, 1, 1). */
   public ScaleModifier() {
@@ -66,7 +67,7 @@ public class ScaleModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }
-    if (mesh.vertices.isEmpty()) {
+    if (mesh.getVertexCount() == 0) {
       return mesh;
     }
     setMesh(mesh);
@@ -74,11 +75,12 @@ public class ScaleModifier implements IMeshModifier {
     return mesh;
   }
 
-  /**
-   * Scales all vertices of the associated mesh using parallel processing for improved performance.
-   */
+  /** Scales all vertices of the associated mesh. */
   private void scaleMesh() {
-    mesh.vertices.parallelStream().forEach(this::applyScaleToVertex);
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      applyScaleToVertex(v);
+    }
   }
 
   /**
@@ -95,7 +97,7 @@ public class ScaleModifier implements IMeshModifier {
    *
    * @param mesh the mesh to scale.
    */
-  private void setMesh(Mesh3D mesh) {
+  private void setMesh(Mesh mesh) {
     this.mesh = mesh;
   }
 

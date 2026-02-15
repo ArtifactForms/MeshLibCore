@@ -69,7 +69,7 @@ public class TraverseHelper {
      * Populates the internal data structures with edge and face relationships.
      */
     private void map() {
-        for (Face3D face : mesh.faces)
+        for (Face3D face : mesh.getFaces())
             mapFace(face);
     }
 
