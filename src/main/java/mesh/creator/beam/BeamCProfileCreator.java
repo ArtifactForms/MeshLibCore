@@ -78,7 +78,7 @@ public class BeamCProfileCreator implements IBeamCreator {
 	}
 
 	private void center() {
-		mesh.apply(new TranslateModifier(-width / 2f, 0, depth / 2f));
+	    new TranslateModifier(-width / 2f, 0, depth / 2f).modify(mesh);
 	}
 
 	public float getWidth() {
