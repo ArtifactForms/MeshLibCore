@@ -3,6 +3,8 @@ package mesh.creator.beam;
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.RotateModifier;
+import mesh.modifier.transform.TransformAxis;
 import mesh.modifier.transform.TranslateModifier;
 
 public class BeamCProfileCreator implements IBeamCreator {
@@ -70,7 +72,7 @@ public class BeamCProfileCreator implements IBeamCreator {
 	}
 
 	private void rotate() {
-		mesh.rotateZ(Mathf.HALF_PI);
+		new RotateModifier(Mathf.HALF_PI, TransformAxis.Z).modify(mesh);
 	}
 
 	private void solidify() {

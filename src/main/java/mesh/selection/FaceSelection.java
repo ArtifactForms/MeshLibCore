@@ -392,7 +392,9 @@ public class FaceSelection {
     }
 
     public void selectFromTo(int from, int to) {
-        faceSet.addAll(mesh.getFaces(from, to));
+        for (int i = 0; i < mesh.getFaceCount(); i++) {
+        	faceSet.add(mesh.getFaceAt(i));
+        }
     }
 
     public void selectFaceAt(int index) {
@@ -400,7 +402,7 @@ public class FaceSelection {
     }
 
     public void selectAll() {
-        faceSet.addAll(mesh.getFaces(0, mesh.getFaceCount()));
+        faceSet.addAll(mesh.getFaces());
     }
 
     public void add(Face3D face) {

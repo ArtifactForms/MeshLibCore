@@ -6,7 +6,10 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.repair.RemoveDoubleVerticesModifier;
+import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.TransformAxis;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.Mesh3DUtil;
 

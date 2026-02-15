@@ -213,7 +213,7 @@ public class SolidifyModifier implements IMeshModifier {
 
   /** Initializes the list of original faces of the mesh. */
   private void initializeOriginalFaces() {
-    originalFaces = mesh.getFaces(0, mesh.getFaceCount());
+    originalFaces = mesh.getFaces();
   }
 
   /** Computes the vertex normals for the mesh. */

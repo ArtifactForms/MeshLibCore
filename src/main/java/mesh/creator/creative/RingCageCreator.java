@@ -107,9 +107,12 @@ public class RingCageCreator implements IMeshCreator {
     }
 
     private void createHoles() {
-        List<Face3D> faces = mesh.getFaces(vertices, vertices * 2);
-        for (Face3D face : faces) {
-            Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0f);
+        List<Face3D> faces = new ArrayList<Face3D>();
+
+        for (int i = vertices; i < vertices * 2; i++) {
+        	Face3D face = mesh.getFaceAt(i);
+        	 Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0f);
+        	 faces.add(face);
         }
         mesh.removeFaces(faces);
     }

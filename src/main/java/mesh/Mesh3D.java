@@ -71,7 +71,7 @@ public class Mesh3D implements Mesh {
   }
 
   // -------------------------------------------------------------------
-  // Deprecated
+  // Deprecated transform operations
   // -------------------------------------------------------------------
 
   /**
@@ -124,6 +124,45 @@ public class Mesh3D implements Mesh {
     return new TranslateModifier(0, 0, tz).modify(this);
   }
 
+  // -------------------------------------------------------------------
+  // Deprecated vertex access
+  // -------------------------------------------------------------------
+
+  @Deprecated
+  public List<Vector3f> getVertices() {
+    return new ArrayList<>(vertices);
+  }
+
+  @Deprecated
+  public int indexOf(Vector3f v) {
+    return vertices.indexOf(v);
+  }
+
+  public void remove(Vector3f v) {
+    vertices.remove(v);
+  }
+
+  public void remove(Collection<Vector3f> vertices) {
+    this.vertices.removeAll(vertices);
+  }
+
+  @Deprecated
+  public void clearVertices() {
+    vertices.clear();
+  }
+
+  @Deprecated
+  public void addVertices(Collection<Vector3f> vertices) {
+    this.vertices.addAll(vertices);
+  }
+
+  @Deprecated
+  public void add(Vector3f... vertices) {
+    this.vertices.addAll(Arrays.asList(vertices));
+  }
+
+  // -------------------------------------------------------------------
+
   @Deprecated
   public Vector3f calculateFaceNormal(Face3D face) {
     Vector3f faceNormal = new Vector3f();
@@ -148,11 +187,6 @@ public class Mesh3D implements Mesh {
       center.addLocal(vertices.get(face.indices[i]));
     }
     return center.divideLocal(face.indices.length);
-  }
-
-  @Deprecated
-  public List<Vector3f> getVertices() {
-    return new ArrayList<>(vertices);
   }
 
   @Deprecated
@@ -300,11 +334,6 @@ public class Mesh3D implements Mesh {
   }
 
   @Deprecated
-  public void clearVertices() {
-    vertices.clear();
-  }
-
-  @Deprecated
   public void clearFaces() {
     faces.clear();
   }
@@ -312,11 +341,6 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public void addFace(boolean uvs, int... indices) {
     faces.add(new Face3D(indices, indices));
-  }
-
-  @Deprecated
-  public void addVertices(Collection<Vector3f> vertices) {
-    this.vertices.addAll(vertices);
   }
 
   @Deprecated
@@ -330,11 +354,6 @@ public class Mesh3D implements Mesh {
   }
 
   @Deprecated
-  public void add(Vector3f... vertices) {
-    this.vertices.addAll(Arrays.asList(vertices));
-  }
-
-  @Deprecated
   public Face3D getFaceAt(int index) {
     return faces.get(index);
   }
@@ -342,14 +361,6 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public List<Face3D> getFaces() {
     return new ArrayList<Face3D>(faces);
-  }
-
-  public void remove(Vector3f v) {
-    vertices.remove(v);
-  }
-
-  public void remove(Collection<Vector3f> vertices) {
-    this.vertices.removeAll(vertices);
   }
 
   // -------------------------------------------------------------------
@@ -365,12 +376,8 @@ public class Mesh3D implements Mesh {
     this.faces.addAll(Arrays.asList(faces));
   }
 
-  @Deprecated
-  public List<Face3D> getFaces(int from, int to) {
-    return new ArrayList<>(faces.subList(from, to));
-  }
-
-  public int indexOf(Vector3f v) {
-    return vertices.indexOf(v);
-  }
+//  @Deprecated
+//  public List<Face3D> getFaces(int from, int to) {
+//    return new ArrayList<>(faces.subList(from, to));
+//  }
 }
