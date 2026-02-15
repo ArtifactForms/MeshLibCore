@@ -74,10 +74,10 @@ public class BendModifier implements IMeshModifier {
    * @param mesh the 3D mesh whose vertices are to be deformed.
    */
   private void bend(Mesh3D mesh) {
-	  for (int i = 0; i < mesh.getVertexCount(); i++) {
-		  Vector3f v = mesh.getVertexAt(i);
-		  simpleDeformBend(v);
-	  }
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      simpleDeformBend(v);
+    }
   }
 
   /**
