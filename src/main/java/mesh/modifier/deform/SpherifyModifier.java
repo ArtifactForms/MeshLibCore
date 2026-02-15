@@ -70,8 +70,8 @@ public class SpherifyModifier implements IMeshModifier {
   /** Performs the spherification on the mesh vertices. */
   private void spherify() {
     for (int i = 0; i < mesh.getVertexCount(); i++) {
-    	Vector3f v = mesh.getVertexAt(i);
-    	spherifyVertex(v);
+      Vector3f v = mesh.getVertexAt(i);
+      spherifyVertex(v);
     }
   }
 

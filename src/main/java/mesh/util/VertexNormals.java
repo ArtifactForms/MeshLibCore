@@ -43,8 +43,7 @@ public class VertexNormals {
     }
 
     private void calculateVertexNormals() {
-        for (int i = 0; i < mesh.getVertexCount(); i++) {
-        	Vector3f v = mesh.getVertexAt(i);
+        for (Vector3f v : mesh.getVertices()) {
             Vector3f normal = new Vector3f();
             List<Face3D> faces = vectorToFace.get(v);
             if (faces == null)

@@ -1,6 +1,7 @@
 package mesh.modifier.transform;
 
 import math.Vector3f;
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
@@ -23,7 +24,7 @@ public class ScaleModifier implements IMeshModifier {
   private float scaleZ;
 
   /** The 3D mesh currently being operated on by the modifier. */
-  private Mesh3D mesh;
+  private Mesh mesh;
 
   /** Default constructor that initializes uniform scaling with factors (1, 1, 1). */
   public ScaleModifier() {
@@ -96,7 +97,7 @@ public class ScaleModifier implements IMeshModifier {
    *
    * @param mesh the mesh to scale.
    */
-  private void setMesh(Mesh3D mesh) {
+  private void setMesh(Mesh mesh) {
     this.mesh = mesh;
   }
 

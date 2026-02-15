@@ -4,6 +4,7 @@ import java.util.LinkedHashSet;
 
 import math.Vector3f;
 import mesh.Face3D;
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 

@@ -75,7 +75,7 @@ public class Mesh3D implements Mesh {
   // -------------------------------------------------------------------
   // Deprecated
   // -------------------------------------------------------------------
-  
+
   /**
    * Applies the provided {@link IMeshModifier} to this mesh. This is congruent to {@link
    * IMeshModifier#modify(Mesh3D)}.
@@ -86,7 +86,7 @@ public class Mesh3D implements Mesh {
    *     validation and pipeline control.
    */
   @Deprecated
-  public Mesh3D apply(IMeshModifier modifier) {
+  public Mesh apply(IMeshModifier modifier) {
     return modifier.modify(this);
   }
 
@@ -96,7 +96,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link RotateYModifier} instead.
    */
   @Deprecated
-  public Mesh3D rotateY(float angle) {
+  public Mesh rotateY(float angle) {
     return new RotateYModifier(angle).modify(this);
   }
 
@@ -106,7 +106,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link RotateZModifier} instead.
    */
   @Deprecated
-  public Mesh3D rotateZ(float angle) {
+  public Mesh rotateZ(float angle) {
     return new RotateZModifier(angle).modify(this);
   }
 
@@ -116,7 +116,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link TranslateModifier} instead.
    */
   @Deprecated
-  public Mesh3D translateX(float tx) {
+  public Mesh translateX(float tx) {
     return new TranslateModifier(tx, 0, 0).modify(this);
   }
 
@@ -126,7 +126,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link TranslateModifier} instead.
    */
   @Deprecated
-  public Mesh3D translateY(float ty) {
+  public Mesh translateY(float ty) {
     return new TranslateModifier(0, ty, 0).modify(this);
   }
 
@@ -136,7 +136,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link TranslateModifier} instead.
    */
   @Deprecated
-  public Mesh3D translateZ(float tz) {
+  public Mesh translateZ(float tz) {
     return new TranslateModifier(0, 0, tz).modify(this);
   }
 
@@ -369,13 +369,13 @@ public class Mesh3D implements Mesh {
   public List<Face3D> getFaces() {
     return new ArrayList<Face3D>(faces);
   }
-  
+
   public void remove(Vector3f v) {
-	  vertices.remove(v);
+    vertices.remove(v);
   }
-  
+
   public void remove(Collection<Vector3f> vertices) {
-	  this.vertices.removeAll(vertices);
+    this.vertices.removeAll(vertices);
   }
 
   // -------------------------------------------------------------------
@@ -395,8 +395,8 @@ public class Mesh3D implements Mesh {
   public List<Face3D> getFaces(int from, int to) {
     return new ArrayList<>(faces.subList(from, to));
   }
-  
+
   public int indexOf(Vector3f v) {
-	  return vertices.indexOf(v);
+    return vertices.indexOf(v);
   }
 }

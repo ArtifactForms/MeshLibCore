@@ -89,10 +89,10 @@ public class RotateYModifier implements IMeshModifier {
 
   /** Applies the rotation transformation to all vertices of the mesh. */
   private void rotateMesh() {
-	  for (int i = 0; i < mesh.getVertexCount(); i++) {
-		  Vector3f v = mesh.getVertexAt(i);
-		  applyRotationToVertex(v);
-	  }
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      applyRotationToVertex(v);
+    }
   }
 
   /**

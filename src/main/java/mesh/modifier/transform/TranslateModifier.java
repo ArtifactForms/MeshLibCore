@@ -1,7 +1,7 @@
 package mesh.modifier.transform;
 
 import math.Vector3f;
-import mesh.Mesh3D;
+import mesh.Mesh;
 import mesh.modifier.IMeshModifier;
 
 /**
@@ -74,7 +74,7 @@ public class TranslateModifier implements IMeshModifier {
    * @throws IllegalArgumentException if the provided mesh is null.
    */
   @Override
-  public Mesh3D modify(Mesh3D mesh) {
+  public Mesh modify(Mesh mesh) {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh cannot be null.");
     }

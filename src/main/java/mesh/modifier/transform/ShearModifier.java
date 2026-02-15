@@ -1,6 +1,7 @@
 package mesh.modifier.transform;
 
 import math.Vector3f;
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
@@ -112,7 +113,7 @@ public class ShearModifier implements IMeshModifier {
 	 * @param mesh the mesh to validate.
 	 * @throws IllegalArgumentException if the mesh is null.
 	 */
-	private void validateMesh(Mesh3D mesh) {
+	private void validateMesh(Mesh mesh) {
 		if (mesh == null) {
 			throw new IllegalArgumentException("Mesh cannot be null.");
 		}

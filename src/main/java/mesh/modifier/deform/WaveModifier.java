@@ -98,8 +98,8 @@ public class WaveModifier implements IMeshModifier {
    */
   private void applyWaveToVertices() {
     for (int i = 0; i < mesh.getVertexCount(); i++) {
-    	Vector3f v = mesh.getVertexAt(i);
-    	applyWaveToVertex(v);
+      Vector3f v = mesh.getVertexAt(i);
+      applyWaveToVertex(v);
     }
   }
 

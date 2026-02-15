@@ -51,8 +51,11 @@ public class SmoothModifier implements IMeshModifier {
       Vector3f v = mesh.getVertexAt(i);
       smoothedVertices.add(getSmoothedVertex(v, map.get(i)));
     }
-    mesh.clearVertices();
-    mesh.addVertices(smoothedVertices);
+
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      mesh.getVertexAt(i).set(smoothedVertices.get(i));
+    }
+
     smoothedVertices.clear();
   }
 

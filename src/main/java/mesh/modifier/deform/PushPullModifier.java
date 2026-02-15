@@ -65,10 +65,10 @@ public class PushPullModifier implements IMeshModifier {
 
   /** Displaces each vertex radially relative to the center point. */
   private void pushPullVertices() {
-	  for (int i = 0; i < mesh.getVertexCount(); i++) {
-		  Vector3f v = mesh.getVertexAt(i);
-		  pushPullVertex(v);
-	  }
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      pushPullVertex(v);
+    }
   }
 
   /**

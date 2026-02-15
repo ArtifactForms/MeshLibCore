@@ -1,11 +1,12 @@
 package mesh.modifier.pipeline;
 
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
 /**
  * A pipeline modifier that applies another {@link IMeshModifier} repeatedly to the same {@link
- * Mesh3D} instance.
+ * Mesh} instance.
  *
  * <p>The {@code RepeatModifier} is useful for creating iterative or cumulative effects where a
  * modifier needs to be applied multiple times in sequence. Typical use cases include smoothing,
