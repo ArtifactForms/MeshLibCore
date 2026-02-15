@@ -70,7 +70,7 @@ public class SciFiFloorCreator implements IMeshCreator {
 
 	private void createFloor() {
 		Mesh3D plane = new PlaneCreator(0.5f).create();
-		new ScaleModifier(width, 1, depth).modify(plane);
+		new ScaleModifier(width, 1, depth).modify(mesh);
 		plane.translateY(wallHeight / 2f);
 		mesh.append(plane);
 	}
