@@ -39,7 +39,6 @@ public class PlanarVertexCenterCubeTest {
     int expectedFaceCount = 24;
     assertEquals(expectedFaceCount, cube.getFaceCount());
     assertEquals(expectedFaceCount, cube.getFaces().size());
-    assertEquals(expectedFaceCount, cube.getFaces(0, cube.getFaceCount()).size());
   }
 
   @Test

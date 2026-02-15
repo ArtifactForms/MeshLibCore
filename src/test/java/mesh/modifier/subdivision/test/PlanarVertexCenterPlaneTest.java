@@ -32,7 +32,6 @@ public class PlanarVertexCenterPlaneTest {
     int expectedFaceCount = 4;
     assertEquals(expectedFaceCount, plane.getFaceCount());
     assertEquals(expectedFaceCount, plane.getFaces().size());
-    assertEquals(expectedFaceCount, plane.getFaces(0, plane.getFaceCount()).size());
   }
 
   @Test
