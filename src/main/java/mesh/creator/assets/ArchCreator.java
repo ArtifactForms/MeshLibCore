@@ -68,8 +68,8 @@ public class ArchCreator implements IMeshCreator {
       if (i > 0 && i < segments) v1.setX(v0.getX());
 
       addFaceAt(i);
-      mesh.add(v0);
-      mesh.add(v1);
+      mesh.addVertex(v0.x, v0.y, v0.z);
+      mesh.addVertex(v1.x, v1.y, v1.z);
     }
   }
 

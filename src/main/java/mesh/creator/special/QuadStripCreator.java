@@ -39,7 +39,7 @@ public class QuadStripCreator implements IMeshCreator {
 
     private void createVertices() {
         for (Vector3f v : vertices) {
-            mesh.add(new Vector3f(v));
+            mesh.addVertex(v.x, v.y, v.z);
         }
     }
 

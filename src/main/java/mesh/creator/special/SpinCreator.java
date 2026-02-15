@@ -62,7 +62,7 @@ public class SpinCreator implements IMeshCreator {
             Vector3f v1 = createPointOnCircle(angle, v0.getY());
             Vector3f v2 = new Vector3f(v0.getX(), 1, v0.getX());
             v1.multLocal(v2);
-            mesh.add(v1);
+            mesh.addVertex(v1.x, v1.y, v1.z);
         }
     }
 

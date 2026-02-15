@@ -178,7 +178,7 @@ public class VariableCylinderCreator implements IMeshCreator {
         float x = radius * Mathf.cos(angleStep * j);
         float z = radius * Mathf.sin(angleStep * j);
         float y = yCoordinates.get(i);
-        mesh.add(new Vector3f(x, y, z));
+        mesh.addVertex(x, y, z);
       }
     }
   }

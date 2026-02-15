@@ -67,7 +67,7 @@ public class TorusCreator implements IMeshCreator {
     }
     
     private void addVertex(float x, float y, float z) {
-        mesh.add(new Vector3f(x, y, z));
+        mesh.addVertex(x, y, z);
     }
 
     private void createFaceAt(int i, int j) {
