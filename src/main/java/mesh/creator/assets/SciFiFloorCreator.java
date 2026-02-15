@@ -70,7 +70,7 @@ public class SciFiFloorCreator implements IMeshCreator {
 
 	private void createFloor() {
 		Mesh3D plane = new PlaneCreator(0.5f).create();
-		mesh.apply(new ScaleModifier(width, 1, depth));
+		new ScaleModifier(width, 1, depth).modify(plane);
 		plane.translateY(wallHeight / 2f);
 		mesh.append(plane);
 	}
@@ -85,9 +85,9 @@ public class SciFiFloorCreator implements IMeshCreator {
 		creator.setVertices(8);
 		Mesh3D cylinder = creator.create();
 		cylinder.rotateY(Mathf.TWO_PI / 16f);
-		cylinder.apply(new RotateXModifier(Mathf.HALF_PI));
+		new RotateXModifier(Mathf.HALF_PI).modify(cylinder);
 		new FitToAABBModifier(width, height, depth).modify(cylinder);
-		cylinder.apply(new FlipFacesModifier());
+		new FlipFacesModifier().modify(cylinder);
 		mesh.append(cylinder);
 		calculateWallHeight();
 	}

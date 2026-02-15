@@ -8,7 +8,6 @@ import java.util.List;
 import math.Vector2f;
 import math.Vector3f;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.TranslateModifier;
@@ -75,20 +74,6 @@ public class Mesh3D implements Mesh {
   // -------------------------------------------------------------------
   // Deprecated
   // -------------------------------------------------------------------
-
-  /**
-   * Applies the provided {@link IMeshModifier} to this mesh. This is congruent to {@link
-   * IMeshModifier#modify(Mesh3D)}.
-   *
-   * @param modifier The modifier to apply to this mesh.
-   * @return this
-   * @deprecated Modifiers must be applied via {@link ModifierStackr}. This method bypasses
-   *     validation and pipeline control.
-   */
-  @Deprecated
-  public Mesh3D apply(IMeshModifier modifier) {
-    return modifier.modify(this);
-  }
 
   /**
    * Rotates the mesh around the Y-axis.

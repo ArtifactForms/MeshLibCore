@@ -15,8 +15,8 @@ public class PlayerVisual extends AbstractComponent implements RenderableCompone
 
   public PlayerVisual() {
     mesh = new BoxCreator(0.9f, 1.8f, 0.9f).create();
-    mesh.apply(new SnapToGroundModifier());
-    mesh.apply(new TranslateModifier(0, -0.5f, 0));
+    new SnapToGroundModifier().modify(mesh);
+    new TranslateModifier(0, -0.5f, 0).modify(mesh);
   }
 
   @Override

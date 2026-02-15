@@ -64,7 +64,7 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 				float y = radius * Mathf.sin(angle);
 				cubes[i][j] = new CubeCreator(jointSize).create();
 				cubes[i][j].rotateY(-angle);
-				cubes[i][j].apply(new TranslateModifier(x, i * dy, y));
+			    new TranslateModifier(x, i * dy, y).modify(cubes[i][j]);
 				mesh.append(cubes[i][j]);
 				angle += step;
 			}
@@ -113,7 +113,7 @@ public class CubeJointLatticeCylinderCreator implements IMeshCreator {
 
 	private void centerOnAxisY() {
 		float ty = -subdivisionsY * (height / subdivisionsY) / 2f;
-		mesh.apply(new TranslateModifier(0, ty, 0));
+		new TranslateModifier(0, ty, 0).modify(mesh);
 	}
 
 	public int getVertices() {

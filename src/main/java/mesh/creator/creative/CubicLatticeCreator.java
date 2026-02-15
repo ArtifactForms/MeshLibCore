@@ -62,7 +62,7 @@ public class CubicLatticeCreator implements IMeshCreator {
 
 	private void createSegmentAt(int x, int y, int z) {
 		Mesh3D segment = createSegment();
-		segment.apply(new TranslateModifier(x * 3, y * 3, z * 3));
+		new TranslateModifier(x * 3, y * 3, z * 3).modify(segment);
 		this.mesh.append(segment);
 	}
 

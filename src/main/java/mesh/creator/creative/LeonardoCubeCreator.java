@@ -85,14 +85,14 @@ public class LeonardoCubeCreator implements IMeshCreator {
 
     private void createBackConnector() {
         Mesh3D back = createConnector(true, true);
-        back.apply(new RotateXModifier(-Mathf.HALF_PI));
+        new RotateXModifier(-Mathf.HALF_PI).modify(back);
         back.translateZ(-outerRadius + connectorRadius);
         mesh.append(back);
     }
 
     private void createFrontConnector() {
         Mesh3D front = createConnector(true, true);
-        front.apply(new RotateXModifier(-Mathf.HALF_PI));
+        new RotateXModifier(-Mathf.HALF_PI).modify(front);
         front.translateZ(outerRadius - connectorRadius);
         mesh.append(front);
     }

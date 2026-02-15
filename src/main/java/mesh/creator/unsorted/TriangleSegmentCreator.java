@@ -41,7 +41,7 @@ public class TriangleSegmentCreator implements IMeshCreator {
     }
 
     private void scale() {
-        mesh.apply(new ScaleModifier(size));
+        new ScaleModifier(size).modify(mesh);
     }
 
     private void extrude() {

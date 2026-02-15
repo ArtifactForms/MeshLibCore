@@ -44,11 +44,11 @@ public class TessellationSphereCreator implements IMeshCreator {
 	}
 
 	private void pushToSphere() {
-		mesh.apply(new SpherifyModifier(radius));
+		new SpherifyModifier(radius).modify(mesh);
 	}
 
 	private void flipFaceNormals() {
-		mesh.apply(new FlipFacesModifier());
+		new FlipFacesModifier().modify(mesh);
 	}
 
 	private void solidify() {

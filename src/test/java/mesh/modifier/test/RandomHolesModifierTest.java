@@ -79,7 +79,7 @@ public class RandomHolesModifierTest {
   @Test
   public void faceCountPlane() {
     Mesh3D mesh = new PlaneCreator().create();
-    mesh.apply(modifier);
+    modifier.modify(mesh);
     assertEquals(4, mesh.getFaceCount());
   }
 
@@ -278,7 +278,7 @@ public class RandomHolesModifierTest {
     extrudeModifier.setRemoveFaces(true);
     extrudeModifier.setScale(amount);
     extrudeModifier.setAmount(0);
-    expected.apply(extrudeModifier);
+    extrudeModifier.modify(expected);
 
     Mesh3D actual = new PlaneCreator().create();
     modifier = new RandomHolesModifier(amount, amount);

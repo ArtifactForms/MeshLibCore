@@ -23,7 +23,7 @@ public class ChunkVisualizer1 extends AbstractComponent implements RenderableCom
   public ChunkVisualizer1() {
     plane = new PlaneCreator(8).create();
     chunk = new BoxCreator(16, 384, 16).create();
-    chunk.apply(new SnapToGroundModifier());
+    new SnapToGroundModifier().modify(chunk);
   }
 
   /**

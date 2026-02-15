@@ -273,7 +273,7 @@ public class RandomHolesModifierSingleFaceOperationTest {
     extrudeModifier.setRemoveFaces(true);
     extrudeModifier.setScale(amount);
     extrudeModifier.setAmount(0);
-    expected.apply(extrudeModifier);
+    extrudeModifier.modify(expected);
 
     Mesh3D actual = new PlaneCreator().create();
     modifier = new RandomHolesModifier(amount, amount);

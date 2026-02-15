@@ -40,7 +40,7 @@ public class FromObjectCreator implements IMeshCreator {
     }
 
     private void scaleMesh() {
-        mesh.apply(new ScaleModifier(scale));
+        new ScaleModifier(scale).modify(mesh);
     }
 
     public float getScale() {

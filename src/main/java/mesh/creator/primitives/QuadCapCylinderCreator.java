@@ -136,7 +136,7 @@ public class QuadCapCylinderCreator implements IMeshCreator {
 
         Mesh3D bottom = top.copy();
         bottom.translateY(height);
-        bottom.apply(new FlipFacesModifier());
+        new FlipFacesModifier().modify(bottom);
 
         createCircles(meshes);
         meshes.add(bottom);

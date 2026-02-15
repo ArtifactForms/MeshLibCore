@@ -72,7 +72,7 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 
 	private void createJointAt(int x, int y, int z) {
 		cubes[y][x][z] = new CubeCreator(jointSize).create();
-		cubes[y][x][z].apply(new TranslateModifier(x * tileSizeX, y * tileSizeY, z * tileSizeZ));
+		new TranslateModifier(x * tileSizeX, y * tileSizeY, z * tileSizeZ).modify(cubes[y][x][z]);
 		mesh.append(cubes[y][x][z]);
 	}
 
@@ -151,7 +151,7 @@ public class CubeJointLatticeCubeCreator implements IMeshCreator {
 		float tx = -subdivisionsX * tileSizeX / 2f;
 		float ty = -subdivisionsY * tileSizeY / 2f;
 		float tz = -subdivisionsZ * tileSizeZ / 2f;
-		mesh.apply(new TranslateModifier(tx, ty, tz));
+		new TranslateModifier(tx, ty, tz).modify(mesh);
 	}
 
 	private void initializeCubes() {

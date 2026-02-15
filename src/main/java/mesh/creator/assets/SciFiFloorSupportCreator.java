@@ -79,7 +79,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
 
   private void centerOnAxisX() {
     float deltaX = -(getTotalWidth() / 2f) + (getWidth() / 2f);
-    mesh.apply(new TranslateModifier(deltaX, 0, 0));
+    new TranslateModifier(deltaX, 0, 0).modify(mesh);
   }
 
   private void processCapBack() {
@@ -113,7 +113,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
     for (int i = 0; i < supportCount; i++) {
       Mesh3D support = this.support.copy();
       float deltaX = i * (width + gap);
-      support.apply(new TranslateModifier(deltaX, 0, 0));
+      new TranslateModifier(deltaX, 0, 0).modify(support);
       mesh.append(support);
     }
   }
@@ -131,7 +131,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
     creator.setSegments(segments);
     support = creator.create();
     support.rotateZ(-Mathf.HALF_PI);
-    support.apply(new TranslateModifier(deltaX, deltaY, 0));
+    new TranslateModifier(deltaX, deltaY, 0).modify(mesh);
     support.rotateY(-Mathf.HALF_PI);
     processCapBack();
     processCapTop();

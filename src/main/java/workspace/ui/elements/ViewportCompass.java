@@ -95,8 +95,8 @@ public class ViewportCompass extends UiComponent {
   /** Creates the X-axis cone and applies necessary transformations to position and rotate it. */
   private void createConeX() {
     coneX = createCone();
-    coneX.apply(new RotateZModifier(-Mathf.HALF_PI));
-    coneX.apply(new TranslateModifier(height * size, 0, 0));
+    new RotateZModifier(-Mathf.HALF_PI).modify(coneX);
+    new TranslateModifier(height * size, 0, 0).modify(coneX);
   }
 
   /**
@@ -105,7 +105,7 @@ public class ViewportCompass extends UiComponent {
    */
   private void createConeY() {
     coneY = createCone();
-    coneY.apply(new TranslateModifier(0, height * size, 0));
+    new TranslateModifier(0, height * size, 0).modify(coneY);
   }
 
   /**
@@ -114,8 +114,8 @@ public class ViewportCompass extends UiComponent {
    */
   private void createConeZ() {
     coneZ = createCone();
-    coneZ.apply(new RotateXModifier(Mathf.HALF_PI));
-    coneZ.apply(new TranslateModifier(0, 0, height * size));
+    new RotateXModifier(Mathf.HALF_PI).modify(coneZ);
+    new TranslateModifier(0, 0, height * size).modify(coneZ);
   }
 
   /**
@@ -125,7 +125,7 @@ public class ViewportCompass extends UiComponent {
    */
   private Mesh3D createCone() {
     Mesh3D cone = new ConeCreator().create();
-    cone.apply(new ScaleModifier(size));
+    new ScaleModifier(size).modify(cone);
     return cone;
   }
 

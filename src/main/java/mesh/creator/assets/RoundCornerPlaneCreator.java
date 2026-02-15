@@ -64,16 +64,16 @@ public class RoundCornerPlaneCreator implements IMeshCreator {
 
   private void solidify() {
     if (height == 0) return;
-    mesh.apply(new SolidifyModifier(height));
+   new SolidifyModifier(height).modify(mesh);
   }
 
   private void centerAtOrigin() {
-    mesh.apply(new CenterAtModifier());
+    new CenterAtModifier().modify(mesh);
   }
 
   private void triangulateQuads() {
     if (!triangulateFaces) return;
-    mesh.apply(new QuadsToTrianglesModifier());
+      new QuadsToTrianglesModifier().modify(mesh);
   }
 
   private void createAllCornerFaces() {

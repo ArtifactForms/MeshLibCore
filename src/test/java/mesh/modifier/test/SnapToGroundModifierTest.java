@@ -98,7 +98,7 @@ public class SnapToGroundModifierTest {
   @Test
   public void testPlaneNegativeY() {
     Mesh3D plane = new PlaneCreator().create();
-    plane.apply(new TranslateModifier(0, -10.23f, 0));
+    new TranslateModifier(0, -10.23f, 0).modify(plane);
     modifier.modify(plane);
     for (int i = 0; i < plane.getVertexCount(); i++) {
       Vector3f vertex = plane.getVertexAt(i);
@@ -109,7 +109,7 @@ public class SnapToGroundModifierTest {
   @Test
   public void testPlanePositiveY() {
     Mesh3D plane = new PlaneCreator().create();
-    plane.apply(new TranslateModifier(0, 10.23f, 0));
+    new TranslateModifier(0, 10.23f, 0).modify(plane);
     modifier.modify(plane);
     for (int i = 0; i < plane.getVertexCount(); i++) {
       Vector3f vertex = plane.getVertexAt(i);
@@ -122,8 +122,8 @@ public class SnapToGroundModifierTest {
   public void testCubeAboveGround(float translateY) {
     Mesh3D expeted = new CubeCreator().create();
     Mesh3D actual = new CubeCreator().create();
-    expeted.apply(new TranslateModifier(0, -1, 0));
-    actual.apply(new TranslateModifier(0, translateY, 0));
+    new TranslateModifier(0, -1, 0).modify(expeted);
+    new TranslateModifier(0, translateY, 0).modify(actual);
     modifier.modify(actual);
     for (int i = 0; i < actual.getVertexCount(); i++) {
       Vector3f expectedVertex = expeted.getVertexAt(i);
@@ -137,8 +137,8 @@ public class SnapToGroundModifierTest {
   public void testCubeBelowGround(float translateY) {
     Mesh3D expeted = new CubeCreator().create();
     Mesh3D actual = new CubeCreator().create();
-    expeted.apply(new TranslateModifier(0, -1, 0));
-    actual.apply(new TranslateModifier(0, translateY, 0));
+    new TranslateModifier(0, -1, 0).modify(expeted);
+    new TranslateModifier(0, translateY, 0).modify(actual);
     modifier.modify(actual);
     for (int i = 0; i < actual.getVertexCount(); i++) {
       Vector3f expectedVertex = expeted.getVertexAt(i);
@@ -151,7 +151,7 @@ public class SnapToGroundModifierTest {
   public void testCubeCenteredAtOrigin() {
     Mesh3D expeted = new CubeCreator().create();
     Mesh3D actual = new CubeCreator().create();
-    expeted.apply(new TranslateModifier(0, -1, 0));
+    new TranslateModifier(0, -1, 0).modify(expeted);
     modifier.modify(actual);
     for (int i = 0; i < actual.getVertexCount(); i++) {
       Vector3f expectedVertex = expeted.getVertexAt(i);

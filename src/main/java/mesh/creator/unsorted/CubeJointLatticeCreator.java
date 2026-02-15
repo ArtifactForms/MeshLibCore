@@ -64,7 +64,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 		for (int i = 0; i < cubes.length; i++) {
 			for (int j = 0; j < cubes[0].length; j++) {
 				cubes[i][j] = new CubeCreator(jointSize).create();
-				cubes[i][j].apply(new TranslateModifier(j * tileSizeX, i * tileSizeY, 0));
+				new TranslateModifier(j * tileSizeX, i * tileSizeY, 0).modify(cubes[i][j]);
 				mesh.append(cubes[i][j]);
 			}
 		}
@@ -121,7 +121,7 @@ public class CubeJointLatticeCreator implements IMeshCreator {
 	private void centerOnAxisXY() {
 		float tx = -subdivisionsX * tileSizeX / 2f;
 		float ty = -subdivisionsY * tileSizeY / 2f;
-		mesh.apply(new TranslateModifier(tx, ty, 0));
+		new TranslateModifier(tx, ty, 0).modify(mesh);
 	}
 
 	public int getSubdivisionsX() {

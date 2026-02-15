@@ -76,7 +76,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createFront() {
         Mesh3D front = createGrid(segmentsX, segmentsY, segmentSizeX,
                 segmentSizeY);
-        front.apply(new RotateXModifier(-Mathf.HALF_PI));
+        new RotateXModifier(-Mathf.HALF_PI).modify(front);
         front.translateZ(depth / 2f);
         mesh.append(front);
     }
@@ -84,7 +84,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createBack() {
         Mesh3D back = createGrid(segmentsX, segmentsY, segmentSizeX,
                 segmentSizeY);
-        back.apply(new RotateXModifier(Mathf.HALF_PI));
+        new RotateXModifier(Mathf.HALF_PI).modify(back);
         back.translateZ(-depth / 2f);
         mesh.append(back);
     }
@@ -92,7 +92,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createLeft() {
         Mesh3D left = createGrid(segmentsZ, segmentsY, segmentSizeZ,
                 segmentSizeY);
-        left.apply(new RotateXModifier(Mathf.HALF_PI));
+        new RotateXModifier(Mathf.HALF_PI).modify(left);
         left.rotateY(Mathf.HALF_PI);
         left.translateX(-width / 2f);
         mesh.append(left);
@@ -101,7 +101,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createRight() {
         Mesh3D right = createGrid(segmentsZ, segmentsY, segmentSizeZ,
                 segmentSizeY);
-        right.apply(new RotateXModifier(Mathf.HALF_PI));
+        new RotateXModifier(Mathf.HALF_PI).modify(right);
         right.rotateY(-Mathf.HALF_PI);
         right.translateX(width / 2f);
         mesh.append(right);
@@ -117,7 +117,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
     private void createBottom() {
         Mesh3D bottom = createGrid(segmentsX, segmentsZ, segmentSizeX,
                 segmentSizeZ);
-        bottom.apply(new RotateXModifier(-Mathf.PI));
+        new RotateXModifier(-Mathf.PI).modify(bottom);
         bottom.translateY(height / 2f);
         mesh.append(bottom);
     }

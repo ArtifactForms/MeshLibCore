@@ -43,11 +43,11 @@ public class SquareBasedPyramidCreator implements IMeshCreator {
 	}
 
 	private void scale() {
-		mesh.apply(new ScaleModifier(size, height, size));
+		new ScaleModifier(size, height, size).modify(mesh);
 	}
 
 	private void centerAlongAxisY() {
-		mesh.apply(new TranslateModifier(0, height / 2f, 0));
+		new TranslateModifier(0, height / 2f, 0).modify(mesh);
 	}
 
 	@Override

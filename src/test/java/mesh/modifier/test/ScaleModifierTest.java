@@ -80,7 +80,7 @@ public class ScaleModifierTest {
   public void testScalesOriginalVertices() {
     Mesh3D mesh = new IcosahedronCreator().create();
     List<Vector3f> vertices = new ArrayList<Vector3f>(mesh.getVertices());
-    mesh.apply(new ScaleModifier(2.3f));
+    new ScaleModifier(2.3f).modify(mesh);
     for (int i = 0; i < vertices.size(); i++) {
       Vector3f expected = vertices.get(i);
       Vector3f actual = mesh.getVertexAt(i);
