@@ -86,7 +86,7 @@ public class Mesh3D implements Mesh {
    *     validation and pipeline control.
    */
   @Deprecated
-  public Mesh apply(IMeshModifier modifier) {
+  public Mesh3D apply(IMeshModifier modifier) {
     return modifier.modify(this);
   }
 
@@ -96,7 +96,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link RotateYModifier} instead.
    */
   @Deprecated
-  public Mesh rotateY(float angle) {
+  public Mesh3D rotateY(float angle) {
     return new RotateYModifier(angle).modify(this);
   }
 
@@ -106,7 +106,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link RotateZModifier} instead.
    */
   @Deprecated
-  public Mesh rotateZ(float angle) {
+  public Mesh3D rotateZ(float angle) {
     return new RotateZModifier(angle).modify(this);
   }
 
@@ -116,7 +116,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link TranslateModifier} instead.
    */
   @Deprecated
-  public Mesh translateX(float tx) {
+  public Mesh3D translateX(float tx) {
     return new TranslateModifier(tx, 0, 0).modify(this);
   }
 
@@ -126,7 +126,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link TranslateModifier} instead.
    */
   @Deprecated
-  public Mesh translateY(float ty) {
+  public Mesh3D translateY(float ty) {
     return new TranslateModifier(0, ty, 0).modify(this);
   }
 
@@ -136,7 +136,7 @@ public class Mesh3D implements Mesh {
    * @deprecated Use {@link TranslateModifier} instead.
    */
   @Deprecated
-  public Mesh translateZ(float tz) {
+  public Mesh3D translateZ(float tz) {
     return new TranslateModifier(0, 0, tz).modify(this);
   }
 
