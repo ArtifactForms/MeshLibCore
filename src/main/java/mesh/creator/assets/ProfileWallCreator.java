@@ -2,7 +2,6 @@ package mesh.creator.assets;
 
 import math.Mathf;
 import math.Vector3f;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.special.QuadStripCreator;
@@ -59,7 +58,7 @@ public class ProfileWallCreator implements IMeshCreator {
 			int c = indexB + i;
 			int b = indexB + i + 2;
 			int a = indexA + i + 2;
-			mesh.add(new Face3D(a, b, c, d));
+			mesh.addFace(a, b, c, d);
 		}
 	}
 
@@ -75,7 +74,7 @@ public class ProfileWallCreator implements IMeshCreator {
 			int b = indexB + i + 1;
 			int c = indexB + i + 3;
 			int d = indexA + i + 3;
-			mesh.add(new Face3D(a, b, c, d));
+			mesh.addFace(a, b, c, d);
 		}
 	}
 
@@ -84,7 +83,7 @@ public class ProfileWallCreator implements IMeshCreator {
 		int b = a + 1;
 		int c = segmentsCount * 6;
 		int d = c + 1;
-		mesh.add(new Face3D(c, d, b, a));
+		mesh.addFace(c, d, b, a);
 	}
 
 	private void createTopCornerFace() {
@@ -92,7 +91,7 @@ public class ProfileWallCreator implements IMeshCreator {
 		int b = a + 1;
 		int c = segmentsCount * 8 - 2;
 		int d = c + 1;
-		mesh.add(new Face3D(a, b, d, c));
+		mesh.addFace(a, b, d, c);
 	}
 
 	private void createCorner() {

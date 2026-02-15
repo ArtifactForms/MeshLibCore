@@ -1,7 +1,6 @@
 package mesh.creator.special;
 
 import math.Mathf;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -104,7 +103,7 @@ public class MobiusStripCreator implements IMeshCreator {
     }
 
     private void addFace(int... indices) {
-        mesh.add(new Face3D(indices));
+        mesh.addFace(indices);
     }
 
     private void addVertex(float x, float y, float z) {

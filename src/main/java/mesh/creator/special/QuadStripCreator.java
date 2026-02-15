@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import math.Vector3f;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -32,8 +31,7 @@ public class QuadStripCreator implements IMeshCreator {
             int b = i + 1;
             int c = i + 3;
             int d = i + 2;
-            Face3D face = new Face3D(a, b, c, d);
-            mesh.add(face);
+            mesh.addFace(a, b, c, d);
         }
     }
 

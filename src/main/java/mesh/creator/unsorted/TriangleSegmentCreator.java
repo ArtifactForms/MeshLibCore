@@ -37,7 +37,7 @@ public class TriangleSegmentCreator implements IMeshCreator {
     }
 
     private void createFaces() {
-        mesh.add(new Face3D(0, 2, 1));
+        mesh.addFace(0, 2, 1);
     }
 
     private void scale() {
