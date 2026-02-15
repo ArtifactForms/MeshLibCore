@@ -47,7 +47,7 @@ public class RotateModifier implements IMeshModifier {
   public Mesh3D modify(Mesh3D mesh) {
     if (axis == TransformAxis.X) return new RotateXModifier(angle).modify(mesh);
     if (axis == TransformAxis.Y) return new RotateYModifier(angle).modify(mesh);
-    if (axis == TransformAxis.Z) return new RotateYModifier(angle).modify(mesh);
+    if (axis == TransformAxis.Z) return new RotateZModifier(angle).modify(mesh);
 
     return mesh;
   }
