@@ -140,16 +140,6 @@ public class Mesh3D implements Mesh {
     return new TranslateModifier(0, 0, tz).modify(this);
   }
 
-  /**
-   * Removes duplicated vertices.
-   *
-   * @deprecated Use {@link RemoveDoubleVerticesModifier} instead.
-   */
-  @Deprecated
-  public void removeDoubles() {
-    new RemoveDoubleVerticesModifier().modify(this);
-  }
-
   @Deprecated
   public Vector3f calculateFaceNormal(Face3D face) {
     Vector3f faceNormal = new Vector3f();

@@ -4,6 +4,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.subdivision.CatmullClarkModifier;
 import mesh.modifier.topology.ExtrudeModifier;
 import mesh.modifier.topology.SolidifyModifier;
@@ -72,7 +73,7 @@ public class CubicLatticeCreator implements IMeshCreator {
 	}
 
 	private void removeDoubleVertices() {
-		mesh.removeDoubles();
+		new RemoveDoubleVerticesModifier().modify(mesh);
 	}
 
 	private void initializeMesh() {

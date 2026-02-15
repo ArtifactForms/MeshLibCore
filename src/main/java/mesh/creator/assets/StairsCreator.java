@@ -4,6 +4,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.BoxCreator;
+import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 
 public class StairsCreator implements IMeshCreator {
 
@@ -56,7 +57,7 @@ public class StairsCreator implements IMeshCreator {
             mesh.append(step);
         }
 
-        mesh.removeDoubles();
+        new RemoveDoubleVerticesModifier().modify(mesh);
     }
 
     private void createStairs() {
