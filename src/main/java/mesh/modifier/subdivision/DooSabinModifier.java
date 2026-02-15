@@ -65,7 +65,7 @@ public class DooSabinModifier implements IMeshModifier {
      * that have been generated for each original vertex of the face.
      */
     private void createAndConnectNewVertices() {
-        List<Face3D> faces = source.getFaces(0, source.getFaceCount());
+        List<Face3D> faces = source.getFaces();
         for (Face3D face : faces) {
             Vector3f center = source.calculateFaceCenter(face);
             int[] indices = new int[face.indices.length];
