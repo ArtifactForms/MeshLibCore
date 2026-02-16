@@ -115,13 +115,38 @@ public class Vector3f {
     return (diffX <= threshold && diffY <= threshold && diffZ <= threshold);
   }
 
+  /**
+   * Computes the unsigned angle between this vector and another vector. * @param v The other
+   * vector.
+   *
+   * @return The angle in radians [0, PI].
+   */
   public float angle(Vector3f v) {
-    return (float) Math.acos(dot(v));
+    float divisor = (float) Math.sqrt(lengthSquared() * v.lengthSquared());
+    if (divisor < 1e-6f) return 0;
+
+    float dot = dot(v) / divisor;
+    // Clamp to [-1, 1] to prevent NaN due to floating point inaccuracies
+    return (float) Math.acos(Math.max(-1f, Math.min(1f, dot)));
   }
 
+  /**
+   * Returns the signed angle between this vector and the given vector v, relative to a plane
+   * normal.
+   *
+   * @param v The other vector.
+   * @param normal The normal vector defining the positive rotation direction.
+   * @return The signed angle in radians.
+   */
   public float signedAngle(Vector3f v, Vector3f normal) {
-    float unsignedAngle = (float) Math.acos(dot(v));
-    return unsignedAngle * Math.signum(normal.dot(cross(v)));
+    float unsignedAngle = angle(v);
+
+    // The sign is determined by the dot product of the normal
+    // and the cross product of (this x v).
+    Vector3f cross = this.cross(v);
+    float sign = Math.signum(normal.dot(cross));
+
+    return unsignedAngle * sign;
   }
 
   public Vector3f project(Vector3f v) {
@@ -130,21 +155,43 @@ public class Vector3f {
   }
 
   public Vector3f projectLocal(Vector3f v) {
-    float scalar = dot(v) / v.lengthSquared();
+    float lenSq = v.lengthSquared();
+    if (lenSq < 1e-6f) return new Vector3f(this);
+    float scalar = dot(v) / lenSq;
     set(v.mult(scalar));
     return this;
   }
 
+  /**
+   * Projects this vector onto a plane defined by a normal vector. * @param planeNormal The normal
+   * vector of the plane.
+   *
+   * @return A new vector representing the projection on the plane.
+   */
   public Vector3f projectOnPlane(Vector3f planeNormal) {
-    // FIXME Check if this implementation is correct.
-    float scalar = dot(planeNormal) / planeNormal.lengthSquared();
-    return subtract(planeNormal.mult(scalar));
+    float lenSq = planeNormal.lengthSquared();
+    if (lenSq < 1e-6f) {
+      return new Vector3f(this);
+    }
+    float scalar = dot(planeNormal) / lenSq;
+    return new Vector3f(
+        x - (planeNormal.x * scalar), y - (planeNormal.y * scalar), z - (planeNormal.z * scalar));
   }
 
+  /**
+   * Projects this vector onto a plane locally, modifying this instance. * @param planeNormal The
+   * normal vector of the plane.
+   *
+   * @return This vector for chaining.
+   */
   public Vector3f projectOnPlaneLocal(Vector3f planeNormal) {
-    // FIXME Check if this implementation is correct.
-    float scalar = dot(planeNormal) / planeNormal.lengthSquared();
-    subtractLocal(planeNormal.mult(scalar));
+    float lenSq = planeNormal.lengthSquared();
+    if (lenSq < 1e-6f) return this;
+
+    float scalar = dot(planeNormal) / lenSq;
+    this.x -= planeNormal.x * scalar;
+    this.y -= planeNormal.y * scalar;
+    this.z -= planeNormal.z * scalar;
     return this;
   }
 
@@ -210,10 +257,16 @@ public class Vector3f {
         (this.y * z) - (this.z * y), (this.z * x) - (this.x * z), (this.x * y) - (this.y * x));
   }
 
-  public Vector3f crossLocal(float x, float y, float z) {
-    this.x = (this.y * z) - (this.z * y);
-    this.y = (this.z * x) - (this.x * z);
-    this.z = (this.x * y) - (this.y * x);
+  /**
+   * Calculates the cross product with another vector and stores the result locally. Note: Uses
+   * temporary variables to avoid using modified components during calculation.
+   */
+  public Vector3f crossLocal(float vx, float vy, float vz) {
+    float tempX = (y * vz) - (z * vy);
+    float tempY = (z * vx) - (x * vz);
+    z = (x * vy) - (y * vx);
+    x = tempX;
+    y = tempY;
     return this;
   }
 
@@ -222,10 +275,7 @@ public class Vector3f {
   }
 
   public Vector3f crossLocal(Vector3f v) {
-    x = (y * v.z) - (z * v.y);
-    y = (z * v.x) - (x * v.z);
-    z = (x * v.y) - (y * v.x);
-    return this;
+    return crossLocal(v.x, v.y, v.z);
   }
 
   public Vector3f cross(Vector3f v, Vector3f result) {
