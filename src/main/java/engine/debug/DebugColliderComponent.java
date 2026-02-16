@@ -79,7 +79,7 @@ public class DebugColliderComponent extends AbstractComponent {
         DebugDraw.drawSphere(
                 position,
                 collider.getRadius(),
-                Color.WHITE
+                color
         );
     }
 
