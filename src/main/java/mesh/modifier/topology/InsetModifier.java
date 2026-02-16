@@ -91,7 +91,6 @@ public class InsetModifier implements IMeshModifier, FaceModifier {
     validateMesh(mesh);
     validateFaces(faces);
     Collection<Face3D> facesToModify = faces;
-    facesToModify = new ArrayList<Face3D>(mesh.getFaces());
     setMesh(mesh);
     for (Face3D face : facesToModify) {
       insetFace(face);
