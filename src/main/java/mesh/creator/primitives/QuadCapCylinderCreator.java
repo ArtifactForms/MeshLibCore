@@ -133,6 +133,9 @@ public class QuadCapCylinderCreator implements IMeshCreator {
         Mesh3D top = createCap();
         meshes.add(top);
         mesh.append(top);
+        
+        if (height <= 0)
+        	return mesh;
 
         Mesh3D bottom = top.copy();
         bottom.translateY(height);
