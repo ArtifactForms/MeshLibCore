@@ -82,7 +82,7 @@ public class SolidArcCreator implements IMeshCreator {
   }
 
   private void addVertex(Vector3f v) {
-    mesh.add(v);
+    mesh.addVertex(v.x, v.y, v.z);
   }
 
   private void capStart() {

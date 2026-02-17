@@ -97,8 +97,7 @@ public class HelixCreator implements IMeshCreator {
                 int index1 = k[0] * minorSegments + k[2];
                 int index2 = k[1] * minorSegments + k[3];
                 int index3 = k[0] * minorSegments + k[3];
-                Face3D face = new Face3D(index0, index1, index3, index2);
-                mesh.add(face);
+                mesh.addFace(index0, index1, index3, index2);
             }
         }
     }

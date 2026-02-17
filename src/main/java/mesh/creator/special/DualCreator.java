@@ -61,7 +61,7 @@ public class DualCreator implements IMeshCreator {
     }
 
     private void addVertex(Vector3f v) {
-        mesh.add(v);
+        mesh.addVertex(v.x, v.y, v.z);
     }
 
     private void mapFaceToCenterVertexIndex(Face3D face, int index) {

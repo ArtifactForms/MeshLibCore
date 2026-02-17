@@ -20,9 +20,6 @@ public class SpherifyModifier implements IMeshModifier {
   /** The center of the sphere. */
   private Vector3f center;
 
-  /** The mesh being modified. */
-  private Mesh3D mesh;
-
   /**
    * Default constructor. Creates a spherify modifier with a default radius of 1.0 and a factor of
    * 1.0.
@@ -62,13 +59,12 @@ public class SpherifyModifier implements IMeshModifier {
     if (mesh.getVertexCount() == 0) {
       return mesh;
     }
-    setMesh(mesh);
-    spherify();
+    spherify(mesh);
     return mesh;
   }
 
   /** Performs the spherification on the mesh vertices. */
-  private void spherify() {
+  private void spherify(Mesh3D mesh) {
     for (int i = 0; i < mesh.getVertexCount(); i++) {
       Vector3f v = mesh.getVertexAt(i);
       spherifyVertex(v);
@@ -85,15 +81,6 @@ public class SpherifyModifier implements IMeshModifier {
     Vector3f direction = vertex.subtract(center).normalize();
     Vector3f newPosition = direction.mult(radius).add(center);
     vertex.lerpLocal(newPosition, factor);
-  }
-
-  /**
-   * Sets the mesh to be modified.
-   *
-   * @param mesh the mesh to modify.
-   */
-  private void setMesh(Mesh3D mesh) {
-    this.mesh = mesh;
   }
 
   /**

@@ -6,7 +6,6 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.repair.RemoveDoubleVerticesModifier;
-import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.TransformAxis;
 import mesh.modifier.transform.TranslateModifier;
@@ -89,14 +88,14 @@ public class LeonardoCubeCreator implements IMeshCreator {
     private void createBackConnector() {
         Mesh3D back = createConnector(true, true);
         new RotateXModifier(-Mathf.HALF_PI).modify(back);
-        back.translateZ(-outerRadius + connectorRadius);
+        new TranslateModifier(-outerRadius + connectorRadius, TransformAxis.Z).modify(back);
         mesh.append(back);
     }
 
     private void createFrontConnector() {
         Mesh3D front = createConnector(true, true);
         new RotateXModifier(-Mathf.HALF_PI).modify(front);
-        front.translateZ(outerRadius - connectorRadius);
+        new TranslateModifier(outerRadius - connectorRadius, TransformAxis.Z).modify(front);
         mesh.append(front);
     }
 

@@ -51,6 +51,7 @@ public final class DebugRenderer {
     register(new DebugRayRenderer());
     register(new DebugAxisRenderer());
     register(new DebugBoundsRenderer());
+    register(new DebugCapsuleRenderer());
   }
 
   public <T extends DebugCommand> void register(DebugCommandRenderer<T> renderer) {

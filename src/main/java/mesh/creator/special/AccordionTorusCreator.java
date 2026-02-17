@@ -1,7 +1,6 @@
 package mesh.creator.special;
 
 import math.Mathf;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
@@ -66,7 +65,7 @@ public class AccordionTorusCreator implements IMeshCreator {
     int index1 = toOneDimensionalIndex(i, j);
     int index2 = toOneDimensionalIndex(i, j + 1);
     int index3 = toOneDimensionalIndex(i + 1, j + 1);
-    mesh.add(new Face3D(index0, index1, index2, index3));
+    mesh.addFace(index0, index1, index2, index3);
   }
 
   private int toOneDimensionalIndex(int i, int j) {

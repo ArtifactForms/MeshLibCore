@@ -1,6 +1,5 @@
 package mesh.creator.platonic;
 
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.transform.ScaleModifier;
@@ -99,7 +98,7 @@ public class IcosahedronCreator implements IMeshCreator {
     }
 
     private void addFace(int... vertices) {
-        mesh.add(new Face3D(vertices));
+        mesh.addFace(vertices);
     }
 
     private void addVertex(float x, float y, float z) {

@@ -103,7 +103,7 @@ public class StairsCreator implements IMeshCreator {
     }
 
     private void addVertex(Vector3f v) {
-        mesh.add(v);
+        mesh.addVertex(v.x, v.y, v.z);
     }
 
     private void addTriangle(int a, int b, int c) {

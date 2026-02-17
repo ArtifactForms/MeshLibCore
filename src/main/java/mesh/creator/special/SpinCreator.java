@@ -6,7 +6,6 @@ import java.util.List;
 
 import math.Mathf;
 import math.Vector3f;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -62,7 +61,7 @@ public class SpinCreator implements IMeshCreator {
             Vector3f v1 = createPointOnCircle(angle, v0.getY());
             Vector3f v2 = new Vector3f(v0.getX(), 1, v0.getX());
             v1.multLocal(v2);
-            mesh.add(v1);
+            mesh.addVertex(v1.x, v1.y, v1.z);
         }
     }
 
@@ -77,18 +76,17 @@ public class SpinCreator implements IMeshCreator {
         int m = close ? steps : steps - 1;
         for (int j = 0; j < m; j++) {
             for (int i = 0; i < n - 1; i++) {
-                mesh.add(createQuadFace(j, i, n));
+                addQuadFace(j, i, n);
             }
         }
     }
 
-    private Face3D createQuadFace(int j, int i, int n) {
-        Face3D face = new Face3D(new int[4]);
-        face.indices[3] = ((j + 1) % steps * n) + i;
-        face.indices[2] = ((j + 1) % steps * n) + i + 1;
-        face.indices[1] = (j * n) + i + 1;
-        face.indices[0] = (j * n) + i;
-        return face;
+    private void addQuadFace(int j, int i, int n) {
+        int idx0 = (j * n) + i;
+        int idx1 = (j * n) + i + 1;
+        int idx2 = ((j + 1) % steps * n) + i + 1;
+        int idx3 = ((j + 1) % steps * n) + i;
+        mesh.addFace(idx0, idx1, idx2, idx3);;
     }
 
     @Override

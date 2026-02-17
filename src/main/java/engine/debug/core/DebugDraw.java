@@ -3,6 +3,7 @@ package engine.debug.core;
 import engine.components.Transform;
 import engine.debug.core.command.DebugAxisCommand;
 import engine.debug.core.command.DebugBoundsCommand;
+import engine.debug.core.command.DebugCapsuleCommand;
 import engine.debug.core.command.DebugCommand;
 import engine.debug.core.command.DebugGridCommand;
 import engine.debug.core.command.DebugLineCommand;
@@ -117,6 +118,17 @@ public final class DebugDraw {
       float ttl) {
     DebugGridCommand c =
         new DebugGridCommand(cells, spacing, majorLineEvery, origin, majorColor, minorColor);
+    c.ttl = ttl;
+    context.submit(c);
+  }
+
+  public static void drawCapsule(float radius, float halfHeight, Vector3f center, Color color) {
+    drawCapsule(radius, halfHeight, center, color, DebugCommand.ONE_FRAME);
+  }
+
+  public static void drawCapsule(
+      float radius, float halfHeight, Vector3f center, Color color, float ttl) {
+    DebugCapsuleCommand c = new DebugCapsuleCommand(radius, halfHeight, center, color);
     c.ttl = ttl;
     context.submit(c);
   }

@@ -1,8 +1,6 @@
 package mesh.creator.primitives;
 
 import math.Mathf;
-import math.Vector3f;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -67,7 +65,7 @@ public class TorusCreator implements IMeshCreator {
     }
     
     private void addVertex(float x, float y, float z) {
-        mesh.add(new Vector3f(x, y, z));
+        mesh.addVertex(x, y, z);
     }
 
     private void createFaceAt(int i, int j) {
@@ -86,7 +84,7 @@ public class TorusCreator implements IMeshCreator {
     }
 
     private void addFace(int... indices) {
-        mesh.add(new Face3D(indices));
+        mesh.addFace(indices);
     }
 
     public float getMajorRadius() {

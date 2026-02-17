@@ -1,6 +1,5 @@
 package mesh.creator.catalan;
 
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -61,7 +60,7 @@ public class TriakisTetrahedronCreator implements IMeshCreator {
     }
 
     private void addFace(int... indices) {
-        mesh.add(new Face3D(indices));
+        mesh.addFace(indices);
     }
 
 }

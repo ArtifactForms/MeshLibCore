@@ -22,9 +22,6 @@ public class PushPullModifier implements IMeshModifier {
   /** Center point for radial displacement. */
   private Vector3f center;
 
-  /** The mesh being modified. */
-  private Mesh3D mesh;
-
   /** Default constructor. Initializes with zero displacement and origin (0, 0, 0) as center. */
   public PushPullModifier() {
     this(0, new Vector3f());
@@ -58,13 +55,12 @@ public class PushPullModifier implements IMeshModifier {
     if (mesh.getVertexCount() == 0) {
       return mesh;
     }
-    setMesh(mesh);
-    pushPullVertices();
+    pushPullVertices(mesh);
     return mesh;
   }
 
   /** Displaces each vertex radially relative to the center point. */
-  private void pushPullVertices() {
+  private void pushPullVertices(Mesh3D mesh) {
     for (int i = 0; i < mesh.getVertexCount(); i++) {
       Vector3f v = mesh.getVertexAt(i);
       pushPullVertex(v);
@@ -86,15 +82,6 @@ public class PushPullModifier implements IMeshModifier {
     float displacement = targetRadius - distanceToCenter;
     Vector3f directionToCenter = vertex.subtract(center).normalize();
     vertex.set(directionToCenter.mult(displacement).add(center));
-  }
-
-  /**
-   * Sets the mesh to be modified.
-   *
-   * @param mesh the mesh to modify.
-   */
-  private void setMesh(Mesh3D mesh) {
-    this.mesh = mesh;
   }
 
   /**

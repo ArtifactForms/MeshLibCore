@@ -13,10 +13,12 @@ import mesh.creator.primitives.PlaneCreatorUV;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
+import mesh.modifier.transform.ScaleModifier;
 
 public class Billboard extends SceneNode {
 
-  private final float size;
+  private final float width;
+  private final float height;
   private final Texture texture;
 
   private UVRect uv;
@@ -27,9 +29,18 @@ public class Billboard extends SceneNode {
   }
 
   public Billboard(Texture texture, UVRect uv, float size) {
+    this(texture, uv, size, size);
+  }
+
+  public Billboard(Texture texture, float width, float height) {
+    this(texture, UVRect.FULL, width, height);
+  }
+
+  public Billboard(Texture texture, UVRect uv, float width, float height) {
     super("Billboard");
     this.texture = texture;
-    this.size = size;
+    this.width = width;
+    this.height = height;
     this.uv = uv != null ? uv : UVRect.FULL;
 
     this.mesh = createPlaneMesh();
@@ -46,12 +57,13 @@ public class Billboard extends SceneNode {
   }
 
   private Mesh3D createPlaneMesh() {
-    Mesh3D mesh = new PlaneCreatorUV(size).create();
+    Mesh3D mesh = new PlaneCreatorUV(0.5f).create();
 
     // Rotate plane upright for billboard usage
     new RotateXModifier(Mathf.HALF_PI).modify(mesh);
     new RotateZModifier(Mathf.HALF_PI).modify(mesh);
     new RotateYModifier(-Mathf.PI).modify(mesh);
+    new ScaleModifier(width, height, 1).modify(mesh);
 
     applyUv(mesh, uv);
     return mesh;

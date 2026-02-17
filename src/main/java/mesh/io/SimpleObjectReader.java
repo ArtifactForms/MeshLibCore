@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 
 import math.Vector3f;
-import mesh.Face3D;
 import mesh.Mesh3D;
 
 public class SimpleObjectReader {
@@ -54,13 +53,11 @@ public class SimpleObjectReader {
     }
 
     protected void addFace(String[] sArray) {
-        Face3D f = null;
         int[] iArray = new int[sArray.length - 1];
         for (int i = 0; i < iArray.length; i++) {
             iArray[i] = Integer.parseInt(sArray[i + 1]) - 1;
         }
-        f = new Face3D(iArray);
-        mesh.add(f);
+        mesh.addFace(iArray);
     }
 
 }

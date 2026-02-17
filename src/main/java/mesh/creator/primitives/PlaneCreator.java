@@ -1,6 +1,5 @@
 package mesh.creator.primitives;
 
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
@@ -42,7 +41,7 @@ public class PlaneCreator implements IMeshCreator {
   }
 
   private void createFace() {
-    mesh.add(new Face3D(0, 1, 2, 3));
+    mesh.addFace(0, 1, 2, 3);
   }
 
   public float getRadius() {
