@@ -3,10 +3,9 @@ package engine.application;
 import engine.Timer;
 import engine.collision.CollisionSystem;
 import engine.components.SmoothFlyByCameraControl;
+import engine.debug.Debug;
 import engine.debug.DebugInfoUpdater;
 import engine.debug.DebugOverlay;
-import engine.debug.FpsGraph;
-import engine.debug.FpsHistory;
 import engine.debug.core.DebugContext;
 import engine.debug.core.DebugDraw;
 import engine.input.Input;
@@ -39,8 +38,6 @@ public abstract class BasicApplication implements Application {
   protected DebugOverlay debugOverlay;
 
   protected DebugInfoUpdater debugInfoUpdater;
-
-  protected FpsGraph fpsGraph;
 
   private Viewport viewport;
 
@@ -93,7 +90,6 @@ public abstract class BasicApplication implements Application {
     viewport = new Viewport(0, 0, settings.getWidth(), settings.getHeight());
     initializeDebugOverlay();
     setupDebug();
-    fpsGraph = new FpsGraph(new FpsHistory());
     onInitialize();
     setupDefaultCamera();
   }
@@ -134,8 +130,8 @@ public abstract class BasicApplication implements Application {
 
     if (settings.isUseGamePadInput()) input.updateGamepadState();
 
-    fpsGraph.update(timer);
     debugInfoUpdater.update(timer, activeScene, input);
+    Debug.getInstance().update(timer);
 
     float tpf = timer.getTimePerFrame();
     tpf = Mathf.clamp(tpf, 0, MAX_TPF);
@@ -195,7 +191,7 @@ public abstract class BasicApplication implements Application {
     if (!displayInfo) return;
     g.setFont(new Font("Lucida Sans", 12, Font.PLAIN));
     debugOverlay.render(g);
-    fpsGraph.render(g);
+    Debug.getInstance().render(g);
   }
 
   @Override

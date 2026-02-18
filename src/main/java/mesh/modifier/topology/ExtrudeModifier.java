@@ -5,6 +5,7 @@ import java.util.Collection;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.FaceModifier;
 import mesh.modifier.IMeshModifier;
 
@@ -169,8 +170,8 @@ public class ExtrudeModifier implements IMeshModifier, FaceModifier {
   private void extrudeFace(Mesh3D mesh, Face3D face) {
     int n = face.indices.length;
     int nextIndex = mesh.getVertexCount();
-    Vector3f normal = mesh.calculateFaceNormal(face);
-    Vector3f center = mesh.calculateFaceCenter(face);
+    Vector3f normal = MeshGeometryUtil.calculateFaceNormal(mesh, face);
+    Vector3f center = MeshGeometryUtil.calculateFaceCenter(mesh, face);
 
     for (int i = 0; i < n; i++) {
       Vector3f vertex =

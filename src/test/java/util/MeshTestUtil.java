@@ -11,6 +11,7 @@ import math.Vector3f;
 import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.util.TraverseHelper;
 
 /**
@@ -161,8 +162,8 @@ public class MeshTestUtil {
   public static boolean normalsPointOutwards(Mesh3D mesh) {
     Vector3f center = new Vector3f();
     for (Face3D face : mesh.getFaces()) {
-      Vector3f faceNormal = mesh.calculateFaceNormal(face);
-      Vector3f faceCenter = mesh.calculateFaceCenter(face);
+      Vector3f faceNormal = MeshGeometryUtil.calculateFaceNormal(mesh, face);
+      Vector3f faceCenter = MeshGeometryUtil.calculateFaceCenter(mesh, face);
       Vector3f a = faceCenter.subtract(center);
       float dotProduct = faceNormal.dot(a);
       if (dotProduct < 0) {

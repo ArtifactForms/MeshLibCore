@@ -6,6 +6,7 @@ import java.util.List;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.VertexNormals;
@@ -50,8 +51,8 @@ public class Mesh3DRenderer {
     context.pushMatrix();
     context.beginShape(PApplet.LINES);
     for (Face3D f : mesh.getFaces()) {
-      Vector3f c = mesh.calculateFaceCenter(f);
-      Vector3f n = mesh.calculateFaceNormal(f);
+      Vector3f c = MeshGeometryUtil.calculateFaceCenter(mesh, f);
+      Vector3f n = MeshGeometryUtil.calculateFaceNormal(mesh, f);
       Vector3f v = c.add(n.mult(length));
       context.vertex(c.getX(), c.getY(), c.getZ());
       context.vertex(v.getX(), v.getY(), v.getZ());

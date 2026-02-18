@@ -18,6 +18,7 @@ import mesh.creator.archimedian.CuboctahedronCreator;
 import mesh.creator.platonic.IcosahedronCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.creator.primitives.PlaneCreator;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.subdivision.LinearSubdivisionModifier;
 import mesh.util.MeshBoundsCalculator;
@@ -113,7 +114,8 @@ public class LinearSubdivisionModifierTest {
         Mesh3D subdividedCube = new CubeCreator().create();
         modifier.modify(subdividedCube);
         for (Face3D face : originalCube.getFaces()) {
-            Vector3f center = originalCube.calculateFaceCenter(face);
+            Vector3f center = MeshGeometryUtil.calculateFaceCenter(originalCube, face);
+            
             assertTrue(subdividedCube.getVertices().contains(center));
         }
     }
@@ -180,7 +182,7 @@ public class LinearSubdivisionModifierTest {
     public void everyFaceContainsCenterVertexIndex() {
         Mesh3D plane = new PlaneCreator().create();
         Face3D face = plane.getFaceAt(0);
-        Vector3f center = plane.calculateFaceCenter(face);
+        Vector3f center = MeshGeometryUtil.calculateFaceCenter(plane, face);
         modifier.modify(plane);
         for (Face3D f : plane.getFaces()) {
             boolean containsCenter = false;
@@ -199,7 +201,8 @@ public class LinearSubdivisionModifierTest {
         List<Vector3f> vertices = cubeMesh.getVertices();
         vertices.removeAll(calculateEdgePoints(originalCube));
         for (Face3D face : originalCube.getFaces()) {
-            Vector3f center = originalCube.calculateFaceCenter(face);
+            Vector3f center = MeshGeometryUtil.calculateFaceCenter(originalCube, face);
+            
             vertices.remove(center);
         }
         assertEquals(8, vertices.size());

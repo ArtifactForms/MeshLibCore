@@ -4,6 +4,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.conway.ConwayAmboModifier;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
 import mesh.selection.FaceSelection;
 
@@ -81,8 +82,8 @@ public class CrocodileModifier implements IMeshModifier {
    * @return The 3D position of the spike tip.
    */
   private Vector3f calculateSpikeTip(Face3D face) {
-    Vector3f center = mesh.calculateFaceCenter(face);
-    Vector3f normal = mesh.calculateFaceNormal(face);
+    Vector3f center = MeshGeometryUtil.calculateFaceCenter(mesh, face);
+    Vector3f normal = MeshGeometryUtil.calculateFaceNormal(mesh, face);
     if (distance == 0) {
       return center;
     }

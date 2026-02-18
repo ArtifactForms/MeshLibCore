@@ -10,6 +10,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import mesh.selection.FaceSelection;
 import util.MeshTestUtil;
@@ -70,7 +71,7 @@ public class PlanarVertexCenterCubeTest {
   public void resultMeshContainsFaceCentersOfOriginalCube() {
     Mesh3D original = new CubeCreator().create();
     for (Face3D face : original.getFaces()) {
-      Vector3f faceCenter = original.calculateFaceCenter(face);
+      Vector3f faceCenter = MeshGeometryUtil.calculateFaceCenter(original, face);
       assertTrue(cube.getVertices().contains(faceCenter));
     }
   }
