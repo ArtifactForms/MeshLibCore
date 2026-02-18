@@ -3,6 +3,7 @@ package engine.gfx;
 import engine.components.Geometry;
 import engine.scene.SceneNode;
 import mesh.Mesh3D;
+import mesh.next.surface.SurfaceLayer;
 
 /**
  * {@code AnimatedSprite} is a lightweight helper for building and updating frame-based sprite
@@ -214,9 +215,11 @@ public final class AnimatedSprite {
     Frame f = frames[index];
     UVRect uv = topLeft ? atlas.getUVTopLeft(f.row(), f.col()) : atlas.getUV(f.row(), f.col());
 
-    mesh.setUvCoordinate(0, uv.uMin, uv.vMin);
-    mesh.setUvCoordinate(1, uv.uMax, uv.vMin);
-    mesh.setUvCoordinate(2, uv.uMax, uv.vMax);
-    mesh.setUvCoordinate(3, uv.uMin, uv.vMax);
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+
+    surfaceLayer.getUvAt(0).set(uv.uMin, uv.vMin);
+    surfaceLayer.getUvAt(1).set(uv.uMax, uv.vMin);
+    surfaceLayer.getUvAt(2).set(uv.uMax, uv.vMax);
+    surfaceLayer.getUvAt(3).set(uv.uMin, uv.vMax);
   }
 }

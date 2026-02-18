@@ -27,6 +27,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.SubMesh;
+import mesh.next.surface.SurfaceLayer;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -139,19 +140,19 @@ public class GraphicsPImpl implements Graphics {
     this.g.specular(state.specularR, state.specularG, state.specularB);
     this.g.shininess(state.shininess);
 
-//    if (material.getShading() == Shading.TOON && activeShader != null) {
-//      this.g.shader(activeShader);
-//
-//      // ---- Toon shader uniforms ----
-//      activeShader.set("baseColor", color.getRed(), color.getGreen(), color.getBlue());
-//
-//      activeShader.set("steps", 3);
-//
-//      // Example directional light (view space)
-//      activeShader.set("lightDirection", 0f, -1f, 0f);
-//    } else {
-//      this.g.resetShader();
-//    }
+    //    if (material.getShading() == Shading.TOON && activeShader != null) {
+    //      this.g.shader(activeShader);
+    //
+    //      // ---- Toon shader uniforms ----
+    //      activeShader.set("baseColor", color.getRed(), color.getGreen(), color.getBlue());
+    //
+    //      activeShader.set("steps", 3);
+    //
+    //      // Example directional light (view space)
+    //      activeShader.set("lightDirection", 0f, -1f, 0f);
+    //    } else {
+    //      this.g.resetShader();
+    //    }
   }
 
   @Override
@@ -191,8 +192,11 @@ public class GraphicsPImpl implements Graphics {
   private void drawMeshFaces(Mesh3D mesh, boolean texture) {
     final boolean hasNormals = mesh.hasVertexNormals();
     final ArrayList<Vector3f> vertexNormals = hasNormals ? mesh.getVertexNormals() : null;
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+    boolean useUVs = mesh.getVertexCount() == surfaceLayer.getUVCount();
 
-    for (Face3D f : mesh.getFaces()) {
+    for (int faceIdx = 0; faceIdx < mesh.getFaceCount(); faceIdx++) {
+      Face3D f = mesh.getFaceAt(faceIdx);
       if (f.indices.length == 3) {
         g.beginShape(PApplet.TRIANGLES);
       } else if (f.indices.length == 4) {
@@ -203,23 +207,41 @@ public class GraphicsPImpl implements Graphics {
 
       if (texture) applyTexture();
 
-      int[] indices = f.indices;
-      for (int i = 0; i < indices.length; i++) {
-        Vector3f v = mesh.getVertexAt(f.indices[i]);
+      int[] vertexIndices = f.indices;
 
-        if (hasNormals && smoothShading) {
-          Vector3f normal = vertexNormals.get(f.indices[i]);
-          g.normal(normal.getX(), normal.getY(), normal.getZ());
-        }
+      for (int i = 0; i < vertexIndices.length; i++) {
 
-        int uvIndex = f.getUvIndexAt(i);
-        if (uvIndex != -1) {
-          Vector2f uv = mesh.getUvAt(uvIndex);
+        Vector3f v = mesh.getVertexAt(vertexIndices[i]);
+
+        if (useUVs) {
+
+          int[] uvIndices = surfaceLayer.getFaceUVIndices(faceIdx);
+          Vector2f uv = surfaceLayer.getUvAt(uvIndices[i]);
           g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
         } else {
           g.vertex(v.getX(), v.getY(), v.getZ());
         }
+
+        //      int[] indices = f.indices;
+        //      for (int i = 0; i < indices.length; i++) {
+        //        Vector3f v = mesh.getVertexAt(f.indices[i]);
+        //
+        //        if (hasNormals && smoothShading) {
+        //          Vector3f normal = vertexNormals.get(f.indices[i]);
+        //          g.normal(normal.getX(), normal.getY(), normal.getZ());
+        //        }
+        //
+        //        int uvIndex = f.getUvIndexAt(i);
+        //        if (uvIndex != -1) {
+        //          Vector2f uv = mesh.getUvAt(uvIndex);
+        //          g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+        //        } else {
+        //          g.vertex(v.getX(), v.getY(), v.getZ());
+        //        }
+        //      }
+
       }
+
       g.endShape();
     }
 
@@ -228,48 +250,52 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void render(Model model) {
-    Mesh3D mesh = model.getMesh();
-    List<Vector3f> vertexNormals = mesh.getVertexNormals();
-    for (SubMesh subMesh : model.getSubMeshes()) {
-      List<Face3D> subFaces = subMesh.getFaces();
-
-      String materialName = subMesh.getMaterialName();
-      Material subMaterial = model.getMaterial(materialName);
-      setMaterial(subMaterial);
-
-      for (Face3D f : subFaces) {
-        if (f.indices.length == 3) {
-          g.beginShape(PApplet.TRIANGLES);
-        } else if (f.indices.length == 4) {
-          g.beginShape(PApplet.QUADS);
-        } else {
-          g.beginShape(PApplet.POLYGON);
-        }
-
-        applyTexture();
-
-        int[] indices = f.indices;
-        for (int i = 0; i < indices.length; i++) {
-          Vector3f v = mesh.getVertexAt(f.indices[i]);
-
-          if (f.indices[i] < vertexNormals.size()) {
-            Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
-            g.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
-          }
-
-          int uvIndex = f.getUvIndexAt(i);
-          if (uvIndex != -1) {
-            Vector2f uv = mesh.getUvAt(uvIndex);
-            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
-          } else {
-            g.vertex(v.getX(), v.getY(), v.getZ());
-          }
-        }
-        g.endShape();
-      }
-    }
-
-    g.resetShader();
+    //    Mesh3D mesh = model.getMesh();
+    //	SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+    //    List<Vector3f> vertexNormals = mesh.getVertexNormals();
+    //    for (SubMesh subMesh : model.getSubMeshes()) {
+    //      List<Face3D> subFaces = subMesh.getFaces();
+    //
+    //      String materialName = subMesh.getMaterialName();
+    //      Material subMaterial = model.getMaterial(materialName);
+    //      setMaterial(subMaterial);
+    //
+    //      for (Face3D f : subFaces) {
+    //        if (f.indices.length == 3) {
+    //          g.beginShape(PApplet.TRIANGLES);
+    //        } else if (f.indices.length == 4) {
+    //          g.beginShape(PApplet.QUADS);
+    //        } else {
+    //          g.beginShape(PApplet.POLYGON);
+    //        }
+    //
+    //        applyTexture();
+    //
+    //        int[] indices = f.indices;
+    //        for (int i = 0; i < indices.length; i++) {
+    //          Vector3f v = mesh.getVertexAt(f.indices[i]);
+    //
+    //          if (f.indices[i] < vertexNormals.size()) {
+    //            Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
+    //            g.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
+    //          }
+    //
+    //          int uvIndex = f.getUvIndexAt(i);
+    //
+    //          int[] uvIndices = surfaceLayer.getFaceUVIndices(i);
+    //
+    //          if (uvIndex != -1) {
+    //            Vector2f uv = mesh.getUvAt(uvIndex);
+    //            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+    //          } else {
+    //            g.vertex(v.getX(), v.getY(), v.getZ());
+    //          }
+    //        }
+    //        g.endShape();
+    //      }
+    //    }
+    //
+    //    g.resetShader();
   }
 
   @Override

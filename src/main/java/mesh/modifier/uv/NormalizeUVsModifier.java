@@ -3,6 +3,7 @@ package mesh.modifier.uv;
 import math.Vector2f;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
+import mesh.next.surface.SurfaceLayer;
 
 /**
  * Mesh modifier that normalizes all UV coordinates to the [0,1] range.
@@ -41,7 +42,9 @@ public class NormalizeUVsModifier implements IMeshModifier {
   @Override
   public Mesh3D modify(Mesh3D mesh) {
 
-    if (mesh.getUvCount() == 0) {
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+
+    if (surfaceLayer.getUVCount() == 0) {
       return mesh;
     }
 
@@ -50,8 +53,10 @@ public class NormalizeUVsModifier implements IMeshModifier {
     float maxU = Float.NEGATIVE_INFINITY;
     float maxV = Float.NEGATIVE_INFINITY;
 
-    // Compute bounds
-    for (Vector2f uv : mesh.getUVCoordinates()) {
+    // Calculate bounds
+    for (int i = 0; i < surfaceLayer.getUVCount(); i++) {
+      Vector2f uv = surfaceLayer.getUvAt(i);
+
       minU = Math.min(minU, uv.x);
       minV = Math.min(minV, uv.y);
       maxU = Math.max(maxU, uv.x);
@@ -62,10 +67,13 @@ public class NormalizeUVsModifier implements IMeshModifier {
     float rangeV = maxV - minV;
 
     // Normalize
-    for (Vector2f uv : mesh.getUVCoordinates()) {
+    for (int i = 0; i < surfaceLayer.getUVCount(); i++) {
+      Vector2f uv = surfaceLayer.getUvAt(i);
+
       if (rangeU != 0f) {
         uv.x = (uv.x - minU) / rangeU;
       }
+
       if (rangeV != 0f) {
         uv.y = (uv.y - minV) / rangeV;
       }

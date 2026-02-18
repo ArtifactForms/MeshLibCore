@@ -3,6 +3,7 @@ package mesh.modifier.uv;
 import math.Vector2f;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
+import mesh.next.surface.SurfaceLayer;
 
 /**
  * Mesh modifier that flips the V (vertical) texture coordinate of all UVs.
@@ -36,9 +37,11 @@ public class FlipVModifier implements IMeshModifier {
    */
   @Override
   public Mesh3D modify(Mesh3D mesh) {
-    for (Vector2f uv : mesh.getUVCoordinates()) {
-      uv.y = -uv.y;
-    }
+	SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+	for (int i = 0; i < surfaceLayer.getUVCount(); i++) {
+		Vector2f uv = surfaceLayer.getUvAt(i);
+		uv.y = -uv.y;
+	}
     return mesh;
   }
 }

@@ -83,9 +83,8 @@ public class TerrainMesh {
 
         // Add triangles within the bounds of the height map
         if (x < width - 1 && y < height - 1) {
-          boolean useIndicesAsUvs = true;
-          mesh.addFace(useIndicesAsUvs, vertexIndex, vertexIndex + width + 1, vertexIndex + width);
-          mesh.addFace(useIndicesAsUvs, vertexIndex + width + 1, vertexIndex, vertexIndex + 1);
+          mesh.addFaceWithSharedUVs(vertexIndex, vertexIndex + width + 1, vertexIndex + width);
+          mesh.addFaceWithSharedUVs(vertexIndex + width + 1, vertexIndex, vertexIndex + 1);
         }
         vertexIndex++;
       }

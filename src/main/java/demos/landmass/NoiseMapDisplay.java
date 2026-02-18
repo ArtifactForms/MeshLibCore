@@ -9,6 +9,7 @@ import engine.resources.Texture2D;
 import engine.scene.SceneNode;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreator;
+import mesh.next.surface.SurfaceLayer;
 import workspace.ui.Graphics;
 
 /**
@@ -58,11 +59,13 @@ public class NoiseMapDisplay extends AbstractComponent implements RenderableComp
    */
   private void createPlaneMesh() {
     planeMesh = new PlaneCreator(30).create();
-    planeMesh.addUvCoordinate(0, 0);
-    planeMesh.addUvCoordinate(1, 0);
-    planeMesh.addUvCoordinate(1, 1);
-    planeMesh.addUvCoordinate(0, 1);
-    planeMesh.getFaceAt(0).setUvIndices(0, 1, 2, 3);
+    
+	SurfaceLayer surfaceLayer = planeMesh.getSurfaceLayer();
+    surfaceLayer.addUV(0, 0);
+    surfaceLayer.addUV(1, 0);
+    surfaceLayer.addUV(1, 1);
+    surfaceLayer.addUV(0, 1);
+    surfaceLayer.setFaceUVIndices(0, new int[] {0, 1, 2, 3});
   }
 
   /**
