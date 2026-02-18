@@ -55,7 +55,7 @@ public class DualCreator implements IMeshCreator {
     private void createVertices() {
         for (int i = 0; i < source.getFaceCount(); i++) {
             Face3D face = source.getFaceAt(i);
-            Vector3f center = MeshGeometryUtil.calculateFaceCenter(mesh, face);
+            Vector3f center = MeshGeometryUtil.calculateFaceCenter(source, face);
             addVertex(center);
             mapFaceToCenterVertexIndex(face, i);
         }
