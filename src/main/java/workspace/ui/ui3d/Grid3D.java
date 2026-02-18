@@ -57,7 +57,7 @@ public class Grid3D {
     g.setColor(UiValues.getColor(UiConstants.KEY_GRID_COLOR));
     g.pushMatrix();
     g.rotateX(-Mathf.HALF_PI);
-    g.translate(-cols / 2.0f, -rows / 2.0f);
+    g.translate(-cols * size * 0.5f, -rows * size * 0.5f);
     renderGridLines(g);
     g.popMatrix();
   }

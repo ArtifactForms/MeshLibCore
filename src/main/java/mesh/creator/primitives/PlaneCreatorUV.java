@@ -3,6 +3,7 @@ package mesh.creator.primitives;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.next.surface.SurfaceLayer;
 
 /**
  * A class for creating a 2D plane mesh centered at the origin. The plane lies on the XZ plane and
@@ -73,10 +74,11 @@ public class PlaneCreatorUV implements IMeshCreator {
    * system where `v = 0` is at the top and `v = 1` is at the bottom.
    */
   private void createUvCoordinates() {
-    mesh.addUvCoordinate(1, 1); // Top-right
-    mesh.addUvCoordinate(1, 0); // Bottom-right
-    mesh.addUvCoordinate(0, 0); // Bottom-left
-    mesh.addUvCoordinate(0, 1); // Top-left
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+    surfaceLayer.addUV(1, 1); // Top-right
+    surfaceLayer.addUV(1, 0); // Bottom-right
+    surfaceLayer.addUV(0, 0); // Bottom-left
+    surfaceLayer.addUV(0, 1); // Top-left
   }
 
   /**
@@ -97,7 +99,9 @@ public class PlaneCreatorUV implements IMeshCreator {
   private void createFace() {
     int[] vertexIndices = new int[] {0, 1, 2, 3};
     int[] uvIndices = new int[] {0, 1, 2, 3};
-    mesh.add(new Face3D(vertexIndices, uvIndices));
+    mesh.addFace(vertexIndices);
+    SurfaceLayer layer = mesh.getSurfaceLayer();
+    layer.setFaceUVIndices(0, uvIndices);
   }
 
   /**

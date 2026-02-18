@@ -11,6 +11,7 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.modifier.topology.FlipFacesModifier;
+import mesh.next.surface.SurfaceLayer;
 
 public class LevelBuilder {
 
@@ -270,14 +271,15 @@ public class LevelBuilder {
     float x2 = px2 / atlasWidth;
     float y2 = py2 / atlasHeight;
 
-    levelMesh.addUvCoordinate(x1, y2);
-    levelMesh.addUvCoordinate(x2, y2);
-    levelMesh.addUvCoordinate(x2, y1);
-    levelMesh.addUvCoordinate(x1, y1);
-
-    levelMesh
-        .getFaceAt(levelMesh.getFaceCount() - 1)
-        .setUvIndices(nextIndex, nextIndex + 1, nextIndex + 2, nextIndex + 3);
+    SurfaceLayer surfaceLayer = levelMesh.getSurfaceLayer();
+    
+    surfaceLayer.addUV(x1, y2);
+    surfaceLayer.addUV(x2, y2);
+    surfaceLayer.addUV(x2, y1);
+    surfaceLayer.addUV(x1, y1);
+    
+    int faceIndex = levelMesh.getFaceCount() - 1;
+    surfaceLayer.setFaceUVIndices(faceIndex, new int[] {nextIndex, nextIndex + 1, nextIndex + 2, nextIndex + 3});
   }
 
   public Vector3f getPlayerSpawn() {

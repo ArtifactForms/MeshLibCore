@@ -145,7 +145,9 @@ public class OBJLoader implements ModelLoaderStrategy {
         uvIndices[i - 1] = -1; // No UV index, handle this properly
       }
     }
-    addFace(new Face3D(indices, uvIndices));
+    
+    // FIXME UV Support
+    addFace(new Face3D(indices));
   }
 
   private void processFaceVertexFormat() {

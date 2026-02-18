@@ -11,6 +11,7 @@ import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.ScaleModifier;
 import mesh.modifier.transform.TransformAxis;
 import mesh.modifier.transform.TranslateModifier;
+import mesh.next.surface.SurfaceLayer;
 
 /**
  * {@code Sprite} is a small builder-style helper for creating a textured quad (billboard-style
@@ -139,12 +140,14 @@ public final class Sprite {
     new ScaleModifier(width, height, 1).modify(mesh);
     new TranslateModifier(width * 0.5f, height * 0.5f, 0).modify(mesh);
 
-    mesh.addUvCoordinate(uv.uMin, uv.vMin);
-    mesh.addUvCoordinate(uv.uMax, uv.vMin);
-    mesh.addUvCoordinate(uv.uMax, uv.vMax);
-    mesh.addUvCoordinate(uv.uMin, uv.vMax);
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
 
-    mesh.getFaceAt(mesh.getFaceCount() - 1).setUvIndices(0, 1, 2, 3);
+    surfaceLayer.addUV(uv.uMin, uv.vMin);
+    surfaceLayer.addUV(uv.uMax, uv.vMin);
+    surfaceLayer.addUV(uv.uMax, uv.vMax);
+    surfaceLayer.addUV(uv.uMin, uv.vMax);
+
+    surfaceLayer.setFaceUVIndices(0, new int[] {0, 1, 2, 3});
 
     Material material = new Material(Color.WHITE);
     material.setDiffuseTexture(atlas.getTexture());

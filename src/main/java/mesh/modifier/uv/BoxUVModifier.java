@@ -1,14 +1,12 @@
 package mesh.modifier.uv;
 
-import java.util.ArrayList;
-
-import math.Vector2f;
 import math.Vector3f;
 import mesh.Axis;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
+import mesh.next.surface.SurfaceLayer;
 
 /**
  * Mesh modifier that generates box-projected UV coordinates.
@@ -96,19 +94,20 @@ public class BoxUVModifier implements IMeshModifier {
    */
   @Override
   public Mesh3D modify(Mesh3D mesh) {
-    ArrayList<Vector2f> uvs = new ArrayList<Vector2f>();
+
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
 
     for (int j = 0; j < mesh.getFaceCount(); j++) {
+
       Face3D face = mesh.getFaceAt(j);
       int vc = face.getVertexCount();
       int[] uvIndices = new int[vc];
 
-      // Determine projection axis from face normal
       MeshGeometryUtil.calculateFaceNormal(mesh, face, face.normal);
-      Vector3f n = face.normal;
-      Axis axis = axisFromNormal(n);
+      Axis axis = axisFromNormal(face.normal);
 
       for (int i = 0; i < vc; i++) {
+
         Vector3f p = mesh.getVertexAt(face.getIndexAt(i));
 
         float u, v;
@@ -130,14 +129,14 @@ public class BoxUVModifier implements IMeshModifier {
             throw new IllegalStateException();
         }
 
-        uvs.add(new Vector2f(u, v));
-        uvIndices[i] = uvs.size() - 1;
+        surfaceLayer.addUV(u, v);
+        uvIndices[i] = surfaceLayer.getUVCount() - 1;
       }
 
-      face.setUvIndices(uvIndices);
+      // Set once per face
+      surfaceLayer.setFaceUVIndices(j, uvIndices);
     }
 
-    mesh.setUvs(uvs);
     return mesh;
   }
 
