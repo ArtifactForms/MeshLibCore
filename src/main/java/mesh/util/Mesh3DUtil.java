@@ -5,6 +5,7 @@ import math.Matrix3f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.topology.ExtrudeModifier;
 
 @Deprecated
@@ -24,7 +25,8 @@ public class Mesh3DUtil {
 
 	@Deprecated
 	private static void scaleFace(Mesh3D mesh, Face3D face, float scale) {
-		Vector3f center = mesh.calculateFaceCenter(face);
+		Vector3f center = MeshGeometryUtil.calculateFaceCenter(mesh, face);
+		
 		for (int i = 0; i < face.indices.length; i++) {
 			Vector3f v = mesh.getVertexAt(face.indices[i]);
 			v.subtractLocal(center).multLocal(scale).addLocal(center);

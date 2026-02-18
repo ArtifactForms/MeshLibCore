@@ -13,6 +13,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CapsuleCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
 import mesh.modifier.subdivision.PokeFacesModifier;
 import util.MeshTestUtil;
@@ -125,8 +126,8 @@ public class PokeFacesModifierTest {
         modifier.setPokeOffset(randomPokeOffset);
         modifier.modify(modifiedCube);
         for (Face3D face : cube.getFaces()) {
-            Vector3f normal = cube.calculateFaceNormal(face);
-            Vector3f center = cube.calculateFaceCenter(face);
+            Vector3f normal = MeshGeometryUtil.calculateFaceNormal(cube, face);
+            Vector3f center = MeshGeometryUtil.calculateFaceCenter(cube, face);
             Vector3f expected = center.add(normal.mult(randomPokeOffset));
             assertTrue(modifiedCube.getVertices().contains(expected));
         }

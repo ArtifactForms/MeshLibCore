@@ -8,6 +8,7 @@ import math.Vector3f;
 import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
 
 public class CatmullClarkModifier implements IMeshModifier {
@@ -128,7 +129,7 @@ public class CatmullClarkModifier implements IMeshModifier {
     }
 
     private Vector3f calculateFacePoint(Face3D face) {
-        return mesh.calculateFaceCenter(face);
+        return MeshGeometryUtil.calculateFaceCenter(mesh, face);
     }
 
     private VertexData getVertexData(int index) {

@@ -14,6 +14,7 @@ import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.ScaleModifier;
+import mesh.next.surface.SurfaceLayer;
 
 public class Billboard extends SceneNode {
 
@@ -81,10 +82,14 @@ public class Billboard extends SceneNode {
    * </pre>
    */
   private static void applyUv(Mesh3D mesh, UVRect uv) {
-    mesh.getUvAt(0).set(uv.uMin, uv.vMin);
-    mesh.getUvAt(1).set(uv.uMax, uv.vMin);
-    mesh.getUvAt(2).set(uv.uMax, uv.vMax);
-    mesh.getUvAt(3).set(uv.uMin, uv.vMax);
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+
+    surfaceLayer.getUvAt(0).set(uv.uMin, uv.vMin);
+    surfaceLayer.getUvAt(1).set(uv.uMax, uv.vMin);
+    surfaceLayer.getUvAt(2).set(uv.uMax, uv.vMax);
+    surfaceLayer.getUvAt(3).set(uv.uMin, uv.vMax);
+    
+    surfaceLayer.setFaceUVIndices(0, new int[] {0, 1, 2, 3});
   }
 
   public Billboard at(float x, float y, float z) {

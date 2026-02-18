@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
 
 /**
@@ -53,7 +54,7 @@ public class LinearSubdivisionModifier implements IMeshModifier {
     private void createFaceCenter() {
         if (face.indices.length <= 3)
             return;
-        Vector3f center = mesh.calculateFaceCenter(face);
+        Vector3f center = MeshGeometryUtil.calculateFaceCenter(mesh, face);
         indices[0] = getNextIndex();
         mesh.add(center);
     }

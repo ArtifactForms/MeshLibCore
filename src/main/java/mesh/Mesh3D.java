@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import math.Vector2f;
 import math.Vector3f;
 import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.TranslateModifier;
+import mesh.next.surface.SurfaceLayer;
 
 /**
  * Mesh3D is a simple indexed triangle/face mesh implementation.
@@ -30,13 +30,21 @@ public class Mesh3D implements Mesh {
 
   private ArrayList<Vector3f> vertexNormals;
 
-  private ArrayList<Vector2f> uvs;
+  private SurfaceLayer surfaceLayer;
 
   public Mesh3D() {
     vertices = new ArrayList<Vector3f>();
     faces = new ArrayList<Face3D>();
     vertexNormals = new ArrayList<Vector3f>();
-    uvs = new ArrayList<Vector2f>();
+    this.surfaceLayer = new SurfaceLayer();
+  }
+
+  // -------------------------------------------------------------------
+  // Surface Layer
+  // -------------------------------------------------------------------
+
+  public SurfaceLayer getSurfaceLayer() {
+    return surfaceLayer;
   }
 
   // -------------------------------------------------------------------
@@ -68,6 +76,7 @@ public class Mesh3D implements Mesh {
   @Override
   public void addFace(int... indices) {
     faces.add(new Face3D(indices));
+    surfaceLayer.ensureFaceCapacity(faces.size());
   }
 
   // -------------------------------------------------------------------
@@ -125,6 +134,35 @@ public class Mesh3D implements Mesh {
   }
 
   // -------------------------------------------------------------------
+  // UVs
+  // -------------------------------------------------------------------
+
+  /**
+   * Adds a UV coordinate to the mesh.
+   *
+   * <p>This method appends a new UV coordinate, specified by the parameters {@code u} and {@code
+   * v}, to the list of UV coordinates for this mesh. UV coordinates are used for mapping textures
+   * to the surface of the mesh, where {@code u} and {@code v} typically represent the horizontal
+   * and vertical texture coordinates, respectively.
+   *
+   * @param u The horizontal component of the UV coordinate.
+   * @param v The vertical component of the UV coordinate.
+   */
+  @Deprecated
+  public void addUvCoordinate(float u, float v) {
+    surfaceLayer.addUV(u, v);
+  }
+
+  // TEMP: shared vertex/uv indices shortcut
+  // Will be removed once UV generation pipeline is stable
+  @Deprecated
+  public void addFaceWithSharedUVs(int... indices) {
+    addFace(indices);
+    int faceIndex = faces.size() - 1;
+    surfaceLayer.setFaceUVIndices(faceIndex, indices);
+  }
+  
+  // -------------------------------------------------------------------
   // Deprecated vertex access
   // -------------------------------------------------------------------
 
@@ -164,32 +202,6 @@ public class Mesh3D implements Mesh {
   // -------------------------------------------------------------------
 
   @Deprecated
-  public Vector3f calculateFaceNormal(Face3D face) {
-    Vector3f faceNormal = new Vector3f();
-    for (int i = 0; i < face.indices.length; i++) {
-      Vector3f currentVertex = vertices.get(face.indices[i]);
-      Vector3f nextVertex = vertices.get(face.indices[(i + 1) % face.indices.length]);
-      float x =
-          (currentVertex.getY() - nextVertex.getY()) * (currentVertex.getZ() + nextVertex.getZ());
-      float y =
-          (currentVertex.getZ() - nextVertex.getZ()) * (currentVertex.getX() + nextVertex.getX());
-      float z =
-          (currentVertex.getX() - nextVertex.getX()) * (currentVertex.getY() + nextVertex.getY());
-      faceNormal.addLocal(x, y, z);
-    }
-    return faceNormal.normalize();
-  }
-
-  @Deprecated
-  public Vector3f calculateFaceCenter(Face3D face) {
-    Vector3f center = new Vector3f();
-    for (int i = 0; i < face.indices.length; i++) {
-      center.addLocal(vertices.get(face.indices[i]));
-    }
-    return center.divideLocal(face.indices.length);
-  }
-
-  @Deprecated
   public void removeFace(Face3D face) {
     faces.remove(face);
   }
@@ -210,75 +222,9 @@ public class Mesh3D implements Mesh {
     return vertexNormals;
   }
 
-  /**
-   * Adds a UV coordinate to the mesh.
-   *
-   * <p>This method appends a new UV coordinate, specified by the parameters {@code u} and {@code
-   * v}, to the list of UV coordinates for this mesh. UV coordinates are used for mapping textures
-   * to the surface of the mesh, where {@code u} and {@code v} typically represent the horizontal
-   * and vertical texture coordinates, respectively.
-   *
-   * @param u The horizontal component of the UV coordinate.
-   * @param v The vertical component of the UV coordinate.
-   */
-  @Deprecated
-  public void addUvCoordinate(float u, float v) {
-    uvs.add(new Vector2f(u, v));
-  }
-
-  /**
-   * Sets the UV coordinates for this mesh.
-   *
-   * <p>This method sets the list of UV coordinates that will be used for the mesh. The provided
-   * list of UV coordinates will replace any existing UVs. The list must be a valid {@link
-   * ArrayList} of {@link Vector2f} objects. If the provided list is {@code null}, an {@link
-   * IllegalArgumentException} will be thrown.
-   *
-   * @param uvs The list of UV coordinates to be set. It must not be {@code null} and should contain
-   *     {@link Vector2f} objects representing the UV mapping for the mesh.
-   * @throws IllegalArgumentException if the provided {@code uvs} list is {@code null}.
-   */
-  @Deprecated
-  public void setUvs(ArrayList<Vector2f> uvs) {
-    if (uvs == null) {
-      throw new IllegalArgumentException("The list of UV coordinates cannot be null.");
-    }
-    this.uvs = uvs;
-  }
-
   @Deprecated
   public int getUvCount() {
-    return uvs.size();
-  }
-
-  @Deprecated
-  public ArrayList<Vector2f> getUVCoordinates() {
-    return uvs;
-  }
-
-  /**
-   * Retrieves the UV coordinates at the specified index.
-   *
-   * <p>This method returns the UV coordinates associated with the given index. If the index is out
-   * of bounds (either negative or beyond the size of the list), a default UV coordinate (0, 0) is
-   * returned to avoid potential errors or exceptions. The method does not throw an exception when
-   * an invalid index is provided, ensuring that the calling code can proceed without disruption.
-   *
-   * @param index The index of the UV coordinate to retrieve.
-   * @return The UV coordinates as a {@link Vector2f}. If the index is out of bounds, returns {@code
-   *     new Vector2f(0, 0)}. The return value will never be {@code null}.
-   */
-  @Deprecated
-  public Vector2f getUvAt(int index) {
-    if (index < 0 || index >= uvs.size()) {
-      return new Vector2f(0, 0);
-    }
-    return uvs.get(index);
-  }
-
-  @Deprecated
-  public void setUvCoordinate(int index, float u, float v) {
-    uvs.get(index).set(u, v);
+    return surfaceLayer.getUVCount();
   }
 
   @Deprecated
@@ -336,11 +282,6 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public void clearFaces() {
     faces.clear();
-  }
-
-  @Deprecated
-  public void addFace(boolean uvs, int... indices) {
-    faces.add(new Face3D(indices, indices));
   }
 
   @Deprecated

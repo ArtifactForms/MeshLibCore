@@ -3,6 +3,7 @@ package mesh.selection;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 
 public class SelectFaceRuleCenterDistance implements IFaceSelectionRule {
 
@@ -22,7 +23,7 @@ public class SelectFaceRuleCenterDistance implements IFaceSelectionRule {
     @Override
     public boolean isValid(Mesh3D mesh, Face3D face) {
         return Compare.compare(compare,
-                origin.distance(mesh.calculateFaceCenter(face)), distance);
+                origin.distance(MeshGeometryUtil.calculateFaceCenter(mesh, face)), distance);
     }
 
 }

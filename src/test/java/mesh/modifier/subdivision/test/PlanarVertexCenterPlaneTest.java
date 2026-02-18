@@ -10,6 +10,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreator;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.modifier.subdivision.PlanarVertexCenterModifier;
 import util.MeshTestUtil;
@@ -71,7 +72,7 @@ public class PlanarVertexCenterPlaneTest {
   public void resultMeshContainsPlaneCenter() {
     Mesh3D original = new PlaneCreator().create();
     Face3D face = original.getFaceAt(0);
-    Vector3f faceCenter = original.calculateFaceCenter(face);
+    Vector3f faceCenter = MeshGeometryUtil.calculateFaceCenter(original, face);
     assertTrue(plane.getVertices().contains(faceCenter));
   }
 
@@ -89,7 +90,7 @@ public class PlanarVertexCenterPlaneTest {
   public void eachFaceContainsFaceCenterVertexIndex() {
     Mesh3D original = new PlaneCreator().create();
     Face3D face = original.getFaceAt(0);
-    Vector3f faceCenter = original.calculateFaceCenter(face);
+    Vector3f faceCenter = MeshGeometryUtil.calculateFaceCenter(original, face);
     int index = plane.getVertices().indexOf(faceCenter);
     for (Face3D face0 : plane.getFaces())
       assertTrue(MeshTestUtil.containsVertexIndex(face0, index));

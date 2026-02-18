@@ -52,14 +52,10 @@ public class TerrainMeshLOD {
 
         // Add triangles within the bounds of the height map
         if (x < width - 1 && y < height - 1) {
-          boolean useIndicesAsUvs = true;
-          mesh.addFace(
-              useIndicesAsUvs,
-              vertexIndex,
-              vertexIndex + verticesPerLine + 1,
-              vertexIndex + verticesPerLine);
-          mesh.addFace(
-              useIndicesAsUvs, vertexIndex + verticesPerLine + 1, vertexIndex, vertexIndex + 1);
+          mesh.addFaceWithSharedUVs(
+              vertexIndex, vertexIndex + verticesPerLine + 1, vertexIndex + verticesPerLine);
+          mesh.addFaceWithSharedUVs(
+              vertexIndex + verticesPerLine + 1, vertexIndex, vertexIndex + 1);
         }
         vertexIndex++;
       }

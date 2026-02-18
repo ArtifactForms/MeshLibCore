@@ -1,8 +1,8 @@
 package mesh.creator.primitives;
 
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.next.surface.SurfaceLayer;
 
 /**
  * The CubeCreatorUV class generates a 3D cube mesh with UV mapping. It supports creating a cube
@@ -96,41 +96,50 @@ public class CubeCreatorUV implements IMeshCreator {
    * system where `v = 0` is at the top and `v = 1` is at the bottom.
    */
   private void createUvCoordinates() {
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+
     // Top
-    mesh.addUvCoordinate(0.25f + EPSILON, 1 - 0 - EPSILON);
-    mesh.addUvCoordinate(0.50f - EPSILON, 1 - 0 - EPSILON);
-    mesh.addUvCoordinate(0.50f - EPSILON, 1 - ONE_THIRD + EPSILON);
-    mesh.addUvCoordinate(0.25f + EPSILON, 1 - ONE_THIRD + EPSILON);
+    surfaceLayer.addUV(0.25f + EPSILON, 1 - 0 - EPSILON);
+    surfaceLayer.addUV(0.50f - EPSILON, 1 - 0 - EPSILON);
+    surfaceLayer.addUV(0.50f - EPSILON, 1 - ONE_THIRD + EPSILON);
+    surfaceLayer.addUV(0.25f + EPSILON, 1 - ONE_THIRD + EPSILON);
 
     // Bottom
-    mesh.addUvCoordinate(0.25f + EPSILON, 1 - TWO_THIRDS - EPSILON);
-    mesh.addUvCoordinate(0.50f - EPSILON, 1 - TWO_THIRDS - EPSILON);
-    mesh.addUvCoordinate(0.50f - EPSILON, 1 - 1 + EPSILON);
-    mesh.addUvCoordinate(0.25f + EPSILON, 1 - 1 + EPSILON);
+    surfaceLayer.addUV(0.25f + EPSILON, 1 - TWO_THIRDS - EPSILON);
+    surfaceLayer.addUV(0.50f - EPSILON, 1 - TWO_THIRDS - EPSILON);
+    surfaceLayer.addUV(0.50f - EPSILON, 1 - 1 + EPSILON);
+    surfaceLayer.addUV(0.25f + EPSILON, 1 - 1 + EPSILON);
 
     // Right
-    mesh.addUvCoordinate(0.50f + EPSILON, 1 - ONE_THIRD - EPSILON);
-    mesh.addUvCoordinate(0.75f - EPSILON, 1 - ONE_THIRD - EPSILON);
-    mesh.addUvCoordinate(0.75f - EPSILON, 1 - TWO_THIRDS + EPSILON);
-    mesh.addUvCoordinate(0.50f + EPSILON, 1 - TWO_THIRDS + EPSILON);
+    surfaceLayer.addUV(0.50f + EPSILON, 1 - ONE_THIRD - EPSILON);
+    surfaceLayer.addUV(0.75f - EPSILON, 1 - ONE_THIRD - EPSILON);
+    surfaceLayer.addUV(0.75f - EPSILON, 1 - TWO_THIRDS + EPSILON);
+    surfaceLayer.addUV(0.50f + EPSILON, 1 - TWO_THIRDS + EPSILON);
 
     // Front
-    mesh.addUvCoordinate(0.25f + EPSILON, 1 - ONE_THIRD - EPSILON);
-    mesh.addUvCoordinate(0.50f - EPSILON, 1 - ONE_THIRD - EPSILON);
-    mesh.addUvCoordinate(0.50f - EPSILON, 1 - TWO_THIRDS + EPSILON);
-    mesh.addUvCoordinate(0.25f + EPSILON, 1 - TWO_THIRDS + EPSILON);
+    surfaceLayer.addUV(0.25f + EPSILON, 1 - ONE_THIRD - EPSILON);
+    surfaceLayer.addUV(0.50f - EPSILON, 1 - ONE_THIRD - EPSILON);
+    surfaceLayer.addUV(0.50f - EPSILON, 1 - TWO_THIRDS + EPSILON);
+    surfaceLayer.addUV(0.25f + EPSILON, 1 - TWO_THIRDS + EPSILON);
 
     // Left
-    mesh.addUvCoordinate(0.00f + EPSILON, 1 - ONE_THIRD - EPSILON);
-    mesh.addUvCoordinate(0.25f - EPSILON, 1 - ONE_THIRD - EPSILON);
-    mesh.addUvCoordinate(0.25f - EPSILON, 1 - TWO_THIRDS + EPSILON);
-    mesh.addUvCoordinate(0.00f + EPSILON, 1 - TWO_THIRDS + EPSILON);
+    surfaceLayer.addUV(0.00f + EPSILON, 1 - ONE_THIRD - EPSILON);
+    surfaceLayer.addUV(0.25f - EPSILON, 1 - ONE_THIRD - EPSILON);
+    surfaceLayer.addUV(0.25f - EPSILON, 1 - TWO_THIRDS + EPSILON);
+    surfaceLayer.addUV(0.00f + EPSILON, 1 - TWO_THIRDS + EPSILON);
 
     // Back
-    mesh.addUvCoordinate(0.75f + EPSILON, 1 - ONE_THIRD - EPSILON);
-    mesh.addUvCoordinate(1.00f - EPSILON, 1 - ONE_THIRD - EPSILON);
-    mesh.addUvCoordinate(1.00f - EPSILON, 1 - TWO_THIRDS + EPSILON);
-    mesh.addUvCoordinate(0.75f + EPSILON, 1 - TWO_THIRDS + EPSILON);
+    surfaceLayer.addUV(0.75f + EPSILON, 1 - ONE_THIRD - EPSILON);
+    surfaceLayer.addUV(1.00f - EPSILON, 1 - ONE_THIRD - EPSILON);
+    surfaceLayer.addUV(1.00f - EPSILON, 1 - TWO_THIRDS + EPSILON);
+    surfaceLayer.addUV(0.75f + EPSILON, 1 - TWO_THIRDS + EPSILON);
+
+    surfaceLayer.setFaceUVIndices(0, new int[] {0, 1, 2, 3});
+    surfaceLayer.setFaceUVIndices(1, new int[] {4, 5, 6, 7});
+    surfaceLayer.setFaceUVIndices(2, new int[] {8, 9, 10, 11});
+    surfaceLayer.setFaceUVIndices(3, new int[] {13, 14, 15, 12});
+    surfaceLayer.setFaceUVIndices(4, new int[] {18, 19, 16, 17});
+    surfaceLayer.setFaceUVIndices(5, new int[] {21, 22, 23, 20});
   }
 
   /**
@@ -138,23 +147,12 @@ public class CubeCreatorUV implements IMeshCreator {
    * coordinate indices for each face.
    */
   private void createFaces() {
-    // Top face
-    addFace(new int[] {3, 0, 1, 2}, new int[] {0, 1, 2, 3});
-
-    // Bottom face
-    addFace(new int[] {6, 5, 4, 7}, new int[] {4, 5, 6, 7});
-
-    // Right face
-    addFace(new int[] {1, 0, 4, 5}, new int[] {8, 9, 10, 11});
-
-    // Front face
-    addFace(new int[] {1, 5, 6, 2}, new int[] {13, 14, 15, 12});
-
-    // Left face
-    addFace(new int[] {6, 7, 3, 2}, new int[] {18, 19, 16, 17});
-
-    // Back face
-    addFace(new int[] {3, 7, 4, 0}, new int[] {21, 22, 23, 20});
+    mesh.addFace(3, 0, 1, 2); // Top face
+    mesh.addFace(6, 5, 4, 7); // Bottom face
+    mesh.addFace(1, 0, 4, 5); // Right face
+    mesh.addFace(1, 5, 6, 2); // Front face
+    mesh.addFace(6, 7, 3, 2); // Left face
+    mesh.addFace(3, 7, 4, 0);     // Back face
   }
 
   /**
@@ -166,16 +164,6 @@ public class CubeCreatorUV implements IMeshCreator {
    */
   private void addVertex(float x, float y, float z) {
     mesh.addVertex(x, y, z);
-  }
-
-  /**
-   * Adds a face to the cube's mesh by specifying the vertex indices and UV coordinate indices.
-   *
-   * @param vertexIndices the indices of the vertices that form the face
-   * @param uvIndices the indices of the UV coordinates for texture mapping
-   */
-  private void addFace(int[] vertexIndices, int[] uvIndices) {
-    mesh.add(new Face3D(vertexIndices, uvIndices));
   }
 
   /**

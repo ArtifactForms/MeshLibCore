@@ -8,29 +8,21 @@ public class Face3D {
 
   public int[] indices;
 
-  private int[] uvIndices;
-
   public Vector3f normal;
 
   private String tag;
 
-  public Face3D(int... indices) {
-    this(indices, new int[0]);
-  }
-
   public Face3D(Face3D f) {
     this.indices = Arrays.copyOf(f.indices, f.indices.length);
-    this.uvIndices = f.uvIndices != null ? Arrays.copyOf(f.uvIndices, f.uvIndices.length) : null;
     this.normal = new Vector3f(f.normal);
     this.tag = f.tag != null ? new String(f.tag) : "";
   }
 
-  public Face3D(int[] indices, int[] uvIndices) {
+  public Face3D(int... indices) {
     this.indices = new int[indices.length];
     this.normal = new Vector3f();
     this.tag = "";
     this.indices = Arrays.copyOf(indices, indices.length);
-    this.uvIndices = Arrays.copyOf(uvIndices, uvIndices.length);
   }
 
   public boolean sharesSameIndices(Face3D face) {
@@ -43,18 +35,6 @@ public class Face3D {
 
   public int getIndexAt(int index) {
     return indices[index % indices.length];
-  }
-
-  // Get UV index, return -1 if no UVs are available
-  public int getUvIndexAt(int index) {
-    if (uvIndices == null || uvIndices.length == 0) {
-      return -1; // No UVs available
-    }
-    return uvIndices[index % uvIndices.length];
-  }
-
-  public void setUvIndices(int... uvIndices) {
-    this.uvIndices = uvIndices;
   }
 
   public int getVertexCount() {

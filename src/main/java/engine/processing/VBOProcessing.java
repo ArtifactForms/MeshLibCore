@@ -10,6 +10,7 @@ import math.Vector2f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.next.surface.SurfaceLayer;
 import mesh.util.MeshBoundsCalculator;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -32,6 +33,7 @@ public class VBOProcessing implements VBO {
 
   @Override
   public void create(Mesh3D mesh, Material material) {
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
     bounds = MeshBoundsCalculator.calculateBounds(mesh);
 
     ArrayList<Vector3f> vertexNormals = mesh.getVertexNormals();
@@ -46,7 +48,8 @@ public class VBOProcessing implements VBO {
     // TODO Full material support
     shape.fill(material.getColor().getRGBA());
 
-    for (Face3D f : mesh.getFaces()) {
+    for (int idx = 0; idx < mesh.getFaceCount(); idx++) {
+      Face3D f = mesh.getFaceAt(idx);
       if (f.indices.length == 3) {
         shape.beginShape(PApplet.TRIANGLES);
       } else if (f.indices.length == 4) {
@@ -63,9 +66,14 @@ public class VBOProcessing implements VBO {
           shape.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
         }
 
-        int uvIndex = f.getUvIndexAt(i);
-        if (uvIndex != -1) {
-          Vector2f uv = mesh.getUvAt(uvIndex);
+        int[] uvIndices = null;
+        if (surfaceLayer.getUVCount() > 0) {
+          uvIndices = surfaceLayer.getFaceUVIndices(idx);
+        }
+
+        if (uvIndices != null) {
+          int uvIndex = uvIndices[i];
+          Vector2f uv = surfaceLayer.getUvAt(uvIndex);
           shape.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
         } else {
           shape.vertex(v.getX(), v.getY(), v.getZ());
