@@ -193,7 +193,6 @@ public class GraphicsPImpl implements Graphics {
     final boolean hasNormals = mesh.hasVertexNormals();
     final ArrayList<Vector3f> vertexNormals = hasNormals ? mesh.getVertexNormals() : null;
     SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
-    boolean useUVs = mesh.getVertexCount() == surfaceLayer.getUVCount();
 
     for (int faceIdx = 0; faceIdx < mesh.getFaceCount(); faceIdx++) {
       Face3D f = mesh.getFaceAt(faceIdx);
@@ -212,10 +211,9 @@ public class GraphicsPImpl implements Graphics {
       for (int i = 0; i < vertexIndices.length; i++) {
 
         Vector3f v = mesh.getVertexAt(vertexIndices[i]);
+        int[] uvIndices = surfaceLayer.getFaceUVIndices(faceIdx);
 
-        if (useUVs) {
-
-          int[] uvIndices = surfaceLayer.getFaceUVIndices(faceIdx);
+        if (uvIndices != null) {
           Vector2f uv = surfaceLayer.getUvAt(uvIndices[i]);
           g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
         } else {
