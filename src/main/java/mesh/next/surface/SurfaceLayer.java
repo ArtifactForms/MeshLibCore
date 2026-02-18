@@ -30,6 +30,7 @@ public class SurfaceLayer {
   }
 
   public int[] getFaceUVIndices(int faceIndex) {
+    if (faceIndex < 0 || faceIndex >= faceUvIndices.size()) return null;
     return faceUvIndices.get(faceIndex);
   }
 
