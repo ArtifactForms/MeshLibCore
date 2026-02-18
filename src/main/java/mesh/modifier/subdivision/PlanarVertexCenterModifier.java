@@ -7,6 +7,7 @@ import java.util.List;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
 
 /**
@@ -82,7 +83,7 @@ public class PlanarVertexCenterModifier implements IMeshModifier {
     }
 
     private Vector3f calculateFaceCenter(Face3D face) {
-        return mesh.calculateFaceCenter(face);
+        return MeshGeometryUtil.calculateFaceCenter(mesh, face);
     }
 
     private void setMesh(Mesh3D mesh) {

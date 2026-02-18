@@ -13,6 +13,7 @@ import mesh.Mesh3D;
 import mesh.creator.primitives.IcoSphereCreator;
 import mesh.creator.primitives.QuadSphereCreator;
 import mesh.creator.primitives.UVSphereCreator;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.util.MeshBoundsCalculator;
 
 class MirrorModifierTest {
@@ -115,7 +116,7 @@ class MirrorModifierTest {
     new MirrorModifier().modify(mesh);
 
     for (Face3D face : mesh.getFaces()) {
-      Vector3f recalculated = mesh.calculateFaceNormal(face);
+      Vector3f recalculated = MeshGeometryUtil.calculateFaceNormal(mesh, face);
       assertEquals(recalculated, face.normal);
     }
   }
@@ -248,7 +249,7 @@ class MirrorModifierTest {
       Face3D face = original.getFaceAt(i);
       Face3D mirroredFace = mirrored.getFaceAt(i);
 
-      Vector3f expected = original.calculateFaceNormal(face);
+      Vector3f expected = MeshGeometryUtil.calculateFaceNormal(original, face);
       expected.multLocal(sx, sy, sz);
 
       Vector3f actual = mirroredFace.normal;

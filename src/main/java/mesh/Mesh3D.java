@@ -164,32 +164,6 @@ public class Mesh3D implements Mesh {
   // -------------------------------------------------------------------
 
   @Deprecated
-  public Vector3f calculateFaceNormal(Face3D face) {
-    Vector3f faceNormal = new Vector3f();
-    for (int i = 0; i < face.indices.length; i++) {
-      Vector3f currentVertex = vertices.get(face.indices[i]);
-      Vector3f nextVertex = vertices.get(face.indices[(i + 1) % face.indices.length]);
-      float x =
-          (currentVertex.getY() - nextVertex.getY()) * (currentVertex.getZ() + nextVertex.getZ());
-      float y =
-          (currentVertex.getZ() - nextVertex.getZ()) * (currentVertex.getX() + nextVertex.getX());
-      float z =
-          (currentVertex.getX() - nextVertex.getX()) * (currentVertex.getY() + nextVertex.getY());
-      faceNormal.addLocal(x, y, z);
-    }
-    return faceNormal.normalize();
-  }
-
-  @Deprecated
-  public Vector3f calculateFaceCenter(Face3D face) {
-    Vector3f center = new Vector3f();
-    for (int i = 0; i < face.indices.length; i++) {
-      center.addLocal(vertices.get(face.indices[i]));
-    }
-    return center.divideLocal(face.indices.length);
-  }
-
-  @Deprecated
   public void removeFace(Face3D face) {
     faces.remove(face);
   }

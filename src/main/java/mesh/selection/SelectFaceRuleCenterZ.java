@@ -2,6 +2,7 @@ package mesh.selection;
 
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 
 public class SelectFaceRuleCenterZ implements IFaceSelectionRule {
 
@@ -16,7 +17,7 @@ public class SelectFaceRuleCenterZ implements IFaceSelectionRule {
 
     @Override
     public boolean isValid(Mesh3D mesh, Face3D face) {
-        return Compare.compare(compare, mesh.calculateFaceCenter(face).getZ(),
+        return Compare.compare(compare, MeshGeometryUtil.calculateFaceCenter(mesh, face).getZ(),
                 z);
     }
 

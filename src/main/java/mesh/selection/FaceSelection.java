@@ -9,6 +9,7 @@ import math.Mathf;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.util.Mesh3DUtil;
 import mesh.util.TraverseHelper;
 
@@ -68,7 +69,7 @@ public class FaceSelection {
      */
     public void selectSimilarNormal(Vector3f normal, float threshold) {
         for (Face3D face : mesh.getFaces()) {
-            Vector3f normal0 = mesh.calculateFaceNormal(face);
+            Vector3f normal0 = MeshGeometryUtil.calculateFaceNormal(mesh, face);
             float delta = normal0.distance(normal);
             if (delta <= threshold) {
                 faceSet.add(face);
@@ -201,13 +202,13 @@ public class FaceSelection {
 
     public void selectCenterDistanceEquals(Vector3f origin, float distance) {
         for (Face3D face : mesh.getFaces())
-            if (origin.distance(mesh.calculateFaceNormal(face)) == distance)
+            if (origin.distance(MeshGeometryUtil.calculateFaceNormal(mesh, face)) == distance)
                 faceSet.add(face);
     }
 
     public void selectCenterDistanceLessThan(Vector3f origin, float distance) {
         for (Face3D face : mesh.getFaces())
-            if (origin.distance(mesh.calculateFaceCenter(face)) < distance)
+            if (origin.distance(MeshGeometryUtil.calculateFaceCenter(mesh, face)) < distance)
                 faceSet.add(face);
     }
 
@@ -221,7 +222,7 @@ public class FaceSelection {
 
     public void selectWithCenterYLessThan(float y) {
         for (Face3D face : mesh.getFaces()) {
-            Vector3f center = mesh.calculateFaceCenter(face);
+            Vector3f center = MeshGeometryUtil.calculateFaceCenter(mesh, face);
             if (center.getY() <= y) {
                 faceSet.add(face);
             }
@@ -230,7 +231,7 @@ public class FaceSelection {
 
     public void selectWithCenterXLessThan(float x) {
         for (Face3D face : mesh.getFaces()) {
-            Vector3f center = mesh.calculateFaceCenter(face);
+            Vector3f center = MeshGeometryUtil.calculateFaceCenter(mesh, face);
             if (center.getX() <= x) {
                 faceSet.add(face);
             }
@@ -273,7 +274,7 @@ public class FaceSelection {
 
     public void selectLeftFaces() {
         for (Face3D f : mesh.getFaces()) {
-            Vector3f v = mesh.calculateFaceNormal(f);
+            Vector3f v = MeshGeometryUtil.calculateFaceNormal(mesh, f);
             Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
                     Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getX() == -1) {
@@ -284,7 +285,7 @@ public class FaceSelection {
 
     public void selectRightFaces() {
         for (Face3D f : mesh.getFaces()) {
-            Vector3f v = mesh.calculateFaceNormal(f);
+            Vector3f v = MeshGeometryUtil.calculateFaceNormal(mesh, f);
             Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
                     Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getX() == 1) {
@@ -295,7 +296,7 @@ public class FaceSelection {
 
     public void selectTopFaces() {
         for (Face3D f : mesh.getFaces()) {
-            Vector3f v = mesh.calculateFaceNormal(f);
+            Vector3f v = MeshGeometryUtil.calculateFaceNormal(mesh, f);
             Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
                     Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getY() == -1) {
@@ -306,7 +307,7 @@ public class FaceSelection {
 
     public void selectBottomFaces() {
         for (Face3D f : mesh.getFaces()) {
-            Vector3f v = mesh.calculateFaceNormal(f);
+            Vector3f v = MeshGeometryUtil.calculateFaceNormal(mesh, f);
             Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
                     Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getY() == 1) {
@@ -317,7 +318,7 @@ public class FaceSelection {
 
     public void selectFrontFaces() {
         for (Face3D f : mesh.getFaces()) {
-            Vector3f v = mesh.calculateFaceNormal(f);
+            Vector3f v = MeshGeometryUtil.calculateFaceNormal(mesh, f);
             Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
                     Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getZ() == 1) {
@@ -328,7 +329,7 @@ public class FaceSelection {
 
     public void selectBackFaces() {
         for (Face3D f : mesh.getFaces()) {
-            Vector3f v = mesh.calculateFaceNormal(f);
+            Vector3f v = MeshGeometryUtil.calculateFaceNormal(mesh, f);
             Vector3f v0 = new Vector3f(Mathf.round(v.getX()),
                     Mathf.round(v.getY()), Mathf.round(v.getZ()));
             if (v0.getZ() == -1) {
@@ -356,7 +357,7 @@ public class FaceSelection {
 
     public void selectOuter() {
         for (Face3D face : mesh.getFaces()) {
-            Vector3f normal = mesh.calculateFaceNormal(face);
+            Vector3f normal = MeshGeometryUtil.calculateFaceNormal(mesh, face);
             Vector3f v = mesh.getVertexAt(face.indices[0]);
             if (normal.dot(v) > 0) {
                 faceSet.add(face);
@@ -366,7 +367,7 @@ public class FaceSelection {
 
     public void selectInner() {
         for (Face3D face : mesh.getFaces()) {
-            Vector3f normal = mesh.calculateFaceNormal(face);
+            Vector3f normal = MeshGeometryUtil.calculateFaceNormal(mesh, face);
             Vector3f v = mesh.getVertexAt(face.indices[0]);
             if (normal.dot(v) < 0) {
                 faceSet.add(face);

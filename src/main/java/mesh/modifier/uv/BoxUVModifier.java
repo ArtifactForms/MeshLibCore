@@ -7,6 +7,7 @@ import math.Vector3f;
 import mesh.Axis;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
 
 /**
@@ -103,7 +104,7 @@ public class BoxUVModifier implements IMeshModifier {
       int[] uvIndices = new int[vc];
 
       // Determine projection axis from face normal
-      face.normal = mesh.calculateFaceNormal(face);
+      MeshGeometryUtil.calculateFaceNormal(mesh, face, face.normal);
       Vector3f n = face.normal;
       Axis axis = axisFromNormal(n);
 

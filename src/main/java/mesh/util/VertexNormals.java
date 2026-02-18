@@ -7,6 +7,7 @@ import java.util.List;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 
 public class VertexNormals {
 
@@ -28,7 +29,7 @@ public class VertexNormals {
 
     private void calculateFaceNormals() {
         for (Face3D face : mesh.getFaces()) {
-            Vector3f faceNormal = mesh.calculateFaceNormal(face);
+            Vector3f faceNormal = MeshGeometryUtil.calculateFaceNormal(mesh, face);
             faceNormals.put(face, faceNormal);
             for (int i = 0; i < face.indices.length; i++) {
                 Vector3f v = mesh.getVertexAt(face.indices[i]);

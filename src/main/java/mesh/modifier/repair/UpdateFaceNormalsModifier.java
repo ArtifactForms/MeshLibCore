@@ -4,6 +4,7 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 import mesh.modifier.IMeshModifier;
 
 /**
@@ -49,7 +50,7 @@ public class UpdateFaceNormalsModifier implements IMeshModifier {
    * @param face The face whose normal is to be updated.
    */
   private void updateFaceNormal(Face3D face) {
-    Vector3f normal = mesh.calculateFaceNormal(face);
+    Vector3f normal = MeshGeometryUtil.calculateFaceNormal(mesh, face, face.normal);
     face.normal.set(normal);
   }
 
