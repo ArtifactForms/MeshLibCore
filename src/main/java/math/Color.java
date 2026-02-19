@@ -1,7 +1,27 @@
 package math;
 
-/** Representation of RGBA colors. The components (r,g,b) define a color in RGB color space. */
+/**
+ * Represents a mutable RGBA color using floating point components.
+ *
+ * <p>
+ * Components are stored as floats and are not automatically clamped.
+ * Values outside the range [0, 1] are allowed to support HDR rendering
+ * and intermediate color calculations.
+ * </p>
+ *
+ * <p>
+ * All operations are component-wise unless stated otherwise.
+ * Methods with the suffix {@code Local} modify this instance,
+ * while other methods return a new instance or write into a result parameter.
+ * </p>
+ *
+ * <p>
+ * This class is not thread-safe.
+ * </p>
+ */
 public class Color {
+	
+  public static final float ALPHA_OPAQUE_TOLERANCE = 1e-4f;
 
   /** Solid black. RGBA is (0, 0, 0, 1). */
   public static final Color BLACK = new Color(0f, 0f, 0f, 1f);
@@ -264,11 +284,14 @@ public class Color {
   }
 
   /**
-   * Divides this color by <code>a</code> internally. Each component is scaled separately
+   * Divides all components of this color by the given scalar.
    *
-   * @return this
+   * @param scalar the divisor
+   * @return this color after division
+   *
+   * @throws ArithmeticException if scalar is zero
    */
-  public Color divideLocal(float a) {
+  public Color divideLocal(float scalar) {
     this.r /= a;
     this.g /= a;
     this.b /= a;
@@ -277,8 +300,13 @@ public class Color {
   }
 
   /**
-   * @param a
-   * @return
+   * Multiplies each component of this color by the corresponding component.
+   *
+   * @param r multiplier for red
+   * @param g multiplier for green
+   * @param b multiplier for blue
+   * @param a multiplier for alpha
+   * @return this color after multiplication
    */
   public Color multLocal(float r, float g, float b, float a) {
     this.r *= r;
@@ -286,6 +314,98 @@ public class Color {
     this.b *= b;
     this.a *= a;
     return this;
+  }
+
+  /**
+   * Multiplies this color component-wise with another color.
+   *
+   * @param other the color to multiply with
+   * @param result the color to store the result in (may be null)
+   * @return the resulting color
+   *
+   * @throws NullPointerException if other is null
+   */
+  public Color mult(Color other, Color result) {
+    if (result == null) result = new Color();
+    result.r = this.r * other.r;
+    result.g = this.g * other.g;
+    result.b = this.b * other.b;
+    result.a = this.a * other.a;
+    return result;
+  }
+  
+  /**
+   * Multiplies this color component-wise with another color.
+   *
+   * @param other the color to multiply with
+   * @return this color after multiplication
+   *
+   * @throws NullPointerException if other is null
+   */
+  public Color multLocal(Color other) {
+    this.r *= other.r;
+    this.g *= other.g;
+    this.b *= other.b;
+    this.a *= other.a;
+    return this;
+  }
+
+  /**
+   * Multiplies the RGB components of this color by a scalar.
+   * The alpha component remains unchanged.
+   *
+   * @param scalar the scalar multiplier
+   * @param result the color to store the result in (may be null)
+   * @return the resulting color
+   */
+  public Color mult(float scalar, Color result) {
+    if (result == null) result = new Color();
+    result.r = this.r * scalar;
+    result.g = this.g * scalar;
+    result.b = this.b * scalar;
+    result.a = this.a;
+    return result;
+  }
+
+  /**
+   * Multiplies the RGB components of this color by a scalar.
+   * The alpha component remains unchanged.
+   *
+   * @param scalar the scalar multiplier
+   * @return this color after scaling
+   */
+  public Color multLocal(float scalar) {
+    this.r *= scalar;
+    this.g *= scalar;
+    this.b *= scalar;
+    return this;
+  }
+
+  /**
+   * Returns true if all components of this color are exactly zero.
+   *
+   * <p>
+   * This method performs exact comparison.
+   * No floating point tolerance is used.
+   * </p>
+   *
+   * @return true if r, g, b and a are all 0
+   */
+  public boolean isZero() {
+    return r == 0f && g == 0f && b == 0f && a == 0f;
+  }
+
+  /**
+   * Returns true if this color is considered fully opaque.
+   *
+   * <p>
+   * Uses {@link #ALPHA_OPAQUE_TOLERANCE} for comparison.
+   * </p>
+   *
+   * @return true if alpha is approximately 1
+   */
+  public boolean isOpaque() {
+      return a >= 1f - ALPHA_OPAQUE_TOLERANCE;
   }
 
   /**
@@ -301,6 +421,27 @@ public class Color {
     a = Mathf.clamp01(a);
     return this;
   }
+  
+  /**
+   * Returns a new color that is a clamped copy of this color.
+   *
+   * @return a new clamped color
+   */
+  public Color clamped() {
+      return new Color(this).clampLocal();
+  }
+  
+  /**
+   * Returns true if all components are within the range [0, 1].
+   *
+   * @return true if r, g, b and a are clamped
+   */
+  public boolean isClamped() {
+	    return r >= 0f && r <= 1f &&
+	           g >= 0f && g <= 1f &&
+	           b >= 0f && b <= 1f &&
+	           a >= 0f && a <= 1f;
+	}
 
   /**
    * Sets all components of this color to 0.0f internally, and returns a handle to this color for
@@ -314,13 +455,13 @@ public class Color {
   }
 
   /**
-   * Returns the maximum color component value: Max(r,g,b). This method does not consider the alpha
-   * component.
+   * Returns the maximum of the RGB components.
+   * The alpha component is not considered.
    *
-   * @return the maximum color component
+   * @return max(r, g, b)
    */
   public float maxComponent() {
-    return Mathf.max(new float[] {r, g, b});
+    return Math.max(r, Math.max(g, b));
   }
 
   /**
@@ -480,7 +621,7 @@ public class Color {
    * @return the red component of this color (0 to 255)
    */
   public int getRedInt() {
-      return (int) (Math.max(0, Math.min(1, r)) * 255 + 0.5);
+    return (int) (Math.max(0, Math.min(1, r)) * 255 + 0.5);
   }
 
   /**
@@ -489,7 +630,7 @@ public class Color {
    * @return the green component of this color (0 to 255)
    */
   public int getGreenInt() {
-      return (int) (Math.max(0, Math.min(1, g)) * 255 + 0.5);
+    return (int) (Math.max(0, Math.min(1, g)) * 255 + 0.5);
   }
 
   /**
@@ -498,7 +639,7 @@ public class Color {
    * @return the blue component of this color (0 to 255)
    */
   public int getBlueInt() {
-      return (int) (Math.max(0, Math.min(1, b)) * 255 + 0.5);
+    return (int) (Math.max(0, Math.min(1, b)) * 255 + 0.5);
   }
 
   /**
@@ -507,7 +648,7 @@ public class Color {
    * @return the alpha component of this color (0 to 255)
    */
   public int getAlphaInt() {
-      return (int) (Math.max(0, Math.min(1, a)) * 255 + 0.5);
+    return (int) (Math.max(0, Math.min(1, a)) * 255 + 0.5);
   }
 
   /**
