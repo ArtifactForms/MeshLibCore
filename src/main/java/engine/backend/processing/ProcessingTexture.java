@@ -1,4 +1,4 @@
-package engine.processing;
+package engine.backend.processing;
 
 import engine.resources.FilterMode;
 import engine.resources.Texture;

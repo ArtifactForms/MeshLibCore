@@ -1,4 +1,4 @@
-package engine.processing;
+package engine.backend.processing;
 
 import engine.scene.light.AmbientLight;
 import engine.scene.light.DirectionalLight;

@@ -1,4 +1,4 @@
-package engine.processing;
+package engine.backend.processing;
 
 import engine.vbo.VBO;
 import engine.vbo.VBOCreationStrategy;

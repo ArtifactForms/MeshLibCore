@@ -5,8 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import engine.backend.processing.BufferedShape;
 import engine.components.StaticGeometry;
-import engine.processing.BufferedShape;
 import math.Vector3f;
 import workspace.ui.Graphics;
 

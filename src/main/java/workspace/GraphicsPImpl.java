@@ -3,10 +3,10 @@ package workspace;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.processing.LightRendererImpl;
-import engine.processing.ProcessingFontManager;
-import engine.processing.ProcessingTexture;
-import engine.processing.VBOProcessing;
+import engine.backend.processing.LightRendererImpl;
+import engine.backend.processing.ProcessingFontManager;
+import engine.backend.processing.ProcessingTexture;
+import engine.backend.processing.VBOProcessing;
 import engine.render.Material;
 import engine.render.MaterialResolver;
 import engine.render.MaterialState;
