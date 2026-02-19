@@ -1,7 +1,7 @@
 package demos.ray;
 
 import engine.components.Transform;
-import engine.input.Input;
+import engine.runtime.input.Input;
 import engine.scene.camera.Camera;
 import math.Ray3f;
 import math.Vector3f;

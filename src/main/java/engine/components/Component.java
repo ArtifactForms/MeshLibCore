@@ -1,5 +1,6 @@
 package engine.components;
 
+import engine.scene.Scene;
 import engine.scene.SceneNode;
 
 /**
@@ -105,6 +106,21 @@ public interface Component {
    * impact during scene setup.
    */
   void onAttach();
+
+  /**
+   * Called when the component's owning {@link SceneNode} is added to a {@link Scene}.
+   *
+   * <p>While {@link #onAttach()} is triggered when a component is added to a node, this method is
+   * specifically triggered when that node (or its parent hierarchy) becomes part of an active scene
+   * graph.
+   *
+   * <p>This is the ideal place to perform setup that requires access to scene-wide resources. If
+   * the node is moved from one scene to another, this method will be called again with the new
+   * scene context.
+   *
+   * @param scene The {@link Scene} instance this component is now a part of.
+   */
+  void onAttachToScene(Scene scene);
 
   /**
    * Called when the component is detached from a {@link SceneNode}.

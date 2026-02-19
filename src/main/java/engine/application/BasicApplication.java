@@ -1,16 +1,16 @@
 package engine.application;
 
 import engine.Timer;
-import engine.collision.CollisionSystem;
+import engine.backend.processing.ProcessingApplication;
 import engine.components.SmoothFlyByCameraControl;
-import engine.debug.Debug;
-import engine.debug.DebugInfoUpdater;
-import engine.debug.DebugOverlay;
-import engine.debug.core.DebugContext;
-import engine.debug.core.DebugDraw;
-import engine.input.Input;
-import engine.processing.ProcessingApplication;
+import engine.physics.collision.CollisionSystem;
 import engine.resources.Font;
+import engine.runtime.debug.Debug;
+import engine.runtime.debug.DebugInfoUpdater;
+import engine.runtime.debug.DebugOverlay;
+import engine.runtime.debug.core.DebugContext;
+import engine.runtime.debug.core.DebugDraw;
+import engine.runtime.input.Input;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;

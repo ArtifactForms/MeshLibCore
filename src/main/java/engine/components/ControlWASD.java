@@ -1,22 +1,49 @@
 package engine.components;
 
-import engine.input.Input;
-import engine.input.Key;
+import engine.runtime.input.Input;
+import engine.runtime.input.Key;
 import engine.scene.SceneNode;
 import math.Vector3f;
 
 /**
- * ControlWASD is a movement component that allows moving a node in the scene graph using keyboard
- * input (W/A/S/D) or custom key mappings. It integrates with the scene's transformation system to
- * control position changes, allowing basic 3D navigation in a scene graph.
+ * ControlWASD is an input-driven movement component that translates keyboard input (W/A/S/D by
+ * default) into directional movement for a {@link SceneNode}.
  *
- * <p>Movement is normalized to ensure consistent speed, even when moving diagonally. This class
- * supports velocity adjustments via the speed multiplier and works by translating the owning node
- * within the 3D world space.
+ * <p>This component can operate in two distinct modes:
  *
- * <p>Example usage: Attach this component to a {@link SceneNode} to allow movement using keyboard
- * inputs. The position updates depend on the elapsed time per frame to ensure smooth and consistent
- * movement over varying frame rates.
+ * <ul>
+ *   <li><b>Standalone Mode:</b> If no {@link MovementInputConsumer} is assigned, the component
+ *       directly modifies the owning node's transform, applying movement in world space using a
+ *       configurable speed multiplier.
+ *   <li><b>Input Provider Mode:</b> If a {@link MovementInputConsumer} is set, this component does
+ *       not move the node directly. Instead, it forwards normalized directional input and jump
+ *       requests to the assigned consumer, allowing external systems (e.g. physics-based character
+ *       controllers) to handle movement simulation.
+ * </ul>
+ *
+ * <p>Movement input is normalized to ensure consistent speed, even when moving diagonally.
+ * Frame-rate independence is achieved by scaling movement with the elapsed time per frame (tpf).
+ *
+ * <p>This design cleanly separates input handling from movement simulation, enabling flexible
+ * architectures where input, physics, and character logic are decoupled.
+ *
+ * <p>Example usage:
+ *
+ * <pre>
+ *   ControlWASD control = new ControlWASD(input, 5f);
+ *   node.addComponent(control);
+ *
+ *   // Optional: forward input to a character controller
+ *   control.setMovementInputConsumer(characterController);
+ * </pre>
+ *
+ * <p><b>Important:</b> When operating in input provider mode (i.e. when a {@link
+ * MovementInputConsumer} is assigned), the {@code speed} property of this component may be ignored.
+ * In this case, the consumer is fully responsible for interpreting movement input and determining
+ * the final movement speed, acceleration, and physics behavior.
+ *
+ * <p>The {@code speed} value only affects movement when this component directly modifies the
+ * transform (standalone mode).
  */
 public class ControlWASD extends AbstractComponent {
 
@@ -37,6 +64,21 @@ public class ControlWASD extends AbstractComponent {
 
   /** Key used for moving backward. Default is 'S'. */
   private Key backwardKey = Key.S;
+
+  /** Key used for jumping. Default is 'SPACE' */
+  private Key jumpKey = Key.SPACE;
+
+  /**
+   * Optional movement input consumer that receives normalized directional input and jump requests.
+   *
+   * <p>If set, this component will no longer apply movement directly to the owning {@link
+   * SceneNode}. Instead, all movement input is forwarded to the provided {@link
+   * MovementInputConsumer}, allowing external systems (e.g. a physics-based character controller)
+   * to process input and perform movement simulation.
+   *
+   * <p>If null, this component falls back to default transform-based movement.
+   */
+  private MovementInputConsumer movementInputConsumer;
 
   /**
    * Constructs a new ControlWASD component, injecting the Input logic needed for detecting key
@@ -81,15 +123,31 @@ public class ControlWASD extends AbstractComponent {
    *
    * @param tpf Time per frame, used to ensure frame-rate-independent movement.
    */
-  @Override
   public void onUpdate(float tpf) {
+
     SceneNode node = getOwner();
-    Vector3f velocity = handleInput();
+    Vector3f direction = handleInput();
 
-    Transform transform = node.getTransform();
-    Vector3f position = transform.getPosition();
+    if (movementInputConsumer != null) {
 
-    transform.setPosition(position.add(velocity.mult(tpf)));
+      if (direction.lengthSquared() > 0f) {
+        movementInputConsumer.addMovementInput(direction);
+      }
+
+      if (input.isKeyPressed(jumpKey)) {
+        movementInputConsumer.jump();
+      }
+
+      return;
+    }
+
+    // Default Movement (no Controller)
+    if (direction.lengthSquared() > 0f) {
+      Vector3f velocity = direction.mult(speed);
+      Transform transform = node.getTransform();
+      Vector3f position = transform.getPosition();
+      transform.setPosition(position.add(velocity.mult(tpf)));
+    }
   }
 
   /**
@@ -100,19 +158,18 @@ public class ControlWASD extends AbstractComponent {
    * @return A velocity vector representing the computed movement direction and speed.
    */
   private Vector3f handleInput() {
-    Vector3f velocity = new Vector3f();
+    Vector3f direction = new Vector3f();
 
-    // Check for movement inputs
-    if (input.isKeyPressed(forwardKey)) velocity.addLocal(0, 0, -1);
-    if (input.isKeyPressed(leftKey)) velocity.addLocal(-1, 0, 0);
-    if (input.isKeyPressed(backwardKey)) velocity.addLocal(0, 0, 1);
-    if (input.isKeyPressed(rightKey)) velocity.addLocal(1, 0, 0);
+    if (input.isKeyPressed(forwardKey)) direction.addLocal(0, 0, -1);
+    if (input.isKeyPressed(leftKey)) direction.addLocal(-1, 0, 0);
+    if (input.isKeyPressed(backwardKey)) direction.addLocal(0, 0, 1);
+    if (input.isKeyPressed(rightKey)) direction.addLocal(1, 0, 0);
 
-    // Normalize diagonal movement to prevent unintended speed boosts
-    if (velocity.length() > 0) {
-      velocity.normalizeLocal().multLocal(speed);
+    if (direction.lengthSquared() > 0f) {
+      direction.normalizeLocal();
     }
-    return velocity;
+
+    return direction;
   }
 
   /**
@@ -205,6 +262,29 @@ public class ControlWASD extends AbstractComponent {
    */
   public void setForwardKey(Key forwardKey) {
     this.forwardKey = forwardKey;
+  }
+
+  /** Sets the key used to jump. */
+  public void setJumpKey(Key jumpKey) {
+    this.jumpKey = jumpKey;
+  }
+
+  /**
+   * Sets the {@link MovementInputConsumer} that should handle movement input.
+   *
+   * <p>When a consumer is assigned, this component switches from direct transform-based movement to
+   * an input-provider mode. Movement directions are normalized and forwarded via {@link
+   * MovementInputConsumer#addMovementInput(math.Vector3f)}, and jump requests are forwarded via
+   * {@link MovementInputConsumer#jump()}.
+   *
+   * <p>Passing {@code null} disables input forwarding and restores the default behavior of directly
+   * modifying the owning node's transform.
+   *
+   * @param movementInputConsumer The movement consumer responsible for handling movement input, or
+   *     {@code null} to use default movement.
+   */
+  public void setMovementInputConsumer(MovementInputConsumer movementInputConsumer) {
+    this.movementInputConsumer = movementInputConsumer;
   }
 
   /**

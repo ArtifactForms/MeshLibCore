@@ -2,8 +2,8 @@ package demos.voxels;
 
 import java.util.ArrayList;
 
+import engine.backend.processing.BufferedShape;
 import engine.components.StaticGeometry;
-import engine.processing.BufferedShape;
 import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Texture;

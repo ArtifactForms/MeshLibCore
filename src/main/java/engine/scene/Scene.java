@@ -8,6 +8,9 @@ import engine.scene.audio.AudioListener;
 import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
+import engine.system.SceneSystem;
+import engine.system.SceneSystemManager;
+import engine.system.UpdatePhase;
 import math.Color;
 import workspace.ui.Graphics;
 
@@ -42,6 +45,8 @@ public class Scene {
 
   private SceneNode worldRoot;
 
+  private SceneSystemManager systemManager;
+
   /** Constructs a {@code Scene} with a default name. */
   public Scene() {
     this(DEFAULT_NAME);
@@ -65,6 +70,7 @@ public class Scene {
     this.uiRoot.setScene(this);
     this.worldRoot = new SceneNode();
     this.worldRoot.setScene(this);
+    this.systemManager = new SceneSystemManager();
   }
 
   /**
@@ -105,18 +111,37 @@ public class Scene {
   }
 
   /**
-   * Updates all nodes in the scene graph.
+   * Executes a full frame update using the phased engine pipeline.
    *
-   * @param deltaTime The time step for simulation logic updates.
+   * <p>The update is performed in deterministic phases defined by {@link UpdatePhase}. For each
+   * phase: 1. All registered systems for that phase are updated. 2. Engine-level operations (world
+   * update, audio, UI) are executed in their designated phases.
+   *
+   * <p>This ensures a clear separation between simulation, world logic, and presentation updates.
+   *
+   * @param deltaTime The frame time in seconds.
    */
   public void update(float deltaTime) {
 
-    worldRoot.update(deltaTime);
+    for (UpdatePhase phase : UpdatePhase.values()) {
 
-    worldRoot.pruneDestroyedChildren();
+      // Update all systems registered for the current phase
+      systemManager.updatePhase(phase, deltaTime);
 
-    updateAudio();
-    updateUI(deltaTime);
+      // Update the scene graph during the WORLD_UPDATE phase
+      if (phase == UpdatePhase.WORLD_UPDATE) {
+        worldRoot.update(deltaTime);
+        worldRoot.pruneDestroyedChildren();
+
+        // UI is updated after world logic to reflect final transforms/state
+        updateUI(deltaTime);
+      }
+
+      // Synchronize audio after world updates are finalized
+      if (phase == UpdatePhase.POST_WORLD) {
+        updateAudio();
+      }
+    }
   }
 
   private void updateUI(float deltaTime) {
@@ -427,5 +452,51 @@ public class Scene {
    */
   public SceneNode getUIRoot() {
     return uiRoot;
+  }
+
+  /**
+   * Registers a {@link SceneSystem} with this scene.
+   *
+   * <p>The system will be attached to this scene via {@link SceneSystem#onAttach(Scene)} and
+   * becomes part of the scene's update lifecycle.
+   *
+   * <p>After registration, the system will automatically receive update calls when {@link
+   * #update(float)} is invoked on this scene.
+   *
+   * <p>Systems are scene-scoped. A system instance should not be added to multiple scenes
+   * simultaneously.
+   *
+   * @param system the system to register; must not be null
+   * @throws IllegalArgumentException if the system is null
+   */
+  public void addSystem(SceneSystem system) {
+    if (system == null) throw new IllegalArgumentException("System cannot be null.");
+    systemManager.addSystem(system, this);
+  }
+
+  /**
+   * Returns the system instance of the specified type that is registered with this scene.
+   *
+   * <p>Systems are scene-scoped and must have been previously registered via {@link
+   * #addSystem(SceneSystem)}. If no system of the given type is registered, this method returns
+   * {@code null}.
+   *
+   * <p>Typical usage:
+   *
+   * <pre>
+   * PhysicsQuerySystem physics =
+   *     scene.getSystem(PhysicsQuerySystem.class);
+   * </pre>
+   *
+   * @param <T> the concrete system type
+   * @param type the class object representing the requested system type; must not be {@code null}
+   * @return the registered system instance of the given type, or {@code null} if none is found
+   * @throws IllegalArgumentException if {@code type} is {@code null}
+   */
+  public <T extends SceneSystem> T getSystem(Class<T> type) {
+    if (type == null) {
+      throw new IllegalArgumentException("System type must not be null");
+    }
+    return systemManager.getSystem(type);
   }
 }

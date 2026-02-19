@@ -1,6 +1,6 @@
 package engine.application;
 
-import engine.input.Input;
+import engine.runtime.input.Input;
 import workspace.ui.Graphics;
 
 public class ApplicationContainer {

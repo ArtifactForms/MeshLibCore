@@ -1,9 +1,9 @@
 package engine.scene.camera;
 
 import engine.components.AbstractComponent;
-import engine.input.Input;
-import engine.input.Key;
-import engine.input.MouseInput;
+import engine.runtime.input.Input;
+import engine.runtime.input.Key;
+import engine.runtime.input.MouseInput;
 import math.Mathf;
 import math.Vector3f;
 
