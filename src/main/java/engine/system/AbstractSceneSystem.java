@@ -2,7 +2,7 @@ package engine.system;
 
 import engine.scene.Scene;
 
-public abstract class AbstractSystem implements System {
+public abstract class AbstractSceneSystem implements SceneSystem {
 
   private Scene scene;
 
@@ -15,7 +15,7 @@ public abstract class AbstractSystem implements System {
     // optional override hook
   }
 
-  public abstract void update(float deltaTime);
+  public abstract void update(UpdatePhase phase, float deltaTime);
 
   protected Scene getScene() {
     return scene;

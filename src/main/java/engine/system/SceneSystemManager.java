@@ -1,31 +1,51 @@
 package engine.system;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import engine.scene.Scene;
 
-public class SystemManager {
+public class SceneSystemManager {
 
-  private final List<System> systems = new ArrayList<>();
-  private final Map<Class<?>, System> systemMap = new HashMap<>();
+  private final List<SceneSystem> systems = new ArrayList<>();
+  
+  private final Map<Class<?>, SceneSystem> systemMap = new HashMap<>();
 
-  public void addSystem(System system, Scene scene) {
+  private final Map<UpdatePhase, List<SceneSystem>> systemsByPhase =
+      new EnumMap<>(UpdatePhase.class);
+
+  public SceneSystemManager() {
+    for (UpdatePhase phase : UpdatePhase.values()) {
+      systemsByPhase.put(phase, new ArrayList<>());
+    }
+  }
+
+  public void addSystem(SceneSystem system, Scene scene) {
     systems.add(system);
     systemMap.put(system.getClass(), system);
+
+    EnumSet<UpdatePhase> phases = system.getPhases();
+    for (UpdatePhase phase : phases) {
+      systemsByPhase.get(phase).add(system);
+    }
+
     system.onAttach(scene);
   }
 
-  public void update(float deltaTime) {
-    for (System system : systems) {
-      system.update(deltaTime);
+  public void updatePhase(UpdatePhase phase, float deltaTime) {
+    List<SceneSystem> phaseSystems = systemsByPhase.get(phase);
+
+    for (SceneSystem system : phaseSystems) {
+      system.update(phase, deltaTime);
     }
   }
 
   @SuppressWarnings("unchecked")
-  public <T extends System> T getSystem(Class<T> type) {
+  public <T extends SceneSystem> T getSystem(Class<T> type) {
     return (T) systemMap.get(type);
   }
 }
