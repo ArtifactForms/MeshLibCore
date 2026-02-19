@@ -3,24 +3,27 @@ package math;
 /**
  * Represents a mutable RGBA color using floating point components.
  *
- * <p>
- * Components are stored as floats and are not automatically clamped.
- * Values outside the range [0, 1] are allowed to support HDR rendering
- * and intermediate color calculations.
- * </p>
+ * <p>Components are stored as floats and are not automatically clamped. Values outside the range
+ * [0, 1] are allowed to support HDR rendering and intermediate color calculations.
  *
- * <p>
- * All operations are component-wise unless stated otherwise.
- * Methods with the suffix {@code Local} modify this instance,
- * while other methods return a new instance or write into a result parameter.
- * </p>
+ * <p>All operations are component-wise unless stated otherwise. Methods with the suffix {@code
+ * Local} modify this instance, while other methods return a new instance or write into a result
+ * parameter.
  *
- * <p>
- * This class is not thread-safe.
- * </p>
+ * <p>This class is not thread-safe.
  */
 public class Color {
-	
+
+  /**
+   * Tolerance used when checking whether the alpha component should be considered fully opaque.
+   *
+   * <p>Due to floating-point precision errors and accumulated arithmetic operations, the alpha
+   * value may not be exactly {@code 1.0f} even if it represents a conceptually opaque color. This
+   * tolerance allows treating values sufficiently close to {@code 1.0f} as opaque.
+   *
+   * <p>This constant is intentionally small and only affects semantic checks such as {@link
+   * #isOpaque()}. It does <b>not</b> clamp or modify stored color values.
+   */
   public static final float ALPHA_OPAQUE_TOLERANCE = 1e-4f;
 
   /** Solid black. RGBA is (0, 0, 0, 1). */
@@ -288,7 +291,6 @@ public class Color {
    *
    * @param scalar the divisor
    * @return this color after division
-   *
    * @throws ArithmeticException if scalar is zero
    */
   public Color divideLocal(float scalar) {
@@ -322,7 +324,6 @@ public class Color {
    * @param other the color to multiply with
    * @param result the color to store the result in (may be null)
    * @return the resulting color
-   *
    * @throws NullPointerException if other is null
    */
   public Color mult(Color other, Color result) {
@@ -333,13 +334,12 @@ public class Color {
     result.a = this.a * other.a;
     return result;
   }
-  
+
   /**
    * Multiplies this color component-wise with another color.
    *
    * @param other the color to multiply with
    * @return this color after multiplication
-   *
    * @throws NullPointerException if other is null
    */
   public Color multLocal(Color other) {
@@ -351,8 +351,7 @@ public class Color {
   }
 
   /**
-   * Multiplies the RGB components of this color by a scalar.
-   * The alpha component remains unchanged.
+   * Multiplies the RGB components of this color by a scalar. The alpha component remains unchanged.
    *
    * @param scalar the scalar multiplier
    * @param result the color to store the result in (may be null)
@@ -368,8 +367,7 @@ public class Color {
   }
 
   /**
-   * Multiplies the RGB components of this color by a scalar.
-   * The alpha component remains unchanged.
+   * Multiplies the RGB components of this color by a scalar. The alpha component remains unchanged.
    *
    * @param scalar the scalar multiplier
    * @return this color after scaling
@@ -384,10 +382,7 @@ public class Color {
   /**
    * Returns true if all components of this color are exactly zero.
    *
-   * <p>
-   * This method performs exact comparison.
-   * No floating point tolerance is used.
-   * </p>
+   * <p>This method performs exact comparison. No floating point tolerance is used.
    *
    * @return true if r, g, b and a are all 0
    */
@@ -398,14 +393,12 @@ public class Color {
   /**
    * Returns true if this color is considered fully opaque.
    *
-   * <p>
-   * Uses {@link #ALPHA_OPAQUE_TOLERANCE} for comparison.
-   * </p>
+   * <p>Uses {@link #ALPHA_OPAQUE_TOLERANCE} for comparison.
    *
    * @return true if alpha is approximately 1
    */
   public boolean isOpaque() {
-      return a >= 1f - ALPHA_OPAQUE_TOLERANCE;
+    return a >= 1f - ALPHA_OPAQUE_TOLERANCE;
   }
 
   /**
@@ -421,27 +414,24 @@ public class Color {
     a = Mathf.clamp01(a);
     return this;
   }
-  
+
   /**
    * Returns a new color that is a clamped copy of this color.
    *
    * @return a new clamped color
    */
   public Color clamped() {
-      return new Color(this).clampLocal();
+    return new Color(this).clampLocal();
   }
-  
+
   /**
    * Returns true if all components are within the range [0, 1].
    *
    * @return true if r, g, b and a are clamped
    */
   public boolean isClamped() {
-	    return r >= 0f && r <= 1f &&
-	           g >= 0f && g <= 1f &&
-	           b >= 0f && b <= 1f &&
-	           a >= 0f && a <= 1f;
-	}
+    return r >= 0f && r <= 1f && g >= 0f && g <= 1f && b >= 0f && b <= 1f && a >= 0f && a <= 1f;
+  }
 
   /**
    * Sets all components of this color to 0.0f internally, and returns a handle to this color for
@@ -455,8 +445,7 @@ public class Color {
   }
 
   /**
-   * Returns the maximum of the RGB components.
-   * The alpha component is not considered.
+   * Returns the maximum of the RGB components. The alpha component is not considered.
    *
    * @return max(r, g, b)
    */
