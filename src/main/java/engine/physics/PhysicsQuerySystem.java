@@ -1,46 +1,51 @@
 package engine.physics;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import engine.collision.component.ColliderComponent;
-import engine.scene.Scene;
 import engine.scene.SceneNode;
-import engine.system.AbstractSystem;
+import engine.system.AbstractSceneSystem;
+import engine.system.UpdatePhase;
 import math.Vector3f;
 
-public class PhysicsQuerySystem extends AbstractSystem {
+/**
+ * Provides physics query functionality (sweep tests).
+ *
+ * <p>During the PHYSICS phase, all active colliders in the scene are collected and cached. Query
+ * operations then operate on this cached list for the remainder of the frame.
+ *
+ * <p>This ensures deterministic and efficient physics queries.
+ */
+public class PhysicsQuerySystem extends AbstractSceneSystem {
 
   private final List<ColliderComponent> colliders = new ArrayList<>();
 
+  private final List<PhysicsQueryListener> listeners = new ArrayList<PhysicsQueryListener>();
+
   @Override
-  public void update(float deltaTime) {}
-
-  public SweepResult sweepCapsuleAtPosition(
-      Scene scene, ColliderComponent capsuleComponent, Vector3f startPos, Vector3f delta) {
-
-    collectColliders();
-
-    SweepResult best = SweepResult.noHit();
-
-    for (ColliderComponent other : colliders) {
-
-      if (other == capsuleComponent) continue;
-
-      SweepResult hit =
-          SweepTests.sweepCapsuleVsColliderAtPosition(capsuleComponent, startPos, other, delta);
-
-      if (!hit.hasHit()) continue;
-
-      if (!best.hasHit() || hit.getTOI() < best.getTOI()) best = hit;
-    }
-
-    return best;
+  public EnumSet<UpdatePhase> getPhases() {
+    // Prepare collider cache during PHYSICS phase
+    return EnumSet.of(UpdatePhase.PHYSICS);
   }
 
-  public SweepResult sweepCapsule(ColliderComponent capsule, Vector3f delta) {
+  @Override
+  public void update(UpdatePhase phase, float deltaTime) {
 
-    collectColliders();
+    if (phase == UpdatePhase.PHYSICS) {
+      collectColliders();
+    }
+  }
+
+  /**
+   * Performs a capsule sweep against all cached colliders.
+   *
+   * @param capsule The capsule collider performing the sweep.
+   * @param delta The movement vector.
+   * @return The closest sweep result.
+   */
+  public SweepResult sweepCapsule(ColliderComponent capsule, Vector3f delta) {
 
     float closestTOI = 1f;
     SweepResult bestResult = SweepResult.noHit();
@@ -60,11 +65,14 @@ public class PhysicsQuerySystem extends AbstractSystem {
       }
     }
 
+    notifyListeners(new PhysicsQueryEvent(capsule, delta, bestResult));
+
     return bestResult;
   }
 
   /* ========================================================= */
 
+  /** Collects all active collider components from the scene. Called once per PHYSICS phase. */
   private void collectColliders() {
 
     colliders.clear();
@@ -76,5 +84,18 @@ public class PhysicsQuerySystem extends AbstractSystem {
 
               colliders.addAll(node.getComponents(ColliderComponent.class));
             });
+  }
+
+  protected void notifyListeners(PhysicsQueryEvent e) {
+    for (PhysicsQueryListener l : listeners) l.onSweepCapsule(e);
+  }
+
+  public void addListener(PhysicsQueryListener listener) {
+    if (listener == null) throw new IllegalArgumentException("Listener cannot be null.");
+    listeners.add(listener);
+  }
+
+  public void removeListener(PhysicsQueryListener listener) {
+    listeners.remove(listener);
   }
 }

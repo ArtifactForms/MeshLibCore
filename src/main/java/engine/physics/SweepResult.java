@@ -6,7 +6,7 @@ import math.Vector3f;
 public final class SweepResult {
 
   private final boolean hit;
-  private final float toi;
+  private final float toi; // Time of impact
   private final Vector3f point;
   private final Vector3f normal;
   private final ColliderComponent collider;

@@ -57,9 +57,9 @@ public final class SweepTests {
 
     float radius = capsule.getRadius();
     float halfHeight = capsule.getHalfHeight();
-
+    
     Vector3f bottomCenter = capsuleCenter.add(new Vector3f(0, -halfHeight, 0));
-    Vector3f topCenter = capsuleCenter.add(new Vector3f(0, halfHeight, 0));
+    Vector3f topCenter    = capsuleCenter.add(new Vector3f(0,  halfHeight, 0));
 
     SweepResult bottomHit =
         sweepSphereVsAABB(bottomCenter, radius, otherComponent, boxCenter, box, delta);
@@ -166,19 +166,16 @@ public final class SweepTests {
     float halfHeight = capsule.getHalfHeight();
     Vector3f halfExt = box.getHalfExtents();
 
-    float capsuleMinY = Math.min(
-            capsuleCenter.y - halfHeight,
-            capsuleCenter.y + delta.y - halfHeight);
+    float capsuleMinY =
+        Math.min(capsuleCenter.y - halfHeight, capsuleCenter.y + delta.y - halfHeight);
 
-    float capsuleMaxY = Math.max(
-            capsuleCenter.y + halfHeight,
-            capsuleCenter.y + delta.y + halfHeight);
+    float capsuleMaxY =
+        Math.max(capsuleCenter.y + halfHeight, capsuleCenter.y + delta.y + halfHeight);
 
     float boxMinY = boxCenter.y - halfExt.y;
     float boxMaxY = boxCenter.y + halfExt.y;
 
-    if (capsuleMaxY < boxMinY || capsuleMinY > boxMaxY)
-        return SweepResult.noHit();
+    if (capsuleMaxY < boxMinY || capsuleMinY > boxMaxY) return SweepResult.noHit();
 
     Vector3f expandedHalf = new Vector3f(halfExt.x + radius, halfExt.y, halfExt.z + radius);
 
