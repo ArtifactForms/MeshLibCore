@@ -1,4 +1,4 @@
-package engine.animation.skeleton;
+package engine.runtime.animation.skeleton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
