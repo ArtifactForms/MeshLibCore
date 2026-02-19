@@ -1,4 +1,4 @@
-package engine.particles;
+package engine.runtime.particles;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
