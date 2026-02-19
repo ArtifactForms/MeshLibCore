@@ -2,13 +2,13 @@ package engine.debug;
 
 import java.util.List;
 
-import engine.collision.collider.AABBCollider;
-import engine.collision.collider.CapsuleCollider;
-import engine.collision.collider.Collider;
-import engine.collision.collider.SphereCollider;
-import engine.collision.component.ColliderComponent;
 import engine.components.AbstractComponent;
 import engine.debug.core.DebugDraw;
+import engine.physics.collision.collider.AABBCollider;
+import engine.physics.collision.collider.CapsuleCollider;
+import engine.physics.collision.collider.Collider;
+import engine.physics.collision.collider.SphereCollider;
+import engine.physics.collision.component.ColliderComponent;
 import engine.scene.SceneNode;
 import math.Bounds;
 import math.Color;

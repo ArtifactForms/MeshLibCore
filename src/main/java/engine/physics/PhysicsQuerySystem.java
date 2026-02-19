@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import engine.collision.component.ColliderComponent;
+import engine.physics.collision.component.ColliderComponent;
 import engine.scene.SceneNode;
 import engine.system.AbstractSceneSystem;
 import engine.system.UpdatePhase;

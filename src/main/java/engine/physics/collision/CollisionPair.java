@@ -1,6 +1,6 @@
-package engine.collision;
+package engine.physics.collision;
 
-import engine.collision.component.ColliderComponent;
+import engine.physics.collision.component.ColliderComponent;
 
 public final class CollisionPair {
 

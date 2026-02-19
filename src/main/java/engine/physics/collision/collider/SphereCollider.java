@@ -1,4 +1,4 @@
-package engine.collision.collider;
+package engine.physics.collision.collider;
 
 public class SphereCollider extends AbstractCollider {
 

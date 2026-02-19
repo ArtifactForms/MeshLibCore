@@ -1,7 +1,7 @@
-package engine.collision;
+package engine.physics.collision;
 
-import engine.collision.component.ColliderComponent;
-import engine.collision.contact.Contact;
+import engine.physics.collision.component.ColliderComponent;
+import engine.physics.collision.contact.Contact;
 
 public interface CollisionListener {
 

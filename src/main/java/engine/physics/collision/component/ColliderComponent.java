@@ -1,13 +1,13 @@
-package engine.collision.component;
+package engine.physics.collision.component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.collision.CollisionListener;
-import engine.collision.collider.Collider;
-import engine.collision.contact.Contact;
 import engine.components.AbstractComponent;
 import engine.components.Transform;
+import engine.physics.collision.CollisionListener;
+import engine.physics.collision.collider.Collider;
+import engine.physics.collision.contact.Contact;
 import math.Vector3f;
 
 public class ColliderComponent extends AbstractComponent {

@@ -1,13 +1,13 @@
-package engine.collision;
+package engine.physics.collision;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import engine.collision.component.ColliderComponent;
-import engine.collision.contact.Contact;
-import engine.collision.narrowphase.CollisionTests;
+import engine.physics.collision.component.ColliderComponent;
+import engine.physics.collision.contact.Contact;
+import engine.physics.collision.narrowphase.CollisionTests;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 

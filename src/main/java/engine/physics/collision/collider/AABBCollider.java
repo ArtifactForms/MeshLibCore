@@ -1,4 +1,4 @@
-package engine.collision.collider;
+package engine.physics.collision.collider;
 
 import math.Vector3f;
 

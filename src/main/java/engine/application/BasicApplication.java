@@ -2,7 +2,6 @@ package engine.application;
 
 import engine.Timer;
 import engine.backend.processing.ProcessingApplication;
-import engine.collision.CollisionSystem;
 import engine.components.SmoothFlyByCameraControl;
 import engine.debug.Debug;
 import engine.debug.DebugInfoUpdater;
@@ -10,6 +9,7 @@ import engine.debug.DebugOverlay;
 import engine.debug.core.DebugContext;
 import engine.debug.core.DebugDraw;
 import engine.input.Input;
+import engine.physics.collision.CollisionSystem;
 import engine.resources.Font;
 import engine.scene.Scene;
 import engine.scene.SceneNode;

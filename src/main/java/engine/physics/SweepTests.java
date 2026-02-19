@@ -1,9 +1,9 @@
 package engine.physics;
 
-import engine.collision.collider.AABBCollider;
-import engine.collision.collider.CapsuleCollider;
-import engine.collision.collider.ColliderType;
-import engine.collision.component.ColliderComponent;
+import engine.physics.collision.collider.AABBCollider;
+import engine.physics.collision.collider.CapsuleCollider;
+import engine.physics.collision.collider.ColliderType;
+import engine.physics.collision.component.ColliderComponent;
 import math.Vector3f;
 
 public final class SweepTests {
@@ -37,10 +37,6 @@ public final class SweepTests {
     CapsuleCollider capsule = (CapsuleCollider) capsuleCol.getCollider();
 
     AABBCollider box = (AABBCollider) other.getCollider();
-
-    // ⚠ WICHTIG:
-    // Hier benutzen wir NICHT capsuleCol.getWorldPosition()
-    // sondern die explizite Startposition!
 
     return sweepCapsuleVsAABB(
         capsuleStartPos, capsule, other, other.getWorldPosition(), box, delta);

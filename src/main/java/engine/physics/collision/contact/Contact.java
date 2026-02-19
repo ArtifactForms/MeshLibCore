@@ -1,4 +1,4 @@
-package engine.collision.contact;
+package engine.physics.collision.contact;
 
 import math.Vector3f;
 

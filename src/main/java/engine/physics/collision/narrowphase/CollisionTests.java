@@ -1,8 +1,8 @@
-package engine.collision.narrowphase;
+package engine.physics.collision.narrowphase;
 
-import engine.collision.collider.*;
-import engine.collision.component.ColliderComponent;
-import engine.collision.contact.Contact;
+import engine.physics.collision.collider.*;
+import engine.physics.collision.component.ColliderComponent;
+import engine.physics.collision.contact.Contact;
 import math.Vector3f;
 
 public final class CollisionTests {

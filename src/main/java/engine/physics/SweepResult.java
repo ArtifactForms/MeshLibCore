@@ -1,6 +1,6 @@
 package engine.physics;
 
-import engine.collision.component.ColliderComponent;
+import engine.physics.collision.component.ColliderComponent;
 import math.Vector3f;
 
 public final class SweepResult {
