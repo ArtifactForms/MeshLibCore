@@ -8,7 +8,7 @@ import demos.ray.Raycaster;
 import engine.components.AbstractComponent;
 import engine.components.Geometry;
 import engine.components.StaticGeometry;
-import engine.debug.core.DebugDraw;
+import engine.runtime.debug.core.DebugDraw;
 import engine.runtime.input.Input;
 import engine.scene.Scene;
 import engine.scene.SceneNode;

@@ -2,7 +2,7 @@ package demos.voxels;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.debug.DebugOverlay;
+import engine.runtime.debug.DebugOverlay;
 import workspace.ui.Graphics;
 
 public class ChunkProfile extends AbstractComponent implements RenderableComponent {
