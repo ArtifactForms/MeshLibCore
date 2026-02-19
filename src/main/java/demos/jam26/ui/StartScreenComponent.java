@@ -3,12 +3,12 @@ package demos.jam26.ui;
 import demos.jam26.assets.AssetRefs;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.input.Input;
-import engine.input.Key;
-import engine.input.MouseInput;
 import engine.resources.Font;
 import engine.resources.Image;
 import engine.resources.ResourceManager;
+import engine.runtime.input.Input;
+import engine.runtime.input.Key;
+import engine.runtime.input.MouseInput;
 import math.Color;
 import workspace.ui.Graphics;
 

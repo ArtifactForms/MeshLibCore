@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import engine.input.Gamepad;
-import engine.input.GamepadInput;
-import engine.input.GamepadListener;
+import engine.runtime.input.Gamepad;
+import engine.runtime.input.GamepadInput;
+import engine.runtime.input.GamepadListener;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 

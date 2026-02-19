@@ -1,7 +1,7 @@
 package engine.components;
 
-import engine.input.Input;
-import engine.input.Key;
+import engine.runtime.input.Input;
+import engine.runtime.input.Key;
 
 /**
  * Toggles the active state of the owning SceneNode when a specific key is pressed.

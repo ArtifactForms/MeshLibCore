@@ -1,8 +1,8 @@
 package engine.components;
 
-import engine.input.Input;
-import engine.input.Key;
-import engine.input.MouseMode;
+import engine.runtime.input.Input;
+import engine.runtime.input.Key;
+import engine.runtime.input.MouseMode;
 import engine.scene.camera.Camera;
 import engine.scene.camera.PerspectiveCamera;
 import math.Mathf;

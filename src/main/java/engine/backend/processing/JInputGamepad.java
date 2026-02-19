@@ -3,9 +3,9 @@ package engine.backend.processing;
 import java.util.EnumSet;
 import java.util.Set;
 
-import engine.input.Gamepad;
-import engine.input.GamepadAxis;
-import engine.input.GamepadButton;
+import engine.runtime.input.Gamepad;
+import engine.runtime.input.GamepadAxis;
+import engine.runtime.input.GamepadButton;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 

@@ -2,18 +2,18 @@ package engine.backend.processing;
 
 import java.util.Collection;
 
-import engine.input.Gamepad;
-import engine.input.GamepadInput;
-import engine.input.GamepadListener;
-import engine.input.Input;
-import engine.input.Key;
-import engine.input.KeyInput;
-import engine.input.KeyListener;
-import engine.input.MouseInput;
-import engine.input.MouseListener;
-import engine.input.MouseMode;
-import engine.input.action.DefaultInputBindings;
-import engine.input.action.InputActions;
+import engine.runtime.input.Gamepad;
+import engine.runtime.input.GamepadInput;
+import engine.runtime.input.GamepadListener;
+import engine.runtime.input.Input;
+import engine.runtime.input.Key;
+import engine.runtime.input.KeyInput;
+import engine.runtime.input.KeyListener;
+import engine.runtime.input.MouseInput;
+import engine.runtime.input.MouseListener;
+import engine.runtime.input.MouseMode;
+import engine.runtime.input.action.DefaultInputBindings;
+import engine.runtime.input.action.InputActions;
 
 public class InputImpl implements Input {
 

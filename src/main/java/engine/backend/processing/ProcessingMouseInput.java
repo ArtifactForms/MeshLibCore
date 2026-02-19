@@ -4,10 +4,10 @@ import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.input.MouseEvent;
-import engine.input.MouseInput;
-import engine.input.MouseListener;
-import engine.input.MouseMode;
+import engine.runtime.input.MouseEvent;
+import engine.runtime.input.MouseInput;
+import engine.runtime.input.MouseListener;
+import engine.runtime.input.MouseMode;
 import processing.core.PApplet;
 
 public class ProcessingMouseInput implements MouseInput {

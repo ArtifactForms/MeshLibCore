@@ -1,7 +1,7 @@
 package engine.components;
 
-import engine.input.Input;
-import engine.input.Key;
+import engine.runtime.input.Input;
+import engine.runtime.input.Key;
 import engine.scene.SceneNode;
 import math.Vector3f;
 

@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import engine.input.InputState;
-import engine.input.Key;
-import engine.input.KeyCharacterMapper;
-import engine.input.KeyInput;
-import engine.input.KeyListener;
+import engine.runtime.input.InputState;
+import engine.runtime.input.Key;
+import engine.runtime.input.KeyCharacterMapper;
+import engine.runtime.input.KeyInput;
+import engine.runtime.input.KeyListener;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 
@@ -152,16 +152,16 @@ public class ProcessingKeyInput implements KeyInput {
 
   private void handlePress(Key key, KeyEvent e) {
     inputState.onKeyPressed(key);
-    fireKeyPressed(new engine.input.KeyEvent(key, e.getKey()));
+    fireKeyPressed(new engine.runtime.input.KeyEvent(key, e.getKey()));
   }
 
   private void handleRelease(Key key, KeyEvent e) {
     inputState.onKeyReleased(key);
-    fireKeyReleased(new engine.input.KeyEvent(key, e.getKey()));
+    fireKeyReleased(new engine.runtime.input.KeyEvent(key, e.getKey()));
   }
 
   private void handleTyped(Key key, KeyEvent e) {
-    fireKeyTyped(new engine.input.KeyEvent(key, e.getKey()));
+    fireKeyTyped(new engine.runtime.input.KeyEvent(key, e.getKey()));
   }
 
   @Override
@@ -174,15 +174,15 @@ public class ProcessingKeyInput implements KeyInput {
     listeners.remove(listener);
   }
 
-  protected void fireKeyPressed(engine.input.KeyEvent e) {
+  protected void fireKeyPressed(engine.runtime.input.KeyEvent e) {
     for (KeyListener l : listeners) l.onKeyPressed(e);
   }
 
-  protected void fireKeyReleased(engine.input.KeyEvent e) {
+  protected void fireKeyReleased(engine.runtime.input.KeyEvent e) {
     for (KeyListener l : listeners) l.onKeyReleased(e);
   }
 
-  protected void fireKeyTyped(engine.input.KeyEvent e) {
+  protected void fireKeyTyped(engine.runtime.input.KeyEvent e) {
     for (KeyListener l : listeners) l.onKeyTyped(e);
   }
 }

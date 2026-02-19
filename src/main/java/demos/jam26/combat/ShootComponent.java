@@ -9,7 +9,7 @@ import engine.components.AbstractComponent;
 import engine.components.Geometry;
 import engine.components.StaticGeometry;
 import engine.debug.core.DebugDraw;
-import engine.input.Input;
+import engine.runtime.input.Input;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.audio.SoundManager;

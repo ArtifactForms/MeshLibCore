@@ -2,12 +2,12 @@ package engine.backend.processing;
 
 import engine.application.ApplicationContainer;
 import engine.application.ApplicationSettings;
-import engine.input.GamepadInput;
-import engine.input.Input;
-import engine.input.KeyInput;
-import engine.input.MouseInput;
 import engine.resources.ResourceManager;
 import engine.resources.TextureManager;
+import engine.runtime.input.GamepadInput;
+import engine.runtime.input.Input;
+import engine.runtime.input.KeyInput;
+import engine.runtime.input.MouseInput;
 import engine.vbo.VBOFactory;
 import processing.core.PApplet;
 import workspace.GraphicsPImpl;

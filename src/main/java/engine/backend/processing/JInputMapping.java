@@ -1,7 +1,7 @@
 package engine.backend.processing;
 
-import engine.input.GamepadAxis;
-import engine.input.GamepadButton;
+import engine.runtime.input.GamepadAxis;
+import engine.runtime.input.GamepadButton;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import com.jogamp.newt.event.KeyEvent;
 
-import engine.input.Key;
+import engine.runtime.input.Key;
 
 public class NewtKeyMapper {
 
