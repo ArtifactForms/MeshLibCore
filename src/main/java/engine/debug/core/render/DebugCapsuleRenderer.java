@@ -20,9 +20,9 @@ import workspace.ui.Graphics;
  *
  * </pre>
  *
- * The total height is defined by: halfHeight * 2
+ * The total height is defined by: (halfHeight * 2) + (radius * 2)
  *
- * <p>The cylindrical section height is: (halfHeight - radius) * 2
+ * <p>The cylindrical section height is: halfHeight * 2
  */
 class DebugCapsuleRenderer implements DebugCommandRenderer<DebugCapsuleCommand> {
 
@@ -39,7 +39,7 @@ class DebugCapsuleRenderer implements DebugCommandRenderer<DebugCapsuleCommand> 
     float halfHeight = command.halfHeight;
 
     // Half-height of the cylindrical part (excluding hemispheres)
-    float cylinderHalf = Math.max(0f, halfHeight - radius);
+    float cylinderHalf = Math.max(0f, halfHeight);
 
     g.setColor(command.color);
 
@@ -76,13 +76,13 @@ class DebugCapsuleRenderer implements DebugCommandRenderer<DebugCapsuleCommand> 
 
     // Top ring
     g.pushMatrix();
-    g.translate(0, half, 0);
+    g.translate(0, -half, 0);
     drawXZCircle(g, radius);
     g.popMatrix();
 
     // Bottom ring
     g.pushMatrix();
-    g.translate(0, -half, 0);
+    g.translate(0, half, 0);
     drawXZCircle(g, radius);
     g.popMatrix();
   }
@@ -105,20 +105,20 @@ class DebugCapsuleRenderer implements DebugCommandRenderer<DebugCapsuleCommand> 
   Hemispheres
   ========================================================= */
 
-  /** Draws the bottom hemisphere at -cylinderHalf. */
+  /** Draws the bottom hemisphere at +cylinderHalf. */
   private void drawBottomHemisphere(Graphics g, float radius, float half) {
 
     g.pushMatrix();
-    g.translate(0, -half, 0);
+    g.translate(0, half, 0);
     drawSphereRings(g, radius);
     g.popMatrix();
   }
 
-  /** Draws the top hemisphere at +cylinderHalf. */
+  /** Draws the top hemisphere at -cylinderHalf. */
   private void drawTopHemisphere(Graphics g, float radius, float half) {
 
     g.pushMatrix();
-    g.translate(0, half, 0);
+    g.translate(0, -half, 0);
     drawSphereRings(g, radius);
     g.popMatrix();
   }

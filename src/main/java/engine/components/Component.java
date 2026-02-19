@@ -1,5 +1,6 @@
 package engine.components;
 
+import engine.scene.Scene;
 import engine.scene.SceneNode;
 
 /**
@@ -105,6 +106,8 @@ public interface Component {
    * impact during scene setup.
    */
   void onAttach();
+  
+  void onAttachToScene(Scene scene);
 
   /**
    * Called when the component is detached from a {@link SceneNode}.

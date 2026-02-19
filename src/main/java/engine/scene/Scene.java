@@ -8,6 +8,8 @@ import engine.scene.audio.AudioListener;
 import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
+import engine.system.System;
+import engine.system.SystemManager;
 import math.Color;
 import workspace.ui.Graphics;
 
@@ -42,6 +44,8 @@ public class Scene {
 
   private SceneNode worldRoot;
 
+  private SystemManager systemManager;
+
   /** Constructs a {@code Scene} with a default name. */
   public Scene() {
     this(DEFAULT_NAME);
@@ -65,6 +69,7 @@ public class Scene {
     this.uiRoot.setScene(this);
     this.worldRoot = new SceneNode();
     this.worldRoot.setScene(this);
+    this.systemManager = new SystemManager();
   }
 
   /**
@@ -116,7 +121,12 @@ public class Scene {
     worldRoot.pruneDestroyedChildren();
 
     updateAudio();
+    updateSystems(deltaTime);
     updateUI(deltaTime);
+  }
+
+  private void updateSystems(float deltaTime) {
+    systemManager.update(deltaTime);
   }
 
   private void updateUI(float deltaTime) {
@@ -427,5 +437,51 @@ public class Scene {
    */
   public SceneNode getUIRoot() {
     return uiRoot;
+  }
+
+  /**
+   * Registers a {@link System} with this scene.
+   *
+   * <p>The system will be attached to this scene via {@link System#onAttach(Scene)} and becomes
+   * part of the scene's update lifecycle.
+   *
+   * <p>After registration, the system will automatically receive update calls when {@link
+   * #update(float)} is invoked on this scene.
+   *
+   * <p>Systems are scene-scoped. A system instance should not be added to multiple scenes
+   * simultaneously.
+   *
+   * @param system the system to register; must not be null
+   * @throws IllegalArgumentException if the system is null
+   */
+  public void addSystem(System system) {
+    if (system == null) throw new IllegalArgumentException("System cannot be null.");
+    systemManager.addSystem(system, this);
+  }
+
+  /**
+   * Returns the system instance of the specified type that is registered with this scene.
+   *
+   * <p>Systems are scene-scoped and must have been previously registered via {@link
+   * #addSystem(System)}. If no system of the given type is registered, this method returns {@code
+   * null}.
+   *
+   * <p>Typical usage:
+   *
+   * <pre>
+   * PhysicsQuerySystem physics =
+   *     scene.getSystem(PhysicsQuerySystem.class);
+   * </pre>
+   *
+   * @param <T> the concrete system type
+   * @param type the class object representing the requested system type; must not be {@code null}
+   * @return the registered system instance of the given type, or {@code null} if none is found
+   * @throws IllegalArgumentException if {@code type} is {@code null}
+   */
+  public <T extends System> T getSystem(Class<T> type) {
+    if (type == null) {
+      throw new IllegalArgumentException("System type must not be null");
+    }
+    return systemManager.getSystem(type);
   }
 }

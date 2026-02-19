@@ -299,8 +299,13 @@ public class SceneNode {
       throw new IllegalArgumentException("Child node cannot be null.");
     }
     if (children.contains(child)) return;
+
     child.parent = this;
     children.add(child);
+
+    if (this.scene != null) {
+      child.setScene(this.scene);
+    }
   }
 
   /**
@@ -447,6 +452,19 @@ public class SceneNode {
    */
   protected void setScene(Scene scene) {
     this.scene = scene;
+    propagateScene(scene);
+  }
+
+  private void propagateScene(Scene scene) {
+    this.scene = scene;
+
+    for (Component c : components) {
+      c.onAttachToScene(scene);
+    }
+
+    for (SceneNode child : children) {
+      child.propagateScene(scene);
+    }
   }
 
   /**

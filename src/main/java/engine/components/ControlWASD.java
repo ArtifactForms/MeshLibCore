@@ -38,6 +38,8 @@ public class ControlWASD extends AbstractComponent {
   /** Key used for moving backward. Default is 'S'. */
   private Key backwardKey = Key.S;
 
+  private MovementInputConsumer movementInputConsumer;
+
   /**
    * Constructs a new ControlWASD component, injecting the Input logic needed for detecting key
    * presses.
@@ -83,12 +85,19 @@ public class ControlWASD extends AbstractComponent {
    */
   @Override
   public void onUpdate(float tpf) {
+
     SceneNode node = getOwner();
     Vector3f velocity = handleInput();
 
+    // Movement input consumer handle movement
+    if (movementInputConsumer != null) {
+      movementInputConsumer.addMovementInput(velocity);
+      return;
+    }
+
+    // Default movement
     Transform transform = node.getTransform();
     Vector3f position = transform.getPosition();
-
     transform.setPosition(position.add(velocity.mult(tpf)));
   }
 
@@ -205,6 +214,10 @@ public class ControlWASD extends AbstractComponent {
    */
   public void setForwardKey(Key forwardKey) {
     this.forwardKey = forwardKey;
+  }
+
+  public void setMovementInputConsumer(MovementInputConsumer movementInputConsumer) {
+    this.movementInputConsumer = movementInputConsumer;
   }
 
   /**

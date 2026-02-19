@@ -1,5 +1,6 @@
 package engine.components;
 
+import engine.scene.Scene;
 import engine.scene.SceneNode;
 
 /**
@@ -29,6 +30,9 @@ public abstract class AbstractComponent implements Component {
 
   @Override
   public void onUpdate(float tpf) {}
+
+  @Override
+  public void onAttachToScene(Scene scene) {}
 
   @Override
   public void setOwner(SceneNode owner) {
