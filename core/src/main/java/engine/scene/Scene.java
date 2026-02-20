@@ -178,11 +178,7 @@ public class Scene {
    * @param g The graphics context used for rendering.
    */
   public void render(Graphics g) {
-
-    g.disableDepthTest();
-    g.setColor(background);
-    g.fillRect(0, 0, g.getWidth(), g.getHeight());
-    g.enableDepthTest();
+    g.clear(background);
 
     if (activeCamera != null) {
       g.applyCamera(activeCamera);
