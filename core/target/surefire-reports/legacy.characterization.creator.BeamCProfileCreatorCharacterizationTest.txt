@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: legacy.characterization.creator.BeamCProfileCreatorCharacterizationTest
+-------------------------------------------------------------------------------
+Tests run: 24, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.016 s - in legacy.characterization.creator.BeamCProfileCreatorCharacterizationTest

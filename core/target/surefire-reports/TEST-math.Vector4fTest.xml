@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="math.Vector4fTest" time="0.042" tests="194" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="22"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\simon\git\MeshLibCore-Checkout\core\target\test-classes;C:\Users\simon\git\MeshLibCore-Checkout\core\target\classes;C:\Users\simon\git\MeshLibCore-Checkout\math\target\math-0.0.1-SNAPSHOT.jar;C:\Users\simon\git\MeshLibCore-Checkout\mesh\target\mesh-0.0.1-SNAPSHOT.jar;C:\Users\simon\.m2\repository\org\processing\core\3.3.7\core-3.3.7.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt-main\2.5.0\gluegen-rt-main-2.5.0.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-android-aarch64.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-linux-amd64.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-linux-armv6hf.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-linux-aarch64.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-macosx-universal.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-windows-amd64.jar;C:\Users\simon\.m2\repository\antlr\antlr\2.7.7\antlr-2.7.7.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all-main\2.5.0\jogl-all-main-2.5.0.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-android-aarch64.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-linux-amd64.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-linux-armv6hf.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-linux-aarch64.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-macosx-universal.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-windows-amd64.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-runner\1.2.0\junit-platform-runner-1.2.0.jar;C:\Users\simon\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-launcher\1.2.0\junit-platform-launcher-1.2.0.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-suite-api\1.2.0\junit-platform-suite-api-1.2.0.jar;C:\Users\simon\.m2\repository\junit\junit\4.12\junit-4.12.jar;C:\Users\simon\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\simon\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.0\junit-jupiter-engine-5.4.0.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-engine\1.4.0\junit-platform-engine-1.4.0.jar;C:\Users\simon\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.4.0\junit-jupiter-params-5.4.0.jar;C:\Users\simon\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.0\junit-jupiter-api-5.4.0.jar;C:\Users\simon\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-commons\1.4.0\junit-platform-commons-1.4.0.jar;C:\Users\simon\.m2\repository\org\jacoco\jacoco-maven-plugin\0.8.10\jacoco-maven-plugin-0.8.10.jar;C:\Users\simon\.m2\repository\org\codehaus\plexus\plexus-utils\3.0.24\plexus-utils-3.0.24.jar;C:\Users\simon\.m2\repository\org\apache\maven\shared\file-management\1.2.1\file-management-1.2.1.jar;C:\Users\simon\.m2\repository\org\apache\maven\maven-plugin-api\2.0.6\maven-plugin-api-2.0.6.jar;C:\Users\simon\.m2\repository\org\apache\maven\shared\maven-shared-io\1.1\maven-shared-io-1.1.jar;C:\Users\simon\.m2\repository\org\apache\maven\maven-artifact\2.0.2\maven-artifact-2.0.2.jar;C:\Users\simon\.m2\repository\org\apache\maven\maven-artifact-manager\2.0.2\maven-artifact-manager-2.0.2.jar;C:\Users\simon\.m2\repository\org\apache\maven\maven-repository-metadata\2.0.2\maven-repository-metadata-2.0.2.jar;C:\Users\simon\.m2\repository\org\apache\maven\wagon\wagon-provider-api\1.0-alpha-6\wagon-provider-api-1.0-alpha-6.jar;C:\Users\simon\.m2\repository\org\codehaus\plexus\plexus-container-default\1.0-alpha-9\plexus-container-default-1.0-alpha-9.jar;C:\Users\simon\.m2\repository\classworlds\classworlds\1.1-alpha-2\classworlds-1.1-alpha-2.jar;C:\Users\simon\.m2\repository\org\apache\maven\reporting\maven-reporting-api\3.0\maven-reporting-api-3.0.jar;C:\Users\simon\.m2\repository\org\apache\maven\doxia\doxia-sink-api\1.0\doxia-sink-api-1.0.jar;C:\Users\simon\.m2\repository\org\jacoco\org.jacoco.agent\0.8.10\org.jacoco.agent-0.8.10-runtime.jar;C:\Users\simon\.m2\repository\org\jacoco\org.jacoco.core\0.8.10\org.jacoco.core-0.8.10.jar;C:\Users\simon\.m2\repository\org\ow2\asm\asm\9.5\asm-9.5.jar;C:\Users\simon\.m2\repository\org\ow2\asm\asm-commons\9.5\asm-commons-9.5.jar;C:\Users\simon\.m2\repository\org\ow2\asm\asm-tree\9.5\asm-tree-9.5.jar;C:\Users\simon\.m2\repository\org\jacoco\org.jacoco.report\0.8.10\org.jacoco.report-0.8.10.jar;C:\Users\simon\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\simon\.m2\repository\net\java\jinput\jinput\2.0.10\jinput-2.0.10.jar;C:\Users\simon\.m2\repository\net\java\jinput\jinput\2.0.10\jinput-2.0.10-natives-all.jar;"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="java.vm.specification.version" value="22"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.boot.library.path" value="C:\Users\simon\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_22.0.1.v20240426-1149\jre\bin"/>
+    <property name="sun.java.command" value="C:\Users\simon\AppData\Local\Temp\surefire14925906910441714735\surefirebooter16096291611960362502.jar C:\Users\simon\AppData\Local\Temp\surefire14925906910441714735 2026-02-20T10-18-25_314-jvmRun1 surefire2642044298152654795tmp surefire_03991050436472484683tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\simon\git\MeshLibCore-Checkout\core\target\test-classes;C:\Users\simon\git\MeshLibCore-Checkout\core\target\classes;C:\Users\simon\git\MeshLibCore-Checkout\math\target\math-0.0.1-SNAPSHOT.jar;C:\Users\simon\git\MeshLibCore-Checkout\mesh\target\mesh-0.0.1-SNAPSHOT.jar;C:\Users\simon\.m2\repository\org\processing\core\3.3.7\core-3.3.7.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt-main\2.5.0\gluegen-rt-main-2.5.0.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-android-aarch64.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-linux-amd64.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-linux-armv6hf.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-linux-aarch64.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-macosx-universal.jar;C:\Users\simon\.m2\repository\org\jogamp\gluegen\gluegen-rt\2.5.0\gluegen-rt-2.5.0-natives-windows-amd64.jar;C:\Users\simon\.m2\repository\antlr\antlr\2.7.7\antlr-2.7.7.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all-main\2.5.0\jogl-all-main-2.5.0.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-android-aarch64.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-linux-amd64.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-linux-armv6hf.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-linux-aarch64.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-macosx-universal.jar;C:\Users\simon\.m2\repository\org\jogamp\jogl\jogl-all\2.5.0\jogl-all-2.5.0-natives-windows-amd64.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-runner\1.2.0\junit-platform-runner-1.2.0.jar;C:\Users\simon\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-launcher\1.2.0\junit-platform-launcher-1.2.0.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-suite-api\1.2.0\junit-platform-suite-api-1.2.0.jar;C:\Users\simon\.m2\repository\junit\junit\4.12\junit-4.12.jar;C:\Users\simon\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\simon\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.0\junit-jupiter-engine-5.4.0.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-engine\1.4.0\junit-platform-engine-1.4.0.jar;C:\Users\simon\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.4.0\junit-jupiter-params-5.4.0.jar;C:\Users\simon\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.0\junit-jupiter-api-5.4.0.jar;C:\Users\simon\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\simon\.m2\repository\org\junit\platform\junit-platform-commons\1.4.0\junit-platform-commons-1.4.0.jar;C:\Users\simon\.m2\repository\org\jacoco\jacoco-maven-plugin\0.8.10\jacoco-maven-plugin-0.8.10.jar;C:\Users\simon\.m2\repository\org\codehaus\plexus\plexus-utils\3.0.24\plexus-utils-3.0.24.jar;C:\Users\simon\.m2\repository\org\apache\maven\shared\file-management\1.2.1\file-management-1.2.1.jar;C:\Users\simon\.m2\repository\org\apache\maven\maven-plugin-api\2.0.6\maven-plugin-api-2.0.6.jar;C:\Users\simon\.m2\repository\org\apache\maven\shared\maven-shared-io\1.1\maven-shared-io-1.1.jar;C:\Users\simon\.m2\repository\org\apache\maven\maven-artifact\2.0.2\maven-artifact-2.0.2.jar;C:\Users\simon\.m2\repository\org\apache\maven\maven-artifact-manager\2.0.2\maven-artifact-manager-2.0.2.jar;C:\Users\simon\.m2\repository\org\apache\maven\maven-repository-metadata\2.0.2\maven-repository-metadata-2.0.2.jar;C:\Users\simon\.m2\repository\org\apache\maven\wagon\wagon-provider-api\1.0-alpha-6\wagon-provider-api-1.0-alpha-6.jar;C:\Users\simon\.m2\repository\org\codehaus\plexus\plexus-container-default\1.0-alpha-9\plexus-container-default-1.0-alpha-9.jar;C:\Users\simon\.m2\repository\classworlds\classworlds\1.1-alpha-2\classworlds-1.1-alpha-2.jar;C:\Users\simon\.m2\repository\org\apache\maven\reporting\maven-reporting-api\3.0\maven-reporting-api-3.0.jar;C:\Users\simon\.m2\repository\org\apache\maven\doxia\doxia-sink-api\1.0\doxia-sink-api-1.0.jar;C:\Users\simon\.m2\repository\org\jacoco\org.jacoco.agent\0.8.10\org.jacoco.agent-0.8.10-runtime.jar;C:\Users\simon\.m2\repository\org\jacoco\org.jacoco.core\0.8.10\org.jacoco.core-0.8.10.jar;C:\Users\simon\.m2\repository\org\ow2\asm\asm\9.5\asm-9.5.jar;C:\Users\simon\.m2\repository\org\ow2\asm\asm-commons\9.5\asm-commons-9.5.jar;C:\Users\simon\.m2\repository\org\ow2\asm\asm-tree\9.5\asm-tree-9.5.jar;C:\Users\simon\.m2\repository\org\jacoco\org.jacoco.report\0.8.10\org.jacoco.report-0.8.10.jar;C:\Users\simon\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\simon\.m2\repository\net\java\jinput\jinput\2.0.10\jinput-2.0.10.jar;C:\Users\simon\.m2\repository\net\java\jinput\jinput\2.0.10\jinput-2.0.10-natives-all.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\simon"/>
+    <property name="user.language" value="de"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-04-16"/>
+    <property name="java.home" value="C:\Users\simon\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_22.0.1.v20240426-1149\jre"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\simon\git\MeshLibCore-Checkout\core"/>
+    <property name="style.color" value="always"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\simon\AppData\Local\Temp\surefire14925906910441714735\surefirebooter16096291611960362502.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="22.0.1+8"/>
+    <property name="user.name" value="simon"/>
+    <property name="stdout.encoding" value="Cp1252"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-22.0.1+8"/>
+    <property name="localRepository" value="C:\Users\simon\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="C:\Users\simon\AppData\Local\Temp\"/>
+    <property name="java.version" value="22.0.1"/>
+    <property name="user.dir" value="C:\Users\simon\git\MeshLibCore-Checkout\core"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Users\simon\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_22.0.1.v20240426-1149\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/Users/simon/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_22.0.1.v20240426-1149/jre/bin/server;C:/Users/simon/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_22.0.1.v20240426-1149/jre/bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\WorldPainter;C:\HaxeToolkit\haxe;C:\HaxeToolkit\neko;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Users\simon\AppData\Local\Microsoft\WindowsApps;C:\Users\simon\AppData\Local\atom\bin;C:\Users\simon\AppData\Local\GitHubDesktop\bin;C:\Users\simon\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\simon\Desktop;;."/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="stderr.encoding" value="Cp1252"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="22.0.1+8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="66.0"/>
+  </properties>
+  <testcase name="testHashCodeWithNullValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByOne" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyLocalByPositiveScalar" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testProjectOntoSameDirection" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testReflectXAxis" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testReflectYAxis" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testReflectZAxis" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualLargeTolerance" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testMultiplyByNegativeScalar" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractLocalNullVector" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testDistanceSquaredToWithNegativeComponents" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testLerpClampedWithNegativeT" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyWithIdentityMatrix" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testDivideByW_createsNewInstance" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testCloneIsIndependentOfOriginal" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testReflectParallelToNormal" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyLocalByFraction" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNormalizeNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNormalizeLocal" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpClampedWithTZero" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testHashCodeInequality" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpUnclampedWithIdenticalStartAndEnd" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testReflectCreatesNewInstanceAndDoesNotChangeOriginalVectorAndInputNormal" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByZero" classname="math.Vector4fTest" time="0.002"/>
+  <testcase name="testCopyConstructor" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByW_wIsZero" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testDivideShouldNotModifyOriginalVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDistanceToWithZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDistanceToItself" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsZeroWithAllNonZeroComponents" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAngleBetweenWithDifferentAngles" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testNormalizeMixedValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToStringLargeValues" classname="math.Vector4fTest" time="0.008"/>
+  <testcase name="testDistanceToWithNullOtherVector" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testLengthSquared" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testProjectOntoReturnsNewInstanceAndLeavesOriginalUntouched" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateLocalWithMixedValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToStringNegativeValues" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testSetUpdatesVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testCloneCreatesNewInstance" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDotProductWithDifferentMagnitudeVectors" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractShouldNotModifyOriginalVectorWhenSubtractingZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateWithMixedValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testProjectOntoPerpendicularVectors" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddLocalValidVector" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testDivideByWLocal_throwsArithmeticException_whenWIsZero" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddShouldNotModifyOriginalVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthSquaredNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNormalizeUnitVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testParameterizedConstructor" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualWithinTolerance" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpClampedReturnsNewInstanceAndOriginalVectorsUntouched" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToVector3fZeroValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsZeroWithMixedNonZeroValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddShouldNotModifyOtherVectorWhenAddingNonZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateLocalWithNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualNaN" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyLocalByZero" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpUnclampedWithNegativeT" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testReflectAlongZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthSquaredUnitVector" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testSubtractLocalZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNormalizeLocalNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthSquaredMixedValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractLocalValidVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToStringSmallValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDistanceSquaredToWithZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideLocalWithNegativeFraction" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDistanceToWithNegativeComponents" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testNormalizeLocalUnitVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideLocalByNegativeScalar" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpUnclampedWithHalfwayT" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByWLocal_updatesOriginalVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testEqualsDifferentTypes" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateLocal" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateTwice" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToStringBasic" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testLerpClampedWithHalfwayT" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthMixedValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNormalizeZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateLocalWithZero" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAngleBetweenWithNullVector" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testAddNullVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddLocalShouldNotModifyOtherVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testHashCodeConsistency" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualWithSelf" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testEqualsNull" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDistanceToWithValidInput" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testMultiplyShouldNotModifyOriginalVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpUnclampedWithTOne" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyByZero" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideLocalByPositiveScalar" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testCloneCreatesIdenticalVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDotProductWithParallelVectors" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthSquaredZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testReflectArbitraryNormal" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractLocalShouldNotModifyOtherVector" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testReflectAlongNullVectorThrowsIllegalArgumentException" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpUnclampedWithOverOneT" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualExceedsTolerance" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNormalizeLocalZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpClampedWithOverOneT" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDotProductWithSameVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsZeroWithNonZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testProjectOntoNullThrowsIllegalArgumentException" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractShouldNotModifyOriginalVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testEqualsWithEpsilonTolerance" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractShouldNotModifyOtherVectorWhenSubtractingNonZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByFraction" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testEqualsIdenticalVectors" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testIsZeroWithZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDistanceSquaredToWithValidInput" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDotProductWithZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAngleBetweenWithSameDirection" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsZeroWithNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyWithScalingMatrix" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNormalizeLocalMixedValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthSquaredLargeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualNegativeInfinity" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testAngleBetweenWithZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideLocalByFraction" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDotProductWithNull" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpUnclampedWithNullThrowsException" classname="math.Vector4fTest" time="0.002"/>
+  <testcase name="testSetWithNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyValidScalar" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testReflectAlongItself" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractNullVector" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testMultiplyWithZeroMatrix" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAngleBetweenWithOppositeDirection" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testHashCodeWithSlightlyDifferentVectors" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSetSameValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideLocalByOne" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testDivideByWLocal_doesNotCreateNewInstance" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testEqualsSameObject" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualWithNullVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDistanceSquaredToWithNullOtherVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNormalizeDoesNotAlterOriginalVector" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testNormalize" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddLocalNullVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByW_validW" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpClampedWithTOne" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDotProductWithOrthogonalVectors" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyWithZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testCopyConstructorIndependence" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthLargeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testProjectOntoNonUnitVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractValidVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDistanceSquaredToItself" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpClampedWithIdenticalStartAndEnd" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddShouldNotModifyOriginalVectorWhenAddingZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpUnclampedWithTZero" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToVector3f" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyWithTranslationMatrix" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToStringZeroValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSetToZero" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testAngleBetweenWithValidVectors" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDotProductWithNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToStringEmptyVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSetAndGetW" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSetAndGetX" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSetAndGetY" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSetAndGetZ" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualWithVerySmallTolerance" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByNegativeScalar" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testEqualsDifferentVectors" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLength" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthUnitVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateWithZero" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyWithRotationMatrix" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegate" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideLocalByZero" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSetWithLargeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLerpClampedWithNullThrowsException" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateLocalTwice" classname="math.Vector4fTest" time="0.001"/>
+  <testcase name="testLerpUnclampedReturnsNewInstanceAndOriginalVectorsUntouched" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testNegateWithNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testSubtractZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testProjectOntoNonZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyLocalByOne" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testMultiplyLocalByNegativeScalar" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testLengthNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByW_wIsNegative" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testToVector3fNegativeValues" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDivideByPositiveScalar" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testProjectOntoZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualNegativeTolerance" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testHashCodeEquality" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddLocalZeroVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualPositiveInfinity" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testAddValidVector" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testDefaultConstructor" classname="math.Vector4fTest" time="0"/>
+  <testcase name="testIsEqualExactMatch" classname="math.Vector4fTest" time="0"/>
+</testsuite>
