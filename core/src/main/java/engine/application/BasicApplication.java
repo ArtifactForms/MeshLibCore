@@ -91,7 +91,12 @@ public abstract class BasicApplication implements Application {
     initializeDebugOverlay();
     setupDebug();
     onInitialize();
+
     setupDefaultCamera();
+
+    if (activeScene == null) {
+      setActiveScene(new DefaultScene(input));
+    }
   }
 
   private void setupDefaultCamera() {
@@ -118,7 +123,9 @@ public abstract class BasicApplication implements Application {
   private void updateAspectRatio() {
     if (!autoUpdateAspectRatio) return;
     if (activeScene != null && activeScene.getActiveCamera() != null) {
-      activeScene.getActiveCamera().setAspectRatio((float) viewport.getWidth() / (float) viewport.getHeight());
+      activeScene
+          .getActiveCamera()
+          .setAspectRatio((float) viewport.getWidth() / (float) viewport.getHeight());
     }
   }
 
@@ -154,6 +161,8 @@ public abstract class BasicApplication implements Application {
 
   @Override
   public void render(Graphics g) {
+    g.pushMatrix();
+    g.resetMatrix();
 
     if (activeScene != null) {
       activeScene.render(g);
@@ -185,6 +194,8 @@ public abstract class BasicApplication implements Application {
     renderDebugUi(g);
 
     g.enableDepthTest();
+
+    g.popMatrix();
   }
 
   private void renderDebugUi(Graphics g) {
