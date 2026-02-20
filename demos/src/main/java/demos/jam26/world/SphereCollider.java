@@ -1,8 +1,8 @@
 package demos.jam26.world;
 
 import demos.jam26.combat.RaySphereIntersection;
-import demos.ray.RaycastHit;
 import engine.components.AbstractComponent;
+import engine.physics.ray.RaycastHit;
 import engine.scene.SceneNode;
 import math.Ray3f;
 import math.Vector3f;

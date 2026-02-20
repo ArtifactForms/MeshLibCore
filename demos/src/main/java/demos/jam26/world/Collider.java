@@ -1,6 +1,6 @@
 package demos.jam26.world;
 
-import demos.ray.RaycastHit;
+import engine.physics.ray.RaycastHit;
 import math.Ray3f;
 
 public interface Collider {

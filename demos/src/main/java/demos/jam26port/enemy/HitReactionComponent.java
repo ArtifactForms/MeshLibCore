@@ -1,8 +1,8 @@
 package demos.jam26port.enemy;
 
 import demos.jam26port.assets.AssetRefs;
-import demos.ray.RaycastHit;
 import engine.components.AbstractComponent;
+import engine.physics.ray.RaycastHit;
 import engine.scene.audio.SoundManager;
 import math.Mathf;
 import math.Vector3f;

@@ -2,12 +2,12 @@ package demos.jam26.combat;
 
 import demos.jam26.assets.AssetRefs;
 import demos.jam26.enemy.HitReactionComponent;
-import demos.ray.RaycastHit;
-import demos.ray.RaycastQuery;
-import demos.ray.Raycaster;
 import engine.components.AbstractComponent;
 import engine.components.Geometry;
 import engine.components.StaticGeometry;
+import engine.physics.ray.RaycastHit;
+import engine.physics.ray.RaycastQuery;
+import engine.physics.ray.Raycaster;
 import engine.runtime.debug.core.DebugDraw;
 import engine.runtime.input.Input;
 import engine.scene.Scene;

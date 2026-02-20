@@ -1,7 +1,7 @@
 package demos.jam26port.combat;
 
 import demos.jam26port.world.SphereCollider;
-import demos.ray.RaycastHit;
+import engine.physics.ray.RaycastHit;
 import engine.scene.SceneNode;
 import engine.scene.SceneNodeVisitor;
 import math.Ray3f;
