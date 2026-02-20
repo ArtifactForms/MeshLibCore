@@ -1,4 +1,4 @@
-package demos.ray;
+package engine.physics.ray;
 
 import engine.scene.SceneNode;
 import engine.scene.SceneNodeVisitor;
