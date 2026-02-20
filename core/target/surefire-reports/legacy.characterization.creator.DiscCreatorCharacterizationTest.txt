@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: legacy.characterization.creator.DiscCreatorCharacterizationTest
--------------------------------------------------------------------------------
-Tests run: 24, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.009 s - in legacy.characterization.creator.DiscCreatorCharacterizationTest

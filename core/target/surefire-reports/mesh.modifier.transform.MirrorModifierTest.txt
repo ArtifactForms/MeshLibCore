@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: mesh.modifier.transform.MirrorModifierTest
--------------------------------------------------------------------------------
-Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in mesh.modifier.transform.MirrorModifierTest

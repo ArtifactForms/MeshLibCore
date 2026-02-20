@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: test.unit.Edge3DUnitTest
--------------------------------------------------------------------------------
-Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in test.unit.Edge3DUnitTest

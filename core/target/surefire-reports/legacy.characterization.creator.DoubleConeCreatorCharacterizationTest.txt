@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: legacy.characterization.creator.DoubleConeCreatorCharacterizationTest
--------------------------------------------------------------------------------
-Tests run: 24, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.01 s - in legacy.characterization.creator.DoubleConeCreatorCharacterizationTest
