@@ -18,6 +18,7 @@
         <module>math</module>
         <module>mesh</module>
         <module>core</module>
+        <module>demos</module>
     </modules>
 
 </project>
