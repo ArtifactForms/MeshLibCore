@@ -49,6 +49,8 @@ public interface Graphics3D {
   void drawLines(Vector3f[] vertices, math.Color[] colors);
 
   void camera();
+  
+  void ortho();
 
   void lightsOff();
 

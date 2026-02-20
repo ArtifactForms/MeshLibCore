@@ -178,6 +178,7 @@ public abstract class BasicApplication implements Application {
     g.disableDepthTest();
 
     g.camera();
+    g.ortho();
     g.strokeWeight(1);
 
     if (activeScene != null) {

@@ -443,10 +443,17 @@ public class GraphicsPImpl implements Graphics {
   // CAMERA
   // -------------------------------------------------
 
+  @Override
   public void camera() {
     g.camera();
-  }
 
+  }
+  
+  @Override
+  public void ortho() {
+    g.ortho();
+  }
+  
   @Override
   public void applyCamera(Camera camera) {
     if (camera == null) {
