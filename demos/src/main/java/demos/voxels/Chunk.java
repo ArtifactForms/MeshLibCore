@@ -17,7 +17,7 @@ public class Chunk {
   public static final int HEIGHT = 384;
 
   private static final ExecutorService executorService =
-      Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+      Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
 
   private short[] blockData;
   private int[] heightMap; // Stores max block values for y
@@ -29,6 +29,10 @@ public class Chunk {
   private boolean dataReady = false;
   private boolean shedule = false;
   private BufferedShape shape = new BufferedShape(ChunkMesher.sharedMaterial);
+  private ChunkGenerator chunkGenerator;
+  private Chunk instance;
+
+  public Chunk() {}
 
   public Chunk(Vector3f position) {
     this.position = position;
@@ -47,7 +51,7 @@ public class Chunk {
   }
 
   public void generateData(ChunkGenerator chunkGenerator) {
-    if (dataReady) return;
+    this.chunkGenerator = chunkGenerator;
     chunkGenerator.generate(this);
     dataReady = true;
   }
@@ -125,7 +129,7 @@ public class Chunk {
     if (index < 0 || index > blockData.length) return null;
     return BlockType.fromId(blockData[getIndex(x, y, z)]);
   }
-  
+
   public int getHeightValueAt(int x, int z) {
     if (x < 0 || x >= 16) return 0;
     if (z < 0 || z >= 16) return 0;

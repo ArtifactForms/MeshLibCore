@@ -66,9 +66,9 @@ public class ChunkGenerator3 implements ChunkGenerator {
       }
     }
 
-//    createTrees(chunk);
+    createTrees(chunk);
     createWater(chunk);
-    createCave(chunk);
+//    createCave(chunk);
   }
 
   private void createCave(Chunk chunk) {

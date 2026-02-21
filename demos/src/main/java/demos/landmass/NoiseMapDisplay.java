@@ -7,8 +7,11 @@ import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Texture2D;
 import engine.scene.SceneNode;
+import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreator;
+import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.next.surface.SurfaceLayer;
 import workspace.ui.Graphics;
 
@@ -58,7 +61,10 @@ public class NoiseMapDisplay extends AbstractComponent implements RenderableComp
    * coordinates to map the texture correctly.
    */
   private void createPlaneMesh() {
-    planeMesh = new PlaneCreator(30).create();
+    planeMesh = new PlaneCreator(200).create();
+    
+    new RotateXModifier(-Mathf.HALF_PI).modify(planeMesh);
+    new TranslateModifier(210, 210, 0).modify(planeMesh);
     
 	SurfaceLayer surfaceLayer = planeMesh.getSurfaceLayer();
     surfaceLayer.addUV(0, 0);
@@ -78,6 +84,7 @@ public class NoiseMapDisplay extends AbstractComponent implements RenderableComp
     texture.setPixels(pixels);
     Material material = new Material();
     material.setDiffuseTexture(texture);
+    material.setUseLighting(false);
     planeGeometry = new Geometry(planeMesh, material);
   }
 

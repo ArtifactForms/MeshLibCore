@@ -9,7 +9,7 @@ import engine.resources.FilterMode;
 import engine.resources.Texture;
 import math.Vector2f;
 
-public class ChunkMesher{
+public class ChunkMesher {
 
   // Ordinal constants
   private static final int TOP = 0;

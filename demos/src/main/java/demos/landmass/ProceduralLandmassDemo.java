@@ -65,7 +65,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
   public void onInitialize() {
     setupScene();
     setupUI();
-    createCamera();
+    setupCamera();
     runTerrainCreation();
     //    endlessTerrain = new EndlessTerrain(scene, chunkSize * chunkScale);
   }
@@ -89,6 +89,20 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
     DirectionalLight directionalLight = new DirectionalLight();
     scene.addLight(directionalLight);
+  }
+
+  /** Sets up the camera with smooth fly-by controls. */
+  private void setupCamera() {
+    PerspectiveCamera camera = new PerspectiveCamera();
+    camera.getTransform().setPosition(0, -chunkSize / 2f * chunkScale, 0);
+
+    SmoothFlyByCameraControl cameraControl = new SmoothFlyByCameraControl(input, camera);
+    cameraControl.setMoveSpeed(200);
+
+    SceneNode cameraNode = new SceneNode();
+    cameraNode.addComponent(cameraControl);
+    scene.addNode(cameraNode);
+    scene.setActiveCamera(camera);
   }
 
   /** Sets up the UI elements, such as the round reticle. */
@@ -119,7 +133,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
     }
     SceneNode noiseDisplayNode = new SceneNode();
     noiseDisplayNode.addComponent(display);
-    scene.addNode(noiseDisplayNode);
+    scene.getUIRoot().addChild(noiseDisplayNode);
 
     // Create a texture from the display and apply it to the terrain material
     Texture2D texture = display.getTexture();
@@ -143,20 +157,6 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
     roundReticle.setActive(true);
     //    loadingScreen.hide();
-  }
-
-  /** Sets up the camera with smooth fly-by controls. */
-  private void createCamera() {
-    PerspectiveCamera camera = new PerspectiveCamera();
-    camera.getTransform().setPosition(0, -chunkSize / 2f * chunkScale, 0);
-
-    SmoothFlyByCameraControl cameraControl = new SmoothFlyByCameraControl(input, camera);
-    cameraControl.setMoveSpeed(200);
-
-    SceneNode cameraNode = new SceneNode();
-    cameraNode.addComponent(cameraControl);
-    scene.addNode(cameraNode);
-    scene.setActiveCamera(camera);
   }
 
   /** Update logic (currently empty). */

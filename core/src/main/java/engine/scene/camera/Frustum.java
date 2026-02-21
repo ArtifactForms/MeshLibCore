@@ -1,5 +1,6 @@
 package engine.scene.camera;
 
+import math.Bounds;
 import math.Matrix4f;
 import math.Plane;
 import math.Vector3f;
@@ -29,6 +30,17 @@ public class Frustum {
   /** The far clipping plane. */
   public final Plane far = new Plane();
 
+  private final Plane[] planes = new Plane[6];
+
+  public Frustum() {
+    planes[0] = left;
+    planes[1] = right;
+    planes[2] = bottom;
+    planes[3] = top;
+    planes[4] = near;
+    planes[5] = far;
+  }
+  
   /**
    * Updates the frustum planes based on the provided View-Projection matrix. This implementation
    * uses the Gribb-Hartmann method adapted for Row-Major matrices.
@@ -69,7 +81,7 @@ public class Frustum {
    * @return {@code true} if the sphere is partially or fully inside the frustum; {@code false} if
    *     it is completely outside.
    */
-  public boolean containsSphere(Vector3f center, float radius) {
+  public boolean intersectsSphere(Vector3f center, float radius) {
     if (left.distanceToPoint(center) < -radius) return false;
     if (right.distanceToPoint(center) < -radius) return false;
     if (bottom.distanceToPoint(center) < -radius) return false;
@@ -79,13 +91,36 @@ public class Frustum {
     return true;
   }
 
+  public boolean intersectsAABB(Bounds bounds) {
+
+    Vector3f min = bounds.getMin();
+    Vector3f max = bounds.getMax();
+
+    for (Plane plane : getPlanes()) {
+
+      Vector3f normal = plane.getNormal();
+
+      float x = (normal.x >= 0) ? max.x : min.x;
+      float y = (normal.y >= 0) ? max.y : min.y;
+      float z = (normal.z >= 0) ? max.z : min.z;
+
+      float distance = normal.x * x + normal.y * y + normal.z * z + plane.getDistance();
+
+      if (distance < 0f) {
+        return false; // completely outside
+      }
+    }
+
+    return true; // intersects or inside
+  }
+
   /**
    * Returns an array containing all six frustum planes. The order is: Left, Right, Bottom, Top,
    * Near, Far.
    *
    * @return An array of the six {@link Plane} objects defining this frustum.
    */
-  public Plane[] getPlanes() {
-    return new Plane[] {left, right, bottom, top, near, far};
+  private Plane[] getPlanes() {
+    return planes;
   }
 }
