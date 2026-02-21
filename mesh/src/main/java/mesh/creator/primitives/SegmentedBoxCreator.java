@@ -5,6 +5,8 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.TransformAxis;
+import mesh.modifier.transform.TranslateModifier;
 
 public class SegmentedBoxCreator implements IMeshCreator {
 
@@ -77,7 +79,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
         Mesh3D front = createGrid(segmentsX, segmentsY, segmentSizeX,
                 segmentSizeY);
         new RotateXModifier(-Mathf.HALF_PI).modify(front);
-        front.translateZ(depth / 2f);
+        new TranslateModifier(depth / 2f, TransformAxis.Z).modify(front);
         mesh.append(front);
     }
 
@@ -85,7 +87,7 @@ public class SegmentedBoxCreator implements IMeshCreator {
         Mesh3D back = createGrid(segmentsX, segmentsY, segmentSizeX,
                 segmentSizeY);
         new RotateXModifier(Mathf.HALF_PI).modify(back);
-        back.translateZ(-depth / 2f);
+        new TranslateModifier(-depth / 2f, TransformAxis.Z).modify(back);
         mesh.append(back);
     }
 

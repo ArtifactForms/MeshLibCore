@@ -6,6 +6,8 @@ import mesh.creator.IMeshCreator;
 import mesh.modifier.repair.RemoveDoubleVerticesModifier;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.ScaleModifier;
+import mesh.modifier.transform.TransformAxis;
+import mesh.modifier.transform.TranslateModifier;
 
 public class SegmentedCubeCreator implements IMeshCreator {
 
@@ -51,14 +53,14 @@ public class SegmentedCubeCreator implements IMeshCreator {
     private void createFront() {
         Mesh3D front = createSide();
         new RotateXModifier(Mathf.HALF_PI).modify(front);
-        front.translateZ(-creationSize);
+        new TranslateModifier(-creationSize, TransformAxis.Z).modify(front);
         append(front);
     }
 
     private void createBack() {
         Mesh3D back = createSide();
         new RotateXModifier(-Mathf.HALF_PI).modify(back);
-        back.translateZ(creationSize);
+        new TranslateModifier(creationSize, TransformAxis.Z).modify(back);
         append(back);
     }
 

@@ -123,15 +123,15 @@ public class Mesh3D implements Mesh {
     return new TranslateModifier(0, ty, 0).modify(this);
   }
 
-  /**
-   * Translates the mesh along the Z-axis.
-   *
-   * @deprecated Use {@link TranslateModifier} instead.
-   */
-  @Deprecated
-  public Mesh3D translateZ(float tz) {
-    return new TranslateModifier(0, 0, tz).modify(this);
-  }
+//  /**
+//   * Translates the mesh along the Z-axis.
+//   *
+//   * @deprecated Use {@link TranslateModifier} instead.
+//   */
+//  @Deprecated
+//  public Mesh3D translateZ(float tz) {
+//    return new TranslateModifier(0, 0, tz).modify(this);
+//  }
 
   // -------------------------------------------------------------------
   // UVs

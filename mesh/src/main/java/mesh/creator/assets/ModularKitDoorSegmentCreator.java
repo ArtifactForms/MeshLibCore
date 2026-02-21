@@ -3,6 +3,8 @@ package mesh.creator.assets;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.TransformAxis;
+import mesh.modifier.transform.TranslateModifier;
 
 public class ModularKitDoorSegmentCreator implements IMeshCreator {
 
@@ -96,7 +98,7 @@ public class ModularKitDoorSegmentCreator implements IMeshCreator {
         if (segmentDepth <= 0)
             return;
         new SolidifyModifier(segmentDepth).modify(mesh);
-        mesh.translateZ(segmentDepth);
+        new TranslateModifier(segmentDepth, TransformAxis.Z).modify(mesh);
     }
 
     public float getDoorWidth() {

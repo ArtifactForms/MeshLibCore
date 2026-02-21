@@ -5,6 +5,8 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.BoxCreator;
 import mesh.modifier.repair.RemoveDoubleVerticesModifier;
+import mesh.modifier.transform.TransformAxis;
+import mesh.modifier.transform.TranslateModifier;
 
 public class StairsCreator implements IMeshCreator {
 
@@ -50,8 +52,8 @@ public class StairsCreator implements IMeshCreator {
 
         for (int i = 0; i < numSteps; i++) {
             Mesh3D step = creator.create();
-            step.translateZ(-stepDepth / 2.0f);
-            step.translateZ(-i * stepDepth);
+            new TranslateModifier(-stepDepth / 2.0f, TransformAxis.Z).modify(step);
+            new TranslateModifier(-i * stepDepth, TransformAxis.Z).modify(step);
             step.translateY(-stepHeight / 2.0f);
             step.translateY(-i * stepHeight);
             mesh.append(step);
