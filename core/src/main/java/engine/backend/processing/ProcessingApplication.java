@@ -11,7 +11,6 @@ import engine.runtime.input.KeyInput;
 import engine.runtime.input.MouseInput;
 import engine.vbo.VBOFactory;
 import processing.core.PApplet;
-import workspace.GraphicsPImpl;
 
 public class ProcessingApplication extends PApplet {
 

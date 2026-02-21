@@ -1,12 +1,8 @@
-package workspace;
+package engine.backend.processing;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.backend.processing.LightRendererImpl;
-import engine.backend.processing.ProcessingFontManager;
-import engine.backend.processing.ProcessingTexture;
-import engine.backend.processing.VBOProcessing;
 import engine.render.Graphics;
 import engine.render.Material;
 import engine.render.MaterialResolver;

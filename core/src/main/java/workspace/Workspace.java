@@ -1,5 +1,6 @@
 package workspace;
 
+import engine.backend.processing.GraphicsPImpl;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
