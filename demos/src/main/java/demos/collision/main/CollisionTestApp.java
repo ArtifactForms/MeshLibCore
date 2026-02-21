@@ -1,6 +1,7 @@
 package demos.collision.main;
 
 import demos.collision.CollisionTestScene;
+import demos.collision.Settings;
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
 import workspace.ui.Graphics;
@@ -14,8 +15,9 @@ public class CollisionTestApp extends BasicApplication {
 
   @Override
   public void onInitialize() {
+    Settings settings = new Settings();
     CollisionTestScene scene = new CollisionTestScene();
-    scene.init(input);
+    scene.init(input, settings);
     setActiveScene(scene);
   }
 

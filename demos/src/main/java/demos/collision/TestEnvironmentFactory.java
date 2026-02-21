@@ -6,13 +6,12 @@ import math.Vector3f;
 
 public class TestEnvironmentFactory {
 
-  private float capsuleRadius = 0.5f;
-  private float stepHeight = 0.3f;
-  private float capsuleHeight = 2;
   private GrayBox grayBox;
+  private Settings settings;
 
-  public SceneNode createEnvironment() {
-    grayBox = new GrayBox(4);
+  public SceneNode createEnvironment(Settings settings) {
+    this.settings = settings;
+    this.grayBox = new GrayBox(4);
 
     SceneNode root = new SceneNode("CollisionTestEnvironment");
 
@@ -212,7 +211,7 @@ public class TestEnvironmentFactory {
 
     SceneNode root = new SceneNode("NarrowPassage");
 
-    float diameter = 2f * capsuleRadius;
+    float diameter = 2f * settings.getCapsuleRadius();
     float gap = 1.1f * diameter;
 
     SceneNode wallLeft =
@@ -234,7 +233,9 @@ public class TestEnvironmentFactory {
 
   private SceneNode createCeilingZone() {
     return grayBox.blockOutBox(
-        "Ceiling", new Vector3f(-30, -(capsuleHeight + 0.025f), -10), new Vector3f(2, 0.1f, 5));
+        "Ceiling",
+        new Vector3f(-30, -(settings.getCapsuleHeight() + 0.025f), -10),
+        new Vector3f(2, 0.1f, 5));
   }
 
   // ---------------------------------------------------
@@ -266,7 +267,8 @@ public class TestEnvironmentFactory {
 
   private SceneNode createStepZone() {
 
-    return grayBox.blockOutBox("Step", new Vector3f(20, 0, 5), new Vector3f(4, stepHeight, 4));
+    return grayBox.blockOutBox(
+        "Step", new Vector3f(20, 0, 5), new Vector3f(4, settings.getStepHeight(), 4));
   }
 
   // ---------------------------------------------------

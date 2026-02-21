@@ -16,27 +16,25 @@ import mesh.creator.primitives.CapsuleCreator;
 /** Factory for creating a playable character node with capsule physics and WASD controls. */
 public class PlayerFactory {
 
-  private final float radius = 0.5f;
-  private final float halfHeight = 0.5f; // Half-height of the cylindrical section
-  private final float speed = 10f;
   private final Color capsuleColor = Color.BLUE;
   private final Key jumpKey = Key.N;
   private final Vector3f spawnLocation = new Vector3f(0, -10, 0);
 
-  public SceneNode createTestCapsulePlayer(Input input) {
+  public SceneNode createTestCapsulePlayer(Input input, Settings settings) {
     SceneNode player = new SceneNode("Player");
 
     // 1. Visual representation
-    player.addComponent(createGeometry());
+    player.addComponent(createGeometry(settings));
 
     // 2. Physics and collision
-    ColliderComponent collider = createColliderComponent();
+    ColliderComponent collider =
+        createColliderComponent(settings.getCapsuleRadius(), settings.getHalfHeight());
     player.addComponent(collider);
 
     // 3. Logic and controller
     CharacterControllerComponent controller = new CharacterControllerComponent(collider);
     player.addComponent(controller);
-    player.addComponent(createControl(input, controller));
+    player.addComponent(createControl(input, controller, settings.getSpeed()));
 
     // 4. Initial state
     player.getTransform().setPosition(spawnLocation);
@@ -44,9 +42,10 @@ public class PlayerFactory {
     return player;
   }
 
-  private Geometry createGeometry() {
+  private Geometry createGeometry(Settings settings) {
     // Match visual mesh to the collider dimensions
-    float cylinderHeight = 2 * halfHeight;
+    float cylinderHeight = 2 * settings.getHalfHeight();
+    float radius = settings.getCapsuleRadius();
 
     CapsuleCreator creator = new CapsuleCreator();
     creator.setTopCapHeight(radius);
@@ -59,12 +58,13 @@ public class PlayerFactory {
     return new Geometry(mesh, new Material(capsuleColor));
   }
 
-  private ColliderComponent createColliderComponent() {
+  private ColliderComponent createColliderComponent(float radius, float halfHeight) {
     CapsuleCollider collider = new CapsuleCollider(radius, halfHeight);
     return new ColliderComponent(collider);
   }
 
-  private ControlWASD createControl(Input input, CharacterControllerComponent controller) {
+  private ControlWASD createControl(
+      Input input, CharacterControllerComponent controller, float speed) {
     ControlWASD control = new ControlWASD(input);
     control.setSpeed(speed);
     control.mapArrowKeys();

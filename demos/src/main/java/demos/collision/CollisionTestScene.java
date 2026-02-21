@@ -17,10 +17,10 @@ public class CollisionTestScene extends Scene {
 
   private SceneNode player;
 
-  public void init(Input input) {
+  public void init(Input input, Settings settings) {
     setupPhysicsSystem();
-    setupEnvironment();
-    setupPlayer(input);
+    setupEnvironment(settings);
+    setupPlayer(input, settings);
     setupDebugRenderer();
     setupLight();
     setupUI();
@@ -47,12 +47,12 @@ public class CollisionTestScene extends Scene {
     addNode(new DebugCollisionRenderer());
   }
 
-  private void setupEnvironment() {
-    addNode(new TestEnvironmentFactory().createEnvironment());
+  private void setupEnvironment(Settings settings) {
+    addNode(new TestEnvironmentFactory().createEnvironment(settings));
   }
 
-  private void setupPlayer(Input input) {
-    this.player = new PlayerFactory().createTestCapsulePlayer(input);
+  private void setupPlayer(Input input, Settings settings) {
+    this.player = new PlayerFactory().createTestCapsulePlayer(input, settings);
     addNode(player);
   }
 
