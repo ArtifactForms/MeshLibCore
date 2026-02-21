@@ -18,6 +18,7 @@
 		<module>mesh</module>
 		<module>core</module>
 		<module>demos</module>
+		<module>workspace</module>
 	</modules>
 
 	<dependencies>
