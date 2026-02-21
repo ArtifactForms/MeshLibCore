@@ -1,7 +1,7 @@
 package demos.jam26port.enemy;
 
-import engine.Timer;
 import engine.components.AbstractComponent;
+import engine.core.Time;
 import math.Mathf;
 import math.Vector3f;
 
@@ -17,11 +17,11 @@ public class DeathComponent extends AbstractComponent {
 
   private float timer = 0f;
 
-  private final Timer time;
+  private final Time time;
   private Vector3f baseScale;
   private Vector3f fallDir;
 
-  public DeathComponent(Timer time) {
+  public DeathComponent(Time time) {
     this.time = time;
   }
 

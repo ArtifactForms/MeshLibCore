@@ -1,10 +1,10 @@
 package engine.core;
 
 /**
- * The {@code Timer} class provides a utility for tracking elapsed time, frames per second (FPS),
- * and time scaling for games or applications. It uses nanosecond precision for timekeeping and
- * offers features such as formatted time representation, time-per-frame calculation, and
- * slow-motion or speed-up effects via time scaling.
+ * The {@link Time} class provides a utility for tracking elapsed time, frames per second (FPS), and
+ * time scaling for games or applications. It uses nanosecond precision for timekeeping and offers
+ * features such as formatted time representation, time-per-frame calculation, and slow-motion or
+ * speed-up effects via time scaling.
  *
  * <p>Key features include:
  *
@@ -17,7 +17,7 @@ package engine.core;
  *
  * This class is designed to be updated on every frame of an application or game.
  */
-public class Timer {
+public class Time {
 
   /** Real world time when the timer started. */
   private long startTime;
@@ -46,8 +46,8 @@ public class Timer {
   /** Total number of frames since the Timer started. */
   private int frameCount;
 
-  /** Constructs a {@code Timer} with a default time scale of 1.0. */
-  public Timer() {
+  /** Constructs a {@code Time} with a default time scale of 1.0. */
+  public Time() {
     this.startTime = System.nanoTime();
     this.lastTime = System.nanoTime();
     this.time = 0;
@@ -57,11 +57,11 @@ public class Timer {
   }
 
   /**
-   * Constructs a {@code Timer} with the specified initial time scale.
+   * Constructs a {@code Time} with the specified initial time scale.
    *
    * @param initialTimeScale the initial time scaling factor
    */
-  public Timer(float initialTimeScale) {
+  public Time(float initialTimeScale) {
     this.timeScale = initialTimeScale;
   }
 
@@ -97,7 +97,7 @@ public class Timer {
   }
 
   /**
-   * Resets the {@code Timer} to its initial state, clearing all accumulated time and frame count
+   * Resets the {@code Time} to its initial state, clearing all accumulated time and frame count
    * values. This includes resetting the following:
    *
    * <ul>
