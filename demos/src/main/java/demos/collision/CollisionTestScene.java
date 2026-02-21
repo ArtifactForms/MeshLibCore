@@ -1,5 +1,6 @@
 package demos.collision;
 
+import demos.collision.debug.DebugCollisionRenderer;
 import engine.components.CameraFollowComponent;
 import engine.components.CrossLineReticle;
 import engine.physics.PhysicsQuerySystem;
@@ -60,17 +61,22 @@ public class CollisionTestScene extends Scene {
   }
 
   private void setupLight() {
-    AmbientLight ambient = new AmbientLight(new Color(0.5f, 0.5f, 0.5f));
-    addLight(ambient);
+    addLight(createAmbientLight());
+    addLight(createSunLight());
+    addLight(createFillLight());
+  }
 
-    DirectionalLight sun =
-        new DirectionalLight(
-            new Color(1.0f, 0.98f, 0.85f), new Vector3f(-0.5f, 1.0f, -0.3f).normalize());
-    addLight(sun);
+  private AmbientLight createAmbientLight() {
+    return new AmbientLight(new Color(0.5f, 0.5f, 0.5f));
+  }
 
-    DirectionalLight fill =
-        new DirectionalLight(
-            new Color(0.15f, 0.15f, 0.18f), new Vector3f(0.5f, -1.0f, 0.3f).normalize());
-    addLight(fill);
+  private DirectionalLight createSunLight() {
+    return new DirectionalLight(
+        new Color(1.0f, 0.98f, 0.85f), new Vector3f(-0.5f, 1.0f, -0.3f).normalize());
+  }
+
+  private DirectionalLight createFillLight() {
+    return new DirectionalLight(
+        new Color(0.15f, 0.15f, 0.18f), new Vector3f(0.5f, -1.0f, 0.3f).normalize());
   }
 }
