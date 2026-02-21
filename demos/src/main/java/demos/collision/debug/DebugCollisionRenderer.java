@@ -1,4 +1,4 @@
-package demos.collision;
+package demos.collision.debug;
 
 import engine.runtime.debug.DebugColliderComponent;
 import engine.scene.SceneNode;

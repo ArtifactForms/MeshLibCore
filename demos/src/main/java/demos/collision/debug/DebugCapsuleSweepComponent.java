@@ -1,4 +1,4 @@
-package demos.collision;
+package demos.collision.debug;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
