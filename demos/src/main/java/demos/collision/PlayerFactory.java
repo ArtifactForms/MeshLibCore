@@ -4,7 +4,7 @@ import engine.components.ControlWASD;
 import engine.components.Geometry;
 import engine.physics.collision.collider.CapsuleCollider;
 import engine.physics.collision.component.ColliderComponent;
-import engine.render.Material;
+import engine.rendering.Material;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
 import engine.scene.SceneNode;

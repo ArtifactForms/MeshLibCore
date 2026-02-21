@@ -5,7 +5,7 @@ import engine.application.BasicApplication;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.components.SmoothFlyByCameraControl;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.runtime.debug.DebugCameraRenderer;
 import engine.runtime.debug.core.DebugDraw;
 import engine.runtime.input.Key;

@@ -3,7 +3,7 @@ package engine.scene.nodes;
 import engine.components.BillboardComponent;
 import engine.components.Geometry;
 import engine.gfx.UVRect;
-import engine.render.Material;
+import engine.rendering.Material;
 import engine.resources.Texture;
 import engine.scene.SceneNode;
 import math.Color;

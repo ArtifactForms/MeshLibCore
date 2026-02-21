@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.command.DebugCommand;
 import engine.runtime.debug.core.config.DebugDepthMode;
 

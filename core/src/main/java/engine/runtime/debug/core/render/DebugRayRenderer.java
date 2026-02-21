@@ -1,6 +1,6 @@
 package engine.runtime.debug.core.render;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.command.DebugRayCommand;
 import math.Ray3f;
 

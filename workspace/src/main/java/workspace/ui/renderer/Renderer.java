@@ -1,6 +1,6 @@
 package workspace.ui.renderer;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import workspace.ui.elements.UiElement;
 
 /**
@@ -16,7 +16,7 @@ import workspace.ui.elements.UiElement;
  * rendering pipelines without requiring changes to the underlying UI component logic.
  *
  * @see workspace.ui.elements.UiElement
- * @see engine.render.Graphics
+ * @see engine.rendering.Graphics
  */
 public interface Renderer {
 

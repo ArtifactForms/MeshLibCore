@@ -1,6 +1,6 @@
 package workspace.ui.ui3d;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Mathf;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;

@@ -2,7 +2,7 @@ package engine.runtime.particles;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 
 /**
  * A component responsible for managing and rendering particles using a specified particle emitter

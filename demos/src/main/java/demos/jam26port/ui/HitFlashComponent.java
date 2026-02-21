@@ -2,7 +2,7 @@ package demos.jam26port.ui;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Color;
 import math.Mathf;
 

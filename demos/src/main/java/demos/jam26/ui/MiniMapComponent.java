@@ -4,7 +4,7 @@ import demos.jam26.level.TileMap;
 import demos.jam26.level.TileType;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.Scene;
 import engine.scene.camera.Camera;
 import math.Color;

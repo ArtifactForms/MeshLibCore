@@ -1,6 +1,6 @@
 package engine.runtime.debug;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Color;
 import math.Plane;
 import math.Vector3f;

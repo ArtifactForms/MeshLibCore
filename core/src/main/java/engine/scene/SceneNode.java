@@ -6,7 +6,7 @@ import java.util.List;
 import engine.components.Component;
 import engine.components.RenderableComponent;
 import engine.components.Transform;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.audio.AudioSource;
 import engine.scene.audio.AudioSystem;
 import math.Vector3f;

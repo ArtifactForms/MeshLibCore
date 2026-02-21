@@ -17,7 +17,7 @@ import demos.jam26port.world.GridCollisionComponent;
 import demos.jam26port.world.SphereCollider;
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.DebugDraw;
 import engine.scene.Scene;
 import engine.scene.SceneNode;

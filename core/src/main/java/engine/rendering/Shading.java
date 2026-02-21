@@ -1,4 +1,4 @@
-package engine.render;
+package engine.rendering;
 
 /**
  * Defines how surface normals are interpreted during lighting calculations.

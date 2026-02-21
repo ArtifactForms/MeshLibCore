@@ -1,4 +1,4 @@
-package engine.render;
+package engine.rendering;
 
 import engine.resources.Texture;
 import math.Color;
@@ -387,7 +387,7 @@ public class Material {
    * Enables or disables depth testing for this material.
    *
    * <p>This flag only describes the desired render state. The actual graphics API state change is
-   * performed by the {@link engine.render.Graphics} implementation when the material is applied.
+   * performed by the {@link engine.rendering.Graphics} implementation when the material is applied.
    *
    * @param depthTest {@code true} to enable depth testing, {@code false} to disable it
    */

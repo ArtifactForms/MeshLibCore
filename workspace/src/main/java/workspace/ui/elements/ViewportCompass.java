@@ -1,6 +1,6 @@
 package workspace.ui.elements;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Mathf;
 import math.Vector3f;
 import mesh.Mesh3D;

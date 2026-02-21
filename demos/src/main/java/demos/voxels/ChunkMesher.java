@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import engine.backend.processing.BufferedShape;
 import engine.components.StaticGeometry;
-import engine.render.Material;
+import engine.rendering.Material;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
 import math.Vector2f;

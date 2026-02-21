@@ -11,7 +11,7 @@ package engine.components;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;

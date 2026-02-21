@@ -1,6 +1,6 @@
 package workspace.ui.elements;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Color;
 import workspace.ui.border.Border;
 import workspace.ui.border.Insets;

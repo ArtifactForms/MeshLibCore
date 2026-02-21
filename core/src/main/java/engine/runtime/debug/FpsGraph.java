@@ -3,7 +3,7 @@ package engine.runtime.debug;
 import java.util.Queue;
 
 import engine.Timer;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Color;
 
 public class FpsGraph {

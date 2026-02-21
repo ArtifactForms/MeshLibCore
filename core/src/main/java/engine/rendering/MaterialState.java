@@ -1,4 +1,4 @@
-package engine.render;
+package engine.rendering;
 
 import engine.resources.Texture;
 import math.Color;

@@ -3,7 +3,7 @@ package engine.backend.processing;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.light.AmbientLight;
 import engine.scene.light.DirectionalLight;
 import engine.scene.light.Light;

@@ -2,7 +2,7 @@ package demos.jam26port.game.ui.minimap;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Vector3f;
 
 public class MiniMapComponent extends AbstractComponent implements RenderableComponent {

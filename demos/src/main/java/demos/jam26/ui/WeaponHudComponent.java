@@ -3,7 +3,7 @@ package demos.jam26.ui;
 import demos.jam26.assets.AssetRefs;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.resources.Image;
 import engine.resources.ResourceManager;
 

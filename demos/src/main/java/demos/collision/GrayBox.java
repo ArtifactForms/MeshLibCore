@@ -6,7 +6,7 @@ import demos.collision.texture.PrototypeGridTexture;
 import engine.components.Geometry;
 import engine.physics.collision.collider.AABBCollider;
 import engine.physics.collision.component.ColliderComponent;
-import engine.render.Material;
+import engine.rendering.Material;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;

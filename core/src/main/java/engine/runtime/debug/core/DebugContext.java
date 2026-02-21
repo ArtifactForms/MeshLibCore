@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.command.DebugCommand;
 import engine.runtime.debug.core.render.DebugRenderer;
 

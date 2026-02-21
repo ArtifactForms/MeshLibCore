@@ -2,7 +2,7 @@ package demos.jam26port.game.ui.minimap;
 
 import demos.jam26port.level.TileMap;
 import demos.jam26port.level.TileType;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Color;
 import math.Vector3f;
 

@@ -2,7 +2,7 @@ package engine.runtime.particles;
 
 import java.util.Collection;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;

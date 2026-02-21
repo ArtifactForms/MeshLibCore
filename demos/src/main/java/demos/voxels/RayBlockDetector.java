@@ -2,7 +2,7 @@ package demos.voxels;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.camera.Camera;
 import math.Color;
 import math.Mathf;

@@ -27,7 +27,7 @@ import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
 import engine.application.Viewport;
 import engine.components.RoundReticle;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.DebugDraw;
 import engine.scene.Scene;
 import engine.scene.SceneNode;

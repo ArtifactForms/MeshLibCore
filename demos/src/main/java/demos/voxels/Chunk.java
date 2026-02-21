@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 
 import engine.backend.processing.BufferedShape;
 import engine.components.StaticGeometry;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Vector3f;
 
 public class Chunk {

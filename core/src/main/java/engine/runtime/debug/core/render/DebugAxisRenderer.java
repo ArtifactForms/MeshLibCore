@@ -1,7 +1,7 @@
 package engine.runtime.debug.core.render;
 
 import engine.components.Transform;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.command.DebugAxisCommand;
 import math.Color;
 import math.Vector3f;

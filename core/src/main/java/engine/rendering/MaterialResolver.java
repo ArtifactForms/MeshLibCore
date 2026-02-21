@@ -1,4 +1,4 @@
-package engine.render;
+package engine.rendering;
 
 import math.Color;
 

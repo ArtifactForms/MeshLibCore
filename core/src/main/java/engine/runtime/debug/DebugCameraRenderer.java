@@ -1,6 +1,6 @@
 package engine.runtime.debug;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.camera.Camera;
 import engine.scene.camera.FrustumGeometry;
 import math.Color;

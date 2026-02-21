@@ -1,6 +1,6 @@
 package workspace.ui.border;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Color;
 
 /**

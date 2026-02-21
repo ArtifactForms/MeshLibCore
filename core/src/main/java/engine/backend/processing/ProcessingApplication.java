@@ -2,7 +2,7 @@ package engine.backend.processing;
 
 import engine.application.ApplicationContainer;
 import engine.application.ApplicationSettings;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.resources.ResourceManager;
 import engine.resources.TextureManager;
 import engine.runtime.input.GamepadInput;

@@ -8,7 +8,7 @@ import engine.physics.PhysicsQuerySystem;
 import engine.physics.SweepResult;
 import engine.physics.collision.collider.CapsuleCollider;
 import engine.physics.collision.component.ColliderComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.DebugDraw;
 import engine.scene.Scene;
 import math.Color;

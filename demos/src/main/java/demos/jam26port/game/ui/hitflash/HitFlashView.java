@@ -1,6 +1,6 @@
 package demos.jam26port.game.ui.hitflash;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 
 public interface HitFlashView {
 

@@ -4,7 +4,7 @@ import engine.Timer;
 import engine.backend.processing.ProcessingApplication;
 import engine.components.SmoothFlyByCameraControl;
 import engine.physics.collision.CollisionSystem;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.resources.Font;
 import engine.runtime.debug.Debug;
 import engine.runtime.debug.DebugInfoUpdater;

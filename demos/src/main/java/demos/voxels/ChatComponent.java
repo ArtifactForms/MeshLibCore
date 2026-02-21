@@ -4,7 +4,7 @@ import demos.voxels.client.event.EventManager;
 import demos.voxels.client.event.MessageSentEvent;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.resources.Font;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;

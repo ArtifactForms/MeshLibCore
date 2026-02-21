@@ -1,6 +1,6 @@
 package engine.components;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.SceneNode;
 
 /**

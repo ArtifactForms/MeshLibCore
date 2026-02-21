@@ -2,7 +2,7 @@ package demos.jam26port.core;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.light.PointLight;
 
 public class LightComponent extends AbstractComponent implements RenderableComponent {

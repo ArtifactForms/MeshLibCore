@@ -1,6 +1,6 @@
 package engine.backend.processing;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.light.AmbientLight;
 import engine.scene.light.DirectionalLight;
 import engine.scene.light.Light;

@@ -3,10 +3,10 @@ package engine.backend.processing;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.render.Graphics;
-import engine.render.Material;
-import engine.render.MaterialResolver;
-import engine.render.MaterialState;
+import engine.rendering.Graphics;
+import engine.rendering.Material;
+import engine.rendering.MaterialResolver;
+import engine.rendering.MaterialState;
 import engine.resources.FilterMode;
 import engine.resources.Font;
 import engine.resources.Image;

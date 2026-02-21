@@ -1,6 +1,6 @@
 package workspace.ui.renderer;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import workspace.ui.border.Insets;
 import workspace.ui.elements.UiElement;
 import workspace.ui.elements.UiLabel;

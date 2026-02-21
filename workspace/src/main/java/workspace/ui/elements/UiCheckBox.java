@@ -1,6 +1,6 @@
 package workspace.ui.elements;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import workspace.ui.UiComponent;
 import workspace.ui.event.IActionListener;
 import workspace.ui.renderer.CheckBoxRenderer;

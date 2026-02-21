@@ -4,7 +4,7 @@ import demos.jam26port.assets.AssetRefs;
 import demos.jam26port.game.world.WorldContext;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.resources.Font;
 import engine.resources.Image;
 import engine.resources.ResourceManager;

@@ -2,8 +2,8 @@ package engine.components;
 
 import engine.physics.ray.RaycastComponent;
 import engine.physics.ray.RaycastHit;
-import engine.render.Graphics;
-import engine.render.Material;
+import engine.rendering.Graphics;
+import engine.rendering.Material;
 import engine.vbo.VBO;
 import engine.vbo.VBOFactory;
 import math.Bounds;

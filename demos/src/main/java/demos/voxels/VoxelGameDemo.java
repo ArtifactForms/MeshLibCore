@@ -8,7 +8,7 @@ import engine.application.BasicApplication;
 import engine.components.ControlWASD;
 import engine.components.CrossLineReticle;
 import engine.components.SmoothFlyByCameraControl;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;

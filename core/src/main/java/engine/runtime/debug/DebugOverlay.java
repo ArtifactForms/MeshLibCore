@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 import math.Color;
 
 /**

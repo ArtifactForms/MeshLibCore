@@ -4,7 +4,7 @@ import demos.collision.CollisionTestScene;
 import demos.collision.Settings;
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
-import engine.render.Graphics;
+import engine.rendering.Graphics;
 
 public class CollisionTestApp extends BasicApplication {
 
