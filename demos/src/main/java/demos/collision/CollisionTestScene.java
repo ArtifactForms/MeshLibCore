@@ -23,13 +23,17 @@ public class CollisionTestScene extends Scene {
     setupDebugRenderer();
     setupLight();
     setupUI();
+    setupCamera();
+  }
 
+  private void setupCamera() {
     PerspectiveCamera camera = new PerspectiveCamera();
     setActiveCamera(camera);
 
     Vector3f offset = new Vector3f(0, -15, 20);
     CameraFollowComponent cameraFollowComponent = new CameraFollowComponent(camera, player, offset);
     cameraFollowComponent.setSmoothness(2f);
+
     SceneNode cameraNode = new SceneNode("Camera", cameraFollowComponent);
     addNode(cameraNode);
   }
