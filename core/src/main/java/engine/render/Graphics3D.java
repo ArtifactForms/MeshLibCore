@@ -1,6 +1,5 @@
-package workspace.ui;
+package engine.render;
 
-import engine.render.Material;
 import engine.resources.Model;
 import engine.resources.Texture;
 import engine.scene.camera.Camera;

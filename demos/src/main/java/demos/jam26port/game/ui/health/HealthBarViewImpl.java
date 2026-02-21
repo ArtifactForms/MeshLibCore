@@ -1,8 +1,8 @@
 package demos.jam26port.game.ui.health;
 
+import engine.render.Graphics;
 import math.Color;
 import math.Mathf;
-import workspace.ui.Graphics;
 
 public class HealthBarViewImpl implements HealthBarView {
 

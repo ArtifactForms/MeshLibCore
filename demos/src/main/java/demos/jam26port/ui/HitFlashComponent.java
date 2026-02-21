@@ -2,9 +2,9 @@ package demos.jam26port.ui;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.render.Graphics;
 import math.Color;
 import math.Mathf;
-import workspace.ui.Graphics;
 
 /** Fullscreen red flash effect used as player hit feedback. */
 public class HitFlashComponent extends AbstractComponent implements RenderableComponent {

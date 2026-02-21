@@ -8,11 +8,11 @@ import engine.physics.PhysicsQuerySystem;
 import engine.physics.SweepResult;
 import engine.physics.collision.collider.CapsuleCollider;
 import engine.physics.collision.component.ColliderComponent;
+import engine.render.Graphics;
 import engine.runtime.debug.core.DebugDraw;
 import engine.scene.Scene;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 /**
  * Visualizes Capsule Sweep queries for debugging purposes. Displays the trajectory, the hit

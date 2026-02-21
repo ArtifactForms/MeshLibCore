@@ -2,6 +2,7 @@ package demos.voxels;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.render.Graphics;
 import engine.scene.camera.Camera;
 import math.Color;
 import math.Mathf;
@@ -9,7 +10,6 @@ import math.Ray3f;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
-import workspace.ui.Graphics;
 
 public class RayBlockDetector extends AbstractComponent implements RenderableComponent {
 

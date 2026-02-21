@@ -7,6 +7,7 @@ import engine.backend.processing.LightRendererImpl;
 import engine.backend.processing.ProcessingFontManager;
 import engine.backend.processing.ProcessingTexture;
 import engine.backend.processing.VBOProcessing;
+import engine.render.Graphics;
 import engine.render.Material;
 import engine.render.MaterialResolver;
 import engine.render.MaterialState;
@@ -34,7 +35,6 @@ import processing.core.PImage;
 import processing.opengl.PGL;
 import processing.opengl.PGraphicsOpenGL;
 import processing.opengl.PShader;
-import workspace.ui.Graphics;
 
 public class GraphicsPImpl implements Graphics {
 

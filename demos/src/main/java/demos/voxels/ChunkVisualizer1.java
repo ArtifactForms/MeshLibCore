@@ -2,12 +2,12 @@ package demos.voxels;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.render.Graphics;
 import math.Color;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
 import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.transform.SnapToGroundModifier;
-import workspace.ui.Graphics;
 
 /**
  * ChunkVisualizer is a component that visualizes the chunk structure in the voxel engine. It

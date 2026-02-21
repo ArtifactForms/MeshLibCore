@@ -1,8 +1,8 @@
 package engine.runtime.debug.core.render;
 
+import engine.render.Graphics;
 import engine.runtime.debug.core.command.DebugSphereCommand;
 import math.Mathf;
-import workspace.ui.Graphics;
 
 class DebugSphereRenderer implements DebugCommandRenderer<DebugSphereCommand> {
 

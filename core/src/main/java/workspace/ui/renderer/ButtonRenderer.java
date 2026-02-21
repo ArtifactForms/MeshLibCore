@@ -1,6 +1,6 @@
 package workspace.ui.renderer;
 
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 import workspace.ui.elements.UiButton;
 import workspace.ui.elements.UiElement;
 

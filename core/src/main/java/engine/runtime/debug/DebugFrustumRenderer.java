@@ -1,9 +1,9 @@
 package engine.runtime.debug;
 
+import engine.render.Graphics;
 import math.Color;
 import math.Plane;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 /**
  * Utility class for debug rendering of a camera frustum represented by six planes.

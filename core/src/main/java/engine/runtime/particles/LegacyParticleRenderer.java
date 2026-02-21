@@ -2,7 +2,7 @@ package engine.runtime.particles;
 
 import java.util.Collection;
 
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 
 /**
  * Interface for rendering particles in a particle system. Implementations of this interface define

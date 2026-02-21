@@ -1,7 +1,7 @@
 package engine.runtime.debug;
 
+import engine.render.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 
 public class FloatHistoryGraphRenderer {
 

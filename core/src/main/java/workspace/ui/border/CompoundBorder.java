@@ -1,6 +1,6 @@
 package workspace.ui.border;
 
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 
 /**
  * A border implementation that combines two borders: an outer border and an

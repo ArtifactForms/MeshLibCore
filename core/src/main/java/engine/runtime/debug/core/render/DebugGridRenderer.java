@@ -1,9 +1,9 @@
 package engine.runtime.debug.core.render;
 
+import engine.render.Graphics;
 import engine.runtime.debug.core.command.DebugGridCommand;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 public final class DebugGridRenderer implements DebugCommandRenderer<DebugGridCommand> {
 

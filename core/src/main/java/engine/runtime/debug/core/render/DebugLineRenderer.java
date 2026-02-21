@@ -2,10 +2,10 @@ package engine.runtime.debug.core.render;
 
 import java.util.List;
 
+import engine.render.Graphics;
 import engine.runtime.debug.core.command.DebugLineCommand;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 public final class DebugLineRenderer implements DebugCommandRenderer<DebugLineCommand> {
 

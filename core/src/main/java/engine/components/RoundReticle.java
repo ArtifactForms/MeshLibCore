@@ -1,7 +1,7 @@
 package engine.components;
 
+import engine.render.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 
 /**
  * A component that renders a round reticle in the center of the screen. The reticle consists of an

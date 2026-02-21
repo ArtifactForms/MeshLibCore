@@ -1,8 +1,8 @@
 package workspace.ui.ui3d;
 
+import engine.render.Graphics;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
-import workspace.ui.Graphics;
 
 /**
  * Represents a 3D axis visualization that can be rendered with customizable visibility for each

@@ -17,6 +17,7 @@ import demos.jam26port.world.GridCollisionComponent;
 import demos.jam26port.world.SphereCollider;
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
+import engine.render.Graphics;
 import engine.runtime.debug.core.DebugDraw;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
@@ -30,7 +31,6 @@ import math.Color;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import workspace.ui.Graphics;
 
 public class DungeonCrawlerGame extends BasicApplication {
 

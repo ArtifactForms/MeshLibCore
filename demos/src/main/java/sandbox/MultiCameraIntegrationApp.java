@@ -5,6 +5,7 @@ import engine.application.BasicApplication;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.components.SmoothFlyByCameraControl;
+import engine.render.Graphics;
 import engine.runtime.debug.DebugCameraRenderer;
 import engine.runtime.debug.core.DebugDraw;
 import engine.runtime.input.Key;
@@ -17,7 +18,6 @@ import engine.scene.camera.PerspectiveCamera;
 import engine.scene.nodes.DefaultTestCube;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 /**
  *

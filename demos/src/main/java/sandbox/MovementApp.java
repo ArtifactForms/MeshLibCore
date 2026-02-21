@@ -4,6 +4,7 @@ import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
 import engine.components.ControlWASD;
 import engine.components.Geometry;
+import engine.render.Graphics;
 import engine.render.Material;
 import engine.runtime.debug.core.DebugDraw;
 import engine.scene.Scene;
@@ -12,7 +13,6 @@ import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CapsuleCreator;
-import workspace.ui.Graphics;
 
 public class MovementApp extends BasicApplication {
 

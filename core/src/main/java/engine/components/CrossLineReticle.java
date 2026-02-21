@@ -11,6 +11,7 @@ package engine.components;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import engine.render.Graphics;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
@@ -19,7 +20,6 @@ import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreatorUV;
 import mesh.modifier.transform.RotateXModifier;
-import workspace.ui.Graphics;
 
 public class CrossLineReticle extends AbstractComponent implements RenderableComponent {
 

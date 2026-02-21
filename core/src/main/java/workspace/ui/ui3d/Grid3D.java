@@ -1,9 +1,9 @@
 package workspace.ui.ui3d;
 
+import engine.render.Graphics;
 import math.Mathf;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
-import workspace.ui.Graphics;
 
 /**
  * Represents a 3D grid visualization that can be rendered in a 3D UI space.

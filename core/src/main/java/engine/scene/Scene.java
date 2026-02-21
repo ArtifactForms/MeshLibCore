@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.components.Transform;
+import engine.render.Graphics;
 import engine.scene.audio.AudioListener;
 import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
@@ -12,7 +13,6 @@ import engine.system.SceneSystem;
 import engine.system.SceneSystemManager;
 import engine.system.UpdatePhase;
 import math.Color;
-import workspace.ui.Graphics;
 
 /**
  * The {@code Scene} class manages a hierarchy of {@code SceneNode}s for rendering and updating. It

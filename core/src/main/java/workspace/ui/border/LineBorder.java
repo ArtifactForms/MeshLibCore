@@ -1,7 +1,7 @@
 package workspace.ui.border;
 
+import engine.render.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 
 /**
  * A border implementation that draws a solid line around a UI element. The

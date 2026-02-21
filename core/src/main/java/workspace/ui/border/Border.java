@@ -1,6 +1,6 @@
 package workspace.ui.border;
 
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 
 /**
  * Represents a customizable border for UI elements.

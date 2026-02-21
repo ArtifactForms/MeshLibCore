@@ -2,7 +2,7 @@ package engine.runtime.debug.core.command;
 
 import java.util.List;
 
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 
 class DebugDrawBuffer {
     

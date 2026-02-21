@@ -2,7 +2,7 @@ package demos.jam26port.game.ui.hitflash;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 
 public class HitFlashComponent extends AbstractComponent implements RenderableComponent {
 

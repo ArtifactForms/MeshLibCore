@@ -1,4 +1,4 @@
-package workspace.ui;
+package engine.render;
 
 import engine.resources.Font;
 import engine.resources.Image;

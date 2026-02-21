@@ -2,9 +2,9 @@ package demos.jam26port.game.ui.minimap;
 
 import demos.jam26port.level.TileMap;
 import demos.jam26port.level.TileType;
+import engine.render.Graphics;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 /** Simple top-down minimap centered on the player. */
 public class MiniMapViewImpl implements MinimapView {

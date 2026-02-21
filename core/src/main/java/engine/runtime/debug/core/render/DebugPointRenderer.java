@@ -1,8 +1,8 @@
 package engine.runtime.debug.core.render;
 
+import engine.render.Graphics;
 import engine.runtime.debug.core.command.DebugPointCommand;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 public class DebugPointRenderer implements DebugCommandRenderer<DebugPointCommand> {
 

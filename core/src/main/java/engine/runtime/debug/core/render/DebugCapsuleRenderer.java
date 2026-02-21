@@ -1,8 +1,8 @@
 package engine.runtime.debug.core.render;
 
+import engine.render.Graphics;
 import engine.runtime.debug.core.command.DebugCapsuleCommand;
 import math.Mathf;
-import workspace.ui.Graphics;
 
 /**
  * Renders a debug capsule using simple wireframe primitives.

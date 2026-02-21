@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import engine.components.AbstractComponent;
 import engine.components.Geometry;
 import engine.components.RenderableComponent;
+import engine.render.Graphics;
 import engine.render.Material;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
@@ -16,7 +17,6 @@ import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreatorUV;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.ScaleModifier;
-import workspace.ui.Graphics;
 
 public class Hotbar extends AbstractComponent implements RenderableComponent {
 

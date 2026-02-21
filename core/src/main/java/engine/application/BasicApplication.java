@@ -4,6 +4,7 @@ import engine.Timer;
 import engine.backend.processing.ProcessingApplication;
 import engine.components.SmoothFlyByCameraControl;
 import engine.physics.collision.CollisionSystem;
+import engine.render.Graphics;
 import engine.resources.Font;
 import engine.runtime.debug.Debug;
 import engine.runtime.debug.DebugInfoUpdater;
@@ -15,7 +16,6 @@ import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
 import math.Mathf;
-import workspace.ui.Graphics;
 
 public abstract class BasicApplication implements Application {
 

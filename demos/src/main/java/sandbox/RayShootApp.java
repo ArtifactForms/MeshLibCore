@@ -7,6 +7,7 @@ import engine.components.StaticGeometry;
 import engine.physics.ray.RaycastHit;
 import engine.physics.ray.RaycastQuery;
 import engine.physics.ray.Raycaster;
+import engine.render.Graphics;
 import engine.render.Material;
 import engine.runtime.debug.core.DebugDraw;
 import engine.runtime.input.Input;
@@ -19,7 +20,6 @@ import math.Ray3f;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
-import workspace.ui.Graphics;
 
 /**
  *

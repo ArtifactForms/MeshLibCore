@@ -1,7 +1,7 @@
 package workspace.ui.elements;
 
+import engine.render.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 import workspace.ui.border.Border;
 import workspace.ui.border.Insets;
 import workspace.ui.layout.Anchor;

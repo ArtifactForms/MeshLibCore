@@ -1,7 +1,7 @@
 package workspace.ui.border;
 
+import engine.render.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 
 /**
  * A custom border implementation that mimics pixel art-style UI borders with

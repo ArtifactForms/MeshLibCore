@@ -1,7 +1,7 @@
 package engine.components;
 
+import engine.render.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 
 /**
  * CinematicBlackBarsRenderer is responsible for rendering cinematic black bars on the top and

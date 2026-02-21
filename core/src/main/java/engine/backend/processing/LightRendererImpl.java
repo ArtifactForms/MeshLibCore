@@ -3,6 +3,7 @@ package engine.backend.processing;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.render.Graphics;
 import engine.scene.light.AmbientLight;
 import engine.scene.light.DirectionalLight;
 import engine.scene.light.Light;
@@ -13,7 +14,6 @@ import engine.scene.light.SpotLight;
 import math.Color;
 import math.Mathf;
 import processing.core.PApplet;
-import workspace.ui.Graphics;
 
 public class LightRendererImpl implements LightRenderer {
 

@@ -2,8 +2,8 @@ package engine.ui;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.render.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 
 public class LoadingScreen extends AbstractComponent implements RenderableComponent {
 

@@ -1,7 +1,7 @@
 package engine.runtime.debug;
 
 import engine.Timer;
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 
 public class Debug {
 

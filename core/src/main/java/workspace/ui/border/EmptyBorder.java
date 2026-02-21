@@ -1,6 +1,6 @@
 package workspace.ui.border;
 
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 
 /**
  * A border implementation that does not render any visual element but provides

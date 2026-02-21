@@ -1,5 +1,6 @@
 package workspace.ui.elements;
 
+import engine.render.Graphics;
 import math.Mathf;
 import math.Vector3f;
 import mesh.Mesh3D;
@@ -11,7 +12,6 @@ import mesh.modifier.transform.ScaleModifier;
 import mesh.modifier.transform.TranslateModifier;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
-import workspace.ui.Graphics;
 import workspace.ui.UiComponent;
 
 /**

@@ -1,10 +1,10 @@
 package engine.runtime.debug.core.render;
 
 import engine.components.Transform;
+import engine.render.Graphics;
 import engine.runtime.debug.core.command.DebugAxisCommand;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 public class DebugAxisRenderer implements DebugCommandRenderer<DebugAxisCommand> {
 

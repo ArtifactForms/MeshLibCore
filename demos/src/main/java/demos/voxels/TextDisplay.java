@@ -2,9 +2,9 @@ package demos.voxels;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.render.Graphics;
 import engine.resources.Font;
 import math.Color;
-import workspace.ui.Graphics;
 
 public class TextDisplay extends AbstractComponent implements RenderableComponent {
 

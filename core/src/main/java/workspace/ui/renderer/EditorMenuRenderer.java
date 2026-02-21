@@ -1,8 +1,8 @@
 package workspace.ui.renderer;
 
+import engine.render.Graphics;
 import workspace.laf.UiConstants;
 import workspace.laf.UiValues;
-import workspace.ui.Graphics;
 import workspace.ui.elements.UiEditorMenu;
 import workspace.ui.elements.UiElement;
 

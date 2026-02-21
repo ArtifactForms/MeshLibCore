@@ -2,7 +2,7 @@ package demos.jam26port.game.ui.health;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import workspace.ui.Graphics;
+import engine.render.Graphics;
 
 public class HealthBarComponent extends AbstractComponent implements RenderableComponent {
 
