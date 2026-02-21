@@ -1,4 +1,4 @@
-package demos.collision;
+package demos.collision.texture;
 
 import java.awt.Color;
 import java.awt.Font;

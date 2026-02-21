@@ -2,6 +2,7 @@ package demos.collision;
 
 import java.awt.image.BufferedImage;
 
+import demos.collision.texture.PrototypeGridTexture;
 import engine.components.Geometry;
 import engine.physics.collision.collider.AABBCollider;
 import engine.physics.collision.component.ColliderComponent;

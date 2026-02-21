@@ -1,5 +1,6 @@
-package demos.collision;
+package demos.collision.main;
 
+import demos.collision.CollisionTestScene;
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
 import workspace.ui.Graphics;
