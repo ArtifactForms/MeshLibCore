@@ -1,4 +1,4 @@
-package engine;
+package engine.core;
 
 /**
  * The {@code Timer} class provides a utility for tracking elapsed time, frames per second (FPS),
