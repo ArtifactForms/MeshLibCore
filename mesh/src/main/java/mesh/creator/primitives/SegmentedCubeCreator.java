@@ -1,9 +1,12 @@
 package mesh.creator.primitives;
 
+import java.lang.System.Logger.Level;
+
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.repair.RemoveDoubleVerticesModifier;
+import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.ScaleModifier;
 import mesh.modifier.transform.TransformAxis;
@@ -66,14 +69,14 @@ public class SegmentedCubeCreator implements IMeshCreator {
 
     private void createLeft() {
         Mesh3D left = createSide();
-        left.rotateZ(-Mathf.HALF_PI);
+        new RotateModifier(-Mathf.HALF_PI, TransformAxis.Z).modify(left);
         left.translateX(-creationSize);
         append(left);
     }
 
     private void createRight() {
         Mesh3D right = createSide();
-        right.rotateZ(Mathf.HALF_PI);
+        new RotateModifier(Mathf.HALF_PI, TransformAxis.Z).modify(right);
         right.translateX(creationSize);
         append(right);
     }

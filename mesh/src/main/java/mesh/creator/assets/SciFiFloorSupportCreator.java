@@ -4,6 +4,7 @@ import math.Mathf;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.TransformAxis;
 import mesh.modifier.transform.TranslateModifier;
 import mesh.selection.CompareType;
@@ -142,7 +143,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
     creator.setDepth(width);
     creator.setSegments(segments);
     support = creator.create();
-    support.rotateZ(-Mathf.HALF_PI);
+    new RotateModifier(-Mathf.HALF_PI, TransformAxis.Z).modify(mesh);
     new TranslateModifier(deltaX, deltaY, 0).modify(support);
     support.rotateY(-Mathf.HALF_PI);
     processCapBack();

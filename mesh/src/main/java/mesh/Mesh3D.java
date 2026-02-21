@@ -7,7 +7,6 @@ import java.util.List;
 
 import math.Vector3f;
 import mesh.modifier.transform.RotateYModifier;
-import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.TranslateModifier;
 import mesh.next.surface.SurfaceLayer;
 
@@ -91,16 +90,6 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public Mesh3D rotateY(float angle) {
     return new RotateYModifier(angle).modify(this);
-  }
-
-  /**
-   * Rotates the mesh around the Z-axis.
-   *
-   * @deprecated Use {@link RotateZModifier} instead.
-   */
-  @Deprecated
-  public Mesh3D rotateZ(float angle) {
-    return new RotateZModifier(angle).modify(this);
   }
 
   /**

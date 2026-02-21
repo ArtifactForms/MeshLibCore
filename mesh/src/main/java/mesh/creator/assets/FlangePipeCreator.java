@@ -8,7 +8,9 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 import mesh.creator.primitives.CylinderCreator;
 import mesh.creator.special.VariableCylinderCreator;
+import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.TransformAxis;
 import mesh.modifier.transform.TranslateModifier;
 
 public class FlangePipeCreator implements IMeshCreator {
@@ -77,7 +79,7 @@ public class FlangePipeCreator implements IMeshCreator {
     private void translate() {
         pipe.translateY(-calculateSegmentHeight() / 2f);
         pipe.translateY(calculateTotalHeight() / 2f);
-        pipe.rotateZ(Mathf.HALF_PI);
+        new RotateModifier(Mathf.HALF_PI, TransformAxis.Z).modify(pipe);
     }
 
     private void createSegment() {
