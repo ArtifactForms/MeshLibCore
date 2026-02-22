@@ -205,6 +205,11 @@ public class GraphicsPImpl implements Graphics {
         Vector3f v = mesh.getVertexAt(vertexIndices[i]);
         int[] uvIndices = surfaceLayer.getFaceUVIndices(faceIdx);
 
+        if (hasNormals && smoothShading) {
+          Vector3f normal = vertexNormals.get(f.indices[i]);
+          g.normal(normal.getX(), normal.getY(), normal.getZ());
+        }
+
         if (uvIndices != null) {
           Vector2f uv = surfaceLayer.getUvAt(uvIndices[i]);
           g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
