@@ -1,7 +1,6 @@
 package engine.backend.processing;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import engine.rendering.Graphics;
 import engine.rendering.Material;
@@ -23,7 +22,6 @@ import math.Vector2f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import mesh.SubMesh;
 import mesh.next.surface.SurfaceLayer;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -161,8 +159,7 @@ public class GraphicsPImpl implements Graphics {
     this.texture = texture2;
   }
 
-  @Override
-  public void unbindTexture(int unit) {}
+  private void unbindTexture(int unit) {}
 
   // -------------------------------------------------
   // MESH
