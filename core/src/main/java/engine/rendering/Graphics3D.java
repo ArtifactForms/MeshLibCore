@@ -52,8 +52,6 @@ public interface Graphics3D {
 
   void lightsOff();
 
-  void unbindTexture(int unit);
-
   void enableFaceCulling();
 
   void disableFaceCulling();
