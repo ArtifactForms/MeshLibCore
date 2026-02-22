@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import engine.rendering.Graphics;
+import engine.rendering.Material;
 import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
@@ -23,20 +24,8 @@ import mesh.modifier.transform.RotateXModifier;
 
 public class CrossLineReticle extends AbstractComponent implements RenderableComponent {
 
-  /** The radius of the reticle, defining its size. */
-  private int radius;
-
-  /** The thickness of the cross lines. */
-  private int thickness;
-
-  /** The color of the cross lines. */
-  private Color color;
-
-  /** The mesh used to represent the plane of the reticle. */
-  private Mesh3D mesh;
-
-  /** The texture used for rendering the reticle. */
-  private Texture texture;
+  /** The geometry of holding shape and texture. */
+  private Geometry geometry;
 
   /** Creates a default CrossLineReticle with a radius of 9, thickness of 2, and white color. */
   public CrossLineReticle() {
@@ -51,12 +40,14 @@ public class CrossLineReticle extends AbstractComponent implements RenderableCom
    * @param color The color of the cross lines.
    */
   public CrossLineReticle(int radius, int thickness, Color color) {
-    this.radius = radius;
-    this.color = color;
-    this.thickness = thickness;
-    this.mesh = new PlaneCreatorUV(radius).create();
+    Mesh3D mesh = new PlaneCreatorUV(radius).create();
     new RotateXModifier(-Mathf.HALF_PI).modify(mesh);
-    this.texture = createTexture();
+
+    Texture texture = createTexture(radius, thickness, color);
+    Material material = new Material();
+    material.setDiffuseTexture(texture);
+    material.setUseLighting(false);
+    geometry = new Geometry(mesh, material);
   }
 
   /**
@@ -70,9 +61,7 @@ public class CrossLineReticle extends AbstractComponent implements RenderableCom
     float centerY = g.getHeight() / 2.0f;
     g.pushMatrix();
     g.translate(centerX, centerY);
-    g.bindTexture(texture, 0);
-    g.fillFaces(mesh);
-    g.unbindTexture(0);
+    geometry.render(g);
     g.popMatrix();
   }
 
@@ -81,8 +70,8 @@ public class CrossLineReticle extends AbstractComponent implements RenderableCom
    *
    * @return The generated texture.
    */
-  private Texture createTexture() {
-    BufferedImage image = createTextureImage();
+  private Texture createTexture(int radius, int thickness, Color color) {
+    BufferedImage image = createTextureImage(radius, thickness, color);
     Texture texture = TextureManager.getInstance().createTexture(image);
     texture.setFilterMode(FilterMode.POINT);
     return texture;
@@ -93,11 +82,11 @@ public class CrossLineReticle extends AbstractComponent implements RenderableCom
    *
    * @return The generated image.
    */
-  private BufferedImage createTextureImage() {
+  private BufferedImage createTextureImage(int radius, int thickness, Color color) {
     int size = radius + radius;
     BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2d = (Graphics2D) image.getGraphics();
-    g2d.setColor(new java.awt.Color(this.color.getRGBA()));
+    g2d.setColor(new java.awt.Color(color.getRGBA()));
     g2d.fillRect(radius - (thickness / 2), 0, thickness, size);
     g2d.fillRect(0, radius - (thickness / 2), size, thickness);
     return image;

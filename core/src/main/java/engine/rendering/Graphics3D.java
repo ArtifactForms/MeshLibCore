@@ -1,7 +1,6 @@
 package engine.rendering;
 
 import engine.resources.Model;
-import engine.resources.Texture;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.vbo.VBO;
@@ -48,12 +47,10 @@ public interface Graphics3D {
   void drawLines(Vector3f[] vertices, math.Color[] colors);
 
   void camera();
-  
+
   void ortho();
 
   void lightsOff();
-
-  void bindTexture(Texture texture, int unit);
 
   void unbindTexture(int unit);
 

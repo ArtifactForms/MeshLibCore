@@ -151,8 +151,7 @@ public class GraphicsPImpl implements Graphics {
     //    }
   }
 
-  @Override
-  public void bindTexture(Texture texture, int unit) {
+  private void bindTexture(Texture texture, int unit) {
     // FIXME 1. unit not needed cause we are only using normal mode for textures
     // FIXME 2  bind texture should not be exposed by the graphics context
     //      if (unit == 1) {
@@ -442,14 +441,13 @@ public class GraphicsPImpl implements Graphics {
   @Override
   public void camera() {
     g.camera();
-
   }
-  
+
   @Override
   public void ortho() {
     g.ortho();
   }
-  
+
   @Override
   public void applyCamera(Camera camera) {
     if (camera == null) {
