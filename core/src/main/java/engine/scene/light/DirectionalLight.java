@@ -42,7 +42,7 @@ public class DirectionalLight implements Light {
    * - Intensity: 1.0 (full strength).
    */
   public DirectionalLight() {
-    this(Color.WHITE, new Vector3f(0, 1, 0), 1.0f);
+    this(new Color(1, 1, 1, 1), new Vector3f(0, 1, 0), 1.0f);
   }
 
   /**
