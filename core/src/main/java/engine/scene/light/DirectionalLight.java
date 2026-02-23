@@ -136,6 +136,55 @@ public class DirectionalLight implements Light {
   }
 
   /**
+   * Sets the color of the directional light using individual RGB components.
+   *
+   * <p>This method updates the internal {@link Color} instance by modifying its red, green, and
+   * blue components directly. It does not replace the {@code Color} object reference, but instead
+   * mutates the existing instance.
+   *
+   * <p>The provided values are expected to be within the valid color range defined by the {@link
+   * Color} class (normalized 0.0–1.0).
+   *
+   * @param r The red component of the light color.
+   * @param g The green component of the light color.
+   * @param b The blue component of the light color.
+   * @throws IllegalStateException if the internal color instance is null.
+   * @see #setColor(Color)
+   * @see #setColor(Vector3f)
+   */
+  public void setColor(float r, float g, float b) {
+    if (color == null) {
+      throw new IllegalStateException("Color instance is not initialized.");
+    }
+    color.set(r, g, b);
+  }
+
+  /**
+   * Sets the color of the directional light using a {@link Vector3f}.
+   *
+   * <p>The vector's x, y, and z components represent the red, green, and blue channels of the light
+   * color. This method updates the internal {@link Color} instance without replacing it.
+   *
+   * <p>This overload is particularly useful for mathematical operations such as interpolation
+   * (e.g., linear interpolation between day and night colors in a day-night cycle system).
+   *
+   * @param color A vector containing RGB values (x = red, y = green, z = blue).
+   * @throws IllegalArgumentException if the provided vector is null.
+   * @throws IllegalStateException if the internal color instance is null.
+   * @see #setColor(Color)
+   * @see #setColor(float, float, float)
+   */
+  public void setColor(Vector3f color) {
+    if (color == null) {
+      throw new IllegalArgumentException("Color vector cannot be null.");
+    }
+    if (this.color == null) {
+      throw new IllegalStateException("Color instance is not initialized.");
+    }
+    this.color.set(color.x, color.y, color.z);
+  }
+
+  /**
    * Gets the intensity of the light emitted by the directional light source.
    *
    * @return The intensity of the light.
