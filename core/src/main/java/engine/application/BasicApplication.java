@@ -178,7 +178,7 @@ public abstract class BasicApplication implements Application {
     g.disableDepthTest();
 
     g.camera();
-    g.ortho();
+//    g.ortho();
     g.strokeWeight(1);
 
     if (activeScene != null) {
@@ -191,7 +191,7 @@ public abstract class BasicApplication implements Application {
     // with full unlit intensity, preventing material-based shading
     // FIXME lightsOff() -> graphics context
     g.lightsOff();
-
+    
     renderDebugUi(g);
 
     g.enableDepthTest();

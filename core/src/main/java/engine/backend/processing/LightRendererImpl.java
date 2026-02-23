@@ -41,6 +41,11 @@ public class LightRendererImpl implements LightRenderer {
 
   @Override
   public void render(Light light) {
+    if (lightsOff) {
+      p.noLights();
+      return;
+    }
+
     switch (light.getType()) {
       case SPOT:
         render((SpotLight) light);

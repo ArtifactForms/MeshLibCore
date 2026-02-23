@@ -398,6 +398,14 @@ public class Scene {
     this.background = background;
   }
 
+  public void setBackground(float r, float g, float b) {
+    if (background == null) {
+      background = new Color(r, g, b);
+    } else {
+      background.set(r, g, b);
+    }
+  }
+
   /**
    * Retrieves the transform of the scene.
    *
