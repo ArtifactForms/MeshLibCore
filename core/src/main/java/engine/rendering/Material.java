@@ -158,7 +158,7 @@ public class Material {
     if (color == null) {
       throw new IllegalArgumentException("Color cannot be null.");
     }
-    this.color = color;
+    this.color = new Color(color);
     this.name = "";
     this.useLighting = true;
     this.ambient = new float[] {0.2f, 0.2f, 0.2f};
