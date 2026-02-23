@@ -51,12 +51,12 @@ public class GraphicsPImpl implements Graphics {
   public GraphicsPImpl(PApplet p) {
     this.g = p.g;
 
+    color = new Color();
+    
     lightRenderer = new LightRendererImpl(p);
     lightRenderer.setGraphics(this);
 
     fontManager = new ProcessingFontManager(p);
-
-    color = Color.BLACK;
 
     setShader("toon.vert", "toon.frag");
   }
@@ -89,7 +89,7 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void lightsOff() {
-    //    g.noLights();
+//    g.noLights();
     lightRenderer.off();
   }
 
@@ -316,7 +316,7 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void setColor(Color color) {
-    this.color = color;
+    this.color.set(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
   }
 
   // -------------------------------------------------
