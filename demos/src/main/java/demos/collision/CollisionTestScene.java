@@ -19,13 +19,12 @@ public class CollisionTestScene extends Scene {
 
   public void init(Input input, Settings settings) {
     setupPhysicsSystem();
-    setupEnvironment(settings);
     setupPlayer(input, settings);
-    setupDebugRenderer();
+    setupDebugRenderer(input, settings);
     setupLight();
     setupUI();
-    if (settings.isCameraFollowEnabled())
-    	setupCamera();
+    if (settings.isFpsControlEnabled()) setActiveCamera(new PerspectiveCamera());
+    //    if (settings.isCameraFollowEnabled()) setupCamera();
   }
 
   private void setupCamera() {
@@ -44,12 +43,8 @@ public class CollisionTestScene extends Scene {
     addSystem(new PhysicsQuerySystem());
   }
 
-  private void setupDebugRenderer() {
-    addNode(new DebugCollisionRenderer());
-  }
-
-  private void setupEnvironment(Settings settings) {
-    addNode(new TestEnvironmentFactory().createEnvironment(settings));
+  private void setupDebugRenderer(Input input, Settings settings) {
+    addNode(new DebugCollisionRenderer(input));
   }
 
   private void setupPlayer(Input input, Settings settings) {

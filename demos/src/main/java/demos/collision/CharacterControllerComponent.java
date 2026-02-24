@@ -24,7 +24,7 @@ public class CharacterControllerComponent extends AbstractComponent
   private final Vector3f lastGroundPosition = new Vector3f();
 
   // --- Configuration ---
-  private float moveSpeed = 6f;
+  private float moveSpeed = 11f;
   private float gravity = 18.0f;
   private float jumpSpeed = 7f;
   private float skinWidth = 0.005f;

@@ -34,6 +34,7 @@ public class DebugCapsuleSweepComponent extends AbstractComponent implements Ren
         new PhysicsQueryListener() {
           @Override
           public void onSweepCapsule(PhysicsQueryEvent e) {
+            if (!getOwner().isActive() || !isActive()) return;
             visualizeSweep(e);
           }
         });

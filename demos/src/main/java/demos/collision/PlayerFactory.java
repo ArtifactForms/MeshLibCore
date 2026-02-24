@@ -19,12 +19,14 @@ public class PlayerFactory {
   private final Color capsuleColor = Color.BLUE;
   private final Key jumpKey = Key.N;
   private final Vector3f spawnLocation = new Vector3f(0, -10, 0);
+  private Input input;
 
   public SceneNode createTestCapsulePlayer(Input input, Settings settings) {
     SceneNode player = new SceneNode("Player");
 
     // 1. Visual representation
-    player.addComponent(createGeometry(settings));
+    if (!settings.isFpsControlEnabled())
+    	player.addComponent(createGeometry(settings));
 
     // 2. Physics and collision
     ColliderComponent collider =
@@ -34,7 +36,12 @@ public class PlayerFactory {
     // 3. Logic and controller
     CharacterControllerComponent controller = new CharacterControllerComponent(collider);
     player.addComponent(controller);
-    player.addComponent(createControl(input, controller, settings.getSpeed()));
+
+    if (settings.isFpsControlEnabled()) {
+      player.addComponent(createFPSControl(input, controller));
+    } else {
+      player.addComponent(createControl(input, controller, settings.getSpeed()));
+    }
 
     // 4. Initial state
     player.getTransform().setPosition(spawnLocation);
@@ -61,6 +68,11 @@ public class PlayerFactory {
   private ColliderComponent createColliderComponent(float radius, float halfHeight) {
     CapsuleCollider collider = new CapsuleCollider(radius, halfHeight);
     return new ColliderComponent(collider);
+  }
+
+  private FPSControl createFPSControl(Input input, CharacterControllerComponent controller) {
+    FPSControl control = new FPSControl(input, controller);
+    return control;
   }
 
   private ControlWASD createControl(

@@ -7,6 +7,7 @@ public class Settings {
   private float halfHeight = 1.0f; // Half-height of the cylindrical section
   private float speed = 12f;
   private boolean cameraFollowEnabled = false;
+  private boolean fpsControlEnabled = true;
 
   public float getCapsuleRadius() {
     return radius;
@@ -34,5 +35,9 @@ public class Settings {
 
   public boolean isCameraFollowEnabled() {
     return cameraFollowEnabled;
+  }
+  
+  public boolean isFpsControlEnabled() {
+	  return fpsControlEnabled;
   }
 }
