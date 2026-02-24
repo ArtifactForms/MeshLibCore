@@ -89,9 +89,9 @@ public class FPSControl extends AbstractComponent {
     activeCamera.getTransform().setRotation(currentPitch, playerYaw, 0);
 
     // Position camera at eye height
-    activeCamera
-        .getTransform()
-        .setPosition(getOwner().getTransform().getPosition().add(0, -eyeHeight, 0));
+    Vector3f pos = new Vector3f(getOwner().getTransform().getPosition());
+    pos.setY(-eyeHeight);
+    activeCamera.getTransform().setPosition(pos);
 
     // Update camera target
     Vector3f forward = activeCamera.getTransform().getForward();
