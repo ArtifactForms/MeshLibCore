@@ -38,7 +38,7 @@ public class FPSControl extends AbstractComponent {
   private float currentPitch = 0f;
 
   /** Vertical camera offset relative to the player position. */
-  private float eyeHeight = 0.8f;
+  private float eyeHeightOffset = 0.8f;
 
   private final Input input;
   private final MovementInputConsumer consumer;
@@ -90,8 +90,7 @@ public class FPSControl extends AbstractComponent {
 
     // Position camera at eye height
     Vector3f pos = new Vector3f(getOwner().getTransform().getPosition());
-    pos.setY(-eyeHeight);
-    activeCamera.getTransform().setPosition(pos);
+    activeCamera.getTransform().setPosition(pos.subtract(0, eyeHeightOffset, 0));
 
     // Update camera target
     Vector3f forward = activeCamera.getTransform().getForward();
@@ -162,7 +161,7 @@ public class FPSControl extends AbstractComponent {
     this.mouseSmoothingFactor = mouseSmoothingFactor;
   }
 
-  public void setEyeHeight(float eyeHeight) {
-    this.eyeHeight = eyeHeight;
+  public void setEyeHeightOffset(float eyeHeightOffset) {
+    this.eyeHeightOffset = eyeHeightOffset;
   }
 }
