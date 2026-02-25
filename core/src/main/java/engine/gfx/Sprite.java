@@ -1,7 +1,7 @@
 package engine.gfx;
 
 import engine.components.Geometry;
-import engine.render.Material;
+import engine.rendering.Material;
 import engine.scene.SceneNode;
 import math.Color;
 import math.Mathf;

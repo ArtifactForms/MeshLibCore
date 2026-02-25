@@ -19,19 +19,19 @@ public class CollisionTestScene extends Scene {
 
   public void init(Input input, Settings settings) {
     setupPhysicsSystem();
-    setupEnvironment(settings);
     setupPlayer(input, settings);
-    setupDebugRenderer();
+    setupDebugRenderer(input, settings);
     setupLight();
     setupUI();
-    setupCamera();
+    if (settings.isFpsControlEnabled()) setActiveCamera(new PerspectiveCamera());
+    //    if (settings.isCameraFollowEnabled()) setupCamera();
   }
 
   private void setupCamera() {
     PerspectiveCamera camera = new PerspectiveCamera();
     setActiveCamera(camera);
 
-    Vector3f offset = new Vector3f(0, -15, 20);
+    Vector3f offset = new Vector3f(0, -1, 10);
     CameraFollowComponent cameraFollowComponent = new CameraFollowComponent(camera, player, offset);
     cameraFollowComponent.setSmoothness(2f);
 
@@ -43,12 +43,8 @@ public class CollisionTestScene extends Scene {
     addSystem(new PhysicsQuerySystem());
   }
 
-  private void setupDebugRenderer() {
-    addNode(new DebugCollisionRenderer());
-  }
-
-  private void setupEnvironment(Settings settings) {
-    addNode(new TestEnvironmentFactory().createEnvironment(settings));
+  private void setupDebugRenderer(Input input, Settings settings) {
+    addNode(new DebugCollisionRenderer(input));
   }
 
   private void setupPlayer(Input input, Settings settings) {

@@ -295,6 +295,32 @@ public class Bounds {
   }
 
   /**
+   * Returns the half-extents of this bounding box.
+   *
+   * <p>The half-extents represent half of the box size along each axis and are defined as:
+   *
+   * <pre>
+   * halfExtents = (width * 0.5, height * 0.5, depth * 0.5)
+   * </pre>
+   *
+   * <p>This is equivalent to:
+   *
+   * <pre>
+   * halfExtents = (max - min) * 0.5
+   * </pre>
+   *
+   * <p>Half-extents are commonly used in collision detection, physics systems, and when
+   * constructing bounds from a center point.
+   *
+   * <p>A new {@link Vector3f} instance is returned on each call.
+   *
+   * @return a new {@code Vector3f} representing half the size of the bounding box on each axis
+   */
+  public Vector3f getHalfExtents() {
+    return new Vector3f(getWidth() * 0.5f, getHeight() * 0.5f, getDepth() * 0.5f);
+  }
+
+  /**
    * Returns the center point of the bounding box. *
    *
    * <p>The center is calculated as the average of the minimum and maximum corners.

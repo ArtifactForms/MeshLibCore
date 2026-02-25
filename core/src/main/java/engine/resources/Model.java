@@ -3,7 +3,7 @@ package engine.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.render.Material;
+import engine.rendering.Material;
 import mesh.Mesh3D;
 import mesh.SubMesh;
 

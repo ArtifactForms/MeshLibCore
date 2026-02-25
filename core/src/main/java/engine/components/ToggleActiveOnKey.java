@@ -2,9 +2,10 @@ package engine.components;
 
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
+import engine.scene.SceneNode;
 
 /**
- * Toggles the active state of the owning SceneNode when a specific key is pressed.
+ * Toggles the active state of a SceneNode when a specific key was pressed.
  *
  * <p>This component is useful for enabling or disabling debug features, lights, cameras, effects,
  * or entire subtrees during runtime.
@@ -15,6 +16,9 @@ import engine.runtime.input.Key;
 public class ToggleActiveOnKey extends AbstractComponent {
 
   private final Input input;
+
+  private SceneNode node;
+
   private final Key toggleKey;
 
   private boolean lastPressed;
@@ -25,20 +29,19 @@ public class ToggleActiveOnKey extends AbstractComponent {
    * @param input The input system used to query key states.
    * @param toggleKey The key that triggers toggling the active state.
    */
-  public ToggleActiveOnKey(Input input, Key toggleKey) {
+  public ToggleActiveOnKey(Input input, SceneNode node, Key toggleKey) {
     this.input = input;
+    this.node = node;
     this.toggleKey = toggleKey;
   }
 
   @Override
   public void onUpdate(float tpf) {
-    boolean pressed = input.isKeyPressed(toggleKey);
-
     // Edge-triggered toggle
+    boolean pressed = input.isKeyPressed(toggleKey);
     if (pressed && !lastPressed) {
-      getOwner().setActive(!getOwner().isActive());
+      node.setActive(!node.isActive());
     }
-
     lastPressed = pressed;
   }
 

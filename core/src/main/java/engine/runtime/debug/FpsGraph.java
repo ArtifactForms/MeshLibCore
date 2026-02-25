@@ -2,9 +2,9 @@ package engine.runtime.debug;
 
 import java.util.Queue;
 
-import engine.Timer;
+import engine.core.Time;
+import engine.rendering.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 
 public class FpsGraph {
 
@@ -18,7 +18,7 @@ public class FpsGraph {
     renderFpsGraph(g, 300, 100);
   }
 
-  public void update(Timer timer) {
+  public void update(Time timer) {
     fpsHistory.addSample(timer.getFrameRate());
   }
 

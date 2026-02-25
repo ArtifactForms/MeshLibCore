@@ -1,5 +1,6 @@
 package engine.backend.processing;
 
+import engine.rendering.Graphics;
 import engine.scene.light.AmbientLight;
 import engine.scene.light.DirectionalLight;
 import engine.scene.light.Light;
@@ -10,7 +11,6 @@ import engine.scene.light.SpotLight;
 import math.Mathf;
 import math.Vector3f;
 import processing.core.PApplet;
-import workspace.ui.Graphics;
 
 public class LightGizmoRenderer implements LightRenderer {
 

@@ -2,9 +2,9 @@ package demos.texture;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.rendering.Graphics;
 import engine.resources.Font;
 import math.Color;
-import workspace.ui.Graphics;
 
 public class TitleTextComponent extends AbstractComponent implements RenderableComponent {
 

@@ -3,7 +3,7 @@ package demos.jam26port.level;
 import demos.jam26port.assets.AssetRefs;
 import demos.jam26port.core.Settings;
 import engine.components.StaticGeometry;
-import engine.render.Material;
+import engine.rendering.Material;
 import engine.resources.Texture;
 import engine.scene.SceneNode;
 import math.Color;

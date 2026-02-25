@@ -4,6 +4,7 @@ import demos.jam26port.assets.AssetRefs;
 import demos.jam26port.game.world.WorldContext;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.rendering.Graphics;
 import engine.resources.Font;
 import engine.resources.Image;
 import engine.resources.ResourceManager;
@@ -11,7 +12,6 @@ import engine.runtime.input.Input;
 import engine.runtime.input.Key;
 import engine.runtime.input.MouseInput;
 import math.Color;
-import workspace.ui.Graphics;
 
 public class StartScreenComponent extends AbstractComponent implements RenderableComponent {
 

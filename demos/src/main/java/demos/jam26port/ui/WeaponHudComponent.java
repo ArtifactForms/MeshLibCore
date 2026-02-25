@@ -3,9 +3,9 @@ package demos.jam26port.ui;
 import demos.jam26port.assets.AssetRefs;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.rendering.Graphics;
 import engine.resources.Image;
 import engine.resources.ResourceManager;
-import workspace.ui.Graphics;
 
 public class WeaponHudComponent extends AbstractComponent implements RenderableComponent {
 

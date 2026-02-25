@@ -2,8 +2,8 @@ package engine.runtime.debug.core.render;
 
 import java.util.List;
 
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.command.DebugCommand;
-import workspace.ui.Graphics;
 
 public interface DebugCommandRenderer<T extends DebugCommand> {
 

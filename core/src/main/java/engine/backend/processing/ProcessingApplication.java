@@ -2,6 +2,7 @@ package engine.backend.processing;
 
 import engine.application.ApplicationContainer;
 import engine.application.ApplicationSettings;
+import engine.rendering.Graphics;
 import engine.resources.ResourceManager;
 import engine.resources.TextureManager;
 import engine.runtime.input.GamepadInput;
@@ -10,8 +11,6 @@ import engine.runtime.input.KeyInput;
 import engine.runtime.input.MouseInput;
 import engine.vbo.VBOFactory;
 import processing.core.PApplet;
-import workspace.GraphicsPImpl;
-import workspace.ui.Graphics;
 
 public class ProcessingApplication extends PApplet {
 

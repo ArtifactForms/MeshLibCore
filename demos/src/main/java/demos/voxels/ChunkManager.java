@@ -8,12 +8,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import demos.voxels.structure.ChunkCoordinate;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.rendering.Graphics;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
 import mesh.modifier.transform.SnapToGroundModifier;
-import workspace.ui.Graphics;
 
 public class ChunkManager extends AbstractComponent implements RenderableComponent {
 

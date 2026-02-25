@@ -3,7 +3,8 @@ package demos.landmass;
 import engine.components.AbstractComponent;
 import engine.components.Geometry;
 import engine.components.RenderableComponent;
-import engine.render.Material;
+import engine.rendering.Graphics;
+import engine.rendering.Material;
 import engine.resources.FilterMode;
 import engine.resources.Texture2D;
 import engine.scene.SceneNode;
@@ -13,7 +14,6 @@ import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.TranslateModifier;
 import mesh.next.surface.SurfaceLayer;
-import workspace.ui.Graphics;
 
 /**
  * The {@code NoiseMapDisplay} class is responsible for rendering a noise map texture onto a 3D

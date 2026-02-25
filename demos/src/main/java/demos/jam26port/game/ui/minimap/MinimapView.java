@@ -1,7 +1,7 @@
 package demos.jam26port.game.ui.minimap;
 
+import engine.rendering.Graphics;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 public interface MinimapView {
 	

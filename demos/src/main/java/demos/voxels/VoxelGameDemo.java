@@ -8,13 +8,13 @@ import engine.application.BasicApplication;
 import engine.components.ControlWASD;
 import engine.components.CrossLineReticle;
 import engine.components.SmoothFlyByCameraControl;
+import engine.rendering.Graphics;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
 import engine.scene.nodes.DefaultTestCube;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 public class VoxelGameDemo extends BasicApplication {
 

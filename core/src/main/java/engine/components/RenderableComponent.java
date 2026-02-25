@@ -1,7 +1,7 @@
 package engine.components;
 
+import engine.rendering.Graphics;
 import engine.scene.SceneNode;
-import workspace.ui.Graphics;
 
 /**
  * Represents a renderable component within the scene graph architecture.

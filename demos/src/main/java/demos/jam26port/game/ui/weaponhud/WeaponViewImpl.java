@@ -1,9 +1,9 @@
 package demos.jam26port.game.ui.weaponhud;
 
 import demos.jam26port.assets.AssetRefs;
+import engine.rendering.Graphics;
 import engine.resources.Image;
 import engine.resources.ResourceManager;
-import workspace.ui.Graphics;
 
 public class WeaponViewImpl implements WeaponView {
 

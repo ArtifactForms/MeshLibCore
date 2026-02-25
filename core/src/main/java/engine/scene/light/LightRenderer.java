@@ -1,6 +1,6 @@
 package engine.scene.light;
 
-import workspace.ui.Graphics;
+import engine.rendering.Graphics;
 
 /**
  * Interface for rendering various light sources in a 3D scene.

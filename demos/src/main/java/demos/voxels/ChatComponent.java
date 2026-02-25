@@ -4,6 +4,7 @@ import demos.voxels.client.event.EventManager;
 import demos.voxels.client.event.MessageSentEvent;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.rendering.Graphics;
 import engine.resources.Font;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
@@ -11,7 +12,6 @@ import engine.runtime.input.KeyEvent;
 import engine.runtime.input.KeyListener;
 import engine.scene.camera.Camera;
 import math.Color;
-import workspace.ui.Graphics;
 
 public class ChatComponent extends AbstractComponent implements KeyListener, RenderableComponent {
 

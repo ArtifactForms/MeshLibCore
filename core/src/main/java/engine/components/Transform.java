@@ -1,7 +1,7 @@
 package engine.components;
 
+import engine.rendering.Graphics;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 /**
  * Represents a transformation in 3D space, encapsulating position, rotation, and scale.

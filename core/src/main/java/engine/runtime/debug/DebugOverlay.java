@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import engine.rendering.Graphics;
 import math.Color;
-import workspace.ui.Graphics;
 
 /**
  * The {@code DebugOverlay} class is responsible for displaying a customizable debug overlay on the

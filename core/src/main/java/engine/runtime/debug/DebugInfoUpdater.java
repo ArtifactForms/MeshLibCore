@@ -5,9 +5,9 @@ import java.util.Collection;
 
 import com.sun.management.OperatingSystemMXBean;
 
-import engine.Timer;
 import engine.components.Geometry;
 import engine.components.StaticGeometry;
+import engine.core.Time;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
 import engine.scene.Scene;
@@ -88,7 +88,7 @@ public class DebugInfoUpdater {
    * @param activeScene the active {@code Scene}, or {@code null} if no scene is active.
    * @param input the {@code Input} providing input-related debug information.
    */
-  public void update(Timer timer, Scene activeScene, Input input) {
+  public void update(Time timer, Scene activeScene, Input input) {
     updateTimeMetrics(timer);
     updatePerformanceMetrics();
     updateInputMetrics(input);
@@ -164,7 +164,7 @@ public class DebugInfoUpdater {
     setInfo(CATEGORY_SCENE, "Nodes", nodeCount);
   }
 
-  private void updateTimeMetrics(Timer timer) {
+  private void updateTimeMetrics(Time timer) {
     setInfo(CATEGORY_TIME, "Time per frame (tpf)", timer.getTimePerFrame());
     setInfo(CATEGORY_TIME, "Frames per second (fps)", timer.getFrameRate());
     setInfo(CATEGORY_TIME, "Frames rendered", timer.getFrameCount());

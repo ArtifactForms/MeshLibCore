@@ -1,9 +1,10 @@
 package engine.application;
 
-import engine.Timer;
 import engine.backend.processing.ProcessingApplication;
 import engine.components.SmoothFlyByCameraControl;
+import engine.core.Time;
 import engine.physics.collision.CollisionSystem;
+import engine.rendering.Graphics;
 import engine.resources.Font;
 import engine.runtime.debug.Debug;
 import engine.runtime.debug.DebugInfoUpdater;
@@ -15,7 +16,6 @@ import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
 import math.Mathf;
-import workspace.ui.Graphics;
 
 public abstract class BasicApplication implements Application {
 
@@ -29,7 +29,7 @@ public abstract class BasicApplication implements Application {
 
   private boolean autoUpdateAspectRatio = true;
 
-  private Timer timer;
+  private Time timer;
 
   protected Input input;
 
@@ -48,7 +48,7 @@ public abstract class BasicApplication implements Application {
   private CollisionSystem collisionSystem;
 
   public BasicApplication() {
-    this.timer = new Timer();
+    this.timer = new Time();
     this.collisionSystem = new CollisionSystem();
   }
 
@@ -191,7 +191,7 @@ public abstract class BasicApplication implements Application {
     // with full unlit intensity, preventing material-based shading
     // FIXME lightsOff() -> graphics context
     g.lightsOff();
-
+    
     renderDebugUi(g);
 
     g.enableDepthTest();
@@ -269,7 +269,7 @@ public abstract class BasicApplication implements Application {
     return viewport;
   }
 
-  public Timer getTimer() {
+  public Time getTimer() {
     return timer;
   }
 

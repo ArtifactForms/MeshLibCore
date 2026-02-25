@@ -4,11 +4,11 @@ import demos.jam26port.level.TileMap;
 import demos.jam26port.level.TileType;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.rendering.Graphics;
 import engine.scene.Scene;
 import engine.scene.camera.Camera;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 /** Simple top-down minimap centered on the player. */
 public class MiniMapComponent extends AbstractComponent implements RenderableComponent {

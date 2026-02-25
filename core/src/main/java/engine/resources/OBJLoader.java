@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import engine.render.Material;
+import engine.rendering.Material;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;

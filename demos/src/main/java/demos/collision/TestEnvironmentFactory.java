@@ -2,6 +2,7 @@ package demos.collision;
 
 import demos.skybox.SkyBox;
 import engine.scene.SceneNode;
+import math.Mathf;
 import math.Vector3f;
 
 public class TestEnvironmentFactory {
@@ -255,6 +256,8 @@ public class TestEnvironmentFactory {
 
     SceneNode ramp = grayBox.blockOutBox("Ramp", new Vector3f(20, 0, -15), new Vector3f(8, 2, 8));
 
+    ramp.getTransform().rotate(Mathf.toRadians(-25), 0, 0);
+    
     // rotate to create slope
     //    ramp.getTransform().setRotationEuler(-20, 0, 0);
 

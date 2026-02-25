@@ -1,6 +1,6 @@
 package engine.backend.processing;
 
-import engine.render.Material;
+import engine.rendering.Material;
 import engine.resources.Texture;
 import engine.vbo.VBO;
 import processing.core.PApplet;

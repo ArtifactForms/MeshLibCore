@@ -7,7 +7,6 @@ import java.util.List;
 
 import math.Vector3f;
 import mesh.modifier.transform.RotateYModifier;
-import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.TranslateModifier;
 import mesh.next.surface.SurfaceLayer;
 
@@ -94,16 +93,6 @@ public class Mesh3D implements Mesh {
   }
 
   /**
-   * Rotates the mesh around the Z-axis.
-   *
-   * @deprecated Use {@link RotateZModifier} instead.
-   */
-  @Deprecated
-  public Mesh3D rotateZ(float angle) {
-    return new RotateZModifier(angle).modify(this);
-  }
-
-  /**
    * Translates the mesh along the X-axis.
    *
    * @deprecated Use {@link TranslateModifier} instead.
@@ -122,17 +111,7 @@ public class Mesh3D implements Mesh {
   public Mesh3D translateY(float ty) {
     return new TranslateModifier(0, ty, 0).modify(this);
   }
-
-  /**
-   * Translates the mesh along the Z-axis.
-   *
-   * @deprecated Use {@link TranslateModifier} instead.
-   */
-  @Deprecated
-  public Mesh3D translateZ(float tz) {
-    return new TranslateModifier(0, 0, tz).modify(this);
-  }
-
+  
   // -------------------------------------------------------------------
   // UVs
   // -------------------------------------------------------------------

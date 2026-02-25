@@ -27,6 +27,7 @@ import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
 import engine.application.Viewport;
 import engine.components.RoundReticle;
+import engine.rendering.Graphics;
 import engine.runtime.debug.core.DebugDraw;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
@@ -38,7 +39,6 @@ import math.Color;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
-import workspace.ui.Graphics;
 
 public class DungeonCrawlerGame extends BasicApplication {
 

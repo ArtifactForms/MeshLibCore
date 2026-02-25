@@ -5,7 +5,8 @@ import engine.application.BasicApplication;
 import engine.components.RoundReticle;
 import engine.components.SmoothFlyByCameraControl;
 import engine.components.StaticGeometry;
-import engine.render.Material;
+import engine.rendering.Graphics;
+import engine.rendering.Material;
 import engine.resources.Texture2D;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
@@ -16,7 +17,6 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.modifier.transform.CenterAtModifier;
 import mesh.modifier.transform.ScaleModifier;
-import workspace.ui.Graphics;
 
 /**
  * A demo showcasing a procedurally generated landmass using Perlin noise. This demo features a

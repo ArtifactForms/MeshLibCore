@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.components.Transform;
+import engine.rendering.Graphics;
 import engine.scene.audio.AudioListener;
 import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
@@ -12,7 +13,6 @@ import engine.system.SceneSystem;
 import engine.system.SceneSystemManager;
 import engine.system.UpdatePhase;
 import math.Color;
-import workspace.ui.Graphics;
 
 /**
  * The {@code Scene} class manages a hierarchy of {@code SceneNode}s for rendering and updating. It
@@ -396,6 +396,14 @@ public class Scene {
       throw new IllegalArgumentException("Background color cannot be null.");
     }
     this.background = background;
+  }
+
+  public void setBackground(float r, float g, float b) {
+    if (background == null) {
+      background = new Color(r, g, b);
+    } else {
+      background.set(r, g, b);
+    }
   }
 
   /**

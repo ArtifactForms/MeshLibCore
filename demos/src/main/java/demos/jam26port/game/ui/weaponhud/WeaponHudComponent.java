@@ -2,7 +2,7 @@ package demos.jam26port.game.ui.weaponhud;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import workspace.ui.Graphics;
+import engine.rendering.Graphics;
 
 public class WeaponHudComponent extends AbstractComponent implements RenderableComponent {
 

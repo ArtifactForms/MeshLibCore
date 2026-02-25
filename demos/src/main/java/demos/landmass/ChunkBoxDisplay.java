@@ -2,10 +2,10 @@ package demos.landmass;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.rendering.Graphics;
 import math.Color;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
-import workspace.ui.Graphics;
 
 public class ChunkBoxDisplay extends AbstractComponent implements RenderableComponent {
 

@@ -3,9 +3,9 @@ package demos.jam26.ui;
 import demos.jam26.player.PlayerHealthComponent;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
+import engine.rendering.Graphics;
 import math.Color;
 import math.Mathf;
-import workspace.ui.Graphics;
 
 /** Simple HUD health bar bound to a PlayerHealthComponent. Renders background, fill, and border. */
 public class HealthBarUIComponent extends AbstractComponent implements RenderableComponent {

@@ -2,7 +2,8 @@ package engine.components;
 
 import engine.physics.ray.RaycastComponent;
 import engine.physics.ray.RaycastHit;
-import engine.render.Material;
+import engine.rendering.Graphics;
+import engine.rendering.Material;
 import engine.vbo.VBO;
 import engine.vbo.VBOFactory;
 import math.Bounds;
@@ -10,7 +11,6 @@ import math.Ray3f;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.util.MeshBoundsCalculator;
-import workspace.ui.Graphics;
 
 /**
  * The {@code Geometry} class represents a 3D object in a scene with a mesh and material applied to

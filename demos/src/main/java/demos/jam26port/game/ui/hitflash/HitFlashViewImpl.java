@@ -1,8 +1,8 @@
 package demos.jam26port.game.ui.hitflash;
 
+import engine.rendering.Graphics;
 import math.Color;
 import math.Mathf;
-import workspace.ui.Graphics;
 
 /** Fullscreen red flash effect used as player hit feedback. */
 public class HitFlashViewImpl implements HitFlashView {

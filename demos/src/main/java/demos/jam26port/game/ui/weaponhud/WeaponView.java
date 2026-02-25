@@ -1,6 +1,6 @@
 package demos.jam26port.game.ui.weaponhud;
 
-import workspace.ui.Graphics;
+import engine.rendering.Graphics;
 
 public interface WeaponView {
 

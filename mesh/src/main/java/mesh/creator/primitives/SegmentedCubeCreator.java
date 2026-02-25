@@ -1,11 +1,16 @@
 package mesh.creator.primitives;
 
+import java.lang.System.Logger.Level;
+
 import math.Mathf;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.repair.RemoveDoubleVerticesModifier;
+import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.ScaleModifier;
+import mesh.modifier.transform.TransformAxis;
+import mesh.modifier.transform.TranslateModifier;
 
 public class SegmentedCubeCreator implements IMeshCreator {
 
@@ -51,27 +56,27 @@ public class SegmentedCubeCreator implements IMeshCreator {
     private void createFront() {
         Mesh3D front = createSide();
         new RotateXModifier(Mathf.HALF_PI).modify(front);
-        front.translateZ(-creationSize);
+        new TranslateModifier(-creationSize, TransformAxis.Z).modify(front);
         append(front);
     }
 
     private void createBack() {
         Mesh3D back = createSide();
         new RotateXModifier(-Mathf.HALF_PI).modify(back);
-        back.translateZ(creationSize);
+        new TranslateModifier(creationSize, TransformAxis.Z).modify(back);
         append(back);
     }
 
     private void createLeft() {
         Mesh3D left = createSide();
-        left.rotateZ(-Mathf.HALF_PI);
+        new RotateModifier(-Mathf.HALF_PI, TransformAxis.Z).modify(left);
         left.translateX(-creationSize);
         append(left);
     }
 
     private void createRight() {
         Mesh3D right = createSide();
-        right.rotateZ(Mathf.HALF_PI);
+        new RotateModifier(Mathf.HALF_PI, TransformAxis.Z).modify(right);
         right.translateX(creationSize);
         append(right);
     }

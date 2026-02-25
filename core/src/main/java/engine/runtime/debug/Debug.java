@@ -1,7 +1,7 @@
 package engine.runtime.debug;
 
-import engine.Timer;
-import workspace.ui.Graphics;
+import engine.core.Time;
+import engine.rendering.Graphics;
 
 public class Debug {
 
@@ -21,7 +21,7 @@ public class Debug {
     fpsGraph.setReferenceLines(30f, 60f, 120f);
   }
 
-  public void update(Timer timer) {
+  public void update(Time timer) {
     tpfHistory.addSample(timer.getTimePerFrame() * 1000f);
     fpsHistory.addSample(timer.getFrameRate());
   }

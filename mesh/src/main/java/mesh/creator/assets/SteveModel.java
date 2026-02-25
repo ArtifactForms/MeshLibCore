@@ -4,7 +4,9 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.BoxCreator;
 import mesh.creator.primitives.CubeCreator;
+import mesh.modifier.transform.RotateModifier;
 import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.TransformAxis;
 
 public class SteveModel {
 
@@ -40,14 +42,14 @@ public class SteveModel {
     public void rotateHead(float x, float y, float z) {
         head.translateY(28 * unit);
 
-        head.rotateZ(-rotationHead.getZ());
+        new RotateModifier(-rotationHead.getZ(), TransformAxis.Z).modify(head);
         head.rotateY(-rotationHead.getY());
         new RotateXModifier(-rotationHead.getX()).modify(head);
         
 
         new RotateXModifier(x).modify(head);
         head.rotateY(y);
-        head.rotateZ(z);
+        new RotateModifier(z, TransformAxis.Z).modify(head);
 
         head.translateY(-28 * unit);
 

@@ -1,7 +1,7 @@
 package engine.application;
 
+import engine.rendering.Graphics;
 import engine.runtime.input.Input;
-import workspace.ui.Graphics;
 
 public class ApplicationContainer {
 

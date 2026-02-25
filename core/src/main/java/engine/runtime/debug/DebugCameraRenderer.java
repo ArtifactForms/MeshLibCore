@@ -1,10 +1,10 @@
 package engine.runtime.debug;
 
+import engine.rendering.Graphics;
 import engine.scene.camera.Camera;
 import engine.scene.camera.FrustumGeometry;
 import math.Color;
 import math.Vector3f;
-import workspace.ui.Graphics;
 
 /**
  * Debug utility for visualizing a camera and its view frustum geometry.

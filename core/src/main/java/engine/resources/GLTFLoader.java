@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import engine.render.Material;
+import engine.rendering.Material;
 import math.Color;
 import math.Vector2f;
 import math.Vector3f;

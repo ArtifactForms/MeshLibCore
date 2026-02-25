@@ -1,7 +1,7 @@
 package demos.skybox;
 
 import engine.components.StaticGeometry;
-import engine.render.Material;
+import engine.rendering.Material;
 import engine.resources.Resources;
 import engine.resources.Texture;
 import engine.resources.TextureManager;

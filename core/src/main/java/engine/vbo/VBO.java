@@ -1,6 +1,6 @@
 package engine.vbo;
 
-import engine.render.Material;
+import engine.rendering.Material;
 import math.Bounds;
 import mesh.Mesh3D;
 

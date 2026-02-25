@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import engine.render.Material;
+import engine.rendering.Material;
 
 public class MaterialLoader {
   private static final String KEY_NEW_MATERIAL = "newmtl";
