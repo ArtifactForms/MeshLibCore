@@ -1,4 +1,4 @@
-package engine.runtime.particles;
+package engine.particles;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
