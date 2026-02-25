@@ -84,7 +84,7 @@ class StepPyramidTest {
 
     assertEquals(expected, creator.create().getFaceCount());
   }
-  
+
   // =========================================================
   // Cap Variations
   // =========================================================
