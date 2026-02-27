@@ -3,91 +3,66 @@ package mesh.creator.archimedian;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 
-/**
- * Generates a cuboctahedron mesh (Archimedean solid).
- *
- * <p>Mesh properties:
- *
- * <ul>
- *   <li>Vertices: 12
- *   <li>Faces: 14 (8 triangles, 6 squares)
- *   <li>Edges: 24
- * </ul>
- *
- * <p>Scaling is controlled via `scale`. All coordinates are multiplied by this value.
- *
- * <p>Usage:
- *
- * <pre>
- * CuboctahedronCreator creator = new CuboctahedronCreator();
- * Mesh3D mesh = creator.create();
- *
- * // Or custom scale
- * CuboctahedronCreator creator2 = new CuboctahedronCreator(2.0f);
- * Mesh3D mesh2 = creator2.create();
- * </pre>
- */
 public class CuboctahedronCreator implements IMeshCreator {
 
-  private final float scale;
+    private float a;
 
-  /** Default constructor with scale = 1.0 */
-  public CuboctahedronCreator() {
-    this(1.0f);
-  }
+    private Mesh3D mesh;
 
-  /** Constructor with custom scale */
-  public CuboctahedronCreator(float scale) {
-    this.scale = scale;
-  }
+    public CuboctahedronCreator() {
+        a = 1;
+    }
 
-  @Override
-  public Mesh3D create() {
-    Mesh3D mesh = new Mesh3D();
-    createVertices(mesh);
-    createFaces(mesh);
-    return mesh;
-  }
+    @Override
+    public Mesh3D create() {
+        initializeMesh();
+        createVertices();
+        createFaces();
+        return mesh;
+    }
 
-  private void createVertices(Mesh3D mesh) {
-    float a = scale;
+    private void initializeMesh() {
+        mesh = new Mesh3D();
+    }
 
-    mesh.addVertex(0, -a, +a);
-    mesh.addVertex(+a, 0, +a);
-    mesh.addVertex(0, +a, +a);
-    mesh.addVertex(-a, 0, +a);
-    mesh.addVertex(+a, -a, 0);
-    mesh.addVertex(+a, +a, 0);
-    mesh.addVertex(-a, +a, 0);
-    mesh.addVertex(-a, -a, 0);
-    mesh.addVertex(0, -a, -a);
-    mesh.addVertex(+a, 0, -a);
-    mesh.addVertex(0, +a, -a);
-    mesh.addVertex(-a, 0, -a);
-  }
+    private void createVertices() {
+        addVertex(0, -a, +a);
+        addVertex(+a, 0, +a);
+        addVertex(0, +a, +a);
+        addVertex(-a, 0, +a);
+        addVertex(+a, -a, 0);
+        addVertex(+a, +a, 0);
+        addVertex(-a, +a, 0);
+        addVertex(-a, -a, 0);
+        addVertex(0, -a, -a);
+        addVertex(+a, 0, -a);
+        addVertex(0, +a, -a);
+        addVertex(-a, 0, -a);
+    }
 
-  private void createFaces(Mesh3D mesh) {
-    createQuads(mesh);
-    createTriangles(mesh);
-  }
+    private void createFaces() {
+        addFace(0, 1, 2, 3);
+        addFace(0, 4, 1);
+        addFace(1, 5, 2);
+        addFace(2, 6, 3);
+        addFace(3, 7, 0);
+        addFace(4, 9, 5, 1);
+        addFace(2, 5, 10, 6);
+        addFace(3, 6, 11, 7);
+        addFace(0, 7, 8, 4);
+        addFace(4, 8, 9);
+        addFace(5, 9, 10);
+        addFace(6, 10, 11);
+        addFace(7, 11, 8);
+        addFace(8, 11, 10, 9);
+    }
 
-  private void createQuads(Mesh3D mesh) {
-    mesh.addFace(0, 1, 2, 3);
-    mesh.addFace(4, 9, 5, 1);
-    mesh.addFace(2, 5, 10, 6);
-    mesh.addFace(3, 6, 11, 7);
-    mesh.addFace(0, 7, 8, 4);
-    mesh.addFace(8, 11, 10, 9);
-  }
+    private void addVertex(float x, float y, float z) {
+        mesh.addVertex(x, y, z);
+    }
 
-  private void createTriangles(Mesh3D mesh) {
-    mesh.addFace(0, 4, 1);
-    mesh.addFace(1, 5, 2);
-    mesh.addFace(2, 6, 3);
-    mesh.addFace(3, 7, 0);
-    mesh.addFace(4, 8, 9);
-    mesh.addFace(5, 9, 10);
-    mesh.addFace(6, 10, 11);
-    mesh.addFace(7, 11, 8);
-  }
+    private void addFace(int... indices) {
+        mesh.addFace(indices);
+    }
+
 }
