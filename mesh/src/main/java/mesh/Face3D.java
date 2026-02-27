@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import math.Vector3f;
 
-public class Face3D {
+public class Face3D implements FaceView {
 
   public int[] indices;
 
@@ -33,10 +33,12 @@ public class Face3D {
     return Arrays.equals(indices0, indices1);
   }
 
+  @Override
   public int getIndexAt(int index) {
     return indices[index % indices.length];
   }
 
+  @Override
   public int getVertexCount() {
     return indices.length;
   }

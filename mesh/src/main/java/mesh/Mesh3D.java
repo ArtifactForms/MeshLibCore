@@ -78,6 +78,11 @@ public class Mesh3D implements Mesh {
     surfaceLayer.ensureFaceCapacity(faces.size());
   }
 
+  // TODO Refactor to miminmal contract -> FaceView
+  public Face3D getFaceAt(int index) {
+    return faces.get(index);
+  }
+
   // -------------------------------------------------------------------
   // Deprecated transform operations
   // -------------------------------------------------------------------
@@ -111,7 +116,7 @@ public class Mesh3D implements Mesh {
   public Mesh3D translateY(float ty) {
     return new TranslateModifier(0, ty, 0).modify(this);
   }
-  
+
   // -------------------------------------------------------------------
   // UVs
   // -------------------------------------------------------------------
@@ -140,7 +145,7 @@ public class Mesh3D implements Mesh {
     int faceIndex = faces.size() - 1;
     surfaceLayer.setFaceUVIndices(faceIndex, indices);
   }
-  
+
   // -------------------------------------------------------------------
   // Deprecated vertex access
   // -------------------------------------------------------------------
@@ -271,11 +276,6 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public void removeFaces(Collection<Face3D> faces) {
     this.faces.removeAll(faces);
-  }
-
-  @Deprecated
-  public Face3D getFaceAt(int index) {
-    return faces.get(index);
   }
 
   @Deprecated

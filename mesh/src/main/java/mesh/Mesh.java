@@ -3,22 +3,39 @@ package mesh;
 import math.Vector3f;
 
 /**
- * Minimal abstraction of a polygon mesh.
+ * Minimal abstraction of an indexed polygon mesh.
  *
- * <p>This interface defines the smallest stable contract required for mesh construction and
- * vertex-based manipulation. It intentionally exposes only indexed vertex access and face creation.
+ * <p>A {@code Mesh} represents a collection of vertices and polygonal faces. Faces are defined by
+ * ordered sequences of vertex indices referring to vertices stored in this mesh.
  *
- * <p>The goal of this interface is to:
+ * <h2>Structural Contract</h2>
  *
  * <ul>
- *   <li>Decouple mesh consumers (e.g. modifiers) from concrete implementations
- *   <li>Reduce API surface area
- *   <li>Prepare for future alternative mesh representations (e.g. half-edge, winged-edge,
- *       GPU-backed meshes)
+ *   <li>Vertex indices are zero-based and contiguous in the range {@code [0, getVertexCount())}.
+ *   <li>Face indices are zero-based and contiguous in the range {@code [0, getFaceCount())}.
+ *   <li>Each face must reference only valid vertex indices.
+ *   <li>A valid face should contain at least three vertices.
+ *   <li>The order of indices within a face defines its winding.
  * </ul>
  *
- * <p>Implementations are free to define their internal storage model. Returned vertex positions may
- * be direct references to internal data.
+ * <h2>Mutation Semantics</h2>
+ *
+ * <ul>
+ *   <li>Vertices can be added via {@link #addVertex(float, float, float)}.
+ *   <li>Faces can be added via {@link #addFace(int...)}.
+ *   <li>The behavior regarding removal or reordering of elements is implementation-defined.
+ * </ul>
+ *
+ * <h2>Data Ownership</h2>
+ *
+ * <ul>
+ *   <li>{@link #getVertexAt(int)} may return a direct reference to internal mutable data.
+ *   <li>Callers modifying returned vertex instances directly mutate the mesh.
+ *   <li>{@link FaceView} provides read-only structural access to faces.
+ * </ul>
+ *
+ * <p>Implementations are free to choose their internal representation (e.g. indexed arrays,
+ * half-edge structures, or GPU-backed buffers), as long as this contract is upheld.
  */
 public interface Mesh {
 
@@ -55,4 +72,15 @@ public interface Mesh {
    * @param indices vertex indices forming the face
    */
   void addFace(int... indices);
+
+  /**
+   * Returns a read-only view of the face at the given index.
+   *
+   * <p>The valid range is {@code 0 <= index < getFaceCount()}.
+   *
+   * @param index face index
+   * @return read-only face view
+   * @throws IndexOutOfBoundsException if the index is invalid
+   */
+  FaceView getFaceAt(int index);
 }
