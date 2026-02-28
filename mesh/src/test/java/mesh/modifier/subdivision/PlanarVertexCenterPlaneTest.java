@@ -80,7 +80,7 @@ public class PlanarVertexCenterPlaneTest {
 
     for (int i = 0; i < plane.getFaceCount(); i++) {
       Face3D face = plane.getFaceAt(i);
-      Vector3f normal = MeshGeometryUtil.calculateFaceCenter(plane, face);
+      Vector3f normal = MeshGeometryUtil.calculateFaceNormal(plane, face);
       assertEquals(expectedNormal, normal);
     }
   }
