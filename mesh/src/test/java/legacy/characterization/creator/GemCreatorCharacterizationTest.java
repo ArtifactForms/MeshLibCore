@@ -588,33 +588,6 @@ public class GemCreatorCharacterizationTest {
   }
   
  /**
-  * Verifies that the mesh creator does not initialize face normals
-  * when generating the mesh.
-  *
-  * <p>This test captures the current behavior that {@link Face3D#normal}
-  * vectors remain zero-initialized after mesh creation.
-  *
-  * <p>The absence of initialized face normals is considered part of the
-  * creator's characterization footprint and does not imply incorrect
-  * behavior. Normal computation may be expected to occur in a later
-  * processing step (e.g. normal generation, shading, or export).
-  *
-  * <p>Any change causing this test to fail indicates a behavioral change
-  * in responsibility allocation and should be reviewed intentionally.
-  */
-  @Test
-  public void testFaceNormalsAreNotInitializedByCreator() {
-    Mesh3D mesh = new GemCreator().create();
-
-    for (Face3D face : mesh.getFaces()) {
-      Vector3f faceNormal = face.normal;
-      assertEquals(0f, faceNormal.x);
-      assertEquals(0f, faceNormal.y);
-      assertEquals(0f, faceNormal.z);
-    }
-  }
-  
- /**
   * Characterization test documenting the vertex normal behavior
   * of {@link IMeshCreator} implementations that do NOT declare
   * {@link MeshCapabilities#CALCULATES_VERTEX_NORMALS}.

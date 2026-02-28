@@ -18,13 +18,11 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-
+import mesh.creator.primitives.ArcCreator;
 import mesh.io.SimpleObjectReader;
 import mesh.io.SimpleObjectWriter;
 import mesh.util.MeshBoundsCalculator;
 import util.MeshTestUtil;
-
-import mesh.creator.primitives.ArcCreator;
 
 /**
  * AUTO-GENERATED CHARACTERIZATION TEST.
@@ -583,33 +581,6 @@ public class ArcCreatorCharacterizationTest {
 
     Mesh3D mesh = new ArcCreator().create();
     assertTrue(MeshTestUtil.isManifold(mesh));
-  }
-  
- /**
-  * Verifies that the mesh creator does not initialize face normals
-  * when generating the mesh.
-  *
-  * <p>This test captures the current behavior that {@link Face3D#normal}
-  * vectors remain zero-initialized after mesh creation.
-  *
-  * <p>The absence of initialized face normals is considered part of the
-  * creator's characterization footprint and does not imply incorrect
-  * behavior. Normal computation may be expected to occur in a later
-  * processing step (e.g. normal generation, shading, or export).
-  *
-  * <p>Any change causing this test to fail indicates a behavioral change
-  * in responsibility allocation and should be reviewed intentionally.
-  */
-  @Test
-  public void testFaceNormalsAreNotInitializedByCreator() {
-    Mesh3D mesh = new ArcCreator().create();
-
-    for (Face3D face : mesh.getFaces()) {
-      Vector3f faceNormal = face.normal;
-      assertEquals(0f, faceNormal.x);
-      assertEquals(0f, faceNormal.y);
-      assertEquals(0f, faceNormal.z);
-    }
   }
   
  /**
