@@ -103,8 +103,8 @@ public class BoxUVModifier implements IMeshModifier {
       int vc = face.getVertexCount();
       int[] uvIndices = new int[vc];
 
-      MeshGeometryUtil.calculateFaceNormal(mesh, face, face.normal);
-      Axis axis = axisFromNormal(face.normal);
+      Vector3f normal = MeshGeometryUtil.calculateFaceNormal(mesh, face);
+      Axis axis = axisFromNormal(normal);
 
       for (int i = 0; i < vc; i++) {
 

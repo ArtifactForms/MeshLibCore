@@ -7,7 +7,6 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.geometry.MeshGeometryUtil;
-import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.selection.FaceSelection;
 import mesh.util.VertexNormals;
 import processing.core.PApplet;
@@ -93,10 +92,8 @@ public class Mesh3DRenderer {
   private void drawFacesSmooth(Mesh3D mesh, Collection<Face3D> faces) {
     context.pushMatrix();
 
-    new UpdateFaceNormalsModifier().modify(mesh);
-
-    VertexNormals normals = new VertexNormals(mesh);
-
+    List<Vector3f> normals = new VertexNormals(mesh).getVertexNormals();
+    
     for (Face3D f : faces) {
       Vector3f v;
 
@@ -112,11 +109,11 @@ public class Mesh3DRenderer {
         context.beginShape();
       }
 
-      Vector3f fn = f.normal;
+      Vector3f fn = MeshGeometryUtil.calculateFaceCenter(mesh, f);
       context.normal(fn.getX(), fn.getY(), fn.getZ());
 
       for (int i = 0; i < f.indices.length; i++) {
-        Vector3f vn = normals.getVertexNormals().get(f.indices[i]);
+        Vector3f vn = normals.get(f.indices[i]);
         v = mesh.getVertexAt(f.indices[i]);
         context.normal(vn.getX(), vn.getY(), vn.getZ());
         context.vertex(v.getX(), v.getY(), v.getZ());

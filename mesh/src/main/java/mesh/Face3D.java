@@ -2,25 +2,19 @@ package mesh;
 
 import java.util.Arrays;
 
-import math.Vector3f;
-
 public class Face3D implements FaceView {
 
   public int[] indices;
-
-  public Vector3f normal;
 
   private String tag;
 
   public Face3D(Face3D f) {
     this.indices = Arrays.copyOf(f.indices, f.indices.length);
-    this.normal = new Vector3f(f.normal);
     this.tag = f.tag != null ? new String(f.tag) : "";
   }
 
   public Face3D(int... indices) {
     this.indices = new int[indices.length];
-    this.normal = new Vector3f();
     this.tag = "";
     this.indices = Arrays.copyOf(indices, indices.length);
   }

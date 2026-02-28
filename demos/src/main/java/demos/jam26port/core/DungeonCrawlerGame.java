@@ -31,6 +31,7 @@ import math.Color;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 
 public class DungeonCrawlerGame extends BasicApplication {
 
@@ -78,7 +79,7 @@ public class DungeonCrawlerGame extends BasicApplication {
 
     setupStartScreen();
 
-//    scene.addLight(new AmbientLight(Color.BLUE));
+    //    scene.addLight(new AmbientLight(Color.BLUE));
 
     SoundManager.loopSound(AssetRefs.SOUND_BACKGROUND_KEY);
   }
@@ -140,9 +141,9 @@ public class DungeonCrawlerGame extends BasicApplication {
   private void setupScene() {
     scene = new Scene();
     light = new PointLight(Color.WHITE, new Vector3f(384, -30, 256), 3, 0.001f);
-//    lightNode = new SceneNode("Light", new LightComponent(light));
-//    scene.addLight(light);
-//    scene.addNode(lightNode);
+    //    lightNode = new SceneNode("Light", new LightComponent(light));
+    //    scene.addLight(light);
+    //    scene.addNode(lightNode);
     uiRoot = scene.getUIRoot();
     setActiveScene(scene);
   }
@@ -211,7 +212,7 @@ public class DungeonCrawlerGame extends BasicApplication {
 
   @Override
   public void onUpdate(float tpf) {
-//    light.setPosition(player.getPosition().subtract(0, 32, 0));
+    //    light.setPosition(player.getPosition().subtract(0, 32, 0));
     world.update(tpf);
     debugColliders();
   }
@@ -248,7 +249,8 @@ public class DungeonCrawlerGame extends BasicApplication {
 
       if (center.distance(camera.getTransform().getPosition()) >= maxDistance) continue;
 
-      Vector3f end = new Vector3f(center).addLocal(new Vector3f(f.normal).multLocal(normalLength));
+      Vector3f normal = MeshGeometryUtil.calculateFaceCenter(levelMesh, f);
+      Vector3f end = new Vector3f(center).addLocal(new Vector3f(normal).multLocal(normalLength));
       DebugDraw.drawLine(center, end, Color.RED);
     }
   }
