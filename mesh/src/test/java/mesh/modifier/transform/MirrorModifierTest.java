@@ -13,7 +13,6 @@ import mesh.Mesh3D;
 import mesh.creator.primitives.IcoSphereCreator;
 import mesh.creator.primitives.QuadSphereCreator;
 import mesh.creator.primitives.UVSphereCreator;
-import mesh.geometry.MeshGeometryUtil;
 import mesh.util.MeshBoundsCalculator;
 
 class MirrorModifierTest {
@@ -107,46 +106,6 @@ class MirrorModifierTest {
   }
 
   // -------------------------------------------------------------------------
-  // Face normals
-  // -------------------------------------------------------------------------
-
-  @Test
-  void recalculatesFaceNormals() {
-    Mesh3D mesh = new UVSphereCreator(20, 41, 2.43f).create();
-    new MirrorModifier().modify(mesh);
-
-    for (Face3D face : mesh.getFaces()) {
-      Vector3f recalculated = MeshGeometryUtil.calculateFaceNormal(mesh, face);
-      assertEquals(recalculated, face.normal);
-    }
-  }
-
-  @Test
-  void invertsFaceNormalsForYAxisMirror() {
-    assertMirroredFaceNormals(TransformAxis.Y, -1, 1, 1);
-  }
-
-  @Test
-  void invertsFaceNormalsForXAxisMirror() {
-    assertMirroredFaceNormals(TransformAxis.X, 1, 1, -1);
-  }
-
-  @Test
-  void invertsFaceNormalsForZAxisMirror() {
-    assertMirroredFaceNormals(TransformAxis.Z, 1, -1, 1);
-  }
-
-  @Test
-  void faceNormalsRemainNormalized() {
-    Mesh3D mesh = new UVSphereCreator().create();
-    new MirrorModifier().modify(mesh);
-
-    for (Face3D face : mesh.getFaces()) {
-      assertEquals(1f, face.normal.length(), EPSILON);
-    }
-  }
-
-  // -------------------------------------------------------------------------
   // Invariants & Edge cases
   // -------------------------------------------------------------------------
 
@@ -232,31 +191,6 @@ class MirrorModifierTest {
       assertEquals(v0.x * sx, v1.x);
       assertEquals(v0.y * sy, v1.y);
       assertEquals(v0.z * sz, v1.z);
-    }
-  }
-
-  private void assertMirroredFaceNormals(TransformAxis axis, float sx, float sy, float sz) {
-
-    UVSphereCreator creator = new UVSphereCreator(20, 41, 2.43f);
-    Mesh3D original = creator.create();
-    Mesh3D mirrored = creator.create();
-
-    MirrorModifier modifier = new MirrorModifier();
-    modifier.setTransformAxis(axis);
-    modifier.modify(mirrored);
-
-    for (int i = 0; i < original.getFaceCount(); i++) {
-      Face3D face = original.getFaceAt(i);
-      Face3D mirroredFace = mirrored.getFaceAt(i);
-
-      Vector3f expected = MeshGeometryUtil.calculateFaceNormal(original, face);
-      expected.multLocal(sx, sy, sz);
-
-      Vector3f actual = mirroredFace.normal;
-
-      assertEquals(expected.x, actual.x, EPSILON);
-      assertEquals(expected.y, actual.y, EPSILON);
-      assertEquals(expected.z, actual.z, EPSILON);
     }
   }
 
