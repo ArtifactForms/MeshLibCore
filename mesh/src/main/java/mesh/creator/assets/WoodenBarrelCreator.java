@@ -53,7 +53,8 @@ public class WoodenBarrelCreator implements IMeshCreator {
     creator.setHeightSegments(heightSegments);
     creator.setTopRadius(radius);
     creator.setBottomRadius(radius);
-    creator.setCapFillType(FillType.N_GON);
+    creator.setBottomCapFillType(FillType.N_GON);
+    creator.setTopCapFillType(FillType.N_GON);
     mesh = creator.create();
   }
 
