@@ -9,7 +9,6 @@ import engine.scene.SceneNode;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
-import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.modifier.topology.FlipFacesModifier;
 import mesh.next.surface.SurfaceLayer;
 
@@ -92,9 +91,6 @@ public class LevelBuilder {
     }
 
     new FlipFacesModifier().modify(levelMesh);
-
-    UpdateFaceNormalsModifier modifier = new UpdateFaceNormalsModifier();
-    modifier.modify(levelMesh);
   }
 
   private int getAtlasCol(TileType tileType) {
