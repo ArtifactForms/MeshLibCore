@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import engine.rendering.Material;
@@ -14,7 +15,6 @@ import mesh.SubMesh;
 import mesh.util.VertexNormals;
 
 public class OBJLoader implements ModelLoaderStrategy {
-  private static final String BLANK = " ";
   private static final String COMMENT = "#";
   private static final String OBJECT = "o";
   private static final String GEOMETRIC_VERTEX = "v";
@@ -28,8 +28,8 @@ public class OBJLoader implements ModelLoaderStrategy {
   private SubMesh currentSubMesh;
   private Model model;
   private String directoryPath;
-  private String[] parts;
   private ArrayList<Vector3f> vertexNormals;
+  private int parsedFaceCount;
 
   public OBJLoader() {
     vertexNormals = new ArrayList<Vector3f>();
@@ -53,13 +53,19 @@ public class OBJLoader implements ModelLoaderStrategy {
     directoryPath = filePath.substring(0, filePath.lastIndexOf('/'));
     model = new Model("");
     vertexNormals.clear();
+    parsedFaceCount = 0;
     mesh = new Mesh3D();
 
     String line;
     BufferedReader reader = new BufferedReader(new FileReader(getPath(filePath)));
 
     while ((line = reader.readLine()) != null) {
-      parts = line.split(BLANK);
+      String currentLine = line.trim();
+      if (currentLine.isEmpty()) {
+        continue;
+      }
+
+      String[] parts = currentLine.split("\\s+");
       String keyword = parts[0];
 
       switch (keyword) {
@@ -70,22 +76,22 @@ public class OBJLoader implements ModelLoaderStrategy {
           System.out.println("Object: " + line);
           break;
         case USE_MATERIAL:
-          processUseMaterial();
+          processUseMaterial(parts);
           break;
         case MATERIAL_LIB:
-          loadMaterials();
+          loadMaterials(parts);
           break;
         case GEOMETRIC_VERTEX:
-          processVertex();
+          processVertex(parts);
           break;
         case VERTEX_NORMAL:
-          processVertexNormal();
+          processVertexNormal(parts);
           break;
         case TEXTURE_VERTEX:
-          processVertexTexture();
+          processVertexTexture(parts);
           break;
         case FACE:
-          processFace(line);
+          processFace(parts);
           break;
         default:
           System.err.println("Unsupported OBJ keyword " + keyword + " Line: " + line);
@@ -105,7 +111,7 @@ public class OBJLoader implements ModelLoaderStrategy {
     }
   }
 
-  private void loadMaterials() throws IOException {
+  private void loadMaterials(String[] parts) throws IOException {
     System.out.println(directoryPath);
 
     MaterialLoader materialLoader = new MaterialLoader();
@@ -116,49 +122,56 @@ public class OBJLoader implements ModelLoaderStrategy {
     }
   }
 
-  private void processUseMaterial() {
+  private void processUseMaterial(String[] parts) {
+    if (parts.length < 2) {
+      return;
+    }
+
     SubMesh subMesh = new SubMesh();
     subMesh.setMaterialName(parts[1]);
     model.addSubMesh(subMesh);
     currentSubMesh = subMesh;
   }
 
-  private void processFace(String line) {
-    // TODO FIXME support //
-    if (line.contains("/")) {
-      processFaceVertexUvFormat();
-    } else {
-      processFaceVertexFormat();
+  private void processFace(String[] parts) {
+    int vertexCount = parts.length - 1;
+    if (vertexCount < 3) {
+      return;
     }
-  }
 
-  private void processFaceVertexUvFormat() {
-    int[] indices = new int[parts.length - 1];
-    int[] uvIndices = new int[parts.length - 1];
+    int[] vertexIndices = new int[vertexCount];
+    int[] uvIndices = new int[vertexCount];
+    Arrays.fill(uvIndices, -1);
+    boolean hasAnyUv = false;
+
     for (int i = 1; i < parts.length; i++) {
-      String part = parts[i];
-      String[] parts2 = part.split("/");
-      indices[i - 1] = Integer.parseInt(parts2[0]) - 1;
-      if (parts2.length > 1 && !parts2[1].isEmpty()) {
-        uvIndices[i - 1] = Integer.parseInt(parts2[1]) - 1;
-      } else {
-        uvIndices[i - 1] = -1; // No UV index, handle this properly
+      String[] faceParts = parts[i].split("/");
+
+      vertexIndices[i - 1] = resolveVertexIndex(faceParts[0], mesh.getVertexCount());
+
+      if (faceParts.length > 1 && !faceParts[1].isEmpty()) {
+        uvIndices[i - 1] = resolveVertexIndex(faceParts[1], mesh.getSurfaceLayer().getUVCount());
+        hasAnyUv = true;
       }
     }
-    
-    // FIXME UV Support
-    addFace(new Face3D(indices));
+
+    addFace(new Face3D(vertexIndices), hasAnyUv ? uvIndices : null);
   }
 
-  private void processFaceVertexFormat() {
-    int[] indices = new int[parts.length - 1];
-    for (int i = 1; i < parts.length; i++) {
-      indices[i - 1] = Integer.parseInt(parts[i]) - 1;
+  private int resolveVertexIndex(String token, int size) {
+    int index = Integer.parseInt(token);
+    if (index > 0) {
+      return index - 1;
     }
-    addFace(new Face3D(indices));
+    return size + index;
   }
 
-  private void addFace(Face3D face) {
+  private void addFace(Face3D face, int[] uvIndices) {
+    if (uvIndices != null) {
+      mesh.getSurfaceLayer().setFaceUVIndices(parsedFaceCount, uvIndices);
+    }
+    parsedFaceCount++;
+
     if (currentSubMesh != null) {
       currentSubMesh.addFace(face);
     } else {
@@ -166,15 +179,15 @@ public class OBJLoader implements ModelLoaderStrategy {
     }
   }
 
-  private void processVertex() {
+  private void processVertex(String[] parts) {
     mesh.addVertex(parse(parts[1]), parse(parts[2]), parse(parts[3]));
   }
 
-  private void processVertexNormal() {
+  private void processVertexNormal(String[] parts) {
     vertexNormals.add(new Vector3f(parse(parts[1]), parse(parts[2]), parse(parts[3])));
   }
 
-  private void processVertexTexture() {
+  private void processVertexTexture(String[] parts) {
     mesh.addUvCoordinate(parse(parts[1]), parse(parts[2]));
   }
 
