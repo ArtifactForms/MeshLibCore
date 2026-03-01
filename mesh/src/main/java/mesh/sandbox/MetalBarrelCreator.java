@@ -141,10 +141,10 @@ public class MetalBarrelCreator implements IMeshCreator {
 
     // 2. Select end faces for modification
     FaceSelection topFaces = new FaceSelection(mesh);
-    topFaces.selectSimilarNormal(new Vector3f(0, 1, 0), 0.001f);
+    topFaces.selectSimilarNormal(new Vector3f(0, -1, 0), 0.001f);
 
     FaceSelection bottomFaces = new FaceSelection(mesh);
-    bottomFaces.selectSimilarNormal(new Vector3f(0, -1, 0), 0.001f);
+    bottomFaces.selectSimilarNormal(new Vector3f(0, 1, 0), 0.001f);
 
     // Combined selection for operations affecting both ends
     FaceSelection bothEnds = new FaceSelection(mesh);
