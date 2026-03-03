@@ -109,38 +109,41 @@ public class WorldStreamer extends AbstractComponent {
   }
 
   private void queueMissingChunksNearAnchor(int anchorChunkX, int anchorChunkZ) {
-    List<Long> missingChunks = new ArrayList<>();
+    // enqueue in concentric rings around anchor to avoid sort/allocation spikes
+    for (int ring = 0; ring <= chunkRadius; ring++) {
+      int minX = anchorChunkX - ring;
+      int maxX = anchorChunkX + ring;
+      int minZ = anchorChunkZ - ring;
+      int maxZ = anchorChunkZ + ring;
 
-    for (int chunkX = anchorChunkX - chunkRadius; chunkX <= anchorChunkX + chunkRadius; chunkX++) {
-      for (int chunkZ = anchorChunkZ - chunkRadius; chunkZ <= anchorChunkZ + chunkRadius; chunkZ++) {
-        if (world.hasChunk(chunkX, chunkZ)) {
-          continue;
-        }
+      enqueueChunkForGeneration(minX, minZ);
 
-        long key = key(chunkX, chunkZ);
-        if (pendingGenerationSet.contains(key)) {
-          continue;
-        }
-
-        missingChunks.add(key);
+      for (int x = minX + 1; x <= maxX; x++) {
+        enqueueChunkForGeneration(x, minZ);
+      }
+      for (int z = minZ + 1; z <= maxZ; z++) {
+        enqueueChunkForGeneration(maxX, z);
+      }
+      for (int x = maxX - 1; x >= minX; x--) {
+        enqueueChunkForGeneration(x, maxZ);
+      }
+      for (int z = maxZ - 1; z > minZ; z--) {
+        enqueueChunkForGeneration(minX, z);
       }
     }
+  }
 
-    // closest chunks first to make visible area fill seamlessly from the anchor outward
-    missingChunks.sort(
-        Comparator.comparingInt(
-            key -> {
-              int chunkX = xFromKey(key);
-              int chunkZ = zFromKey(key);
-              int dx = chunkX - currentAnchorChunkX;
-              int dz = chunkZ - currentAnchorChunkZ;
-              return dx * dx + dz * dz;
-            }));
-
-    for (long key : missingChunks) {
-      pendingGeneration.addLast(key);
-      pendingGenerationSet.add(key);
+  private void enqueueChunkForGeneration(int chunkX, int chunkZ) {
+    if (world.hasChunk(chunkX, chunkZ)) {
+      return;
     }
+
+    long chunkKey = key(chunkX, chunkZ);
+    if (!pendingGenerationSet.add(chunkKey)) {
+      return;
+    }
+
+    pendingGeneration.addLast(chunkKey);
   }
 
   private void queueChunksForUnload(int anchorChunkX, int anchorChunkZ) {
