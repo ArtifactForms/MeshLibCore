@@ -108,16 +108,6 @@ public class Mesh3D implements Mesh {
   // -------------------------------------------------------------------
 
   /**
-   * Translates the mesh along the X-axis.
-   *
-   * @deprecated Use {@link TranslateModifier} instead.
-   */
-  @Deprecated
-  public Mesh3D translateX(float tx) {
-    return new TranslateModifier(tx, 0, 0).modify(this);
-  }
-
-  /**
    * Translates the mesh along the Y-axis.
    *
    * @deprecated Use {@link TranslateModifier} instead.
