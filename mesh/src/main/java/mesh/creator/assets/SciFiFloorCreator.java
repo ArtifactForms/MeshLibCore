@@ -11,6 +11,7 @@ import mesh.creator.primitives.PlaneCreator;
 import mesh.modifier.topology.FlipFacesModifier;
 import mesh.modifier.transform.FitToAABBModifier;
 import mesh.modifier.transform.RotateXModifier;
+import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.ScaleModifier;
 import mesh.selection.FaceSelection;
 
@@ -84,7 +85,7 @@ public class SciFiFloorCreator implements IMeshCreator {
     creator.setHeight(1);
     creator.setVertices(8);
     Mesh3D cylinder = creator.create();
-    cylinder.rotateY(Mathf.TWO_PI / 16f);
+    new RotateYModifier(Mathf.TWO_PI / 16f).modify(cylinder);
     new RotateXModifier(Mathf.HALF_PI).modify(cylinder);
     new FitToAABBModifier(width, height, depth).modify(cylinder);
     new FlipFacesModifier().modify(cylinder);

@@ -1,7 +1,6 @@
 package mesh.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import math.Vector3f;
@@ -9,64 +8,76 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.geometry.MeshGeometryUtil;
 
-public class VertexNormals {
+/**
+ * Utility class for computing per-vertex normals of a {@link Mesh3D}.
+ *
+ * <p>The computed normals are <b>area-weighted</b>. This means that each face contributes to its
+ * adjacent vertices proportionally to its surface area. This produces physically more accurate and
+ * visually smoother shading compared to averaging already normalized face normals.
+ *
+ * <p>The algorithm works as follows:
+ *
+ * <ol>
+ *   <li>Initialize one zero-vector normal per vertex.
+ *   <li>For each face, compute its raw (non-normalized) normal using {@link
+ *       MeshGeometryUtil#calculateFaceNormalRaw}.
+ *   <li>Add the face normal to all vertices referenced by that face.
+ *   <li>Normalize all accumulated vertex normals.
+ * </ol>
+ *
+ * <p>This class is stateless and thread-safe as long as the provided mesh is not modified
+ * concurrently.
+ */
+public final class VertexNormals {
 
-    private Mesh3D mesh;
+  private VertexNormals() {
+    // Prevent instantiation
+    throw new AssertionError("No instances allowed.");
+  }
 
-    private List<Vector3f> vertexNormals;
+  /**
+   * Computes area-weighted vertex normals for the given mesh.
+   *
+   * <p>The returned list contains one normal per vertex. The list index corresponds directly to the
+   * vertex index in the mesh.
+   *
+   * <p>If a vertex is not referenced by any face or only by degenerate faces (zero area), its
+   * resulting normal may be the zero vector.
+   *
+   * @param mesh the mesh for which vertex normals should be computed
+   * @return a list containing one normalized {@link Vector3f} per vertex
+   * @throws NullPointerException if {@code mesh} is null
+   */
+  public static List<Vector3f> calculate(Mesh3D mesh) {
+    int vertexCount = mesh.getVertexCount();
+    List<Vector3f> normals = new ArrayList<>(vertexCount);
 
-    private HashMap<Face3D, Vector3f> faceNormals;
-
-    private HashMap<Vector3f, List<Face3D>> vectorToFace;
-
-    public VertexNormals(Mesh3D mesh) {
-        this.mesh = mesh;
-        vertexNormals = new ArrayList<>();
-        faceNormals = new HashMap<>();
-        vectorToFace = new HashMap<>();
-        refresh();
+    // Initialize normals with (0,0,0)
+    for (int i = 0; i < vertexCount; i++) {
+      normals.add(new Vector3f());
     }
 
-    private void calculateFaceNormals() {
-        for (Face3D face : mesh.getFaces()) {
-            Vector3f faceNormal = MeshGeometryUtil.calculateFaceNormal(mesh, face);
-            faceNormals.put(face, faceNormal);
-            for (int i = 0; i < face.indices.length; i++) {
-                Vector3f v = mesh.getVertexAt(face.indices[i]);
-                List<Face3D> faces = vectorToFace.get(v);
-                if (faces == null) {
-                    faces = new ArrayList<Face3D>();
-                    vectorToFace.put(v, faces);
-                }
-                faces.add(face);
-            }
-        }
+    int faceCount = mesh.getFaceCount();
+    Vector3f store = new Vector3f();
+
+    for (int i = 0; i < faceCount; i++) {
+      Face3D face = mesh.getFaceAt(i);
+
+      // Area-weighted face normal (non-normalized)
+      Vector3f faceNormal = MeshGeometryUtil.calculateFaceNormalRaw(mesh, face, store);
+
+      int faceVertexCount = face.getVertexCount();
+      for (int j = 0; j < faceVertexCount; j++) {
+        int vertexIndex = face.getIndexAt(j);
+        normals.get(vertexIndex).addLocal(faceNormal);
+      }
     }
 
-    private void calculateVertexNormals() {
-        for (Vector3f v : mesh.getVertices()) {
-            Vector3f normal = new Vector3f();
-            List<Face3D> faces = vectorToFace.get(v);
-            if (faces == null)
-                continue;
-            for (Face3D face : faces) {
-                normal.addLocal(faceNormals.get(face));
-            }
-            normal.divideLocal(faces.size());
-            vertexNormals.add(normal.normalizeLocal());
-        }
+    // Final normalization per vertex
+    for (Vector3f normal : normals) {
+      normal.normalizeLocal();
     }
 
-    public List<Vector3f> getVertexNormals() {
-        return vertexNormals;
-    }
-
-    public void refresh() {
-        vertexNormals.clear();
-        faceNormals.clear();
-        vectorToFace.clear();
-        calculateFaceNormals();
-        calculateVertexNormals();
-    }
-
+    return normals;
+  }
 }

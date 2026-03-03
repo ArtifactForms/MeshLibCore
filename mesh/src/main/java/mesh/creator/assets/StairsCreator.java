@@ -54,8 +54,8 @@ public class StairsCreator implements IMeshCreator {
             Mesh3D step = creator.create();
             new TranslateModifier(-stepDepth / 2.0f, TransformAxis.Z).modify(step);
             new TranslateModifier(-i * stepDepth, TransformAxis.Z).modify(step);
-            step.translateY(-stepHeight / 2.0f);
-            step.translateY(-i * stepHeight);
+            new TranslateModifier(0, -stepHeight / 2.0f, 0).modify(step);
+            new TranslateModifier(0, -i * stepHeight, 0).modify(step);
             mesh.append(step);
         }
 

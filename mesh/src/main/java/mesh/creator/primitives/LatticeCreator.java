@@ -4,6 +4,7 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.topology.ExtrudeModifier;
 import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.TranslateModifier;
 
 public class LatticeCreator implements IMeshCreator {
 
@@ -57,7 +58,7 @@ public class LatticeCreator implements IMeshCreator {
     }
 
     private void centerOnAxisY() {
-        mesh.translateY(-height / 2f);
+        new TranslateModifier(0, -height / 2f, 0).modify(mesh);
     }
 
     private void solidify() {

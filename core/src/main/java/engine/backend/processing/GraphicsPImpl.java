@@ -1,6 +1,5 @@
 package engine.backend.processing;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import engine.rendering.Graphics;
@@ -25,6 +24,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.SubMesh;
 import mesh.next.surface.SurfaceLayer;
+import mesh.util.VertexNormals;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -184,8 +184,13 @@ public class GraphicsPImpl implements Graphics {
   }
 
   private void drawMeshFaces(Mesh3D mesh, boolean texture) {
-    final boolean hasNormals = mesh.hasVertexNormals();
-    final ArrayList<Vector3f> vertexNormals = hasNormals ? mesh.getVertexNormals() : null;
+    final List<Vector3f> vertexNormals;
+    if (smoothShading) {
+      vertexNormals = VertexNormals.calculate(mesh);
+    } else {
+      vertexNormals = null;
+    }
+
     SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
 
     for (int faceIdx = 0; faceIdx < mesh.getFaceCount(); faceIdx++) {
@@ -207,7 +212,7 @@ public class GraphicsPImpl implements Graphics {
         Vector3f v = mesh.getVertexAt(vertexIndices[i]);
         int[] uvIndices = surfaceLayer.getFaceUVIndices(faceIdx);
 
-        if (hasNormals && smoothShading) {
+        if (smoothShading) {
           Vector3f normal = vertexNormals.get(f.indices[i]);
           g.normal(normal.getX(), normal.getY(), normal.getZ());
         }
@@ -230,8 +235,13 @@ public class GraphicsPImpl implements Graphics {
   public void render(Model model) {
     Mesh3D mesh = model.getMesh();
     SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
-    final boolean hasNormals = mesh.hasVertexNormals();
-    final ArrayList<Vector3f> vertexNormals = hasNormals ? mesh.getVertexNormals() : null;
+
+    final List<Vector3f> vertexNormals;
+    if (smoothShading) {
+      vertexNormals = VertexNormals.calculate(mesh);
+    } else {
+      vertexNormals = null;
+    }
 
     List<SubMesh> subMeshes = model.getSubMeshes();
     if (subMeshes.isEmpty()) {
@@ -251,7 +261,7 @@ public class GraphicsPImpl implements Graphics {
         applyTexture();
 
         int[] uvIndices = surfaceLayer.getFaceUVIndices(faceCursor);
-        drawFaceVertices(mesh, face, uvIndices, hasNormals, vertexNormals);
+        drawFaceVertices(mesh, face, uvIndices, vertexNormals != null, vertexNormals);
 
         g.endShape();
         faceCursor++;
@@ -272,11 +282,7 @@ public class GraphicsPImpl implements Graphics {
   }
 
   private void drawFaceVertices(
-      Mesh3D mesh,
-      Face3D face,
-      int[] uvIndices,
-      boolean hasNormals,
-      ArrayList<Vector3f> vertexNormals) {
+      Mesh3D mesh, Face3D face, int[] uvIndices, boolean hasNormals, List<Vector3f> vertexNormals) {
     for (int i = 0; i < face.indices.length; i++) {
       int vertexIndex = face.indices[i];
       Vector3f v = mesh.getVertexAt(vertexIndex);

@@ -145,7 +145,6 @@ public class BoulderCreator implements IMeshCreator {
     applyPrimaryNoise();
     applySecondaryNoise();
     flattenBottom();
-    recalculateVertexNormals();
     pivotPointToBottomCenter();
 
     // CLEAR temporary data
@@ -157,21 +156,13 @@ public class BoulderCreator implements IMeshCreator {
   }
 
   /**
-   * Recalculates and assigns vertex normals after all geometric modifications have been applied.
-   */
-  private void recalculateVertexNormals() {
-    VertexNormals normals = new VertexNormals(mesh);
-    mesh.setVertexNormals(normals.getVertexNormals());
-  }
-
-  /**
    * Captures the initial vertex normals of the base geometry.
    *
    * <p>These normals are used as stable deformation directions during subsequent mesh modification
    * stages.
    */
   private void cacheInitialVertexNormals() {
-    vertexNormals = new VertexNormals(mesh).getVertexNormals();
+    vertexNormals = VertexNormals.calculate(mesh);
   }
 
   /**

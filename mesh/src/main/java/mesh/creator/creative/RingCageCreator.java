@@ -10,6 +10,7 @@ import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CircleCreator;
 import mesh.modifier.subdivision.CatmullClarkModifier;
 import mesh.modifier.topology.SolidifyModifier;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.util.FaceBridging;
 import mesh.util.Mesh3DUtil;
 
@@ -79,7 +80,7 @@ public class RingCageCreator implements IMeshCreator {
     private void createCircles() {
         for (int i = 0; i <= segments; i++) {
             Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
-            mesh.translateY(segmentsHeights[i]);
+            new TranslateModifier(0, segmentsHeights[i], 0).modify(mesh);
             circles.add(mesh);
         }
     }
@@ -138,7 +139,7 @@ public class RingCageCreator implements IMeshCreator {
     }
 
     private void translate() {
-        mesh.translateY(-segmentHeight / 2.0f);
+        new TranslateModifier(0, -segmentHeight / 2.0f, 0).modify(mesh);
     }
 
     public int getSubdivisions() {

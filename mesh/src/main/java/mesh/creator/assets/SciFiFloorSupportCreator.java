@@ -4,6 +4,7 @@ import math.Mathf;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
+import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.RotateZModifier;
 import mesh.modifier.transform.TranslateModifier;
 import mesh.selection.CompareType;
@@ -75,7 +76,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
     if (!mirror) return;
     new TranslateModifier(0, 0, -getSupportDepth() / 2f - getMirrorGap() / 2f).modify(mesh);
     Mesh3D mirrorMesh = mesh.copy();
-    mirrorMesh.rotateY(Mathf.PI);
+    new RotateYModifier(Mathf.PI).modify(mirrorMesh);
     mesh.append(mirrorMesh);
   }
 
@@ -143,7 +144,7 @@ public class SciFiFloorSupportCreator implements IMeshCreator {
     support = creator.create();
     new RotateZModifier(-Mathf.HALF_PI).modify(support);
     new TranslateModifier(deltaX, deltaY, 0).modify(support);
-    support.rotateY(-Mathf.HALF_PI);
+    new RotateYModifier(-Mathf.HALF_PI).modify(support);
     processCapBack();
     processCapTop();
     processCapBottom();

@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import math.Vector3f;
-import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.TranslateModifier;
 import mesh.next.surface.SurfaceLayer;
 
@@ -27,14 +26,11 @@ public class Mesh3D implements Mesh {
 
   private ArrayList<Face3D> faces;
 
-  private ArrayList<Vector3f> vertexNormals;
-
   private SurfaceLayer surfaceLayer;
 
   public Mesh3D() {
     vertices = new ArrayList<Vector3f>();
     faces = new ArrayList<Face3D>();
-    vertexNormals = new ArrayList<Vector3f>();
     this.surfaceLayer = new SurfaceLayer();
   }
 
@@ -84,28 +80,31 @@ public class Mesh3D implements Mesh {
   }
 
   // -------------------------------------------------------------------
-  // Deprecated transform operations
+  // Core
   // -------------------------------------------------------------------
 
-  /**
-   * Rotates the mesh around the Y-axis.
-   *
-   * @deprecated Use {@link RotateYModifier} instead.
-   */
-  @Deprecated
-  public Mesh3D rotateY(float angle) {
-    return new RotateYModifier(angle).modify(this);
+  public Mesh3D copy() {
+    Mesh3D copy = new Mesh3D();
+
+    // vertices
+    for (Vector3f v : this.vertices) {
+      copy.vertices.add(new Vector3f(v));
+    }
+
+    // faces
+    for (Face3D f : this.faces) {
+      copy.faces.add(new Face3D(f));
+    }
+
+    // surface layer
+    copy.surfaceLayer = this.surfaceLayer.copy();
+
+    return copy;
   }
 
-  /**
-   * Translates the mesh along the X-axis.
-   *
-   * @deprecated Use {@link TranslateModifier} instead.
-   */
-  @Deprecated
-  public Mesh3D translateX(float tx) {
-    return new TranslateModifier(tx, 0, 0).modify(this);
-  }
+  // -------------------------------------------------------------------
+  // Deprecated transform operations
+  // -------------------------------------------------------------------
 
   /**
    * Translates the mesh along the Y-axis.
@@ -188,40 +187,6 @@ public class Mesh3D implements Mesh {
   @Deprecated
   public void removeFace(Face3D face) {
     faces.remove(face);
-  }
-
-  @Deprecated
-  public boolean hasVertexNormals() {
-    return !vertexNormals.isEmpty();
-  }
-
-  @Deprecated
-  public void setVertexNormals(List<Vector3f> vertexNormals) {
-    this.vertexNormals.clear();
-    this.vertexNormals.addAll(vertexNormals);
-  }
-
-  @Deprecated
-  public ArrayList<Vector3f> getVertexNormals() {
-    return vertexNormals;
-  }
-
-  @Deprecated
-  public int getUvCount() {
-    return surfaceLayer.getUVCount();
-  }
-
-  @Deprecated
-  public Mesh3D copy() {
-    Mesh3D copy = new Mesh3D();
-    List<Vector3f> vertices = copy.vertices;
-    List<Face3D> faces = copy.faces;
-
-    for (Vector3f v : this.vertices) vertices.add(new Vector3f(v));
-
-    for (Face3D f : this.faces) faces.add(new Face3D(f));
-
-    return copy;
   }
 
   @Deprecated

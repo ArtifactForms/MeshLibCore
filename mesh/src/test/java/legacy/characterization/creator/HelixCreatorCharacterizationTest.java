@@ -588,47 +588,6 @@ public class HelixCreatorCharacterizationTest {
   }
   
  /**
-  * Characterization test documenting the vertex normal behavior
-  * of {@link IMeshCreator} implementations that do NOT declare
-  * {@link MeshCapabilities#CALCULATES_VERTEX_NORMALS}.
-  *
-  * <p>
-  * This test is only executed if the creator does not advertise
-  * the {@code CALCULATES_VERTEX_NORMALS} capability. Implementations
-  * that explicitly support vertex normal generation are excluded
-  * via {@code assumeFalse(...)}.
-  * </p>
-  *
-  * <p>
-  * Historically, mesh creators did not calculate or attach per-vertex
-  * normals during mesh generation. Vertex normal support was introduced
-  * later and is now an optional capability.
-  * </p>
-  *
-  * <p>
-  * This test captures the expected behavior for creators without
-  * vertex normal support and serves as a regression guard to ensure
-  * that normals are not generated implicitly unless explicitly declared
-  * via capabilities.
-  * </p>
-  *
-  * <h3>Verified Behavior (for creators without vertex normal capability)</h3>
-  * <ul>
-  *   <li>No vertex normals are generated during mesh creation.</li>
-  *   <li>The vertex normal collection remains empty.</li>
-  * </ul>
-  */
-  @Test
-  public void testCreatorDoesNotCalculateVertexNormals() {
-      assumeFalse(CAPABILITIES.contains(MeshCapabilities.CALCULATES_VERTEX_NORMALS));
-      
-      Mesh3D mesh = new HelixCreator().create();
-
-      assertFalse(mesh.hasVertexNormals());
-      assertTrue(mesh.getVertexNormals().isEmpty());
-  }
-  
- /**
   * Verifies that the mesh creator does not modify or initialize face tags
   * during mesh creation.
   *
