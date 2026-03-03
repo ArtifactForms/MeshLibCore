@@ -108,16 +108,6 @@ public class Mesh3D implements Mesh {
   // -------------------------------------------------------------------
 
   /**
-   * Rotates the mesh around the Y-axis.
-   *
-   * @deprecated Use {@link RotateYModifier} instead.
-   */
-  @Deprecated
-  public Mesh3D rotateY(float angle) {
-    return new RotateYModifier(angle).modify(this);
-  }
-
-  /**
    * Translates the mesh along the X-axis.
    *
    * @deprecated Use {@link TranslateModifier} instead.
