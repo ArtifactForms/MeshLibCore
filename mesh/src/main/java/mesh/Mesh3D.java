@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import math.Vector3f;
-import mesh.modifier.transform.RotateYModifier;
 import mesh.modifier.transform.TranslateModifier;
 import mesh.next.surface.SurfaceLayer;
 
