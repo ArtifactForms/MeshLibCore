@@ -103,11 +103,12 @@ public class OBJLoader implements ModelLoaderStrategy {
   }
 
   private void applyNormals() {
-    if (vertexNormals.isEmpty()) {
-      mesh.setVertexNormals(VertexNormals.calculate(mesh));
-    } else {
-      mesh.setVertexNormals(vertexNormals);
-    }
+	  // TODO vertex normals support
+//    if (vertexNormals.isEmpty()) {
+//      mesh.setVertexNormals(VertexNormals.calculate(mesh));
+//    } else {
+//      mesh.setVertexNormals(vertexNormals);
+//    }
   }
 
   private void loadMaterials(String[] parts) throws IOException {

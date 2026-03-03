@@ -1,8 +1,10 @@
 package engine.backend.processing;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import engine.rendering.Material;
+import engine.rendering.Shading;
 import engine.resources.Texture;
 import engine.vbo.VBO;
 import math.Bounds;
@@ -12,6 +14,7 @@ import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.next.surface.SurfaceLayer;
 import mesh.util.MeshBoundsCalculator;
+import mesh.util.VertexNormals;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PShape;
@@ -36,7 +39,12 @@ public class VBOProcessing implements VBO {
     SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
     bounds = MeshBoundsCalculator.calculateBounds(mesh);
 
-    ArrayList<Vector3f> vertexNormals = mesh.getVertexNormals();
+    List<Vector3f> vertexNormals;
+    if (material.getShading() == Shading.SMOOTH) {
+      vertexNormals = VertexNormals.calculate(mesh);
+    } else {
+      vertexNormals = null;
+    }
 
     faceCount = mesh.getFaceCount();
     vertexCount = mesh.getVertexCount();
@@ -61,7 +69,7 @@ public class VBOProcessing implements VBO {
       for (int i = 0; i < indices.length; i++) {
         Vector3f v = mesh.getVertexAt(f.indices[i]);
 
-        if (!vertexNormals.isEmpty()) {
+        if (vertexNormals != null) {
           Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
           shape.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
         }
