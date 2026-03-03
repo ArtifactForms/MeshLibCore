@@ -92,7 +92,7 @@ public class Mesh3DRenderer {
   private void drawFacesSmooth(Mesh3D mesh, Collection<Face3D> faces) {
     context.pushMatrix();
 
-    List<Vector3f> normals = new VertexNormals(mesh).getVertexNormals();
+    List<Vector3f> normals = VertexNormals.calculate(mesh);
     
     for (Face3D f : faces) {
       Vector3f v;

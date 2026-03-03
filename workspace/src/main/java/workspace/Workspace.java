@@ -200,8 +200,7 @@ public class Workspace extends Editor implements ModelListener {
 
     if (isVertexNormalsVisible()) {
       p.stroke(35 / 255f, 97 / 255f, 221 / 255f);
-      VertexNormals normals = new VertexNormals(mesh);
-      renderer.drawVertexNormals(mesh, normals.getVertexNormals());
+      renderer.drawVertexNormals(mesh, VertexNormals.calculate(mesh));
     }
     p.popStyle();
   }

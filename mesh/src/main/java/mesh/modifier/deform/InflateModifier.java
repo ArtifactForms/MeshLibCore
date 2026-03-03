@@ -107,7 +107,7 @@ public class InflateModifier implements IMeshModifier {
    * vertex.
    */
   private void calculateVertexNormals() {
-    vertexNormals = new VertexNormals(mesh).getVertexNormals();
+    vertexNormals = VertexNormals.calculate(mesh);
   }
 
   /** Calculates the inflation amount based on the inflation factor and direction. */

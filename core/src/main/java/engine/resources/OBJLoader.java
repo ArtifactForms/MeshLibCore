@@ -104,8 +104,7 @@ public class OBJLoader implements ModelLoaderStrategy {
 
   private void applyNormals() {
     if (vertexNormals.isEmpty()) {
-      VertexNormals vertexNormals = new VertexNormals(mesh);
-      mesh.setVertexNormals(vertexNormals.getVertexNormals());
+      mesh.setVertexNormals(VertexNormals.calculate(mesh));
     } else {
       mesh.setVertexNormals(vertexNormals);
     }

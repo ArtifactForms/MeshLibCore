@@ -218,7 +218,7 @@ public class SolidifyModifier implements IMeshModifier {
 
   /** Computes the vertex normals for the mesh. */
   private void createVertexNormals() {
-    vertexNormals = new VertexNormals(mesh).getVertexNormals();
+    vertexNormals = VertexNormals.calculate(mesh);
   }
 
   /**

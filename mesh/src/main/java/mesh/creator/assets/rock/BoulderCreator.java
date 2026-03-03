@@ -160,8 +160,7 @@ public class BoulderCreator implements IMeshCreator {
    * Recalculates and assigns vertex normals after all geometric modifications have been applied.
    */
   private void recalculateVertexNormals() {
-    VertexNormals normals = new VertexNormals(mesh);
-    mesh.setVertexNormals(normals.getVertexNormals());
+    mesh.setVertexNormals(VertexNormals.calculate(mesh));
   }
 
   /**
@@ -171,7 +170,7 @@ public class BoulderCreator implements IMeshCreator {
    * stages.
    */
   private void cacheInitialVertexNormals() {
-    vertexNormals = new VertexNormals(mesh).getVertexNormals();
+    vertexNormals = VertexNormals.calculate(mesh);
   }
 
   /**

@@ -74,7 +74,7 @@ public class NoiseModifier implements IMeshModifier {
   }
 
   private void calculateVertexNormals() {
-    vertexNormals = new VertexNormals(mesh).getVertexNormals();
+    vertexNormals = VertexNormals.calculate(mesh);
   }
 
   private float createRandomValue() {
