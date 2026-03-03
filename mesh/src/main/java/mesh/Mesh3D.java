@@ -32,7 +32,6 @@ public class Mesh3D implements Mesh {
   public Mesh3D() {
     vertices = new ArrayList<Vector3f>();
     faces = new ArrayList<Face3D>();
-    //    vertexNormals = new ArrayList<Vector3f>();
     this.surfaceLayer = new SurfaceLayer();
   }
 
