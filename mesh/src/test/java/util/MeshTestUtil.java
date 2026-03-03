@@ -11,6 +11,7 @@ import math.Vector3f;
 import mesh.Edge3D;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.analysis.MeshAnalysis;
 import mesh.geometry.MeshGeometryUtil;
 import mesh.util.TraverseHelper;
 
@@ -115,48 +116,8 @@ public class MeshTestUtil {
     return map.size() == mesh.getVertexCount();
   }
 
-  /**
-   * Checks whether the mesh contains any loose (unreferenced) vertices.
-   *
-   * <p>A vertex is considered <i>loose</i> if it is not referenced by any face index in the mesh.
-   *
-   * <p>This method operates purely on vertex indices and does not mutate the mesh or rely on
-   * defensive copies. It marks all indices referenced by faces and verifies that every vertex index
-   * in the range {@code [0, vertexCount)} is used at least once.
-   *
-   * <p><b>Time Complexity:</b> O(V + F), where
-   *
-   * <ul>
-   *   <li>V = number of vertices
-   *   <li>F = total number of face indices
-   * </ul>
-   *
-   * <p>This is a structural integrity check intended for test-side validation and mesh consistency
-   * verification.
-   *
-   * @param mesh the mesh to validate
-   * @return {@code true} if every vertex is referenced by at least one face, {@code false} if one
-   *     or more loose vertices are found
-   */
   public static boolean meshHasNoLooseVertices(Mesh3D mesh) {
-    int vertexCount = mesh.getVertexCount();
-    boolean[] used = new boolean[vertexCount];
-
-    for (Face3D face : mesh.getFaces()) {
-      for (int index : face.indices) {
-        if (index >= 0 && index < vertexCount) {
-          used[index] = true;
-        }
-      }
-    }
-
-    for (boolean isUsed : used) {
-      if (!isUsed) {
-        return false; // found loose vertex
-      }
-    }
-
-    return true;
+    return MeshAnalysis.meshHasNoLooseVertices(mesh);
   }
 
   public static boolean normalsPointOutwards(Mesh3D mesh) {
@@ -174,54 +135,11 @@ public class MeshTestUtil {
   }
 
   public static int calculateEdgeCount(Mesh3D mesh) {
-    HashSet<Edge3D> edges = new HashSet<Edge3D>();
-
-    for (Face3D face : mesh.getFaces()) {
-      for (int i = 0; i < face.indices.length; i++) {
-        int fromIndex = face.indices[i];
-        int toIndex = face.indices[(i + 1) % face.indices.length];
-        if (fromIndex == toIndex) continue;
-        if (fromIndex < 0 || toIndex < 0) continue;
-        Edge3D edge = new Edge3D(fromIndex, toIndex);
-        Edge3D pair = edge.createPair();
-        if (!edges.contains(pair)) edges.add(edge);
-      }
-    }
-    return edges.size();
+    return MeshAnalysis.edgeCount(mesh);
   }
 
-  /**
-   * Verifies whether the mesh satisfies the Euler characteristic for closed, genus-0 manifold
-   * meshes.
-   *
-   * <p>The Euler characteristic is defined as:
-   *
-   * <pre>
-   * V - E + F = 2
-   * </pre>
-   *
-   * where:
-   *
-   * <ul>
-   *   <li>V = number of vertices
-   *   <li>E = number of edges
-   *   <li>F = number of faces
-   * </ul>
-   *
-   * <p>This condition holds for closed convex polyhedra (topological spheres).
-   *
-   * <p><b>Note:</b> This check is only valid for closed manifold meshes without holes or
-   * boundaries.
-   *
-   * @param mesh the mesh to validate
-   * @return {@code true} if the Euler characteristic equals 2, {@code false} otherwise
-   */
   public static boolean fulfillsEulerCharacteristic(Mesh3D mesh) {
-    int edgeCount = MeshTestUtil.calculateEdgeCount(mesh);
-    int faceCount = mesh.getFaceCount();
-    int vertexCount = mesh.getVertexCount();
-    int actual = vertexCount - edgeCount + faceCount;
-    return actual == 2;
+    return MeshAnalysis.fulfillsEulerCharacteristic(mesh);
   }
 
   public static void assertMeshHasEdgesWithLengthOf(
