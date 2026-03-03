@@ -1,7 +1,8 @@
 package voxels.world;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Region {
 
@@ -10,7 +11,7 @@ public class Region {
   private final int regionX;
   private final int regionZ;
 
-  private final List<Chunk> chunks = new ArrayList<>();
+  private final Map<Long, Chunk> chunks = new LinkedHashMap<>();
 
   public Region(int regionX, int regionZ) {
     this.regionX = regionX;
@@ -18,11 +19,19 @@ public class Region {
   }
 
   public void addChunk(Chunk chunk) {
-    chunks.add(chunk);
+    chunks.put(key(chunk.getChunkX(), chunk.getChunkZ()), chunk);
   }
 
-  public List<Chunk> getChunks() {
-    return chunks;
+  public void removeChunk(int chunkX, int chunkZ) {
+    chunks.remove(key(chunkX, chunkZ));
+  }
+
+  public Collection<Chunk> getChunks() {
+    return chunks.values();
+  }
+
+  public boolean isEmpty() {
+    return chunks.isEmpty();
   }
 
   public int getRegionX() {
@@ -31,5 +40,9 @@ public class Region {
 
   public int getRegionZ() {
     return regionZ;
+  }
+
+  private long key(int chunkX, int chunkZ) {
+    return (((long) chunkX) << 32) | (chunkZ & 0xffffffffL);
   }
 }

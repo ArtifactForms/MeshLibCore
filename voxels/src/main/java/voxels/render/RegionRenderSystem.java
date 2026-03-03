@@ -10,20 +10,14 @@ import java.util.concurrent.*;
 
 public class RegionRenderSystem {
 
-  private final Map<Region, Mesh3D> meshCache = new ConcurrentHashMap<>();
+  private final Map<Long, Mesh3D> meshCache = new ConcurrentHashMap<>();
 
   public void buildMeshesParallel(VoxelWorld world, int threadCount) {
 
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
     for (Region region : world.getRegions()) {
-
-      executor.submit(
-          () -> {
-            RegionMesher mesher = new RegionMesher();
-            Mesh3D mesh = mesher.create(region, world);
-            meshCache.put(region, mesh);
-          });
+      executor.submit(() -> buildMesh(region, world));
     }
 
     executor.shutdown();
@@ -31,11 +25,30 @@ public class RegionRenderSystem {
     try {
       executor.awaitTermination(10, TimeUnit.MINUTES);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      Thread.currentThread().interrupt();
     }
   }
 
+  public Mesh3D buildMesh(Region region, VoxelWorld world) {
+    RegionMesher mesher = new RegionMesher();
+    Mesh3D mesh = mesher.create(region, world);
+    meshCache.put(key(region), mesh);
+    return mesh;
+  }
+
+  public void invalidateRegion(int regionX, int regionZ) {
+    meshCache.remove(key(regionX, regionZ));
+  }
+
   public Mesh3D getMesh(Region region) {
-    return meshCache.get(region);
+    return meshCache.get(key(region));
+  }
+
+  private long key(Region region) {
+    return key(region.getRegionX(), region.getRegionZ());
+  }
+
+  private long key(int regionX, int regionZ) {
+    return (((long) regionX) << 32) | (regionZ & 0xffffffffL);
   }
 }
