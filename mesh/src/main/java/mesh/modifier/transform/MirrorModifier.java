@@ -3,7 +3,6 @@ package mesh.modifier.transform;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.modifier.topology.FlipFacesModifier;
 
 /**
@@ -74,27 +73,21 @@ public class MirrorModifier implements IMeshModifier {
 
     // Mirroring changes handedness → must flip winding + normals
     invertWindingOrder(mesh);
-    recalculateFaceNormals(mesh);
 
     return mesh;
   }
 
   /** Mirrors all vertices of the mesh along the configured axis. */
   private void mirror(Mesh3D mesh) {
-	  for (int i = 0; i < mesh.getVertexCount(); i++) {
-		  Vector3f v = mesh.getVertexAt(i);
-		  mirrorAlongAxis(v);
-	  }
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      Vector3f v = mesh.getVertexAt(i);
+      mirrorAlongAxis(v);
+    }
   }
 
   /** Inverts the winding order of all faces to restore correct orientation. */
   private void invertWindingOrder(Mesh3D mesh) {
     new FlipFacesModifier().modify(mesh);
-  }
-
-  /** Recalculates face normals after the mirror operation. */
-  private void recalculateFaceNormals(Mesh3D mesh) {
-    new UpdateFaceNormalsModifier().modify(mesh);
   }
 
   /** Mirrors a single vertex along the configured axis. */

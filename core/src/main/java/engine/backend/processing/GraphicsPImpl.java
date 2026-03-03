@@ -1,6 +1,7 @@
 package engine.backend.processing;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import engine.rendering.Graphics;
 import engine.rendering.Material;
@@ -22,6 +23,7 @@ import math.Vector2f;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.SubMesh;
 import mesh.next.surface.SurfaceLayer;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -52,7 +54,7 @@ public class GraphicsPImpl implements Graphics {
     this.g = p.g;
 
     color = new Color();
-    
+
     lightRenderer = new LightRendererImpl(p);
     lightRenderer.setGraphics(this);
 
@@ -89,7 +91,7 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void lightsOff() {
-//    g.noLights();
+    //    g.noLights();
     lightRenderer.off();
   }
 
@@ -210,31 +212,12 @@ public class GraphicsPImpl implements Graphics {
           g.normal(normal.getX(), normal.getY(), normal.getZ());
         }
 
-        if (uvIndices != null) {
+        if (uvIndices != null && i < uvIndices.length && uvIndices[i] >= 0) {
           Vector2f uv = surfaceLayer.getUvAt(uvIndices[i]);
           g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
         } else {
           g.vertex(v.getX(), v.getY(), v.getZ());
         }
-
-        //      int[] indices = f.indices;
-        //      for (int i = 0; i < indices.length; i++) {
-        //        Vector3f v = mesh.getVertexAt(f.indices[i]);
-        //
-        //        if (hasNormals && smoothShading) {
-        //          Vector3f normal = vertexNormals.get(f.indices[i]);
-        //          g.normal(normal.getX(), normal.getY(), normal.getZ());
-        //        }
-        //
-        //        int uvIndex = f.getUvIndexAt(i);
-        //        if (uvIndex != -1) {
-        //          Vector2f uv = mesh.getUvAt(uvIndex);
-        //          g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
-        //        } else {
-        //          g.vertex(v.getX(), v.getY(), v.getZ());
-        //        }
-        //      }
-
       }
 
       g.endShape();
@@ -245,52 +228,71 @@ public class GraphicsPImpl implements Graphics {
 
   @Override
   public void render(Model model) {
-    //    Mesh3D mesh = model.getMesh();
-    //	SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
-    //    List<Vector3f> vertexNormals = mesh.getVertexNormals();
-    //    for (SubMesh subMesh : model.getSubMeshes()) {
-    //      List<Face3D> subFaces = subMesh.getFaces();
-    //
-    //      String materialName = subMesh.getMaterialName();
-    //      Material subMaterial = model.getMaterial(materialName);
-    //      setMaterial(subMaterial);
-    //
-    //      for (Face3D f : subFaces) {
-    //        if (f.indices.length == 3) {
-    //          g.beginShape(PApplet.TRIANGLES);
-    //        } else if (f.indices.length == 4) {
-    //          g.beginShape(PApplet.QUADS);
-    //        } else {
-    //          g.beginShape(PApplet.POLYGON);
-    //        }
-    //
-    //        applyTexture();
-    //
-    //        int[] indices = f.indices;
-    //        for (int i = 0; i < indices.length; i++) {
-    //          Vector3f v = mesh.getVertexAt(f.indices[i]);
-    //
-    //          if (f.indices[i] < vertexNormals.size()) {
-    //            Vector3f vertexNormal = vertexNormals.get(f.indices[i]);
-    //            g.normal(vertexNormal.getX(), vertexNormal.getY(), vertexNormal.getZ());
-    //          }
-    //
-    //          int uvIndex = f.getUvIndexAt(i);
-    //
-    //          int[] uvIndices = surfaceLayer.getFaceUVIndices(i);
-    //
-    //          if (uvIndex != -1) {
-    //            Vector2f uv = mesh.getUvAt(uvIndex);
-    //            g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
-    //          } else {
-    //            g.vertex(v.getX(), v.getY(), v.getZ());
-    //          }
-    //        }
-    //        g.endShape();
-    //      }
-    //    }
-    //
-    //    g.resetShader();
+    Mesh3D mesh = model.getMesh();
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+    final boolean hasNormals = mesh.hasVertexNormals();
+    final ArrayList<Vector3f> vertexNormals = hasNormals ? mesh.getVertexNormals() : null;
+
+    List<SubMesh> subMeshes = model.getSubMeshes();
+    if (subMeshes.isEmpty()) {
+      drawMeshFaces(mesh, true);
+      return;
+    }
+
+    int faceCursor = 0;
+    for (SubMesh subMesh : subMeshes) {
+      Material subMaterial = model.getMaterial(subMesh.getMaterialName());
+      if (subMaterial != null) {
+        setMaterial(subMaterial);
+      }
+
+      for (Face3D face : subMesh.getFaces()) {
+        beginShape(face);
+        applyTexture();
+
+        int[] uvIndices = surfaceLayer.getFaceUVIndices(faceCursor);
+        drawFaceVertices(mesh, face, uvIndices, hasNormals, vertexNormals);
+
+        g.endShape();
+        faceCursor++;
+      }
+    }
+
+    g.resetShader();
+  }
+
+  private void beginShape(Face3D face) {
+    if (face.indices.length == 3) {
+      g.beginShape(PApplet.TRIANGLES);
+    } else if (face.indices.length == 4) {
+      g.beginShape(PApplet.QUADS);
+    } else {
+      g.beginShape(PApplet.POLYGON);
+    }
+  }
+
+  private void drawFaceVertices(
+      Mesh3D mesh,
+      Face3D face,
+      int[] uvIndices,
+      boolean hasNormals,
+      ArrayList<Vector3f> vertexNormals) {
+    for (int i = 0; i < face.indices.length; i++) {
+      int vertexIndex = face.indices[i];
+      Vector3f v = mesh.getVertexAt(vertexIndex);
+
+      if (hasNormals && smoothShading) {
+        Vector3f normal = vertexNormals.get(vertexIndex);
+        g.normal(normal.getX(), normal.getY(), normal.getZ());
+      }
+
+      if (uvIndices != null && i < uvIndices.length && uvIndices[i] >= 0) {
+        Vector2f uv = mesh.getSurfaceLayer().getUvAt(uvIndices[i]);
+        g.vertex(v.getX(), v.getY(), v.getZ(), uv.getX(), 1 - uv.getY());
+      } else {
+        g.vertex(v.getX(), v.getY(), v.getZ());
+      }
+    }
   }
 
   @Override

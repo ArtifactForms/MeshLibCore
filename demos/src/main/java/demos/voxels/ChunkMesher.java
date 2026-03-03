@@ -11,7 +11,6 @@ import math.Vector2f;
 
 public class ChunkMesher {
 
-  // Ordinal constants
   private static final int TOP = 0;
   private static final int BOTTOM = 5;
   private static final int FRONT = 1;
@@ -49,68 +48,80 @@ public class ChunkMesher {
     this.shape = shape;
 
     shape.begin(BufferedShape.QUADS);
+
     for (int x = 0; x < Chunk.WIDTH; x++) {
       for (int z = 0; z < Chunk.DEPTH; z++) {
+
         int heightValue = chunk.getHeightValueAt(x, z);
-        // FIXME We can improve this by using max height value from the height map
-        //        for (int y = 0; y < height; y++) {
+
         for (int y = 0; y <= heightValue; y++) {
           createBlock(x, y, z);
         }
       }
     }
+
     shape.end();
-
     geometry = new StaticGeometry(shape.getVBO(), sharedMaterial);
-
     return geometry;
   }
 
+  // ================================
+  // 🔥 FIXED SOLID CHECK
+  // ================================
   private boolean isSolid(int x, int y, int z) {
-    // Avoid render invisible bottom layer
+
     if (y < 0) return true;
 
-    // Check if the block is within the current chunk
     if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) {
       return chunk.isBlockSolid(x, y, z);
     }
 
-    // Handle neighbor chunks
     int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0);
     int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0);
+
     Chunk neighborChunk = chunkManager.getChunk(neighborChunkX, neighborChunkZ);
 
-    if (neighborChunk != null) {
-      int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
-      int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
-      return neighborChunk.isBlockSolid(neighborX, y, neighborZ);
+    // 🔥 WICHTIG: Wenn Nachbar fehlt ODER noch keine Daten hat → SOLID behandeln
+    if (neighborChunk == null || !neighborChunk.isDataReady()) {
+      return true;
     }
 
-    // If no neighbor chunk, assume the block is not solid
-    return false;
+    int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
+    int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
+
+    return neighborChunk.isBlockSolid(neighborX, y, neighborZ);
   }
 
+  // ================================
+  // 🔥 FIXED BLOCK DATA
+  // ================================
   private int getBlockData(int x, int y, int z) {
+
     if (chunk.isWithinBounds(x, y, z)) {
       return chunk.getBlockData(x, y, z);
     }
 
-    // Handle neighbor chunks
     int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0);
     int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0);
+
     Chunk neighborChunk = chunkManager.getChunk(neighborChunkX, neighborChunkZ);
 
-    if (neighborChunk != null) {
+    if (neighborChunk != null && neighborChunk.isDataReady()) {
+
       int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
       int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
+
       if (neighborChunk.isWithinBounds(neighborX, y, neighborZ)) {
         return neighborChunk.getBlockData(neighborX, y, neighborZ);
       }
     }
 
-    //    return chunk.getBlockData(x, y, z);
     return BlockType.AIR.getId();
   }
+
+  // ================================
+  // REST IST UNVERÄNDERT
+  // ================================
 
   public boolean shouldRender(int id, int x, int y, int z) {
     int id2 = getBlockData(x, y + 1, z);
@@ -127,6 +138,7 @@ public class ChunkMesher {
     if (id == BlockType.WATER.getId() && id2 == BlockType.WATER.getId()) {
       return false;
     }
+
     return !isSolid(x, y, z);
   }
 

@@ -9,7 +9,6 @@ import engine.scene.SceneNode;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
-import mesh.modifier.repair.UpdateFaceNormalsModifier;
 import mesh.modifier.topology.FlipFacesModifier;
 import mesh.next.surface.SurfaceLayer;
 
@@ -92,9 +91,6 @@ public class LevelBuilder {
     }
 
     new FlipFacesModifier().modify(levelMesh);
-
-    UpdateFaceNormalsModifier modifier = new UpdateFaceNormalsModifier();
-    modifier.modify(levelMesh);
   }
 
   private int getAtlasCol(TileType tileType) {
@@ -272,14 +268,15 @@ public class LevelBuilder {
     float y2 = py2 / atlasHeight;
 
     SurfaceLayer surfaceLayer = levelMesh.getSurfaceLayer();
-    
+
     surfaceLayer.addUV(x1, y2);
     surfaceLayer.addUV(x2, y2);
     surfaceLayer.addUV(x2, y1);
     surfaceLayer.addUV(x1, y1);
-    
+
     int faceIndex = levelMesh.getFaceCount() - 1;
-    surfaceLayer.setFaceUVIndices(faceIndex, new int[] {nextIndex, nextIndex + 1, nextIndex + 2, nextIndex + 3});
+    surfaceLayer.setFaceUVIndices(
+        faceIndex, new int[] {nextIndex, nextIndex + 1, nextIndex + 2, nextIndex + 3});
   }
 
   public Vector3f getPlayerSpawn() {

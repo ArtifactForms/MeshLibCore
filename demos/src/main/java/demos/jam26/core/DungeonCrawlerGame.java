@@ -39,6 +39,7 @@ import math.Color;
 import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
+import mesh.geometry.MeshGeometryUtil;
 
 public class DungeonCrawlerGame extends BasicApplication {
 
@@ -60,11 +61,11 @@ public class DungeonCrawlerGame extends BasicApplication {
   private TileMap tileMap;
   private PlayerHealthComponent health;
   private PerspectiveCamera camera;
-  
+
   private SceneNode uiRoot;
 
   @Override
-  public void onInitialize() {      
+  public void onInitialize() {
     setupDebug();
     setupAudio();
 
@@ -328,7 +329,8 @@ public class DungeonCrawlerGame extends BasicApplication {
 
       if (center.distance(camera.getTransform().getPosition()) >= maxDistance) continue;
 
-      Vector3f end = new Vector3f(center).addLocal(new Vector3f(f.normal).multLocal(normalLength));
+      Vector3f normal = MeshGeometryUtil.calculateFaceCenter(levelMesh, f);
+      Vector3f end = new Vector3f(center).addLocal(new Vector3f(normal).multLocal(normalLength));
       DebugDraw.drawLine(center, end, Color.RED);
     }
   }

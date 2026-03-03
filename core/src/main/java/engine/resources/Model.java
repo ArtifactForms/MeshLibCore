@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.rendering.Material;
+import engine.rendering.Shading;
 import mesh.Mesh3D;
 import mesh.SubMesh;
 
@@ -71,5 +72,11 @@ public class Model {
     }
     // Exception??
     return null;
+  }
+
+  public void setShading(Shading shading) {
+    for (Material material : materials) {
+      material.setShading(shading);
+    }
   }
 }
