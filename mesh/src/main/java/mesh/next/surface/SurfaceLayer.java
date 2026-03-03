@@ -37,4 +37,24 @@ public class SurfaceLayer {
   public int getUVCount() {
     return uvs.size();
   }
+
+  public SurfaceLayer copy() {
+    SurfaceLayer copy = new SurfaceLayer();
+
+    // Deep copy UVs
+    for (Vector2f uv : this.uvs) {
+      copy.uvs.add(new Vector2f(uv));
+    }
+
+    // Deep copy face UV indices
+    for (int[] indices : this.faceUvIndices) {
+      if (indices == null) {
+        copy.faceUvIndices.add(null);
+      } else {
+        copy.faceUvIndices.add(indices.clone());
+      }
+    }
+
+    return copy;
+  }
 }
