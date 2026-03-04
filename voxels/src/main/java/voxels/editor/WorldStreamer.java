@@ -123,7 +123,7 @@ public class WorldStreamer extends AbstractComponent {
       return;
     }
 
-    blockAtlas = new ProceduralBlockAtlas();
+    blockAtlas = new ProceduralBlockAtlas(true);
 
     Material material = new Material();
     material.setColor(Color.WHITE);
