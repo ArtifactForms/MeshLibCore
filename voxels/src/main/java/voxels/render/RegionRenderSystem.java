@@ -31,12 +31,8 @@ public class RegionRenderSystem {
   }
 
   public Mesh3D buildMesh(Region region, VoxelWorld world) {
-    return buildMesh(region, (BlockAccess) world);
-  }
-
-  public Mesh3D buildMesh(Region region, BlockAccess blockAccess) {
     RegionMesher mesher = new RegionMesher();
-    Mesh3D mesh = mesher.create(region, blockAccess);
+    Mesh3D mesh = mesher.create(region, world);
     meshCache.put(key(region), mesh);
     return mesh;
   }
