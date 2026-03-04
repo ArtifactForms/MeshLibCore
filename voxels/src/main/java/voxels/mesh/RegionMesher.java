@@ -8,12 +8,25 @@ import voxels.world.Blocks;
 import voxels.world.Chunk;
 import voxels.world.Region;
 import voxels.world.VoxelWorld;
+import voxels.render.ProceduralBlockAtlas;
 
 public class RegionMesher {
 
   private Mesh3D mesh;
   private int nextIndex;
   private BlockAccess blocks;
+  private final ProceduralBlockAtlas atlas;
+
+  public RegionMesher(ProceduralBlockAtlas atlas) {
+    if (atlas == null) {
+      throw new IllegalArgumentException("atlas cannot be null");
+    }
+    this.atlas = atlas;
+  }
+
+  public RegionMesher() {
+    this(new ProceduralBlockAtlas());
+  }
 
 
   public Mesh3D create(Region region, VoxelWorld world) {
@@ -25,6 +38,7 @@ public class RegionMesher {
     this.blocks = blocks;
     this.mesh = new Mesh3D();
     this.nextIndex = 0;
+    atlas.appendUVs(mesh.getSurfaceLayer());
 
     int startChunkX = region.getRegionX() * Region.REGION_SIZE;
     int startChunkZ = region.getRegionZ() * Region.REGION_SIZE;
@@ -121,7 +135,7 @@ public class RegionMesher {
               du[u] = w;
               dv[v] = h;
 
-              addQuad(x, du, dv, c > 0);
+              addQuad(x, du, dv, c > 0, (short) Math.abs(c), d);
 
               for (int l = 0; l < h; l++) for (int k = 0; k < w; k++) mask[n + k + l * dims[u]] = 0;
 
@@ -144,7 +158,7 @@ public class RegionMesher {
     return blocks.getBlock(worldX, y, worldZ);
   }
 
-  private void addQuad(int[] pos, int[] du, int[] dv, boolean frontFace) {
+  private void addQuad(int[] pos, int[] du, int[] dv, boolean frontFace, short blockId, int axis) {
 
     float x = pos[0];
     float y = pos[1];
@@ -166,7 +180,22 @@ public class RegionMesher {
       mesh.addVertex(x + du[0], y + du[1], z + du[2]);
     }
 
+    int faceIndex = mesh.getFaceCount();
     mesh.addFace(nextIndex, nextIndex + 1, nextIndex + 2, nextIndex + 3);
+
+    int faceOrdinal = toFaceOrdinal(axis, frontFace);
+    mesh.getSurfaceLayer().setFaceUVIndices(faceIndex, atlas.getFaceUVIndices(blockId, faceOrdinal));
+
     nextIndex += 4;
+  }
+
+  private int toFaceOrdinal(int axis, boolean frontFace) {
+    if (axis == 1) {
+      return frontFace ? ProceduralBlockAtlas.FACE_TOP : ProceduralBlockAtlas.FACE_BOTTOM;
+    }
+    if (axis == 2) {
+      return frontFace ? ProceduralBlockAtlas.FACE_FRONT : ProceduralBlockAtlas.FACE_BACK;
+    }
+    return frontFace ? ProceduralBlockAtlas.FACE_RIGHT : ProceduralBlockAtlas.FACE_LEFT;
   }
 }
