@@ -71,6 +71,48 @@ public class VoxelWorld implements BlockAccess {
     return regions.get(key(regionX, regionZ));
   }
 
+
+  public boolean setBlockWorld(int worldX, int worldY, int worldZ, short id) {
+    if (worldY < 0 || worldY >= Chunk.SIZE_Y) {
+      return false;
+    }
+
+    int chunkX = Math.floorDiv(worldX, Chunk.SIZE_X);
+    int chunkZ = Math.floorDiv(worldZ, Chunk.SIZE_Z);
+
+    Chunk chunk = getChunk(chunkX, chunkZ);
+    if (chunk == null) {
+      if (id == Blocks.AIR) {
+        return false;
+      }
+      chunk = new Chunk(chunkX, chunkZ);
+      addChunk(chunk);
+    }
+
+    int localX = Math.floorMod(worldX, Chunk.SIZE_X);
+    int localZ = Math.floorMod(worldZ, Chunk.SIZE_Z);
+
+    short current = chunk.getBlock(localX, worldY, localZ);
+    if (current == id) {
+      return false;
+    }
+
+    chunk.setBlock(localX, worldY, localZ, id);
+
+    if (id != Blocks.AIR) {
+      int existingHeight = chunk.getHeight(localX, localZ);
+      if (worldY > existingHeight) {
+        chunk.setHeight(localX, localZ, worldY);
+      }
+    }
+
+    return true;
+  }
+
+  public boolean removeBlockWorld(int worldX, int worldY, int worldZ) {
+    return setBlockWorld(worldX, worldY, worldZ, Blocks.AIR);
+  }
+
   public short getBlock(int worldX, int worldY, int worldZ) {
 
     if (worldY < 0 || worldY >= Chunk.SIZE_Y) return Blocks.AIR;

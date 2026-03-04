@@ -127,6 +127,18 @@ public class WorldStreamer extends AbstractComponent {
     queueChunksForUnload(anchorChunkX, anchorChunkZ);
   }
 
+
+
+  public void onChunkEdited(int chunkX, int chunkZ) {
+    markChunkRegionAndNeighborsDirty(chunkX, chunkZ);
+  }
+
+  public void onBlockEdited(int worldX, int worldY, int worldZ) {
+    int chunkX = Math.floorDiv(worldX, Chunk.SIZE_X);
+    int chunkZ = Math.floorDiv(worldZ, Chunk.SIZE_Z);
+    markChunkRegionAndNeighborsDirty(chunkX, chunkZ);
+  }
+
   private void processQueues() {
     generateQueuedChunks();
     unloadQueuedChunks();

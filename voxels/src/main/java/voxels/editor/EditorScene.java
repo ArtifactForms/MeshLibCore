@@ -53,6 +53,10 @@ public class EditorScene extends Scene {
 
     SceneNode streamingNode = new SceneNode("World-Streamer", streamer);
     addNode(streamingNode);
+
+    VoxelEditTool editTool = new VoxelEditTool(input, world, streamer);
+    SceneNode editorNode = new SceneNode("Voxel-Edit-Tool", editTool);
+    addNode(editorNode);
   }
 
   private void setupCamera() {

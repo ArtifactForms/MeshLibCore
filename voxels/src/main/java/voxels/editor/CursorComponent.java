@@ -19,7 +19,7 @@ public class CursorComponent extends AbstractComponent implements RenderableComp
   public void render(Graphics g) {
     float x = input.getMouseX();
     float y = input.getMouseY();
-    g.setColor(Color.WHITE);
+    g.setColor(Color.GRAY);
     g.drawLine(x - halfSize, y, x + halfSize, y);
     g.drawLine(x, y - halfSize, x, y + halfSize);
   }
