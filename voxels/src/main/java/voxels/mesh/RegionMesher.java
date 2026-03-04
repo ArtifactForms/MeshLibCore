@@ -126,6 +126,12 @@ public class RegionMesher {
                 }
               }
 
+              // Atlas-mapped block textures should repeat per block. With the current atlas UV scheme,
+              // merged greedy quads would stretch a single tile over multiple blocks, so clamp merge
+              // extent to one block per face to preserve per-block texel density.
+              w = 1;
+              h = 1;
+
               x[u] = i;
               x[v] = j;
 
