@@ -44,6 +44,7 @@ public class EditorScene extends Scene {
 
   private void setupStreaming() {
     long seed = 0;
+    int visibleChunkRadius = 10;
     int visibleChunkRadius = 30;
     int unloadChunkRadius = visibleChunkRadius + 2;
 
@@ -53,6 +54,10 @@ public class EditorScene extends Scene {
 
     SceneNode streamingNode = new SceneNode("World-Streamer", streamer);
     addNode(streamingNode);
+
+    VoxelEditTool editTool = new VoxelEditTool(input, world, streamer);
+    SceneNode editorNode = new SceneNode("Voxel-Edit-Tool", editTool);
+    addNode(editorNode);
   }
 
   private void setupCamera() {
