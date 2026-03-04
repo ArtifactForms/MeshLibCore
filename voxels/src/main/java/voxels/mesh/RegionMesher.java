@@ -170,20 +170,36 @@ public class RegionMesher {
     float y = pos[1];
     float z = pos[2];
 
-    float x2 = x + du[0] + dv[0];
-    float y2 = y + du[1] + dv[1];
-    float z2 = z + du[2] + dv[2];
+    float[] v0 = {x, y, z};
+    float[] v1;
+    float[] v2;
+    float[] v3;
+
+    float[] duv = {du[0], du[1], du[2]};
+    float[] dvv = {dv[0], dv[1], dv[2]};
+
+    float[] xdu = {x + duv[0], y + duv[1], z + duv[2]};
+    float[] xdv = {x + dvv[0], y + dvv[1], z + dvv[2]};
+    float[] xduv = {x + duv[0] + dvv[0], y + duv[1] + dvv[1], z + duv[2] + dvv[2]};
 
     if (frontFace) {
-      mesh.addVertex(x, y, z);
-      mesh.addVertex(x + du[0], y + du[1], z + du[2]);
-      mesh.addVertex(x2, y2, z2);
-      mesh.addVertex(x + dv[0], y + dv[1], z + dv[2]);
+      v1 = xdu;
+      v2 = xduv;
+      v3 = xdv;
     } else {
-      mesh.addVertex(x, y, z);
-      mesh.addVertex(x + dv[0], y + dv[1], z + dv[2]);
-      mesh.addVertex(x2, y2, z2);
-      mesh.addVertex(x + du[0], y + du[1], z + du[2]);
+      v1 = xdv;
+      v2 = xduv;
+      v3 = xdu;
+    }
+
+    float[] expected = expectedFaceNormal(axis, frontFace);
+    float[] actual = faceNormal(v0, v1, v2);
+
+    // Ensure deterministic outward winding for all axes.
+    if (dot(actual, expected) < 0f) {
+      float[] tmp = v1;
+      v1 = v3;
+      v3 = tmp;
     }
 
     int faceIndex = mesh.getFaceCount();
