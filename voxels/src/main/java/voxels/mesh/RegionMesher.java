@@ -8,12 +8,25 @@ import voxels.world.Blocks;
 import voxels.world.Chunk;
 import voxels.world.Region;
 import voxels.world.VoxelWorld;
+import voxels.render.ProceduralBlockAtlas;
 
 public class RegionMesher {
 
   private Mesh3D mesh;
   private int nextIndex;
   private BlockAccess blocks;
+  private final ProceduralBlockAtlas atlas;
+
+  public RegionMesher(ProceduralBlockAtlas atlas) {
+    if (atlas == null) {
+      throw new IllegalArgumentException("atlas cannot be null");
+    }
+    this.atlas = atlas;
+  }
+
+  public RegionMesher() {
+    this(new ProceduralBlockAtlas());
+  }
 
 
   public Mesh3D create(Region region, VoxelWorld world) {
@@ -25,6 +38,7 @@ public class RegionMesher {
     this.blocks = blocks;
     this.mesh = new Mesh3D();
     this.nextIndex = 0;
+    atlas.appendUVs(mesh.getSurfaceLayer());
 
     int startChunkX = region.getRegionX() * Region.REGION_SIZE;
     int startChunkZ = region.getRegionZ() * Region.REGION_SIZE;
@@ -112,6 +126,12 @@ public class RegionMesher {
                 }
               }
 
+              // Atlas-mapped block textures should repeat per block. With the current atlas UV scheme,
+              // merged greedy quads would stretch a single tile over multiple blocks, so clamp merge
+              // extent to one block per face to preserve per-block texel density.
+              w = 1;
+              h = 1;
+
               x[u] = i;
               x[v] = j;
 
@@ -121,7 +141,7 @@ public class RegionMesher {
               du[u] = w;
               dv[v] = h;
 
-              addQuad(x, du, dv, c > 0);
+              addQuad(x, du, dv, c > 0, (short) Math.abs(c), d);
 
               for (int l = 0; l < h; l++) for (int k = 0; k < w; k++) mask[n + k + l * dims[u]] = 0;
 
@@ -144,29 +164,96 @@ public class RegionMesher {
     return blocks.getBlock(worldX, y, worldZ);
   }
 
-  private void addQuad(int[] pos, int[] du, int[] dv, boolean frontFace) {
+  private void addQuad(int[] pos, int[] du, int[] dv, boolean frontFace, short blockId, int axis) {
 
     float x = pos[0];
     float y = pos[1];
     float z = pos[2];
 
-    float x2 = x + du[0] + dv[0];
-    float y2 = y + du[1] + dv[1];
-    float z2 = z + du[2] + dv[2];
+    float[] v0 = {x, y, z};
+    float[] v1;
+    float[] v2;
+    float[] v3;
+
+    float[] duv = {du[0], du[1], du[2]};
+    float[] dvv = {dv[0], dv[1], dv[2]};
+
+    float[] xdu = {x + duv[0], y + duv[1], z + duv[2]};
+    float[] xdv = {x + dvv[0], y + dvv[1], z + dvv[2]};
+    float[] xduv = {x + duv[0] + dvv[0], y + duv[1] + dvv[1], z + duv[2] + dvv[2]};
 
     if (frontFace) {
-      mesh.addVertex(x, y, z);
-      mesh.addVertex(x + du[0], y + du[1], z + du[2]);
-      mesh.addVertex(x2, y2, z2);
-      mesh.addVertex(x + dv[0], y + dv[1], z + dv[2]);
+      v1 = xdu;
+      v2 = xduv;
+      v3 = xdv;
     } else {
-      mesh.addVertex(x, y, z);
-      mesh.addVertex(x + dv[0], y + dv[1], z + dv[2]);
-      mesh.addVertex(x2, y2, z2);
-      mesh.addVertex(x + du[0], y + du[1], z + du[2]);
+      v1 = xdv;
+      v2 = xduv;
+      v3 = xdu;
     }
 
+    float[] expected = expectedFaceNormal(axis, frontFace);
+    float[] actual = faceNormal(v0, v1, v2);
+
+    // Ensure deterministic outward winding for all axes.
+    if (dot(actual, expected) < 0f) {
+      float[] tmp = v1;
+      v1 = v3;
+      v3 = tmp;
+    }
+
+    mesh.addVertex(v0[0], v0[1], v0[2]);
+    mesh.addVertex(v1[0], v1[1], v1[2]);
+    mesh.addVertex(v2[0], v2[1], v2[2]);
+    mesh.addVertex(v3[0], v3[1], v3[2]);
+
+    int faceIndex = mesh.getFaceCount();
     mesh.addFace(nextIndex, nextIndex + 1, nextIndex + 2, nextIndex + 3);
+
+    int faceOrdinal = toFaceOrdinal(axis, frontFace);
+    mesh.getSurfaceLayer().setFaceUVIndices(faceIndex, atlas.getFaceUVIndices(blockId, faceOrdinal));
+
     nextIndex += 4;
+  }
+
+  private float[] expectedFaceNormal(int axis, boolean frontFace) {
+    float sign = frontFace ? 1f : -1f;
+    if (axis == 0) {
+      return new float[] {sign, 0f, 0f};
+    }
+    if (axis == 1) {
+      return new float[] {0f, sign, 0f};
+    }
+    return new float[] {0f, 0f, sign};
+  }
+
+  private float[] faceNormal(float[] v0, float[] v1, float[] v2) {
+    float ax = v1[0] - v0[0];
+    float ay = v1[1] - v0[1];
+    float az = v1[2] - v0[2];
+
+    float bx = v2[0] - v0[0];
+    float by = v2[1] - v0[1];
+    float bz = v2[2] - v0[2];
+
+    return new float[] {
+      ay * bz - az * by,
+      az * bx - ax * bz,
+      ax * by - ay * bx
+    };
+  }
+
+  private float dot(float[] a, float[] b) {
+    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  }
+
+  private int toFaceOrdinal(int axis, boolean frontFace) {
+    if (axis == 1) {
+      return frontFace ? ProceduralBlockAtlas.FACE_TOP : ProceduralBlockAtlas.FACE_BOTTOM;
+    }
+    if (axis == 2) {
+      return frontFace ? ProceduralBlockAtlas.FACE_FRONT : ProceduralBlockAtlas.FACE_BACK;
+    }
+    return frontFace ? ProceduralBlockAtlas.FACE_RIGHT : ProceduralBlockAtlas.FACE_LEFT;
   }
 }

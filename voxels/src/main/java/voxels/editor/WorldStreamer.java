@@ -5,8 +5,10 @@ import engine.components.StaticGeometry;
 import engine.rendering.Material;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
+import math.Color;
 import mesh.Mesh3D;
 import voxels.mesh.RegionMesher;
+import voxels.render.ProceduralBlockAtlas;
 import voxels.render.RegionRenderSystem;
 import voxels.world.BlockAccess;
 import voxels.world.Chunk;
@@ -45,6 +47,9 @@ public class WorldStreamer extends AbstractComponent {
   private final Set<Long> inFlightRegionBuilds = new HashSet<>();
   private final Set<Long> dirtyAfterBuild = new HashSet<>();
   private final ConcurrentLinkedQueue<MeshBuildResult> completedMeshBuilds = new ConcurrentLinkedQueue<>();
+
+  private ProceduralBlockAtlas blockAtlas;
+  private Material regionMaterial;
 
   private final ExecutorService meshExecutor =
       Executors.newSingleThreadExecutor(
@@ -94,6 +99,7 @@ public class WorldStreamer extends AbstractComponent {
   @Override
   public void onAttachToScene(Scene scene) {
     this.scene = scene;
+    ensureRenderResources();
     updateStreamingTargets(true);
     processQueues();
   }
@@ -110,6 +116,20 @@ public class WorldStreamer extends AbstractComponent {
     completedMeshBuilds.clear();
     inFlightRegionBuilds.clear();
     dirtyAfterBuild.clear();
+  }
+
+  private synchronized void ensureRenderResources() {
+    if (blockAtlas != null && regionMaterial != null) {
+      return;
+    }
+
+    blockAtlas = new ProceduralBlockAtlas();
+
+    Material material = new Material();
+    material.setColor(Color.WHITE);
+    material.setDiffuseTexture(blockAtlas.getTexture());
+    material.setUseLighting(false);
+    regionMaterial = material;
   }
 
   private void updateStreamingTargets(boolean force) {
@@ -288,7 +308,8 @@ public class WorldStreamer extends AbstractComponent {
       inFlightRegionBuilds.add(regionKey);
       meshExecutor.submit(
           () -> {
-            RegionMesher mesher = new RegionMesher();
+            ensureRenderResources();
+            RegionMesher mesher = new RegionMesher(blockAtlas);
             Mesh3D mesh = mesher.create(regionSnapshot, blockSnapshot);
             completedMeshBuilds.add(new MeshBuildResult(regionKey, mesh));
           });
@@ -348,8 +369,8 @@ public class WorldStreamer extends AbstractComponent {
         oldNode.destroy();
       }
 
-      Material material = new Material();
-      StaticGeometry geometry = new StaticGeometry(mesh, material);
+      ensureRenderResources();
+      StaticGeometry geometry = new StaticGeometry(mesh, regionMaterial);
 
       SceneNode newNode = new SceneNode("Region [" + regionX + "," + regionZ + "]", geometry);
       scene.addNode(newNode);
