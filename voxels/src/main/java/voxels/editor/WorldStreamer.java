@@ -50,7 +50,6 @@ public class WorldStreamer extends AbstractComponent {
 
   private ProceduralBlockAtlas blockAtlas;
   private Material regionMaterial;
-  private final ProceduralBlockAtlas blockAtlas = new ProceduralBlockAtlas();
 
   private final ExecutorService meshExecutor =
       Executors.newSingleThreadExecutor(
@@ -124,7 +123,7 @@ public class WorldStreamer extends AbstractComponent {
       return;
     }
 
-    blockAtlas = new ProceduralBlockAtlas();
+    blockAtlas = new ProceduralBlockAtlas(true);
 
     Material material = new Material();
     material.setColor(Color.WHITE);
@@ -372,10 +371,6 @@ public class WorldStreamer extends AbstractComponent {
 
       ensureRenderResources();
       StaticGeometry geometry = new StaticGeometry(mesh, regionMaterial);
-      Material material = new Material();
-      material.setDiffuseTexture(blockAtlas.getTexture());
-      material.setUseLighting(false);
-      StaticGeometry geometry = new StaticGeometry(mesh, material);
 
       SceneNode newNode = new SceneNode("Region [" + regionX + "," + regionZ + "]", geometry);
       scene.addNode(newNode);
