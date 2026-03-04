@@ -14,6 +14,12 @@ public class RegionMesher {
   private int nextIndex;
   private BlockAccess blocks;
 
+
+  public Mesh3D create(Region region, VoxelWorld world) {
+    return create(region, (BlockAccess) world);
+  }
+
+
   public Mesh3D create(Region region, BlockAccess blocks) {
 
     this.blocks = blocks;
