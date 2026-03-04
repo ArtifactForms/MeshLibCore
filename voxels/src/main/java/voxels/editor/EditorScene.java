@@ -1,7 +1,5 @@
 package voxels.editor;
 
-import engine.components.StaticGeometry;
-import engine.rendering.Material;
 import engine.runtime.input.Input;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
@@ -11,11 +9,8 @@ import engine.scene.light.AmbientLight;
 import engine.scene.light.DirectionalLight;
 import math.Color;
 import math.Vector3f;
-import mesh.Mesh3D;
 import voxels.render.RegionRenderSystem;
-import voxels.world.Chunk;
 import voxels.world.NoiseTerrainGenerator;
-import voxels.world.Region;
 import voxels.world.VoxelWorld;
 
 public class EditorScene extends Scene {
@@ -39,50 +34,25 @@ public class EditorScene extends Scene {
     setupUI();
     setupLight();
     setupWorld();
-    setupRendering();
+    setupStreaming();
   }
 
   private void setupWorld() {
-
     world = new VoxelWorld();
-
-    long seed = 0;
-    int chunkRadius = 10;
-
-    NoiseTerrainGenerator generator = new NoiseTerrainGenerator(seed);
-
-    for (int chunkX = -chunkRadius; chunkX < chunkRadius; chunkX++) {
-      for (int chunkZ = -chunkRadius; chunkZ < chunkRadius; chunkZ++) {
-
-        Chunk chunk = new Chunk(chunkX, chunkZ);
-        generator.generate(chunk);
-
-        world.addChunk(chunk);
-      }
-    }
+    renderSystem = new RegionRenderSystem();
   }
 
-  private void setupRendering() {
+  private void setupStreaming() {
+    long seed = 0;
+    int visibleChunkRadius = 10;
+    int unloadChunkRadius = visibleChunkRadius + 2;
 
-    renderSystem = new RegionRenderSystem();
+    NoiseTerrainGenerator generator = new NoiseTerrainGenerator(seed);
+    WorldStreamer streamer =
+        new WorldStreamer(anchor, world, generator, renderSystem, visibleChunkRadius, unloadChunkRadius);
 
-    renderSystem.buildMeshesParallel(world, 8);
-
-    for (Region region : world.getRegions()) {
-
-      Mesh3D mesh = renderSystem.getMesh(region);
-
-      if (mesh == null || mesh.getFaceCount() == 0) continue;
-
-      Material material = new Material();
-      StaticGeometry geometry = new StaticGeometry(mesh, material);
-
-      SceneNode node =
-          new SceneNode(
-              "Region [" + region.getRegionX() + "," + region.getRegionZ() + "]", geometry);
-
-      addNode(node);
-    }
+    SceneNode streamingNode = new SceneNode("World-Streamer", streamer);
+    addNode(streamingNode);
   }
 
   private void setupCamera() {

@@ -2,7 +2,7 @@ package voxels.world;
 
 import java.util.*;
 
-public class VoxelWorld {
+public class VoxelWorld implements BlockAccess {
 
   private final Map<Long, Chunk> chunks = new HashMap<>();
   private final Map<Long, Region> regions = new HashMap<>();
@@ -12,18 +12,47 @@ public class VoxelWorld {
     int chunkX = chunk.getChunkX();
     int chunkZ = chunk.getChunkZ();
 
-    // store chunk
-    chunks.put(key(chunkX, chunkZ), chunk);
+    long chunkKey = key(chunkX, chunkZ);
+    if (chunks.containsKey(chunkKey)) {
+      return;
+    }
 
-    // determine region
+    chunks.put(chunkKey, chunk);
+
     int regionX = Math.floorDiv(chunkX, Region.REGION_SIZE);
     int regionZ = Math.floorDiv(chunkZ, Region.REGION_SIZE);
 
     long regionKey = key(regionX, regionZ);
 
     Region region = regions.computeIfAbsent(regionKey, k -> new Region(regionX, regionZ));
-
     region.addChunk(chunk);
+  }
+
+  public Chunk removeChunk(int chunkX, int chunkZ) {
+    long chunkKey = key(chunkX, chunkZ);
+    Chunk removedChunk = chunks.remove(chunkKey);
+
+    if (removedChunk == null) {
+      return null;
+    }
+
+    int regionX = Math.floorDiv(chunkX, Region.REGION_SIZE);
+    int regionZ = Math.floorDiv(chunkZ, Region.REGION_SIZE);
+
+    long regionKey = key(regionX, regionZ);
+    Region region = regions.get(regionKey);
+    if (region != null) {
+      region.removeChunk(chunkX, chunkZ);
+      if (region.isEmpty()) {
+        regions.remove(regionKey);
+      }
+    }
+
+    return removedChunk;
+  }
+
+  public boolean hasChunk(int chunkX, int chunkZ) {
+    return chunks.containsKey(key(chunkX, chunkZ));
   }
 
   public Chunk getChunk(int chunkX, int chunkZ) {
@@ -32,6 +61,14 @@ public class VoxelWorld {
 
   public Collection<Region> getRegions() {
     return regions.values();
+  }
+
+  public List<Chunk> getChunks() {
+    return new ArrayList<>(chunks.values());
+  }
+
+  public Region getRegion(int regionX, int regionZ) {
+    return regions.get(key(regionX, regionZ));
   }
 
   public short getBlock(int worldX, int worldY, int worldZ) {
@@ -50,7 +87,7 @@ public class VoxelWorld {
     return chunk.getBlock(localX, worldY, localZ);
   }
 
-  private long key(int x, int z) {
+  public long key(int x, int z) {
     return (((long) x) << 32) | (z & 0xffffffffL);
   }
 }
