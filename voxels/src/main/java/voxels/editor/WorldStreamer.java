@@ -466,3 +466,4 @@ public class WorldStreamer extends AbstractComponent {
     }
   }
 }
+}
