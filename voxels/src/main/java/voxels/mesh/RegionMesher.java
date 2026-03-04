@@ -202,6 +202,11 @@ public class RegionMesher {
       v3 = tmp;
     }
 
+    mesh.addVertex(v0[0], v0[1], v0[2]);
+    mesh.addVertex(v1[0], v1[1], v1[2]);
+    mesh.addVertex(v2[0], v2[1], v2[2]);
+    mesh.addVertex(v3[0], v3[1], v3[2]);
+
     int faceIndex = mesh.getFaceCount();
     mesh.addFace(nextIndex, nextIndex + 1, nextIndex + 2, nextIndex + 3);
 
@@ -209,6 +214,37 @@ public class RegionMesher {
     mesh.getSurfaceLayer().setFaceUVIndices(faceIndex, atlas.getFaceUVIndices(blockId, faceOrdinal));
 
     nextIndex += 4;
+  }
+
+  private float[] expectedFaceNormal(int axis, boolean frontFace) {
+    float sign = frontFace ? 1f : -1f;
+    if (axis == 0) {
+      return new float[] {sign, 0f, 0f};
+    }
+    if (axis == 1) {
+      return new float[] {0f, sign, 0f};
+    }
+    return new float[] {0f, 0f, sign};
+  }
+
+  private float[] faceNormal(float[] v0, float[] v1, float[] v2) {
+    float ax = v1[0] - v0[0];
+    float ay = v1[1] - v0[1];
+    float az = v1[2] - v0[2];
+
+    float bx = v2[0] - v0[0];
+    float by = v2[1] - v0[1];
+    float bz = v2[2] - v0[2];
+
+    return new float[] {
+      ay * bz - az * by,
+      az * bx - ax * bz,
+      ax * by - ay * bx
+    };
+  }
+
+  private float dot(float[] a, float[] b) {
+    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
   }
 
   private int toFaceOrdinal(int axis, boolean frontFace) {
