@@ -5,6 +5,7 @@ import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
+import engine.scene.camera.Camera;
 import math.Color;
 import math.Vector3f;
 
@@ -15,7 +16,7 @@ public class WorldAnchorMovement extends AbstractComponent implements Renderable
   private Key forwardKey = Key.ARROW_UP;
   private Key backwardKey = Key.ARROW_DOWN;
 
-  private float speed = 32;
+  private float speed = 64;
   private Input input;
   private WorldAnchor anchor;
 
@@ -38,6 +39,11 @@ public class WorldAnchorMovement extends AbstractComponent implements Renderable
     }
 
     anchor.move(direction.x * speed * tpf, direction.z * speed * tpf);
+
+    if (direction.length() > 0) {
+      Camera camera = getOwner().getScene().getActiveCamera();
+      camera.setTarget(new Vector3f(anchor.getX(), 0, anchor.getZ()));
+    }
   }
 
   @Override

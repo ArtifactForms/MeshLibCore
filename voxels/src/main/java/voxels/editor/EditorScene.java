@@ -45,6 +45,7 @@ public class EditorScene extends Scene {
   private void setupStreaming() {
     long seed = 0;
     int visibleChunkRadius = 10;
+    int visibleChunkRadius = 30;
     int unloadChunkRadius = visibleChunkRadius + 2;
 
     NoiseTerrainGenerator generator = new NoiseTerrainGenerator(seed);
