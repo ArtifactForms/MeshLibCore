@@ -50,8 +50,14 @@ public class ProceduralBlockAtlas {
 
   private final Texture texture;
   private final float[] uvData;
+  private final boolean flipVForProcessing;
 
   public ProceduralBlockAtlas() {
+    this(true);
+  }
+
+  public ProceduralBlockAtlas(boolean flipVForProcessing) {
+    this.flipVForProcessing = flipVForProcessing;
     BufferedImage image = createAtlasImage();
     texture = TextureManager.getInstance().createTexture(image);
     texture.setFilterMode(FilterMode.POINT);
@@ -136,11 +142,12 @@ public class ProceduralBlockAtlas {
 
     int cursor = 0;
     for (int row = 0; row < TILE_TYPE_COUNT; row++) {
+      int flippedRow = flippedAtlasRow(row);
       for (int col = 0; col < COLUMNS; col++) {
         float u0 = col * uStep + EPSILON;
         float u1 = (col + 1) * uStep - EPSILON;
-        float v0 = row * vStep + EPSILON;
-        float v1 = (row + 1) * vStep - EPSILON;
+        float v0 = flippedRow * vStep + EPSILON;
+        float v1 = (flippedRow + 1) * vStep - EPSILON;
 
         out[cursor++] = u1;
         out[cursor++] = v1;
@@ -156,6 +163,17 @@ public class ProceduralBlockAtlas {
       }
     }
     return out;
+  }
+
+
+
+  private int flippedAtlasRow(int row) {
+    // Processing backend samples V with flipped orientation compared to the generated BufferedImage.
+    // Address this by mapping logical atlas rows from top->bottom onto UV rows from bottom->top.
+    if (!flipVForProcessing) {
+      return row;
+    }
+    return TILE_TYPE_COUNT - 1 - row;
   }
 
   private int tileTypeFor(short blockId, int faceOrdinal) {
