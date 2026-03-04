@@ -3,6 +3,7 @@ package voxels.mesh;
 import mesh.Mesh3D;
 import mesh.modifier.transform.ScaleModifier;
 import mesh.modifier.transform.TranslateModifier;
+import voxels.world.BlockAccess;
 import voxels.world.Blocks;
 import voxels.world.Chunk;
 import voxels.world.Region;
@@ -12,11 +13,16 @@ public class RegionMesher {
 
   private Mesh3D mesh;
   private int nextIndex;
-  private VoxelWorld world;
+  private BlockAccess blocks;
+
 
   public Mesh3D create(Region region, VoxelWorld world) {
+    return create(region, (BlockAccess) world);
+  }
 
-    this.world = world;
+  public Mesh3D create(Region region, BlockAccess blocks) {
+
+    this.blocks = blocks;
     this.mesh = new Mesh3D();
     this.nextIndex = 0;
 
@@ -135,7 +141,7 @@ public class RegionMesher {
   private short getBlock(int chunkStartX, int chunkStartZ, int x, int y, int z) {
     int worldX = chunkStartX * Chunk.SIZE_X + x;
     int worldZ = chunkStartZ * Chunk.SIZE_Z + z;
-    return world.getBlock(worldX, y, worldZ);
+    return blocks.getBlock(worldX, y, worldZ);
   }
 
   private void addQuad(int[] pos, int[] du, int[] dv, boolean frontFace) {

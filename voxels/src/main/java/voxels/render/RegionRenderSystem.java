@@ -31,7 +31,7 @@ public class RegionRenderSystem {
     try {
       executor.awaitTermination(10, TimeUnit.MINUTES);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      Thread.currentThread().interrupt();
     }
   }
 
