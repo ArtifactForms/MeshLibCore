@@ -7,7 +7,6 @@ import engine.runtime.input.Input;
 import engine.runtime.input.Key;
 import engine.scene.camera.Camera;
 import math.Color;
-import math.Mathf;
 import math.Vector3f;
 
 public class WorldAnchorMovement extends AbstractComponent implements RenderableComponent {
@@ -17,7 +16,7 @@ public class WorldAnchorMovement extends AbstractComponent implements Renderable
   private Key forwardKey = Key.ARROW_UP;
   private Key backwardKey = Key.ARROW_DOWN;
 
-  private float speed = 32;
+  private float speed = 64;
   private Input input;
   private WorldAnchor anchor;
 

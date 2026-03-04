@@ -36,7 +36,7 @@ public class EditorScene extends Scene {
     setupWorld();
     setupStreaming();
   }
-  
+
   private void setupWorld() {
     world = new VoxelWorld();
     renderSystem = new RegionRenderSystem();
@@ -44,7 +44,7 @@ public class EditorScene extends Scene {
 
   private void setupStreaming() {
     long seed = 0;
-    int visibleChunkRadius = 16;
+    int visibleChunkRadius = 30;
     int unloadChunkRadius = visibleChunkRadius + 2;
 
     NoiseTerrainGenerator generator = new NoiseTerrainGenerator(seed);
