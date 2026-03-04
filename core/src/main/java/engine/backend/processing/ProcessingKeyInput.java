@@ -135,7 +135,10 @@ public class ProcessingKeyInput implements KeyInput {
       }
     }
 
-    if (key == Key.UNKNOWN) return;
+    // Don't block type events if UNKNOWN
+    if (e.getAction() != KeyEvent.TYPE && key == Key.UNKNOWN) {
+      return;
+    }
 
     switch (e.getAction()) {
       case KeyEvent.PRESS:

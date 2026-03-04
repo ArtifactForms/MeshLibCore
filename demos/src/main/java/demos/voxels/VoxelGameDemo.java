@@ -182,7 +182,7 @@ public class VoxelGameDemo extends BasicApplication {
       BlockType type = chunk.getBlock(localX, yP, localZ);
 
       display.setText("Chunk: " + chunk.getChunkX() + "," + chunk.getChunkZ() + " Block: " + type);
-      
+
       playerNode.getTransform().setPosition(position.x, -yP, position.z);
     }
 
@@ -194,12 +194,19 @@ public class VoxelGameDemo extends BasicApplication {
     //    int x = (int) (playerPosition.x / Chunk.WIDTH) * Chunk.WIDTH + Chunk.WIDTH / 2;
     //    int z = (int) (playerPosition.z / Chunk.DEPTH) * Chunk.DEPTH + Chunk.DEPTH / 2;
     //    chunkBorders.getTransform().setPosition(x, 0, z);
+
+    updateSkyBoxPosition();
+  }
+
+  private void updateSkyBoxPosition() {
+    Vector3f playerPosition = player.getPosition();
+    float boxX = playerPosition.getX();
+    float boxZ = playerPosition.getZ();
+    skyBox.getTransform().setPosition(boxX, 0, boxZ);
   }
 
   @Override
-  public void onRender(Graphics g) {
-
-  }
+  public void onRender(Graphics g) {}
 
   @Override
   public void onCleanup() {}

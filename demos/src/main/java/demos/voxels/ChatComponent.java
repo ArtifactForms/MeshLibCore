@@ -15,21 +15,22 @@ import math.Color;
 
 public class ChatComponent extends AbstractComponent implements KeyListener, RenderableComponent {
 
-  private static final int MAX_MESSAGE_LENGTH = 0;
-  private StringBuffer textBuffer;
+  private static final int MAX_MESSAGE_LENGTH = 256;
+
+  private final StringBuilder textBuffer;
   private boolean textInputEnabled;
-  private Input input;
-  private Camera camera;
-  private String message = "";
+  private final Input input;
+  private final Camera camera;
   private int cursorPosition;
-  private EventManager eventManager;
+  private final EventManager eventManager;
 
   public ChatComponent(Input input, Camera camera, EventManager eventManager) {
     this.input = input;
     this.camera = camera;
-    this.textBuffer = new StringBuffer();
+    this.textBuffer = new StringBuilder();
     this.cursorPosition = 0;
     this.eventManager = eventManager;
+
     input.addKeyListener(this);
   }
 
@@ -37,81 +38,114 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
   public void onAttach() {}
 
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    input.removeKeyListener(this);
+  }
 
   @Override
-  public void onUpdate(float tpf) {
-    message = textBuffer.toString();
-  }
+  public void onUpdate(float tpf) {}
+
+  // =========================================================
+  // Rendering
+  // =========================================================
 
   @Override
   public void render(Graphics g) {
     if (!textInputEnabled) return;
 
     Font font = new Font("monogram-extended", 32, Font.PLAIN);
-    int y = g.getHeight() - 20;
-    int cursorWidth = 10;
+
+    int baseY = g.getHeight() - 20;
     int offsetX = 20;
-    g.setColor(Color.YELLOW);
 
     g.setFont(font);
-    g.text(message, 20, g.getHeight() - offsetX);
-    g.setColor(Color.WHITE);
+    g.setColor(Color.YELLOW);
 
-    float pos = g.textWidth(message);
-    g.drawLine(pos + offsetX, y, pos + offsetX + cursorWidth, y);
+    String message = textBuffer.toString();
+    g.text(message, offsetX, baseY);
+
+    float cursorX = offsetX + g.textWidth(message.substring(0, cursorPosition));
+    g.setColor(Color.WHITE);
+    g.drawLine(cursorX, baseY - 25, cursorX, baseY + 5);
   }
+
+  // =========================================================
+  // Key Handling
+  // =========================================================
 
   @Override
   public void onKeyPressed(KeyEvent e) {
-    if (!shouldProcess(e)) return;
-    processEvent(e);
-  }
 
-  private boolean shouldProcess(KeyEvent e) {
-    return e.getKey() == Key.BACKSPACE || e.getKey() == Key.ENTER || e.getKey() == Key.DELETE;
-  }
+    if (e.getKey() == Key.T && !textInputEnabled) {
+      textInputEnabled = true;
+      return;
+    }
 
-  @Override
-  public void onKeyReleased(KeyEvent e) {}
-
-  private void processEvent(KeyEvent e) {
     if (!textInputEnabled) return;
 
-    if (e.getKey() == Key.BACKSPACE) {
-      if (cursorPosition > 0) {
-        textBuffer.deleteCharAt(cursorPosition - 1);
-        cursorPosition--;
-      }
-    } else if (e.getKey() == Key.DELETE) {
-      if (cursorPosition < textBuffer.length()) {
-        textBuffer.deleteCharAt(cursorPosition);
-      }
-    } else if (e.getKey() == Key.ENTER) {
-      String messageToSend = textBuffer.toString();
-      sendMessage(messageToSend); // Trigger the event here
-      textInputEnabled = false;
-      textBuffer.delete(0, textBuffer.length());
-      cursorPosition = 0;
-    } else {
-      textBuffer.insert(cursorPosition, e.getChar());
-      cursorPosition++;
+    switch (e.getKey()) {
+      case BACKSPACE:
+        if (cursorPosition > 0) {
+          textBuffer.deleteCharAt(cursorPosition - 1);
+          cursorPosition--;
+        }
+        break;
+
+      case DELETE:
+        if (cursorPosition < textBuffer.length()) {
+          textBuffer.deleteCharAt(cursorPosition);
+        }
+        break;
+
+      case ARROW_LEFT:
+        if (cursorPosition > 0) {
+          cursorPosition--;
+        }
+        break;
+
+      case ARROW_RIGHT:
+        if (cursorPosition < textBuffer.length()) {
+          cursorPosition++;
+        }
+        break;
+
+      case ENTER:
+        sendMessage(textBuffer.toString());
+        textInputEnabled = false;
+        textBuffer.setLength(0);
+        cursorPosition = 0;
+        break;
+
+      default:
+        break;
     }
   }
 
   @Override
   public void onKeyTyped(KeyEvent e) {
-    if (e.getKey() != Key.BACKSPACE && e.getKey() != Key.DELETE) {
-      processEvent(e);
-    }
-    if (e.getKey() == Key.T && !textInputEnabled) {
-      textInputEnabled = !textInputEnabled;
-    }
+    if (!textInputEnabled) return;
+
+    char c = e.getChar();
+
+    if (Character.isISOControl(c)) return;
+
+    if (textBuffer.length() >= MAX_MESSAGE_LENGTH) return;
+
+    textBuffer.insert(cursorPosition, c);
+    cursorPosition++;
   }
 
-  // Method to send the message and trigger the event
+  @Override
+  public void onKeyReleased(KeyEvent e) {}
+
+  // =========================================================
+  // Messaging
+  // =========================================================
+
   private void sendMessage(String message) {
-    MessageSentEvent messageSentEvent = new MessageSentEvent(message);
-    eventManager.triggerEvent(messageSentEvent);
+    if (message == null || message.trim().isEmpty()) return;
+
+    MessageSentEvent event = new MessageSentEvent(message);
+    eventManager.triggerEvent(event);
   }
 }
