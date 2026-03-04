@@ -7,6 +7,7 @@ import engine.scene.camera.OrbitCamera;
 import engine.scene.camera.OrbitCameraControl;
 import engine.scene.light.AmbientLight;
 import engine.scene.light.DirectionalLight;
+import engine.scene.nodes.DefaultTestCube;
 import math.Color;
 import math.Vector3f;
 import voxels.render.RegionRenderSystem;
@@ -35,6 +36,9 @@ public class EditorScene extends Scene {
     setupLight();
     setupWorld();
     setupStreaming();
+  
+  
+    addNode(new DefaultTestCube(10));
   }
 
   private void setupWorld() {
