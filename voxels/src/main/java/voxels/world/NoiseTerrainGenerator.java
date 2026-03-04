@@ -18,9 +18,9 @@ public class NoiseTerrainGenerator implements TerrainGenerator {
         int worldX = chunk.getChunkX() * Chunk.SIZE_X + x;
         int worldZ = chunk.getChunkZ() * Chunk.SIZE_Z + z;
 
-        float noiseScale = 0.01f;
+        float noiseScale = 0.008f;
         float heightNoise = noise.sample(worldX * noiseScale, worldZ * noiseScale);
-        int height = (int) (heightNoise * 50 + 80);
+        int height = (int) (heightNoise * 60 + 80);
 
         chunk.setHeight(x, z, height);
 

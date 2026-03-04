@@ -5,7 +5,9 @@ import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
+import engine.scene.camera.Camera;
 import math.Color;
+import math.Mathf;
 import math.Vector3f;
 
 public class WorldAnchorMovement extends AbstractComponent implements RenderableComponent {
@@ -38,6 +40,11 @@ public class WorldAnchorMovement extends AbstractComponent implements Renderable
     }
 
     anchor.move(direction.x * speed * tpf, direction.z * speed * tpf);
+
+    if (direction.length() > 0) {
+      Camera camera = getOwner().getScene().getActiveCamera();
+      camera.setTarget(new Vector3f(anchor.getX(), 0, anchor.getZ()));
+    }
   }
 
   @Override

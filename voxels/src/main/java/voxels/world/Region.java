@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Region {
 
-  public static final int REGION_SIZE = 8; // 8x8 chunks
+  public static final int REGION_SIZE = 2; // 2x2 chunks
 
   private final int regionX;
   private final int regionZ;

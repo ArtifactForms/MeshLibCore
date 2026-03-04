@@ -3,7 +3,7 @@ package voxels.world;
 public final class Chunk {
 
   public static final int SIZE_X = 16;
-  public static final int SIZE_Y = 128;
+  public static final int SIZE_Y = 256;
   public static final int SIZE_Z = 16;
 
   private final int chunkX;
