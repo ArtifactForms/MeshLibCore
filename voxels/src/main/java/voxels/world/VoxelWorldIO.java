@@ -139,3 +139,4 @@ public final class VoxelWorldIO {
     return root.resolve("chunk_" + chunkX + "_" + chunkZ + ".bin");
   }
 }
+
