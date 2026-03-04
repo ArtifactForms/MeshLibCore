@@ -25,9 +25,14 @@ public class NoiseTerrainGenerator implements TerrainGenerator {
 
         chunk.setHeight(x, z, height);
 
-        for (int y = 0; y <= height; y++) {
-          chunk.setBlock(x, y, z, Blocks.STONE);
+        int dirtStart = Math.max(0, height - 3);
+
+        for (int y = 0; y < height; y++) {
+          short id = y >= dirtStart ? Blocks.DIRT : Blocks.STONE;
+          chunk.setBlock(x, y, z, id);
         }
+
+        chunk.setBlock(x, height, z, Blocks.GRASS);
       }
     }
   }
