@@ -8,7 +8,7 @@ import math.Color;
 
 public class CursorComponent extends AbstractComponent implements RenderableComponent {
 
-  private int halfSize = 5;
+  private int halfSize = 10;
   private Input input;
 
   public CursorComponent(Input input) {
@@ -19,7 +19,12 @@ public class CursorComponent extends AbstractComponent implements RenderableComp
   public void render(Graphics g) {
     float x = input.getMouseX();
     float y = input.getMouseY();
-    g.setColor(Color.GRAY);
+
+    g.setColor(Color.BLACK);
+    g.drawLine(x - halfSize + 1, y + 1, x + halfSize + 1, y + 1);
+    g.drawLine(x + 1, y - halfSize + 1, x + 1, y + halfSize + 1);
+
+    g.setColor(Color.WHITE);
     g.drawLine(x - halfSize, y, x + halfSize, y);
     g.drawLine(x, y - halfSize, x, y + halfSize);
   }
