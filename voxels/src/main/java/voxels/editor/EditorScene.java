@@ -33,7 +33,7 @@ public class EditorScene extends Scene {
 
     setupCamera();
     setupUI();
-    setupLight();
+//    setupLight();
     setupWorld();
     setupStreaming();
   

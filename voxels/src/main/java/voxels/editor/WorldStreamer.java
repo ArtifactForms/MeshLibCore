@@ -63,6 +63,28 @@ public class WorldStreamer extends AbstractComponent {
   private int currentAnchorChunkX = Integer.MIN_VALUE;
   private int currentAnchorChunkZ = Integer.MIN_VALUE;
 
+  // -------------------
+  // Chunk Pool
+  // -------------------
+  private final Deque<Chunk> chunkPool = new ArrayDeque<>();
+
+  private Chunk obtainChunk(int chunkX, int chunkZ) {
+    Chunk chunk = chunkPool.pollFirst();
+    if (chunk == null) {
+      chunk = new Chunk(chunkX, chunkZ);
+    } else {
+      chunk.reset(chunkX, chunkZ);
+    }
+    return chunk;
+  }
+
+  private void releaseChunk(Chunk chunk) {
+    chunkPool.addLast(chunk);
+  }
+
+  // -------------------
+  // Constructors
+  // -------------------
   public WorldStreamer(
       WorldAnchor anchor,
       VoxelWorld world,
@@ -146,8 +168,6 @@ public class WorldStreamer extends AbstractComponent {
     queueMissingChunksNearAnchor(anchorChunkX, anchorChunkZ);
     queueChunksForUnload(anchorChunkX, anchorChunkZ);
   }
-
-
 
   public void onChunkEdited(int chunkX, int chunkZ) {
     markChunkRegionAndNeighborsDirty(chunkX, chunkZ);
@@ -243,7 +263,8 @@ public class WorldStreamer extends AbstractComponent {
         continue;
       }
 
-      Chunk chunk = new Chunk(chunkX, chunkZ);
+      // Chunk-Pooling: obtain aus Pool
+      Chunk chunk = obtainChunk(chunkX, chunkZ);
       generator.generate(chunk);
       world.addChunk(chunk);
 
@@ -270,6 +291,9 @@ public class WorldStreamer extends AbstractComponent {
       if (removed == null) {
         continue;
       }
+
+      // Chunk-Pooling: zurück in Pool
+      releaseChunk(removed);
 
       markChunkRegionAndNeighborsDirty(chunkX, chunkZ);
       unloaded++;
