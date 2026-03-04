@@ -7,12 +7,18 @@ import voxels.world.BlockAccess;
 import voxels.world.Blocks;
 import voxels.world.Chunk;
 import voxels.world.Region;
+import voxels.world.VoxelWorld;
 
 public class RegionMesher {
 
   private Mesh3D mesh;
   private int nextIndex;
   private BlockAccess blocks;
+
+
+  public Mesh3D create(Region region, VoxelWorld world) {
+    return create(region, (BlockAccess) world);
+  }
 
   public Mesh3D create(Region region, BlockAccess blocks) {
 

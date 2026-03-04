@@ -6,6 +6,7 @@ import engine.rendering.Material;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import mesh.Mesh3D;
+import voxels.mesh.RegionMesher;
 import voxels.render.RegionRenderSystem;
 import voxels.world.BlockAccess;
 import voxels.world.Chunk;
@@ -261,7 +262,6 @@ public class WorldStreamer extends AbstractComponent {
 
       if (liveRegion == null || liveRegion.isEmpty()) {
         removeRegionNode(regionKey);
-        renderSystem.invalidateRegion(regionX, regionZ);
         submitted++;
         continue;
       }
@@ -276,7 +276,8 @@ public class WorldStreamer extends AbstractComponent {
       inFlightRegionBuilds.add(regionKey);
       meshExecutor.submit(
           () -> {
-            Mesh3D mesh = renderSystem.buildMesh(regionSnapshot, blockSnapshot);
+            RegionMesher mesher = new RegionMesher();
+            Mesh3D mesh = mesher.create(regionSnapshot, blockSnapshot);
             completedMeshBuilds.add(new MeshBuildResult(regionKey, mesh));
           });
       submitted++;
@@ -319,7 +320,6 @@ public class WorldStreamer extends AbstractComponent {
       Region liveRegion = world.getRegion(regionX, regionZ);
       if (liveRegion == null || liveRegion.isEmpty()) {
         removeRegionNode(regionKey);
-        renderSystem.invalidateRegion(regionX, regionZ);
         applied++;
         continue;
       }
