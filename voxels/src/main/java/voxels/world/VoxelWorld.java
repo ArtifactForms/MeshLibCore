@@ -2,7 +2,7 @@ package voxels.world;
 
 import java.util.*;
 
-public class VoxelWorld {
+public class VoxelWorld implements BlockAccess {
 
   private final Map<Long, Chunk> chunks = new HashMap<>();
   private final Map<Long, Region> regions = new HashMap<>();

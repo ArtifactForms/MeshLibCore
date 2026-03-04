@@ -2,6 +2,7 @@ package voxels.render;
 
 import mesh.Mesh3D;
 import voxels.mesh.RegionMesher;
+import voxels.world.BlockAccess;
 import voxels.world.Region;
 import voxels.world.VoxelWorld;
 
