@@ -25,7 +25,7 @@ public class ChunkGenerator3 implements ChunkGenerator {
   // Terrain params
   private float terrainScale = 0.01f;
   private int heightMultiplier = 180;
-  private int octaves = 4;
+  private int octaves = 3;
   private float persistence = 0.5f;
   private float lacunarity = 2.0f;
 

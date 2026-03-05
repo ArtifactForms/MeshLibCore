@@ -1,16 +1,17 @@
 package demos.voxels;
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import demos.voxels.structure.ChunkCoordinate;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
+import engine.scene.camera.Camera;
+import engine.scene.camera.Frustum;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
@@ -18,6 +19,8 @@ import mesh.creator.primitives.BoxCreator;
 import mesh.modifier.transform.SnapToGroundModifier;
 
 public class ChunkManager extends AbstractComponent implements RenderableComponent {
+
+  private World world;
 
   private int renderDistance;
   private int bufferDistance;
@@ -28,20 +31,22 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private boolean debugVisualsEnabled = false;
   private Mesh3D debugBox;
 
-  private Player player;
-  private Vector3f playerPosition;
+  private final Player player;
+  private final Vector3f playerPosition;
 
-  private ArrayDeque<Chunk> chunkPool;
-  private Map<Long, Chunk> activeChunks;
+  private final ConcurrentLinkedDeque<Chunk> chunkPool;
+  private volatile Map<Long, Chunk> activeChunks;
 
-  private int recycledChunks;
+  private final AtomicInteger recycledChunks = new AtomicInteger();
   private int chunksRenderedLastFrame;
 
-  private World world;
-
-  // Controlled chunk processing
+  // Queue system
   private final ConcurrentLinkedQueue<Chunk> dataQueue = new ConcurrentLinkedQueue<>();
   private final ConcurrentLinkedQueue<Chunk> meshQueue = new ConcurrentLinkedQueue<>();
+
+  // Queue tracking
+  private final ConcurrentHashMap<Chunk, Boolean> dataQueueSet = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<Chunk, Boolean> meshQueueSet = new ConcurrentHashMap<>();
 
   private static final int MAX_DATA_PER_FRAME = 30;
   private static final int MAX_MESH_PER_FRAME = 10;
@@ -49,39 +54,49 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private int playerChunkX;
   private int playerChunkZ;
 
-  public ChunkManager(Player player) {
+  private Camera camera;
+  private Frustum frustum = new Frustum();
+
+  public ChunkManager(Player player, Camera camera) {
+    this.player = player;
+    this.playerPosition = new Vector3f(0, 0, 0);
+
+    this.camera = camera;
 
     this.debugBox = new BoxCreator(16, 16, 16).create();
     new SnapToGroundModifier().modify(debugBox);
 
-    this.player = player;
-    this.playerPosition = new Vector3f(0, 0, 0);
-
     this.activeChunks = new ConcurrentHashMap<>();
-    this.chunkPool = new ArrayDeque<>();
+    this.chunkPool = new ConcurrentLinkedDeque<>();
 
     setRenderDistance(GameSettings.renderDistance);
 
-    loadChunksAroundPlayer();
+    loadInitialChunks();
+  }
+
+  // ============================
+  // INITIAL LOAD
+  // ============================
+  private void loadInitialChunks() {
+    playerChunkX = player.getPlayerChunkX();
+    playerChunkZ = player.getPlayerChunkZ();
+    loadChunksInRadius(playerChunkX, playerChunkZ);
+    lastPlayerChunkX = playerChunkX;
+    lastPlayerChunkZ = playerChunkZ;
   }
 
   @Override
   public void render(Graphics g) {
-
     debugRenderActiveChunks(g);
     renderChunks(g);
   }
 
   private void renderChunks(Graphics g) {
-
     chunksRenderedLastFrame = 0;
-
     g.enableFaceCulling();
 
     for (Chunk chunk : activeChunks.values()) {
-
       if (isWithinRenderDistance(chunk)) {
-
         chunk.render(g);
         chunksRenderedLastFrame++;
       }
@@ -92,232 +107,153 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   @Override
   public void onUpdate(float tpf) {
-
     playerChunkX = player.getPlayerChunkX();
     playerChunkZ = player.getPlayerChunkZ();
-
     playerPosition.set(player.getPosition());
 
-    loadChunksAroundPlayer();
-
+    updateChunksAroundPlayer();
     enqueueChunks();
-
     processQueues();
+
+    // Frustum update
+    //    frustum.update(camera.getViewProjectionMatrix());
   }
 
-  // =====================================================
+  // ============================
   // QUEUE SYSTEM
-  // =====================================================
-
+  // ============================
   private void enqueueChunks() {
-
     for (Chunk chunk : activeChunks.values()) {
-
-      // DATA GENERATION
-
-      if (!chunk.isDataReady() && !dataQueue.contains(chunk)) {
+      if (!chunk.isDataReady() && dataQueueSet.putIfAbsent(chunk, true) == null) {
         dataQueue.offer(chunk);
       }
-
-      // MESH GENERATION
-
-      if (chunk.isDataReady() && isWithinRenderDistance(chunk) && !meshQueue.contains(chunk)) {
-
+      if (chunk.isDataReady()
+          && isWithinRenderDistance(chunk)
+          && meshQueueSet.putIfAbsent(chunk, true) == null) {
         meshQueue.offer(chunk);
       }
     }
   }
 
   private void processQueues() {
-
-    // ===============================
-    // DATA GENERATION
-    // ===============================
-
+    // DATA
     for (int i = 0; i < MAX_DATA_PER_FRAME && !dataQueue.isEmpty(); i++) {
-
       Chunk chunk = dataQueue.poll();
-
       if (chunk == null) continue;
+      dataQueueSet.remove(chunk);
 
       long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
-
       if (!activeChunks.containsKey(key)) continue;
 
-      if (!chunk.isDataReady()) {
-        chunk.scheduleDataGeneration(world);
-      }
-
+      if (!chunk.isDataReady()) chunk.scheduleDataGeneration(world);
       chunk.updateData();
     }
 
-    // ===============================
-    // MESH GENERATION
-    // ===============================
-
+    // MESH
     for (int i = 0; i < MAX_MESH_PER_FRAME && !meshQueue.isEmpty(); i++) {
-
       Chunk chunk = meshQueue.poll();
-
       if (chunk == null) continue;
+      meshQueueSet.remove(chunk);
 
       long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
-
       if (!activeChunks.containsKey(key)) continue;
 
-      if (chunk.isDataReady()) {
-        chunk.scheduleMeshGeneration(this);
-      }
-
+      if (chunk.isDataReady()) chunk.scheduleMeshGeneration(this);
       chunk.updateMesh();
     }
   }
 
-  // =====================================================
+  // ============================
   // DEBUG
-  // =====================================================
-
+  // ============================
   private void debugRenderActiveChunks(Graphics g) {
-
     if (!debugVisualsEnabled) return;
-
-    for (Chunk chunk : activeChunks.values()) {
-      debugRenderChunk(g, chunk);
-    }
+    for (Chunk chunk : activeChunks.values()) debugRenderChunk(g, chunk);
   }
 
   private void debugRenderChunk(Graphics g, Chunk chunk) {
-
     Vector3f position = chunk.getPosition();
-
     Color color = isWithinRenderDistance(chunk) ? Color.YELLOW : Color.RED;
 
     g.pushMatrix();
-
     g.translate(position.x, position.y, position.z);
-
     g.setColor(color);
-
     g.drawFaces(debugBox);
-
     g.popMatrix();
   }
 
-  // =====================================================
-  // CHUNK LOADING (SPIRAL)
-  // =====================================================
+  // ============================
+  // CHUNK LOADING
+  // ============================
+  private void updateChunksAroundPlayer() {
+    int dx = playerChunkX - lastPlayerChunkX;
+    int dz = playerChunkZ - lastPlayerChunkZ;
 
-  private void loadChunksAroundPlayer() {
+    if (dx == 0 && dz == 0) return;
 
-    if (playerChunkX == lastPlayerChunkX && playerChunkZ == lastPlayerChunkZ) {
-      return;
-    }
+    loadChunksInRadius(playerChunkX, playerChunkZ);
 
-    Map<Long, Chunk> newChunks = new HashMap<>();
-
-    int r2 = bufferDistance * bufferDistance;
-
-    int x = 0;
-    int z = 0;
-
-    int dx = 0;
-    int dz = -1;
-
-    int max = (bufferDistance * 2 + 1) * (bufferDistance * 2 + 1);
-
-    for (int i = 0; i < max; i++) {
-
-      int dist2 = x * x + z * z;
-
-      if (dist2 <= r2) {
-
-        int chunkX = playerChunkX + x;
-        int chunkZ = playerChunkZ + z;
-
-        long key = toChunkKey(chunkX, chunkZ);
-
-        if (!activeChunks.containsKey(key)) {
-
-          Vector3f chunkPos = new Vector3f(chunkX * Chunk.WIDTH, 0, chunkZ * Chunk.DEPTH);
-
-          Chunk chunk;
-
-          if (chunkPool.isEmpty()) {
-
-            chunk = new Chunk();
-            chunk.setPosition(chunkPos);
-
-          } else {
-
-            chunk = chunkPool.pop();
-
-            chunk.setPosition(chunkPos);
-
-            recycledChunks++;
-          }
-
-          newChunks.put(key, chunk);
-
-        } else {
-
-          newChunks.put(key, activeChunks.get(key));
-        }
-      }
-
-      if (x == z || (x < 0 && x == -z) || (x > 0 && x == 1 - z)) {
-
-        int temp = dx;
-
-        dx = -dz;
-
-        dz = temp;
-      }
-
-      x += dx;
-      z += dz;
-    }
-
-    recycleUnusedChunks(newChunks);
-
-    activeChunks.clear();
-
-    activeChunks.putAll(newChunks);
+    recycleChunksOutsideRadius(playerChunkX, playerChunkZ);
 
     lastPlayerChunkX = playerChunkX;
     lastPlayerChunkZ = playerChunkZ;
   }
 
-  private void recycleUnusedChunks(Map<Long, Chunk> newChunks) {
+  private void loadChunksInRadius(int centerX, int centerZ) {
+    int r = bufferDistance;
+    int r2 = r * r;
 
-    for (Chunk chunk : activeChunks.values()) {
+    for (int x = -r; x <= r; x++) {
+      for (int z = -r; z <= r; z++) {
+        if (x * x + z * z > r2) continue;
 
-      long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
+        int chunkX = centerX + x;
+        int chunkZ = centerZ + z;
+        long key = toChunkKey(chunkX, chunkZ);
 
-      if (!newChunks.containsKey(key)) {
+        if (activeChunks.containsKey(key)) continue;
 
-        dataQueue.remove(chunk);
-        meshQueue.remove(chunk);
-
-        chunk.setupForPooling();
-
-        chunkPool.push(chunk);
+        Vector3f chunkPos = new Vector3f(chunkX * Chunk.WIDTH, 0, chunkZ * Chunk.DEPTH);
+        Chunk chunk = chunkPool.isEmpty() ? new Chunk() : chunkPool.pop();
+        chunk.setPosition(chunkPos);
+        activeChunks.put(key, chunk);
+        recycledChunks.getAndIncrement();
       }
     }
   }
 
-  // =====================================================
-  // HELPERS
-  // =====================================================
+  private void recycleChunksOutsideRadius(int centerX, int centerZ) {
+    int r2 = bufferDistance * bufferDistance;
 
+    for (Chunk chunk : activeChunks.values().toArray(new Chunk[0])) {
+      int dx = chunk.getChunkX() - centerX;
+      int dz = chunk.getChunkZ() - centerZ;
+      if (dx * dx + dz * dz > r2) recycleChunk(chunk);
+    }
+  }
+
+  private void recycleChunk(Chunk chunk) {
+    long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
+    activeChunks.remove(key);
+    dataQueue.remove(chunk);
+    meshQueue.remove(chunk);
+    dataQueueSet.remove(chunk);
+    meshQueueSet.remove(chunk);
+    chunk.setupForPooling();
+    chunkPool.push(chunk);
+    recycledChunks.getAndIncrement();
+  }
+
+  // ============================
+  // HELPERS
+  // ============================
   public void setWorld(World world) {
     this.world = world;
   }
 
   private boolean isWithinRenderDistance(Chunk chunk) {
-
     int dx = Math.abs(chunk.getChunkX() - playerChunkX);
     int dz = Math.abs(chunk.getChunkZ() - playerChunkZ);
-
     return dx * dx + dz * dz <= renderDistance * renderDistance;
   }
 
@@ -334,9 +270,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   }
 
   public void setRenderDistance(int renderDistance) {
-
     this.renderDistance = renderDistance;
-
     this.bufferDistance = renderDistance + 1;
   }
 
@@ -352,7 +286,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     return renderDistance;
   }
 
-  public int getRecycledChunksCount() {
+  public AtomicInteger getRecycledChunksCount() {
     return recycledChunks;
   }
 

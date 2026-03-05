@@ -51,16 +51,19 @@ public class VoxelGameDemo extends BasicApplication {
     scene = new Scene();
     uiRoot = scene.getUIRoot();
 
-    setupPlayer();
+
 
     scene.setBackground(Color.DARK_GRAY);
 
     setupSkyBox();
     setupTestCube();
+
+
+
+    setupCamera();
+    
     setupChunkManager();
     world = new World(chunkManager, seed);
-    setupUI();
-    setupCamera();
 
     SceneNode hotbarNode = new SceneNode("Hotbar", new Hotbar());
     uiRoot.addChild(hotbarNode);
@@ -82,9 +85,15 @@ public class VoxelGameDemo extends BasicApplication {
     //            .start();
 
     //    SceneNode rayNode = new SceneNode("Ray", new RayVisualizer(camera));
-    SceneNode rayNode = new SceneNode("Ray", new RayBlockDetector(camera, world, display));
+//    SceneNode rayNode = new SceneNode("Ray", new RayBlockDetector(camera, world, display));
     //    scene.addNode(rayNode);
 
+    setupUI();
+    setupPlayer();
+    
+   RaycastComponent component = new RaycastComponent(world, input, display);
+   SceneNode rayNode1 = new SceneNode("", component);
+   scene.addNode(rayNode1);
   }
 
   private void setupPlayer() {
@@ -131,7 +140,7 @@ public class VoxelGameDemo extends BasicApplication {
   }
 
   private void setupChunkManager() {
-    chunkManager = new ChunkManager(player);
+    chunkManager = new ChunkManager(player, camera);
     SceneNode managerNode = new SceneNode();
     managerNode.addComponent(chunkManager);
     scene.addNode(managerNode);

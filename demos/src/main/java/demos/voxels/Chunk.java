@@ -176,14 +176,32 @@ public class Chunk {
   public void setBlockAt(BlockType block, int x, int y, int z) {
 
     int index = getIndex(x, y, z);
-
     if (index < 0 || index >= blockData.length) return;
 
+    short old = blockData[index];
     blockData[index] = block.getId();
 
-    int height = Math.max(y, getHeightValueAt(x, z));
+    int currentHeight = getHeightValueAt(x, z);
 
-    setHeightValueAt(height, x, z);
+    // block added above
+    if (block != BlockType.AIR && y > currentHeight) {
+      setHeightValueAt(y, x, z);
+      return;
+    }
+
+    // block removed at top -> recalc
+    if (block == BlockType.AIR && y == currentHeight) {
+
+      for (int ny = y - 1; ny >= 0; ny--) {
+
+        if (getBlockData(x, ny, z) != BlockType.AIR.getId()) {
+          setHeightValueAt(ny, x, z);
+          return;
+        }
+      }
+
+      setHeightValueAt(0, x, z);
+    }
   }
 
   public BlockType getBlock(int x, int y, int z) {
@@ -282,5 +300,26 @@ public class Chunk {
 
   public ChunkStatus getStatus() {
     return status;
+  }
+
+  // =========================================================
+  // WORLD BOUNDS FOR FRUSTUM CULLING
+  // =========================================================
+  public Vector3f getMin() {
+    if (geometry != null && geometry.getLocalBounds() != null) {
+      Vector3f localMin = geometry.getLocalBounds().getMin();
+      return new Vector3f(
+          position.x + localMin.x, position.y + localMin.y, position.z + localMin.z);
+    }
+    return new Vector3f(position.x, position.y, position.z);
+  }
+
+  public Vector3f getMax() {
+    if (geometry != null && geometry.getLocalBounds() != null) {
+      Vector3f localMax = geometry.getLocalBounds().getMax();
+      return new Vector3f(
+          position.x + localMax.x, position.y + localMax.y, position.z + localMax.z);
+    }
+    return new Vector3f(position.x + WIDTH, position.y + HEIGHT, position.z + DEPTH);
   }
 }

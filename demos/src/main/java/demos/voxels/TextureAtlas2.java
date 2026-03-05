@@ -85,7 +85,7 @@ public class TextureAtlas2 {
     fill(g2d, BlockType.OAK_WOOD, new Color(111, 87, 51));
     fill(g2d, BlockType.BIRCH_WOOD, new Color(255, 255, 255));
     fill(g2d, BlockType.DIRT, DIRT_COLOR);
-    fill(g2d, BlockType.WATER, new Color(0, 0, 128, 128));
+    fill(g2d, BlockType.WATER, new Color(45, 137, 212, 160));
     fill(g2d, BlockType.SNOW, new Color(253, 253, 253));
     fill(g2d, BlockType.SAND, new Color(216, 207, 156));
     fill(g2d, BlockType.SAND, new Color(194, 189, 134));
@@ -150,8 +150,8 @@ public class TextureAtlas2 {
       g2d.drawImage(overlay, baseX, baseY, tileSize, tileSize, null);
 
       // Fake light
-      g2d.setColor(new Color(0, 0, 0, 255 / 6 * col));
-      g2d.fillRect(baseX, baseY, tileSize, tileSize);
+//      g2d.setColor(new Color(0, 0, 0, 255 / 6 * col));
+//      g2d.fillRect(baseX, baseY, tileSize, tileSize);
     }
   }
 
@@ -160,14 +160,41 @@ public class TextureAtlas2 {
     return new int[] {index + 3, index + 2, index + 1, index};
   }
 
-  public Vector2f[] getUVCoordinates(int blockId, int ordinal) {
-    int[] uvIndices = getUVIndices(blockId, ordinal);
-    Vector2f uv0 = uvCoordinates.get(uvIndices[0]);
-    Vector2f uv1 = uvCoordinates.get(uvIndices[1]);
-    Vector2f uv2 = uvCoordinates.get(uvIndices[2]);
-    Vector2f uv3 = uvCoordinates.get(uvIndices[3]);
-    return new Vector2f[] {uv0, uv1, uv2, uv3};
-  }
+  //  public Vector2f[] getUVCoordinates(int blockId, int ordinal) {
+  //    int[] uvIndices = getUVIndices(blockId, ordinal);
+  //    Vector2f uv0 = uvCoordinates.get(uvIndices[0]);
+  //    Vector2f uv1 = uvCoordinates.get(uvIndices[1]);
+  //    Vector2f uv2 = uvCoordinates.get(uvIndices[2]);
+  //    Vector2f uv3 = uvCoordinates.get(uvIndices[3]);
+  //    return new Vector2f[] {uv0, uv1, uv2, uv3};
+  //  }
+  public Vector2f[] getUVCoordinates(int blockId, int face) {
+
+	    int col = face;
+	    int row = blockId;
+
+	    float tileU = 1f / columns;
+	    float tileV = 1f / rows;
+
+	    float u0 = col * tileU;
+	    float v0 = row * tileV;
+
+	    float u1 = u0 + tileU;
+	    float v1 = v0 + tileV;
+
+	    // epsilon gegen bleeding
+	    u0 += epsilon;
+	    v0 += epsilon;
+	    u1 -= epsilon;
+	    v1 -= epsilon;
+
+	    return new Vector2f[]{
+	        new Vector2f(u1, v1),
+	        new Vector2f(u0, v1),
+	        new Vector2f(u0, v0),
+	        new Vector2f(u1, v0)
+	    };
+	}
 
   public ArrayList<Vector2f> getUVCoordinates() {
     return uvCoordinates;

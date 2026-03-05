@@ -39,7 +39,7 @@ public class ChunkProfile extends AbstractComponent implements RenderableCompone
     overlay.setDebugItem("Chunk", "Active Chunks", chunkManager.getActiveChunkCount());
     overlay.setDebugItem("Chunk", "Render Distance", chunkManager.getRenderDistance());
     overlay.setDebugItem("Chunk", "Pool Size", chunkManager.getChunkPoolSize());
-    overlay.setDebugItem("Chunk", "Recycled", chunkManager.getRecycledChunksCount());
+    overlay.setDebugItem("Chunk", "Recycled", chunkManager.getRecycledChunksCount().intValue());
     overlay.setDebugItem("Chunk", "Rendered", chunkManager.getChunksRenderedLastFrame());
     overlay.setDebugItem(
         "Chunk", "Player Chunk", player.getPlayerChunkX() + "," + player.getPlayerChunkZ());

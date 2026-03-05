@@ -21,21 +21,19 @@ public class World {
     this.chunkManager = chunkManager;
     this.chunkManager.setWorld(this);
     this.chunkGenerator = new ChunkGenerator3(seed);
+    //    this.chunkGenerator = new ChunkGenerator2();
   }
 
   public BlockType getBlock(int x, int y, int z) {
     if (y < MIN_Y || y > MAX_Y) return BlockType.AIR;
 
     Chunk chunk = getChunkAt(x, y, z);
-    if (chunk == null) {
-      System.err.println("Null chunk requested: " + x + "," + y + "," + z);
-      return null;
-    }
+    if (chunk == null) return BlockType.AIR;
 
-    int localX = (x % CHUNK_WIDTH + CHUNK_WIDTH) % CHUNK_WIDTH;
-    int localZ = (z % CHUNK_DEPTH + CHUNK_DEPTH) % CHUNK_DEPTH;
+    int localX = Math.floorMod(x, CHUNK_WIDTH);
+    int localZ = Math.floorMod(z, CHUNK_DEPTH);
 
-    return chunk.getBlock(localX, y % CHUNK_HEIGHT, localZ);
+    return chunk.getBlock(localX, y, localZ);
   }
 
   public void generate(Chunk chunk) {
@@ -47,10 +45,9 @@ public class World {
   }
 
   public Chunk getChunkAt(int x, int y, int z) {
-    int chunkXIndex = (int) Math.floor(x / Chunk.WIDTH);
-    int chunkZIndex = (int) Math.floor(z / Chunk.DEPTH);
-    Chunk chunk = chunkManager.getChunk(chunkXIndex, chunkZIndex);
-    return chunk;
+    int chunkXIndex = Math.floorDiv(x, Chunk.WIDTH);
+    int chunkZIndex = Math.floorDiv(z, Chunk.DEPTH);
+    return chunkManager.getChunk(chunkXIndex, chunkZIndex);
   }
 
   public boolean isBlockAt(int x, int y, int z) {
