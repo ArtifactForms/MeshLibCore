@@ -11,231 +11,187 @@ import math.Vector2f;
 
 public class ChunkMesher {
 
-  private static final int TOP = 0;
-  private static final int BOTTOM = 5;
-  private static final int FRONT = 1;
-  private static final int BACK = 4;
-  private static final int RIGHT = 2;
-  private static final int LEFT = 3;
+    private static final int TOP = 0, BOTTOM = 5, FRONT = 1, BACK = 4, RIGHT = 2, LEFT = 3;
 
-  private static float blockSize = 1.0f;
-  private static float radius = blockSize * 0.5f;
+    private static float blockSize = 1.0f;
+    private static float radius = blockSize * 0.5f;
 
-  private Chunk chunk;
-  private ChunkManager chunkManager;
-  private BufferedShape shape;
-  private StaticGeometry geometry;
+    private Chunk chunk;
+    private ChunkManager chunkManager;
+    private BufferedShape shape;
+    private StaticGeometry geometry;
 
-  private static ArrayList<Vector2f> uvs;
-  public static Material sharedMaterial;
-  private static TextureAtlas2 textureAtlas;
+    private static ArrayList<Vector2f> uvs;
+    public static Material sharedMaterial;
+    private static TextureAtlas2 textureAtlas;
 
-  static {
-    sharedMaterial = new Material();
-    textureAtlas = new TextureAtlas2();
-    Texture texture = textureAtlas.getTexture();
-    texture.setFilterMode(FilterMode.POINT);
-    sharedMaterial.setDiffuseTexture(texture);
-    uvs = textureAtlas.getUVCoordinates();
-  }
+    static {
+        sharedMaterial = new Material();
+        textureAtlas = new TextureAtlas2();
+        Texture texture = textureAtlas.getTexture();
+        texture.setFilterMode(FilterMode.POINT);
+        sharedMaterial.setDiffuseTexture(texture);
+        uvs = textureAtlas.getUVCoordinates();
+    }
 
-  public ChunkMesher(Chunk chunk, ChunkManager chunkManager) {
-    this.chunk = chunk;
-    this.chunkManager = chunkManager;
-  }
+    public ChunkMesher(Chunk chunk, ChunkManager chunkManager) {
+        this.chunk = chunk;
+        this.chunkManager = chunkManager;
+    }
 
-  public StaticGeometry createMeshFromBlockData(BufferedShape shape) {
-    this.shape = shape;
+    // ==============================
+    // 🟢 MAIN
+    // ==============================
+    public StaticGeometry createMesh() {
+        shape = new BufferedShape(sharedMaterial);
+        shape.begin(BufferedShape.QUADS);
 
-    shape.begin(BufferedShape.QUADS);
-
-    for (int x = 0; x < Chunk.WIDTH; x++) {
-      for (int z = 0; z < Chunk.DEPTH; z++) {
-
-        int heightValue = chunk.getHeightValueAt(x, z);
-
-        for (int y = 0; y <= heightValue; y++) {
-          createBlock(x, y, z);
+        for (int x = 0; x < Chunk.WIDTH; x++) {
+            for (int z = 0; z < Chunk.DEPTH; z++) {
+                int heightValue = chunk.getHeightValueAt(x, z);
+                for (int y = 0; y <= heightValue; y++) {
+                    createBlock(x, y, z);
+                }
+            }
         }
-      }
+
+        shape.end();
+        geometry = new StaticGeometry(shape.getVBO(), sharedMaterial);
+        return geometry;
     }
 
-    shape.end();
-    geometry = new StaticGeometry(shape.getVBO(), sharedMaterial);
-    return geometry;
-  }
+    // ==============================
+    // BLOCK LOGIC
+    // ==============================
+    private boolean isSolid(int x, int y, int z) {
+        if (y < 0) return true;
 
-  // ================================
-  // 🔥 FIXED SOLID CHECK
-  // ================================
-  private boolean isSolid(int x, int y, int z) {
+        if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) {
+            return chunk.isBlockSolid(x, y, z);
+        }
 
-    if (y < 0) return true;
+        int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0);
+        int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0);
 
-    if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) {
-      return chunk.isBlockSolid(x, y, z);
+        Chunk neighborChunk = chunkManager.getChunk(neighborChunkX, neighborChunkZ);
+        if (neighborChunk == null || !neighborChunk.isDataReady()) return true;
+
+        int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
+        int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
+
+        return neighborChunk.isBlockSolid(neighborX, y, neighborZ);
     }
 
-    int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0);
-    int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0);
+    private int getBlockData(int x, int y, int z) {
+        if (chunk.isWithinBounds(x, y, z)) return chunk.getBlockData(x, y, z);
 
-    Chunk neighborChunk = chunkManager.getChunk(neighborChunkX, neighborChunkZ);
+        int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0);
+        int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0);
 
-    // 🔥 WICHTIG: Wenn Nachbar fehlt ODER noch keine Daten hat → SOLID behandeln
-    if (neighborChunk == null || !neighborChunk.isDataReady()) {
-      return true;
+        Chunk neighborChunk = chunkManager.getChunk(neighborChunkX, neighborChunkZ);
+        if (neighborChunk != null && neighborChunk.isDataReady()) {
+            int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
+            int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
+            if (neighborChunk.isWithinBounds(neighborX, y, neighborZ))
+                return neighborChunk.getBlockData(neighborX, y, neighborZ);
+        }
+        return BlockType.AIR.getId();
     }
 
-    int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
-    int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
+    public boolean shouldRender(int id, int x, int y, int z) {
+        int idAbove = getBlockData(x, y + 1, z);
+        int idCurrent = getBlockData(x, y, z);
 
-    return neighborChunk.isBlockSolid(neighborX, y, neighborZ);
-  }
+        if (id != BlockType.WATER.getId() && idCurrent == BlockType.WATER.getId()) return true;
+        if (idCurrent != BlockType.WATER.getId() && id == BlockType.WATER.getId()) return true;
+        if (id == BlockType.WATER.getId() && idAbove == BlockType.WATER.getId()) return false;
 
-  // ================================
-  // 🔥 FIXED BLOCK DATA
-  // ================================
-  private int getBlockData(int x, int y, int z) {
-
-    if (chunk.isWithinBounds(x, y, z)) {
-      return chunk.getBlockData(x, y, z);
+        return !isSolid(x, y, z);
     }
 
-    int neighborChunkX = chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0);
-    int neighborChunkZ = chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0);
+    private void createBlock(int x, int y, int z) {
+        int blockId = chunk.getBlockData(x, y, z);
+        if (blockId == BlockType.AIR.getId()) return;
 
-    Chunk neighborChunk = chunkManager.getChunk(neighborChunkX, neighborChunkZ);
-
-    if (neighborChunk != null && neighborChunk.isDataReady()) {
-
-      int neighborX = (x + Chunk.WIDTH) % Chunk.WIDTH;
-      int neighborZ = (z + Chunk.DEPTH) % Chunk.DEPTH;
-
-      if (neighborChunk.isWithinBounds(neighborX, y, neighborZ)) {
-        return neighborChunk.getBlockData(neighborX, y, neighborZ);
-      }
+        if (blockId == BlockType.GRASS.getId()) {
+            createBillBoard(x, y, z);
+        } else {
+            createBaseBlock(x, y, z);
+        }
     }
 
-    return BlockType.AIR.getId();
-  }
-
-  // ================================
-  // REST IST UNVERÄNDERT
-  // ================================
-
-  public boolean shouldRender(int id, int x, int y, int z) {
-    int id2 = getBlockData(x, y + 1, z);
-    int id3 = getBlockData(x, y, z);
-
-    if (id != BlockType.WATER.getId() && id3 == BlockType.WATER.getId()) {
-      return true;
+    private void createBaseBlock(int x, int y, int z) {
+        int blockId = chunk.getBlockData(x, y, z);
+        if (shouldRender(blockId, x, y + 1, z)) addFace(TOP, x, y, z);
+        if (shouldRender(blockId, x, y - 1, z)) addFace(BOTTOM, x, y, z);
+        if (shouldRender(blockId, x, y, z + 1)) addFace(FRONT, x, y, z);
+        if (shouldRender(blockId, x, y, z - 1)) addFace(BACK, x, y, z);
+        if (shouldRender(blockId, x + 1, y, z)) addFace(RIGHT, x, y, z);
+        if (shouldRender(blockId, x - 1, y, z)) addFace(LEFT, x, y, z);
     }
 
-    if (id3 != BlockType.WATER.getId() && id == BlockType.WATER.getId()) {
-      return true;
+    private void addFace(int face, int x, int y, int z) {
+        Vector2f[] uv = textureAtlas.getUVCoordinates(chunk.getBlockData(x, y, z), face);
+        float px = radius + x, nx = -radius + x;
+        float py = -radius - y, ny = radius - y;
+        float pz = radius + z, nz = -radius + z;
+
+        switch (face) {
+            case TOP -> {
+                shape.vertex(px, py, nz, uv[0].x, uv[0].y);
+                shape.vertex(nx, py, nz, uv[1].x, uv[1].y);
+                shape.vertex(nx, py, pz, uv[2].x, uv[2].y);
+                shape.vertex(px, py, pz, uv[3].x, uv[3].y);
+            }
+            case BOTTOM -> {
+                shape.vertex(px, ny, nz, uv[0].x, uv[0].y);
+                shape.vertex(px, ny, pz, uv[1].x, uv[1].y);
+                shape.vertex(nx, ny, pz, uv[2].x, uv[2].y);
+                shape.vertex(nx, ny, nz, uv[3].x, uv[3].y);
+            }
+            case FRONT -> {
+                shape.vertex(px, py, pz, uv[0].x, uv[0].y);
+                shape.vertex(nx, py, pz, uv[1].x, uv[1].y);
+                shape.vertex(nx, ny, pz, uv[2].x, uv[2].y);
+                shape.vertex(px, ny, pz, uv[3].x, uv[3].y);
+            }
+            case BACK -> {
+                shape.vertex(nx, py, nz, uv[0].x, uv[0].y);
+                shape.vertex(px, py, nz, uv[1].x, uv[1].y);
+                shape.vertex(px, ny, nz, uv[2].x, uv[2].y);
+                shape.vertex(nx, ny, nz, uv[3].x, uv[3].y);
+            }
+            case RIGHT -> {
+                shape.vertex(px, py, nz, uv[0].x, uv[0].y);
+                shape.vertex(px, py, pz, uv[1].x, uv[1].y);
+                shape.vertex(px, ny, pz, uv[2].x, uv[2].y);
+                shape.vertex(px, ny, nz, uv[3].x, uv[3].y);
+            }
+            case LEFT -> {
+                shape.vertex(nx, py, pz, uv[0].x, uv[0].y);
+                shape.vertex(nx, py, nz, uv[1].x, uv[1].y);
+                shape.vertex(nx, ny, nz, uv[2].x, uv[2].y);
+                shape.vertex(nx, ny, pz, uv[3].x, uv[3].y);
+            }
+        }
     }
 
-    if (id == BlockType.WATER.getId() && id2 == BlockType.WATER.getId()) {
-      return false;
+    private void createBillBoard(int x, int y, int z) {
+        int blockId = chunk.getBlockData(x, y, z);
+        int[] uvIndices = textureAtlas.getUVIndices(blockId, 0);
+        Vector2f uv0 = uvs.get(uvIndices[0]);
+        Vector2f uv1 = uvs.get(uvIndices[1]);
+        Vector2f uv2 = uvs.get(uvIndices[2]);
+        Vector2f uv3 = uvs.get(uvIndices[3]);
+
+        shape.vertex(radius + x, -radius - y, radius + z, uv0.x, uv0.y);
+        shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y);
+        shape.vertex(-radius + x, radius - y, -radius + z, uv2.x, uv2.y);
+        shape.vertex(radius + x, radius - y, radius + z, uv3.x, uv3.y);
+
+        shape.vertex(radius + x, -radius - y, -radius + z, uv0.x, uv0.y);
+        shape.vertex(-radius + x, -radius - y, radius + z, uv1.x, uv1.y);
+        shape.vertex(-radius + x, radius - y, radius + z, uv2.x, uv2.y);
+        shape.vertex(radius + x, radius - y, -radius + z, uv3.x, uv3.y);
     }
-
-    return !isSolid(x, y, z);
-  }
-
-  private void createBaseBlock(int x, int y, int z) {
-    int blockId = chunk.getBlockData(x, y, z);
-
-    // Top Face
-    if (shouldRender(blockId, x, y + 1, z)) {
-      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, TOP);
-
-      shape.vertex(+radius + x, -radius - y, -radius + z, uvs[0].x, uvs[0].y); // 4
-      shape.vertex(-radius + x, -radius - y, -radius + z, uvs[1].x, uvs[1].y); // 7
-      shape.vertex(-radius + x, -radius - y, +radius + z, uvs[2].x, uvs[2].y); // 6
-      shape.vertex(+radius + x, -radius - y, +radius + z, uvs[3].x, uvs[3].y); // 5
-    }
-
-    // Bottom Face
-    if (shouldRender(blockId, x, y - 1, z)) {
-      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, BOTTOM);
-
-      shape.vertex(+radius + x, +radius - y, -radius + z, uvs[0].x, uvs[0].y); // 0
-      shape.vertex(+radius + x, +radius - y, +radius + z, uvs[1].x, uvs[1].y); // 1
-      shape.vertex(-radius + x, +radius - y, +radius + z, uvs[2].x, uvs[2].y); // 2
-      shape.vertex(-radius + x, +radius - y, -radius + z, uvs[3].x, uvs[3].y); // 3
-    }
-
-    // Front Face (+z)
-    if (shouldRender(blockId, x, y, z + 1)) {
-      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, FRONT);
-
-      shape.vertex(+radius + x, -radius - y, +radius + z, uvs[0].x, uvs[0].y); // 5
-      shape.vertex(-radius + x, -radius - y, +radius + z, uvs[1].x, uvs[1].y); // 6
-      shape.vertex(-radius + x, +radius - y, +radius + z, uvs[2].x, uvs[2].y); // 2
-      shape.vertex(+radius + x, +radius - y, +radius + z, uvs[3].x, uvs[3].y); // 1
-    }
-
-    // Back Face (-z)
-    if (shouldRender(blockId, x, y, z - 1)) {
-      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, BACK);
-
-      shape.vertex(-radius + x, -radius - y, -radius + z, uvs[0].x, uvs[0].y); // 7
-      shape.vertex(+radius + x, -radius - y, -radius + z, uvs[1].x, uvs[1].y); // 4
-      shape.vertex(+radius + x, +radius - y, -radius + z, uvs[2].x, uvs[2].y); // 0
-      shape.vertex(-radius + x, +radius - y, -radius + z, uvs[3].x, uvs[3].y); // 3
-    }
-
-    // Right Face (+x)
-    if (shouldRender(blockId, x + 1, y, z)) {
-      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, RIGHT);
-
-      shape.vertex(+radius + x, -radius - y, -radius + z, uvs[0].x, uvs[0].y); // 4
-      shape.vertex(+radius + x, -radius - y, +radius + z, uvs[1].x, uvs[1].y); // 5
-      shape.vertex(+radius + x, +radius - y, +radius + z, uvs[2].x, uvs[2].y); // 1
-      shape.vertex(+radius + x, +radius - y, -radius + z, uvs[3].x, uvs[3].y); // 0
-    }
-
-    // Left Face (-x)
-    if (shouldRender(blockId, x - 1, y, z)) {
-      Vector2f[] uvs = textureAtlas.getUVCoordinates(blockId, LEFT);
-
-      shape.vertex(-radius + x, -radius - y, +radius + z, uvs[0].x, uvs[0].y); // 6
-      shape.vertex(-radius + x, -radius - y, -radius + z, uvs[1].x, uvs[1].y); // 7
-      shape.vertex(-radius + x, +radius - y, -radius + z, uvs[2].x, uvs[2].y); // 3
-      shape.vertex(-radius + x, +radius - y, +radius + z, uvs[3].x, uvs[3].y); // 2
-    }
-  }
-
-  private void createBlock(int x, int y, int z) {
-    if (getBlockData(x, y, z) == 0) return;
-
-    int blockId = chunk.getBlockData(x, y, z);
-
-    if (blockId == BlockType.GRASS.getId()) {
-      createBillBoard(x, y, z);
-    } else {
-      createBaseBlock(x, y, z);
-    }
-  }
-
-  private void createBillBoard(int x, int y, int z) {
-    int blockId = chunk.getBlockData(x, y, z);
-    int[] uvIndices = textureAtlas.getUVIndices(blockId, 0);
-    Vector2f uv0 = uvs.get(uvIndices[0]);
-    Vector2f uv1 = uvs.get(uvIndices[1]);
-    Vector2f uv2 = uvs.get(uvIndices[2]);
-    Vector2f uv3 = uvs.get(uvIndices[3]);
-
-    //
-    shape.vertex(+radius + x, -radius - y, +radius + z, uv0.x, uv0.y); // 5
-    shape.vertex(-radius + x, -radius - y, -radius + z, uv1.x, uv1.y); // 7
-    shape.vertex(-radius + x, +radius - y, -radius + z, uv2.x, uv2.y); // 3
-    shape.vertex(+radius + x, +radius - y, +radius + z, uv3.x, uv3.y); // 1
-
-    //
-    shape.vertex(+radius + x, -radius - y, -radius + z, uv0.x, uv0.y); // 4
-    shape.vertex(-radius + x, -radius - y, +radius + z, uv1.x, uv1.y); // 6
-    shape.vertex(-radius + x, +radius - y, +radius + z, uv2.x, uv2.y); // 2
-    shape.vertex(+radius + x, +radius - y, -radius + z, uv3.x, uv3.y); // 0
-  }
 }

@@ -8,9 +8,11 @@ import engine.runtime.debug.DebugOverlay;
 public class ChunkProfile extends AbstractComponent implements RenderableComponent {
 
   private DebugOverlay overlay;
+  private Player player;
   private ChunkManager chunkManager;
 
-  public ChunkProfile(ChunkManager chunkManager) {
+  public ChunkProfile(Player player, ChunkManager chunkManager) {
+    this.player = player;
     this.chunkManager = chunkManager;
     this.overlay = new DebugOverlay();
   }
@@ -38,9 +40,8 @@ public class ChunkProfile extends AbstractComponent implements RenderableCompone
     overlay.setDebugItem("Chunk", "Render Distance", chunkManager.getRenderDistance());
     overlay.setDebugItem("Chunk", "Pool Size", chunkManager.getChunkPoolSize());
     overlay.setDebugItem("Chunk", "Recycled", chunkManager.getRecycledChunksCount());
+    overlay.setDebugItem("Chunk", "Rendered", chunkManager.getChunksRenderedLastFrame());
     overlay.setDebugItem(
-        "Chunk",
-        "Player Chunk",
-        chunkManager.getPlayerChunkX() + "," + chunkManager.getPlayerChunkZ());
+        "Chunk", "Player Chunk", player.getPlayerChunkX() + "," + player.getPlayerChunkZ());
   }
 }

@@ -71,19 +71,15 @@ public class VoxelGameDemo extends BasicApplication {
 
     setActiveScene(scene);
 
-    //    new Thread(
-    //            new Runnable() {
+    //        new Thread(
+    //                new Runnable() {
     //
-    //              @Override
-    //              public void run() {
-    //                client.connect();
-    //              }
-    //            })
-    //        .start();
-
-    display = new TextDisplay();
-    SceneNode displayNode = new SceneNode("Display", display);
-    uiRoot.addChild(displayNode);
+    //                  @Override
+    //                  public void run() {
+    //                    client.connect();
+    //                  }
+    //                })
+    //            .start();
 
     //    SceneNode rayNode = new SceneNode("Ray", new RayVisualizer(camera));
     SceneNode rayNode = new SceneNode("Ray", new RayBlockDetector(camera, world, display));
@@ -140,13 +136,17 @@ public class VoxelGameDemo extends BasicApplication {
     managerNode.addComponent(chunkManager);
     scene.addNode(managerNode);
 
-    ChunkProfile profile = new ChunkProfile(chunkManager);
+    ChunkProfile profile = new ChunkProfile(player, chunkManager);
     SceneNode profileNode = new SceneNode("Chunk Profile", profile);
     profileNode.getTransform().setPosition(220, 0, 0);
     uiRoot.addChild(profileNode);
   }
 
   private void setupUI() {
+    display = new TextDisplay();
+    SceneNode displayNode = new SceneNode("Display", display);
+    uiRoot.addChild(displayNode);
+
     uiRoot.addChild(new SceneNode("Cross-Hair", new CrossLineReticle()));
   }
 

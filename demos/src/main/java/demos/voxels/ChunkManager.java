@@ -4,8 +4,8 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import demos.voxels.structure.ChunkCoordinate;
 import engine.components.AbstractComponent;
@@ -19,288 +19,350 @@ import mesh.modifier.transform.SnapToGroundModifier;
 
 public class ChunkManager extends AbstractComponent implements RenderableComponent {
 
-	private int renderDistance;
-	private int bufferDistance;
+  private int renderDistance;
+  private int bufferDistance;
 
-	private int lastPlayerChunkX = Integer.MIN_VALUE;
-	private int lastPlayerChunkZ = Integer.MIN_VALUE;
+  private int lastPlayerChunkX = Integer.MIN_VALUE;
+  private int lastPlayerChunkZ = Integer.MIN_VALUE;
 
-	private boolean debugVisualsEnabled = false;
-	private Mesh3D debugBox;
+  private boolean debugVisualsEnabled = false;
+  private Mesh3D debugBox;
 
-	private Player player;
-	private Vector3f playerPosition;
+  private Player player;
+  private Vector3f playerPosition;
 
-	private Stack<Chunk> chunkPool;
-	private Map<Long, Chunk> activeChunks = new ConcurrentHashMap<>();
+  private ArrayDeque<Chunk> chunkPool;
+  private Map<Long, Chunk> activeChunks;
 
-	private int recycledChunks;
+  private int recycledChunks;
+  private int chunksRenderedLastFrame;
 
-	private World world;
+  private World world;
 
-	// 🔥 Controlled chunk processing
-	private final Queue<Chunk> dataQueue = new ArrayDeque<>();
-	private final Queue<Chunk> meshQueue = new ArrayDeque<>();
+  // Controlled chunk processing
+  private final ConcurrentLinkedQueue<Chunk> dataQueue = new ConcurrentLinkedQueue<>();
+  private final ConcurrentLinkedQueue<Chunk> meshQueue = new ConcurrentLinkedQueue<>();
 
-	private static final int MAX_DATA_PER_FRAME = 10;
-	private static final int MAX_MESH_PER_FRAME = 10;
+  private static final int MAX_DATA_PER_FRAME = 30;
+  private static final int MAX_MESH_PER_FRAME = 10;
 
-	public ChunkManager(Player player) {
-		this.debugBox = new BoxCreator(16, 16, 16).create();
-		new SnapToGroundModifier().modify(debugBox);
+  private int playerChunkX;
+  private int playerChunkZ;
 
-		this.player = player;
-		this.playerPosition = new Vector3f(0, 0, 0);
-		this.activeChunks = new HashMap<>();
-		this.chunkPool = new Stack<>();
+  public ChunkManager(Player player) {
 
-		setRenderDistance(GameSettings.renderDistance);
-		loadChunksAroundPlayer();
-	}
+    this.debugBox = new BoxCreator(16, 16, 16).create();
+    new SnapToGroundModifier().modify(debugBox);
 
-	@Override
-	public void render(Graphics g) {
-		debugRenderActiveChunks(g);
-		renderChunks(g);
-	}
+    this.player = player;
+    this.playerPosition = new Vector3f(0, 0, 0);
 
-	private void renderChunks(Graphics g) {
-		g.enableFaceCulling();
-		for (Chunk chunk : activeChunks.values()) {
-			if (isWithinRenderDistance(chunk)) {
-				chunk.render(g);
-			}
-		}
-		g.disableFaceCulling();
-	}
+    this.activeChunks = new ConcurrentHashMap<>();
+    this.chunkPool = new ArrayDeque<>();
 
-	@Override
-	public void onUpdate(float tpf) {
-		playerPosition.set(player.getPosition());
-		loadChunksAroundPlayer();
-		updateChunks();
-	}
+    setRenderDistance(GameSettings.renderDistance);
 
-	// ===============================
-	// 🔥 ASYNC DATA GENERATION
-	// ===============================
+    loadChunksAroundPlayer();
+  }
 
-	private void updateChunks() {
+  @Override
+  public void render(Graphics g) {
 
-		// 1️⃣ Schedule async data generation
-		for (Chunk chunk : activeChunks.values()) {
-			if (!chunk.isDataReady()) {
-				chunk.scheduleDataGeneration(world);
-			}
+    debugRenderActiveChunks(g);
+    renderChunks(g);
+  }
 
-			chunk.updateData(); // check if async finished
-		}
+  private void renderChunks(Graphics g) {
 
-		// 2️⃣ Mesh generation (unchanged)
-		for (Chunk chunk : activeChunks.values()) {
-			if (chunk.isDataReady() && isWithinRenderDistance(chunk)) {
-				chunk.scheduleMeshGeneration(this);
-			}
+    chunksRenderedLastFrame = 0;
 
-			chunk.updateMesh();
-		}
-	}
+    g.enableFaceCulling();
 
-//	private void updateChunks() {
-//
-//	    int playerChunkX = getPlayerChunkX();
-//	    int playerChunkZ = getPlayerChunkZ();
-//
-//	    // Queue missing chunks
-//	    for (Chunk chunk : activeChunks.values()) {
-//
-//	        if (!chunk.isDataReady() && !dataQueue.contains(chunk)) {
-//	            dataQueue.offer(chunk);
-//	        }
-//
-//	        if (chunk.isDataReady()
-//	                && isWithinRenderDistance(chunk)
-//	                && !meshQueue.contains(chunk)) {
-//	            meshQueue.offer(chunk);
-//	        }
-//	    }
-//
-//	    // DATA generation (FIFO)
-//	    for (int i = 0; i < MAX_DATA_PER_FRAME && !dataQueue.isEmpty(); i++) {
-//	        Chunk chunk = dataQueue.poll();
-//
-//	        if (!activeChunks.containsValue(chunk))
-//	            continue;
-//
-//	        chunk.scheduleDataGeneration(world);
-//	        chunk.updateData();
-//	    }
-//
-//	    // MESH generation (FIFO)
-//	    for (int i = 0; i < MAX_MESH_PER_FRAME && !meshQueue.isEmpty(); i++) {
-//	        Chunk chunk = meshQueue.poll();
-//
-//	        if (!activeChunks.containsValue(chunk))
-//	            continue;
-//
-//	        chunk.scheduleMeshGeneration(this);
-//	        chunk.updateMesh();
-//	    }
-//	}
+    for (Chunk chunk : activeChunks.values()) {
 
-	// ===============================
-	// DEBUG
-	// ===============================
+      if (isWithinRenderDistance(chunk)) {
 
-	private void debugRenderActiveChunks(Graphics g) {
-		if (!debugVisualsEnabled)
-			return;
+        chunk.render(g);
+        chunksRenderedLastFrame++;
+      }
+    }
 
-		for (Chunk chunk : activeChunks.values()) {
-			debugRenderChunk(g, chunk);
-		}
-	}
+    g.disableFaceCulling();
+  }
 
-	private void debugRenderChunk(Graphics g, Chunk chunk) {
-		Vector3f position = chunk.getPosition();
-		Color color = isWithinRenderDistance(chunk) ? Color.YELLOW : Color.RED;
+  @Override
+  public void onUpdate(float tpf) {
 
-		g.pushMatrix();
-		g.translate(position.x, position.y, position.z);
-		g.setColor(color);
-		g.drawFaces(debugBox);
-		g.popMatrix();
-	}
+    playerChunkX = player.getPlayerChunkX();
+    playerChunkZ = player.getPlayerChunkZ();
 
-	// ===============================
-	// CHUNK LOADING
-	// ===============================
+    playerPosition.set(player.getPosition());
 
-	private void loadChunksAroundPlayer() {
+    loadChunksAroundPlayer();
 
-		int playerChunkX = getPlayerChunkX();
-		int playerChunkZ = getPlayerChunkZ();
+    enqueueChunks();
 
-		if (playerChunkX == lastPlayerChunkX && playerChunkZ == lastPlayerChunkZ) {
-			return;
-		}
+    processQueues();
+  }
 
-		Map<Long, Chunk> newChunks = new HashMap<>();
+  // =====================================================
+  // QUEUE SYSTEM
+  // =====================================================
 
-		for (int x = -bufferDistance; x <= bufferDistance; x++) {
-			for (int z = -bufferDistance; z <= bufferDistance; z++) {
+  private void enqueueChunks() {
 
-				int chunkX = playerChunkX + x;
-				int chunkZ = playerChunkZ + z;
+    for (Chunk chunk : activeChunks.values()) {
 
-				long chunkKey = toChunkKey(chunkX, chunkZ);
+      // DATA GENERATION
 
-				if (!activeChunks.containsKey(chunkKey)) {
+      if (!chunk.isDataReady() && !dataQueue.contains(chunk)) {
+        dataQueue.offer(chunk);
+      }
 
-					Vector3f chunkPos = new Vector3f(chunkX * Chunk.WIDTH, 0, chunkZ * Chunk.DEPTH);
+      // MESH GENERATION
 
-					Chunk chunk;
+      if (chunk.isDataReady() && isWithinRenderDistance(chunk) && !meshQueue.contains(chunk)) {
 
-					if (chunkPool.isEmpty()) {
-						chunk = new Chunk(chunkPos);
-					} else {
-						chunk = chunkPool.pop();
-						chunk.setPosition(chunkPos);
-						recycledChunks++;
-					}
+        meshQueue.offer(chunk);
+      }
+    }
+  }
 
-					newChunks.put(chunkKey, chunk);
+  private void processQueues() {
 
-				} else {
-					newChunks.put(chunkKey, activeChunks.get(chunkKey));
-				}
-			}
-		}
+    // ===============================
+    // DATA GENERATION
+    // ===============================
 
-		recycleUnusedChunks(newChunks);
+    for (int i = 0; i < MAX_DATA_PER_FRAME && !dataQueue.isEmpty(); i++) {
 
-		activeChunks.clear();
-		activeChunks.putAll(newChunks);
+      Chunk chunk = dataQueue.poll();
 
-		lastPlayerChunkX = playerChunkX;
-		lastPlayerChunkZ = playerChunkZ;
-	}
+      if (chunk == null) continue;
 
-	private void recycleUnusedChunks(Map<Long, Chunk> newChunks) {
-		for (Chunk chunk : activeChunks.values()) {
-			long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
+      long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
 
-			if (!newChunks.containsKey(key)) {
-				chunk.setupForPooling();
-				chunkPool.add(chunk);
-			}
-		}
-	}
+      if (!activeChunks.containsKey(key)) continue;
 
-	// ===============================
-	// HELPERS
-	// ===============================
+      if (!chunk.isDataReady()) {
+        chunk.scheduleDataGeneration(world);
+      }
 
-	public void setWorld(World world) {
-		this.world = world;
-	}
+      chunk.updateData();
+    }
 
-	private boolean isWithinRenderDistance(Chunk chunk) {
-		int playerChunkX = getPlayerChunkX();
-		int playerChunkZ = getPlayerChunkZ();
+    // ===============================
+    // MESH GENERATION
+    // ===============================
 
-		int dx = Math.abs(chunk.getChunkX() - playerChunkX);
-		int dz = Math.abs(chunk.getChunkZ() - playerChunkZ);
+    for (int i = 0; i < MAX_MESH_PER_FRAME && !meshQueue.isEmpty(); i++) {
 
-		return dx <= renderDistance && dz <= renderDistance;
-	}
+      Chunk chunk = meshQueue.poll();
 
-	public boolean isChunkActive(int x, int z) {
-		return activeChunks.containsKey(toChunkKey(x, z));
-	}
+      if (chunk == null) continue;
 
-	public Chunk getChunk(int x, int z) {
-		return activeChunks.get(toChunkKey(x, z));
-	}
+      long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
 
-	private long toChunkKey(int x, int z) {
-		return ChunkCoordinate.toLong(x, z);
-	}
+      if (!activeChunks.containsKey(key)) continue;
 
-	public void setRenderDistance(int renderDistance) {
-		this.renderDistance = renderDistance;
-		this.bufferDistance = renderDistance + 1;
-	}
+      if (chunk.isDataReady()) {
+        chunk.scheduleMeshGeneration(this);
+      }
 
-	public int getChunkPoolSize() {
-		return chunkPool.size();
-	}
+      chunk.updateMesh();
+    }
+  }
 
-	public int getActiveChunkCount() {
-		return activeChunks.size();
-	}
+  // =====================================================
+  // DEBUG
+  // =====================================================
 
-	public int getRenderDistance() {
-		return renderDistance;
-	}
+  private void debugRenderActiveChunks(Graphics g) {
 
-	public int getRecycledChunksCount() {
-		return recycledChunks;
-	}
+    if (!debugVisualsEnabled) return;
 
-	public int getPlayerChunkX() {
-		return (int) Math.floor(playerPosition.x / Chunk.WIDTH);
-	}
+    for (Chunk chunk : activeChunks.values()) {
+      debugRenderChunk(g, chunk);
+    }
+  }
 
-	public int getPlayerChunkZ() {
-		return (int) Math.floor(playerPosition.z / Chunk.DEPTH);
-	}
+  private void debugRenderChunk(Graphics g, Chunk chunk) {
 
-	@Override
-	public void onAttach() {
-	}
+    Vector3f position = chunk.getPosition();
 
-	@Override
-	public void onDetach() {
-	}
+    Color color = isWithinRenderDistance(chunk) ? Color.YELLOW : Color.RED;
+
+    g.pushMatrix();
+
+    g.translate(position.x, position.y, position.z);
+
+    g.setColor(color);
+
+    g.drawFaces(debugBox);
+
+    g.popMatrix();
+  }
+
+  // =====================================================
+  // CHUNK LOADING (SPIRAL)
+  // =====================================================
+
+  private void loadChunksAroundPlayer() {
+
+    if (playerChunkX == lastPlayerChunkX && playerChunkZ == lastPlayerChunkZ) {
+      return;
+    }
+
+    Map<Long, Chunk> newChunks = new HashMap<>();
+
+    int r2 = bufferDistance * bufferDistance;
+
+    int x = 0;
+    int z = 0;
+
+    int dx = 0;
+    int dz = -1;
+
+    int max = (bufferDistance * 2 + 1) * (bufferDistance * 2 + 1);
+
+    for (int i = 0; i < max; i++) {
+
+      int dist2 = x * x + z * z;
+
+      if (dist2 <= r2) {
+
+        int chunkX = playerChunkX + x;
+        int chunkZ = playerChunkZ + z;
+
+        long key = toChunkKey(chunkX, chunkZ);
+
+        if (!activeChunks.containsKey(key)) {
+
+          Vector3f chunkPos = new Vector3f(chunkX * Chunk.WIDTH, 0, chunkZ * Chunk.DEPTH);
+
+          Chunk chunk;
+
+          if (chunkPool.isEmpty()) {
+
+            chunk = new Chunk();
+            chunk.setPosition(chunkPos);
+
+          } else {
+
+            chunk = chunkPool.pop();
+
+            chunk.setPosition(chunkPos);
+
+            recycledChunks++;
+          }
+
+          newChunks.put(key, chunk);
+
+        } else {
+
+          newChunks.put(key, activeChunks.get(key));
+        }
+      }
+
+      if (x == z || (x < 0 && x == -z) || (x > 0 && x == 1 - z)) {
+
+        int temp = dx;
+
+        dx = -dz;
+
+        dz = temp;
+      }
+
+      x += dx;
+      z += dz;
+    }
+
+    recycleUnusedChunks(newChunks);
+
+    activeChunks.clear();
+
+    activeChunks.putAll(newChunks);
+
+    lastPlayerChunkX = playerChunkX;
+    lastPlayerChunkZ = playerChunkZ;
+  }
+
+  private void recycleUnusedChunks(Map<Long, Chunk> newChunks) {
+
+    for (Chunk chunk : activeChunks.values()) {
+
+      long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
+
+      if (!newChunks.containsKey(key)) {
+
+        dataQueue.remove(chunk);
+        meshQueue.remove(chunk);
+
+        chunk.setupForPooling();
+
+        chunkPool.push(chunk);
+      }
+    }
+  }
+
+  // =====================================================
+  // HELPERS
+  // =====================================================
+
+  public void setWorld(World world) {
+    this.world = world;
+  }
+
+  private boolean isWithinRenderDistance(Chunk chunk) {
+
+    int dx = Math.abs(chunk.getChunkX() - playerChunkX);
+    int dz = Math.abs(chunk.getChunkZ() - playerChunkZ);
+
+    return dx * dx + dz * dz <= renderDistance * renderDistance;
+  }
+
+  public boolean isChunkActive(int x, int z) {
+    return activeChunks.containsKey(toChunkKey(x, z));
+  }
+
+  public Chunk getChunk(int x, int z) {
+    return activeChunks.get(toChunkKey(x, z));
+  }
+
+  private long toChunkKey(int x, int z) {
+    return ChunkCoordinate.toLong(x, z);
+  }
+
+  public void setRenderDistance(int renderDistance) {
+
+    this.renderDistance = renderDistance;
+
+    this.bufferDistance = renderDistance + 1;
+  }
+
+  public int getChunkPoolSize() {
+    return chunkPool.size();
+  }
+
+  public int getActiveChunkCount() {
+    return activeChunks.size();
+  }
+
+  public int getRenderDistance() {
+    return renderDistance;
+  }
+
+  public int getRecycledChunksCount() {
+    return recycledChunks;
+  }
+
+  public int getChunksRenderedLastFrame() {
+    return chunksRenderedLastFrame;
+  }
+
+  @Override
+  public void onAttach() {}
+
+  @Override
+  public void onDetach() {}
 }

@@ -17,20 +17,17 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
 
   private static final int MAX_MESSAGE_LENGTH = 256;
 
-  private final StringBuilder textBuffer;
-  private boolean textInputEnabled;
+  private final StringBuilder textBuffer = new StringBuilder();
+  private boolean textInputEnabled = false;
   private final Input input;
   private final Camera camera;
-  private int cursorPosition;
+  private int cursorPosition = 0;
   private final EventManager eventManager;
 
   public ChatComponent(Input input, Camera camera, EventManager eventManager) {
     this.input = input;
     this.camera = camera;
-    this.textBuffer = new StringBuilder();
-    this.cursorPosition = 0;
     this.eventManager = eventManager;
-
     input.addKeyListener(this);
   }
 
@@ -54,17 +51,18 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
     if (!textInputEnabled) return;
 
     Font font = new Font("monogram-extended", 32, Font.PLAIN);
+    g.setFont(font);
 
     int baseY = g.getHeight() - 20;
     int offsetX = 20;
 
-    g.setFont(font);
-    g.setColor(Color.YELLOW);
-
     String message = textBuffer.toString();
+
+    g.setColor(Color.YELLOW);
     g.text(message, offsetX, baseY);
 
     float cursorX = offsetX + g.textWidth(message.substring(0, cursorPosition));
+
     g.setColor(Color.WHITE);
     g.drawLine(cursorX, baseY - 25, cursorX, baseY + 5);
   }
@@ -76,7 +74,7 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
   @Override
   public void onKeyPressed(KeyEvent e) {
 
-    if (e.getKey() == Key.T && !textInputEnabled) {
+    if (!textInputEnabled && e.getKey() == Key.T) {
       textInputEnabled = true;
       return;
     }
@@ -84,40 +82,38 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
     if (!textInputEnabled) return;
 
     switch (e.getKey()) {
+      case ENTER:
+        sendMessage(textBuffer.toString());
+        closeChat();
+        return;
+
       case BACKSPACE:
         if (cursorPosition > 0) {
           textBuffer.deleteCharAt(cursorPosition - 1);
           cursorPosition--;
         }
-        break;
+        return;
 
       case DELETE:
         if (cursorPosition < textBuffer.length()) {
           textBuffer.deleteCharAt(cursorPosition);
         }
-        break;
+        return;
 
       case ARROW_LEFT:
-        if (cursorPosition > 0) {
-          cursorPosition--;
-        }
-        break;
+        if (cursorPosition > 0) cursorPosition--;
+        return;
 
       case ARROW_RIGHT:
-        if (cursorPosition < textBuffer.length()) {
-          cursorPosition++;
-        }
-        break;
+        if (cursorPosition < textBuffer.length()) cursorPosition++;
+        return;
 
-      case ENTER:
-        sendMessage(textBuffer.toString());
-        textInputEnabled = false;
-        textBuffer.setLength(0);
-        cursorPosition = 0;
-        break;
+      case ESCAPE:
+        closeChat();
+        return;
 
       default:
-        break;
+        return;
     }
   }
 
@@ -126,6 +122,10 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
     if (!textInputEnabled) return;
 
     char c = e.getChar();
+
+    if (c == '\n' || c == '\r') return;
+
+    if (e.getKey() == Key.ENTER) return;
 
     if (Character.isISOControl(c)) return;
 
@@ -147,5 +147,11 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
 
     MessageSentEvent event = new MessageSentEvent(message);
     eventManager.triggerEvent(event);
+  }
+
+  private void closeChat() {
+    textInputEnabled = false;
+    textBuffer.setLength(0);
+    cursorPosition = 0;
   }
 }

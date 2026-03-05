@@ -38,6 +38,30 @@ public class ChunkCoordinate {
   }
 
   /**
+   * Calculates the squared Euclidean distance to another {@link ChunkCoordinate}.
+   *
+   * <p>This method avoids the expensive square root operation required for computing the actual
+   * Euclidean distance and is therefore useful for distance comparisons (e.g. render distance
+   * checks).
+   *
+   * <p>The squared distance is calculated using the formula:
+   *
+   * <pre>
+   * dx = this.x - other.x
+   * dz = this.z - other.z
+   * distance² = dx * dx + dz * dz
+   * </pre>
+   *
+   * @param other the other ChunkCoordinate
+   * @return the squared Euclidean distance between this coordinate and the other
+   */
+  public int squaredDistance(ChunkCoordinate other) {
+    int dx = this.x - other.x;
+    int dz = this.z - other.z;
+    return dx * dx + dz * dz;
+  }
+
+  /**
    * Retrieves a list of neighboring ChunkCoordinates. Neighbors are directly adjacent chunks in the
    * x and z directions.
    *
@@ -128,7 +152,7 @@ public class ChunkCoordinate {
    */
   @Override
   public int hashCode() {
-    return 31 * x + z;
+    return (x * 73428767) ^ z;
   }
 
   /**

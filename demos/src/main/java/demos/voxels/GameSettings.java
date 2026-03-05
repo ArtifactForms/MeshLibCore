@@ -6,11 +6,11 @@ public class GameSettings {
 
   public static boolean textureDebugText = true;
   
-  public static boolean textureBackground = true;
+  public static boolean textureBackground = false;
   
   public static boolean textureBorder = true;
   
-  public static int renderDistance = 16;
+  public static int renderDistance = 18;
   
   public static float flySpeed = 32;
 }

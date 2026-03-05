@@ -5,258 +5,282 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import engine.backend.processing.BufferedShape;
 import engine.components.StaticGeometry;
 import engine.rendering.Graphics;
 import math.Vector3f;
 
 public class Chunk {
 
-	public static final int WIDTH = 16;
-	public static final int DEPTH = 16;
-	public static final int HEIGHT = 384;
+  public static final int WIDTH = 16;
+  public static final int DEPTH = 16;
+  public static final int HEIGHT = 384;
 
-	// 🔥 EIN ThreadPool für Data + Mesh (wie vorher)
-	private static final ExecutorService executorService = Executors
-			.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1));
+  private static final ExecutorService executorService =
+      Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1));
 
-	private short[] blockData;
-	private int[] heightMap;
+  private final short[] blockData;
+  private final int[] heightMap;
 
-	private Vector3f position;
-	private StaticGeometry geometry;
+  private Vector3f position;
+  private StaticGeometry geometry;
 
-	private Future<StaticGeometry> meshFuture;
-	private Future<?> dataFuture;
+  private Future<StaticGeometry> meshFuture;
+  private Future<?> dataFuture;
 
-	private boolean isMeshReady = false;
-	private volatile boolean dataReady = false;
+  private volatile ChunkStatus status = ChunkStatus.EMPTY;
 
-	private boolean meshScheduled = false;
-	private boolean dataScheduled = false;
+  public Chunk() {
 
-	private BufferedShape shape = new BufferedShape(ChunkMesher.sharedMaterial);
+    this.blockData = new short[WIDTH * DEPTH * HEIGHT];
+    this.heightMap = new int[WIDTH * DEPTH];
+  }
 
-	public Chunk() {
-	}
+  // =========================================================
+  // DATA GENERATION
+  // =========================================================
 
-	public Chunk(Vector3f position) {
-		this.position = position;
-		this.blockData = new short[WIDTH * DEPTH * HEIGHT];
-		this.heightMap = new int[WIDTH * DEPTH];
-	}
+  public void generateData(ChunkGenerator chunkGenerator) {
+    chunkGenerator.generate(this);
+  }
 
-	// =========================================
-	// 🔥 ASYNC DATA GENERATION
-	// =========================================
+  public void scheduleDataGeneration(World world) {
 
-	public void scheduleDataGeneration(World world) {
-		if (dataScheduled)
-			return;
+    if (status != ChunkStatus.EMPTY) return;
 
-		dataScheduled = true;
+    status = ChunkStatus.DATA_GENERATING;
 
-		dataFuture = executorService.submit(() -> {
-			world.generate(this); // dein alter Code
-			dataReady = true;
-		});
-	}
+    dataFuture =
+        executorService.submit(
+            () -> {
+              world.generate(this);
+            });
+  }
 
-	public void updateData() {
-		if (!dataReady && dataFuture != null && dataFuture.isDone()) {
-			try {
-				dataFuture.get(); // propagate exceptions
-				dataReady = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+  public void updateData() {
 
-	public void generateData(ChunkGenerator chunkGenerator) {
-		Arrays.fill(blockData, BlockType.AIR.getId());
-		Arrays.fill(heightMap, 0);
-		chunkGenerator.generate(this);
-		dataReady = true;
-	}
+    if (status != ChunkStatus.DATA_GENERATING) return;
 
-	// =========================================
-	// MESH (unverändert)
-	// =========================================
+    if (dataFuture != null && dataFuture.isDone()) {
 
-	public void scheduleMeshGeneration(ChunkManager chunkManager) {
-		if (meshScheduled)
-			return;
+      try {
 
-		meshScheduled = true;
+        dataFuture.get();
 
-		meshFuture = executorService.submit(() -> {
-			ChunkMesher mesher = new ChunkMesher(this, chunkManager);
-			return mesher.createMeshFromBlockData(shape);
-		});
-	}
+        status = ChunkStatus.DATA_READY;
 
-	public void updateMesh() {
-		if (!isMeshReady && meshFuture != null && meshFuture.isDone()) {
-			try {
-				geometry = meshFuture.get();
-				isMeshReady = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+      } catch (Exception e) {
 
-	// =========================================
-	// POOL RESET
-	// =========================================
+        e.printStackTrace();
+      }
+    }
+  }
 
-	public void setupForPooling() {
-//		Arrays.fill(blockData, BlockType.AIR.getId());
-//		Arrays.fill(heightMap, 0);
+  // =========================================================
+  // MESH GENERATION
+  // =========================================================
 
-		isMeshReady = false;
-		dataReady = false;
+  public void scheduleMeshGeneration(ChunkManager manager) {
 
-		meshScheduled = false;
-		dataScheduled = false;
+    if (status != ChunkStatus.DATA_READY) return;
 
-		meshFuture = null;
-		dataFuture = null;
+    status = ChunkStatus.MESH_GENERATING;
 
-		geometry = null;
-	}
+    meshFuture =
+        executorService.submit(
+            () -> {
+              ChunkMesher mesher = new ChunkMesher(this, manager);
 
-	// =========================================
-	// RENDER
-	// =========================================
+              return mesher.createMesh();
+            });
+  }
 
-	public void render(Graphics g) {
-		if (geometry == null)
-			return;
+  public void updateMesh() {
 
-		g.pushMatrix();
-		g.translate(position.x, position.y, position.z);
-		geometry.render(g);
-		g.popMatrix();
-	}
+    if (status != ChunkStatus.MESH_GENERATING) return;
 
-	public boolean isMeshReady() {
-		return geometry != null;
-	}
+    if (meshFuture != null && meshFuture.isDone()) {
 
-	public boolean isDataReady() {
-		return dataReady;
-	}
+      try {
 
-	// =========================================
-	// BLOCK ACCESS
-	// =========================================
+        geometry = meshFuture.get();
 
-	public boolean isBlockSolid(int x, int y, int z) {
-		int index = getIndex(x, y, z);
-		if (index < 0 || index >= blockData.length)
-			return false;
+        status = ChunkStatus.MESH_READY;
 
-		short id = blockData[index];
-		if (id == BlockType.AIR.getId())
-			return false;
-		if (id == BlockType.GRASS.getId())
-			return false;
+      } catch (Exception e) {
 
-		return true;
-	}
+        e.printStackTrace();
+      }
+    }
+  }
 
-	public void setBlockDataAt(short data, int x, int y, int z) {
-		int index = getIndex(x, y, z);
-		blockData[index] = data;
-	}
+  // =========================================================
+  // POOL RESET
+  // =========================================================
 
-	public void setBlockAt(BlockType block, int x, int y, int z) {
-		int index = getIndex(x, y, z);
-		if (index >= blockData.length || index < 0)
-			return;
+  public void setupForPooling() {
 
-		blockData[index] = block.getId();
+    if (meshFuture != null) meshFuture.cancel(true);
+    if (dataFuture != null) dataFuture.cancel(true);
 
-		int height = Math.max(y, getHeightValueAt(x, z));
-		setHeightValueAt(height, x, z);
-	}
+    Arrays.fill(blockData, BlockType.AIR.getId());
+    Arrays.fill(heightMap, 0);
 
-	public int getBlockData(int x, int y, int z) {
-		return blockData[getIndex(x, y, z)];
-	}
+    meshFuture = null;
+    dataFuture = null;
 
-	public BlockType getBlock(int x, int y, int z) {
-		int index = getIndex(x, y, z);
-		if (index < 0 || index >= blockData.length)
-			return null;
-		return BlockType.fromId(blockData[index]);
-	}
+    geometry = null;
 
-	public int getHeightValueAt(int x, int z) {
-		if (x < 0 || x >= 16)
-			return 0;
-		if (z < 0 || z >= 16)
-			return 0;
+    status = ChunkStatus.EMPTY;
+  }
 
-		int index = x + z * WIDTH;
-		if (index >= heightMap.length)
-			return -1;
+  // =========================================================
+  // RENDER
+  // =========================================================
 
-		return heightMap[index];
-	}
+  public void render(Graphics g) {
 
-	public void setHeightValueAt(int value, int x, int z) {
-		if (x < 0 || x >= 16)
-			return;
-		if (z < 0 || z >= 16)
-			return;
+    if (geometry == null) return;
 
-		int index = x + z * WIDTH;
-		if (index >= heightMap.length)
-			return;
+    g.pushMatrix();
+    g.translate(position.x, position.y, position.z);
+    geometry.render(g);
+    g.popMatrix();
+  }
 
-		heightMap[index] = value;
-	}
+  // =========================================================
+  // BLOCK ACCESS
+  // =========================================================
 
-	public int[] getHeightMap() {
-		return heightMap;
-	}
+  public short getBlockData(int x, int y, int z) {
+    if (!isWithinBounds(x, y, z)) {
+      return BlockType.AIR.getId();
+    }
 
-	private int getIndex(int x, int y, int z) {
-		return x + WIDTH * (y + HEIGHT * z);
-	}
+    return blockData[getIndex(x, y, z)];
+  }
 
-	public boolean isWithinBounds(int x, int y, int z) {
-		return x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT && z >= 0 && z < DEPTH;
-	}
+  public boolean isWithinBounds(int x, int y, int z) {
 
-	public Vector3f getPosition() {
-		return position;
-	}
+    return x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT && z >= 0 && z < DEPTH;
+  }
 
-	public void setPosition(Vector3f position) {
-		this.position = position;
-	}
+  public boolean isBlockSolid(int x, int y, int z) {
 
-	public int getWidth() {
-		return WIDTH;
-	}
+    int index = getIndex(x, y, z);
 
-	public int getHeight() {
-		return HEIGHT;
-	}
+    if (index < 0 || index >= blockData.length) return false;
 
-	public int getDepth() {
-		return DEPTH;
-	}
+    return blockData[index] != BlockType.AIR.getId();
+  }
 
-	public int getChunkX() {
-		return (int) position.x / WIDTH;
-	}
+  public void setBlockAt(BlockType block, int x, int y, int z) {
 
-	public int getChunkZ() {
-		return (int) position.z / DEPTH;
-	}
+    int index = getIndex(x, y, z);
+
+    if (index < 0 || index >= blockData.length) return;
+
+    blockData[index] = block.getId();
+
+    int height = Math.max(y, getHeightValueAt(x, z));
+
+    setHeightValueAt(height, x, z);
+  }
+
+  public BlockType getBlock(int x, int y, int z) {
+
+    int index = getIndex(x, y, z);
+
+    if (index < 0 || index >= blockData.length) return null;
+
+    return BlockType.fromId(blockData[index]);
+  }
+
+  public short[] getBlockData() {
+    return blockData;
+  }
+
+  // =========================================================
+  // HEIGHTMAP
+  // =========================================================
+
+  public int getHeightValueAt(int x, int z) {
+
+    if (x < 0 || x >= WIDTH || z < 0 || z >= DEPTH) return 0;
+
+    return heightMap[x + z * WIDTH];
+  }
+
+  public void setHeightValueAt(int value, int x, int z) {
+
+    if (x < 0 || x >= WIDTH || z < 0 || z >= DEPTH) return;
+
+    heightMap[x + z * WIDTH] = value;
+  }
+
+  public int[] getHeightMap() {
+    return heightMap;
+  }
+
+  // =========================================================
+  // STATE HELPERS (IMPORTANT FOR CHUNKMANAGER)
+  // =========================================================
+
+  public boolean isDataReady() {
+    return status == ChunkStatus.DATA_READY
+        || status == ChunkStatus.MESH_GENERATING
+        || status == ChunkStatus.MESH_READY;
+  }
+
+  public boolean isMeshReady() {
+    return status == ChunkStatus.MESH_READY;
+  }
+
+  public boolean hasGeometry() {
+    return geometry != null;
+  }
+
+  public StaticGeometry getGeometry() {
+    return geometry;
+  }
+
+  // =========================================================
+  // HELPERS
+  // =========================================================
+
+  private int getIndex(int x, int y, int z) {
+    return x + WIDTH * (y + HEIGHT * z);
+  }
+
+  public boolean isInsideChunk(int x, int y, int z) {
+
+    return x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT && z >= 0 && z < DEPTH;
+  }
+
+  // =========================================================
+  // POSITION
+  // =========================================================
+
+  public Vector3f getPosition() {
+    return position;
+  }
+
+  public void setPosition(Vector3f position) {
+    this.position = position;
+  }
+
+  public int getChunkX() {
+    return (int) Math.floor(position.x / WIDTH);
+  }
+
+  public int getChunkZ() {
+    return (int) Math.floor(position.z / DEPTH);
+  }
+
+  // =========================================================
+  // STATUS
+  // =========================================================
+
+  public ChunkStatus getStatus() {
+    return status;
+  }
 }

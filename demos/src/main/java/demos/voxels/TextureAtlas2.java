@@ -122,7 +122,7 @@ public class TextureAtlas2 {
       for (int y = 0; y < 16; y++) {
         float noise1 = (float) noise.noise(x * 0.6f, y * 0.6f);
 
-        int alpha = (int) (((noise1 * 2) + 1) * 20);
+        int alpha = (int) (((noise1 * 2) + 1) * 10);
         image.setRGB(x, y, new Color(0, 0, 0, alpha).getRGB());
       }
     }

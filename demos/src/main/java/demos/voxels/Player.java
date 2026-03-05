@@ -47,4 +47,12 @@ public class Player {
   public void setGrounded(boolean grounded) {
     this.grounded = grounded;
   }
+
+  public int getPlayerChunkX() {
+    return (int) Math.floor(position.x / Chunk.WIDTH);
+  }
+
+  public int getPlayerChunkZ() {
+    return (int) Math.floor(position.z / Chunk.DEPTH);
+  }
 }
