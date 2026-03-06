@@ -19,6 +19,10 @@
 		<module>core</module>
 		<module>demos</module>
 		<module>workspace</module>
+		<module>voxels</module>
+		<module>voxels-common</module>
+		<module>voxels-client</module>
+		<module>voxels-server</module>
 	</modules>
 
 	<dependencies>
