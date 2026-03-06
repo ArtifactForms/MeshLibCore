@@ -1,4 +1,4 @@
-package demos.voxels;
+package demos.voxels.ui;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;

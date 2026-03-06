@@ -1,4 +1,4 @@
-package demos.voxels;
+package demos.voxels.chunk;
 
 public enum ChunkStatus {
   EMPTY,

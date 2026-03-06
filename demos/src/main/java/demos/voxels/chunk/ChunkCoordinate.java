@@ -1,4 +1,4 @@
-package demos.voxels.structure;
+package demos.voxels.chunk;
 
 import java.util.List;
 

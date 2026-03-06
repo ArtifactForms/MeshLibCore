@@ -2,7 +2,7 @@ package demos.voxels;
 
 public class GameSettings {
 
-  public static boolean textureNoise = true;
+  public static boolean textureNoise = false;
 
   public static boolean textureDebugText = false;
   
@@ -12,5 +12,5 @@ public class GameSettings {
   
   public static int renderDistance = 18;
   
-  public static float flySpeed = 32;
+  public static float flySpeed = 16;
 }

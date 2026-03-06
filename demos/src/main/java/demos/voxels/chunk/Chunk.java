@@ -1,10 +1,12 @@
-package demos.voxels;
+package demos.voxels.chunk;
 
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import demos.voxels.world.BlockType;
+import demos.voxels.world.World;
 import engine.components.StaticGeometry;
 import engine.rendering.Graphics;
 import math.Vector3f;
@@ -300,6 +302,14 @@ public class Chunk {
 
   public ChunkStatus getStatus() {
     return status;
+  }
+
+  public void markDirty() {
+    // If the chunk mesh was already finished or is currently being generated,
+    // reset the status to DATA_READY so that a new mesh can be generated.
+    if (this.status == ChunkStatus.MESH_READY || this.status == ChunkStatus.MESH_GENERATING) {
+      this.status = ChunkStatus.DATA_READY;
+    }
   }
 
   // =========================================================

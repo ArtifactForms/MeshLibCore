@@ -1,4 +1,4 @@
-package demos.voxels;
+package demos.voxels.chunk;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,7 +6,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import demos.voxels.structure.ChunkCoordinate;
+import demos.voxels.GameSettings;
+import demos.voxels.Player;
+import demos.voxels.world.World;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
@@ -135,8 +137,36 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     }
   }
 
+  //  private void processQueues() {
+  //    // DATA
+  //    for (int i = 0; i < MAX_DATA_PER_FRAME && !dataQueue.isEmpty(); i++) {
+  //      Chunk chunk = dataQueue.poll();
+  //      if (chunk == null) continue;
+  //      dataQueueSet.remove(chunk);
+  //
+  //      long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
+  //      if (!activeChunks.containsKey(key)) continue;
+  //
+  //      if (!chunk.isDataReady()) chunk.scheduleDataGeneration(world);
+  //      chunk.updateData();
+  //    }
+  //
+  //    // MESH
+  //    for (int i = 0; i < MAX_MESH_PER_FRAME && !meshQueue.isEmpty(); i++) {
+  //      Chunk chunk = meshQueue.poll();
+  //      if (chunk == null) continue;
+  //      meshQueueSet.remove(chunk);
+  //
+  //      long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
+  //      if (!activeChunks.containsKey(key)) continue;
+  //
+  //      if (chunk.isDataReady()) chunk.scheduleMeshGeneration(this);
+  //      chunk.updateMesh();
+  //    }
+  //  }
+
   private void processQueues() {
-    // DATA
+    // 1. DATA GENERATION (Bleibt limitiert, da CPU-lastig)
     for (int i = 0; i < MAX_DATA_PER_FRAME && !dataQueue.isEmpty(); i++) {
       Chunk chunk = dataQueue.poll();
       if (chunk == null) continue;
@@ -149,7 +179,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
       chunk.updateData();
     }
 
-    // MESH
+    // 2. MESH GENERATION START (Hier fangen wir an zu arbeiten)
     for (int i = 0; i < MAX_MESH_PER_FRAME && !meshQueue.isEmpty(); i++) {
       Chunk chunk = meshQueue.poll();
       if (chunk == null) continue;
@@ -158,9 +188,30 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
       long key = toChunkKey(chunk.getChunkX(), chunk.getChunkZ());
       if (!activeChunks.containsKey(key)) continue;
 
+      // Startet den Thread, falls noch nicht geschehen
       if (chunk.isDataReady()) chunk.scheduleMeshGeneration(this);
-      chunk.updateMesh();
     }
+
+    // 3. FAST TRACK: Alle Chunks, deren Mesh-Thread fertig ist, SOFORT auf die GPU schieben
+    // Das ignoriert das "10 pro Frame" Limit, weil Future.isDone() fast kostenlos ist.
+    for (Chunk chunk : activeChunks.values()) {
+      if (chunk.getStatus() == ChunkStatus.MESH_GENERATING) {
+        chunk.updateMesh();
+      }
+    }
+  }
+
+  public void forceImmediateMesh(Chunk chunk) {
+    if (chunk == null) return;
+
+    chunk.markDirty();
+    // 1. Thread starten
+    chunk.scheduleMeshGeneration(this);
+
+    // 2. WICHTIG: Wir zwingen diesen spezifischen Chunk,
+    // sofort im nächsten Frame (oder sogar jetzt) fertig zu werden,
+    // ohne dass er in der Mesh-Queue warten muss.
+    chunk.updateMesh();
   }
 
   // ============================

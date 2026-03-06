@@ -1,8 +1,14 @@
 package demos.voxels;
 
 import demos.skybox.SkyBox;
+import demos.voxels.chunk.Chunk;
+import demos.voxels.chunk.ChunkManager;
 import demos.voxels.client.Client;
 import demos.voxels.client.event.EventManager;
+import demos.voxels.ui.Hotbar;
+import demos.voxels.ui.TextDisplay;
+import demos.voxels.world.BlockType;
+import demos.voxels.world.World;
 import engine.application.ApplicationSettings;
 import engine.application.BasicApplication;
 import engine.components.ControlWASD;
@@ -51,8 +57,6 @@ public class VoxelGameDemo extends BasicApplication {
     scene = new Scene();
     uiRoot = scene.getUIRoot();
 
-
-
     scene.setBackground(Color.DARK_GRAY);
 
     setupSkyBox();
@@ -91,7 +95,7 @@ public class VoxelGameDemo extends BasicApplication {
     setupUI();
     setupPlayer();
     
-   RaycastComponent component = new RaycastComponent(world, input, display);
+   BlockInteractionComponent component = new BlockInteractionComponent(world, input, display);
    SceneNode rayNode1 = new SceneNode("", component);
    scene.addNode(rayNode1);
   }
@@ -99,7 +103,7 @@ public class VoxelGameDemo extends BasicApplication {
   private void setupPlayer() {
     ControlWASD control = new ControlWASD(input);
     control.mapArrowKeys();
-    control.setSpeed(16);
+    control.setSpeed(6);
     playerNode = new SceneNode();
     playerNode.addComponent(new PlayerVisual());
     playerNode.addComponent(control);

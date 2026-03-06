@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import demos.voxels.world.BlockType;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
 import math.PerlinNoise;

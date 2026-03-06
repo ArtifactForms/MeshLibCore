@@ -1,5 +1,6 @@
-package demos.voxels;
+package demos.voxels.chunk;
 
+import demos.voxels.world.BlockType;
 import math.Mathf;
 import math.PerlinNoise;
 import math.PerlinNoise3;

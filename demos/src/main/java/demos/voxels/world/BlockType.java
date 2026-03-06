@@ -1,4 +1,4 @@
-package demos.voxels;
+package demos.voxels.world;
 
 /**
  * Represents different types of blocks in the voxel engine. Each block type is associated with a

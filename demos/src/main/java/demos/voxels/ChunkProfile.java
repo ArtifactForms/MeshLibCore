@@ -1,5 +1,6 @@
 package demos.voxels;
 
+import demos.voxels.chunk.ChunkManager;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;

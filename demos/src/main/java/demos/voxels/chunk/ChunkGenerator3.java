@@ -1,7 +1,9 @@
-package demos.voxels;
+package demos.voxels.chunk;
 
 import java.util.Random;
 
+import demos.voxels.world.BiomeType;
+import demos.voxels.world.BlockType;
 import math.Mathf;
 import math.PerlinNoise;
 import math.PerlinNoise3;

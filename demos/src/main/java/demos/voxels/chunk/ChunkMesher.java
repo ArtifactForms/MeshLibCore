@@ -1,6 +1,9 @@
-package demos.voxels;
+package demos.voxels.chunk;
 
 import java.util.ArrayList;
+
+import demos.voxels.TextureAtlas2;
+import demos.voxels.world.BlockType;
 import engine.backend.processing.BufferedShape;
 import engine.components.StaticGeometry;
 import engine.rendering.Material;

@@ -1,9 +1,11 @@
-package demos.voxels;
+package demos.voxels.chunk;
 
 import math.Mathf;
 import math.PerlinNoise;
 import math.Vector3f;
 import java.util.Random;
+
+import demos.voxels.world.BlockType;
 
 public class ChunkGenerator2 implements ChunkGenerator {
 

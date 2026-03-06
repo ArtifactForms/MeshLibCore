@@ -1,4 +1,4 @@
-package demos.voxels;
+package demos.voxels.world;
 
 /**
  * Represents different types of biomes that can be used in the voxel engine. Each biome type can

@@ -61,6 +61,28 @@ public final class Plane {
     normal.set(n).multLocal(invLen);
     distance = d * invLen;
   }
+  
+  /**
+   * Sets the plane from three points in counter-clockwise order.
+   *
+   * @param a first point on the plane
+   * @param b second point on the plane
+   * @param c third point on the plane
+   */
+  public void setFromPoints(Vector3f a, Vector3f b, Vector3f c) {
+      // Vectors lying on the plane
+      Vector3f ab = b.subtract(a);
+      Vector3f ac = c.subtract(a);
+
+      // Normal is cross product of two edges
+      Vector3f n = ab.cross(ac).normalizeLocal();
+
+      // Set plane normal
+      normal.set(n);
+
+      // Plane equation: dot(normal, point) + distance = 0
+      distance = -normal.dot(a);
+  }
 
   /**
    * Flips the plane orientation. After calling this method, the plane represents the same geometric

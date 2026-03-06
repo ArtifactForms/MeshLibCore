@@ -1,5 +1,6 @@
 package demos.voxels;
 
+import demos.voxels.chunk.Chunk;
 import math.Vector3f;
 
 public class Player {
