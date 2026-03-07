@@ -23,7 +23,7 @@ public class ProcessingApplication extends PApplet {
   @Override
   public void settings() {
     size(settings.getWidth(), settings.getHeight(), P3D);
-    smooth(8);
+    smooth(2);
     if (settings.isFullscreen()) {
       fullScreen();
     }
