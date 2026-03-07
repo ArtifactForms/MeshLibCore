@@ -45,6 +45,10 @@ public class BufferedShape {
     shape.vertex(x, y, z, u, v);
   }
 
+  public void color(float r, float g, float b) {
+    shape.fill(r, g, b);
+  }
+
   private void applyMaterial() {
     shape.fill(material.getColor().getRGBA());
   }
