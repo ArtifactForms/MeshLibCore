@@ -139,7 +139,7 @@ public class Scene {
 
       // Synchronize audio after world updates are finalized
       if (phase == UpdatePhase.POST_WORLD) {
-        updateAudio();
+//        updateAudio();
       }
     }
   }
