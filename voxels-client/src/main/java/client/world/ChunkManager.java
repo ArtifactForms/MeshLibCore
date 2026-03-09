@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import client.app.ApplicationContext;
 import client.app.GameSettings;
+import common.world.ChunkData;
 import common.world.ChunkStatus;
 import common.world.World;
 import engine.components.AbstractComponent;
@@ -14,10 +15,6 @@ import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
 import math.Vector3f;
 
-/**
- * Manages the lifecycle of Chunks on the client side. Handles automatic loading/unloading based on
- * player position, asynchronous mesh generation, and object pooling to minimize Garbage Collection.
- */
 public class ChunkManager extends AbstractComponent implements RenderableComponent {
 
   private int renderDistance;
@@ -26,25 +23,17 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private int lastPlayerChunkX = Integer.MIN_VALUE;
   private int lastPlayerChunkZ = Integer.MIN_VALUE;
 
-  /** Object pool for reused Chunk instances to prevent memory fragmentation */
   private final ConcurrentLinkedDeque<Chunk> chunkPool = new ConcurrentLinkedDeque<>();
-  /** Registry of currently active chunks mapped by their world coordinates */
   private final Map<Long, Chunk> activeChunks = new ConcurrentHashMap<>();
 
-  /** Queues for asynchronous processing */
   private final ConcurrentLinkedQueue<Chunk> dataQueue = new ConcurrentLinkedQueue<>();
-
   private final ConcurrentLinkedQueue<Chunk> meshQueue = new ConcurrentLinkedQueue<>();
 
-  /** Sets used to prevent duplicate entries in the queues */
   private final ConcurrentHashMap<Chunk, Boolean> dataQueueSet = new ConcurrentHashMap<>();
-
   private final ConcurrentHashMap<Chunk, Boolean> meshQueueSet = new ConcurrentHashMap<>();
 
-  /** Performance caps per frame to maintain stable FPS */
-  private static final int MAX_DATA_PER_FRAME = 30;
-
-  private static final int MAX_MESH_PER_FRAME = 8;
+  private static final int MAX_DATA_PER_FRAME = 40;
+  private static final int MAX_MESH_PER_FRAME = 12;
 
   private int playerChunkX;
   private int playerChunkZ;
@@ -57,11 +46,9 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   public void onUpdate(float tpf) {
     Vector3f pos = ApplicationContext.clientMovementConsumer.getPosition();
 
-    // Calculate current player chunk coordinates
     playerChunkX = (int) Math.floor(pos.x / 16.0);
     playerChunkZ = (int) Math.floor(pos.z / 16.0);
 
-    // Update world loading only if player crossed a chunk boundary
     if (playerChunkX != lastPlayerChunkX || playerChunkZ != lastPlayerChunkZ) {
       updateChunksAroundPlayer();
       lastPlayerChunkX = playerChunkX;
@@ -72,17 +59,12 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     processQueues();
   }
 
-  /** Identifies chunks that need data or a mesh rebuild and adds them to the work queues. */
   private void enqueueChunks() {
     for (Chunk chunk : activeChunks.values()) {
-      // Stage 1: Queue for data if not ready
       if (!chunk.isDataReady() && dataQueueSet.putIfAbsent(chunk, true) == null) {
         dataQueue.offer(chunk);
       }
-
-      // Stage 2: Queue for mesh rebuild if data is ready but mesh is dirty
       if (chunk.isDataReady()
-          && neighborsReady(chunk.getChunkX(), chunk.getChunkZ())
           && (chunk.getStatus() == ChunkStatus.DATA_READY || chunk.needsRebuild())) {
         if (meshQueueSet.putIfAbsent(chunk, true) == null) {
           meshQueue.offer(chunk);
@@ -91,17 +73,13 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     }
   }
 
-  /** Processes a limited number of chunks from the queues each frame. */
   private void processQueues() {
-    // 1. DATA PROCESSING: Check if network data has arrived
     for (int i = 0; i < MAX_DATA_PER_FRAME && !dataQueue.isEmpty(); i++) {
       Chunk chunk = dataQueue.poll();
       if (chunk == null) continue;
       dataQueueSet.remove(chunk);
-      // Logic for re-requesting missing data would go here
     }
 
-    // 2. MESH GENERATION: Trigger asynchronous geometry calculation
     for (int i = 0; i < MAX_MESH_PER_FRAME && !meshQueue.isEmpty(); i++) {
       Chunk chunk = meshQueue.poll();
       if (chunk == null) continue;
@@ -112,7 +90,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
       }
     }
 
-    // 3. GPU UPLOAD: Transfer completed meshes from RAM to VRAM
     for (Chunk chunk : activeChunks.values()) {
       if (chunk.getStatus() == ChunkStatus.MESH_GENERATING) {
         chunk.updateMesh();
@@ -121,39 +98,26 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   }
 
   public boolean neighborsReady(int cx, int cz) {
-    // Prüft alle 8 Nachbarn (N, S, O, W + Diagonalen)
-    for (int x = -1; x <= 1; x++) {
-      for (int z = -1; z <= 1; z++) {
-        if (x == 0 && z == 0) continue; // Den eigenen Chunk überspringen
-
-        Chunk neighbor = getChunk(cx + x, cz + z);
-        if (neighbor == null || !neighbor.isDataReady()) {
-          return false;
-        }
+    int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    for (int[] dir : directions) {
+      Chunk neighbor = getChunk(cx + dir[0], cz + dir[1]);
+      if (neighbor == null || !neighbor.isDataReady()) {
+        return false;
       }
     }
     return true;
   }
 
-  private void updateChunksAroundPlayer() {
-    loadChunksInRadius(playerChunkX, playerChunkZ);
-    recycleChunksOutsideRadius(playerChunkX, playerChunkZ);
-  }
-
-  private void loadChunksInRadius(int centerX, int centerZ) {
-    int r = bufferDistance;
-    for (int x = -r; x <= r; x++) {
-      for (int z = -r; z <= r; z++) {
-        if (x * x + z * z > r * r) continue;
-
-        int cx = centerX + x;
-        int cz = centerZ + z;
-        getOrCreateChunk(cx, cz);
+  public void notifyNeighborsOfDataReady(int cx, int cz) {
+    int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    for (int[] dir : directions) {
+      Chunk neighbor = getChunk(cx + dir[0], cz + dir[1]);
+      if (neighbor != null && neighbor.isDataReady()) {
+        neighbor.markDirty();
       }
     }
   }
 
-  /** Retrieves a chunk from the active map or reuses one from the pool. */
   public Chunk getOrCreateChunk(int cx, int cz) {
     long key = World.getChunkKey(cx, cz);
     Chunk c = activeChunks.get(key);
@@ -165,8 +129,19 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     return c;
   }
 
+  private void updateChunksAroundPlayer() {
+    int r = bufferDistance;
+    for (int x = -r; x <= r; x++) {
+      for (int z = -r; z <= r; z++) {
+        if (x * x + z * z > r * r) continue;
+        getOrCreateChunk(playerChunkX + x, playerChunkZ + z);
+      }
+    }
+    recycleChunksOutsideRadius(playerChunkX, playerChunkZ);
+  }
+
   private void recycleChunksOutsideRadius(int centerX, int centerZ) {
-    int r2 = bufferDistance * bufferDistance;
+    int r2 = (bufferDistance + 1) * (bufferDistance + 1);
     activeChunks
         .values()
         .removeIf(
@@ -181,7 +156,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
             });
   }
 
-  /** Removes chunk from all active queues and returns it to the pool for later reuse. */
   private void recycleChunk(Chunk chunk) {
     dataQueue.remove(chunk);
     meshQueue.remove(chunk);
@@ -201,7 +175,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     g.disableFaceCulling();
   }
 
-  /** Modifies a block in the world and marks the affected chunk as dirty for a mesh rebuild. */
   public void setBlockAt(int x, int y, int z, short id) {
     int cx = Math.floorDiv(x, 16);
     int cz = Math.floorDiv(z, 16);
@@ -209,36 +182,15 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
     if (c != null) {
       c.setBlockId(id, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
-      c.markDirty(); //
+      c.markDirty();
 
-      // WICHTIG: Wenn der Block am Rand liegt, Nachbarn auch dirty markieren!
       int lx = Math.floorMod(x, 16);
       int lz = Math.floorMod(z, 16);
-
       if (lx == 0) markChunkDirty(cx - 1, cz);
       if (lx == 15) markChunkDirty(cx + 1, cz);
       if (lz == 0) markChunkDirty(cx, cz - 1);
       if (lz == 15) markChunkDirty(cx, cz + 1);
     }
-  }
-
-  /**
-   * Calculates the highest solid block at specific world coordinates. Used for client-side player
-   * snapping.
-   */
-  public float getTerrainHeight(float x, float z) {
-    int cx = (int) Math.floor(x / 16.0);
-    int cz = (int) Math.floor(z / 16.0);
-    Chunk c = getChunk(cx, cz);
-    if (c == null || !c.isDataReady()) return 0;
-
-    int lx = Math.floorMod((int) Math.floor(x), 16);
-    int lz = Math.floorMod((int) Math.floor(z), 16);
-
-    for (int y = Chunk.HEIGHT - 1; y >= 0; y--) {
-      if (c.getBlockId(lx, y, lz) != 0) return y + 1.0f;
-    }
-    return 0;
   }
 
   public void markChunkDirty(int cx, int cz) {
@@ -248,6 +200,22 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   public Chunk getChunk(int x, int z) {
     return activeChunks.get(World.getChunkKey(x, z));
+  }
+
+  public float getTerrainHeight(float x, float z) {
+    int cx = (int) Math.floor(x / 16.0);
+    int cz = (int) Math.floor(z / 16.0);
+
+    Chunk c = getChunk(cx, cz);
+    if (c == null || !c.isDataReady()) return 0;
+
+    int lx = Math.floorMod((int) Math.floor(x), 16);
+    int lz = Math.floorMod((int) Math.floor(z), 16);
+
+    for (int y = ChunkData.HEIGHT; y >= 0; y--) {
+      if (c.getBlockId(lx, y, lz) != 0) return y + 1.0f;
+    }
+    return 0;
   }
 
   private boolean isWithinRenderDistance(Chunk chunk) {

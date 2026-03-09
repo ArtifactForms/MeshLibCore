@@ -62,16 +62,12 @@ public class Chunk extends ChunkData {
     if (meshFuture == null || !meshFuture.isDone()) return;
     try {
       StaticGeometry newMesh = meshFuture.get();
-      if (newMesh != null) {
-        //                if (this.currentGeometry != null) this.currentGeometry.dispose();
-        this.currentGeometry = newMesh;
-        this.status = ChunkStatus.MESH_READY;
-        this.needsRebuild = false;
-      } else {
-        this.status = ChunkStatus.DATA_READY;
-      }
+      this.currentGeometry = newMesh; // Kann null sein bei Luft-Chunks
+      this.status = ChunkStatus.MESH_READY; // IMMER auf Ready setzen, wenn Task fertig
+      this.needsRebuild = false;
     } catch (Exception e) {
       e.printStackTrace();
+      this.status = ChunkStatus.DATA_READY; // Fehler-Fallback
     }
     meshFuture = null;
   }
