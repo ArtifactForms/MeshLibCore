@@ -34,6 +34,8 @@ public class ClientWorld extends World {
     // Register chunk in the base World structure
     addChunk(chunk);
 
+    chunkManager.markChunkDirty(cx, cz);
+    
     // Trigger neighbor updates to fix ambient occlusion or face culling at borders
     chunkManager.markChunkDirty(cx + 1, cz);
     chunkManager.markChunkDirty(cx - 1, cz);

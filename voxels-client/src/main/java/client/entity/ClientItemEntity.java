@@ -69,9 +69,9 @@ public class ClientItemEntity {
     int by = (int) Math.floor(nextY);
     int bz = Math.round(nextZ);
 
-    short blockId = ApplicationContext.clientWorld.getBlockId(bx, by, bz);
+    short blockId = ApplicationContext.clientWorld.getBlock(bx, by, bz).getId();
 
-    if (BlockType.fromId(blockId).isSolid()) {
+    if (BlockType.fromId(blockId) != BlockType.AIR) {
       // BOUNCE LOGIC: If falling fast enough, reflect velocity
       if (Math.abs(velocity.y) > 0.05f) {
         velocity.y *= BOUNCE_RESTITUTION;

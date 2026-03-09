@@ -17,7 +17,7 @@ public class ClientMovementConsumer implements MovementInputConsumer {
   private Vector3f position = new Vector3f();
 
   private float speed = 0.2f;
-
+  
   /**
    * * Determines how quickly the camera glides to the target position. Values between 0.1 and 0.3
    * provide a smooth experience.

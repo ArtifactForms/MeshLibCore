@@ -48,7 +48,7 @@ public class BlockBreakHandler {
 
     // Get the block type before it's gone
     short oldBlockId =
-        GameServer.getWorld().getBlockId(packet.getX(), packet.getY(), packet.getZ());
+        GameServer.getWorld().getBlock(packet.getX(), packet.getY(), packet.getZ()).getId();
 
     BlockType oldType = BlockType.fromId(oldBlockId);
 
@@ -97,7 +97,7 @@ public class BlockBreakHandler {
   }
 
   private void resyncBlock(int x, int y, int z) {
-    short currentId = GameServer.getWorld().getBlockId(x, y, z);
+    short currentId = GameServer.getWorld().getBlock(x, y, z).getId();
     connection.send(new BlockUpdatePacket(x, y, z, currentId));
   }
 }

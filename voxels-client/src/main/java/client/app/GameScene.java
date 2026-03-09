@@ -3,9 +3,11 @@ package client.app;
 import client.player.BlockInteractionComponent;
 import client.player.ClientMovementConsumer;
 import client.player.FPSControl;
+import client.ui.ClientView;
 import client.ui.HotbarComponent;
 import client.ui.HotbarViewComponent;
-import client.ui.TextDisplay;
+import client.ui.ActionBarComponent;
+import client.ui.View;
 import common.game.Hotbar;
 import common.game.ItemStack;
 import common.world.BlockType;
@@ -20,9 +22,12 @@ public class GameScene extends Scene {
   private Input input;
   private SkyBox skyBox;
   private SceneNode player;
-  private TextDisplay textDisplay;
+  private ActionBarComponent actionBar;
+  private View view;
 
   public GameScene(Input input) {
+    view = new View();
+
     this.input = input;
 
     setupCamera();
@@ -37,11 +42,14 @@ public class GameScene extends Scene {
     SceneNode interactNode = new SceneNode("Interact", new BlockInteractionComponent(input));
     addNode(interactNode);
     ApplicationContext.activeScene = this;
-    
+
     SceneNode entities = new SceneNode("Entities");
     entities.addComponent(new EntitiesComponent());
     addNode(entities);
     
+    ApplicationContext.view = view;
+    
+//    view.getActionBarView().display("Test Message", 6);
   }
 
   private void setupCamera() {
@@ -85,7 +93,7 @@ public class GameScene extends Scene {
     hotbar.setSlot(0, new ItemStack(BlockType.STONE.getId(), 64));
     hotbar.setSlot(1, new ItemStack(BlockType.GRASS_BLOCK.getId(), 64));
     hotbar.setSlot(2, new ItemStack(BlockType.SAND.getId(), 64));
-    
+
     ApplicationContext.hotbar = hotbar;
 
     HotbarComponent control = new HotbarComponent(input, hotbar);
@@ -99,8 +107,9 @@ public class GameScene extends Scene {
   }
 
   private void setupTextDisplay() {
-    textDisplay = ApplicationContext.display;
-    getUIRoot().addChild(new SceneNode("Text-Display", textDisplay));
+    actionBar = new ActionBarComponent();
+    view.setActionBarView(actionBar);
+    getUIRoot().addChild(new SceneNode("ActionNar", actionBar));
   }
 
   private void setupReticle() {

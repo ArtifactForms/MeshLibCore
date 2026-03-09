@@ -40,7 +40,7 @@ public class HotbarViewComponent extends AbstractComponent implements Renderable
 
   // Model
   private Hotbar hotbar;
-  
+
   // Icons
   private HotbarBlockIconRenderer iconRenderer = new HotbarBlockIconRenderer();
 
@@ -136,6 +136,7 @@ public class HotbarViewComponent extends AbstractComponent implements Renderable
 
     int posY = g.getHeight() - (slotSize / 2) - MARGIN;
 
+    g.pushMatrix();
     // Hotbar
     g.translate(offsetX, posY, 0);
     geometry.render(g);
@@ -148,26 +149,17 @@ public class HotbarViewComponent extends AbstractComponent implements Renderable
     g.strokeWeight(2);
     g.setColor(Color.WHITE);
     g.drawRect(x, -slotSize / 2, slotSize, slotSize);
-    
-    
-    g.pushMatrix();
-    
+
     for (int i = 0; i < SLOTS; i++) {
 
-    	ItemStack itemStack = hotbar.getSlot(i);
-    	if (itemStack == null) continue;    	
-    	
-    	  int x1 = (i * slotSize) - (scaledWidth / 2) + slotSize / 2;
+      ItemStack itemStack = hotbar.getSlot(i);
+      if (itemStack == null) continue;
 
-    	  iconRenderer.render(
-    	      g,
-    	      itemStack.getItemId(),
-    	      itemStack.getAmount(),
-    	      x1,
-    	      0
-    	  );
-    	}
-    
+      int x1 = (i * slotSize) - (scaledWidth / 2) + slotSize / 2;
+
+      iconRenderer.render(g, itemStack.getItemId(), itemStack.getAmount(), x1, 0);
+    }
+
     g.popMatrix();
   }
 

@@ -44,7 +44,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   /** Performance caps per frame to maintain stable FPS */
   private static final int MAX_DATA_PER_FRAME = 30;
 
-  private static final int MAX_MESH_PER_FRAME = 10;
+  private static final int MAX_MESH_PER_FRAME = 8;
 
   private int playerChunkX;
   private int playerChunkZ;
@@ -82,11 +82,10 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
       // Stage 2: Queue for mesh rebuild if data is ready but mesh is dirty
       if (chunk.isDataReady()
+          && neighborsReady(chunk.getChunkX(), chunk.getChunkZ())
           && (chunk.getStatus() == ChunkStatus.DATA_READY || chunk.needsRebuild())) {
-        if (isWithinRenderDistance(chunk)) {
-          if (meshQueueSet.putIfAbsent(chunk, true) == null) {
-            meshQueue.offer(chunk);
-          }
+        if (meshQueueSet.putIfAbsent(chunk, true) == null) {
+          meshQueue.offer(chunk);
         }
       }
     }
@@ -119,6 +118,21 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
         chunk.updateMesh();
       }
     }
+  }
+
+  public boolean neighborsReady(int cx, int cz) {
+    // Prüft alle 8 Nachbarn (N, S, O, W + Diagonalen)
+    for (int x = -1; x <= 1; x++) {
+      for (int z = -1; z <= 1; z++) {
+        if (x == 0 && z == 0) continue; // Den eigenen Chunk überspringen
+
+        Chunk neighbor = getChunk(cx + x, cz + z);
+        if (neighbor == null || !neighbor.isDataReady()) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   private void updateChunksAroundPlayer() {
@@ -189,12 +203,22 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   /** Modifies a block in the world and marks the affected chunk as dirty for a mesh rebuild. */
   public void setBlockAt(int x, int y, int z, short id) {
-    int cx = (int) Math.floor(x / 16.0);
-    int cz = (int) Math.floor(z / 16.0);
+    int cx = Math.floorDiv(x, 16);
+    int cz = Math.floorDiv(z, 16);
     Chunk c = getChunk(cx, cz);
+
     if (c != null) {
       c.setBlockId(id, Math.floorMod(x, 16), y, Math.floorMod(z, 16));
-      c.markDirty();
+      c.markDirty(); //
+
+      // WICHTIG: Wenn der Block am Rand liegt, Nachbarn auch dirty markieren!
+      int lx = Math.floorMod(x, 16);
+      int lz = Math.floorMod(z, 16);
+
+      if (lx == 0) markChunkDirty(cx - 1, cz);
+      if (lx == 15) markChunkDirty(cx + 1, cz);
+      if (lz == 0) markChunkDirty(cx, cz - 1);
+      if (lz == 15) markChunkDirty(cx, cz + 1);
     }
   }
 

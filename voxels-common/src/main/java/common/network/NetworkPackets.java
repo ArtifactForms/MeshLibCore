@@ -37,5 +37,8 @@ public class NetworkPackets {
     
     // Entities
     PacketRegistry.register(EntityDestroyPacket::new);
+    
+    // HUD
+    PacketRegistry.register(ActionBarPacket::new);
   }
 }

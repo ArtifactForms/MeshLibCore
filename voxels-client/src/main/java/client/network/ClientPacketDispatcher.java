@@ -61,49 +61,50 @@ public class ClientPacketDispatcher {
   }
 
   private void handleChatMessage(ChatMessagePacket packet) {
-    ApplicationContext.display.setText(packet.getMessage());
+    //    ApplicationContext.display.setText(packet.getMessage());
+    ApplicationContext.view.getActionBarView().display(packet.getMessage(), 4);
   }
 
   private void handleSoundEffect(SoundEffectPacket packet) {
     SoundManager.playEffect(packet.getSoundEffectId());
   }
 
-  //  private void handlePlayerPosition(PlayerPositionPacket packet) {
-  //    if (packet.getPlayerUuid().equals(ApplicationContext.playerUiid)) {
-  //      ClientMovementConsumer consumer = ApplicationContext.clientMovementConsumer;
-  //      Vector3f clientPos = consumer.getPosition();
-  //
-  //      float dx = packet.getX() - clientPos.x;
-  //      float dy = (-packet.getY()) - clientPos.y;
-  //      float dz = packet.getZ() - clientPos.z;
-  //
-  //      float distanceSq = dx * dx + dy * dy + dz * dz;
-  //
-  //      // Hard sync if the difference is too large (Server-side authority)
-  //      if (distanceSq > 0.01f) {
-  //        clientPos.set(packet.getX(), -packet.getY(), packet.getZ());
-  //        System.out.println("[Network] Hard sync applied (Diff: " + Math.sqrt(distanceSq) + ")");
-  //      }
-  //    }
-  //  }
-
   private void handlePlayerPosition(PlayerPositionPacket packet) {
     if (packet.getPlayerUuid().equals(ApplicationContext.playerUiid)) {
-
       ClientMovementConsumer consumer = ApplicationContext.clientMovementConsumer;
       Vector3f clientPos = consumer.getPosition();
 
       float dx = packet.getX() - clientPos.x;
-      float dy = packet.getY() - clientPos.y;
+      float dy = (-packet.getY()) - clientPos.y;
       float dz = packet.getZ() - clientPos.z;
 
       float distanceSq = dx * dx + dy * dy + dz * dz;
 
-      if (distanceSq > 1.0f) {
-        clientPos.set(packet.getX(), packet.getY(), packet.getZ());
+      // Hard sync if the difference is too large (Server-side authority)
+      if (distanceSq > 0.01f) {
+        clientPos.set(packet.getX(), -packet.getY(), packet.getZ());
+        System.out.println("[Network] Hard sync applied (Diff: " + Math.sqrt(distanceSq) + ")");
       }
     }
   }
+
+  //  private void handlePlayerPosition(PlayerPositionPacket packet) {
+  //    if (packet.getPlayerUuid().equals(ApplicationContext.playerUiid)) {
+  //
+  //      ClientMovementConsumer consumer = ApplicationContext.clientMovementConsumer;
+  //      Vector3f clientPos = consumer.getPosition();
+  //
+  //      float dx = packet.getX() - clientPos.x;
+  //      float dy = packet.getY() - clientPos.y;
+  //      float dz = packet.getZ() - clientPos.z;
+  //
+  //      float distanceSq = dx * dx + dy * dy + dz * dz;
+  //
+  //      if (distanceSq > 1.0f) {
+  //        clientPos.set(packet.getX(), packet.getY(), packet.getZ());
+  //      }
+  //    }
+  //  }
 
   // Inside your ClientPacketDispatcher or Handler
   public void handleItemSpawn(ItemSpawnPacket packet) {

@@ -9,6 +9,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class World {
 
+  // Chunk dimension constants for internal calculations
+  private static final int CHUNK_WIDTH = ChunkData.WIDTH;
+  private static final int CHUNK_DEPTH = ChunkData.DEPTH;
+  private static final int CHUNK_HEIGHT = ChunkData.HEIGHT;
+
+  // Vertical world limits to prevent out-of-bounds access
+  private static final int MIN_Y = 0;
+  private static final int MAX_Y = CHUNK_HEIGHT - 1;
+
   // Thread-safe map to store chunks by a single long key (packed X/Z)
   protected final Map<Long, ChunkData> chunks = new ConcurrentHashMap<>();
 
@@ -28,24 +37,35 @@ public class World {
 
   // --- Block Access (The Bridge) ---
 
-  public short getBlockId(int x, int y, int z) {
-    if (y < 0 || y >= ChunkData.HEIGHT) return BlockType.AIR.getId();
+  /** Returns the BlockType at the given world coordinates. */
+  public BlockType getBlock(int x, int y, int z) {
+    if (y < MIN_Y || y > MAX_Y) {
+      return BlockType.AIR;
+    }
 
-    int cx = Math.floorDiv(x, ChunkData.WIDTH);
-    int cz = Math.floorDiv(z, ChunkData.DEPTH);
+    ChunkData chunk = getChunkAt(x, y, z);
+    if (chunk == null) {
+      return BlockType.AIR;
+    }
 
-    ChunkData chunk = getChunk(cx, cz);
-    if (chunk == null) return BlockType.AIR.getId();
+    int localX = Math.floorMod(x, CHUNK_WIDTH);
+    int localZ = Math.floorMod(z, CHUNK_DEPTH);
 
-    int lx = Math.floorMod(x, ChunkData.WIDTH);
-    int lz = Math.floorMod(z, ChunkData.DEPTH);
-
-    return chunk.getBlockId(lx, y, lz);
+    return chunk.getBlock(localX, y, localZ);
   }
 
+  /** Finds the chunk corresponding to the given world coordinates. */
+  public ChunkData getChunkAt(int x, int y, int z) {
+    int chunkXIndex = Math.floorDiv(x, CHUNK_WIDTH);
+    int chunkZIndex = Math.floorDiv(z, CHUNK_DEPTH);
+
+    return getChunk(chunkXIndex, chunkZIndex);
+  }
+
+  /** Checks if a solid block exists at the specified world coordinates. */
   public boolean isSolid(int x, int y, int z) {
-    short id = getBlockId(x, y, z);
-    return BlockType.fromId(id).isSolid();
+    BlockType blockType = getBlock(x, y, z);
+    return blockType != null && blockType != BlockType.AIR;
   }
 
   public void setBlock(int x, int y, int z, short blockId) {
