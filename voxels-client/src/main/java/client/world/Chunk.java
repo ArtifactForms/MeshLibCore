@@ -11,8 +11,7 @@ import engine.rendering.Graphics;
 import math.Vector3f;
 
 public class Chunk extends ChunkData {
-  private static final ExecutorService executorService =
-      Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1));
+  private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
   private final Vector3f worldPosition = new Vector3f();
   private volatile StaticGeometry currentGeometry;
@@ -62,8 +61,8 @@ public class Chunk extends ChunkData {
     if (meshFuture == null || !meshFuture.isDone()) return;
     try {
       StaticGeometry newMesh = meshFuture.get();
-      this.currentGeometry = newMesh; // Kann null sein bei Luft-Chunks
-      this.status = ChunkStatus.MESH_READY; // IMMER auf Ready setzen, wenn Task fertig
+      this.currentGeometry = newMesh;
+      this.status = ChunkStatus.MESH_READY;
       this.needsRebuild = false;
     } catch (Exception e) {
       e.printStackTrace();
@@ -85,12 +84,12 @@ public class Chunk extends ChunkData {
     this.needsRebuild = true;
   }
 
-  public boolean isDataReady() {
-    return status != ChunkStatus.EMPTY;
+  public void setDataReady() {
+    this.status = ChunkStatus.DATA_READY;
   }
 
-  public void setDataReady() {
-    if (status == ChunkStatus.EMPTY) status = ChunkStatus.DATA_READY;
+  public boolean isDataReady() {
+    return status != ChunkStatus.EMPTY;
   }
 
   public ChunkStatus getStatus() {
@@ -99,5 +98,9 @@ public class Chunk extends ChunkData {
 
   public boolean needsRebuild() {
     return needsRebuild;
+  }
+
+  public Vector3f getWorldPosition() {
+    return worldPosition;
   }
 }

@@ -1,5 +1,7 @@
 package client.world;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -13,8 +15,13 @@ import common.world.World;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
+import math.Color;
 import math.Vector3f;
 
+/**
+ * Manages the lifecycle of Chunks on the client side. Optimized with time-budgeted queue processing
+ * for stable performance.
+ */
 public class ChunkManager extends AbstractComponent implements RenderableComponent {
 
   private int renderDistance;
@@ -32,8 +39,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private final ConcurrentHashMap<Chunk, Boolean> dataQueueSet = new ConcurrentHashMap<>();
   private final ConcurrentHashMap<Chunk, Boolean> meshQueueSet = new ConcurrentHashMap<>();
 
-  private static final int MAX_DATA_PER_FRAME = 40;
-  private static final int MAX_MESH_PER_FRAME = 12;
+  private static final int MAX_DATA_PER_FRAME = 30;
+  private static final int MAX_MESH_PER_FRAME = 15;
 
   private int playerChunkX;
   private int playerChunkZ;
@@ -44,56 +51,68 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   @Override
   public void onUpdate(float tpf) {
+    ApplicationContext.clientWorld.processIncomingPackets(2_000_000);
+
     Vector3f pos = ApplicationContext.clientMovementConsumer.getPosition();
 
     playerChunkX = (int) Math.floor(pos.x / 16.0);
     playerChunkZ = (int) Math.floor(pos.z / 16.0);
 
-    if (playerChunkX != lastPlayerChunkX || playerChunkZ != lastPlayerChunkZ) {
-      updateChunksAroundPlayer();
-      lastPlayerChunkX = playerChunkX;
-      lastPlayerChunkZ = playerChunkZ;
-    }
-
+    updateChunksAroundPlayer();
     enqueueChunks();
-    processQueues();
+    processQueues(); 
   }
 
   private void enqueueChunks() {
+    List<Chunk> toMesh = new ArrayList<>();
+
     for (Chunk chunk : activeChunks.values()) {
       if (!chunk.isDataReady() && dataQueueSet.putIfAbsent(chunk, true) == null) {
         dataQueue.offer(chunk);
       }
       if (chunk.isDataReady()
           && (chunk.getStatus() == ChunkStatus.DATA_READY || chunk.needsRebuild())) {
-        if (meshQueueSet.putIfAbsent(chunk, true) == null) {
-          meshQueue.offer(chunk);
+        if (!meshQueueSet.containsKey(chunk)) {
+          toMesh.add(chunk);
         }
+      }
+    }
+
+    toMesh.sort(
+        (a, b) -> {
+          float distA =
+              a.getWorldPosition()
+                  .distanceSquared(ApplicationContext.clientMovementConsumer.getPosition());
+          float distB =
+              b.getWorldPosition()
+                  .distanceSquared(ApplicationContext.clientMovementConsumer.getPosition());
+          return Float.compare(distA, distB);
+        });
+
+    for (Chunk c : toMesh) {
+      if (meshQueueSet.putIfAbsent(c, true) == null) {
+        meshQueue.offer(c);
       }
     }
   }
 
   private void processQueues() {
-    for (int i = 0; i < MAX_DATA_PER_FRAME && !dataQueue.isEmpty(); i++) {
-      Chunk chunk = dataQueue.poll();
-      if (chunk == null) continue;
-      dataQueueSet.remove(chunk);
-    }
+    long startTime = System.nanoTime();
+    long budgetInNanos = 2_000_000; // 2ms budget
 
-    for (int i = 0; i < MAX_MESH_PER_FRAME && !meshQueue.isEmpty(); i++) {
+    while (!meshQueue.isEmpty() && (System.nanoTime() - startTime) < budgetInNanos) {
       Chunk chunk = meshQueue.poll();
       if (chunk == null) continue;
+
       meshQueueSet.remove(chunk);
 
-      if (chunk.isDataReady()) {
+      if (!activeChunks.containsValue(chunk)) continue;
+
+      if (chunk.getStatus() == ChunkStatus.DATA_READY || chunk.needsRebuild()) {
         chunk.scheduleMeshGeneration(this);
       }
-    }
 
-    for (Chunk chunk : activeChunks.values()) {
-      if (chunk.getStatus() == ChunkStatus.MESH_GENERATING) {
-        chunk.updateMesh();
-      }
+      chunk.updateMesh();
     }
   }
 
@@ -166,13 +185,27 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   @Override
   public void render(Graphics g) {
+    Color skyColor = Color.getColorFromInt(180, 210, 255);
+    
+    g.setShader("voxel.vert", "voxel.frag");
+    g.setUniform("u_fogColor", skyColor);
+
+    float blocks = 8.0f * 16.0f;
+    float density = 1.5f / blocks;
+    g.setUniform("u_fogDensity", density);
+
     g.enableFaceCulling();
+
     for (Chunk chunk : activeChunks.values()) {
       if (isWithinRenderDistance(chunk)) {
         chunk.render(g);
       }
     }
+
     g.disableFaceCulling();
+
+    // 5. Shader ausschalten, damit das UI nicht vernebelt wird
+    g.resetShader();
   }
 
   public void setBlockAt(int x, int y, int z, short id) {
@@ -212,7 +245,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     int lx = Math.floorMod((int) Math.floor(x), 16);
     int lz = Math.floorMod((int) Math.floor(z), 16);
 
-    for (int y = ChunkData.HEIGHT; y >= 0; y--) {
+    for (int y = ChunkData.HEIGHT - 1; y >= 0; y--) {
       if (c.getBlockId(lx, y, lz) != 0) return y + 1.0f;
     }
     return 0;

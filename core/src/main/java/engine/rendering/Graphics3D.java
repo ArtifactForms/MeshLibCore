@@ -4,6 +4,7 @@ import engine.resources.Model;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.vbo.VBO;
+import math.Color;
 import math.Matrix4f;
 import math.Vector3f;
 import mesh.Mesh3D;
@@ -33,6 +34,14 @@ public interface Graphics3D {
   void draw(VBO vbo);
 
   void setShader(String vertexShaderName, String fragmentShaderName);
+  
+  void resetShader();
+  
+  void setUniform(String name, float value);
+  
+  void setUniform(String name, Vector3f value);
+  
+  void setUniform(String name, Color color);
 
   void enableDepthTest();
 

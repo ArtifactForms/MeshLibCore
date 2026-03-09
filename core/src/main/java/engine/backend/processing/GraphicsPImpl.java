@@ -48,6 +48,8 @@ public class GraphicsPImpl implements Graphics {
 
   private boolean smoothShading;
 
+  private final java.util.Map shaderCache = new java.util.HashMap();
+  private String currentShaderKey = "";
   private PShader activeShader;
 
   public GraphicsPImpl(PApplet p) {
@@ -59,8 +61,6 @@ public class GraphicsPImpl implements Graphics {
     lightRenderer.setGraphics(this);
 
     fontManager = new ProcessingFontManager(p);
-
-    setShader("toon.vert", "toon.frag");
   }
 
   @Override
@@ -74,22 +74,6 @@ public class GraphicsPImpl implements Graphics {
   }
 
   @Override
-  public void setShader(String vertexShaderName, String fragmentShaderName) {
-    try {
-      activeShader = g.loadShader("shaders/" + fragmentShaderName, "shaders/" + vertexShaderName);
-
-      if (activeShader == null) {
-        System.err.println("Failed to load shader.");
-      } else {
-        System.out.println("Shader loaded successfully.");
-      }
-    } catch (Exception e) {
-      System.err.println("Error while loading shader: " + e.getMessage());
-      e.printStackTrace();
-    }
-  }
-
-  @Override
   public void lightsOff() {
     //    g.noLights();
     lightRenderer.off();
@@ -98,6 +82,62 @@ public class GraphicsPImpl implements Graphics {
   @Override
   public void render(Light light) {
     light.render(lightRenderer);
+  }
+
+  // -------------------------------------------------
+  // SHADER
+  // -------------------------------------------------
+
+  @Override
+  public void setShader(String vertexShaderName, String fragmentShaderName) {
+    String key = vertexShaderName + "|" + fragmentShaderName;
+
+    if (key.equals(currentShaderKey)) return;
+
+    if (shaderCache.containsKey(key)) {
+      activeShader = (processing.opengl.PShader) shaderCache.get(key);
+      g.shader(activeShader);
+      currentShaderKey = key;
+      return;
+    }
+
+    try {
+      activeShader = g.loadShader("shaders/" + fragmentShaderName, "shaders/" + vertexShaderName);
+      if (activeShader != null) {
+        shaderCache.put(key, activeShader);
+        g.shader(activeShader);
+        currentShaderKey = key;
+      }
+    } catch (Exception e) {
+      System.err.println("Shader Load Error: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public void resetShader() {
+    g.resetShader();
+    activeShader = null;
+    currentShaderKey = "";
+  }
+
+  @Override
+  public void setUniform(String name, float value) {
+    if (activeShader != null) activeShader.set(name, value);
+  }
+
+  @Override
+  public void setUniform(String name, Vector3f value) {
+    if (activeShader != null) activeShader.set(name, value.x, value.y, value.z);
+  }
+
+  @Override
+  public void setUniform(String name, math.Color color) {
+    if (activeShader != null) {
+      float r = color.getRed();
+      float g = color.getGreen();
+      float b = color.getBlue();
+      activeShader.set(name, r, g, b);
+    }
   }
 
   // -------------------------------------------------

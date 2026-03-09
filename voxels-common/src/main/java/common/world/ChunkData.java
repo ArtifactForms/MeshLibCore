@@ -12,7 +12,8 @@ public class ChunkData {
   public static final int DEPTH = 16;
   public static final int HEIGHT = 384;
 
-  protected final short[] blockData;
+  //  protected final short[] blockData;
+  protected short[] blockData;
   protected final int[] heightMap;
 
   protected int chunkX;
@@ -78,10 +79,10 @@ public class ChunkData {
     if (!isInside(x, y, z)) return false;
     return blockData[getIndex(x, y, z)] != BlockType.AIR.getId();
   }
-  
+
   public boolean isBlockSolid(int x, int y, int z) {
-	  return isSolid(x, y, z);
-	}
+    return isSolid(x, y, z);
+  }
 
   // --- Helpers ---
 
@@ -122,5 +123,9 @@ public class ChunkData {
 
   public int getChunkZ() {
     return chunkZ;
+  }
+
+  public void setBlockData(short[] blockData) {
+    this.blockData = blockData;
   }
 }

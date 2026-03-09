@@ -16,6 +16,7 @@ import engine.runtime.input.Input;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
+import math.Color;
 
 public class GameScene extends Scene {
 
@@ -28,11 +29,13 @@ public class GameScene extends Scene {
   public GameScene(Input input) {
     view = new View();
 
+    setBackground(Color.getColorFromInt(180, 210, 255));
+    
     this.input = input;
 
     setupCamera();
     setupPlayer();
-    setupSkyBox();
+//    setupSkyBox();
     setupUI();
 
     SceneNode world = new SceneNode("World", ApplicationContext.chunkManager);
