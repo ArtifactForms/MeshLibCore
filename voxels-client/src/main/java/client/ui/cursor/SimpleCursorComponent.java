@@ -1,4 +1,4 @@
-package client.ui;
+package client.ui.cursor;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
