@@ -1,4 +1,4 @@
-package client.ui;
+package client.ui.hotbar;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

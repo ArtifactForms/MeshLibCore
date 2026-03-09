@@ -1,6 +1,7 @@
-package client.ui;
+package client.ui.hotbar;
 
 import client.rendering.TextureAtlas;
+import client.ui.GameTextures;
 import engine.components.Geometry;
 import engine.rendering.Graphics;
 import engine.rendering.Material;
