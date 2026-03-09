@@ -2,6 +2,9 @@ package common.world;
 
 import java.util.Arrays;
 
+import math.Bounds;
+import math.Vector3f;
+
 /**
  * Pure data representation of a voxel chunk. This class is "Headless" and can run on a server
  * without any graphics API.
@@ -85,6 +88,12 @@ public class ChunkData {
   }
 
   // --- Helpers ---
+
+  public Bounds getChunkBounds() {
+    Vector3f min = new Vector3f(getChunkX() * WIDTH, 0, getChunkZ() * DEPTH);
+    Vector3f max = new Vector3f(min.x + WIDTH, HEIGHT, min.z + DEPTH);
+    return new Bounds(min, max);
+  }
 
   protected int getIndex(int x, int y, int z) {
     return x + WIDTH * (y + HEIGHT * z);
