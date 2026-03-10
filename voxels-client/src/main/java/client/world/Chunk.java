@@ -66,7 +66,7 @@ public class Chunk extends ChunkData {
       this.needsRebuild = false;
     } catch (Exception e) {
       e.printStackTrace();
-      this.status = ChunkStatus.DATA_READY; // Fehler-Fallback
+      this.status = ChunkStatus.DATA_READY; // Error-Fallback
     }
     meshFuture = null;
   }
