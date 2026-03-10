@@ -23,9 +23,12 @@ public class BlockBreakHandler {
 
   private final ServerConnection connection;
 
+//  private static final List<BlockActionValidator> RULES =
+//      List.<BlockActionValidator>of(
+//          new DistanceValidator(ReachDistance.VALUE + 0.5f), new MaterialValidator());
+  
   private static final List<BlockActionValidator> RULES =
-      List.<BlockActionValidator>of(
-          new DistanceValidator(ReachDistance.VALUE + 0.5f), new MaterialValidator());
+	      List.<BlockActionValidator>of(new MaterialValidator());
 
   public BlockBreakHandler(ServerConnection connection) {
     this.connection = connection;

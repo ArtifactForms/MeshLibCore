@@ -55,7 +55,7 @@ public class PlayerMoveHandler {
     // 2. Validate position against terrain (Server Authority)
     // We determine where the player *should* be based on the world data
     int terrainY =
-        GameServer.getWorld().getHighestNonAirBlock((int) Math.floor(x), (int) Math.floor(z));
+        GameServer.getWorld().getHeightAt((int) Math.floor(x), (int) Math.floor(z));
 
     // 3. Check for significant deviations (e.g., flying or falling through floor)
     float diffY = Math.abs(y - terrainY);

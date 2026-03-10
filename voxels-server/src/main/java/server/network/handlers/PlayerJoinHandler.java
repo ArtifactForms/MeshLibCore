@@ -34,7 +34,7 @@ public class PlayerJoinHandler {
     // Calculate spawn position
     int spawnX = 0;
     int spawnZ = 0;
-    int spawnY = GameServer.getWorld().getHighestNonAirBlock(spawnX, spawnZ);
+    int spawnY = GameServer.getWorld().getHeightAt(spawnX, spawnZ);
 
     // Default join message
     String joinMessage = "§e" + player.getName() + " ist dem Spiel beigetreten!";
