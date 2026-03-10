@@ -1,9 +1,9 @@
 package client.player;
 
+import client.settings.KeyBinds;
 import engine.components.AbstractComponent;
 import engine.components.MovementInputConsumer;
 import engine.runtime.input.Input;
-import engine.runtime.input.Key;
 import engine.runtime.input.MouseMode;
 import engine.scene.camera.Camera;
 import math.Mathf;
@@ -37,13 +37,19 @@ public class FPSControl extends AbstractComponent {
   private float smoothedMouseY = 0f;
   private float currentPitch = 0f;
 
+  private boolean sprint;
+
+  private float bobOffsetY = 0f;
+  private float bobRotX = 0f;
+  private float bobRoll = 0f;
+
   /** Vertical camera offset relative to the player position. */
   private float eyeHeightOffset = 0.8f;
 
   private final Input input;
-  private final MovementInputConsumer consumer;
+  private final ClientMovementConsumer consumer;
 
-  public FPSControl(Input input, MovementInputConsumer consumer) {
+  public FPSControl(Input input, ClientMovementConsumer consumer) {
     this.input = input;
     this.consumer = consumer;
   }
@@ -62,14 +68,17 @@ public class FPSControl extends AbstractComponent {
   public void onUpdate(float tpf) {
     handleMouseLook(tpf);
 
+    sprint = input.isKeyPressed(KeyBinds.sprint);
+    consumer.sprint(sprint);
+
     Vector3f moveDirection = calculateMoveDirection();
     if (moveDirection.lengthSquared() > 0) {
-      consumer.addMovementInput(moveDirection);
+      consumer.addMovementInput(moveDirection, tpf);
     }
 
-    if (input.isKeyPressed(Key.SPACE)) {
-      consumer.jump();
-    }
+    //    if (input.isKeyPressed(Key.SPACE)) {
+    ////      consumer.jump();
+    //    }
 
     syncCamera();
   }
@@ -86,15 +95,30 @@ public class FPSControl extends AbstractComponent {
 
     // Combine yaw (from player) and pitch (local)
     float playerYaw = getOwner().getTransform().getRotation().y;
-    activeCamera.getTransform().setRotation(currentPitch, playerYaw, 0);
+//    activeCamera.getTransform().setRotation(currentPitch, playerYaw, 0);
+    
+    activeCamera.getTransform().setRotation(
+    	    currentPitch + bobRotX,
+    	    playerYaw,
+    	    bobRoll
+    );
 
     // Position camera at eye height
     Vector3f pos = new Vector3f(getOwner().getTransform().getPosition());
-    activeCamera.getTransform().setPosition(pos.subtract(0, eyeHeightOffset, 0));
+
+    activeCamera.getTransform().setPosition(
+        pos.subtract(0, eyeHeightOffset - bobOffsetY, 0)
+    );
 
     // Update camera target
     Vector3f forward = activeCamera.getTransform().getForward();
     activeCamera.setTarget(activeCamera.getTransform().getPosition().add(forward));
+
+    if (sprint) {
+      activeCamera.setFieldOfView(Mathf.toRadians(90));
+    } else {
+      activeCamera.setFieldOfView(Mathf.toRadians(70));
+    }
   }
 
   /**
@@ -117,10 +141,10 @@ public class FPSControl extends AbstractComponent {
     forward.normalizeLocal();
     right.normalizeLocal();
 
-    if (input.isKeyPressed(Key.W)) dir.addLocal(forward);
-    if (input.isKeyPressed(Key.S)) dir.subtractLocal(forward);
-    if (input.isKeyPressed(Key.A)) dir.subtractLocal(right);
-    if (input.isKeyPressed(Key.D)) dir.addLocal(right);
+    if (input.isKeyPressed(KeyBinds.walkForwards)) dir.addLocal(forward);
+    if (input.isKeyPressed(KeyBinds.walkBackwards)) dir.subtractLocal(forward);
+    if (input.isKeyPressed(KeyBinds.strafeLeftKey)) dir.subtractLocal(right);
+    if (input.isKeyPressed(KeyBinds.strafeRightKey)) dir.addLocal(right);
 
     if (dir.lengthSquared() > 0) {
       dir.normalizeLocal();
@@ -164,4 +188,10 @@ public class FPSControl extends AbstractComponent {
   public void setEyeHeightOffset(float eyeHeightOffset) {
     this.eyeHeightOffset = eyeHeightOffset;
   }
+
+  public void setHeadBob(float y, float pitch, float roll) {
+	    this.bobOffsetY = y;
+	    this.bobRotX = pitch;
+	    this.bobRoll = roll;
+	}
 }

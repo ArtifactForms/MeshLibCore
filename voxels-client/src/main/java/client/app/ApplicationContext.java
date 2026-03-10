@@ -4,8 +4,9 @@ import java.util.UUID;
 
 import client.network.ClientNetwork;
 import client.player.ClientMovementConsumer;
+import client.player.FPSControl;
 import client.ui.ClientView;
-import client.ui.ActionBarComponent;
+import client.ui.actionbar.ActionBarComponent;
 import client.world.ChunkManager;
 import client.world.ClientWorld;
 import common.game.Hotbar;
@@ -33,4 +34,6 @@ public class ApplicationContext {
   public static Hotbar hotbar;
   
   public static ClientView view;
+  
+  public static FPSControl fpsController;
 }

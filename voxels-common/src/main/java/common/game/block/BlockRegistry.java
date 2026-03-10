@@ -67,4 +67,8 @@ public final class BlockRegistry {
   public static boolean isFrozen() {
     return frozen;
   }
+
+  public static int size() {
+    return nextId;
+  }
 }

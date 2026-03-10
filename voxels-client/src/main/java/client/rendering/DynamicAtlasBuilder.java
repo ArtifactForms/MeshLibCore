@@ -5,9 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 
-import common.world.BlockType;
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
+import common.game.block.Blocks;
 
 /**
  * Dynamically constructs a texture atlas at runtime by combining individual block textures.
@@ -24,26 +27,30 @@ public class DynamicAtlasBuilder {
   }
 
   /**
-   * Builds the texture atlas image. Each block type occupies one row. Columns are organized as:
-   * 0:Top, 1:Bottom, 2-5:Sides. * @param emissionMode If true, loads emission maps (_e.png) instead
-   * of diffuse textures.
+   * Builds the texture atlas image. Each block type occupies one row.
    *
-   * @return A completed BufferedImage containing all registered block textures.
+   * <p>Columns: 0 = Top 1 = Bottom 2-5 = Sides
    */
   public BufferedImage build(boolean emissionMode) {
-    int rows = BlockType.values().length;
+
+    int rows = BlockRegistry.size();
     int columns = 6;
 
     BufferedImage atlas =
         new BufferedImage(columns * tileSize, rows * tileSize, BufferedImage.TYPE_INT_ARGB);
+
     Graphics2D g = atlas.createGraphics();
 
-    for (BlockType type : BlockType.values()) {
-      if (type == BlockType.AIR) continue;
+    for (BlockType block : BlockRegistry.getAll()) {
 
-      int row = type.getId();
+      if (block == null) continue;
+      if (block == Blocks.AIR) continue;
+
+      int row = block.getId();
+
       for (int col = 0; col < columns; col++) {
-        BufferedImage texture = loadTextureFor(type, col, emissionMode);
+
+        BufferedImage texture = loadTextureFor(block, col, emissionMode);
 
         int x = col * tileSize;
         int y = row * tileSize;
@@ -51,8 +58,6 @@ public class DynamicAtlasBuilder {
         if (texture != null) {
           g.drawImage(texture, x, y, tileSize, tileSize, null);
         } else if (!emissionMode) {
-          // Only draw the error pattern in diffuse mode to avoid
-          // magenta squares in the glow/emission map.
           drawErrorPattern(g, x, y);
         }
       }
@@ -63,11 +68,19 @@ public class DynamicAtlasBuilder {
   }
 
   /**
-   * Attempts to load a texture file for a specific block and face. Logic follows a priority: 1.
-   * Specific face (e.g., grass_top.png) 2. General fallback (e.g., grass.png)
+   * Attempts to load a texture file for a specific block and face.
+   *
+   * <p>Priority: 1. grass_top.png 2. grass.png
    */
-  private BufferedImage loadTextureFor(BlockType type, int side, boolean emissionMode) {
-    String name = type.name().toLowerCase();
+  private BufferedImage loadTextureFor(BlockType block, int side, boolean emissionMode) {
+
+    String name = block.getName();
+
+    // Remove namespace (core:stone -> stone)
+    if (name.contains(":")) {
+      name = name.split(":")[1];
+    }
+
     String suffix = (side == 0) ? "_top" : (side == 1) ? "_bottom" : "_side";
     String ext = emissionMode ? "_e.png" : ".png";
 
@@ -75,10 +88,9 @@ public class DynamicAtlasBuilder {
     String fallbackPath = resourcePath + name + ext;
 
     try {
-      // Attempt 1: Load specific side texture
+
       InputStream is = getClass().getResourceAsStream(path);
 
-      // Attempt 2: Load generic fallback texture
       if (is == null) {
         is = getClass().getResourceAsStream(fallbackPath);
       }
@@ -88,14 +100,17 @@ public class DynamicAtlasBuilder {
         is.close();
         return img;
       }
+
     } catch (IOException e) {
       System.err.println("[AtlasBuilder] Error reading texture: " + path);
     }
+
     return null;
   }
 
-  /** Draws the classic pink/black checkerboard pattern used to indicate a missing texture. */
+  /** Draws the classic magenta/black checkerboard pattern used for missing textures. */
   private void drawErrorPattern(Graphics2D g, int x, int y) {
+
     g.setColor(Color.MAGENTA);
     g.fillRect(x, y, tileSize / 2, tileSize / 2);
     g.fillRect(x + tileSize / 2, y + tileSize / 2, tileSize / 2, tileSize / 2);

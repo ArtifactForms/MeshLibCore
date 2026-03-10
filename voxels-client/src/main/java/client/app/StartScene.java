@@ -2,9 +2,9 @@ package client.app;
 
 import client.ui.ButtonClickCallback;
 import client.ui.SimpleButton;
-import client.ui.SimpleCursorComponent;
 import client.ui.Sprite;
 import client.ui.UiComponent;
+import client.ui.cursor.SimpleCursorComponent;
 import engine.runtime.input.Input;
 import engine.scene.Scene;
 import engine.scene.SceneNode;

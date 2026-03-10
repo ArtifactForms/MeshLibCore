@@ -2,26 +2,29 @@ package client.player;
 
 import client.app.ApplicationContext;
 import common.network.packets.PlayerMovePacket;
-import engine.components.MovementInputConsumer;
+import common.world.SoundEffect;
 import engine.scene.SceneNode;
+import engine.scene.audio.SoundManager;
 import math.Mathf;
 import math.Vector3f;
 
-/**
- * Handles player movement input on the client side. Implements Client-Side Prediction for terrain
- * following and Linear Interpolation (Lerp) for smooth visual movement.
- */
-public class ClientMovementConsumer implements MovementInputConsumer {
+public class ClientMovementConsumer {
 
-  /** The "logical" target position in the game world. */
   private Vector3f position = new Vector3f();
 
-  private float speed = 0.2f;
-  
-  /**
-   * * Determines how quickly the camera glides to the target position. Values between 0.1 and 0.3
-   * provide a smooth experience.
-   */
+  private float walkSpeed = 4.3f;
+  private float sprintSpeed = 6.5f;
+
+  private float speed;
+  private boolean sprint;
+
+  private float walked;
+  private float bobTime;
+
+  private float headBobY;
+  private float headBobRot;
+  private float headBobRoll;
+
   private float lerpFactor = 0.25f;
 
   private SceneNode player;
@@ -30,68 +33,139 @@ public class ClientMovementConsumer implements MovementInputConsumer {
     this.player = player;
   }
 
-  @Override
-  public void addMovementInput(Vector3f direction) {
-    // 1. Calculate horizontal movement (X/Z)
-    position.x += direction.x * speed;
-    position.z += direction.z * speed;
+  public void addMovementInput(Vector3f direction, float tpf) {
 
-    // 2. CLIENT-SIDE PREDICTION: Snap-to-Ground
-    // We query the local ChunkManager for the terrain height to prevent "jittering"
-    // while waiting for a server response.
+    Vector3f oldPosition = new Vector3f(position);
+
+    speed = sprint ? sprintSpeed : walkSpeed;
+
+    /* ---------------- MOVEMENT ---------------- */
+
+    position.x += direction.x * speed * tpf;
+    position.z += direction.z * speed * tpf;
+
+    /* ---------------- TERRAIN SNAP ---------------- */
+
     if (ApplicationContext.chunkManager != null) {
       float groundHeight = ApplicationContext.chunkManager.getTerrainHeight(position.x, position.z);
-      // Convert to internal rendering coordinate system (-Y logic)
       position.y = -groundHeight;
     }
 
-    // 3. NETWORK: Send intended position to the Server
-    if (ApplicationContext.network != null) {
-      float yaw = 0, pitch = 0;
-      if (ApplicationContext.activeScene != null
-          && ApplicationContext.activeScene.getActiveCamera() != null) {
-        Vector3f rot =
-            ApplicationContext.activeScene.getActiveCamera().getTransform().getRotation();
-        pitch = rot.x;
-        yaw = rot.y;
-      }
+    /* ---------------- NETWORK ---------------- */
 
-      // IMPORTANT: We send positive Y coordinates to the server,
-      // as the server logic is agnostic of the client's -Y rendering.
-      ApplicationContext.network.send(
-          new PlayerMovePacket(position.x, -position.y, position.z, yaw, pitch));
-    }
+    sendMovementPacket();
 
-    // 4. VISUAL SMOOTHING (Interpolation)
-    // Instead of snapping to the position immediately, we interpolate (Lerp)
-    // to smooth out server corrections or uneven terrain transitions.
-    Vector3f currentVisualPos = player.getTransform().getPosition();
+    /* ---------------- VISUAL SMOOTHING ---------------- */
 
-    currentVisualPos.x = Mathf.lerp(currentVisualPos.x, position.x, lerpFactor);
-    currentVisualPos.y = Mathf.lerp(currentVisualPos.y, position.y, lerpFactor);
-    currentVisualPos.z = Mathf.lerp(currentVisualPos.z, position.z, lerpFactor);
+    Vector3f visual = player.getTransform().getPosition();
 
-    // Apply the smoothed transformation
-    player.getTransform().setPosition(currentVisualPos);
+    visual.x = Mathf.lerp(visual.x, position.x, lerpFactor);
+    visual.y = Mathf.lerp(visual.y, position.y, lerpFactor);
+    visual.z = Mathf.lerp(visual.z, position.z, lerpFactor);
+
+    player.getTransform().setPosition(visual);
+
+    /* ---------------- DISTANCE ---------------- */
+
+    float distance =
+        Mathf.sqrt(
+            (position.x - oldPosition.x) * (position.x - oldPosition.x)
+                + (position.z - oldPosition.z) * (position.z - oldPosition.z));
+
+    walked += distance;
+
+    /* ---------------- HEAD BOB ---------------- */
+
+    updateHeadBob(direction, tpf);
+
+    /* ---------------- FOOTSTEPS ---------------- */
+
+    playFootsteps();
   }
 
-  /**
-   * * Called by the ClientPacketHandler when the server issues a mandatory position correction.
-   * Updates the logical position while letting the Lerp handle the visual transition.
-   */
+  private void updateHeadBob(Vector3f direction, float tpf) {
+
+    boolean moving = direction.lengthSquared() > 0.0001f;
+
+    if (moving) {
+
+      float bobSpeed = sprint ? 11.5f : 8.5f;
+      bobTime += tpf * bobSpeed;
+
+      float amplitudeY = sprint ? 0.014f : 0.010f;
+      float amplitudeRot = sprint ? 0.45f : 0.30f;
+      float amplitudeRoll = sprint ? 0.30f : 0.20f;
+
+      float sin = Mathf.sin(bobTime);
+      float cos = Mathf.cos(bobTime);
+
+      headBobY = sin * amplitudeY;
+      headBobRot = cos * Mathf.toRadians(amplitudeRot);
+      headBobRoll = cos * Mathf.toRadians(amplitudeRoll);
+
+    } else {
+
+      headBobY = Mathf.lerp(headBobY, 0f, 0.15f);
+      headBobRot = Mathf.lerp(headBobRot, 0f, 0.15f);
+      headBobRoll = Mathf.lerp(headBobRoll, 0f, 0.15f);
+    }
+
+    if (ApplicationContext.fpsController != null) {
+      ApplicationContext.fpsController.setHeadBob(headBobY, headBobRot, headBobRoll);
+    }
+  }
+
+  private void playFootsteps() {
+
+    float stepDistance = sprint ? sprintSpeed / 2 : walkSpeed / 2;
+
+    while (walked > stepDistance) {
+
+      String[] sounds =
+          new String[] {
+            SoundEffect.FOOT_STEP_GRASS_1,
+            SoundEffect.FOOT_STEP_GRASS_2,
+            SoundEffect.FOOT_STEP_GRASS_3,
+            SoundEffect.FOOT_STEP_GRASS_4
+          };
+      int r = (int) (Math.random() * 4);
+      SoundManager.playEffect(sounds[r]);
+
+      walked -= stepDistance;
+    }
+  }
+
+  private void sendMovementPacket() {
+
+    if (ApplicationContext.network == null) return;
+
+    float yaw = 0;
+    float pitch = 0;
+
+    if (ApplicationContext.activeScene != null
+        && ApplicationContext.activeScene.getActiveCamera() != null) {
+
+      Vector3f rot = ApplicationContext.activeScene.getActiveCamera().getTransform().getRotation();
+
+      pitch = rot.x;
+      yaw = rot.y;
+    }
+
+    ApplicationContext.network.send(
+        new PlayerMovePacket(position.x, -position.y, position.z, yaw, pitch));
+  }
+
   public void applyServerCorrection(float x, float y, float z) {
-    this.position.x = x;
-    this.position.y = -y; // Convert back to -Y rendering
-    this.position.z = z;
-    // Note: We do NOT snap the visual position here; Lerp will pull the camera to the new spot.
+    position.x = x;
+    position.y = -y;
+    position.z = z;
+  }
+
+  public void sprint(boolean sprint) {
+    this.sprint = sprint;
   }
 
   public Vector3f getPosition() {
     return position;
-  }
-
-  @Override
-  public void jump() {
-    // Future implementation: Add upward velocity/force
   }
 }

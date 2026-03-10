@@ -14,7 +14,7 @@ public class ClientPlayer {
   private float yaw;
   private float pitch;
 
-  private float speed = 5.0f; // Erhöht auf 5.0f für flüssigere Bewegung im Test
+  private float speed = 5f;
 
   // --- Position Getters & Setters ---
 
