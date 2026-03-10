@@ -18,7 +18,6 @@ public class ChunkData {
   public static final int DEPTH = 16;
   public static final int HEIGHT = 384;
 
-  //  protected final short[] blockData;
   protected short[] blockData;
   protected final int[] heightMap;
 
@@ -31,8 +30,6 @@ public class ChunkData {
     this.blockData = new short[WIDTH * DEPTH * HEIGHT];
     this.heightMap = new int[WIDTH * DEPTH];
   }
-
-  // --- Block Access ---
 
   public short getBlockId(int x, int y, int z) {
     if (!isInside(x, y, z)) return Blocks.AIR.getId();
@@ -55,8 +52,6 @@ public class ChunkData {
   public void setBlockAt(BlockType type, int x, int y, int z) {
     setBlockId(type.getId(), x, y, z);
   }
-
-  // --- Logic ---
 
   /** Internal helper to keep the heightmap in sync with block changes. */
   private void updateHeightMap(int x, int y, int z, short id) { // Added 'int z' here
@@ -81,6 +76,26 @@ public class ChunkData {
     }
   }
 
+  /**
+   * Fully recalculates the heightmap for the entire chunk. Should be called after setBlockData() or
+   * bulk operations.
+   */
+  public void recalculateHeightMap() {
+    for (int x = 0; x < WIDTH; x++) {
+      for (int z = 0; z < DEPTH; z++) {
+        int newHeight = 0;
+        // Scan from top to bottom
+        for (int y = HEIGHT - 1; y >= 0; y--) {
+          if (getBlockId(x, y, z) != Blocks.AIR.getId()) {
+            newHeight = y;
+            break;
+          }
+        }
+        setHeightValue(newHeight, x, z);
+      }
+    }
+  }
+
   public boolean isSolid(int x, int y, int z) {
     if (!isInside(x, y, z)) return false;
     return blockData[getIndex(x, y, z)] != Blocks.AIR.getId();
@@ -89,8 +104,6 @@ public class ChunkData {
   public boolean isBlockSolid(int x, int y, int z) {
     return isSolid(x, y, z);
   }
-
-  // --- Helpers ---
 
   public Bounds getChunkBounds() {
     Vector3f min = new Vector3f(getChunkX() * WIDTH, 0, getChunkZ() * DEPTH);
@@ -111,14 +124,27 @@ public class ChunkData {
     Arrays.fill(heightMap, 0);
   }
 
-  // --- Getters / Setters ---
+  public void setBlockData(short[] blockData) {
+    int validLength = WIDTH * HEIGHT * DEPTH;
+    if (blockData.length != validLength) {
+      throw new IllegalArgumentException("Block data length must be " + validLength + ".");
+    }
+    this.blockData = blockData;
+  }
 
   public int getHeightValue(int x, int z) {
+    if (!isInsideXZ(x, z)) return 0;
     return heightMap[x + z * WIDTH];
   }
 
-  public void setHeightValue(int value, int x, int z) {
+  protected void setHeightValue(int value, int x, int z) {
+    if (!isInsideXZ(x, z)) return;
     heightMap[x + z * WIDTH] = value;
+  }
+
+  /** Internal helper for 2D boundary checks */
+  public boolean isInsideXZ(int x, int z) {
+    return x >= 0 && x < WIDTH && z >= 0 && z < DEPTH;
   }
 
   public short[] getRawBlockData() {
@@ -135,9 +161,5 @@ public class ChunkData {
 
   public int getChunkZ() {
     return chunkZ;
-  }
-
-  public void setBlockData(short[] blockData) {
-    this.blockData = blockData;
   }
 }
