@@ -24,7 +24,7 @@ public class TextureAtlas {
   private float epsilon = 0.002f; // Small margin to prevent texture bleeding
   private int tileSize = 32;
   private int columns = 6; // 6 faces per block
-  private int rows = 20;
+  private int rows = BlockRegistry.size();
   private int width = tileSize * columns;
   private int height = tileSize * rows;
   private ArrayList<Vector2f> uvCoordinates;
