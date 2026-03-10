@@ -3,7 +3,7 @@ package server.world;
 import common.world.ChunkData;
 import common.world.World;
 import server.network.GameServer;
-import server.world.generation.BasicWorldGenerator;
+import server.world.generation.BasicWorldGenerator2;
 import server.world.generation.WorldGenerator;
 
 /**
@@ -19,7 +19,9 @@ public class ServerWorld extends World {
     this.gameServer = gameServer;
     // Default seed set to 0; consider passing a dynamic seed in the future
     long seed = 0;
-    this.generator = new BasicWorldGenerator(seed);
+    //    this.generator = new BasicWorldGenerator(seed);
+    this.generator = new BasicWorldGenerator2(seed);
+    //    this.generator = new FlatWorldGenerator("1*bedrock,4*dirt,1*grass_block");
   }
 
   /**
@@ -52,32 +54,5 @@ public class ServerWorld extends World {
       addChunk(data);
     }
     return data;
-  }
-
-  /**
-   * Finds the highest non-air block at the given world coordinates. Useful for spawning entities or
-   * determining terrain surface. * @param worldX Global X coordinate
-   *
-   * @param worldZ Global Z coordinate
-   * @return The Y coordinate of the first empty space above the terrain
-   */
-  public int getHighestNonAirBlock(int worldX, int worldZ) {
-    int cx = Math.floorDiv(worldX, 16);
-    int cz = Math.floorDiv(worldZ, 16);
-
-    ChunkData chunk = getOrCreateChunk(cx, cz);
-
-    // Local coordinates within the chunk (0-15)
-    int lx = Math.floorMod(worldX, 16);
-    int lz = Math.floorMod(worldZ, 16);
-
-    // Iterate downwards from the top of the world (assuming 256 height)
-    for (int y = 255; y >= 0; y--) {
-      if (chunk.getBlockId(lx, y, lz) != 0) { // 0 is AIR
-        return y + 1; // Return the position ABOVE the solid block
-      }
-    }
-
-    return 64; // Default fallback height if the chunk is empty
   }
 }
