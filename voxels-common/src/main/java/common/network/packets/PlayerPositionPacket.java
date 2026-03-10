@@ -14,7 +14,9 @@ import common.network.PacketIds;
 public class PlayerPositionPacket implements Packet {
 
   private UUID playerUuid;
-  private float x, y, z;
+  private float x;
+  private float y;
+  private float z;
   private float yaw, pitch;
 
   /** Required for PacketRegistry */

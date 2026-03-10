@@ -7,6 +7,7 @@ import common.network.PacketBuffer;
 import common.network.PacketIds;
 
 public class UpdateSlotPacket implements Packet {
+
   private int slotIndex;
   private short itemId;
   private int amount;
@@ -36,5 +37,17 @@ public class UpdateSlotPacket implements Packet {
   @Override
   public int getId() {
     return PacketIds.UPDATE_SLOT;
+  }
+
+  public int getSlotIndex() {
+    return slotIndex;
+  }
+
+  public short getItemId() {
+    return itemId;
+  }
+
+  public int getAmount() {
+    return amount;
   }
 }

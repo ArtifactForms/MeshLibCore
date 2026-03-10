@@ -15,7 +15,9 @@ public class PlayerSpawnPacket implements Packet {
 
   private UUID uuid;
   private String name;
-  private float x, y, z;
+  private float x;
+  private float y;
+  private float z;
 
   /** Required for PacketRegistry */
   public PlayerSpawnPacket() {}
