@@ -3,7 +3,7 @@ package client.entity;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import common.world.BlockType;
+import common.game.block.BlockType;
 import engine.rendering.Graphics;
 import math.Vector3f;
 

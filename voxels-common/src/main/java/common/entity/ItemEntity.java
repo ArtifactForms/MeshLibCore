@@ -1,6 +1,6 @@
 package common.entity;
 
-import common.world.BlockType;
+import common.game.block.BlockType;
 import math.Vector3f;
 
 /**
@@ -63,7 +63,7 @@ public class ItemEntity {
   }
 
   public void setPosition(Vector3f position) {
-    this.position = position;
+    this.position.set(position);
   }
 
   public Vector3f getVelocity() {

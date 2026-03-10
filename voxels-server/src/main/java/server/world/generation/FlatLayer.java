@@ -1,6 +1,6 @@
 package server.world.generation;
 
-import common.world.BlockType;
+import common.game.block.BlockType;
 
 public class FlatLayer {
 

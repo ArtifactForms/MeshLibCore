@@ -3,6 +3,9 @@ package common.world;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import common.game.block.BlockType;
+import common.game.block.Blocks;
+
 /**
  * Common World logic used by both Server and Client. Manages ChunkData and provides
  * coordinate-to-block translation.
@@ -40,12 +43,12 @@ public class World {
   /** Returns the BlockType at the given world coordinates. */
   public BlockType getBlock(int x, int y, int z) {
     if (y < MIN_Y || y > MAX_Y) {
-      return BlockType.AIR;
+      return Blocks.AIR;
     }
 
     ChunkData chunk = getChunkAt(x, y, z);
     if (chunk == null) {
-      return BlockType.AIR;
+      return Blocks.AIR;
     }
 
     int localX = Math.floorMod(x, CHUNK_WIDTH);
@@ -65,7 +68,7 @@ public class World {
   /** Checks if a solid block exists at the specified world coordinates. */
   public boolean isSolid(int x, int y, int z) {
     BlockType blockType = getBlock(x, y, z);
-    return blockType != null && blockType != BlockType.AIR;
+    return blockType != null && blockType != Blocks.AIR;
   }
 
   public void setBlock(int x, int y, int z, short blockId) {

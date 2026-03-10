@@ -2,6 +2,9 @@ package common.world;
 
 import java.util.Arrays;
 
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
+import common.game.block.Blocks;
 import math.Bounds;
 import math.Vector3f;
 
@@ -32,7 +35,7 @@ public class ChunkData {
   // --- Block Access ---
 
   public short getBlockId(int x, int y, int z) {
-    if (!isInside(x, y, z)) return BlockType.AIR.getId();
+    if (!isInside(x, y, z)) return Blocks.AIR.getId();
     return blockData[getIndex(x, y, z)];
   }
 
@@ -46,7 +49,7 @@ public class ChunkData {
 
   public BlockType getBlock(int x, int y, int z) {
     short id = getBlockId(x, y, z);
-    return BlockType.fromId(id);
+    return BlockRegistry.get(id);
   }
 
   public void setBlockAt(BlockType type, int x, int y, int z) {
@@ -60,7 +63,7 @@ public class ChunkData {
     int currentMaxY = getHeightValue(x, z);
 
     // If a non-air block is placed
-    if (id != BlockType.AIR.getId()) {
+    if (id != Blocks.AIR.getId()) {
       if (y >= currentMaxY) {
         setHeightValue(y, x, z);
       }
@@ -69,7 +72,7 @@ public class ChunkData {
     else if (y == currentMaxY) {
       int newHeight = 0;
       for (int ny = y - 1; ny >= 0; ny--) {
-        if (getBlockId(x, ny, z) != BlockType.AIR.getId()) {
+        if (getBlockId(x, ny, z) != Blocks.AIR.getId()) {
           newHeight = ny;
           break;
         }
@@ -80,7 +83,7 @@ public class ChunkData {
 
   public boolean isSolid(int x, int y, int z) {
     if (!isInside(x, y, z)) return false;
-    return blockData[getIndex(x, y, z)] != BlockType.AIR.getId();
+    return blockData[getIndex(x, y, z)] != Blocks.AIR.getId();
   }
 
   public boolean isBlockSolid(int x, int y, int z) {
@@ -104,7 +107,7 @@ public class ChunkData {
   }
 
   public void clear() {
-    Arrays.fill(blockData, BlockType.AIR.getId());
+    Arrays.fill(blockData, Blocks.AIR.getId());
     Arrays.fill(heightMap, 0);
   }
 

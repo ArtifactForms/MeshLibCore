@@ -3,10 +3,12 @@ package server.network.handlers;
 import java.util.List;
 
 import common.game.ReachDistance;
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
+import common.game.block.Blocks;
 import common.network.packets.BlockBreakPacket;
 import common.network.packets.BlockUpdatePacket;
 import common.network.packets.SoundEffectPacket;
-import common.world.BlockType;
 import common.world.SoundEffect;
 import server.events.events.BlockBreakEvent;
 import server.network.GameServer;
@@ -50,7 +52,7 @@ public class BlockBreakHandler {
     short oldBlockId =
         GameServer.getWorld().getBlock(packet.getX(), packet.getY(), packet.getZ()).getId();
 
-    BlockType oldType = BlockType.fromId(oldBlockId);
+    BlockType oldType = BlockRegistry.get(oldBlockId);
 
     // Event
     BlockBreakEvent event =
@@ -63,11 +65,11 @@ public class BlockBreakHandler {
     }
 
     // Bedrock protect
-    if (oldType == BlockType.BEDROCK) {
+    if (oldType == Blocks.BEDROCK) {
       return;
     }
 
-    GameServer.getWorld().setBlock(event.getX(), event.getY(), event.getZ(), BlockType.AIR.getId());
+    GameServer.getWorld().setBlock(event.getX(), event.getY(), event.getZ(), Blocks.AIR.getId());
 
     //    // 3. SPAWN THE ITEM
     //    if (oldType != BlockType.AIR) {
@@ -93,7 +95,7 @@ public class BlockBreakHandler {
     // 4. Notify everyone about the block and sound
     connection.send(new SoundEffectPacket(SoundEffect.BLOCK_BREAK));
     PlayerManager.broadcast(
-        new BlockUpdatePacket(event.getX(), event.getY(), event.getZ(), BlockType.AIR.getId()));
+        new BlockUpdatePacket(event.getX(), event.getY(), event.getZ(), Blocks.AIR.getId()));
   }
 
   private void resyncBlock(int x, int y, int z) {

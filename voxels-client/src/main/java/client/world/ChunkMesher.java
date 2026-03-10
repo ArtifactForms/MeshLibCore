@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import client.rendering.TextureAtlas;
 import client.ui.GameTextures;
-import common.world.BlockType;
+import common.game.block.Blocks;
 import engine.backend.processing.BufferedShape;
 import engine.components.StaticGeometry;
 import engine.rendering.Material;
@@ -63,7 +63,7 @@ public class ChunkMesher {
                 for (int z = 0; z < Chunk.DEPTH; z++) {
                     if (visited[x][z]) continue;
                     int blockId = chunk.getBlockId(x, y, z);
-                    if (blockId == BlockType.AIR.getId() || !shouldRender(blockId, x, y + 1, z)) continue;
+                    if (blockId == Blocks.AIR.getId() || !shouldRender(blockId, x, y + 1, z)) continue;
 
                     int width = 1;
                     while (x + width < Chunk.WIDTH && !visited[x + width][z] && 
@@ -96,8 +96,8 @@ public class ChunkMesher {
             for (int z = 0; z < Chunk.DEPTH; z++) {
                 for (int y = 0; y < Chunk.HEIGHT; y++) {
                     int blockId = chunk.getBlockId(x, y, z);
-                    if (blockId == BlockType.AIR.getId()) continue;
-                    if (blockId == BlockType.GRASS.getId()) { createBillBoard(x, y, z); continue; }
+                    if (blockId == Blocks.AIR.getId()) continue;
+                    if (blockId == Blocks.GRASS.getId()) { createBillBoard(x, y, z); continue; }
 
                     if (shouldRender(blockId, x, y - 1, z)) addFace(BOTTOM, x, y, z);
                     if (shouldRender(blockId, x, y, z + 1)) addFace(FRONT, x, y, z);
@@ -233,16 +233,52 @@ public class ChunkMesher {
     }
 
     private boolean isSolid(int x, int y, int z) {
+
         if (y < 0 || y >= Chunk.HEIGHT) return false;
-        if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) return chunk.isBlockSolid(x, y, z);
-        Chunk neighbor = chunkManager.getChunk(chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0), chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0));
-        return neighbor != null && neighbor.isDataReady() && neighbor.isBlockSolid((x + Chunk.WIDTH) % Chunk.WIDTH, y, (z + Chunk.DEPTH) % Chunk.DEPTH);
+
+        if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) {
+            return chunk.isBlockSolid(x, y, z);
+        }
+
+        Chunk neighbor = chunkManager.getChunk(
+            chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0),
+            chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0)
+        );
+
+        if (neighbor == null || !neighbor.isDataReady()) {
+            return true;
+        }
+
+        return neighbor.isBlockSolid(
+            Math.floorMod(x, Chunk.WIDTH),
+            y,
+            Math.floorMod(z, Chunk.DEPTH)
+        );
     }
 
     private int getBlockData(int x, int y, int z) {
-        if (x >= 0 && x < Chunk.WIDTH && y >= 0 && y < Chunk.HEIGHT && z >= 0 && z < Chunk.DEPTH) return chunk.getBlockId(x, y, z);
-        Chunk neighbor = chunkManager.getChunk(chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0), chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0));
-        return (neighbor != null && neighbor.isDataReady()) ? neighbor.getBlockId((x + Chunk.WIDTH) % Chunk.WIDTH, y, (z + Chunk.DEPTH) % Chunk.DEPTH) : BlockType.AIR.getId();
+
+        if (x >= 0 && x < Chunk.WIDTH &&
+            y >= 0 && y < Chunk.HEIGHT &&
+            z >= 0 && z < Chunk.DEPTH) {
+
+            return chunk.getBlockId(x, y, z);
+        }
+
+        Chunk neighbor = chunkManager.getChunk(
+            chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0),
+            chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0)
+        );
+
+        if (neighbor != null && neighbor.isDataReady()) {
+            return neighbor.getBlockId(
+                Math.floorMod(x, Chunk.WIDTH),
+                y,
+                Math.floorMod(z, Chunk.DEPTH)
+            );
+        }
+
+        return Blocks.AIR.getId();
     }
 
     public boolean shouldRender(int myId, int x, int y, int z) {
@@ -250,8 +286,8 @@ public class ChunkMesher {
         if (y >= Chunk.HEIGHT) return true;
         int neighborId = getBlockData(x, y, z);
 
-        if (myId != BlockType.WATER.getId() && neighborId == BlockType.WATER.getId()) return true; 
-        if (myId == BlockType.WATER.getId() && neighborId == BlockType.WATER.getId()) return false;
+        if (myId != Blocks.WATER.getId() && neighborId == Blocks.WATER.getId()) return true; 
+        if (myId == Blocks.WATER.getId() && neighborId == Blocks.WATER.getId()) return false;
 
         return !isSolid(x, y, z);
     }

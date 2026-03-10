@@ -2,7 +2,9 @@ package server.world.generation;
 
 import java.util.ArrayList;
 import java.util.List;
-import common.world.BlockType;
+
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
 
 /** Parses flat world generation presets. Format example: "1*bedrock,60*dirt,1*grass_block" */
 public class FlatPresetParser {
@@ -37,7 +39,7 @@ public class FlatPresetParser {
       }
 
       try {
-        BlockType block = BlockType.valueOf(blockName);
+        BlockType block = BlockRegistry.get(blockName);
         layers.add(new FlatLayer(block, height));
       } catch (IllegalArgumentException e) {
         System.err.println("[FlatPresetParser] Unknown block type: " + blockName);

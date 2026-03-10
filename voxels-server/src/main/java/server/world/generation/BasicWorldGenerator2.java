@@ -10,8 +10,11 @@ import math.Mathf;
 import math.PerlinNoise;
 import math.PerlinNoise3;
 import math.Vector3f;
+import server.world.structures.StructureManager;
+import server.world.structures.fin.MeshStructureGenerator;
+import server.world.structures.fin.RockFormationStructure;
 
-public class BasicWorldGenerator implements WorldGenerator {
+public class BasicWorldGenerator2 implements WorldGenerator {
 
   private int seaLevel = 80;
   private int beachSize = 3;
@@ -33,7 +36,9 @@ public class BasicWorldGenerator implements WorldGenerator {
   private float persistence = 0.5f;
   private float lacunarity = 2.0f;
 
-  public BasicWorldGenerator(long seed) {
+  private StructureManager structureManager;
+
+  public BasicWorldGenerator2(long seed) {
     this.seed = seed;
     continentNoise = new PerlinNoise(seed + 12345);
     terrainNoise = new PerlinNoise(seed + 67890);
@@ -41,6 +46,17 @@ public class BasicWorldGenerator implements WorldGenerator {
     treeNoise = new PerlinNoise(seed + 22222);
     riverNoise = new PerlinNoise(seed + 33333);
     caveNoise = new PerlinNoise3(seed + 44444);
+
+    structureManager = new StructureManager();
+ // 1. Das Design erstellen (implementiert VoxelStructure)
+    RockFormationStructure rockDesign = new RockFormationStructure();
+
+    // 2. Den Generator erstellen, der dieses Design nutzt (implementiert StructureGenerator)
+    // Parameter: (Das Design, der maximale Radius, die Spawn-Chance)
+    MeshStructureGenerator rockGen = new MeshStructureGenerator(rockDesign, 20, 0.05f);
+
+    // 3. Jetzt klappt das Registrieren!
+    structureManager.register(rockGen);
   }
 
   @Override
@@ -80,6 +96,9 @@ public class BasicWorldGenerator implements WorldGenerator {
         }
       }
     }
+
+    // structures
+    structureManager.generateStructures(chunk, seed);
 
     // --- Feature Layers ---
     createTrees(chunk);

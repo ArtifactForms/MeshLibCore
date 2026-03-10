@@ -3,10 +3,11 @@ package common.network.packets;
 import java.io.IOException;
 
 import common.entity.ItemEntity;
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
 import common.network.Packet;
 import common.network.PacketBuffer;
 import common.network.PacketIds;
-import common.world.BlockType;
 
 /**
  * Sent by the server to tell clients to spawn a new item entity in the world.
@@ -65,7 +66,7 @@ public class ItemSpawnPacket implements Packet {
 
     // Getters for the Client Dispatcher
     public long getEntityId() { return entityId; }
-    public BlockType getBlockType() { return BlockType.fromId(blockTypeId); }
+    public BlockType getBlockType() { return BlockRegistry.get(blockTypeId); }
     public float getX() { return x; }
     public float getY() { return y; }
     public float getZ() { return z; }

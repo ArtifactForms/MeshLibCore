@@ -3,20 +3,20 @@ package client.app;
 import client.player.BlockInteractionComponent;
 import client.player.ClientMovementConsumer;
 import client.player.FPSControl;
-import client.ui.ClientView;
-import client.ui.HotbarComponent;
-import client.ui.HotbarViewComponent;
-import client.ui.ActionBarComponent;
 import client.ui.View;
+import client.ui.actionbar.ActionBarComponent;
+import client.ui.hotbar.HotbarComponent;
+import client.ui.hotbar.HotbarViewComponent;
 import common.game.Hotbar;
 import common.game.ItemStack;
-import common.world.BlockType;
+import common.game.block.Blocks;
 import engine.components.CrossLineReticle;
 import engine.runtime.input.Input;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.PerspectiveCamera;
 import math.Color;
+import math.Mathf;
 
 public class GameScene extends Scene {
 
@@ -63,7 +63,9 @@ public class GameScene extends Scene {
     //	  addNode(node);
 
     PerspectiveCamera camera = new PerspectiveCamera();
-    camera.setFarPlane(8000);
+    camera.setFarPlane(1000);
+    camera.setNearPlane(0.1f);
+    camera.setFieldOfView(Mathf.toRadians(70));
     SceneNode cameraNode = new SceneNode("Camera");
     addNode(cameraNode);
     setActiveCamera(camera);
@@ -74,7 +76,8 @@ public class GameScene extends Scene {
     ClientMovementConsumer movement = new ClientMovementConsumer(player);
     ApplicationContext.clientMovementConsumer = movement;
     FPSControl fpsControl = new FPSControl(input, movement);
-    fpsControl.setEyeHeightOffset(2.8f);
+    fpsControl.setEyeHeightOffset(1.62f + 0.5f); // because of block offset 0.5f
+    ApplicationContext.fpsController = fpsControl;
     player.addComponent(fpsControl);
     addNode(player);
   }
@@ -93,9 +96,9 @@ public class GameScene extends Scene {
 
   private void setupHotBar() {
     Hotbar hotbar = new Hotbar();
-    hotbar.setSlot(0, new ItemStack(BlockType.STONE.getId(), 64));
-    hotbar.setSlot(1, new ItemStack(BlockType.GRASS_BLOCK.getId(), 64));
-    hotbar.setSlot(2, new ItemStack(BlockType.SAND.getId(), 64));
+    hotbar.setSlot(0, new ItemStack(Blocks.STONE.getId(), 64));
+    hotbar.setSlot(1, new ItemStack(Blocks.GRASS_BLOCK.getId(), 64));
+    hotbar.setSlot(2, new ItemStack(Blocks.SAND.getId(), 64));
 
     ApplicationContext.hotbar = hotbar;
 

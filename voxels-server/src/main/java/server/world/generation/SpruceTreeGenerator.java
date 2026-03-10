@@ -1,6 +1,6 @@
 package server.world.generation;
 
-import common.world.BlockType;
+import common.game.block.Blocks;
 
 public class SpruceTreeGenerator implements TreeGenerator {
 
@@ -15,7 +15,7 @@ public class SpruceTreeGenerator implements TreeGenerator {
 
     // trunk
     for (int y = 0; y < height; y++) {
-      ctx.chunk.setBlockAt(BlockType.SPRUCE_WOOD, baseX, baseY + y, baseZ);
+      ctx.chunk.setBlockAt(Blocks.SPRUCE_WOOD, baseX, baseY + y, baseZ);
     }
 
     int crownStart = baseY + height / 3;
@@ -55,10 +55,10 @@ public class SpruceTreeGenerator implements TreeGenerator {
 
         if (ctx.rng.nextFloat() < 0.15f) continue;
 
-        ctx.chunk.setBlockAt(BlockType.SPRUCE_LEAF, cx + x, y, cz + z);
+        ctx.chunk.setBlockAt(Blocks.SPRUCE_LEAF, cx + x, y, cz + z);
 
         if (dist == radius && ctx.rng.nextFloat() < 0.4f) {
-          ctx.chunk.setBlockAt(BlockType.SPRUCE_LEAF, cx + x, y - 1, cz + z);
+          ctx.chunk.setBlockAt(Blocks.SPRUCE_LEAF, cx + x, y - 1, cz + z);
         }
       }
     }
@@ -69,7 +69,7 @@ public class SpruceTreeGenerator implements TreeGenerator {
     int tip = 2 + ctx.rng.nextInt(2);
 
     for (int i = 1; i <= tip; i++) {
-      ctx.chunk.setBlockAt(BlockType.SPRUCE_LEAF, x, y + i, z);
+      ctx.chunk.setBlockAt(Blocks.SPRUCE_LEAF, x, y + i, z);
     }
   }
 }

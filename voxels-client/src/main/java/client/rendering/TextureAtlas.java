@@ -6,7 +6,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import client.app.GameSettings;
-import common.world.BlockType;
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
+import common.game.block.Blocks;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
 import math.PerlinNoise;
@@ -20,9 +22,9 @@ public class TextureAtlas {
   private boolean drawDebugText = GameSettings.textureDebugText;
   private boolean fillTextureBackground = GameSettings.textureBackground;
   private float epsilon = 0.002f; // Small margin to prevent texture bleeding
-  private int tileSize = 16;
+  private int tileSize = 32;
   private int columns = 6; // 6 faces per block
-  private int rows = BlockType.values().length;
+  private int rows = 20;
   private int width = tileSize * columns;
   private int height = tileSize * rows;
   private ArrayList<Vector2f> uvCoordinates;
@@ -96,23 +98,24 @@ public class TextureAtlas {
     g2d.setColor(Color.GRAY);
     if (fillTextureBackground) g2d.fillRect(0, 0, width, height);
 
-    fill(g2d, BlockType.AIR, new Color(0, 0, 0, 0));
-    fill(g2d, BlockType.STONE, new Color(123, 123, 123));
-    fill(g2d, BlockType.COBBLE_STONE, new Color(108, 108, 108));
-    fill(g2d, BlockType.GRASS_BLOCK, new Color(117, 175, 74));
-    fill(g2d, BlockType.GRASS, new Color(37, 82, 12));
-    fill(g2d, BlockType.LEAF, new Color(66, 175, 29));
-    fill(g2d, BlockType.OAK_WOOD, new Color(111, 87, 51));
-    fill(g2d, BlockType.BIRCH_WOOD, new Color(255, 255, 255));
-    fill(g2d, BlockType.DIRT, DIRT_COLOR);
-    fill(g2d, BlockType.WATER, new Color(45, 137, 212, 160));
-    fill(g2d, BlockType.SNOW, new Color(253, 253, 253));
-    fill(g2d, BlockType.SAND, new Color(194, 189, 134));
-    fill(g2d, BlockType.CACTUS, new Color(96, 142, 50));
-    fill(g2d, BlockType.GRAVEL, new Color(180, 180, 180));
-    fill(g2d, BlockType.SPRUCE_WOOD, new Color(91, 49, 56));
-    fill(g2d, BlockType.SPRUCE_LEAF, new Color(35, 103, 78));
-    fill(g2d, BlockType.BEDROCK, new Color(51, 57, 65));
+    fill(g2d, Blocks.AIR, new Color(0, 0, 0, 0));
+    fill(g2d, Blocks.STONE, new Color(123, 123, 123));
+    fill(g2d, Blocks.COBBLE_STONE, new Color(108, 108, 108));
+    fill(g2d, Blocks.GRASS_BLOCK, new Color(117, 175, 74));
+    fill(g2d, Blocks.GRASS, new Color(37, 82, 12));
+    fill(g2d, Blocks.LEAF, new Color(66, 175, 29));
+    fill(g2d, Blocks.OAK_WOOD, new Color(111, 87, 51));
+    fill(g2d, Blocks.BIRCH_WOOD, new Color(255, 255, 255));
+    fill(g2d, Blocks.DIRT, DIRT_COLOR);
+//    fill(g2d, BlockType.WATER, new Color(45, 137, 212, 160));
+    fill(g2d, Blocks.WATER, new Color(45, 137, 212));
+    fill(g2d, Blocks.SNOW, new Color(253, 253, 253));
+    fill(g2d, Blocks.SAND, new Color(194, 189, 134));
+    fill(g2d, Blocks.CACTUS, new Color(96, 142, 50));
+    fill(g2d, Blocks.GRAVEL, new Color(180, 180, 180));
+    fill(g2d, Blocks.SPRUCE_WOOD, new Color(91, 49, 56));
+    fill(g2d, Blocks.SPRUCE_LEAF, new Color(35, 103, 78));
+    fill(g2d, Blocks.BEDROCK, new Color(51, 57, 65));
 
     drawDebugText(g2d);
   }
@@ -127,7 +130,7 @@ public class TextureAtlas {
         int y = row * tileSize;
         if (GameSettings.textureBorder) g2d.drawRect(x, y, tileSize - 1, tileSize - 1);
         g2d.drawString("Row " + row + " Col " + col, x + 2, y + 12);
-        g2d.drawString(BlockType.fromId((short) row) + "", x + 2, y + 24);
+        g2d.drawString(BlockRegistry.get((short) row) + "", x + 2, y + 24);
         g2d.drawString("Type Id: " + row, x + 2, y + 36);
       }
     }
@@ -162,7 +165,7 @@ public class TextureAtlas {
       g2d.setColor(color);
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
 
-      if (blockType == BlockType.GRASS_BLOCK && col > 0) {
+      if (blockType == Blocks.GRASS_BLOCK && col > 0) {
         // Grass block sides
         g2d.setColor(DIRT_COLOR);
         g2d.fillRect(baseX, baseY + (tileSize / 4), tileSize, tileSize - (tileSize / 4));

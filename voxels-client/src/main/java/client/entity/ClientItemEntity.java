@@ -1,7 +1,9 @@
 package client.entity;
 
 import client.app.ApplicationContext;
-import common.world.BlockType;
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
+import common.game.block.Blocks;
 import engine.components.StaticGeometry;
 import engine.rendering.Graphics;
 import math.Vector3f;
@@ -71,7 +73,7 @@ public class ClientItemEntity {
 
     short blockId = ApplicationContext.clientWorld.getBlock(bx, by, bz).getId();
 
-    if (BlockType.fromId(blockId) != BlockType.AIR) {
+    if (BlockRegistry.get(blockId) != Blocks.AIR) {
       // BOUNCE LOGIC: If falling fast enough, reflect velocity
       if (Math.abs(velocity.y) > 0.05f) {
         velocity.y *= BOUNCE_RESTITUTION;
