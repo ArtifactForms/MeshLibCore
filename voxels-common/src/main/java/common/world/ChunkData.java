@@ -137,7 +137,7 @@ public class ChunkData {
     return heightMap[x + z * WIDTH];
   }
 
-  protected void setHeightValue(int value, int x, int z) {
+  public void setHeightValue(int value, int x, int z) {
     if (!isInsideXZ(x, z)) return;
     heightMap[x + z * WIDTH] = value;
   }
