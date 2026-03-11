@@ -15,4 +15,6 @@ public class GameSettings {
   public static float flySpeed = 16;
   
   public static boolean dynamicTextures = false;
+  
+  public static boolean fog = true;
 }

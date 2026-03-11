@@ -87,6 +87,17 @@ public class World {
     }
   }
 
+  /** Returns the highest non-air block Y-coordinate at the given world coordinates. */
+  public int getHeightAt(int x, int z) {
+    ChunkData chunk = getChunkAt(x, 0, z); // Y is irrelevant for chunk finding here
+    if (chunk == null) {
+      return 0;
+    }
+    int localX = Math.floorMod(x, CHUNK_WIDTH);
+    int localZ = Math.floorMod(z, CHUNK_DEPTH);
+    return chunk.getHeightValue(localX, localZ);
+  }
+
   public static long getChunkKey(int x, int z) {
     return ((long) x << 32) | (z & 0xFFFFFFFFL);
   }

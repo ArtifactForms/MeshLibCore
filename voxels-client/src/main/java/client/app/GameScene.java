@@ -1,5 +1,6 @@
 package client.app;
 
+import client.cam.CameraManager;
 import client.player.BlockInteractionComponent;
 import client.player.ClientMovementConsumer;
 import client.player.FPSControl;
@@ -33,7 +34,11 @@ public class GameScene extends Scene {
     
     this.input = input;
 
-    setupCamera();
+//    setupCamera();
+//    setupOrbitalCamera();
+    
+    CameraManager cameraManager = new CameraManager(this, input);
+    
     setupPlayer();
 //    setupSkyBox();
     setupUI();
@@ -70,6 +75,14 @@ public class GameScene extends Scene {
     addNode(cameraNode);
     setActiveCamera(camera);
   }
+  
+//  private void setupOrbitalCamera() {
+//	  OrbitCamera camera = new OrbitCamera();
+//	  OrbitCameraControl cameraControl = new OrbitCameraControl(input, camera);
+//	  SceneNode orbitCameraNode = new SceneNode("Orbital-Camera", cameraControl);
+//	  addNode(orbitCameraNode);
+//	  setActiveCamera(camera);
+//  }
 
   private void setupPlayer() {
     player = new SceneNode("Player");
@@ -78,7 +91,7 @@ public class GameScene extends Scene {
     FPSControl fpsControl = new FPSControl(input, movement);
     fpsControl.setEyeHeightOffset(1.62f + 0.5f); // because of block offset 0.5f
     ApplicationContext.fpsController = fpsControl;
-    player.addComponent(fpsControl);
+//    player.addComponent(fpsControl);
     addNode(player);
   }
 

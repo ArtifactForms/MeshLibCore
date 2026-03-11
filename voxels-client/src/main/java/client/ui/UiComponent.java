@@ -18,6 +18,8 @@ public class UiComponent extends AbstractComponent implements RenderableComponen
 
   @Override
   public void onUpdate(float tpf) {
+    uiElement.onMouse(input.getMouseX(), input.getMouseY());
+
     boolean pressed = input.isMousePressed(Input.LEFT);
     if (!pressed && lastPressed) {
       dispatchClicked(input.getMouseX(), input.getMouseY());

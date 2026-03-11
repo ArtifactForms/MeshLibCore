@@ -15,14 +15,17 @@ import math.Vector2f;
 
 public class ChunkMesher {
 
-	private static final int TOP = 0, BOTTOM = 1, FRONT = 2, BACK = 3, RIGHT = 4, LEFT = 5;
-//    private static final int TOP = 0, BOTTOM = 5, FRONT = 1, BACK = 4, RIGHT = 2, LEFT = 3;
-
-   private static float radius = 0.5f; 
+    private static final int TOP = 0, BOTTOM = 1, FRONT = 2, BACK = 3, RIGHT = 4, LEFT = 5;
+    private static float radius = 0.5f; 
 
     private Chunk chunk;
     private ChunkManager chunkManager;
-    private BufferedShape shape;
+    
+    // Zwei Shapes für die Trennung von opaken und transparenten Objekten
+    private BufferedShape opaqueShape;
+    private BufferedShape waterShape;
+    private BufferedShape currentShape; // Zeiger auf das aktuell aktive Mesh
+
     private static ArrayList<Vector2f> uvs;
     public static Material sharedMaterial;
     private static TextureAtlas textureAtlas;
@@ -32,10 +35,20 @@ public class ChunkMesher {
         textureAtlas = GameTextures.TEXTURE_ATLAS;
         Texture texture = textureAtlas.getTexture();
         texture.setFilterMode(FilterMode.POINT); 
-        
         texture.setTextureWrapMode(TextureWrapMode.REPEAT);
         sharedMaterial.setDiffuseTexture(texture);
         uvs = textureAtlas.getUVCoordinates();
+    }
+
+    // Container-Klasse für die Rückgabe beider Meshes
+    public static class MeshResult {
+        public final StaticGeometry opaque;
+        public final StaticGeometry water;
+
+        public MeshResult(StaticGeometry opaque, StaticGeometry water) {
+            this.opaque = opaque;
+            this.water = water;
+        }
     }
 
     public ChunkMesher(Chunk chunk, ChunkManager chunkManager) {
@@ -43,17 +56,23 @@ public class ChunkMesher {
         this.chunkManager = chunkManager;
     }
 
-    public StaticGeometry createMesh() {
-//    	int chunkX = chunk.getChunkX();
-//    	int chunkZ = chunk.getChunkZ();
-//    	System.out.println("Mesh rebuild: " + chunkX + "," + chunkZ);
-    	
-        shape = new BufferedShape(sharedMaterial);
-        shape.begin(BufferedShape.QUADS);
+    public MeshResult createMesh() {
+        opaqueShape = new BufferedShape(sharedMaterial);
+        waterShape = new BufferedShape(sharedMaterial);
+
+        opaqueShape.begin(BufferedShape.QUADS);
+        waterShape.begin(BufferedShape.QUADS);
+
         greedyTopFaces(); 
         generateSideFaces();
-        shape.end();
-        return new StaticGeometry(shape.getVBO(), sharedMaterial);
+
+        opaqueShape.end();
+        waterShape.end();
+
+        return new MeshResult(
+            new StaticGeometry(opaqueShape.getVBO(), sharedMaterial),
+            new StaticGeometry(waterShape.getVBO(), sharedMaterial)
+        );
     }
     
     private void greedyTopFaces() {
@@ -62,8 +81,12 @@ public class ChunkMesher {
             for (int x = 0; x < Chunk.WIDTH; x++) {
                 for (int z = 0; z < Chunk.DEPTH; z++) {
                     if (visited[x][z]) continue;
+                    
                     int blockId = chunk.getBlockId(x, y, z);
                     if (blockId == Blocks.AIR.getId() || !shouldRender(blockId, x, y + 1, z)) continue;
+
+                    // Entscheide, in welches Mesh dieser Block gehört
+                    currentShape = (blockId == Blocks.WATER.getId()) ? waterShape : opaqueShape;
 
                     int width = 1;
                     while (x + width < Chunk.WIDTH && !visited[x + width][z] && 
@@ -97,7 +120,14 @@ public class ChunkMesher {
                 for (int y = 0; y < Chunk.HEIGHT; y++) {
                     int blockId = chunk.getBlockId(x, y, z);
                     if (blockId == Blocks.AIR.getId()) continue;
-                    if (blockId == Blocks.GRASS.getId()) { createBillBoard(x, y, z); continue; }
+
+                    // Entscheide, in welches Mesh dieser Block gehört
+                    currentShape = (blockId == Blocks.WATER.getId()) ? waterShape : opaqueShape;
+
+                    if (blockId == Blocks.GRASS.getId()) { 
+                        createBillBoard(x, y, z); 
+                        continue; 
+                    }
 
                     if (shouldRender(blockId, x, y - 1, z)) addFace(BOTTOM, x, y, z);
                     if (shouldRender(blockId, x, y, z + 1)) addFace(FRONT, x, y, z);
@@ -132,14 +162,8 @@ public class ChunkMesher {
         int blockId = chunk.getBlockId(x, y, z);
         Vector2f[] uv = textureAtlas.getUVCoordinates(blockId, face);
         
-//        if (face != TOP && face != BOTTOM) {
-//            uv = new Vector2f[]{new Vector2f(uv[0].x, uv[2].y), new Vector2f(uv[1].x, uv[3].y), new Vector2f(uv[2].x, uv[0].y), new Vector2f(uv[3].x, uv[1].y)};
-//        }
-        
         if (face != TOP && face != BOTTOM) {
-
             uv = new Vector2f[]{new Vector2f(uv[0].x, uv[2].y), new Vector2f(uv[1].x, uv[3].y), new Vector2f(uv[2].x, uv[0].y), new Vector2f(uv[3].x, uv[1].y)};
-
         } 
 
         float light = switch (face) { case FRONT, BACK -> 0.85f; case LEFT, RIGHT -> 0.7f; case BOTTOM -> 0.5f; default -> 1.0f; };
@@ -228,12 +252,11 @@ public class ChunkMesher {
     }
 
     private void drawV(float x, float y, float z, Vector2f uv, float c) {
-        shape.color(c, c, c); 
-        shape.vertex(x, y, z, uv.x, uv.y);
+        currentShape.color(c, c, c); 
+        currentShape.vertex(x, y, z, uv.x, uv.y);
     }
 
     private boolean isSolid(int x, int y, int z) {
-
         if (y < 0 || y >= Chunk.HEIGHT) return false;
 
         if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) {
@@ -245,9 +268,7 @@ public class ChunkMesher {
             chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0)
         );
 
-        if (neighbor == null || !neighbor.isDataReady()) {
-            return true;
-        }
+        if (neighbor == null || !neighbor.isDataReady()) return false;
 
         return neighbor.isBlockSolid(
             Math.floorMod(x, Chunk.WIDTH),
@@ -257,11 +278,7 @@ public class ChunkMesher {
     }
 
     private int getBlockData(int x, int y, int z) {
-
-        if (x >= 0 && x < Chunk.WIDTH &&
-            y >= 0 && y < Chunk.HEIGHT &&
-            z >= 0 && z < Chunk.DEPTH) {
-
+        if (x >= 0 && x < Chunk.WIDTH && y >= 0 && y < Chunk.HEIGHT && z >= 0 && z < Chunk.DEPTH) {
             return chunk.getBlockId(x, y, z);
         }
 
@@ -271,11 +288,7 @@ public class ChunkMesher {
         );
 
         if (neighbor != null && neighbor.isDataReady()) {
-            return neighbor.getBlockId(
-                Math.floorMod(x, Chunk.WIDTH),
-                y,
-                Math.floorMod(z, Chunk.DEPTH)
-            );
+            return neighbor.getBlockId(Math.floorMod(x, Chunk.WIDTH), y, Math.floorMod(z, Chunk.DEPTH));
         }
 
         return Blocks.AIR.getId();
@@ -286,8 +299,14 @@ public class ChunkMesher {
         if (y >= Chunk.HEIGHT) return true;
         int neighborId = getBlockData(x, y, z);
 
-        if (myId != Blocks.WATER.getId() && neighborId == Blocks.WATER.getId()) return true; 
-        if (myId == Blocks.WATER.getId() && neighborId == Blocks.WATER.getId()) return false;
+        // Spezielle Logik für Wasser:
+        // Wasser zeigt Faces gegen Luft und andere Blöcke, aber nicht gegen Wasser.
+        if (myId == Blocks.WATER.getId()) {
+            return neighborId != Blocks.WATER.getId() && neighborId == Blocks.AIR.getId();
+        }
+
+        // Andere Blöcke zeigen Faces gegen Wasser (da Wasser transparent ist)
+        if (neighborId == Blocks.WATER.getId()) return true;
 
         return !isSolid(x, y, z);
     }
@@ -302,12 +321,14 @@ public class ChunkMesher {
     }
 
     private void createBillBoard(int x, int y, int z) {
+        // Billboards (Gras) landen immer im opaken Mesh (oder einem Cutout-Mesh, falls vorhanden)
+        currentShape = opaqueShape;
         int[] uvIdx = textureAtlas.getUVIndices(chunk.getBlockId(x, y, z), 0);
         Vector2f[] vuv = {uvs.get(uvIdx[0]), uvs.get(uvIdx[1]), uvs.get(uvIdx[2]), uvs.get(uvIdx[3])};
-        shape.color(0.9f, 0.9f, 0.9f);
-        shape.vertex(radius+x, -radius-y, radius+z, vuv[0].x, vuv[0].y); shape.vertex(-radius+x, -radius-y, -radius+z, vuv[1].x, vuv[1].y);
-        shape.vertex(-radius+x, radius-y, -radius+z, vuv[2].x, vuv[2].y); shape.vertex(radius+x, radius-y, radius+z, vuv[3].x, vuv[3].y);
-        shape.vertex(radius+x, -radius-y, -radius+z, vuv[0].x, vuv[0].y); shape.vertex(-radius+x, -radius-y, radius+z, vuv[1].x, vuv[1].y);
-        shape.vertex(-radius+x, radius-y, radius+z, vuv[2].x, vuv[2].y); shape.vertex(radius+x, radius-y, -radius+z, vuv[3].x, vuv[3].y);
+        currentShape.color(0.9f, 0.9f, 0.9f);
+        currentShape.vertex(radius+x, -radius-y, radius+z, vuv[0].x, vuv[0].y); currentShape.vertex(-radius+x, -radius-y, -radius+z, vuv[1].x, vuv[1].y);
+        currentShape.vertex(-radius+x, radius-y, -radius+z, vuv[2].x, vuv[2].y); currentShape.vertex(radius+x, radius-y, radius+z, vuv[3].x, vuv[3].y);
+        currentShape.vertex(radius+x, -radius-y, -radius+z, vuv[0].x, vuv[0].y); currentShape.vertex(-radius+x, -radius-y, radius+z, vuv[1].x, vuv[1].y);
+        currentShape.vertex(-radius+x, radius-y, radius+z, vuv[2].x, vuv[2].y); currentShape.vertex(radius+x, radius-y, -radius+z, vuv[3].x, vuv[3].y);
     }
 }

@@ -13,6 +13,8 @@ public final class BlockType {
   private boolean opaque = true;
   private int lightEmission = 0;
 
+  private BlockShape shape = BlockShape.CUBE;
+
   // Behavior
   private final Map<Class<?>, Object> behaviors = new HashMap<>();
 
@@ -47,6 +49,10 @@ public final class BlockType {
     return this;
   }
 
+  public boolean isSolid() {
+    return solid;
+  }
+
   public BlockType setOpaque(boolean opaque) {
     this.opaque = opaque;
     return this;
@@ -54,5 +60,23 @@ public final class BlockType {
 
   public boolean isTransparent() {
     return !opaque;
+  }
+
+  public BlockType setLightEmission(int value) {
+    this.lightEmission = value;
+    return this;
+  }
+
+  public int getLightEmission() {
+    return lightEmission;
+  }
+
+  public BlockType setShape(BlockShape shape) {
+    this.shape = shape;
+    return this;
+  }
+
+  public BlockShape getShape() {
+    return shape;
   }
 }

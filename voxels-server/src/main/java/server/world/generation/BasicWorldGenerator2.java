@@ -13,6 +13,7 @@ import math.Vector3f;
 import server.world.structures.StructureManager;
 import server.world.structures.fin.MeshStructureGenerator;
 import server.world.structures.fin.RockFormationStructure;
+import server.world.structures.fin.TreeStructureGenerator;
 
 public class BasicWorldGenerator2 implements WorldGenerator {
 
@@ -35,6 +36,12 @@ public class BasicWorldGenerator2 implements WorldGenerator {
   private int octaves = 3;
   private float persistence = 0.5f;
   private float lacunarity = 2.0f;
+  
+//  private float terrainScale = 0.04f;
+//  private int heightMultiplier = 380;
+//  private int octaves = 5;
+//  private float persistence = 0.55f;
+//  private float lacunarity = 2.2f;
 
   private StructureManager structureManager;
 
@@ -57,6 +64,9 @@ public class BasicWorldGenerator2 implements WorldGenerator {
 
     // 3. Jetzt klappt das Registrieren!
     structureManager.register(rockGen);
+    
+    
+    structureManager.register(new TreeStructureGenerator());
   }
 
   @Override
@@ -101,7 +111,7 @@ public class BasicWorldGenerator2 implements WorldGenerator {
     structureManager.generateStructures(chunk, seed);
 
     // --- Feature Layers ---
-    createTrees(chunk);
+//    createTrees(chunk);
     createWater(chunk);
     //	    createCaves(chunk);
   }

@@ -5,9 +5,10 @@ import client.ray.RaycastResult;
 import client.ray.Raycasting;
 import client.rendering.BlockHighlightRenderer;
 import common.game.ItemStack;
+import common.interaction.BlockTarget;
+import common.interaction.InteractionTarget;
 import common.network.packets.BlockBreakPacket;
 import common.network.packets.BlockPlacePacket;
-import common.world.World;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
@@ -16,11 +17,12 @@ import engine.scene.camera.Camera;
 
 public class BlockInteractionComponent extends AbstractComponent implements RenderableComponent {
 
+  private final Input input;
+
   private boolean lastPressedLeft;
   private boolean lastPressedRight;
 
-  private final Input input;
-  private RaycastResult lastHit = RaycastResult.miss();
+  private InteractionTarget currentTarget;
 
   public BlockInteractionComponent(Input input) {
     this.input = input;
@@ -29,47 +31,81 @@ public class BlockInteractionComponent extends AbstractComponent implements Rend
   @Override
   public void update(float tpf) {
 
-    Camera camera = getOwner().getScene().getActiveCamera();
-    World world = ApplicationContext.clientWorld;
+    RaycastResult result = raycast();
+    currentTarget = result.target;
 
-    // Always update the current raycast hit
-    lastHit = Raycasting.raycast(camera, world);
+    boolean left = input.isMousePressed(Input.LEFT);
+    boolean right = input.isMousePressed(Input.RIGHT);
 
-    boolean pressedLeft = input.isMousePressed(Input.LEFT);
-    boolean pressedRight = input.isMousePressed(Input.RIGHT);
-
-    if (lastHit.hit) {
-
-      // Break block on left mouse release
-      if (lastPressedLeft && !pressedLeft) {
-        ApplicationContext.network.send(
-            new BlockBreakPacket(lastHit.blockX, lastHit.blockY, lastHit.blockZ));
-      }
-
-      // Place block on right mouse release
-      if (lastPressedRight && !pressedRight) {
-    	ItemStack itemStack = ApplicationContext.hotbar.getSelected();
-    	if (itemStack == null)
-    		return;
-    	short id = (short) itemStack.getItemId();
-    	ApplicationContext.network.send(
-            new BlockPlacePacket(
-                lastHit.placeX, lastHit.placeY, lastHit.placeZ, id));
-      }
+    if (currentTarget == null) {
+      updateLastState(left, right);
+      return;
     }
 
-    lastPressedLeft = pressedLeft;
-    lastPressedRight = pressedRight;
+    if (released(lastPressedLeft, left)) {
+      handleBreak(currentTarget);
+    }
+
+    if (released(lastPressedRight, right)) {
+      handlePlace(currentTarget);
+    }
+
+    updateLastState(left, right);
+  }
+
+  private void handleBreak(InteractionTarget target) {
+
+    if (target instanceof BlockTarget block) {
+
+      ApplicationContext.network.send(
+          new BlockBreakPacket(block.x, block.y, block.z));
+    }
+  }
+
+  private void handlePlace(InteractionTarget target) {
+
+    if (!(target instanceof BlockTarget block)) return;
+
+    ItemStack item = ApplicationContext.hotbar.getSelected();
+    if (item == null) return;
+
+    short id = (short) item.getItemId();
+
+    ApplicationContext.network.send(
+        new BlockPlacePacket(block.placeX, block.placeY, block.placeZ, id));
+  }
+
+  private RaycastResult raycast() {
+
+    Camera camera = getOwner().getScene().getActiveCamera();
+
+    switch (ApplicationContext.raycastMode) {
+
+      case CROSS_HAIR:
+        return Raycasting.raycastCrossHair(camera, 6);
+
+      case CURSOR:
+        return Raycasting.raycastScreenPoint(camera, input, 1000);
+
+      default:
+        return RaycastResult.miss();
+    }
+  }
+
+  private boolean released(boolean last, boolean current) {
+    return last && !current;
+  }
+
+  private void updateLastState(boolean left, boolean right) {
+    lastPressedLeft = left;
+    lastPressedRight = right;
   }
 
   @Override
   public void render(Graphics g) {
-    if (!lastHit.hit) return;
 
-    int rx = lastHit.blockX;
-    int ry = lastHit.blockY;
-    int rz = lastHit.blockZ;
+    if (!(currentTarget instanceof BlockTarget block)) return;
 
-    BlockHighlightRenderer.render(g, rx, ry, rz);
+    BlockHighlightRenderer.render(g, block.x, block.y, block.z);
   }
 }

@@ -5,13 +5,14 @@ import java.util.UUID;
 import client.network.ClientNetwork;
 import client.player.ClientMovementConsumer;
 import client.player.FPSControl;
+import client.ray.RaycastMode;
 import client.ui.ClientView;
-import client.ui.actionbar.ActionBarComponent;
 import client.world.ChunkManager;
 import client.world.ClientWorld;
 import common.game.Hotbar;
 import engine.application.BasicApplication;
 import engine.scene.Scene;
+import engine.scene.camera.Camera;
 
 public class ApplicationContext {
 
@@ -36,4 +37,8 @@ public class ApplicationContext {
   public static ClientView view;
   
   public static FPSControl fpsController;
+  
+  public static RaycastMode raycastMode = RaycastMode.CROSS_HAIR;
+  
+  public static Camera playerCamera;
 }

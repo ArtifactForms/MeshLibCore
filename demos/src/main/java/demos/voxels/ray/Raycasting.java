@@ -18,6 +18,7 @@ public class Raycasting {
     Vector3f origin = ray.getOrigin();
     Vector3f dir = ray.getDirection().normalize();
 
+    // Amanatides & Woo algorithm
     // Welt-Raum Transformation (Y-Spiegelung beibehalten)
     float startX = origin.x;
     float startY = -origin.y;

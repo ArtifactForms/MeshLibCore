@@ -777,13 +777,15 @@ public class GraphicsPImpl implements Graphics {
     }
   }
 
-  //  public void disableDepthMask() {
-  //      g.hint(PApplet.DISABLE_DEPTH_MASK);
-  //  }
+  @Override
+  public void disableDepthMask() {
+    g.hint(PApplet.DISABLE_DEPTH_MASK);
+  }
 
-  //  public void enableDepthMask() {
-  //      g.hint(PApplet.ENABLE_ASYNC_SAVEFRAME);
-  //  }
+  @Override
+  public void enableDepthMask() {
+    g.hint(PApplet.ENABLE_DEPTH_MASK);
+  }
 
   // -------------------------------------------------
 

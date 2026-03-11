@@ -108,7 +108,7 @@ public class TextureAtlas {
     fill(g2d, Blocks.BIRCH_WOOD, new Color(255, 255, 255));
     fill(g2d, Blocks.DIRT, DIRT_COLOR);
 //    fill(g2d, BlockType.WATER, new Color(45, 137, 212, 160));
-    fill(g2d, Blocks.WATER, new Color(45, 137, 212));
+//    fill(g2d, Blocks.WATER, new Color(45, 137, 212, 120));
     fill(g2d, Blocks.SNOW, new Color(253, 253, 253));
     fill(g2d, Blocks.SAND, new Color(194, 189, 134));
     fill(g2d, Blocks.CACTUS, new Color(96, 142, 50));

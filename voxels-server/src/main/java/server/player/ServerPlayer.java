@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import common.game.Inventory;
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.PlayerPositionPacket;
+import common.player.PlayerProperties;
 import common.world.ChunkData;
 import common.world.World;
 import math.Vector3f;
@@ -29,6 +30,8 @@ public class ServerPlayer {
 
   private Vector3f position = new Vector3f();
   private float yaw, pitch;
+
+  private final PlayerProperties properties = new PlayerProperties();
 
   /** Thread-safe set of chunks currently loaded on the client side */
   private Set<Long> loadedChunks = Collections.newSetFromMap(new ConcurrentHashMap<>());
@@ -137,6 +140,10 @@ public class ServerPlayer {
   }
 
   // --- Getters ---
+
+  public PlayerProperties getProperties() {
+    return properties;
+  }
 
   public Vector3f getPosition() {
     return new Vector3f(position);

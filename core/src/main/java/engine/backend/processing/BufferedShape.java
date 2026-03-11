@@ -3,6 +3,8 @@ package engine.backend.processing;
 import engine.rendering.Material;
 import engine.resources.Texture;
 import engine.vbo.VBO;
+import math.Bounds;
+import math.Vector3f;
 import processing.core.PApplet;
 import processing.opengl.PShapeOpenGL;
 
@@ -10,6 +12,9 @@ public class BufferedShape {
 
   public static final int TRIANGLES = PApplet.TRIANGLES;
   public static final int QUADS = PApplet.QUADS;
+
+  private float minX, minY, minZ;
+  private float maxX, maxY, maxZ;
 
   private PShapeOpenGL shape;
   private Material material;
@@ -22,10 +27,13 @@ public class BufferedShape {
   }
 
   public void begin(int type) {
-    shape = Processing.createShape(); // Exception handling if no context is available.
+    shape = Processing.createShape();
     shape.beginShape(type);
     shape.noStroke();
     applyMaterial();
+
+    minX = minY = minZ = Float.POSITIVE_INFINITY;
+    maxX = maxY = maxZ = Float.NEGATIVE_INFINITY;
   }
 
   public void end() {
@@ -38,15 +46,27 @@ public class BufferedShape {
   }
 
   public void vertex(float x, float y, float z) {
+    updateBounds(x, y, z);
     shape.vertex(x, y, z);
   }
 
   public void vertex(float x, float y, float z, float u, float v) {
+    updateBounds(x, y, z);
     shape.vertex(x, y, z, u, v);
   }
 
   public void color(float r, float g, float b) {
     shape.fill(r, g, b);
+  }
+
+  private void updateBounds(float x, float y, float z) {
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (z < minZ) minZ = z;
+
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+    if (z > maxZ) maxZ = z;
   }
 
   private void applyMaterial() {
@@ -64,6 +84,7 @@ public class BufferedShape {
   }
 
   public VBO getVBO() {
-    return new VBOProcessing(shape);
+    return new VBOProcessing(
+        shape, new Bounds(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ)));
   }
 }

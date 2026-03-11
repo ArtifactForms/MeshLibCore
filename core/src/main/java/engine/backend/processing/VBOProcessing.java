@@ -34,6 +34,11 @@ public class VBOProcessing implements VBO {
     this.shape = shape;
   }
 
+  public VBOProcessing(PShape shape, Bounds bounds) {
+    this.shape = shape;
+    this.bounds = bounds;
+  }
+
   @Override
   public void create(Mesh3D mesh, Material material) {
     SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();

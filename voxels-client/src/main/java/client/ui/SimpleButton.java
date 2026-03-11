@@ -12,9 +12,11 @@ public class SimpleButton implements UiElement {
   private int y;
   private int width;
   private int height;
+  private boolean hover;
   private String text;
   private Color background = Color.getColorFromInt(76, 134, 158);
   private Color foreground = Color.getColorFromInt(228, 228, 228);
+  private Color hoverBackground = Color.getColorFromInt(94, 165, 193);
   private ButtonClickCallback callback;
 
   private static final Font FONT = new Font("monogram-extended", 40, Font.PLAIN);
@@ -29,23 +31,27 @@ public class SimpleButton implements UiElement {
 
   @Override
   public void render(Graphics g) {
-	x = (int) ((g.getWidth() - width) * 0.5f) + offsetX;
-	y = (int) ((g.getHeight() - height) * 0.5f) + offsetY;
-	
+    x = (int) ((g.getWidth() - width) * 0.5f) + offsetX;
+    y = (int) ((g.getHeight() - height) * 0.5f) + offsetY;
+
     renderBackground(g);
     renderText(g);
     renderBorder(g);
   }
 
   private void renderBackground(Graphics g) {
-    g.setColor(background);
+    if (hover) {
+      g.setColor(hoverBackground);
+    } else {
+      g.setColor(background);
+    }
     g.fillRect(x, y, width, height);
   }
 
   private void renderBorder(Graphics g) {
     g.setColor(Color.BLACK);
     g.drawRect(x, y, width, height);
-    
+
     g.setColor(Color.WHITE);
     g.drawLine(x + 1, y + 1, x + width - 1, y + 1);
     g.drawLine(x + 1, y + 1, x + 1, y + height - 1);
@@ -71,6 +77,11 @@ public class SimpleButton implements UiElement {
     if (contains(mouseX, mouseY) && callback != null) {
       callback.onButtonClicked();
     }
+  }
+
+  @Override
+  public void onMouse(float x, float y) {
+    hover = contains(x, y);
   }
 
   private boolean contains(float x, float y) {

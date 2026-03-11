@@ -9,13 +9,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import client.app.ApplicationContext;
 import client.app.GameSettings;
+import client.rendering.BasicChunkRenderer;
+import client.rendering.ChunkRenderer;
 import common.world.ChunkData;
 import common.world.ChunkStatus;
 import common.world.World;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
-import math.Color;
 import math.Vector3f;
 
 /**
@@ -45,7 +46,13 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private int playerChunkX;
   private int playerChunkZ;
 
-  float worldTime;
+  private float worldTime;
+
+  private ChunkRenderer chunkRenderer = new BasicChunkRenderer();
+
+  // Füge eine Map für den Lösch-Timer hinzu
+  private final Map<Long, Long> deletionQueue = new ConcurrentHashMap<>();
+  private static final long DELETION_DELAY_MS = 2000; // 2 Sekunden Puffer
 
   public ChunkManager() {
     setRenderDistance(GameSettings.renderDistance);
@@ -93,6 +100,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
           return Float.compare(distA, distB);
         });
 
+    ApplicationContext.view.getActionBarView().display(toMesh.size() + " Chunks to mesh", 1);
+
     for (Chunk c : toMesh) {
       if (meshQueueSet.putIfAbsent(c, true) == null) {
         meshQueue.offer(c);
@@ -100,23 +109,56 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     }
   }
 
+  //  private void processQueues() {
+  //    long startTime = System.nanoTime();
+  //    long budgetInNanos = 2_000_000; // 2ms budget
+  //
+  //    while (!meshQueue.isEmpty() && (System.nanoTime() - startTime) < budgetInNanos) {
+  //      Chunk chunk = meshQueue.poll();
+  //      if (chunk == null) continue;
+  //
+  //      meshQueueSet.remove(chunk);
+  //
+  //      if (!activeChunks.containsValue(chunk)) continue;
+  //
+  //      if ((chunk.getStatus() == ChunkStatus.DATA_READY || chunk.needsRebuild())
+  //          && neighborsReady(chunk.getChunkX(), chunk.getChunkZ())) {
+  //        chunk.scheduleMeshGeneration(this);
+  //      }
+  //
+  //      chunk.updateMesh();
+  //    }
+  //  }
+
   private void processQueues() {
     long startTime = System.nanoTime();
-    long budgetInNanos = 2_000_000; // 2ms budget
+    long budget = 2_000_000;
 
-    while (!meshQueue.isEmpty() && (System.nanoTime() - startTime) < budgetInNanos) {
+    while (!meshQueue.isEmpty() && (System.nanoTime() - startTime) < budget) {
       Chunk chunk = meshQueue.poll();
       if (chunk == null) continue;
 
       meshQueueSet.remove(chunk);
 
-      if (!activeChunks.containsValue(chunk)) continue;
-
-      if ((chunk.getStatus() == ChunkStatus.DATA_READY || chunk.needsRebuild())
-          && neighborsReady(chunk.getChunkX(), chunk.getChunkZ())) {
-        chunk.scheduleMeshGeneration(this);
+      // Sicherstellen, dass der Chunk noch Teil der Welt ist
+      if (!activeChunks.containsKey(World.getChunkKey(chunk.getChunkX(), chunk.getChunkZ()))) {
+        continue;
       }
 
+      // Der Chunk braucht ein Update
+      if (chunk.needsRebuild() || chunk.getStatus() == ChunkStatus.DATA_READY) {
+        // Nur wenn Nachbarn da sind, sonst zurück in die Queue (mit Verzögerung)
+        if (neighborsReady(chunk.getChunkX(), chunk.getChunkZ())) {
+          chunk.scheduleMeshGeneration(this); // Startet Worker-Thread
+        } else {
+          // Erneut hinten anstellen, damit andere Chunks erst dran kommen
+          meshQueue.offer(chunk);
+          meshQueueSet.put(chunk, true);
+          continue;
+        }
+      }
+
+      // Mesh-Resultate vom Worker-Thread einsammeln
       chunk.updateMesh();
     }
   }
@@ -164,17 +206,48 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     recycleChunksOutsideRadius(playerChunkX, playerChunkZ);
   }
 
+  //  private void recycleChunksOutsideRadius(int centerX, int centerZ) {
+  //    int r2 = (bufferDistance + 1) * (bufferDistance + 1);
+  //    activeChunks
+  //        .values()
+  //        .removeIf(
+  //            chunk -> {
+  //              int dx = chunk.getChunkX() - centerX;
+  //              int dz = chunk.getChunkZ() - centerZ;
+  //              if (dx * dx + dz * dz > r2) {
+  //                recycleChunk(chunk);
+  //                return true;
+  //              }
+  //              return false;
+  //            });
+  //  }
+
   private void recycleChunksOutsideRadius(int centerX, int centerZ) {
     int r2 = (bufferDistance + 1) * (bufferDistance + 1);
+    long currentTime = System.currentTimeMillis();
+
     activeChunks
-        .values()
+        .entrySet()
         .removeIf(
-            chunk -> {
+            entry -> {
+              Chunk chunk = entry.getValue();
               int dx = chunk.getChunkX() - centerX;
               int dz = chunk.getChunkZ() - centerZ;
+
               if (dx * dx + dz * dz > r2) {
-                recycleChunk(chunk);
-                return true;
+                long key = entry.getKey();
+                // Wenn noch nicht in der DeletionQueue, jetzt hinzufügen
+                if (!deletionQueue.containsKey(key)) {
+                  deletionQueue.put(key, currentTime);
+                } else if (currentTime - deletionQueue.get(key) > DELETION_DELAY_MS) {
+                  // Erst nach Ablauf des Timers wirklich recyceln
+                  recycleChunk(chunk);
+                  deletionQueue.remove(key);
+                  return true;
+                }
+              } else {
+                // Falls der Spieler zurückläuft, aus der DeletionQueue entfernen
+                deletionQueue.remove(World.getChunkKey(chunk.getChunkX(), chunk.getChunkZ()));
               }
               return false;
             });
@@ -190,31 +263,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   @Override
   public void render(Graphics g) {
-    Color skyColor = Color.getColorFromInt(180, 210, 255);
-
-    g.setShader("voxel.vert", "voxel.frag");
-    g.setUniform("u_fogColor", skyColor);
-
-    g.setUniform("u_lightDir", new Vector3f(0.2f, 1.0f, 0.4f));
-    g.setUniform("u_lightColor", new Vector3f(0.8f, 0.8f, 0.7f)); // Etwas schwächeres Weiß
-    g.setUniform("u_ambient", 0.5f); // Mehr Grundhelligkeit
-
-    float blocks = 8.0f * 16.0f;
-
-    float density = 1.5f / blocks;
-    g.setUniform("u_fogDensity", density);
-
-    g.enableFaceCulling();
-
-    for (Chunk chunk : activeChunks.values()) {
-      if (isWithinRenderDistance(chunk)) {
-        chunk.render(g);
-      }
-    }
-
-    g.disableFaceCulling();
-
-    g.resetShader();
+    chunkRenderer.renderChunks(g, activeChunks.values());
   }
 
   //  @Override
@@ -325,7 +374,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     return 0;
   }
 
-  private boolean isWithinRenderDistance(Chunk chunk) {
+  public boolean isWithinRenderDistance(Chunk chunk) {
     int dx = chunk.getChunkX() - playerChunkX;
     int dz = chunk.getChunkZ() - playerChunkZ;
     return dx * dx + dz * dz <= renderDistance * renderDistance;
@@ -334,6 +383,12 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   public void setRenderDistance(int renderDistance) {
     this.renderDistance = renderDistance;
     this.bufferDistance = renderDistance + 1;
+  }
+
+  public void forceRebuild() {
+    for (Chunk chunk : activeChunks.values()) {
+      chunk.markDirty(); // Sets needsRebuild = true
+    }
   }
 
   @Override

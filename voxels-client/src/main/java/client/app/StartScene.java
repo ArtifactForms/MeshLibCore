@@ -59,6 +59,14 @@ public class StartScene extends Scene {
     getUIRoot().addChild(buttonNode);
 
     SimpleButton button2 = new SimpleButton("Exit", 0, 50, 300, 40);
+    button2.setCallback(
+        new ButtonClickCallback() {
+
+          @Override
+          public void onButtonClicked() {
+            System.exit(0);
+          }
+        });
     UiComponent component2 = new UiComponent(input, button2);
     SceneNode buttonNode2 = new SceneNode("Button-2", component2);
     getUIRoot().addChild(buttonNode2);

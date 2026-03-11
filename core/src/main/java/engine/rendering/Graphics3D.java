@@ -34,13 +34,13 @@ public interface Graphics3D {
   void draw(VBO vbo);
 
   void setShader(String vertexShaderName, String fragmentShaderName);
-  
+
   void resetShader();
-  
+
   void setUniform(String name, float value);
-  
+
   void setUniform(String name, Vector3f value);
-  
+
   void setUniform(String name, Color color);
 
   void enableDepthTest();
@@ -64,6 +64,10 @@ public interface Graphics3D {
   void enableFaceCulling();
 
   void disableFaceCulling();
+
+  void disableDepthMask();
+
+  void enableDepthMask();
 
   void applyMatrix(Matrix4f matrix);
 

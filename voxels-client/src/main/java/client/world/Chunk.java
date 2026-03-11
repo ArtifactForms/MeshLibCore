@@ -8,14 +8,20 @@ import common.world.ChunkData;
 import common.world.ChunkStatus;
 import engine.components.StaticGeometry;
 import engine.rendering.Graphics;
+import math.Bounds;
 import math.Vector3f;
 
 public class Chunk extends ChunkData {
   private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
   private final Vector3f worldPosition = new Vector3f();
-  private volatile StaticGeometry currentGeometry;
-  private Future<StaticGeometry> meshFuture;
+
+  // Jetzt zwei separate Geometrien
+  private volatile StaticGeometry opaqueGeometry;
+  private volatile StaticGeometry waterGeometry;
+
+  // Der Future gibt nun das MeshResult-Objekt aus dem ChunkMesher zurück
+  private Future<ChunkMesher.MeshResult> meshFuture;
 
   private volatile ChunkStatus status = ChunkStatus.EMPTY;
   private volatile int generation = 0;
@@ -37,8 +43,9 @@ public class Chunk extends ChunkData {
     this.chunkZ = z;
     this.worldPosition.set(x * 16, 0, z * 16);
 
-    this.clear(); // Delete all old block data
-    this.currentGeometry = null;
+    this.clear();
+    this.opaqueGeometry = null;
+    this.waterGeometry = null;
     this.status = ChunkStatus.EMPTY;
     this.needsRebuild = false;
   }
@@ -52,32 +59,52 @@ public class Chunk extends ChunkData {
         executorService.submit(
             () -> {
               ChunkMesher mesher = new ChunkMesher(this, manager);
-              StaticGeometry mesh = mesher.createMesh();
-              return (taskGen == generation) ? mesh : null;
+              ChunkMesher.MeshResult result = mesher.createMesh();
+              return (taskGen == generation) ? result : null;
             });
   }
 
   public void updateMesh() {
     if (meshFuture == null || !meshFuture.isDone()) return;
     try {
-      StaticGeometry newMesh = meshFuture.get();
-      this.currentGeometry = newMesh;
-      this.status = ChunkStatus.MESH_READY;
-      this.needsRebuild = false;
+      ChunkMesher.MeshResult result = meshFuture.get();
+      if (result != null) {
+        this.opaqueGeometry = result.opaque;
+        this.waterGeometry = result.water;
+        this.status = ChunkStatus.MESH_READY;
+        this.needsRebuild = false;
+      }
     } catch (Exception e) {
       e.printStackTrace();
-      this.status = ChunkStatus.DATA_READY; // Error-Fallback
+      this.status = ChunkStatus.DATA_READY;
     }
     meshFuture = null;
   }
 
-  public void render(Graphics g) {
-    if (currentGeometry != null) {
+  /** Rendert nur die festen Blöcke */
+  public void renderOpaque(Graphics g) {
+    if (opaqueGeometry != null) {
       g.pushMatrix();
       g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
-      currentGeometry.render(g);
+      opaqueGeometry.render(g);
       g.popMatrix();
     }
+  }
+
+  /** Rendert nur das Wasser */
+  public void renderWater(Graphics g) {
+    if (waterGeometry != null) {
+      g.pushMatrix();
+      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
+      waterGeometry.render(g);
+      g.popMatrix();
+    }
+  }
+
+  // Alte render Methode zur Sicherheit (ruft beides auf)
+  public void render(Graphics g) {
+    renderOpaque(g);
+    renderWater(g);
   }
 
   public void markDirty() {
@@ -102,5 +129,13 @@ public class Chunk extends ChunkData {
 
   public Vector3f getWorldPosition() {
     return worldPosition;
+  }
+
+  public Bounds getMeshBounds() {
+    // Für Culling nutzen wir meist das opake Mesh
+    if (opaqueGeometry != null) {
+      return opaqueGeometry.getLocalBounds();
+    }
+    return null;
   }
 }
