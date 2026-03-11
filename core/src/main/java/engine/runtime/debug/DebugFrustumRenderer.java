@@ -189,11 +189,11 @@ public final class DebugFrustumRenderer {
    */
   public static void drawPlaneNormal(Graphics g, Plane plane, float length, Color color) {
     Vector3f normal = plane.getNormal();
-    Vector3f origin = new Vector3f(normal).multLocal(-plane.getDistance());
-    Vector3f end = new Vector3f(origin).addLocal(new Vector3f(normal).multLocal(length));
+    Vector3f pointOnPlane = new Vector3f(plane.getNormal()).multLocal(-plane.getDistance());
+    Vector3f end = new Vector3f(pointOnPlane).addLocal(new Vector3f(normal).multLocal(length));
 
     g.setColor(color);
-    g.drawLine(origin, end);
+    g.drawLine(pointOnPlane, end);
   }
 
   /**

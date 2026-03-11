@@ -97,12 +97,10 @@ public class Matrix4f {
   }
 
   public static Matrix4f lookAt(Vector3f eye, Vector3f target, Vector3f up) {
-    // Forward points from camera to target
-    Vector3f forward = target.subtract(eye).normalize();
 
-    // Right-handed system with Y-down
-    Vector3f right = up.cross(forward).normalize();
-    Vector3f cameraUp = forward.cross(right);
+    Vector3f forward = target.subtract(eye).normalize();
+    Vector3f right = forward.cross(up).normalize();
+    Vector3f cameraUp = right.cross(forward);
 
     Matrix4f result = new Matrix4f();
 
@@ -119,7 +117,7 @@ public class Matrix4f {
     result.set(2, 0, -forward.x);
     result.set(2, 1, -forward.y);
     result.set(2, 2, -forward.z);
-    result.set(2, 3, -forward.dot(eye));
+    result.set(2, 3, forward.dot(eye)); // FIX
 
     result.set(3, 0, 0);
     result.set(3, 1, 0);
