@@ -18,6 +18,7 @@ public class NetworkPackets {
     PacketRegistry.register(PlayerJoinPacket::new);
     PacketRegistry.register(PlayerSpawnPacket::new);
     PacketRegistry.register(PlayerPositionPacket::new);
+    PacketRegistry.register(PlayerQuitPacket::new);
 
     // World & Blocks
     PacketRegistry.register(BlockUpdatePacket::new);
