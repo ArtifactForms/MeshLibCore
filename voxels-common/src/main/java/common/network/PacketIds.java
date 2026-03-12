@@ -18,4 +18,5 @@ public class PacketIds {
   public static final int UPDATE_SLOT = 14;
   public static final int OPEN_INVENTORY = 15;
   public static final int ACTION_BAR = 16;
+  public static final int PLAYER_QUIT = 17;
 }
