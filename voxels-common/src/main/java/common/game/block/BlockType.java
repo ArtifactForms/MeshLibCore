@@ -58,8 +58,8 @@ public final class BlockType {
     return this;
   }
 
-  public boolean isTransparent() {
-    return !opaque;
+  public boolean isOpaque() {
+    return opaque;
   }
 
   public BlockType setLightEmission(int value) {
