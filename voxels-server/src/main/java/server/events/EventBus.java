@@ -17,19 +17,19 @@ public class EventBus {
 
   @SuppressWarnings("unchecked")
   public <T extends GameEvent> void fire(T event) {
-    if (event.isCancelled()) return;
+    boolean isCancellable = event instanceof Cancellable;
 
-    List<Consumer<? extends GameEvent>> eventListeners = listeners.get(event.getClass());
-
-    if (eventListeners == null) {
+    if (isCancellable && ((Cancellable) event).isCancelled()) {
       return;
     }
 
-    for (Consumer<? extends GameEvent> listener : eventListeners) {
+    List<Consumer<? extends GameEvent>> eventListeners = listeners.get(event.getClass());
+    if (eventListeners == null) return;
 
+    for (Consumer<? extends GameEvent> listener : eventListeners) {
       ((Consumer<T>) listener).accept(event);
 
-      if (event.isCancelled()) {
+      if (isCancellable && ((Cancellable) event).isCancelled()) {
         break;
       }
     }

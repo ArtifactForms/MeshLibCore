@@ -1,4 +1,4 @@
-package client.ui;
+package client.ui.core;
 
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
@@ -18,21 +18,23 @@ public class UiComponent extends AbstractComponent implements RenderableComponen
 
   @Override
   public void onUpdate(float tpf) {
-    uiElement.onMouse(input.getMouseX(), input.getMouseY());
+
+    float mouseX = input.getMouseX();
+    float mouseY = input.getMouseY();
+
+    uiElement.onMouse(mouseX, mouseY);
 
     boolean pressed = input.isMousePressed(Input.LEFT);
+
     if (!pressed && lastPressed) {
-      dispatchClicked(input.getMouseX(), input.getMouseY());
+      uiElement.onMouseClicked(mouseX, mouseY);
     }
+
     lastPressed = pressed;
   }
 
   @Override
   public void render(Graphics g) {
     uiElement.render(g);
-  }
-
-  private void dispatchClicked(float mouseX, float mouseY) {
-    uiElement.onMouseClicked(mouseX, mouseY);
   }
 }

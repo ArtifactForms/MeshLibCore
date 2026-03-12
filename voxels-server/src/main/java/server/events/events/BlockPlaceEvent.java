@@ -1,9 +1,9 @@
 package server.events.events;
 
-import server.events.GameEvent;
+import server.events.CancellableEvent;
 import server.player.ServerPlayer;
 
-public class BlockPlaceEvent extends GameEvent {
+public class BlockPlaceEvent extends CancellableEvent {
 
   private final ServerPlayer player;
 
