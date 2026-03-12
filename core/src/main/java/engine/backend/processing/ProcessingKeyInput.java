@@ -117,19 +117,15 @@ public class ProcessingKeyInput implements KeyInput {
   public void keyEvent(KeyEvent e) {
     Key key = Key.UNKNOWN;
 
-    // SPACE explicit (important!)
     if (e.getKey() == ' ') {
       key = Key.SPACE;
-    }
-    // CODED keys (SHIFT, CTRL, ARROWS, ...)
-    else if (e.getKey() == PApplet.CODED) {
+    } else if (e.getKey() == '\n' || e.getKeyCode() == PApplet.ENTER) {
+      key = Key.ENTER;
+    } else if (e.getKey() == PApplet.CODED) {
       key = codedKeysMap.getOrDefault(e.getKeyCode(), Key.UNKNOWN);
-    }
-    // Normal Keys → keyCode (A–Z, 0–9)
-    else {
+    } else {
       key = KeyCharacterMapper.getMappedKey(e.getKeyCode());
 
-      // Fallback → char (ENTER, TAB, etc.)
       if (key == Key.UNKNOWN) {
         key = KeyCharacterMapper.getMappedKey(e.getKey());
       }

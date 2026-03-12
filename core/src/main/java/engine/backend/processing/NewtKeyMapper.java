@@ -41,17 +41,17 @@ public class NewtKeyMapper {
     keyMap.put(KeyEvent.VK_Z, Key.Z);
 
     keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
-    keyMap.put(KeyEvent.VK_F1, Key.F1);
+    keyMap.put(KeyEvent.VK_F2, Key.F2);
+    keyMap.put(KeyEvent.VK_F3, Key.F3);
+    keyMap.put(KeyEvent.VK_F4, Key.F4);
+    keyMap.put(KeyEvent.VK_F5, Key.F5);
+    keyMap.put(KeyEvent.VK_F6, Key.F6);
+    keyMap.put(KeyEvent.VK_F7, Key.F7);
+    keyMap.put(KeyEvent.VK_F8, Key.F8);
+    keyMap.put(KeyEvent.VK_F9, Key.F9);
+    keyMap.put(KeyEvent.VK_F10, Key.F10);
+    keyMap.put(KeyEvent.VK_F11, Key.F11);
+    keyMap.put(KeyEvent.VK_F12, Key.F12);
   }
 
   public static Key mapKeyCode(int keyCode) {
