@@ -1,7 +1,7 @@
 package engine.scene.audio;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,20 +16,20 @@ public class Sound {
   private Clip clip;
   private FloatControl panControl;
 
-  public Sound(String filePath) {
-    try {
-      AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(filePath));
-      clip = AudioSystem.getClip();
-      clip.open(audioStream);
+  public Sound(InputStream stream) {
+	  try {
+	    AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
+	    clip = AudioSystem.getClip();
+	    clip.open(audioStream);
 
-      // Check if the clip supports panning
-      if (clip.isControlSupported(FloatControl.Type.PAN)) {
-        panControl = (FloatControl) clip.getControl(FloatControl.Type.PAN);
-      }
-    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-      e.printStackTrace();
-    }
-  }
+	    if (clip.isControlSupported(FloatControl.Type.PAN)) {
+	      panControl = (FloatControl) clip.getControl(FloatControl.Type.PAN);
+	    }
+
+	  } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+	    e.printStackTrace();
+	  }
+	}
 
   public void play() {
     if (clip != null) {

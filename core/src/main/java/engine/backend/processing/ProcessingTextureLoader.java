@@ -17,14 +17,35 @@ public class ProcessingTextureLoader implements TextureLoader {
 
   @Override
   public Texture loadTexture(String filePath) {
-    PImage image =
-        parent.loadImage(
-            ProcessingTextureLoader.class
-                .getClassLoader()
-                .getResource("images/" + filePath)
-                .getPath());
-    ProcessingTexture texture = new ProcessingTexture(image);
-    return texture;
+    String fullPath = "/images/" + filePath;
+    java.io.InputStream is = ProcessingTextureLoader.class.getResourceAsStream(fullPath);
+
+    if (is == null) {
+      fullPath = "/resources/images/" + filePath;
+      is = ProcessingTextureLoader.class.getResourceAsStream(fullPath);
+    }
+
+    if (is == null) {
+      System.err.println(
+          "Datei weder in /images/ noch in /resources/images/ gefunden: " + filePath);
+      return null;
+    }
+
+    try {
+      java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read(is);
+      is.close();
+
+      if (bufferedImage == null) return null;
+
+      PImage pImage = new PImage(bufferedImage.getWidth(), bufferedImage.getHeight(), PApplet.ARGB);
+      bufferedImage.getRGB(0, 0, pImage.width, pImage.height, pImage.pixels, 0, pImage.width);
+      pImage.updatePixels();
+
+      return new ProcessingTexture(pImage);
+    } catch (java.io.IOException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   @Override

@@ -30,14 +30,26 @@ public class ProcessingFontManager {
 
   private void loadFont(int size, boolean smooth) {
     try {
-      // Load the font from a custom folder
-      String filePath =
-          "monogram/ttf/monogram-extended.ttf"; // Relative path to your custom font folder
-      String fontPath =
-          ProcessingTextureLoader.class.getClassLoader().getResource("fonts/" + filePath).getPath();
 
-      PFont font = p.createFont(fontPath, size);
+      String filePath = "fonts/monogram/ttf/monogram-extended.ttf";
+
+      var stream = ProcessingFontManager.class.getClassLoader().getResourceAsStream(filePath);
+
+      if (stream == null) {
+        throw new RuntimeException("Font not found: " + filePath);
+      }
+
+      // temp file erzeugen
+      java.io.File temp = java.io.File.createTempFile("font", ".ttf");
+      temp.deleteOnExit();
+
+      java.nio.file.Files.copy(
+          stream, temp.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+      PFont font = p.createFont(temp.getAbsolutePath(), size, smooth);
+
       fontCache.put(new Font("monogram-extended", size, Font.PLAIN), font);
+
     } catch (Exception e) {
       e.printStackTrace();
     }
