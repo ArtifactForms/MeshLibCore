@@ -15,16 +15,16 @@ public class Resources {
   public static final String BLOCK_PLACE_FX_PATH = "block-place-fx.wav";
 
   public static final String FOOT_STEP_GRASS_1_KEY = SoundEffect.FOOT_STEP_GRASS_1;
-  public static final String FOOT_STEP_GRASS_1_PATH = "/steps/footstep-grass-1.wav";
+  public static final String FOOT_STEP_GRASS_1_PATH = "steps/footstep-grass-1.wav";
   
   public static final String FOOT_STEP_GRASS_2_KEY = SoundEffect.FOOT_STEP_GRASS_2;
-  public static final String FOOT_STEP_GRASS_2_PATH = "/steps/footstep-grass-2.wav";
+  public static final String FOOT_STEP_GRASS_2_PATH = "steps/footstep-grass-2.wav";
   
   public static final String FOOT_STEP_GRASS_3_KEY = SoundEffect.FOOT_STEP_GRASS_3;
-  public static final String FOOT_STEP_GRASS_3_PATH = "/steps/footstep-grass-3.wav";
+  public static final String FOOT_STEP_GRASS_3_PATH = "steps/footstep-grass-3.wav";
   
   public static final String FOOT_STEP_GRASS_4_KEY = SoundEffect.FOOT_STEP_GRASS_4;
-  public static final String FOOT_STEP_GRASS_4_PATH = "/steps/footstep-grass-4.wav";
+  public static final String FOOT_STEP_GRASS_4_PATH = "steps/footstep-grass-4.wav";
 
   public static final String GAME_START_BUTTON_TEXT = "PLAY";
 }
