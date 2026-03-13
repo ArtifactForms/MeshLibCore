@@ -2,7 +2,6 @@ package server.network.handlers;
 
 import common.network.packets.PlayerMovePacket;
 import server.events.events.PlayerMoveEvent;
-import server.network.GameServer;
 import server.network.ServerConnection;
 import server.player.ServerPlayer;
 
@@ -38,7 +37,7 @@ public class PlayerMoveHandler {
             packet.getYaw(),
             packet.getPitch());
 
-    GameServer.getEventBus().fire(event);
+    connection.getServer().getEventBus().fire(event);
 
     // If a listener cancelled the movement, stop processing
     if (event.isCancelled()) {
@@ -52,20 +51,22 @@ public class PlayerMoveHandler {
     float yaw = event.getYaw();
     float pitch = event.getPitch();
 
-    // 2. Validate position against terrain (Server Authority)
-    // We determine where the player *should* be based on the world data
-    int terrainY =
-        GameServer.getWorld().getHeightAt((int) Math.floor(x), (int) Math.floor(z));
+    player.move(x, y, z, yaw, pitch);
 
-    // 3. Check for significant deviations (e.g., flying or falling through floor)
-    float diffY = Math.abs(y - terrainY);
-
-    if (diffY > 1.2f) {
-      // The difference is too high; force the client to sync with the server's calculated Y
-      player.move(x, terrainY, z, yaw, pitch);
-    } else {
-      // The position is acceptable; update internal state without sending a correction packet
-      player.setSilentPosition(x, y, z, yaw, pitch);
-    }
+    //    // 2. Validate position against terrain (Server Authority)
+    //    // We determine where the player *should* be based on the world data
+    //    int terrainY =
+    //        GameServer.getWorld().getHeightAt((int) Math.floor(x), (int) Math.floor(z));
+    //
+    //    // 3. Check for significant deviations (e.g., flying or falling through floor)
+    //    float diffY = Math.abs(y - terrainY);
+    //
+    //    if (diffY > 1.2f) {
+    //      // The difference is too high; force the client to sync with the server's calculated Y
+    //      player.move(x, terrainY, z, yaw, pitch);
+    //    } else {
+    //      // The position is acceptable; update internal state without sending a correction packet
+    //      player.setSilentPosition(x, y, z, yaw, pitch);
+    //    }
   }
 }

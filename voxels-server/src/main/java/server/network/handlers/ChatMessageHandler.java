@@ -1,7 +1,12 @@
 package server.network.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import common.logging.Log;
 import common.network.packets.ChatMessagePacket;
-import server.network.PlayerManager;
+import server.commands.Command;
+import server.commands.CommandContext;
 import server.network.ServerConnection;
 import server.player.ServerPlayer;
 
@@ -14,13 +19,41 @@ public class ChatMessageHandler {
   }
 
   public void handle(ChatMessagePacket packet) {
-    ServerPlayer p = connection.getPlayer();
-    if (p == null) return; // Only logged in player are allowed to chat
+    ServerPlayer player = connection.getPlayer();
+    if (player == null) return;
 
-    String formattedMessage = "[" + p.getName() + "]: " + packet.getMessage();
-    System.out.println("[CHAT] " + formattedMessage);
+    String message = packet.getMessage();
 
-    // Broadcast all
-    PlayerManager.broadcast(new ChatMessagePacket(formattedMessage));
+    if (message.startsWith("/")) {
+      handleCommand(player, message);
+      return;
+    }
+
+    String formattedMessage = "[" + player.getName() + "]: " + message;
+    Log.info("[CHAT] " + formattedMessage);
+
+    connection.getServer().getPlayerManager().broadcast(new ChatMessagePacket(formattedMessage));
+  }
+
+  private void handleCommand(ServerPlayer player, String message) {
+    String rawInput = message.substring(1).trim();
+    if (rawInput.isEmpty()) return;
+
+    String[] parts = rawInput.split("\\s+");
+    String commandName = parts[0];
+
+    List<String> args = new ArrayList<>();
+    for (int i = 1; i < parts.length; i++) {
+      args.add(parts[i]);
+    }
+
+    Command command = connection.getServer().getCommandRegistry().get(commandName);
+
+    if (command != null) {
+      CommandContext context = new CommandContext(player.getUuid(), args, connection.getServer());
+      command.execute(context);
+    } else {
+      player.getConnection().send(new ChatMessagePacket("Unknown command: " + commandName));
+    }
   }
 }

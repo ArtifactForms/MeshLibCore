@@ -4,10 +4,9 @@ import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.PlayerJoinPacket;
 import common.network.packets.PlayerPositionPacket;
+import common.network.packets.PlayerSpawnPacket;
 import common.world.ChunkData;
-
 import server.events.events.PlayerJoinEvent;
-import server.network.GameServer;
 import server.network.PlayerManager;
 import server.network.ServerConnection;
 import server.player.ServerPlayer;
@@ -34,14 +33,14 @@ public class PlayerJoinHandler {
     // Calculate spawn position
     int spawnX = 0;
     int spawnZ = 0;
-    int spawnY = GameServer.getWorld().getHeightAt(spawnX, spawnZ);
+    int spawnY = connection.getServer().getWorld().getHeightAt(spawnX, spawnZ);
 
     // Default join message
     String joinMessage = "§e" + player.getName() + " ist dem Spiel beigetreten!";
 
     // Fire join event so other systems can modify spawn or message
     PlayerJoinEvent event = new PlayerJoinEvent(player, joinMessage, spawnX, spawnY, spawnZ);
-    GameServer.getEventBus().fire(event);
+    connection.getServer().getEventBus().fire(event);
 
     // If the event was cancelled, close the connection
     if (event.isCancelled()) {
@@ -58,14 +57,40 @@ public class PlayerJoinHandler {
     // Move the player to the spawn position
     player.move(spawnX, spawnY, spawnZ, 0f, 0f);
 
+    PlayerManager playerManager = connection.getServer().getPlayerManager();
+
     // Broadcast the join message to all connected players
-    PlayerManager.broadcast(new ChatMessagePacket(joinMessage));
+    playerManager.broadcast(new ChatMessagePacket(joinMessage));
 
     // Send initial chunks around the spawn position
     sendInitialChunks();
 
     // Send teleport packet to synchronize client position
     connection.send(new PlayerPositionPacket(player.getUuid(), spawnX, -spawnY, spawnZ, 0f, 0f));
+
+    for (ServerPlayer existingPlayer : playerManager.getAllPlayers()) {
+      // Hier ist die UUID-Prüfung gut, falls getAllPlayers ihn schon enthält
+      if (!existingPlayer.getUuid().equals(player.getUuid())) {
+        connection.send(
+            new PlayerSpawnPacket(
+                existingPlayer.getUuid(),
+                existingPlayer.getName(),
+                existingPlayer.getX(),
+                existingPlayer.getY(),
+                existingPlayer.getZ()));
+      }
+    }
+
+    playerManager.addConnection(connection);
+
+    PlayerSpawnPacket spawnNew =
+        new PlayerSpawnPacket(player.getUuid(), player.getName(), spawnX, spawnY, spawnZ);
+
+    for (ServerPlayer other : playerManager.getAllPlayers()) {
+      if (!other.getUuid().equals(player.getUuid())) {
+        other.getConnection().send(spawnNew);
+      }
+    }
   }
 
   private void sendInitialChunks() {
@@ -74,7 +99,7 @@ public class PlayerJoinHandler {
     for (int cx = -1; cx <= 1; cx++) {
       for (int cz = -1; cz <= 1; cz++) {
 
-        ChunkData data = GameServer.getWorld().getOrCreateChunk(cx, cz);
+        ChunkData data = connection.getServer().getWorld().getOrCreateChunk(cx, cz);
         connection.send(new ChunkDataPacket(data));
       }
     }

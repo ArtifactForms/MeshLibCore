@@ -1,10 +1,14 @@
 package server.network;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
+
 import common.network.Packet;
 import common.network.packets.ChatMessagePacket;
+import common.network.packets.PlayerQuitPacket;
+import server.events.events.PlayerQuitEvent;
 import server.player.ServerPlayer;
 
 /**
@@ -23,8 +27,10 @@ public class PlayerManager {
    *
    * @param conn The ServerConnection to add.
    */
-  public static void addConnection(ServerConnection conn) {
-    connections.add(conn);
+  public void addConnection(ServerConnection conn) {
+    if (!connections.contains(conn)) {
+      connections.add(conn);
+    }
   }
 
   /**
@@ -32,10 +38,12 @@ public class PlayerManager {
    *
    * @param conn The ServerConnection to remove.
    */
-  public static void removeConnection(ServerConnection conn) {
-    if (connections.remove(conn) && conn.getPlayer() != null) {
-      String quitMessage = "§e" + conn.getPlayer().getName() + " left the game.";
-      broadcast(new ChatMessagePacket(quitMessage));
+  public void removeConnection(ServerConnection conn) {
+    if (connections.remove(conn)) {
+      ServerPlayer player = conn.getPlayer();
+      if (player != null) {
+        handleDisconnect(player);
+      }
     }
   }
 
@@ -44,7 +52,7 @@ public class PlayerManager {
    *
    * @return A list of all active ServerPlayers.
    */
-  public static List<ServerPlayer> getAllPlayers() {
+  public List<ServerPlayer> getAllPlayers() {
     return connections
         .stream()
         .map(ServerConnection::getPlayer)
@@ -58,11 +66,44 @@ public class PlayerManager {
    *
    * @param packet The packet to be broadcasted.
    */
-  public static void broadcast(Packet packet) {
+  public void broadcast(Packet packet) {
     for (ServerConnection conn : connections) {
       if (conn.isRunning()) {
         conn.send(packet);
       }
     }
+  }
+
+  public void removePlayer(ServerPlayer player) {
+    // Finde die Verbindung, die zu diesem Player gehört
+    for (ServerConnection conn : connections) {
+      if (conn.getPlayer() != null && conn.getPlayer().equals(player)) {
+        connections.remove(conn);
+        break;
+      }
+    }
+  }
+
+  public void handleDisconnect(ServerPlayer player) {
+    String defaultQuitMessage = "§e" + player.getName() + " left the game.";
+    PlayerQuitEvent event = new PlayerQuitEvent(player, defaultQuitMessage);
+
+    player.getConnection().getServer().getEventBus().fire(event);
+
+    removePlayer(player);
+    broadcast(new PlayerQuitPacket(player.getUuid()));
+
+    if (event.getQuitMessage() != null && !event.getQuitMessage().isEmpty()) {
+      broadcast(new ChatMessagePacket(event.getQuitMessage()));
+    }
+
+    System.out.println("[Server] Player " + player.getName() + " disconnected.");
+  }
+
+  public ServerPlayer getPlayer(UUID uuid) {
+    for (ServerConnection conn : connections) {
+      if (conn.getPlayer().getUuid().equals(uuid)) return conn.getPlayer();
+    }
+    return null;
   }
 }

@@ -11,7 +11,8 @@ import server.player.ServerPlayer;
  */
 public class ServerConnection extends Connection {
 
-  private ServerPlayer player; // Initialized as null until the player officially joins
+  private volatile ServerPlayer player; // Initialized as null until the player officially joins
+  private final GameServer server;
   private final ServerPacketDispatcher packetDispatcher;
 
   /**
@@ -20,12 +21,10 @@ public class ServerConnection extends Connection {
    * @param socket The client socket.
    * @throws Exception If the socket streams cannot be initialized.
    */
-  public ServerConnection(Socket socket) throws Exception {
+  public ServerConnection(GameServer server, Socket socket) throws Exception {
     super(socket);
+    this.server = server;
     this.packetDispatcher = new ServerPacketDispatcher(this);
-
-    // Register the connection to the global manager
-    PlayerManager.addConnection(this);
 
     // Start the background thread for reading incoming data (Connection.run())
     Thread thread = new Thread(this, "Server-Client-" + socket.getInetAddress());
@@ -42,7 +41,7 @@ public class ServerConnection extends Connection {
   @Override
   protected void handle(Packet packet) {
     // Enqueue the packet to ensure thread-safe processing in the Main Game Loop
-    GameServer.packetQueue.add(new QueuedPacket(this, packet));
+    server.getPacketQueue().add(new QueuedPacket(this, packet));
   }
 
   /**
@@ -55,7 +54,7 @@ public class ServerConnection extends Connection {
     super.close();
 
     // Notify manager to handle player logout/cleanup
-    PlayerManager.removeConnection(this);
+    server.getPlayerManager().removeConnection(this);
   }
 
   /** @return true if the connection is still active and listening. */
@@ -74,5 +73,9 @@ public class ServerConnection extends Connection {
 
   public void setPlayer(ServerPlayer player) {
     this.player = player;
+  }
+
+  public GameServer getServer() {
+    return server;
   }
 }

@@ -24,17 +24,35 @@ public class ServerWorld extends World {
     //    this.generator = new FlatWorldGenerator("1*bedrock,4*dirt,1*grass_block");
   }
 
+  @Override
+  public void tick() {
+
+    super.tick();
+
+    // server-specific logic
+  }
+
   /**
    * Updates a block in the world and should eventually broadcast this change to all connected
    * clients.
    */
   @Override
   public void setBlock(int x, int y, int z, short blockId) {
-    // 1. Update the underlying data in the server's world storage
-    super.setBlock(x, y, z, blockId);
 
-    // TODO: Broadcast the change to all clients via the network
-    // gameServer.broadcast(new BlockUpdatePacket(x, y, z, blockId));
+    if (y < 0 || y >= ChunkData.HEIGHT) return;
+
+    int cx = Math.floorDiv(x, ChunkData.WIDTH);
+    int cz = Math.floorDiv(z, ChunkData.DEPTH);
+
+    ChunkData chunk = getOrCreateChunk(cx, cz);
+
+    int lx = Math.floorMod(x, ChunkData.WIDTH);
+    int lz = Math.floorMod(z, ChunkData.DEPTH);
+
+    chunk.setBlockId(blockId, lx, y, lz);
+
+    // Later
+    // TODO gameServer.broadcast(new BlockUpdatePacket(x, y, z, blockId));
   }
 
   /**

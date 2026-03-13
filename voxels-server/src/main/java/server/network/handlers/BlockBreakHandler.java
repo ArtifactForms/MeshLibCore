@@ -2,7 +2,6 @@ package server.network.handlers;
 
 import java.util.List;
 
-import common.game.ReachDistance;
 import common.game.block.BlockRegistry;
 import common.game.block.BlockType;
 import common.game.block.Blocks;
@@ -11,11 +10,8 @@ import common.network.packets.BlockUpdatePacket;
 import common.network.packets.SoundEffectPacket;
 import common.world.SoundEffect;
 import server.events.events.BlockBreakEvent;
-import server.network.GameServer;
-import server.network.PlayerManager;
 import server.network.ServerConnection;
 import server.network.validation.BlockActionValidator;
-import server.network.validation.DistanceValidator;
 import server.network.validation.MaterialValidator;
 import server.player.ServerPlayer;
 
@@ -23,12 +19,12 @@ public class BlockBreakHandler {
 
   private final ServerConnection connection;
 
-//  private static final List<BlockActionValidator> RULES =
-//      List.<BlockActionValidator>of(
-//          new DistanceValidator(ReachDistance.VALUE + 0.5f), new MaterialValidator());
-  
+  //  private static final List<BlockActionValidator> RULES =
+  //      List.<BlockActionValidator>of(
+  //          new DistanceValidator(ReachDistance.VALUE + 0.5f), new MaterialValidator());
+
   private static final List<BlockActionValidator> RULES =
-	      List.<BlockActionValidator>of(new MaterialValidator());
+      List.<BlockActionValidator>of(new MaterialValidator());
 
   public BlockBreakHandler(ServerConnection connection) {
     this.connection = connection;
@@ -53,7 +49,11 @@ public class BlockBreakHandler {
 
     // Get the block type before it's gone
     short oldBlockId =
-        GameServer.getWorld().getBlock(packet.getX(), packet.getY(), packet.getZ()).getId();
+        connection
+            .getServer()
+            .getWorld()
+            .getBlock(packet.getX(), packet.getY(), packet.getZ())
+            .getId();
 
     BlockType oldType = BlockRegistry.get(oldBlockId);
 
@@ -61,7 +61,7 @@ public class BlockBreakHandler {
     BlockBreakEvent event =
         new BlockBreakEvent(player, packet.getX(), packet.getY(), packet.getZ());
 
-    GameServer.getEventBus().fire(event);
+    connection.getServer().getEventBus().fire(event);
 
     if (event.isCancelled()) {
       return;
@@ -72,7 +72,10 @@ public class BlockBreakHandler {
       return;
     }
 
-    GameServer.getWorld().setBlock(event.getX(), event.getY(), event.getZ(), Blocks.AIR.getId());
+    connection
+        .getServer()
+        .getWorld()
+        .setBlock(event.getX(), event.getY(), event.getZ(), Blocks.AIR.getId());
 
     //    // 3. SPAWN THE ITEM
     //    if (oldType != BlockType.AIR) {
@@ -97,12 +100,15 @@ public class BlockBreakHandler {
 
     // 4. Notify everyone about the block and sound
     connection.send(new SoundEffectPacket(SoundEffect.BLOCK_BREAK));
-    PlayerManager.broadcast(
-        new BlockUpdatePacket(event.getX(), event.getY(), event.getZ(), Blocks.AIR.getId()));
+    connection
+        .getServer()
+        .getPlayerManager()
+        .broadcast(
+            new BlockUpdatePacket(event.getX(), event.getY(), event.getZ(), Blocks.AIR.getId()));
   }
 
   private void resyncBlock(int x, int y, int z) {
-    short currentId = GameServer.getWorld().getBlock(x, y, z).getId();
+    short currentId = connection.getServer().getWorld().getBlock(x, y, z).getId();
     connection.send(new BlockUpdatePacket(x, y, z, currentId));
   }
 }

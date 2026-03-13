@@ -5,8 +5,6 @@ import common.network.packets.BlockUpdatePacket;
 import common.network.packets.SoundEffectPacket;
 import common.world.SoundEffect;
 import server.events.events.BlockPlaceEvent;
-import server.network.GameServer;
-import server.network.PlayerManager;
 import server.network.ServerConnection;
 import server.player.ServerPlayer;
 
@@ -20,24 +18,35 @@ public class BlockPlaceHandler {
 
   public void handle(BlockPlacePacket packet) {
 
-    ServerPlayer player = connection.getPlayer();
-    if (player == null) return;
+	  ServerPlayer player = connection.getPlayer();
+	  if (player == null) return;
 
-    BlockPlaceEvent event =
-        new BlockPlaceEvent(
-            player, packet.getX(), packet.getY(), packet.getZ(), packet.getBlockId());
+	  var server = connection.getServer();
 
-    GameServer.getEventBus().fire(event);
+	  BlockPlaceEvent event =
+	      new BlockPlaceEvent(
+	          player,
+	          packet.getX(),
+	          packet.getY(),
+	          packet.getZ(),
+	          packet.getBlockId());
 
-    if (event.isCancelled()) {
-      return;
-    }
+	  server.getEventBus().fire(event);
 
-    GameServer.getWorld().setBlock(event.getX(), event.getY(), event.getZ(), event.getBlockId());
+	  if (event.isCancelled()) {
+	    return;
+	  }
 
-    connection.send(new SoundEffectPacket(SoundEffect.BLOCK_PLACE));
+	  server.getWorld()
+	        .setBlock(event.getX(), event.getY(), event.getZ(), event.getBlockId());
 
-    PlayerManager.broadcast(
-        new BlockUpdatePacket(event.getX(), event.getY(), event.getZ(), event.getBlockId()));
-  }
+	  connection.send(new SoundEffectPacket(SoundEffect.BLOCK_PLACE));
+
+	  server.getPlayerManager().broadcast(
+	      new BlockUpdatePacket(
+	          event.getX(),
+	          event.getY(),
+	          event.getZ(),
+	          event.getBlockId()));
+	}
 }

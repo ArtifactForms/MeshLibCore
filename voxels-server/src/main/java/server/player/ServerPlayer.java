@@ -12,7 +12,7 @@ import common.player.PlayerProperties;
 import common.world.ChunkData;
 import common.world.World;
 import math.Vector3f;
-import server.network.GameServer;
+import server.network.PlayerManager;
 import server.network.ServerConnection;
 
 /**
@@ -39,6 +39,7 @@ public class ServerPlayer {
   private int viewDistance = 12;
 
   private Inventory inventory;
+  private boolean ignoreNextMovement = false;
 
   public ServerPlayer(UUID uuid, String name, ServerConnection connection) {
     this.uuid = uuid;
@@ -47,11 +48,28 @@ public class ServerPlayer {
     this.inventory = new Inventory(4 * 9); // Standard 36 slot inventory
   }
 
+  public void teleport(float x, float y, float z, float yaw, float pitch) {
+//    ignoreNextMovement = true;
+    setSilentPosition(x, y, z, yaw, pitch);
+
+    // Send correction packet to the client
+    connection.send(
+        new PlayerPositionPacket(uuid, position.x, position.y, position.z, yaw, pitch, true));
+
+    // Inform other players of this movement
+    broadcastUpdate();
+  }
+
   /**
    * Forced movement (Hard Correction). Updates the server-side position and ALWAYS sends a packet
    * back to the client to sync their position (useful for anti-cheat or teleportation).
    */
   public void move(float x, float y, float z, float yaw, float pitch) {
+//    if (ignoreNextMovement) {
+//      ignoreNextMovement = false;
+//      return;
+//    }
+
     setSilentPosition(x, y, z, yaw, pitch);
 
     // Send correction packet to the client
@@ -117,7 +135,7 @@ public class ServerPlayer {
       int cz = (int) chunkInfo[1];
       long key = World.getChunkKey(cx, cz);
 
-      ChunkData data = GameServer.getWorld().getOrCreateChunk(cx, cz);
+      ChunkData data = connection.getServer().getWorld().getOrCreateChunk(cx, cz);
       connection.send(new ChunkDataPacket(data));
       loadedChunks.add(key);
     }
@@ -136,10 +154,25 @@ public class ServerPlayer {
 
   /** Broadcasts the player's current state to other nearby players. */
   private void broadcastUpdate() {
-    // TODO: Logic to inform OTHER players about your movement
+    // Wir erstellen das Paket mit der aktuellen Position und Rotation
+    // Wichtig: Hier wieder dein Y-Fix, falls der Client -Y erwartet!
+    PlayerPositionPacket packet =
+        new PlayerPositionPacket(uuid, position.x, position.y, position.z, yaw, pitch);
+
+    // Wir senden es an alle, außer an uns selbst
+    PlayerManager playerManager = connection.getServer().getPlayerManager();
+    for (ServerPlayer other : playerManager.getAllPlayers()) {
+      if (!other.getUuid().equals(this.uuid)) {
+        other.connection.send(packet);
+      }
+    }
   }
 
   // --- Getters ---
+
+  public ServerConnection getConnection() {
+    return connection;
+  }
 
   public PlayerProperties getProperties() {
     return properties;

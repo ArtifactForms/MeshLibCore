@@ -5,7 +5,14 @@ import java.net.Socket;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import common.logging.Log;
+import server.commands.Command;
+import server.commands.CommandRegistry;
+import server.commands.commands.StopCommand;
+import server.commands.commands.TeleportCommand;
+import server.entity.EntityManager;
 import server.events.EventBus;
+import server.scheduler.ServerScheduler;
 import server.world.ServerWorld;
 
 /**
@@ -15,21 +22,46 @@ import server.world.ServerWorld;
  */
 public class GameServer {
 
-  private final int port;
-  private boolean running = true;
-  private ServerSocket serverSocket;
-  private static ServerWorld world;
+  private long tick = 0;
 
-  private static final EventBus EVENT_BUS = new EventBus();
+  private final int port;
+  private volatile boolean running = true;
+  private ServerSocket serverSocket;
+
+  private final ServerScheduler scheduler;
+  private final CommandRegistry commandRegistry;
+  private final EventBus eventBus;
+  private final PlayerManager playerManager;
+  private final EntityManager entityManager;
+  private ServerWorld world;
 
   /**
    * * Thread-safe queue for incoming packets. Packets are added by individual client threads and
    * consumed by the main game thread.
    */
-  public static final Queue<QueuedPacket> packetQueue = new ConcurrentLinkedQueue<>();
+  private final Queue<QueuedPacket> packetQueue = new ConcurrentLinkedQueue<>();
 
   public GameServer(int port) {
     this.port = port;
+
+    this.scheduler = new ServerScheduler();
+    this.commandRegistry = new CommandRegistry();
+    this.eventBus = new EventBus();
+    this.playerManager = new PlayerManager();
+    this.entityManager = new EntityManager(this);
+    this.world = new ServerWorld(this);
+
+    registerCommands();
+  }
+
+  private void registerCommands() {
+	  registerCommand(new StopCommand());
+	  registerCommand(new TeleportCommand());
+  }
+  
+  private void registerCommand(Command command) {
+	  commandRegistry.register(command);
+	  Log.info("Registered command: " + command.getName());
   }
 
   /**
@@ -39,7 +71,8 @@ public class GameServer {
   public void start() throws Exception {
     serverSocket = new ServerSocket(port);
     serverSocket.setReuseAddress(true);
-    System.out.println("[Server] Running on port " + port);
+
+    Log.info("Server running on port " + port);
 
     // THREAD 1: Network Acceptor Loop
     // Dedicated thread to listen for new TCP connections without blocking the game logic.
@@ -57,10 +90,11 @@ public class GameServer {
     try {
       while (running) {
         Socket socket = serverSocket.accept();
-        System.out.println("[Network] New connection: " + socket.getInetAddress());
+
+        Log.info("New connection: " + socket.getInetAddress());
 
         // ServerConnection starts its own internal read-thread upon instantiation
-        new ServerConnection(socket);
+        new ServerConnection(this, socket);
       }
     } catch (Exception e) {
       if (running) e.printStackTrace();
@@ -69,12 +103,13 @@ public class GameServer {
 
   /** The heartbeat of the server. Regulates the tick rate (default: 20 TPS). */
   private void gameLoop() {
-    System.out.println("[Server] Game Loop started.");
+    Log.info("Game loop started.");
 
     while (running) {
       long startTime = System.currentTimeMillis();
 
       // Execute the tick update
+      tick++;
       update();
 
       // Calculate timing for a steady 20 Ticks/s (50ms per tick)
@@ -88,7 +123,7 @@ public class GameServer {
           Thread.currentThread().interrupt();
         }
       } else if (delta > 100) {
-        System.err.println("[Server] Can't keep up! Tick took " + delta + "ms");
+        Log.error("Can't keep up! Tick took " + delta + "ms");
       }
     }
   }
@@ -97,32 +132,82 @@ public class GameServer {
   private void update() {
     // Process all packets that have arrived since the last tick.
     // This ensures all handler logic runs on the main thread, avoiding race conditions.
-    while (!packetQueue.isEmpty()) {
-      QueuedPacket qp = packetQueue.poll();
+    QueuedPacket qp;
 
-      if (qp != null && qp.connection().isRunning()) {
-        // The Dispatcher routes the passive Packet object to its specific logic
+    while ((qp = packetQueue.poll()) != null) {
+
+      if (qp.connection().isRunning()) {
         qp.connection().getPacketDispatcher().dispatch(qp.packet());
       }
     }
-    
-    server.entity.EntityManager.update(PlayerManager.getAllPlayers());
+
+    scheduler.tick(tick);
+
+    entityManager.update(playerManager.getAllPlayers());
 
     // Placeholder for world logic (Physics, AI, Tile Entities, etc.)
     if (world != null) {
-      // world.tick();
+      world.tick();
     }
   }
 
-  public static ServerWorld getWorld() {
+  public void shutdown() {
+
+    running = false;
+
+    try {
+      if (serverSocket != null && !serverSocket.isClosed()) {
+        serverSocket.close();
+      }
+    } catch (Exception ignored) {
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+
+  public long getTick() {
+    return tick;
+  }
+
+  public ServerScheduler getScheduler() {
+    return scheduler;
+  }
+
+  public void runTaskLater(long delay, Runnable task) {
+    scheduler.schedule(tick, delay, task);
+  }
+
+  public void runTaskTimer(long delay, long period, Runnable task) {
+    scheduler.scheduleRepeating(tick, delay, period, task);
+  }
+
+  public void runNextTick(Runnable task) {
+    scheduler.schedule(tick, 1, task);
+  }
+
+  // ---------------------------------------------------------------------------
+
+  public ServerWorld getWorld() {
     return world;
   }
 
-  public static void setWorld(ServerWorld world) {
-    GameServer.world = world;
+  public EventBus getEventBus() {
+    return eventBus;
   }
 
-  public static EventBus getEventBus() {
-    return EVENT_BUS;
+  public PlayerManager getPlayerManager() {
+    return playerManager;
+  }
+
+  public CommandRegistry getCommandRegistry() {
+    return commandRegistry;
+  }
+
+  public EntityManager getEntityManager() {
+    return entityManager;
+  }
+
+  public Queue<QueuedPacket> getPacketQueue() {
+    return packetQueue;
   }
 }
