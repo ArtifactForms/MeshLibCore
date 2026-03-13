@@ -7,7 +7,7 @@ package common.logging;
 public class Log {
 
   // Default to a simple implementation so we don't get NullPointerExceptions
-  private static Logger instance = new ConsoleLogger();
+  private static Logger instance = new ConsoleLogger("");
 
   /**
    * Replaces the current logger implementation (e.g., to switch from Console to File).

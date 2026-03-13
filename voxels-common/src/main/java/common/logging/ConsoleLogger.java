@@ -23,6 +23,12 @@ public class ConsoleLogger implements Logger {
   private static final String RED = "\u001B[31m";
   private static final String BLUE = "\u001B[34m";
 
+  private final String context;
+
+  public ConsoleLogger(String context) {
+    this.context = context;
+  }
+
   /**
    * Logs an informational message.
    *
@@ -75,10 +81,11 @@ public class ConsoleLogger implements Logger {
     String timestamp = LocalDateTime.now().format(TIME_FORMAT);
     String threadName = Thread.currentThread().getName();
 
-    // Format: [2026-03-12 23:15:01] [Main] [INFO]: Server started.
+    // Format: [2026-03-12 23:15:01] [Context] [Main] [INFO]: Server started.
     String output =
         String.format(
-            "[%s] [%s] [%s%s%s]: %s", timestamp, threadName, color, level, RESET, message);
+            "[%s] [%s] [%s] [%s%s%s]: %s",
+            timestamp, context, threadName, color, level, RESET, message);
 
     if ("ERROR".equals(level) || "WARN".equals(level)) {
       System.err.println(output);
