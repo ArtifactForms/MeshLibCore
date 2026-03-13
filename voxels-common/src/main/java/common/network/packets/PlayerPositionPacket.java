@@ -18,17 +18,24 @@ public class PlayerPositionPacket implements Packet {
   private float y;
   private float z;
   private float yaw, pitch;
+  private boolean teleport;
 
   /** Required for PacketRegistry */
   public PlayerPositionPacket() {}
 
   public PlayerPositionPacket(UUID playerUuid, float x, float y, float z, float yaw, float pitch) {
+    this(playerUuid, x, y, z, yaw, pitch, false);
+  }
+
+  public PlayerPositionPacket(
+      UUID playerUuid, float x, float y, float z, float yaw, float pitch, boolean teleport) {
     this.playerUuid = playerUuid;
     this.x = x;
     this.y = y;
     this.z = z;
     this.yaw = yaw;
     this.pitch = pitch;
+    this.teleport = teleport;
   }
 
   @Override
@@ -44,6 +51,8 @@ public class PlayerPositionPacket implements Packet {
     // Write Rotation
     out.writeFloat(yaw);
     out.writeFloat(pitch);
+    
+    out.writeBoolean(teleport);
   }
 
   @Override
@@ -59,6 +68,8 @@ public class PlayerPositionPacket implements Packet {
     // Read Rotation
     this.yaw = in.readFloat();
     this.pitch = in.readFloat();
+    
+    this.teleport = in.readBoolean();
   }
 
   @Override
@@ -89,5 +100,9 @@ public class PlayerPositionPacket implements Packet {
 
   public float getPitch() {
     return pitch;
+  }
+
+  public boolean isTeleport() {
+    return teleport;
   }
 }
