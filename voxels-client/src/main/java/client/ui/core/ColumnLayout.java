@@ -17,15 +17,12 @@ public class ColumnLayout implements Layout {
 
     for (UiElement element : elements) {
 
-      if (element instanceof Layoutable layoutable) {
+      int h = element.getHeight();
 
-        int h = layoutable.getHeight();
+      element.setPosition(x, currentY);
+      element.setWidth(width);
 
-        layoutable.setPosition(x, currentY);
-        layoutable.setWidth(width);
-
-        currentY += h + spacing;
-      }
+      currentY += h + spacing;
     }
   }
 }

@@ -17,15 +17,12 @@ public class RowLayout implements Layout {
 
     for (UiElement element : elements) {
 
-      if (element instanceof Layoutable layoutable) {
+      int w = element.getWidth();
 
-        int w = layoutable.getWidth();
+      element.setPosition(currentX, y);
+      element.setHeight(height);
 
-        layoutable.setPosition(currentX, y);
-        layoutable.setHeight(height);
-
-        currentX += w + spacing;
-      }
+      currentX += w + spacing;
     }
   }
 }
