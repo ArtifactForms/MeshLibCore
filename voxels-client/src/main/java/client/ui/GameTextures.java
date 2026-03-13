@@ -1,6 +1,6 @@
 package client.ui;
 
-import client.rendering.TextureAtlas;
+import client.resources.TextureAtlas;
 
 public class GameTextures {
 

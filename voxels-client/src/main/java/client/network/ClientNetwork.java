@@ -3,6 +3,8 @@ package client.network;
 import java.net.Socket;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import client.app.GameClient;
 import common.network.Connection;
 import common.network.Packet;
 
@@ -22,10 +24,10 @@ public class ClientNetwork extends Connection {
    */
   private final Queue<Packet> packetQueue = new ConcurrentLinkedQueue<>();
 
-  public ClientNetwork() throws Exception {
+  public ClientNetwork(GameClient client) throws Exception {
     // Initialize the base connection without a socket (socket is set in connect())
     super(null);
-    this.packetDispatcher = new ClientPacketDispatcher();
+    this.packetDispatcher = new ClientPacketDispatcher(client);
   }
 
   /**

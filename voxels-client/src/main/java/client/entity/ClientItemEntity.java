@@ -1,6 +1,6 @@
 package client.entity;
 
-import client.app.ApplicationContext;
+import client.world.ClientWorld;
 import common.game.block.BlockRegistry;
 import common.game.block.BlockType;
 import common.game.block.Blocks;
@@ -16,12 +16,15 @@ import mesh.creator.primitives.CubeCreator;
  */
 public class ClientItemEntity {
 
+  private static StaticGeometry geometry;
+
   private final long entityId;
   private final BlockType blockType;
   private Vector3f position;
   private Vector3f velocity;
   private float rotation = 0;
-  private static StaticGeometry geometry;
+
+  private ClientWorld world;
 
   // Physics Constants
   private static final float GRAVITY = -0.015f;
@@ -35,15 +38,15 @@ public class ClientItemEntity {
     geometry = new StaticGeometry(mesh);
   }
 
-  public ClientItemEntity(long id, BlockType type, Vector3f pos, Vector3f vel) {
+  public ClientItemEntity(long id, BlockType type, Vector3f pos, Vector3f vel, ClientWorld world) {
     this.entityId = id;
     this.blockType = type;
     this.position = new Vector3f(pos.x, pos.y, pos.z);
     this.velocity = new Vector3f(vel.x, vel.y, vel.z);
   }
 
-  public ClientItemEntity(long id, BlockType type, Vector3f pos) {
-    this(id, type, pos, new Vector3f(0, 0, 0));
+  public ClientItemEntity(long id, BlockType type, Vector3f pos, ClientWorld world) {
+    this(id, type, pos, new Vector3f(0, 0, 0), world);
   }
 
   /** * Updates physics, handles terrain collision, and updates visual animations. */
@@ -71,7 +74,7 @@ public class ClientItemEntity {
     int by = (int) Math.floor(nextY);
     int bz = Math.round(nextZ);
 
-    short blockId = ApplicationContext.clientWorld.getBlock(bx, by, bz).getId();
+    short blockId = world.getBlock(bx, by, bz).getId();
 
     if (BlockRegistry.get(blockId) != Blocks.AIR) {
       // BOUNCE LOGIC: If falling fast enough, reflect velocity

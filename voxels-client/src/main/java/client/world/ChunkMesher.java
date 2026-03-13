@@ -2,7 +2,7 @@ package client.world;
 
 import java.util.ArrayList;
 
-import client.rendering.TextureAtlas;
+import client.resources.TextureAtlas;
 import client.ui.GameTextures;
 import common.game.block.Blocks;
 import engine.backend.processing.BufferedShape;

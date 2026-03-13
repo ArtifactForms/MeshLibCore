@@ -1,48 +1,82 @@
 package client.player;
 
+import java.util.UUID;
+import math.Vector3f;
+
 /**
  * Represents the local player on the client side. Holds position, rotation, and movement
  * attributes.
  */
 public class ClientPlayer {
 
-  private float x;
-  private float y;
-  private float z;
+  private final UUID uuid;
 
-  // Rotation in degrees (Yaw = horizontal, Pitch = vertical)
+  // Player position
+  private final Vector3f position = new Vector3f();
+
+  // Rotation in radians
   private float yaw;
   private float pitch;
 
-  private float speed = 5f;
+  // Movement speed
+  private float speed = 12f;
 
-  // --- Position Getters & Setters ---
+  private boolean teleportDirty = false;
 
-  public float getX() {
-    return x;
+  public ClientPlayer() {
+    this.uuid = UUID.randomUUID();
   }
 
-  public void setX(float x) {
-    this.x = x;
+  public boolean consumeTeleportFlag() {
+    boolean flag = teleportDirty;
+    teleportDirty = false;
+    return flag;
+  }
+
+  // -------------------------
+  // Position
+  // -------------------------
+
+  public Vector3f getPosition() {
+    return position;
+  }
+
+  public float getX() {
+    return position.x;
   }
 
   public float getY() {
-    return y;
-  }
-
-  public void setY(float y) {
-    this.y = y;
+    return position.y;
   }
 
   public float getZ() {
-    return z;
+    return position.z;
+  }
+
+  public void setPosition(float x, float y, float z) {
+    position.set(x, y, z);
+  }
+
+  public void setPositionFromTeleport(float x, float y, float z) {
+    this.position.set(x, y, z);
+    this.teleportDirty = true;
+  }
+
+  public void setX(float x) {
+    position.x = x;
+  }
+
+  public void setY(float y) {
+    position.y = y;
   }
 
   public void setZ(float z) {
-    this.z = z;
+    position.z = z;
   }
 
-  // --- Rotation Getters & Setters ---
+  // -------------------------
+  // Rotation
+  // -------------------------
 
   public float getYaw() {
     return yaw;
@@ -60,7 +94,9 @@ public class ClientPlayer {
     this.pitch = pitch;
   }
 
-  // --- Attributes ---
+  // -------------------------
+  // Attributes
+  // -------------------------
 
   public float getSpeed() {
     return speed;
@@ -70,10 +106,11 @@ public class ClientPlayer {
     this.speed = speed;
   }
 
-  /** Helper to set position in one call. */
-  public void setPosition(float x, float y, float z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  // -------------------------
+  // Identity
+  // -------------------------
+
+  public UUID getUuid() {
+    return uuid;
   }
 }

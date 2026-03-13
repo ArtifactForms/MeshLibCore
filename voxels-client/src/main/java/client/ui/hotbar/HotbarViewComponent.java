@@ -20,7 +20,8 @@ import mesh.creator.primitives.PlaneCreatorUV;
 import mesh.modifier.transform.RotateXModifier;
 import mesh.modifier.transform.ScaleModifier;
 
-public class HotbarViewComponent extends AbstractComponent implements RenderableComponent {
+public class HotbarViewComponent extends AbstractComponent
+    implements RenderableComponent, HotbarView {
 
   // Hotbar configuration
   private static final int SCALE = 4;
@@ -161,6 +162,11 @@ public class HotbarViewComponent extends AbstractComponent implements Renderable
     }
 
     g.popMatrix();
+  }
+
+  @Override
+  public Hotbar getModel() { // TODO Auto-generated method stub
+    return hotbar;
   }
 
   @Override

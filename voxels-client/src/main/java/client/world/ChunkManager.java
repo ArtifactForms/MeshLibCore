@@ -7,10 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import client.app.ApplicationContext;
-import client.app.GameSettings;
+import client.app.GameClient;
 import client.rendering.BasicChunkRenderer;
 import client.rendering.ChunkRenderer;
+import client.settings.GameSettings;
 import common.world.ChunkData;
 import common.world.ChunkStatus;
 import common.world.World;
@@ -45,16 +45,20 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   private int playerChunkX;
   private int playerChunkZ;
-
+  private volatile Vector3f playerPosition = new Vector3f();
   private float worldTime;
 
-  private ChunkRenderer chunkRenderer = new BasicChunkRenderer();
+  private ChunkRenderer chunkRenderer;
+
+  private ClientWorld world;
 
   // Füge eine Map für den Lösch-Timer hinzu
   private final Map<Long, Long> deletionQueue = new ConcurrentHashMap<>();
   private static final long DELETION_DELAY_MS = 2000; // 2 Sekunden Puffer
 
-  public ChunkManager() {
+  public ChunkManager(GameClient client) {
+    this.world = client.getWorld();
+    this.chunkRenderer = new BasicChunkRenderer(client);
     setRenderDistance(GameSettings.renderDistance);
   }
 
@@ -62,14 +66,19 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   public void onUpdate(float tpf) {
     worldTime += tpf * 0.1f;
 
-    ApplicationContext.clientWorld.processIncomingPackets(2_000_000);
+    world.processIncomingPackets(2_000_000);
 
-    Vector3f pos = ApplicationContext.clientMovementConsumer.getPosition();
+    playerChunkX = (int) Math.floor(playerPosition.x / 16.0);
+    playerChunkZ = (int) Math.floor(playerPosition.z / 16.0);
 
-    playerChunkX = (int) Math.floor(pos.x / 16.0);
-    playerChunkZ = (int) Math.floor(pos.z / 16.0);
+    if (playerChunkX != lastPlayerChunkX || playerChunkZ != lastPlayerChunkZ) {
 
-    updateChunksAroundPlayer();
+      lastPlayerChunkX = playerChunkX;
+      lastPlayerChunkZ = playerChunkZ;
+
+      updateChunksAroundPlayer();
+    }
+
     enqueueChunks();
     processQueues();
   }
@@ -91,16 +100,10 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
     toMesh.sort(
         (a, b) -> {
-          float distA =
-              a.getWorldPosition()
-                  .distanceSquared(ApplicationContext.clientMovementConsumer.getPosition());
-          float distB =
-              b.getWorldPosition()
-                  .distanceSquared(ApplicationContext.clientMovementConsumer.getPosition());
+          float distA = a.getWorldPosition().distanceSquared(playerPosition);
+          float distB = b.getWorldPosition().distanceSquared(playerPosition);
           return Float.compare(distA, distB);
         });
-
-    ApplicationContext.view.getActionBarView().display(toMesh.size() + " Chunks to mesh", 1);
 
     for (Chunk c : toMesh) {
       if (meshQueueSet.putIfAbsent(c, true) == null) {
@@ -389,6 +392,10 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     for (Chunk chunk : activeChunks.values()) {
       chunk.markDirty(); // Sets needsRebuild = true
     }
+  }
+
+  public void updatePlayerPosition(float x, float y, float z) {
+    playerPosition.set(x, y, z);
   }
 
   @Override

@@ -1,13 +1,13 @@
 package client.cam;
 
-import client.app.ApplicationContext;
-import client.app.GameSettings;
+import client.app.GameClient;
+import client.player.PlayerController;
 import client.ray.RaycastMode;
+import client.settings.GameSettings;
 import client.ui.cursor.SimpleCursorComponent;
 import common.network.packets.PlayerMovePacket;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
-import engine.components.SmoothFlyByCameraControl;
 import engine.rendering.Graphics;
 import engine.runtime.debug.DebugCameraRenderer;
 import engine.runtime.input.Input;
@@ -15,6 +15,7 @@ import engine.runtime.input.Key;
 import engine.runtime.input.MouseMode;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
+import engine.scene.camera.Camera;
 import engine.scene.camera.OrbitCamera;
 import engine.scene.camera.OrbitCameraControl;
 import engine.scene.camera.PerspectiveCamera;
@@ -23,38 +24,37 @@ import math.Vector3f;
 public class CameraManager {
 
   private Input input;
-  private PerspectiveCamera camera;
+  private Camera camera;
   private OrbitCamera orbitCamera;
-  private SmoothFlyByCameraControl flyByCameraControl;
+
   private OrbitCameraControl orbitCameraControl;
   private SceneNode cursorNode;
+  private GameClient client;
+  private PlayerController playerController;
 
-  public CameraManager(Scene scene, Input input) {
+  public CameraManager(
+      Scene scene, Input input, PlayerController playerController, GameClient client) {
     this.input = input;
-    camera = new PerspectiveCamera();
-    camera.setFarPlane(600);
-    camera.setNearPlane(0.1f);
+    this.playerController = playerController;
+    this.client = client;
+    setupOrbitCam();
+    
+    this.camera = client.getPlayerCamera();
 
-    flyByCameraControl = new SmoothFlyByCameraControl(input, camera);
-    flyByCameraControl.setMoveSpeed(12);
-
-    scene.setActiveCamera(camera);
-
-    SceneNode movement = new SceneNode("", new ControlComponent());
-    scene.addNode(movement);
-
-    orbitCamera = new OrbitCamera();
-    orbitCameraControl = new OrbitCameraControl(input, orbitCamera);
-    orbitCameraControl.setActive(false);
+    SceneNode control = new SceneNode("", new ControlComponent());
+    scene.addNode(control);
 
     SceneNode cameraNode = new SceneNode("Control");
-    cameraNode.addComponent(flyByCameraControl);
     cameraNode.addComponent(orbitCameraControl);
     scene.addNode(cameraNode);
 
     cursorNode = new SceneNode("Cursor", new SimpleCursorComponent(input));
-    
-    ApplicationContext.playerCamera = camera;
+  }
+
+  private void setupOrbitCam() {
+    orbitCamera = new OrbitCamera();
+    orbitCameraControl = new OrbitCameraControl(input, orbitCamera);
+    orbitCameraControl.setActive(false);
   }
 
   public class ControlComponent extends AbstractComponent implements RenderableComponent {
@@ -63,44 +63,47 @@ public class CameraManager {
     public void onUpdate(float tpf) {
       Vector3f position = camera.getTransform().getPosition();
 
-      ApplicationContext.network.send(
-          new PlayerMovePacket(position.x, -position.y, position.z, 0, 0));
+      client.getNetwork().send(new PlayerMovePacket(position.x, -position.y, position.z, 0, 0));
 
       if (input.wasKeyReleased(Key.J)) {
         orbit();
       }
 
       if (input.wasKeyReleased(Key.K)) {
-        flyCam();
+        playerCam();
       }
-      
+
       if (input.wasKeyPressed(Key.R)) {
-    	  ApplicationContext.chunkManager.forceRebuild();
+        client.getChunkManager().forceRebuild();
       }
-      
+
       if (input.wasKeyReleased(Key.C)) {
-    	  orbitCamera.setTarget(camera.getTransform().getPosition());
+        orbitCamera.setTarget(camera.getTransform().getPosition());
       }
     }
 
     private void orbit() {
-      ApplicationContext.raycastMode = RaycastMode.CURSOR;
+      playerController.setActive(false);
+      orbitCameraControl.setActive(true);
+
+      input.setMouseMode(MouseMode.ABSOLUTE);
+      client.setRaycastMode(RaycastMode.CURSOR);
       GameSettings.fog = false;
       getOwner().getScene().getUIRoot().addChild(cursorNode);
-      flyByCameraControl.setActive(false);
-      orbitCameraControl.setActive(true);
-      input.setMouseMode(MouseMode.ABSOLUTE);
+
       getOwner().getScene().setActiveCamera(orbitCamera);
     }
 
-    private void flyCam() {
-      ApplicationContext.raycastMode = RaycastMode.CROSS_HAIR;
+    private void playerCam() {
+      playerController.setActive(true);
+      orbitCameraControl.setActive(false);
+
+      input.setMouseMode(MouseMode.LOCKED);
+      client.setRaycastMode(RaycastMode.CROSS_HAIR);
       GameSettings.fog = true;
       getOwner().getScene().getUIRoot().removeChild(cursorNode);
-      flyByCameraControl.setActive(true);
-      orbitCameraControl.setActive(false);
-      input.setMouseMode(MouseMode.LOCKED);
-      getOwner().getScene().setActiveCamera(camera);
+
+      getOwner().getScene().setActiveCamera(client.getPlayerCamera());
     }
 
     @Override

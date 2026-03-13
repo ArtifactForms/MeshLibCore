@@ -1,0 +1,37 @@
+package client.usecases.openinventory;
+
+import client.settings.KeyBinds;
+import engine.components.AbstractComponent;
+import engine.runtime.input.Input;
+import engine.runtime.input.MouseMode;
+
+public class OpenInventoryComponent extends AbstractComponent {
+
+  private boolean inventoryOpen;
+  private boolean lastPressed;
+  private Input input;
+  private OpenInventoryController controller;
+
+  public OpenInventoryComponent(Input input, OpenInventoryController controller) {
+    this.input = input;
+    this.controller = controller;
+  }
+
+  @Override
+  public void onUpdate(float tpf) {
+    boolean pressed = input.isKeyPressed(KeyBinds.openCloseInventory);
+
+    if (!lastPressed && pressed) {
+      inventoryOpen = !inventoryOpen;
+      if (inventoryOpen) {
+        controller.onInventoryOpen();
+        input.setMouseMode(MouseMode.ABSOLUTE);
+      } else {
+        controller.onInventoryClose();
+        input.setMouseMode(MouseMode.LOCKED);
+      }
+    }
+
+    lastPressed = pressed;
+  }
+}

@@ -1,6 +1,5 @@
 package client.ray;
 
-import client.app.ApplicationContext;
 import client.world.Chunk;
 import common.interaction.BlockTarget;
 import common.world.BlockFace;
@@ -57,9 +56,8 @@ public final class Raycasting {
    * @param maxDistance maximum ray distance in blocks
    * @return the raycast result
    */
-  public static RaycastResult raycastCrossHair(Camera camera, int maxDistance) {
+  public static RaycastResult raycastCrossHair(World world, Camera camera, int maxDistance) {
     Ray3f ray = Raycaster.crossHairRay(camera);
-    World world = ApplicationContext.clientWorld;
     return raycast(ray, world, maxDistance);
   }
 
@@ -71,9 +69,9 @@ public final class Raycasting {
    * @param maxDistance maximum ray distance in blocks
    * @return the raycast result
    */
-  public static RaycastResult raycastScreenPoint(Camera camera, Input input, int maxDistance) {
+  public static RaycastResult raycastScreenPoint(
+      World world, Camera camera, Input input, int maxDistance) {
     Ray3f ray = Raycaster.screenPointToRay(camera, input);
-    World world = ApplicationContext.clientWorld;
     return raycast(ray, world, maxDistance);
   }
 

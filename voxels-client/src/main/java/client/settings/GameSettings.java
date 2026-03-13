@@ -1,0 +1,20 @@
+package client.settings;
+
+public class GameSettings {
+
+  public static boolean textureNoise = false;
+
+  public static boolean textureDebugText = false;
+
+  public static boolean textureBackground = false;
+
+  public static boolean textureBorder = false;
+
+  public static int renderDistance = 12;
+
+  public static float flySpeed = 16;
+  
+  public static boolean dynamicTextures = false;
+  
+  public static boolean fog = true;
+}

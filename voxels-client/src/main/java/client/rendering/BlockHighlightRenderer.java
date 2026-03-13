@@ -29,6 +29,10 @@ public class BlockHighlightRenderer {
    */
   private static final float OFFSET = 0.504f;
 
+  private BlockHighlightRenderer() {
+    // No instances
+  }
+
   /**
    * Renders the highlight box for a block at the given world coordinates.
    *

@@ -16,16 +16,14 @@ public class Chunk extends ChunkData {
 
   private final Vector3f worldPosition = new Vector3f();
 
-  // Jetzt zwei separate Geometrien
   private volatile StaticGeometry opaqueGeometry;
   private volatile StaticGeometry waterGeometry;
 
-  // Der Future gibt nun das MeshResult-Objekt aus dem ChunkMesher zurück
   private Future<ChunkMesher.MeshResult> meshFuture;
 
-  private volatile ChunkStatus status = ChunkStatus.EMPTY;
   private volatile int generation = 0;
   private volatile boolean needsRebuild = false;
+  private volatile ChunkStatus status = ChunkStatus.EMPTY;
 
   public Chunk(int x, int z) {
     super(x, z);
@@ -81,7 +79,6 @@ public class Chunk extends ChunkData {
     meshFuture = null;
   }
 
-  /** Rendert nur die festen Blöcke */
   public void renderOpaque(Graphics g) {
     if (opaqueGeometry != null) {
       g.pushMatrix();
@@ -91,7 +88,6 @@ public class Chunk extends ChunkData {
     }
   }
 
-  /** Rendert nur das Wasser */
   public void renderWater(Graphics g) {
     if (waterGeometry != null) {
       g.pushMatrix();
@@ -101,7 +97,6 @@ public class Chunk extends ChunkData {
     }
   }
 
-  // Alte render Methode zur Sicherheit (ruft beides auf)
   public void render(Graphics g) {
     renderOpaque(g);
     renderWater(g);

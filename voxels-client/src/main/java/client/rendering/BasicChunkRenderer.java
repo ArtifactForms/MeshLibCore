@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import client.app.ApplicationContext;
-import client.app.GameSettings;
+import client.app.GameClient;
+import client.settings.GameSettings;
 import client.world.Chunk;
 import engine.rendering.Graphics;
 import engine.scene.camera.Camera;
@@ -19,11 +19,16 @@ public class BasicChunkRenderer implements ChunkRenderer {
   private final Vector3f tempMin = new Vector3f();
   private final Vector3f tempMax = new Vector3f();
   private final List<Chunk> visibleChunksCache = new ArrayList<>();
+  private final GameClient client;
+  
+  public BasicChunkRenderer(GameClient client) {
+	  this.client = client;
+  }
 
   @Override
   public void renderChunks(Graphics g, Collection<Chunk> chunks) {
 
-    Camera camera = ApplicationContext.playerCamera;
+    Camera camera = client.getPlayerCamera();
     Frustum frustum = new Frustum();
     frustum.update(camera.getViewProjectionMatrix());
 
