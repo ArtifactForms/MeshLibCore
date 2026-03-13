@@ -123,6 +123,8 @@ public class ProcessingKeyInput implements KeyInput {
       key = Key.ENTER;
     } else if (e.getKey() == PApplet.CODED) {
       key = codedKeysMap.getOrDefault(e.getKeyCode(), Key.UNKNOWN);
+    } else if (e.getKey() == '\b' || e.getKeyCode() == PApplet.BACKSPACE) {
+      key = Key.BACKSPACE;
     } else {
       key = KeyCharacterMapper.getMappedKey(e.getKeyCode());
 
