@@ -19,6 +19,7 @@ public class NetworkPackets {
     PacketRegistry.register(PlayerSpawnPacket::new);
     PacketRegistry.register(PlayerPositionPacket::new);
     PacketRegistry.register(PlayerQuitPacket::new);
+    PacketRegistry.register(PlayerOpenInventoryPacket::new);
 
     // World & Blocks
     PacketRegistry.register(BlockUpdatePacket::new);
@@ -28,6 +29,7 @@ public class NetworkPackets {
 
     // Communication & Effects
     PacketRegistry.register(ChatMessagePacket::new);
+//    PacketRegistry.register(PrivateMessagePacket::new);
     PacketRegistry.register(SoundEffectPacket::new);
 
     // Items

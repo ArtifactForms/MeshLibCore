@@ -15,6 +15,14 @@ public class PacketBuffer {
     this.out = out;
   }
 
+  public boolean readBoolean() throws IOException {
+    return in.readBoolean();
+  }
+
+  public void writeBoolean(boolean v) throws IOException {
+    out.writeBoolean(v);
+  }
+
   public int readInt() throws IOException {
     return in.readInt();
   }

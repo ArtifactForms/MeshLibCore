@@ -27,7 +27,7 @@ public class BlockUpdatePacket implements Packet {
     out.writeInt(x);
     out.writeInt(y);
     out.writeInt(z);
-    out.writeShort((short) blockId);
+    out.writeShort(blockId);
   }
 
   @Override
