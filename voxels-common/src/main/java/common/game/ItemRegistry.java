@@ -5,6 +5,7 @@ import java.util.Map;
 
 import common.game.block.BlockRegistry;
 import common.game.block.BlockType;
+import common.logging.Log;
 
 public class ItemRegistry {
 
@@ -23,7 +24,7 @@ public class ItemRegistry {
       register(new Item(block.getId(), displayName, 64));
     }
 
-    System.out.println("[ItemRegistry] Registered " + ITEMS.size() + " items.");
+    Log.info("[ItemRegistry] Registered " + ITEMS.size() + " items.");
   }
 
   private static void register(Item item) {

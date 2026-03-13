@@ -21,8 +21,23 @@ public class World {
   private static final int MIN_Y = 0;
   private static final int MAX_Y = CHUNK_HEIGHT - 1;
 
+  protected long worldTime = 0;
+
   // Thread-safe map to store chunks by a single long key (packed X/Z)
   protected final Map<Long, ChunkData> chunks = new ConcurrentHashMap<>();
+
+  // --- World update ---
+
+  public void tick() {
+    worldTime++;
+    for (ChunkData chunk : chunks.values()) {
+      tickChunk(chunk);
+    }
+  }
+
+  protected void tickChunk(ChunkData chunk) {
+    // placeholder for future logic
+  }
 
   // --- Chunk Management ---
 
@@ -68,7 +83,7 @@ public class World {
   /** Checks if a solid block exists at the specified world coordinates. */
   public boolean isSolid(int x, int y, int z) {
     BlockType blockType = getBlock(x, y, z);
-    return blockType != null && blockType != Blocks.AIR;
+    return blockType != null && blockType.isSolid();
   }
 
   public void setBlock(int x, int y, int z, short blockId) {
@@ -108,5 +123,9 @@ public class World {
 
   public static int unpackChunkZ(long key) {
     return (int) (key & 0xFFFFFFFFL);
+  }
+
+  public long getWorldTime() {
+    return worldTime;
   }
 }

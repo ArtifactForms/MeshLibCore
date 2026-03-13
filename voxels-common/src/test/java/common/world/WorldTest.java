@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import common.game.block.Blocks;
 
@@ -377,5 +378,19 @@ class WorldTest {
 
     assertEquals(20, world.getHeightAt(5, 5));
     assertEquals(0, world.getHeightAt(100, 100));
+  }
+
+  @Test
+  void testWorldTimeDefault() {
+    assertEquals(0, world.getWorldTime());
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {0, 100, 111, 20123})
+  void testWorldTimeTicked(int ticks) {
+    for (int i = 0; i < ticks; i++) {
+      world.tick();
+    }
+    assertEquals(ticks, world.getWorldTime());
   }
 }
