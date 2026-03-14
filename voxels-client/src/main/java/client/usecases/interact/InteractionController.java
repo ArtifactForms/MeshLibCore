@@ -1,6 +1,7 @@
 package client.usecases.interact;
 
 import client.app.GameClient;
+import common.game.Hotbar;
 import common.game.ItemStack;
 import common.interaction.BlockTarget;
 import common.interaction.InteractionTarget;
@@ -13,6 +14,16 @@ public class InteractionController {
 
   public InteractionController(GameClient client) {
     this.client = client;
+  }
+  
+  public void pickTarget(InteractionTarget target) {
+	    if (!(target instanceof BlockTarget block)) return;
+
+		 short id = client.getWorld().getBlock(block.x, block.y, block.z).getId();
+	  
+	  Hotbar hotbar = client.getView().getHotbarView().getModel();
+	  int selectedSlot = hotbar.getSelectedSlot();
+	  hotbar.setSlot(selectedSlot, new ItemStack(id, 0));
   }
 
   public void breakTarget(InteractionTarget target) {
