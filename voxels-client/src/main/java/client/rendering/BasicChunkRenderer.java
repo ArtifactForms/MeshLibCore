@@ -103,7 +103,7 @@ public class BasicChunkRenderer implements ChunkRenderer {
   }
 
   private boolean isChunkVisible(Frustum frustum, Chunk chunk) {
-    if (!RenderSettings.FRUSTUM_CULLING) return true;
+    if (!RenderSettings.frustum_Culling) return true;
 
     Bounds meshBounds = chunk.getMeshBounds();
 
