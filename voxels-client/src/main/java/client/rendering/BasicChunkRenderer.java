@@ -20,9 +20,9 @@ public class BasicChunkRenderer implements ChunkRenderer {
   private final Vector3f tempMax = new Vector3f();
   private final List<Chunk> visibleChunksCache = new ArrayList<>();
   private final GameClient client;
-  
+
   public BasicChunkRenderer(GameClient client) {
-	  this.client = client;
+    this.client = client;
   }
 
   @Override
@@ -103,6 +103,7 @@ public class BasicChunkRenderer implements ChunkRenderer {
   }
 
   private boolean isChunkVisible(Frustum frustum, Chunk chunk) {
+    if (!RenderSettings.FRUSTUM_CULLING) return true;
 
     Bounds meshBounds = chunk.getMeshBounds();
 
@@ -117,7 +118,7 @@ public class BasicChunkRenderer implements ChunkRenderer {
       tempMax.addLocal(pos);
 
       // kleines Padding gegen Frustum-Clipping
-//      float padding = 0.25f;
+      //      float padding = 0.25f;
       float padding = 1f;
 
       tempMin.x -= padding;

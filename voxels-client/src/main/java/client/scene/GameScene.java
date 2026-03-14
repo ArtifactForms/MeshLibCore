@@ -4,6 +4,7 @@ import client.app.GameClient;
 import client.cam.CameraManager;
 import client.entity.EntitiesComponent;
 import client.player.PlayerController;
+import client.rendering.RenderSettings;
 import client.ui.InventoryComponent;
 import client.ui.actionbar.ActionBarComponent;
 import client.ui.hotbar.HotbarComponent;
@@ -20,8 +21,10 @@ import client.usecases.openinventory.OpenInventoryController;
 import common.game.Hotbar;
 import common.game.ItemStack;
 import common.game.block.Blocks;
+import engine.components.AbstractComponent;
 import engine.components.CrossLineReticle;
 import engine.runtime.input.Input;
+import engine.runtime.input.Key;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.Camera;
@@ -52,8 +55,7 @@ public class GameScene extends Scene {
     TargetingService targetingService = new TargetingService(input, client);
     InteractionController controller = new InteractionController(client);
     SceneNode interactNode =
-        new SceneNode(
-            "Interact", new InteractionComponent(input, controller, targetingService));
+        new SceneNode("Interact", new InteractionComponent(input, controller, targetingService));
     addNode(interactNode);
     //    ApplicationContext.activeScene = this;
 
@@ -62,6 +64,22 @@ public class GameScene extends Scene {
     addNode(entities);
     //    view.getActionBarView().display("Test Message", 6);
 
+    setupDebug();
+  }
+
+  private void setupDebug() {
+    SceneNode cullingNode =
+        new SceneNode(
+            "Culling",
+            new AbstractComponent() {
+              @Override
+              public void onUpdate(float tpf) {
+                if (input.wasKeyReleased(Key.F)) {
+                  RenderSettings.frustum_Culling = !RenderSettings.frustum_Culling;
+                }
+              }
+            });
+    addNode(cullingNode);
   }
 
   private void setupPlayer() {
