@@ -69,6 +69,11 @@ public class InputImpl implements Input {
   }
 
   @Override
+  public boolean isMouseDown(int button) {
+    return mouseInput.isMouseDown(button);
+  }
+
+  @Override
   public float getScreenWidth() {
     return mouseInput.getScreenWidth();
   }
@@ -123,7 +128,7 @@ public class InputImpl implements Input {
     updateKeyState();
     updateMouseState();
     updateGamepadState();
-    
+
     actions.update();
   }
 

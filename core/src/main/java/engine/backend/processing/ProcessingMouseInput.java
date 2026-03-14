@@ -1,7 +1,5 @@
 package engine.backend.processing;
 
-import java.awt.Component;
-import java.awt.Point;
 import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,19 +25,31 @@ public class ProcessingMouseInput implements MouseInput {
 
   private Robot robot;
 
-  private List<MouseListener> listeners;
+  private final List<MouseListener> listeners;
+
+  // Button state tracking
+  private final boolean[] currentButtons = new boolean[3];
+  private final boolean[] lastButtons = new boolean[3];
+  private final boolean[] pressedButtons = new boolean[3];
+  private final boolean[] releasedButtons = new boolean[3];
 
   public ProcessingMouseInput(PApplet applet) {
+
     this.applet = applet;
+
     applet.registerMethod("mouseEvent", this);
+
     try {
       robot = new Robot();
     } catch (Throwable e) {
+      robot = null;
     }
-    listeners = new ArrayList<MouseListener>();
+
+    listeners = new ArrayList<>();
   }
 
   public void mouseEvent(processing.event.MouseEvent event) {
+
     MouseEvent e = new MouseEvent(event.getX(), event.getY(), mapButton(event.getButton()));
 
     int action = event.getAction();
@@ -48,18 +58,23 @@ public class ProcessingMouseInput implements MouseInput {
       case processing.event.MouseEvent.CLICK:
         fireMouseClicked(e);
         break;
+
       case processing.event.MouseEvent.PRESS:
         fireMousePressed(e);
         break;
+
       case processing.event.MouseEvent.MOVE:
         fireMouseMoved(e);
         break;
+
       case processing.event.MouseEvent.DRAG:
         fireMouseDragged(e);
         break;
+
       case processing.event.MouseEvent.RELEASE:
         fireMouseReleased(e);
         break;
+
       case processing.event.MouseEvent.WHEEL:
         mouseWheelDelta = event.getCount();
         break;
@@ -67,65 +82,79 @@ public class ProcessingMouseInput implements MouseInput {
   }
 
   private int mapButton(int button) {
+
     switch (button) {
       case PApplet.LEFT:
         return LEFT;
+
       case PApplet.RIGHT:
         return RIGHT;
+
       case PApplet.CENTER:
         return CENTER;
+
       default:
         return -1;
     }
   }
 
-  @Override
-  public boolean isMousePressed(int button) {
+  private boolean readButtonState(int button) {
+
     int pButton;
+
     switch (button) {
       case LEFT:
         pButton = PApplet.LEFT;
         break;
+
       case RIGHT:
         pButton = PApplet.RIGHT;
         break;
+
       case CENTER:
         pButton = PApplet.CENTER;
         break;
+
       default:
         return false;
     }
+
     return applet.mousePressed && applet.mouseButton == pButton;
   }
 
+  @Override
+  public boolean isMouseDown(int button) {
+    return currentButtons[button];
+  }
+
+  @Override
+  public boolean isMousePressed(int button) {
+    return pressedButtons[button];
+  }
+
+  @Override
+  public boolean isMouseReleased(int button) {
+    return releasedButtons[button];
+  }
+
   protected void fireMouseClicked(MouseEvent e) {
-    for (MouseListener listener : listeners) {
-      listener.onMouseClicked(e);
-    }
+    for (MouseListener listener : listeners) listener.onMouseClicked(e);
   }
 
   protected void fireMousePressed(MouseEvent e) {
-    for (MouseListener listener : listeners) {
-      listener.onMousePressed(e);
-    }
+    for (MouseListener listener : listeners) listener.onMousePressed(e);
   }
 
   protected void fireMouseMoved(MouseEvent e) {
-    for (MouseListener listener : listeners) {
-      listener.onMouseMoved(e);
-    }
+    for (MouseListener listener : listeners) listener.onMouseMoved(e);
   }
 
   protected void fireMouseDragged(MouseEvent e) {
-    for (MouseListener listener : listeners) {
-      listener.onMouseDragged(e);
-    }
+    for (MouseListener listener : listeners) listener.onMouseDragged(e);
   }
 
   protected void fireMouseReleased(MouseEvent e) {
-    for (MouseListener listener : listeners) {
-      listener.onMouseReleased(e);
-    }
+    for (MouseListener listener : listeners) listener.onMouseReleased(e);
   }
 
   @Override
@@ -135,13 +164,7 @@ public class ProcessingMouseInput implements MouseInput {
 
   @Override
   public void removeMouseListener(MouseListener listener) {
-    if (listener != null) listeners.add(listener);
-  }
-
-  @Override
-  public boolean isMouseReleased(int button) {
-    // Custom state tracking needed
-    return false;
+    if (listener != null) listeners.remove(listener);
   }
 
   @Override
@@ -186,8 +209,11 @@ public class ProcessingMouseInput implements MouseInput {
 
   @Override
   public float getMouseWheelDelta() {
+
     float delta = mouseWheelDelta;
-    mouseWheelDelta = 0; // Reset after read
+
+    mouseWheelDelta = 0;
+
     return delta;
   }
 
@@ -203,22 +229,38 @@ public class ProcessingMouseInput implements MouseInput {
 
   @Override
   public void updateMouseState() {
+
     this.mouseX = applet.mouseX;
     this.mouseY = applet.mouseY;
     this.pMouseX = applet.pmouseX;
     this.pMouseY = applet.pmouseY;
 
+    for (int i = 0; i < currentButtons.length; i++) {
+
+      boolean now = readButtonState(i);
+
+      pressedButtons[i] = !lastButtons[i] && now;
+      releasedButtons[i] = lastButtons[i] && !now;
+
+      currentButtons[i] = now;
+      lastButtons[i] = now;
+    }
+
     if (mouseMode == MouseMode.LOCKED) center();
   }
 
   private void center() {
+
     if (!applet.focused) return;
 
-    applet.mouseX = applet.width / 2;
-    applet.mouseY = applet.height / 2;
-    applet.pmouseX = applet.width / 2;
-    applet.pmouseY = applet.height / 2;
+    int cx = applet.width / 2;
+    int cy = applet.height / 2;
 
-    robot.mouseMove((int) getScreenWidth() / 2, (int) getScreenHeight() / 2);
+    applet.mouseX = cx;
+    applet.mouseY = cy;
+    applet.pmouseX = cx;
+    applet.pmouseY = cy;
+
+    if (robot != null) robot.mouseMove(cx, cy);
   }
 }
