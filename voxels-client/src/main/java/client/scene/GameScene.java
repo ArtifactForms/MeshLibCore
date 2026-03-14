@@ -12,7 +12,9 @@ import client.usecases.chat.ChatComponent;
 import client.usecases.chat.ChatController;
 import client.usecases.chat.ChatViewComponent;
 import client.usecases.chat.SendChatMessageController;
-import client.usecases.interact.BlockInteractionComponent;
+import client.usecases.interact.InteractionComponent;
+import client.usecases.interact.InteractionController;
+import client.usecases.interact.TargetingService;
 import client.usecases.openinventory.OpenInventoryComponent;
 import client.usecases.openinventory.OpenInventoryController;
 import common.game.Hotbar;
@@ -47,8 +49,11 @@ public class GameScene extends Scene {
     addNode(world);
 
     // Add after world because of block overlay
+    TargetingService targetingService = new TargetingService(input, client);
+    InteractionController controller = new InteractionController(client);
     SceneNode interactNode =
-        new SceneNode("Interact", new BlockInteractionComponent(input, client));
+        new SceneNode(
+            "Interact", new InteractionComponent(input, controller, targetingService));
     addNode(interactNode);
     //    ApplicationContext.activeScene = this;
 
