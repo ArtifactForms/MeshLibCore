@@ -22,4 +22,11 @@ public class KeyBinds {
   public static Key hotbarSlot9 = Key.NUM_9;
   
   public static Key openCloseInventory = Key.E;
+  
+  // ------------------------------------------
+  // DEBUG
+  // ------------------------------------------
+  
+  public static Key showHideChunkBorders = Key.H;
+  public static Key enableDisableFrustumCulling = Key.F;
 }

@@ -191,7 +191,7 @@ public abstract class BasicApplication implements Application {
     // with full unlit intensity, preventing material-based shading
     // FIXME lightsOff() -> graphics context
     g.lightsOff();
-    
+
     renderDebugUi(g);
 
     g.enableDepthTest();

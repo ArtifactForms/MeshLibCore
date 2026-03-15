@@ -7,6 +7,8 @@ import engine.runtime.input.Input;
 import engine.runtime.input.Key;
 import engine.runtime.input.MouseMode;
 import engine.scene.camera.Camera;
+import input.InputMode;
+import input.InputSettings;
 import math.Mathf;
 import math.Vector3f;
 
@@ -59,6 +61,9 @@ public class PlayerController extends AbstractComponent {
 
   @Override
   public void onUpdate(float tpf) {
+    if (InputSettings.inputMode != InputMode.GAMEPLAY) {
+      return;
+    }
 
     if (client.getView().getChatView().isOpen()) return;
 

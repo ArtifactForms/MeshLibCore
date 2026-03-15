@@ -151,15 +151,15 @@ public class HotbarViewComponent extends AbstractComponent
     g.setColor(Color.WHITE);
     g.drawRect(x, -slotSize / 2, slotSize, slotSize);
 
-    for (int i = 0; i < SLOTS; i++) {
-
-      ItemStack itemStack = hotbar.getSlot(i);
-      if (itemStack == null) continue;
-
-      int x1 = (i * slotSize) - (scaledWidth / 2) + slotSize / 2;
-
-      iconRenderer.render(g, itemStack.getItemId(), itemStack.getAmount(), x1, 0);
-    }
+//    for (int i = 0; i < SLOTS; i++) {
+//
+//      ItemStack itemStack = hotbar.getSlot(i);
+//      if (itemStack == null) continue;
+//
+//      int x1 = (i * slotSize) - (scaledWidth / 2) + slotSize / 2;
+//
+//      iconRenderer.render(g, itemStack.getItemId(), itemStack.getAmount(), x1, 0);
+//    }
 
     g.popMatrix();
   }

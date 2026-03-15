@@ -1,5 +1,7 @@
 package client.app;
 
+import java.util.UUID;
+
 import client.entity.ClientEntityManager;
 import client.network.ClientNetwork;
 import client.player.ClientPlayer;
@@ -34,7 +36,7 @@ public class GameClient {
     initNetwork();
 
     this.view = new View();
-    this.player = new ClientPlayer();
+    this.player = new ClientPlayer(UUID.randomUUID(), "Test-Player");
     this.sceneManager = new SceneManager(application);
 
     this.world = new ClientWorld(); // Important init before manager

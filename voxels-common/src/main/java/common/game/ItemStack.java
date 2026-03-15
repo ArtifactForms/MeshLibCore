@@ -21,7 +21,6 @@ public class ItemStack {
     this.itemId = itemId;
     this.amount = amount;
   }
-
   /**
    * Attempts to add a quantity to the current stack without exceeding the maximum limit. * @param
    * amountToAdd The quantity to be added to this stack.
@@ -38,6 +37,10 @@ public class ItemStack {
     // Return the "overflow" value
     return amountToAdd - canAdd;
   }
+  
+  public ItemStack copy() {
+    return new ItemStack(itemId, amount);
+  }
 
   /** Gets the unique ID of the item in this stack. * @return The item ID. */
   public short getItemId() {
@@ -47,5 +50,13 @@ public class ItemStack {
   /** Gets the current quantity of items in this stack. * @return The amount of items. */
   public int getAmount() {
     return amount;
+  }
+
+  public void setAmount(int amount) {
+    this.amount = amount;
+  }
+
+  public boolean isEmpty() {
+    return amount == 0;
   }
 }

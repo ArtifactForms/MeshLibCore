@@ -5,7 +5,7 @@ import client.cam.CameraManager;
 import client.entity.EntitiesComponent;
 import client.player.PlayerController;
 import client.rendering.RenderSettings;
-import client.ui.InventoryComponent;
+import client.settings.KeyBinds;
 import client.ui.actionbar.ActionBarComponent;
 import client.ui.hotbar.HotbarComponent;
 import client.ui.hotbar.HotbarViewComponent;
@@ -13,22 +13,26 @@ import client.usecases.chat.ChatComponent;
 import client.usecases.chat.ChatController;
 import client.usecases.chat.ChatViewComponent;
 import client.usecases.chat.SendChatMessageController;
+import client.usecases.debug.displaychunkborders.DisplayChunkBordersComponent;
 import client.usecases.interact.InteractionComponent;
 import client.usecases.interact.InteractionController;
 import client.usecases.interact.TargetingService;
+import client.usecases.openinventory.InventoryViewComponent;
 import client.usecases.openinventory.OpenInventoryComponent;
 import client.usecases.openinventory.OpenInventoryController;
 import common.game.Hotbar;
-import common.game.ItemStack;
-import common.game.block.Blocks;
+import common.game.Inventory;
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
 import engine.components.AbstractComponent;
 import engine.components.CrossLineReticle;
 import engine.runtime.input.Input;
-import engine.runtime.input.Key;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.Camera;
 import math.Color;
+import messages.ChatMessageService;
+import messages.MessagePrefix;
 
 public class GameScene extends Scene {
 
@@ -37,8 +41,10 @@ public class GameScene extends Scene {
   private SceneNode player;
   private ActionBarComponent actionBar;
   private GameClient client;
+  private PlayerController playerController;
 
   public GameScene(Input input, GameClient client) {
+
     this.client = client;
 
     setBackground(Color.getColorFromInt(180, 210, 255));
@@ -68,18 +74,28 @@ public class GameScene extends Scene {
   }
 
   private void setupDebug() {
+    ChatMessageService messageService = new ChatMessageService(client.getView().getChatView());
+
     SceneNode cullingNode =
         new SceneNode(
             "Culling",
             new AbstractComponent() {
               @Override
               public void onUpdate(float tpf) {
-                if (input.wasKeyReleased(Key.F)) {
+                if (input.wasKeyReleased(KeyBinds.enableDisableFrustumCulling)) {
                   RenderSettings.frustum_Culling = !RenderSettings.frustum_Culling;
+                  String value = RenderSettings.frustum_Culling ? "enabled" : "disabled";
+                  messageService.displayMessage(MessagePrefix.DEBUG, "Frustum culling: " + value);
                 }
               }
             });
     addNode(cullingNode);
+
+    SceneNode debugNode =
+        new SceneNode(
+            "Debug-Chunk",
+            new DisplayChunkBordersComponent(input, client.getPlayer(), messageService));
+    addNode(debugNode);
   }
 
   private void setupPlayer() {
@@ -88,12 +104,12 @@ public class GameScene extends Scene {
     Camera camera = client.getPlayerCamera();
     setActiveCamera(camera);
 
-    PlayerController controller = new PlayerController(input, camera, client);
-    player.addComponent(controller);
+    playerController = new PlayerController(input, camera, client);
+    player.addComponent(playerController);
 
     // TODO Remove later
     // editor / debug view support
-    new CameraManager(this, input, controller, client);
+    new CameraManager(this, input, playerController, client);
 
     addNode(player);
   }
@@ -127,10 +143,10 @@ public class GameScene extends Scene {
   }
 
   private void setupHotBar() {
-    Hotbar hotbar = new Hotbar();
-    hotbar.setSlot(0, new ItemStack(Blocks.STONE.getId(), 64));
-    hotbar.setSlot(1, new ItemStack(Blocks.GRASS_BLOCK.getId(), 64));
-    hotbar.setSlot(2, new ItemStack(Blocks.SAND.getId(), 64));
+    Hotbar hotbar = new Hotbar(client.getPlayer().getInventory());
+    //    hotbar.setSlot(0, new ItemStack(Blocks.STONE.getId(), 64));
+    //    hotbar.setSlot(1, new ItemStack(Blocks.GRASS_BLOCK.getId(), 64));
+    //    hotbar.setSlot(2, new ItemStack(Blocks.SAND.getId(), 64));
 
     HotbarComponent control = new HotbarComponent(input, hotbar);
     HotbarViewComponent view = new HotbarViewComponent(hotbar);
@@ -145,7 +161,15 @@ public class GameScene extends Scene {
   }
 
   private void setupInventory() {
-    InventoryComponent component = new InventoryComponent();
+    Inventory inventory = client.getPlayer().getInventory();
+    for (BlockType type : BlockRegistry.getAll()) {
+      inventory.addItem(type.getId(), 64);
+    }
+
+    //    InventoryComponent component = new InventoryComponent();
+    InventoryViewComponent component = new InventoryViewComponent(input, inventory);
+    //    component.setActive(false);
+
     client.getView().setInventoryView(component);
 
     OpenInventoryController controller = new OpenInventoryController(client);

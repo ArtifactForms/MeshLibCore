@@ -8,6 +8,8 @@ import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
 import engine.runtime.input.Input;
+import input.InputMode;
+import input.InputSettings;
 
 public class InteractionComponent extends AbstractComponent implements RenderableComponent {
 
@@ -27,7 +29,10 @@ public class InteractionComponent extends AbstractComponent implements Renderabl
 
   @Override
   public void update(float tpf) {
-
+	 if (InputSettings.inputMode != InputMode.GAMEPLAY) {
+	        return;
+	 }
+	 
     RaycastResult result = targeting.raycast(getOwner());
     currentTarget = result.target;
 
@@ -35,15 +40,15 @@ public class InteractionComponent extends AbstractComponent implements Renderabl
       return;
     }
 
-    if (input.isMouseReleased(Input.LEFT)) {
+    if (input.isMousePressed(Input.LEFT)) {
       controller.breakTarget(currentTarget);
     }
 
-    if (input.isMouseReleased(Input.RIGHT)) {
+    if (input.isMousePressed(Input.RIGHT)) {
       controller.placeTarget(currentTarget);
     }
 
-    if (input.isMouseReleased(Input.CENTER)) {
+    if (input.isMousePressed(Input.CENTER)) {
       controller.pickTarget(currentTarget);
     }
   }

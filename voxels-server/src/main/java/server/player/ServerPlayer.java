@@ -5,9 +5,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import common.game.Inventory;
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.PlayerPositionPacket;
+import common.player.PlayerData;
 import common.player.PlayerProperties;
 import common.world.ChunkData;
 import common.world.World;
@@ -19,17 +19,12 @@ import server.network.ServerConnection;
  * Represents a player on the server side. Manages player state, inventory, and chunk streaming
  * (loading/unloading).
  */
-public class ServerPlayer {
+public class ServerPlayer extends PlayerData {
 
   private int lastChunkX = Integer.MAX_VALUE;
   private int lastChunkZ = Integer.MAX_VALUE;
 
   private final ServerConnection connection;
-  private final UUID uuid;
-  private final String name;
-
-  private Vector3f position = new Vector3f();
-  private float yaw, pitch;
 
   private final PlayerProperties properties = new PlayerProperties();
 
@@ -37,19 +32,15 @@ public class ServerPlayer {
   private Set<Long> loadedChunks = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
   private int viewDistance = 12;
-
-  private Inventory inventory;
   private boolean ignoreNextMovement = false;
 
   public ServerPlayer(UUID uuid, String name, ServerConnection connection) {
-    this.uuid = uuid;
-    this.name = name;
+    super(uuid, name);
     this.connection = connection;
-    this.inventory = new Inventory(4 * 9); // Standard 36 slot inventory
   }
 
   public void teleport(float x, float y, float z, float yaw, float pitch) {
-//    ignoreNextMovement = true;
+    //    ignoreNextMovement = true;
     setSilentPosition(x, y, z, yaw, pitch);
 
     // Send correction packet to the client
@@ -65,15 +56,16 @@ public class ServerPlayer {
    * back to the client to sync their position (useful for anti-cheat or teleportation).
    */
   public void move(float x, float y, float z, float yaw, float pitch) {
-//    if (ignoreNextMovement) {
-//      ignoreNextMovement = false;
-//      return;
-//    }
+    //    if (ignoreNextMovement) {
+    //      ignoreNextMovement = false;
+    //      return;
+    //    }
 
     setSilentPosition(x, y, z, yaw, pitch);
 
     // Send correction packet to the client
-    connection.send(new PlayerPositionPacket(uuid, position.x, position.y, position.z, yaw, pitch));
+    connection.send(
+        new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw, pitch));
 
     // Inform other players of this movement
     broadcastUpdate();
@@ -176,33 +168,5 @@ public class ServerPlayer {
 
   public PlayerProperties getProperties() {
     return properties;
-  }
-
-  public Vector3f getPosition() {
-    return new Vector3f(position);
-  }
-
-  public Inventory getInventory() {
-    return inventory;
-  }
-
-  public UUID getUuid() {
-    return uuid;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public float getX() {
-    return position.x;
-  }
-
-  public float getY() {
-    return position.y;
-  }
-
-  public float getZ() {
-    return position.z;
   }
 }

@@ -5,6 +5,7 @@ import client.player.PlayerNetworkSync;
 import client.scene.StartScene;
 import client.usecases.loadresources.LoadResourcesUseCase;
 import client.world.ChunkStreamingSystem;
+import common.game.block.Blocks;
 import engine.application.BasicApplication;
 import engine.rendering.Graphics;
 
@@ -23,6 +24,7 @@ public class ClientApplication extends BasicApplication {
   @Override
   public void onInitialize() {
     setDisplayInfo(true);
+    Blocks.initialize();
 
     GameClient client = new GameClient(this);
     network = client.getNetwork();

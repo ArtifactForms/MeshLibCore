@@ -2,6 +2,10 @@ package common.game.block;
 
 public final class Blocks {
 
+  public static void initialize() {
+    // forces class loading
+  }
+
   public static final BlockType AIR =
       BlockRegistry.register("core:air").setSolid(false).setOpaque(false);
 

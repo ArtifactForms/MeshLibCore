@@ -6,20 +6,26 @@ public class Hotbar {
 
   public static final int SIZE = 9;
 
-  private final ItemStack[] slots = new ItemStack[SIZE];
+  private final Inventory inventory;
+
   private int selectedSlot = 0;
-  private ArrayList<HotbarListener> listeners = new ArrayList<HotbarListener>();
+
+  private ArrayList<HotbarListener> listeners = new ArrayList<>();
+
+  public Hotbar(Inventory inventory) {
+    this.inventory = inventory;
+  }
 
   public ItemStack getSlot(int index) {
-    return slots[index];
+    return inventory.getSlot(index);
   }
 
   public void setSlot(int index, ItemStack stack) {
-    slots[index] = stack;
+    inventory.setSlot(index, stack);
   }
 
   public ItemStack getSelected() {
-    return slots[selectedSlot];
+    return inventory.getSlot(selectedSlot);
   }
 
   public int getSelectedSlot() {
@@ -27,8 +33,10 @@ public class Hotbar {
   }
 
   public void setSelectedSlot(int slot) {
+
     if (slot < 0 || slot >= SIZE) return;
     if (slot == selectedSlot) return;
+
     selectedSlot = slot;
     fireSelectionChanged();
   }

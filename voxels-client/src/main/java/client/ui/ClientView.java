@@ -17,8 +17,8 @@ public interface ClientView {
   ChatView getChatView();
 
   void setChatView(ChatView chatView);
-  
+
   void setInventoryView(InventoryView inventoryView);
-  
+
   InventoryView getInventoryView();
 }

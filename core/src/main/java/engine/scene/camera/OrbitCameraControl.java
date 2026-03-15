@@ -55,7 +55,7 @@ public class OrbitCameraControl extends AbstractComponent {
    */
   @Override
   public void onUpdate(float tpf) {
-    if (input.isMousePressed(MouseInput.CENTER)) {
+    if (input.isMouseDown(MouseInput.CENTER)) {
 
       // ------------------------------------------------------------
       // Panning (SHIFT + MMB)
