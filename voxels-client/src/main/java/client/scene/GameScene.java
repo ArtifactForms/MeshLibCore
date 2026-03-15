@@ -24,6 +24,8 @@ import common.game.Hotbar;
 import common.game.Inventory;
 import common.game.block.BlockRegistry;
 import common.game.block.BlockType;
+import debug.DebugComponent;
+import debug.DebugController;
 import engine.components.AbstractComponent;
 import engine.components.CrossLineReticle;
 import engine.runtime.input.Input;
@@ -76,20 +78,25 @@ public class GameScene extends Scene {
   private void setupDebug() {
     ChatMessageService messageService = new ChatMessageService(client.getView().getChatView());
 
-    SceneNode cullingNode =
-        new SceneNode(
-            "Culling",
-            new AbstractComponent() {
-              @Override
-              public void onUpdate(float tpf) {
-                if (input.wasKeyReleased(KeyBinds.enableDisableFrustumCulling)) {
-                  RenderSettings.frustum_Culling = !RenderSettings.frustum_Culling;
-                  String value = RenderSettings.frustum_Culling ? "enabled" : "disabled";
-                  messageService.displayMessage(MessagePrefix.DEBUG, "Frustum culling: " + value);
-                }
-              }
-            });
-    addNode(cullingNode);
+    DebugController controller = new DebugController(messageService);
+    DebugComponent debugComponent = new DebugComponent(input, controller);
+    addNode(new SceneNode("Debug", debugComponent));
+
+    //    SceneNode cullingNode =
+    //        new SceneNode(
+    //            "Culling",
+    //            new AbstractComponent() {
+    //              @Override
+    //              public void onUpdate(float tpf) {
+    //                if (input.wasKeyReleased(KeyBinds.enableDisableFrustumCulling)) {
+    //                  RenderSettings.frustum_Culling = !RenderSettings.frustum_Culling;
+    //                  String value = RenderSettings.frustum_Culling ? "enabled" : "disabled";
+    //                  messageService.displayMessage(MessagePrefix.DEBUG, "Frustum culling: " +
+    // value);
+    //                }
+    //              }
+    //            });
+//    addNode(cullingNode);
 
     SceneNode debugNode =
         new SceneNode(
