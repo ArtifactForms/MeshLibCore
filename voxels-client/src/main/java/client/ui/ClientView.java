@@ -2,6 +2,7 @@ package client.ui;
 
 import client.ui.actionbar.ActionBarView;
 import client.ui.hotbar.HotbarView;
+import client.ui.title.TitleView;
 import client.usecases.chat.ChatView;
 
 public interface ClientView {
@@ -21,4 +22,8 @@ public interface ClientView {
   void setInventoryView(InventoryView inventoryView);
 
   InventoryView getInventoryView();
+  
+  TitleView getTitleView();
+  
+  void setTitleView(TitleView titleView);
 }

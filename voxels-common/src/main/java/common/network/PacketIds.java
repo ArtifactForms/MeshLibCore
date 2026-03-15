@@ -21,4 +21,5 @@ public class PacketIds {
   public static final int PLAYER_QUIT = 17;
   public static final int PRIVATE_MESSAGE = 18;
   public static final int PLAYER_OPEN_INVENTORY = 19;
+  public static final int TITLE = 20;
 }

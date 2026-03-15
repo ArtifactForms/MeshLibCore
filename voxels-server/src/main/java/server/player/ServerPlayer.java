@@ -7,11 +7,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.PlayerPositionPacket;
+import common.network.packets.TitlePacket;
 import common.player.PlayerData;
 import common.player.PlayerProperties;
 import common.world.ChunkData;
 import common.world.World;
-import math.Vector3f;
 import server.network.PlayerManager;
 import server.network.ServerConnection;
 
@@ -158,6 +158,12 @@ public class ServerPlayer extends PlayerData {
         other.connection.send(packet);
       }
     }
+  }
+
+  public void sendTitle(
+      String title, String subtitle, int faceInTicks, int stayTicks, int fadeOutTicks) {
+    TitlePacket packet = new TitlePacket(title, subtitle, faceInTicks, stayTicks, fadeOutTicks);
+    connection.send(packet);
   }
 
   // --- Getters ---

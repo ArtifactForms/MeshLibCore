@@ -29,7 +29,7 @@ public class NetworkPackets {
 
     // Communication & Effects
     PacketRegistry.register(ChatMessagePacket::new);
-//    PacketRegistry.register(PrivateMessagePacket::new);
+    //    PacketRegistry.register(PrivateMessagePacket::new);
     PacketRegistry.register(SoundEffectPacket::new);
 
     // Items
@@ -37,11 +37,12 @@ public class NetworkPackets {
     PacketRegistry.register(ItemSpawnPacket::new);
 
     PacketRegistry.register(UpdateSlotPacket::new);
-    
+
     // Entities
     PacketRegistry.register(EntityDestroyPacket::new);
-    
+
     // HUD
     PacketRegistry.register(ActionBarPacket::new);
+    PacketRegistry.register(TitlePacket::new);
   }
 }

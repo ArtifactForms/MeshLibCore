@@ -2,6 +2,7 @@ package client.ui;
 
 import client.ui.actionbar.ActionBarView;
 import client.ui.hotbar.HotbarView;
+import client.ui.title.TitleView;
 import client.usecases.chat.ChatView;
 
 public class View implements ClientView {
@@ -10,6 +11,7 @@ public class View implements ClientView {
   private HotbarView hotbarView;
   private ChatView chatView;
   private InventoryView inventoryView;
+  private TitleView titleView;
 
   public View() {}
 
@@ -51,5 +53,15 @@ public class View implements ClientView {
   @Override
   public InventoryView getInventoryView() {
     return inventoryView;
+  }
+
+  @Override
+  public TitleView getTitleView() {
+    return titleView;
+  }
+
+  @Override
+  public void setTitleView(TitleView titleView) {
+    this.titleView = titleView;
   }
 }

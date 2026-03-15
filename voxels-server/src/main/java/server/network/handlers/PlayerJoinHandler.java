@@ -91,6 +91,8 @@ public class PlayerJoinHandler {
         other.getConnection().send(spawnNew);
       }
     }
+    
+    player.sendTitle("Welcome!", "Prototype Server!", 20, 40, 20);
   }
 
   private void sendInitialChunks() {

@@ -4,11 +4,10 @@ import client.app.GameClient;
 import client.cam.CameraManager;
 import client.entity.EntitiesComponent;
 import client.player.PlayerController;
-import client.rendering.RenderSettings;
-import client.settings.KeyBinds;
 import client.ui.actionbar.ActionBarComponent;
 import client.ui.hotbar.HotbarComponent;
 import client.ui.hotbar.HotbarViewComponent;
+import client.ui.title.TitleTextComponent;
 import client.usecases.chat.ChatComponent;
 import client.usecases.chat.ChatController;
 import client.usecases.chat.ChatViewComponent;
@@ -26,7 +25,6 @@ import common.game.block.BlockRegistry;
 import common.game.block.BlockType;
 import debug.DebugComponent;
 import debug.DebugController;
-import engine.components.AbstractComponent;
 import engine.components.CrossLineReticle;
 import engine.runtime.input.Input;
 import engine.scene.Scene;
@@ -34,7 +32,6 @@ import engine.scene.SceneNode;
 import engine.scene.camera.Camera;
 import math.Color;
 import messages.ChatMessageService;
-import messages.MessagePrefix;
 
 public class GameScene extends Scene {
 
@@ -48,7 +45,12 @@ public class GameScene extends Scene {
   public GameScene(Input input, GameClient client) {
 
     this.client = client;
-
+    
+    TitleTextComponent textComponent = new TitleTextComponent();
+    SceneNode titleText = new SceneNode("Title", textComponent);
+    getUIRoot().addChild(titleText);
+    client.getView().setTitleView(textComponent);
+    
     setBackground(Color.getColorFromInt(180, 210, 255));
 
     this.input = input;

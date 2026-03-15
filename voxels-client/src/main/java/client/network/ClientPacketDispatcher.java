@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import client.app.GameClient;
 import client.player.ClientPlayer;
+import client.ui.title.Title;
 import client.usecases.chat.ChatMessage;
 import common.network.Packet;
 import common.network.packets.BlockUpdatePacket;
@@ -18,6 +19,7 @@ import common.network.packets.PlayerPositionPacket;
 import common.network.packets.PlayerQuitPacket;
 import common.network.packets.PlayerSpawnPacket;
 import common.network.packets.SoundEffectPacket;
+import common.network.packets.TitlePacket;
 import common.network.packets.UpdateSlotPacket;
 import engine.scene.audio.SoundManager;
 
@@ -42,6 +44,7 @@ public class ClientPacketDispatcher {
     register(UpdateSlotPacket.class, this::handleUpdateSlot);
     register(PlayerQuitPacket.class, this::handlePlayerQuit);
     register(PlayerSpawnPacket.class, this::handlePlayerSpawn);
+    register(TitlePacket.class, this::handleTitle);
   }
 
   private <T extends Packet> void register(Class<T> packetClass, Consumer<T> handler) {
@@ -146,4 +149,15 @@ public class ClientPacketDispatcher {
   }
 
   private void handleUpdateSlot(UpdateSlotPacket packet) {}
+
+  private void handleTitle(TitlePacket packet) {
+    float ticksPerSecond = 20f;
+    float fadeInTime = packet.getFadeInTicks() / ticksPerSecond;
+    float stayTime = packet.getStayTicks() / ticksPerSecond;
+    float fadeOutTime = packet.getFadeOutTicks() / ticksPerSecond;
+    String titleText = packet.getTitle();
+    String subtitleText = packet.getSubtitle();
+    Title title = new Title(titleText, subtitleText, fadeInTime, stayTime, fadeOutTime);
+    client.getView().getTitleView().displayTitle(title);
+  }
 }
