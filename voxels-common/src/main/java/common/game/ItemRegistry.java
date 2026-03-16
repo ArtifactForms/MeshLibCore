@@ -28,7 +28,15 @@ public class ItemRegistry {
   }
 
   private static void register(Item item) {
-    ITEMS.put((short) item.getId(), item);
+
+    short id = (short) item.getId();
+
+    if (ITEMS.containsKey(id)) {
+      Log.warn("[ItemRegistry] Duplicate item id: " + id);
+      return;
+    }
+
+    ITEMS.put(id, item);
   }
 
   public static Item getItem(short id) {
@@ -51,5 +59,13 @@ public class ItemRegistry {
     }
 
     return sb.toString().trim();
+  }
+
+  public static boolean exists(short id) {
+    return ITEMS.containsKey(id);
+  }
+
+  public static Map<Short, Item> getAll() {
+    return ITEMS;
   }
 }
