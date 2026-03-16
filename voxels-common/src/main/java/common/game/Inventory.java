@@ -140,6 +140,30 @@ public class Inventory {
     return items;
   }
 
+  /**
+   * Replaces the contents of the inventory with the provided items. If the provided array is
+   * smaller than the inventory, the remaining slots are cleared. If it is larger, extra items are
+   * ignored.
+   *
+   * @param items the new items to set
+   */
+  public void setItems(ItemStack[] items) {
+
+    if (items == null) {
+      throw new IllegalArgumentException("Items array cannot be null");
+    }
+
+    for (int i = 0; i < slots.length; i++) {
+      if (i < items.length) {
+        // Use setSlot to leverage defensive copying and index checks
+        setSlot(i, items[i]);
+      } else {
+        // Clear remaining slots if the input array is shorter
+        slots[i].clear();
+      }
+    }
+  }
+
   public int getSize() {
     return slots.length;
   }
