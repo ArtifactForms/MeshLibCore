@@ -3,6 +3,7 @@ package common.network;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import common.game.ItemStack;
@@ -11,6 +12,9 @@ public class PacketBuffer {
 
   private DataInputStream in;
   private DataOutputStream out;
+
+  // Max String length to avoid Memory-Exploits
+  private static final int MAX_STRING_LENGTH = Short.MAX_VALUE;
 
   public PacketBuffer(DataInputStream in, DataOutputStream out) {
     this.in = in;
@@ -57,12 +61,36 @@ public class PacketBuffer {
     out.writeLong(v);
   }
 
-  public String readString() throws IOException {
-    return in.readUTF();
+  public void writeString(String s) throws IOException {
+    if (s == null) {
+      writeInt(-1);
+      return;
+    }
+
+    byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
+    if (bytes.length > MAX_STRING_LENGTH) {
+      throw new IOException("String too big! Max: " + MAX_STRING_LENGTH + " bytes");
+    }
+
+    writeInt(bytes.length);
+    writeBytes(bytes);
   }
 
-  public void writeString(String s) throws IOException {
-    out.writeUTF(s);
+  public String readString() throws IOException {
+    int length = readInt();
+
+    if (length == -1) return null;
+
+    if (length > MAX_STRING_LENGTH) {
+      throw new IOException("String length header too large: " + length);
+    }
+    if (length < 0) {
+      throw new IOException("String length cannot be negative");
+    }
+
+    byte[] bytes = new byte[length];
+    readBytes(bytes);
+    return new String(bytes, StandardCharsets.UTF_8);
   }
 
   public void readBytes(byte[] dest) throws IOException {
