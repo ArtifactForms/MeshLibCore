@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import common.logging.Log;
 import common.network.Packet;
 import common.network.packets.BlockBreakPacket;
 import common.network.packets.BlockPlacePacket;
@@ -90,7 +91,7 @@ public class ServerPacketDispatcher {
       handler.accept(packet);
     } else {
       // Log packets that do not have a registered handler (e.g., client-only packets)
-      System.err.println(
+      Log.error(
           "[Dispatcher] No handler registered for packet type: "
               + packet.getClass().getSimpleName());
     }
