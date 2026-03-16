@@ -67,7 +67,7 @@ public class Inventory {
 
   public void setSlot(int index, ItemStack stack) {
     checkIndex(index);
-    slots[index].setStack(stack);
+    slots[index].setStack(stack == null ? null : stack.copy());
   }
 
   public ItemStack remove(int slotIndex, int amount) {
