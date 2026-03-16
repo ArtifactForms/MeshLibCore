@@ -48,7 +48,6 @@ public class ServerPacketDispatcher {
     register(PlayerJoinPacket.class, new PlayerJoinHandler(c)::handle);
     register(PlayerMovePacket.class, new PlayerMoveHandler(c)::handle);
     register(ChatMessagePacket.class, new ChatMessageHandler(c)::handle);
-    register(PlayerSpawnPacket.class, new PlayerSpawnHandler(c)::handle);
 
     register(BlockPlacePacket.class, new BlockPlaceHandler(c, reg.get(BlockPlace.class))::handle);
     register(BlockBreakPacket.class, new BlockBreakHandler(c, reg.get(BlockBreak.class))::handle);
