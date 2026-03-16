@@ -8,20 +8,14 @@ import common.logging.Log;
 import common.network.Packet;
 import common.network.packets.BlockBreakPacket;
 import common.network.packets.BlockPlacePacket;
-import common.network.packets.BlockUpdatePacket;
 import common.network.packets.ChatMessagePacket;
-import common.network.packets.ChunkDataPacket;
 import common.network.packets.InventoryActionPacket;
-import common.network.packets.InventoryClickPacket;
 import common.network.packets.PlayerDropItemPacket;
 import common.network.packets.PlayerJoinPacket;
 import common.network.packets.PlayerMovePacket;
 import common.network.packets.PlayerSpawnPacket;
-import server.network.handlers.BlockUpdateHandler;
 import server.network.handlers.ChatMessageHandler;
-import server.network.handlers.ChunkDataHandler;
 import server.network.handlers.InventoryActionHandler;
-import server.network.handlers.InventoryClickHandler;
 import server.network.handlers.PlayerDropItemHandler;
 import server.network.handlers.PlayerJoinHandler;
 import server.network.handlers.PlayerMoveHandler;
@@ -54,15 +48,12 @@ public class ServerPacketDispatcher {
     register(PlayerJoinPacket.class, new PlayerJoinHandler(c)::handle);
     register(PlayerMovePacket.class, new PlayerMoveHandler(c)::handle);
     register(ChatMessagePacket.class, new ChatMessageHandler(c)::handle);
-    register(BlockUpdatePacket.class, new BlockUpdateHandler(c)::handle);
     register(PlayerSpawnPacket.class, new PlayerSpawnHandler(c)::handle);
-    register(ChunkDataPacket.class, new ChunkDataHandler(c)::handle);
 
     register(BlockPlacePacket.class, new BlockPlaceHandler(c, reg.get(BlockPlace.class))::handle);
     register(BlockBreakPacket.class, new BlockBreakHandler(c, reg.get(BlockBreak.class))::handle);
 
     register(PlayerDropItemPacket.class, new PlayerDropItemHandler(c)::handle);
-    register(InventoryClickPacket.class, new InventoryClickHandler(c)::handle);
     register(InventoryActionPacket.class, new InventoryActionHandler(c)::handle);
   }
 
