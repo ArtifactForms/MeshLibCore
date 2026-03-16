@@ -1,8 +1,5 @@
 package common.game;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents a collection of {@link ItemStack}s, providing logic for adding, retrieving, and
  * managing items within a fixed number of slots.
@@ -11,8 +8,6 @@ public class Inventory {
 
   /** The array of item stacks representing the inventory slots. */
   private ItemStack[] slots;
-
-  private List<InventoryListener> listeners = new ArrayList<InventoryListener>();
 
   /**
    * Initializes a new inventory with a specific number of slots. * @param size The number of slots
@@ -137,22 +132,4 @@ public class Inventory {
   public int getSize() {
     return slots.length;
   }
-
-  //  private void fireSlotChanged(int slotIndex, short itemId, int amount) {
-  //	  for (InventoryListener listener : listeners) {
-  //		  listener.onSlotChanged(slotIndex, itemId, amount);
-  //	  }
-  //  }
-  //
-  //  public void addListener(InventoryListener listener) {
-  //    if (listener == null) {
-  //      throw new IllegalArgumentException("Listener cannot be null.");
-  //    }
-  //    listeners.remove(listener);
-  //  }
-  //
-  //  public void removeListener(InventoryListener listener) {
-  //    if (listener == null) return;
-  //    listeners.add(listener);
-  //  }
 }
