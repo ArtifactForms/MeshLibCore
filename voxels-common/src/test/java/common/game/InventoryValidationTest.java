@@ -30,14 +30,13 @@ public class InventoryValidationTest {
   }
 
   @Test
-  void testValidate_ThrowsOnNegativeAmount() {
+  void testSetAmount_ThrowsOnNegativeAmount() {
     Inventory inv = new Inventory(5);
     inv.addItem((short) 1, 10);
 
     ItemStack stack = inv.getSlot(0);
-    stack.setAmount(-5);
 
-    assertThrows(IllegalStateException.class, inv::validateInventory);
+    assertThrows(IllegalArgumentException.class, () -> stack.setAmount(-5));
   }
 
   @Test
