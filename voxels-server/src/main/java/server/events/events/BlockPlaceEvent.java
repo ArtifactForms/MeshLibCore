@@ -1,11 +1,12 @@
 package server.events.events;
 
+import java.util.UUID;
+
 import server.events.CancellableEvent;
-import server.player.ServerPlayer;
 
 public class BlockPlaceEvent extends CancellableEvent {
 
-  private final ServerPlayer player;
+  private final UUID player;
 
   private int x;
   private int y;
@@ -13,7 +14,7 @@ public class BlockPlaceEvent extends CancellableEvent {
 
   private short blockId;
 
-  public BlockPlaceEvent(ServerPlayer player, int x, int y, int z, short blockId) {
+  public BlockPlaceEvent(UUID player, int x, int y, int z, short blockId) {
     this.player = player;
     this.x = x;
     this.y = y;
@@ -21,7 +22,7 @@ public class BlockPlaceEvent extends CancellableEvent {
     this.blockId = blockId;
   }
 
-  public ServerPlayer getPlayer() {
+  public UUID getPlayer() {
     return player;
   }
 

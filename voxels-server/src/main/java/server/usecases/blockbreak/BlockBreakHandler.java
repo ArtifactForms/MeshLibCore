@@ -1,0 +1,138 @@
+package server.usecases.blockbreak;
+
+import common.network.packets.BlockBreakPacket;
+import server.network.ServerConnection;
+import server.player.ServerPlayer;
+import server.usecases.blockbreak.BlockBreak.BlockBreakRequest;
+import server.usecases.blockbreak.BlockBreak.BlockBreakResponse;
+import servers.views.BlockBreakViewImpl;
+
+public class BlockBreakHandler {
+
+  private final BlockBreak useCase;
+  private final ServerConnection connection;
+
+  public BlockBreakHandler(ServerConnection connection, BlockBreak useCase) {
+    this.connection = connection;
+    this.useCase = useCase;
+  }
+
+  public void handle(BlockBreakPacket packet) {
+    BlockBreakView view = new BlockBreakViewImpl(connection);
+    BlockBreakRequest request = createRequest(connection.getPlayer(), packet);
+    BlockBreakResponse presenter = new BlockBreakPresenter(view);
+
+    useCase.execute(request, presenter);
+  }
+
+  private BlockBreakRequest createRequest(ServerPlayer player, BlockBreakPacket packet) {
+
+    BlockBreakRequest request =
+        new BlockBreakRequestModel(
+            player.getUuid(),
+            packet.getX(),
+            packet.getY(),
+            packet.getZ(),
+            player.getX(),
+            player.getY(),
+            player.getZ());
+
+    return request;
+  }
+
+  //  private final ServerConnection connection;
+  //
+  //  //  private static final List<BlockActionValidator> RULES =
+  //  //      List.<BlockActionValidator>of(
+  //  //          new DistanceValidator(ReachDistance.VALUE + 0.5f), new MaterialValidator());
+  //
+  //  private static final List<BlockActionValidator> RULES =
+  //      List.<BlockActionValidator>of(new MaterialValidator());
+  //
+  //  public BlockBreakHandler(ServerConnection connection) {
+  //    this.connection = connection;
+  //  }
+  //
+  //  public void handle(BlockBreakPacket packet) {
+  //    ServerPlayer player = connection.getPlayer();
+  //    if (player == null) return;
+  //
+  //    int x = packet.getX();
+  //    int y = packet.getY();
+  //    int z = packet.getZ();
+  //
+  //    // Hard-Validation (Reach, Bedrock, etc.)
+  //    for (BlockActionValidator rule : RULES) {
+  //      if (!rule.isValid(player, x, y, z)) {
+  //        // send block back to client (Re-sync)
+  //        resyncBlock(x, y, z);
+  //        return;
+  //      }
+  //    }
+  //
+  //    // Get the block type before it's gone
+  //    short oldBlockId =
+  //        connection
+  //            .getServer()
+  //            .getWorld()
+  //            .getBlock(packet.getX(), packet.getY(), packet.getZ())
+  //            .getId();
+  //
+  //    BlockType oldType = BlockRegistry.get(oldBlockId);
+  //
+  //    // Event
+  //    BlockBreakEvent event =
+  //        new BlockBreakEvent(player.getUuid(), packet.getX(), packet.getY(), packet.getZ());
+  //
+  //    connection.getServer().getEventBus().fire(event);
+  //
+  //    if (event.isCancelled()) {
+  //      return;
+  //    }
+  //
+  //    // Bedrock protect
+  //    if (oldType == Blocks.BEDROCK) {
+  //      return;
+  //    }
+  //
+  //    connection
+  //        .getServer()
+  //        .getWorld()
+  //        .setBlock(event.getX(), event.getY(), event.getZ(), Blocks.AIR.getId());
+  //
+  //    //    // 3. SPAWN THE ITEM
+  //    //    if (oldType != BlockType.AIR) {
+  //    //      // Position the item in the center of the block
+  //    //      Vector3f spawnPos =
+  //    //          new Vector3f(event.getX() + 0.5f, event.getY() + 0.5f, event.getZ() + 0.5f);
+  //    //
+  //    //      // Generate a unique ID (you'll need an ID generator or use a timestamp)
+  //    //      long entityId = System.currentTimeMillis();
+  //    //
+  //    //      ItemEntity drop = new ItemEntity(entityId, oldType, spawnPos);
+  //    //
+  //    //      // Give it a little "pop" velocity so it doesn't just sit there
+  //    //      drop.getVelocity().y = 0.15f;
+  //    //      drop.getVelocity().x = (float) (Math.random() * 0.1f - 0.05f);
+  //    //      drop.getVelocity().z = (float) (Math.random() * 0.1f - 0.05f);
+  //    //
+  //    //      // Add to server tracking and notify clients
+  //    //      EntityManager.addEntity(drop);
+  //    //      PlayerManager.broadcast(new ItemSpawnPacket(drop));
+  //    //    }
+  //
+  //    // 4. Notify everyone about the block and sound
+  //    connection.send(new SoundEffectPacket(SoundEffect.BLOCK_BREAK));
+  //    connection
+  //        .getServer()
+  //        .getPlayerManager()
+  //        .broadcast(
+  //            new BlockUpdatePacket(event.getX(), event.getY(), event.getZ(),
+  // Blocks.AIR.getId()));
+  //  }
+  //
+  //  private void resyncBlock(int x, int y, int z) {
+  //    short currentId = connection.getServer().getWorld().getBlock(x, y, z).getId();
+  //    connection.send(new BlockUpdatePacket(x, y, z, currentId));
+  //  }
+}

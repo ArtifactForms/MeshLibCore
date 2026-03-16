@@ -37,11 +37,9 @@ public class InteractionController {
 
     if (!(target instanceof BlockTarget block)) return;
 
-    ItemStack item = client
-        .getView()
-        .getHotbarView()
-        .getModel()
-        .getSelected();
+    Hotbar hotbar = client.getView().getHotbarView().getModel();
+    ItemStack item = hotbar.getSelected();
+    int selectedSlot = hotbar.getSelectedSlot();
 
     if (item == null) return;
 
@@ -52,6 +50,7 @@ public class InteractionController {
             block.placeX,
             block.placeY,
             block.placeZ,
+            selectedSlot,
             id));
   }
 

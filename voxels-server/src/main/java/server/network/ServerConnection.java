@@ -1,9 +1,11 @@
 package server.network;
 
 import java.net.Socket;
+
 import common.network.Connection;
 import common.network.Packet;
 import server.player.ServerPlayer;
+import server.usecases.UseCaseRegistry;
 
 /**
  * Represents a server-side network connection to a specific client. Extends the base Connection to
@@ -21,10 +23,11 @@ public class ServerConnection extends Connection {
    * @param socket The client socket.
    * @throws Exception If the socket streams cannot be initialized.
    */
-  public ServerConnection(GameServer server, Socket socket) throws Exception {
+  public ServerConnection(GameServer server, Socket socket, UseCaseRegistry useCases)
+      throws Exception {
     super(socket);
     this.server = server;
-    this.packetDispatcher = new ServerPacketDispatcher(this);
+    this.packetDispatcher = new ServerPacketDispatcher(this, useCases);
 
     // Start the background thread for reading incoming data (Connection.run())
     Thread thread = new Thread(this, "Server-Client-" + socket.getInetAddress());

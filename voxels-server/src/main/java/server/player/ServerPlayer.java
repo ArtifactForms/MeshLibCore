@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import common.game.ItemStack;
+import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.PlayerPositionPacket;
 import common.network.packets.TitlePacket;
@@ -33,6 +35,9 @@ public class ServerPlayer extends PlayerData {
 
   private int viewDistance = 12;
   private boolean ignoreNextMovement = false;
+
+  private int inventoryVersion = 0;
+  private ItemStack cursorStack;
 
   public ServerPlayer(UUID uuid, String name, ServerConnection connection) {
     super(uuid, name);
@@ -166,7 +171,12 @@ public class ServerPlayer extends PlayerData {
     connection.send(packet);
   }
 
-  // --- Getters ---
+  public void sendMessage(String message) {
+    ChatMessagePacket packet = new ChatMessagePacket(message);
+    connection.send(packet);
+  }
+
+  // --- Getters / Setters ---
 
   public ServerConnection getConnection() {
     return connection;
@@ -174,5 +184,21 @@ public class ServerPlayer extends PlayerData {
 
   public PlayerProperties getProperties() {
     return properties;
+  }
+
+  public ItemStack getCursorStack() {
+    return cursorStack;
+  }
+
+  public void setCursorStack(ItemStack stack) {
+    this.cursorStack = stack;
+  }
+
+  public int getInventoryVersion() {
+    return inventoryVersion;
+  }
+
+  public void incrementInventoryVersion() {
+    inventoryVersion++;
   }
 }

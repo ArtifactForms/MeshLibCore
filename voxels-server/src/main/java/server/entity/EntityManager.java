@@ -2,6 +2,7 @@ package server.entity;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import common.entity.ItemEntity;
 import common.network.packets.EntityDestroyPacket;
@@ -14,6 +15,8 @@ import server.player.ServerPlayer;
  * handles spawning, updating, and player-item collisions.
  */
 public class EntityManager {
+
+  private final AtomicLong nextEntityId = new AtomicLong(1);
 
   /** Internal registry of all active ItemEntities, mapped by their unique entity ID. */
   private final Map<Long, ItemEntity> itemEntities = new ConcurrentHashMap<>();
@@ -95,5 +98,9 @@ public class EntityManager {
    */
   public Map<Long, ItemEntity> getItemEntities() {
     return itemEntities;
+  }
+
+  public long createEntityId() {
+    return nextEntityId.getAndIncrement();
   }
 }

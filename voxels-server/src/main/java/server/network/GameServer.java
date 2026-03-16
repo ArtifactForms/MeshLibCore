@@ -3,16 +3,30 @@ package server.network;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Queue;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.logging.Log;
 import server.commands.Command;
 import server.commands.CommandRegistry;
+import server.commands.commands.PrivateMessageCommand;
 import server.commands.commands.StopCommand;
 import server.commands.commands.TeleportCommand;
 import server.entity.EntityManager;
 import server.events.EventBus;
+import server.gateways.EventAdapter;
+import server.gateways.EventGateway;
+import server.gateways.GatewayContext;
+import server.gateways.InventoryAdapter;
+import server.gateways.InventoryGateway;
+import server.gateways.PermissionAdapter;
+import server.gateways.PermissionGateway;
+import server.gateways.WorldAdapter;
+import server.gateways.WorldGateway;
+import server.permissions.AlwaysGrantPermissionService;
+import server.permissions.PermissionService;
 import server.scheduler.ServerScheduler;
+import server.usecases.UseCaseRegistry;
 import server.world.ServerWorld;
 
 /**
@@ -35,6 +49,10 @@ public class GameServer {
   private final EntityManager entityManager;
   private ServerWorld world;
 
+  private final PermissionService permissionService;
+
+  private UseCaseRegistry useCases;
+
   /**
    * * Thread-safe queue for incoming packets. Packets are added by individual client threads and
    * consumed by the main game thread.
@@ -51,17 +69,33 @@ public class GameServer {
     this.entityManager = new EntityManager(this);
     this.world = new ServerWorld(this);
 
+    this.permissionService = new AlwaysGrantPermissionService();
+    //    this.permissionService = new AlwaysDenyPermissionService();
+
+    initUseCases();
     registerCommands();
   }
 
-  private void registerCommands() {
-	  registerCommand(new StopCommand());
-	  registerCommand(new TeleportCommand());
+  private void initUseCases() {
+    WorldGateway worldGateway = new WorldAdapter(world);
+    EventGateway eventGateway = new EventAdapter(eventBus);
+    PermissionGateway permissionGateway = new PermissionAdapter(permissionService);
+    InventoryGateway inventoryGateway = new InventoryAdapter(playerManager);
+    GatewayContext context =
+        new GatewayContext(worldGateway, eventGateway, permissionGateway, inventoryGateway);
+
+    this.useCases = new UseCaseRegistry(context);
   }
-  
+
+  private void registerCommands() {
+    registerCommand(new StopCommand());
+    registerCommand(new TeleportCommand());
+    registerCommand(new PrivateMessageCommand());
+  }
+
   private void registerCommand(Command command) {
-	  commandRegistry.register(command);
-	  Log.info("Registered command: " + command.getName());
+    commandRegistry.register(command);
+    Log.info("Registered command: " + command.getName());
   }
 
   /**
@@ -94,7 +128,7 @@ public class GameServer {
         Log.info("New connection: " + socket.getInetAddress());
 
         // ServerConnection starts its own internal read-thread upon instantiation
-        new ServerConnection(this, socket);
+        new ServerConnection(this, socket, useCases);
       }
     } catch (Exception e) {
       if (running) e.printStackTrace();
@@ -209,5 +243,9 @@ public class GameServer {
 
   public Queue<QueuedPacket> getPacketQueue() {
     return packetQueue;
+  }
+
+  public boolean hasPermission(UUID player, String permission) {
+    return permissionService.hasPermission(player, permission);
   }
 }

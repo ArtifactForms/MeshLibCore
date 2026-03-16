@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import common.game.ItemStack;
+
 public class PacketBuffer {
 
   private DataInputStream in;
@@ -83,5 +85,43 @@ public class PacketBuffer {
     // We split the UUID into two 64-bit longs (total 16 bytes)
     out.writeLong(uuid.getMostSignificantBits());
     out.writeLong(uuid.getLeastSignificantBits());
+  }
+
+  public void writeItems(ItemStack[] items) throws IOException {
+
+    writeInt(items.length);
+
+    for (ItemStack stack : items) {
+
+      if (stack == null) {
+        writeBoolean(false);
+        continue;
+      }
+
+      writeBoolean(true);
+      writeShort(stack.getItemId());
+      writeInt(stack.getAmount());
+    }
+  }
+
+  public ItemStack[] readItems() throws IOException {
+
+    int size = readInt();
+
+    ItemStack[] items = new ItemStack[size];
+
+    for (int i = 0; i < size; i++) {
+
+      boolean present = readBoolean();
+
+      if (!present) continue;
+
+      short id = readShort();
+      int amount = readInt();
+
+      items[i] = new ItemStack(id, amount);
+    }
+
+    return items;
   }
 }

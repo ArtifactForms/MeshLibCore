@@ -9,6 +9,8 @@ public class KeyBinds {
   public static Key walkBackwards = Key.S;
   public static Key walkForwards = Key.W;
   
+  public static Key dropItem = Key.Q;
+  
   public static Key sprint = Key.CTRL;
 
   public static Key hotbarSlot1 = Key.NUM_1;

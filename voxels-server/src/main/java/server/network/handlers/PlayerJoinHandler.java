@@ -1,7 +1,11 @@
 package server.network.handlers;
 
+import common.game.Inventory;
+import common.game.block.BlockRegistry;
+import common.game.block.BlockType;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
+import common.network.packets.PlayerInventoryFullUpdatePacket;
 import common.network.packets.PlayerJoinPacket;
 import common.network.packets.PlayerPositionPacket;
 import common.network.packets.PlayerSpawnPacket;
@@ -91,8 +95,20 @@ public class PlayerJoinHandler {
         other.getConnection().send(spawnNew);
       }
     }
-    
+
     player.sendTitle("Welcome!", "Prototype Server!", 20, 40, 20);
+
+    // FIXME Remove later: test items
+    Inventory inventory = player.getInventory();
+
+    for (BlockType blockType : BlockRegistry.getAll()) {
+      inventory.addItem(blockType.getId(), 64);
+    }
+
+    // Send FULL inventory sync
+    connection.send(
+        new PlayerInventoryFullUpdatePacket(
+            inventory.getItems(), null, player.getInventoryVersion()));
   }
 
   private void sendInitialChunks() {

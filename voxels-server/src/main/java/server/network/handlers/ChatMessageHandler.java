@@ -1,12 +1,13 @@
 package server.network.handlers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import common.logging.Log;
 import common.network.packets.ChatMessagePacket;
 import server.commands.Command;
 import server.commands.CommandContext;
+import server.commands.CommandMessages;
+import server.network.GameServer;
 import server.network.ServerConnection;
 import server.player.ServerPlayer;
 
@@ -36,24 +37,30 @@ public class ChatMessageHandler {
   }
 
   private void handleCommand(ServerPlayer player, String message) {
+
+    GameServer server = connection.getServer();
+
     String rawInput = message.substring(1).trim();
     if (rawInput.isEmpty()) return;
 
     String[] parts = rawInput.split("\\s+");
-    String commandName = parts[0];
+    String commandName = parts[0].toLowerCase();
 
-    List<String> args = new ArrayList<>();
-    for (int i = 1; i < parts.length; i++) {
-      args.add(parts[i]);
+    List<String> args = List.of(parts).subList(1, parts.length);
+
+    Command command = server.getCommandRegistry().get(commandName);
+
+    if (command == null) {
+      player.sendMessage(CommandMessages.unknownCommand);
+      return;
     }
 
-    Command command = connection.getServer().getCommandRegistry().get(commandName);
-
-    if (command != null) {
-      CommandContext context = new CommandContext(player.getUuid(), args, connection.getServer());
-      command.execute(context);
-    } else {
-      player.getConnection().send(new ChatMessagePacket("Unknown command: " + commandName));
+    if (!server.hasPermission(player.getUuid(), command.getPermission())) {
+      player.sendMessage(CommandMessages.noPermsission);
+      return;
     }
+
+    CommandContext context = new CommandContext(player.getUuid(), args, server);
+    command.execute(context);
   }
 }

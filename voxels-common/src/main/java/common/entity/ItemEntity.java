@@ -33,8 +33,9 @@ public class ItemEntity {
     velocity.y += GRAVITY;
 
     // Apply drag (air resistance)
+    velocity.y += GRAVITY;
+
     velocity.x *= DRAG;
-    velocity.y *= DRAG;
     velocity.z *= DRAG;
 
     // Move the entity
@@ -87,5 +88,12 @@ public class ItemEntity {
     // Using squared distance for better performance (no square root needed)
     float distSq = dx * dx + dy * dy + dz * dz;
     return distSq < 2.25f; // 1.5 meters range (1.5 * 1.5 = 2.25)
+  }
+
+  public void applyDropImpulse(Vector3f direction) {
+	  
+    velocity.x = direction.x * 0.25f;
+    velocity.y = 0.25f;
+    velocity.z = direction.z * 0.25f;
   }
 }

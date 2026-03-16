@@ -1,5 +1,8 @@
 package common.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a collection of {@link ItemStack}s, providing logic for adding, retrieving, and
  * managing items within a fixed number of slots.
@@ -8,6 +11,8 @@ public class Inventory {
 
   /** The array of item stacks representing the inventory slots. */
   private ItemStack[] slots;
+
+  private List<InventoryListener> listeners = new ArrayList<InventoryListener>();
 
   /**
    * Initializes a new inventory with a specific number of slots. * @param size The number of slots
@@ -70,6 +75,53 @@ public class Inventory {
     return slots[index];
   }
 
+  public ItemStack remove(int slotIndex, int amount) {
+    ItemStack stack = slots[slotIndex];
+    if (stack == null) return null;
+
+    int currentAmount = stack.getAmount();
+    int toRemove = Math.min(amount, currentAmount);
+
+    ItemStack result = new ItemStack(stack.getItemId(), toRemove);
+    stack.setAmount(currentAmount - toRemove);
+
+    if (stack.getAmount() <= 0) {
+      slots[slotIndex] = null;
+    }
+    return result;
+  }
+
+  public ItemStack removeOne(int index) {
+
+    ItemStack stack = slots[index];
+    if (stack == null) return null;
+
+    ItemStack result = new ItemStack(stack.getItemId(), 1);
+
+    stack.setAmount(stack.getAmount() - 1);
+
+    if (stack.getAmount() <= 0) {
+      slots[index] = null;
+    }
+
+    return result;
+  }
+
+  public boolean hasItem(short itemId, int amount) {
+    for (ItemStack itemStack : slots) {
+      if (itemStack.getItemId() == itemId && itemStack.getAmount() >= amount) return true;
+    }
+    return false;
+  }
+
+  public ItemStack[] getItems() {
+    return slots;
+  }
+
+  public void setItems(ItemStack[] items) {
+    this.slots = items;
+  }
+
   /**
    * Sets the {@link ItemStack} at a specific slot index. * @param index The index of the slot to
    * update.
@@ -85,4 +137,22 @@ public class Inventory {
   public int getSize() {
     return slots.length;
   }
+
+  //  private void fireSlotChanged(int slotIndex, short itemId, int amount) {
+  //	  for (InventoryListener listener : listeners) {
+  //		  listener.onSlotChanged(slotIndex, itemId, amount);
+  //	  }
+  //  }
+  //
+  //  public void addListener(InventoryListener listener) {
+  //    if (listener == null) {
+  //      throw new IllegalArgumentException("Listener cannot be null.");
+  //    }
+  //    listeners.remove(listener);
+  //  }
+  //
+  //  public void removeListener(InventoryListener listener) {
+  //    if (listener == null) return;
+  //    listeners.add(listener);
+  //  }
 }

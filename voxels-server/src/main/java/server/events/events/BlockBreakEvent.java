@@ -1,24 +1,24 @@
 package server.events.events;
 
+import java.util.UUID;
+
 import server.events.CancellableEvent;
-import server.player.ServerPlayer;
 
 public class BlockBreakEvent extends CancellableEvent {
 
-  private final ServerPlayer player;
+  private final UUID player;
+  private final int x;
+  private final int y;
+  private final int z;
 
-  private int x;
-  private int y;
-  private int z;
-
-  public BlockBreakEvent(ServerPlayer player, int x, int y, int z) {
+  public BlockBreakEvent(UUID player, int x, int y, int z) {
     this.player = player;
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
-  public ServerPlayer getPlayer() {
+  public UUID getPlayer() {
     return player;
   }
 

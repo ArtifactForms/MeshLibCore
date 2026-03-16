@@ -20,6 +20,12 @@ public class NetworkPackets {
     PacketRegistry.register(PlayerPositionPacket::new);
     PacketRegistry.register(PlayerQuitPacket::new);
     PacketRegistry.register(PlayerOpenInventoryPacket::new);
+    PacketRegistry.register(PlayerDropItemPacket::new);
+    
+    // Inventory
+    PacketRegistry.register(PlayerSlotUpdatePacket::new);
+    PacketRegistry.register(PlayerInventoryFullUpdatePacket::new);
+    PacketRegistry.register(InventoryActionPacket::new);
 
     // World & Blocks
     PacketRegistry.register(BlockUpdatePacket::new);

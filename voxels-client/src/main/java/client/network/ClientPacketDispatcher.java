@@ -9,14 +9,18 @@ import client.app.GameClient;
 import client.player.ClientPlayer;
 import client.ui.title.Title;
 import client.usecases.chat.ChatMessage;
+import common.game.Inventory;
+import common.game.ItemStack;
 import common.network.Packet;
 import common.network.packets.BlockUpdatePacket;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.EntityDestroyPacket;
 import common.network.packets.ItemSpawnPacket;
+import common.network.packets.PlayerInventoryFullUpdatePacket;
 import common.network.packets.PlayerPositionPacket;
 import common.network.packets.PlayerQuitPacket;
+import common.network.packets.PlayerSlotUpdatePacket;
 import common.network.packets.PlayerSpawnPacket;
 import common.network.packets.SoundEffectPacket;
 import common.network.packets.TitlePacket;
@@ -45,6 +49,8 @@ public class ClientPacketDispatcher {
     register(PlayerQuitPacket.class, this::handlePlayerQuit);
     register(PlayerSpawnPacket.class, this::handlePlayerSpawn);
     register(TitlePacket.class, this::handleTitle);
+    register(PlayerSlotUpdatePacket.class, this::handleSlotUpdate);
+    register(PlayerInventoryFullUpdatePacket.class, this::handleInventoryFullUpdate);
   }
 
   private <T extends Packet> void register(Class<T> packetClass, Consumer<T> handler) {
@@ -159,5 +165,20 @@ public class ClientPacketDispatcher {
     String subtitleText = packet.getSubtitle();
     Title title = new Title(titleText, subtitleText, fadeInTime, stayTime, fadeOutTime);
     client.getView().getTitleView().displayTitle(title);
+  }
+
+  private void handleSlotUpdate(PlayerSlotUpdatePacket packet) {
+    Inventory inventory = client.getPlayer().getInventory();
+    ItemStack itemStack = new ItemStack(packet.getItemId(), packet.getAmount());
+    inventory.setSlot(packet.getSlotIndex(), itemStack);
+  }
+
+  private void handleInventoryFullUpdate(PlayerInventoryFullUpdatePacket packet) {
+    Inventory inventory = client.getPlayer().getInventory();
+    inventory.setItems(packet.getItems());
+
+    int inventoryVersion = packet.getInventoryVersion();
+    client.getView().getInventoryView().setInventoryVersion(inventoryVersion);
+    client.getView().getInventoryView().setCursorStack(packet.getCursorStack());
   }
 }

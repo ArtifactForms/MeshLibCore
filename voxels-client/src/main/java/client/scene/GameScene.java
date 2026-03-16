@@ -4,6 +4,7 @@ import client.app.GameClient;
 import client.cam.CameraManager;
 import client.entity.EntitiesComponent;
 import client.player.PlayerController;
+import client.scene.screen.GamePlayScreen;
 import client.ui.actionbar.ActionBarComponent;
 import client.ui.hotbar.HotbarComponent;
 import client.ui.hotbar.HotbarViewComponent;
@@ -13,6 +14,7 @@ import client.usecases.chat.ChatController;
 import client.usecases.chat.ChatViewComponent;
 import client.usecases.chat.SendChatMessageController;
 import client.usecases.debug.displaychunkborders.DisplayChunkBordersComponent;
+import client.usecases.dropitem.DropItemComponent;
 import client.usecases.interact.InteractionComponent;
 import client.usecases.interact.InteractionController;
 import client.usecases.interact.TargetingService;
@@ -38,28 +40,22 @@ public class GameScene extends Scene {
   private Input input;
   private SkyBox skyBox;
   private SceneNode player;
-  private ActionBarComponent actionBar;
+  //  private ActionBarComponent actionBar;
   private GameClient client;
   private PlayerController playerController;
 
   public GameScene(Input input, GameClient client) {
+    GamePlayScreen screen = new GamePlayScreen(input, client);
+    pushScreen(screen);
 
     this.client = client;
-    
-    TitleTextComponent textComponent = new TitleTextComponent();
-    SceneNode titleText = new SceneNode("Title", textComponent);
-    getUIRoot().addChild(titleText);
-    client.getView().setTitleView(textComponent);
-    
+
     setBackground(Color.getColorFromInt(180, 210, 255));
 
     this.input = input;
     setupPlayer();
     //    setupSkyBox();
     setupUI();
-
-    SceneNode world = new SceneNode("World", client.getChunkManager());
-    addNode(world);
 
     // Add after world because of block overlay
     TargetingService targetingService = new TargetingService(input, client);
@@ -83,22 +79,6 @@ public class GameScene extends Scene {
     DebugController controller = new DebugController(messageService);
     DebugComponent debugComponent = new DebugComponent(input, controller);
     addNode(new SceneNode("Debug", debugComponent));
-
-    //    SceneNode cullingNode =
-    //        new SceneNode(
-    //            "Culling",
-    //            new AbstractComponent() {
-    //              @Override
-    //              public void onUpdate(float tpf) {
-    //                if (input.wasKeyReleased(KeyBinds.enableDisableFrustumCulling)) {
-    //                  RenderSettings.frustum_Culling = !RenderSettings.frustum_Culling;
-    //                  String value = RenderSettings.frustum_Culling ? "enabled" : "disabled";
-    //                  messageService.displayMessage(MessagePrefix.DEBUG, "Frustum culling: " +
-    // value);
-    //                }
-    //              }
-    //            });
-//    addNode(cullingNode);
 
     SceneNode debugNode =
         new SceneNode(
@@ -130,11 +110,19 @@ public class GameScene extends Scene {
   }
 
   private void setupUI() {
-    setupActionBar();
+    //    setupActionBar();
     setupHotBar();
     setupChat();
     setupInventory();
-    setupReticle();
+    //    setupReticle();
+    setupTitleView();
+  }
+
+  private void setupTitleView() {
+    TitleTextComponent textComponent = new TitleTextComponent();
+    SceneNode titleText = new SceneNode("Title", textComponent);
+    getUIRoot().addChild(titleText);
+    client.getView().setTitleView(textComponent);
   }
 
   private void setupChat() {
@@ -144,41 +132,34 @@ public class GameScene extends Scene {
     SceneNode chatNode = new SceneNode("Chat", chatComponent);
     getUIRoot().addChild(chatNode);
 
-    ChatViewComponent chatView = new ChatViewComponent();
-    SceneNode chatViewNode = new SceneNode();
-    chatViewNode.addComponent(chatView);
-    client.getView().setChatView(chatView);
-    getUIRoot().addChild(chatViewNode);
+    //    ChatViewComponent chatView = new ChatViewComponent();
+    //    SceneNode chatViewNode = new SceneNode();
+    //    chatViewNode.addComponent(chatView);
+    //    client.getView().setChatView(chatView);
+    //    getUIRoot().addChild(chatViewNode);
   }
 
   private void setupHotBar() {
     Hotbar hotbar = new Hotbar(client.getPlayer().getInventory());
-    //    hotbar.setSlot(0, new ItemStack(Blocks.STONE.getId(), 64));
-    //    hotbar.setSlot(1, new ItemStack(Blocks.GRASS_BLOCK.getId(), 64));
-    //    hotbar.setSlot(2, new ItemStack(Blocks.SAND.getId(), 64));
 
     HotbarComponent control = new HotbarComponent(input, hotbar);
     HotbarViewComponent view = new HotbarViewComponent(hotbar);
+    DropItemComponent dropItemComponent = new DropItemComponent(input, client, hotbar);
 
     client.getView().setHotbarView(view);
 
     SceneNode hotbarNode = new SceneNode("Hotbar");
     hotbarNode.addComponent(control);
     hotbarNode.addComponent(view);
+    hotbarNode.addComponent(dropItemComponent);
 
     getUIRoot().addChild(hotbarNode);
   }
 
   private void setupInventory() {
     Inventory inventory = client.getPlayer().getInventory();
-    for (BlockType type : BlockRegistry.getAll()) {
-      inventory.addItem(type.getId(), 64);
-    }
 
-    //    InventoryComponent component = new InventoryComponent();
-    InventoryViewComponent component = new InventoryViewComponent(input, inventory);
-    //    component.setActive(false);
-
+    InventoryViewComponent component = new InventoryViewComponent(input, inventory, client.getNetwork());
     client.getView().setInventoryView(component);
 
     OpenInventoryController controller = new OpenInventoryController(client);
@@ -189,14 +170,8 @@ public class GameScene extends Scene {
     getUIRoot().addChild(inventoryNode);
   }
 
-  private void setupActionBar() {
-    actionBar = new ActionBarComponent();
-    client.getView().setActionBarView(actionBar);
-    getUIRoot().addChild(new SceneNode("Action-Bar", actionBar));
-  }
-
-  private void setupReticle() {
-    getUIRoot().addChild(new SceneNode("Cross-Hair", new CrossLineReticle()));
-    //    getUIRoot().addChild(new SceneNode("Reticle", new RoundReticle()));
-  }
+  //  private void setupReticle() {
+  //    getUIRoot().addChild(new SceneNode("Cross-Hair", new CrossLineReticle()));
+  //    //    getUIRoot().addChild(new SceneNode("Reticle", new RoundReticle()));
+  //  }
 }

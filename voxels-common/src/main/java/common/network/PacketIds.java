@@ -22,4 +22,9 @@ public class PacketIds {
   public static final int PRIVATE_MESSAGE = 18;
   public static final int PLAYER_OPEN_INVENTORY = 19;
   public static final int TITLE = 20;
+  public static final int PLAYER_DROP_ITEM = 21;
+  public static final int PLAYER_SLOT_UPDATE = 22;
+  public static final int PLAYER_INVENTORY_FULL_UPDATE = 23;
+  public static final int INVENTORY_CLICK = 24;
+  public static final int INVENTORY_ACTION = 25;
 }

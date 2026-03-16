@@ -5,10 +5,13 @@ import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
+import client.network.ClientNetwork;
 import client.ui.InventoryView;
 import client.ui.hotbar.HotbarBlockIconRenderer;
 import common.game.Inventory;
+import common.game.InventoryActionType;
 import common.game.ItemStack;
+import common.network.packets.InventoryActionPacket;
 import engine.components.AbstractComponent;
 import engine.components.Geometry;
 import engine.components.RenderableComponent;
@@ -18,6 +21,7 @@ import engine.resources.FilterMode;
 import engine.resources.Texture;
 import engine.resources.TextureManager;
 import engine.runtime.input.Input;
+import engine.runtime.input.Key;
 import math.Color;
 import math.Mathf;
 import mesh.Mesh3D;
@@ -36,13 +40,9 @@ public class InventoryViewComponent extends AbstractComponent
   private static final int BORDER = 1;
 
   private static final int HOTBAR_SIZE = 9;
-  private static final int MAX_STACK_SIZE = 64;
 
   private final int WIDTH = 9;
   private final int HEIGHT;
-
-  private long lastClickTime;
-  private int lastClickedSlot;
 
   private final int slotSize;
 
@@ -54,31 +54,32 @@ public class InventoryViewComponent extends AbstractComponent
 
   private HotbarBlockIconRenderer iconRenderer = new HotbarBlockIconRenderer();
 
-  private ItemStack draggedStack = null;
-  private int draggedFromSlot = -1;
+  private int inventoryVersion = 0;
+  private ItemStack cursorStack = null;
 
+  // Drag Distribution
   private boolean dragDistributeActive = false;
   private Set<Integer> dragVisitedSlots = new HashSet<>();
 
   private TooltipRenderer tooltipRenderer = new DefaultTooltipRenderer();
 
-  public InventoryViewComponent(Input input, Inventory inventory) {
+  private ClientNetwork network;
+
+  public InventoryViewComponent(Input input, Inventory inventory, ClientNetwork network) {
 
     this.input = input;
     this.inventory = inventory;
+    this.network = network;
 
     int inventorySlots = inventory.getSize() - HOTBAR_SIZE;
-
     this.HEIGHT = (int) Math.ceil(inventorySlots / (float) WIDTH);
 
     this.slotSize = SIZE * SCALE;
 
     texture = createAndConfigureTexture();
-
     Mesh3D plane = createPlaneMesh();
 
     Material material = new Material();
-
     material.setDiffuseTexture(texture);
     material.setUseLighting(false);
     material.setColor(new Color(0, 0, 0, 0));
@@ -89,195 +90,85 @@ public class InventoryViewComponent extends AbstractComponent
   @Override
   public void onUpdate(float tpf) {
 
-    if (draggedStack != null && hoveredSlot == -1 && input.isMousePressed(0)) {
-      inventory.setSlot(draggedFromSlot, draggedStack);
-      clearDragged();
-      return;
-    }
-
     if (hoveredSlot == -1) return;
-
-    if (handleDoubleClick()) return;
 
     handleLeftClick();
     handleRightClick();
     handleDragDistribute();
   }
 
-  private boolean handleDoubleClick() {
-
-    if (!input.isMousePressed(0)) return false;
-    if (hoveredSlot == -1) return false;
-
-    long now = System.currentTimeMillis();
-
-    if (hoveredSlot == lastClickedSlot && now - lastClickTime < 250) {
-
-      collectStacks(hoveredSlot);
-
-      lastClickedSlot = -1;
-      lastClickTime = 0;
-
-      return true;
-    }
-
-    lastClickedSlot = hoveredSlot;
-    lastClickTime = now;
-
-    return false;
-  }
-
-  private void collectStacks(int slot) {
-
-    ItemStack base = inventory.getSlot(slot);
-    if (base == null) return;
-
-    int itemId = base.getItemId();
-
-    for (int i = 0; i < inventory.getSize(); i++) {
-
-      if (i == slot) continue;
-
-      ItemStack stack = inventory.getSlot(i);
-
-      if (stack == null) continue;
-      if (stack.getItemId() != itemId) continue;
-
-      int space = MAX_STACK_SIZE - base.getAmount();
-      if (space <= 0) break;
-
-      int transfer = Math.min(space, stack.getAmount());
-
-      base.setAmount(base.getAmount() + transfer);
-      stack.setAmount(stack.getAmount() - transfer);
-
-      if (stack.getAmount() <= 0) inventory.setSlot(i, null);
-    }
-  }
-
   private void handleLeftClick() {
 
     if (!input.isMousePressed(0)) return;
+    if (hoveredSlot == -1) return;
 
-    if (draggedStack == null) {
+    if (input.isKeyPressed(Key.SHIFT)) {
 
-      ItemStack stack = inventory.getSlot(hoveredSlot);
-      if (stack == null) return;
-
-      draggedStack = stack;
-      draggedFromSlot = hoveredSlot;
-
-      inventory.setSlot(hoveredSlot, null);
+      network.send(
+          new InventoryActionPacket(
+              hoveredSlot, 0, InventoryActionType.SHIFT_CLICK.ordinal(), inventoryVersion));
 
     } else {
 
-      ItemStack target = inventory.getSlot(hoveredSlot);
-
-      if (target == null) {
-
-        inventory.setSlot(hoveredSlot, draggedStack);
-        clearDragged();
-
-      } else if (target.getItemId() == draggedStack.getItemId()) {
-
-        int remainder = target.add(draggedStack.getAmount(), MAX_STACK_SIZE);
-
-        if (remainder == 0) clearDragged();
-        else draggedStack.setAmount(remainder);
-
-      } else {
-
-        inventory.setSlot(draggedFromSlot, target);
-        inventory.setSlot(hoveredSlot, draggedStack);
-        clearDragged();
-      }
+      network.send(
+          new InventoryActionPacket(
+              hoveredSlot, 0, InventoryActionType.CLICK.ordinal(), inventoryVersion));
     }
   }
 
   private void handleRightClick() {
 
     if (!input.isMousePressed(1)) return;
+    if (hoveredSlot == -1) return;
 
-    ItemStack slotStack = inventory.getSlot(hoveredSlot);
-
-    if (draggedStack == null) {
-
-      if (slotStack == null) return;
-
-      int half = (int) Math.ceil(slotStack.getAmount() / 2f);
-
-      draggedStack = new ItemStack(slotStack.getItemId(), half);
-      draggedFromSlot = hoveredSlot;
-
-      int remaining = slotStack.getAmount() - half;
-
-      if (remaining <= 0) inventory.setSlot(hoveredSlot, null);
-      else slotStack.setAmount(remaining);
-
-      return;
-    }
-
-    if (slotStack == null) {
-
-      inventory.setSlot(hoveredSlot, new ItemStack(draggedStack.getItemId(), 1));
-
-    } else if (slotStack.getItemId() == draggedStack.getItemId()
-        && slotStack.getAmount() < MAX_STACK_SIZE) {
-
-      slotStack.setAmount(slotStack.getAmount() + 1);
-
-    } else return;
-
-    draggedStack.setAmount(draggedStack.getAmount() - 1);
-
-    if (draggedStack.getAmount() <= 0) clearDragged();
+    network.send(
+        new InventoryActionPacket(
+            hoveredSlot, 1, InventoryActionType.CLICK.ordinal(), inventoryVersion));
   }
 
   private void handleDragDistribute() {
 
-    if (!input.isMouseDown(1) || draggedStack == null) {
+    // Drag Start
+    if (input.isMousePressed(1)) {
+
+      dragDistributeActive = true;
+      dragVisitedSlots.clear();
+
+      network.send(
+          new InventoryActionPacket(
+              hoveredSlot, 1, InventoryActionType.DRAG_START.ordinal(), inventoryVersion));
+    }
+
+    // Dragging
+    if (dragDistributeActive && input.isMouseDown(1)) {
+
+      if (hoveredSlot != -1 && !dragVisitedSlots.contains(hoveredSlot)) {
+
+        dragVisitedSlots.add(hoveredSlot);
+
+        network.send(
+            new InventoryActionPacket(
+                hoveredSlot, 1, InventoryActionType.DRAG_ADD.ordinal(), inventoryVersion));
+      }
+    }
+
+    // Drag End
+    if (dragDistributeActive && input.isMouseReleased(1)) {
+
       dragDistributeActive = false;
       dragVisitedSlots.clear();
-      return;
+
+      network.send(
+          new InventoryActionPacket(
+              hoveredSlot, 1, InventoryActionType.DRAG_END.ordinal(), inventoryVersion));
     }
-
-    dragDistributeActive = true;
-
-    if (hoveredSlot == -1) return;
-
-    if (!dragVisitedSlots.contains(hoveredSlot)) {
-
-      dragVisitedSlots.add(hoveredSlot);
-
-      ItemStack slotStack = inventory.getSlot(hoveredSlot);
-
-      if (slotStack == null) {
-
-        inventory.setSlot(hoveredSlot, new ItemStack(draggedStack.getItemId(), 1));
-
-      } else if (slotStack.getItemId() == draggedStack.getItemId()
-          && slotStack.getAmount() < MAX_STACK_SIZE) {
-
-        slotStack.setAmount(slotStack.getAmount() + 1);
-      }
-
-      draggedStack.setAmount(draggedStack.getAmount() - 1);
-
-      if (draggedStack.getAmount() <= 0) {
-        clearDragged();
-        dragVisitedSlots.clear();
-      }
-    }
-  }
-
-  private void clearDragged() {
-    draggedStack = null;
-    draggedFromSlot = -1;
   }
 
   private Texture createAndConfigureTexture() {
+
     Texture tex = TextureManager.getInstance().createTexture(createTexture());
     tex.setFilterMode(FilterMode.POINT);
+
     return tex;
   }
 
@@ -360,6 +251,7 @@ public class InventoryViewComponent extends AbstractComponent
             g, stack.getItemId(), stack.getAmount(), x + slotSize / 2, yHotbar + slotSize / 2);
 
       if (hoveredSlot == i) {
+
         g.setColor(new Color(1f, 1f, 1f, 0.25f));
         g.fillRect(x, yHotbar, slotSize, slotSize);
 
@@ -403,20 +295,18 @@ public class InventoryViewComponent extends AbstractComponent
           if (stack != null) {
 
             tooltipStack = stack;
-
-            // WICHTIG: Screen Space Koordinaten
             tooltipX = x + screenW / 2f;
             tooltipY = y + screenH / 2f;
           }
         }
       }
 
-      if (draggedStack != null) {
+      if (cursorStack != null) {
 
         float mx = input.getMouseX() - screenW / 2f;
         float my = input.getMouseY() - screenH / 2f;
 
-        iconRenderer.render(g, draggedStack.getItemId(), draggedStack.getAmount(), mx, my);
+        iconRenderer.render(g, cursorStack.getItemId(), cursorStack.getAmount(), mx, my);
       }
 
       g.popMatrix();
@@ -426,8 +316,10 @@ public class InventoryViewComponent extends AbstractComponent
   }
 
   private void renderTooltip(Graphics g, ItemStack stack, float mouseX, float mouseY) {
+
     float x = mouseX + 12;
     float y = mouseY + 12;
+
     tooltipRenderer.render(g, stack, x, y);
   }
 
@@ -486,4 +378,14 @@ public class InventoryViewComponent extends AbstractComponent
 
   @Override
   public void onDetach() {}
+
+  @Override
+  public void setCursorStack(ItemStack stack) {
+    this.cursorStack = stack;
+  }
+  
+  @Override
+  public void setInventoryVersion(int inventoryVersion) {
+	  this.inventoryVersion = inventoryVersion;
+  }
 }
