@@ -24,11 +24,22 @@ public class ChunkData {
   protected int chunkX;
   protected int chunkZ;
 
+  protected boolean dirty = false;
+
   public ChunkData(int chunkX, int chunkZ) {
     this.chunkX = chunkX;
     this.chunkZ = chunkZ;
     this.blockData = new short[WIDTH * DEPTH * HEIGHT];
     this.heightMap = new int[WIDTH * DEPTH];
+  }
+
+  public ChunkData(int chunkX, int chunkZ, short[] blockData) {
+    // TODO Validate blockData length
+    this.chunkX = chunkX;
+    this.chunkZ = chunkZ;
+    this.blockData = blockData;
+    this.heightMap = new int[WIDTH * DEPTH];
+    recalculateHeightMap();
   }
 
   public short getBlockId(int x, int y, int z) {
@@ -42,6 +53,7 @@ public class ChunkData {
     int index = getIndex(x, y, z);
     blockData[index] = id;
     updateHeightMap(x, y, z, id);
+    dirty = true;
   }
 
   public BlockType getBlock(int x, int y, int z) {
@@ -178,5 +190,13 @@ public class ChunkData {
 
   public int getChunkZ() {
     return chunkZ;
+  }
+
+  public boolean isDirty() {
+    return dirty;
+  }
+
+  public void setDirty(boolean dirty) {
+    this.dirty = dirty;
   }
 }

@@ -1,5 +1,6 @@
 package server.network;
 
+import java.io.File;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Queue;
@@ -25,6 +26,9 @@ import server.gateways.WorldAdapter;
 import server.gateways.WorldGateway;
 import server.permissions.AlwaysGrantPermissionService;
 import server.permissions.PermissionService;
+import server.persistance.ChunkRepository;
+import server.persistance.FileChunkRepository;
+import server.player.ServerPlayer;
 import server.scheduler.ServerScheduler;
 import server.usecases.UseCaseRegistry;
 import server.world.ServerWorld;
@@ -62,12 +66,15 @@ public class GameServer {
   public GameServer(int port) {
     this.port = port;
 
+    File worldFolder = new File("world_data");
+    ChunkRepository chunkRepository = new FileChunkRepository(worldFolder);
+
     this.scheduler = new ServerScheduler();
     this.commandRegistry = new CommandRegistry();
     this.eventBus = new EventBus();
     this.playerManager = new PlayerManager();
     this.entityManager = new EntityManager(this);
-    this.world = new ServerWorld(this);
+    this.world = new ServerWorld(this, chunkRepository);
 
     this.permissionService = new AlwaysGrantPermissionService();
     //    this.permissionService = new AlwaysDenyPermissionService();
@@ -103,6 +110,15 @@ public class GameServer {
    * entering the main game loop.
    */
   public void start() throws Exception {
+    Runtime.getRuntime()
+        .addShutdownHook(
+            new Thread(
+                () -> {
+                  Log.info("Shutdown Hook triggered. Emergency save starting...");
+                  this.shutdown();
+                },
+                "Shutdown-Thread"));
+
     serverSocket = new ServerSocket(port);
     serverSocket.setReuseAddress(true);
 
@@ -177,7 +193,22 @@ public class GameServer {
 
     scheduler.tick(tick);
 
+    // Process chunk streaming
+    for (ServerPlayer player : playerManager.getAllPlayers()) {
+      player.processStreaming();
+    }
+    
     entityManager.update(playerManager.getAllPlayers());
+    
+    if (tick % 200 == 0) {
+        java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
+        for (ServerPlayer player : playerManager.getAllPlayers()) {
+            allRequiredChunks.addAll(player.getLoadedChunks());
+        }
+        Log.info("Start unload..." + allRequiredChunks.size());
+        Log.info("Required chunks: " + allRequiredChunks.size());
+        world.unloadUnusedChunks(allRequiredChunks);
+    }
 
     // Placeholder for world logic (Physics, AI, Tile Entities, etc.)
     if (world != null) {
@@ -186,8 +217,13 @@ public class GameServer {
   }
 
   public void shutdown() {
+    if (!running && tick > 0) return;
 
     running = false;
+
+    Log.info("Saving world before shutdown...");
+    world.saveDirtyChunks();
+    Log.info("World saved.");
 
     try {
       if (serverSocket != null && !serverSocket.isClosed()) {

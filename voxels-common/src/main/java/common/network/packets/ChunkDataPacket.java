@@ -39,6 +39,16 @@ public class ChunkDataPacket implements Packet {
     this.data = compress(chunk.getRawBlockData());
   }
 
+  /**
+   * Internal constructor used for loading compressed data from disk or reconstructing a packet from
+   * a network stream.
+   */
+  public ChunkDataPacket(int x, int z, byte[] compressedData) {
+    this.x = x;
+    this.z = z;
+    this.data = compressedData;
+  }
+  
   @Override
   public void write(PacketBuffer out) throws IOException {
     out.writeInt(x);
@@ -122,6 +132,14 @@ public class ChunkDataPacket implements Packet {
       e.printStackTrace();
       return new short[0];
     }
+  }
+
+  /**
+   * Gets the raw compressed block data. Useful for direct file persistence without re-compression.
+   * * @return The compressed byte array.
+   */
+  public byte[] getCompressedData() {
+    return data;
   }
 
   public int getChunkX() {

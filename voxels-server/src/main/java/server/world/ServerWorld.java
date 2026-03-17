@@ -1,8 +1,15 @@
 package server.world;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import common.logging.Log;
+import common.network.packets.ChatMessagePacket;
 import common.world.ChunkData;
 import common.world.World;
 import server.network.GameServer;
+import server.persistance.ChunkRepository;
 import server.world.generation.BasicWorldGenerator2;
 import server.world.generation.WorldGenerator;
 
@@ -13,29 +20,84 @@ import server.world.generation.WorldGenerator;
 public class ServerWorld extends World {
 
   private final GameServer gameServer;
+  private final ChunkRepository repository;
   private WorldGenerator generator;
 
-  public ServerWorld(GameServer gameServer) {
-    this.gameServer = gameServer;
-    // Default seed set to 0; consider passing a dynamic seed in the future
+  public ServerWorld(GameServer gameServer, ChunkRepository repository) {
+    // TODO Default seed set to 0; consider passing a dynamic seed in the future
     long seed = 0;
-    //    this.generator = new BasicWorldGenerator(seed);
+    this.gameServer = gameServer;
+    this.repository = repository;
     this.generator = new BasicWorldGenerator2(seed);
-    //    this.generator = new FlatWorldGenerator("1*bedrock,4*dirt,1*grass_block");
+
+    //        this.generator = new BasicWorldGenerator(seed);
+    //        this.generator = new FlatWorldGenerator("1*bedrock,4*dirt,1*grass_block");
   }
 
   @Override
   public void tick() {
-
     super.tick();
 
-    // server-specific logic
+    if (gameServer.getTick() % 3000 == 0) {
+      saveDirtyChunks();
+    }
   }
 
-  /**
-   * Updates a block in the world and should eventually broadcast this change to all connected
-   * clients.
-   */
+  public void saveDirtyChunks() {
+    for (ChunkData chunk : chunks.values()) {
+      if (chunk.isDirty()) {
+        repository.save(chunk);
+        chunk.setDirty(false); // Reset
+        Log.info("Saved changed chunk: " + chunk.getChunkX() + "," + chunk.getChunkZ());
+      }
+    }
+    gameServer.getPlayerManager().broadcast(new ChatMessagePacket("World saved."));
+  }
+
+  //  public void unloadUnusedChunks(java.util.Set<Long> requiredByPlayers) {
+  //    Log.info("Loaded chunks: " + chunks.size());
+  //    chunks
+  //        .entrySet()
+  //        .removeIf(
+  //            entry -> {
+  //              long key = entry.getKey();
+  //              ChunkData data = entry.getValue();
+  //              if (!requiredByPlayers.contains(key)) {
+  //                if (data.isDirty()) {
+  //                  repository.save(data);
+  //                  data.setDirty(false);
+  //                }
+  //                return true;
+  //              }
+  //              return false;
+  //            });
+  //    Log.info("Chunks after Unload: " + chunks.size());
+  //  }
+
+  public void unloadUnusedChunks(Set<Long> requiredByPlayers) {
+    int savedThisTick = 0;
+    int maxSavesPerCleanup = 10; // Nur 10 Dateien pro Cleanup schreiben!
+
+    Iterator<Map.Entry<Long, ChunkData>> it = chunks.entrySet().iterator();
+    while (it.hasNext()) {
+      Map.Entry<Long, ChunkData> entry = it.next();
+      if (!requiredByPlayers.contains(entry.getKey())) {
+        ChunkData data = entry.getValue();
+        if (data.isDirty() && savedThisTick < maxSavesPerCleanup) {
+          repository.save(data);
+          data.setDirty(false);
+          savedThisTick++;
+        }
+
+        // Wenn er dirty ist, aber wir das Limit erreicht haben,
+        // behalten wir ihn lieber noch 10 Sek im RAM statt zu laggen.
+        if (!data.isDirty()) {
+          it.remove();
+        }
+      }
+    }
+  }
+
   @Override
   public void setBlock(int x, int y, int z, short blockId) {
 
@@ -50,7 +112,6 @@ public class ServerWorld extends World {
     int lz = Math.floorMod(z, ChunkData.DEPTH);
 
     chunk.setBlockId(blockId, lx, y, lz);
-
     // Later
     // TODO gameServer.broadcast(new BlockUpdatePacket(x, y, z, blockId));
   }
@@ -67,8 +128,18 @@ public class ServerWorld extends World {
     ChunkData data = chunks.get(key);
 
     if (data == null) {
-      data = new ChunkData(cx, cz);
-      generator.generate(data);
+      data =
+          repository
+              .load(cx, cz)
+              .orElseGet(
+                  () -> {
+                    ChunkData newChunk = new ChunkData(cx, cz);
+                    generator.generate(newChunk);
+                    // Initial save
+//                    repository.save(newChunk); // TODO Async!!!
+                    return newChunk;
+                  });
+
       addChunk(data);
     }
     return data;

@@ -27,4 +27,5 @@ public class PacketIds {
   public static final int PLAYER_INVENTORY_FULL_UPDATE = 23;
   public static final int INVENTORY_CLICK = 24;
   public static final int INVENTORY_ACTION = 25;
+  public static final int HANDSHAKE = 26;
 }

@@ -5,7 +5,10 @@ import client.player.PlayerNetworkSync;
 import client.scene.StartScene;
 import client.usecases.loadresources.LoadResourcesUseCase;
 import client.world.ChunkStreamingSystem;
+import common.game.ItemRegistry;
+import common.game.block.BlockRegistry;
 import common.game.block.Blocks;
+import common.game.crafting.GameRecipes;
 import engine.application.BasicApplication;
 import engine.rendering.Graphics;
 
@@ -24,7 +27,11 @@ public class ClientApplication extends BasicApplication {
   @Override
   public void onInitialize() {
     setDisplayInfo(true);
+    
     Blocks.initialize();
+    BlockRegistry.freeze();
+    ItemRegistry.init();
+    GameRecipes.init();
 
     GameClient client = new GameClient(this);
     network = client.getNetwork();

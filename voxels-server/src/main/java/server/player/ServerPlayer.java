@@ -33,6 +33,9 @@ public class ServerPlayer extends PlayerData {
   /** Thread-safe set of chunks currently loaded on the client side */
   private Set<Long> loadedChunks = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
+  private final java.util.Queue<long[]> chunkLoadQueue =
+      new java.util.concurrent.LinkedBlockingQueue<>();
+
   private int viewDistance = 12;
   private boolean ignoreNextMovement = false;
 
@@ -126,16 +129,21 @@ public class ServerPlayer extends PlayerData {
     // 2. Sort by distance (load closest chunks first)
     chunksToLoad.sort(java.util.Comparator.comparingLong(a -> a[2]));
 
-    // 3. Send chunk data to client
+    // 3. NEU: In die Warteschlange einreihen statt sofort senden
     for (long[] chunkInfo : chunksToLoad) {
-      int cx = (int) chunkInfo[0];
-      int cz = (int) chunkInfo[1];
-      long key = World.getChunkKey(cx, cz);
-
-      ChunkData data = connection.getServer().getWorld().getOrCreateChunk(cx, cz);
-      connection.send(new ChunkDataPacket(data));
-      loadedChunks.add(key);
+      chunkLoadQueue.add(chunkInfo);
     }
+
+    //  // 3. Send chunk data to client
+    //  for (long[] chunkInfo : chunksToLoad) {
+    //    int cx = (int) chunkInfo[0];
+    //    int cz = (int) chunkInfo[1];
+    //    long key = World.getChunkKey(cx, cz);
+    //
+    //    ChunkData data = connection.getServer().getWorld().getOrCreateChunk(cx, cz);
+    //    connection.send(new ChunkDataPacket(data));
+    //    loadedChunks.add(key);
+    //  }
 
     // 4. Unload chunks that are out of range (using a small buffer to prevent flickering)
     int unloadDistanceSq = (viewDistance + 2) * (viewDistance + 2);
@@ -147,6 +155,24 @@ public class ServerPlayer extends PlayerData {
           int dz = cz - pChunkZ;
           return (dx * dx + dz * dz > unloadDistanceSq);
         });
+  }
+
+  public void processStreaming() {
+    int chunksThisTick = 12; // Max 4 Chunks pro Tick pro Spieler
+
+    while (chunksThisTick > 0 && !chunkLoadQueue.isEmpty()) {
+      long[] chunkInfo = chunkLoadQueue.poll();
+      int cx = (int) chunkInfo[0];
+      int cz = (int) chunkInfo[1];
+      long key = World.getChunkKey(cx, cz);
+
+      // Jetzt wird erst generiert/geladen
+      ChunkData data = connection.getServer().getWorld().getOrCreateChunk(cx, cz);
+      connection.send(new ChunkDataPacket(data));
+      loadedChunks.add(key);
+
+      chunksThisTick--;
+    }
   }
 
   /** Broadcasts the player's current state to other nearby players. */
@@ -177,6 +203,10 @@ public class ServerPlayer extends PlayerData {
   }
 
   // --- Getters / Setters ---
+
+  public Set<Long> getLoadedChunks() {
+    return loadedChunks;
+  }
 
   public ServerConnection getConnection() {
     return connection;
