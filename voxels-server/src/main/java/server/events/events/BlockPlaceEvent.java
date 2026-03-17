@@ -8,9 +8,9 @@ public class BlockPlaceEvent extends CancellableEvent {
 
   private final UUID player;
 
-  private int x;
-  private int y;
-  private int z;
+  private final int x;
+  private final int y;
+  private final int z;
 
   private short blockId;
 
