@@ -28,4 +28,5 @@ public class PacketIds {
   public static final int INVENTORY_CLICK = 24;
   public static final int INVENTORY_ACTION = 25;
   public static final int HANDSHAKE = 26;
+  public static final int BLOCK_PICK = 27;
 }

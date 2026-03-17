@@ -32,6 +32,7 @@ public class NetworkPackets {
     PacketRegistry.register(ChunkDataPacket::new);
     PacketRegistry.register(BlockPlacePacket::new);
     PacketRegistry.register(BlockBreakPacket::new);
+    PacketRegistry.register(BlockPickPacket::new);
 
     // Communication & Effects
     PacketRegistry.register(ChatMessagePacket::new);

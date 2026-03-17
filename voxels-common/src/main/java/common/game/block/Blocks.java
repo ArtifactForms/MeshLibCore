@@ -5,7 +5,7 @@ public final class Blocks {
   public static void initialize() {
     // forces class loading
   }
-
+  
   public static final BlockType AIR =
       BlockRegistry.register("core:air").setSolid(false).setOpaque(false);
 
@@ -47,4 +47,9 @@ public final class Blocks {
       BlockRegistry.register("core:spruce_leaf").setOpaque(false);
 
   public static final BlockType BEDROCK = BlockRegistry.register("core:bedrock");
+  
+  public static final BlockType BLACK_TERRACOTTA = BlockRegistry.register("core:black_terracotta");
+  public static final BlockType RED_TERRACOTTA = BlockRegistry.register("core:black_terracotta");
+  public static final BlockType GREEN_TERRACOTTA = BlockRegistry.register("core:green_terracotta");
+  public static final BlockType BROWN_TERRACOTTA = BlockRegistry.register("core:brown_terracotta");
 }

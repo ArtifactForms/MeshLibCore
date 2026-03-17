@@ -9,25 +9,25 @@ import common.network.PacketIds;
 public class ActionBarPacket implements Packet {
 
   private String text;
-  private float durationInSeconds;
+  private int durationInTicks;
 
   public ActionBarPacket() {}
 
-  public ActionBarPacket(String text, float durationInSeconds) {
+  public ActionBarPacket(String text, int durationInSeconds) {
     this.text = text;
-    this.durationInSeconds = durationInSeconds;
+    this.durationInTicks = durationInSeconds;
   }
 
   @Override
   public void write(PacketBuffer out) throws IOException {
     out.writeString(text);
-    out.writeFloat(durationInSeconds);
+    out.writeInt(durationInTicks);
   }
 
   @Override
   public void read(PacketBuffer in) throws IOException {
     this.text = in.readString();
-    this.durationInSeconds = in.readFloat();
+    this.durationInTicks = in.readInt();
   }
 
   @Override
@@ -39,7 +39,7 @@ public class ActionBarPacket implements Packet {
     return text;
   }
 
-  public float getDurationInSeconds() {
-    return durationInSeconds;
+  public int getDurationInTicks() {
+    return durationInTicks;
   }
 }

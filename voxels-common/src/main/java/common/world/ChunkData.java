@@ -33,13 +33,12 @@ public class ChunkData {
     this.heightMap = new int[WIDTH * DEPTH];
   }
 
-  public ChunkData(int chunkX, int chunkZ, short[] blockData) {
-    // TODO Validate blockData length
+  public ChunkData(int chunkX, int chunkZ, short[] blockData, int[] heightMap) {
     this.chunkX = chunkX;
     this.chunkZ = chunkZ;
     this.blockData = blockData;
-    this.heightMap = new int[WIDTH * DEPTH];
-    recalculateHeightMap();
+    this.heightMap = heightMap;
+    this.dirty = false;
   }
 
   public short getBlockId(int x, int y, int z) {
