@@ -123,23 +123,6 @@ public class ChunkData {
     return new Bounds(min, max);
   }
 
-  //  public Bounds getChunkBounds() {
-  //	    float worldX = chunkX * WIDTH;
-  //	    float worldZ = chunkZ * DEPTH;
-  //
-  //	    // Die Daten gehen von 0 bis 384.
-  //	    // Im Rendering entspricht das 0 bis -384.
-  //	    // MIN muss der kleinste Wert sein -> -384
-  //	    // MAX muss der größte Wert sein -> 0
-  //	    float renderMinY = -(HEIGHT);
-  //	    float renderMaxY = 0.0f;
-  //
-  //	    Vector3f min = new Vector3f(worldX, renderMinY, worldZ);
-  //	    Vector3f max = new Vector3f(worldX + WIDTH, renderMaxY, worldZ + DEPTH);
-  //
-  //	    return new Bounds(min, max);
-  //	}
-
   protected int getIndex(int x, int y, int z) {
     return x + WIDTH * (y + HEIGHT * z);
   }
@@ -172,7 +155,7 @@ public class ChunkData {
   }
 
   /** Internal helper for 2D boundary checks */
-  public boolean isInsideXZ(int x, int z) {
+  private boolean isInsideXZ(int x, int z) {
     return x >= 0 && x < WIDTH && z >= 0 && z < DEPTH;
   }
 
