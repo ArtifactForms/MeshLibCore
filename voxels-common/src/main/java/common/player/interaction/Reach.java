@@ -4,6 +4,10 @@ import math.Mathf;
 import math.Vector3f;
 
 public class Reach {
+	
+  private Reach() {
+	  // No instances
+  }	
 
   public static boolean isWithinReach(
       Vector3f playerPos, float eyeHeight, int x, int y, int z, float maxReach) {
