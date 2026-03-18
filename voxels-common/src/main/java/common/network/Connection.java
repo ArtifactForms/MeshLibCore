@@ -66,14 +66,22 @@ public abstract class Connection implements Runnable {
 
     synchronized (buffer) {
       try {
-        buffer.writeInt(packet.getId());
-        packet.write(buffer);
-        out.flush();
+        writePacket(packet);
+        flushOutput();
       } catch (Exception e) {
         System.err.println("[Network] Failed to send packet " + packet.getId());
         close();
       }
     }
+  }
+
+  protected void writePacket(Packet packet) throws IOException {
+    buffer.writeInt(packet.getId());
+    packet.write(buffer);
+  }
+
+  protected void flushOutput() throws IOException {
+    out.flush();
   }
 
   /**
