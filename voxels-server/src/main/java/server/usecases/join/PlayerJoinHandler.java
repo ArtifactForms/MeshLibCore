@@ -34,7 +34,7 @@ public class PlayerJoinHandler {
     if (connection.getPlayer() != null) {
       return;
     }
-
+    
     // -------------------------------------
     // PRE-JOIN EVENT
     // -------------------------------------
@@ -107,9 +107,7 @@ public class PlayerJoinHandler {
                 existingPlayer.getZ()));
       }
     }
-
-    playerManager.addConnection(connection);
-
+    
     PlayerSpawnPacket spawnNew =
         new PlayerSpawnPacket(player.getUuid(), player.getName(), spawnX, spawnY, spawnZ);
 
@@ -136,7 +134,6 @@ public class PlayerJoinHandler {
     // -------------------------------------
     // PRE-JOIN EVENT
     // -------------------------------------
-
   }
 
   private void sendInitialChunks() {

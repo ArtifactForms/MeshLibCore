@@ -34,6 +34,8 @@ public class ServerPlayer extends PlayerData {
   /** Thread-safe set of chunks currently loaded on the client side */
   private Set<Long> loadedChunks = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
+  private Set<Long> enqueuedChunks = ConcurrentHashMap.newKeySet();
+
   private final java.util.Queue<long[]> chunkLoadQueue =
       new java.util.concurrent.LinkedBlockingQueue<>();
 
@@ -123,9 +125,9 @@ public class ServerPlayer extends PlayerData {
         int cz = pChunkZ + dz;
         long key = World.getChunkKey(cx, cz);
 
-        if (!loadedChunks.contains(key)) {
-          // Store coordinates and squared distance for sorting
+        if (!loadedChunks.contains(key) && !enqueuedChunks.contains(key)) {
           chunksToLoad.add(new long[] {cx, cz, (long) (dx * dx + dz * dz)});
+          enqueuedChunks.add(key);
         }
       }
     }
@@ -151,26 +153,57 @@ public class ServerPlayer extends PlayerData {
 
     // 4. Unload chunks that are out of range (using a small buffer to prevent flickering)
     int unloadDistanceSq = (viewDistance + 2) * (viewDistance + 2);
+    //    loadedChunks.removeIf(
+    //        key -> {
+    //          int cx = World.unpackChunkX(key);
+    //          int cz = World.unpackChunkZ(key);
+    //          int dx = cx - pChunkX;
+    //          int dz = cz - pChunkZ;
+    //          return (dx * dx + dz * dz > unloadDistanceSq);
+    //        });
     loadedChunks.removeIf(
-        key -> {
+        key -> { // TODO Send packet
           int cx = World.unpackChunkX(key);
           int cz = World.unpackChunkZ(key);
+
           int dx = cx - pChunkX;
           int dz = cz - pChunkZ;
-          return (dx * dx + dz * dz > unloadDistanceSq);
+
+          boolean shouldUnload = (dx * dx + dz * dz > unloadDistanceSq);
+
+          if (shouldUnload) {
+            //            connection.send(new ChunkUnloadPacket(cx, cz));
+          }
+
+          return shouldUnload;
         });
   }
 
   public void processStreaming() {
-    int chunksThisTick = 12; // Max 4 Chunks pro Tick pro Spieler
+    int chunksThisTick = 4; // FIXME Max 3-4 Chunks pro Tick pro Spieler
+
+    int pChunkX = getChunkX();
+    int pChunkZ = getChunkZ();
+    int maxDistSq = viewDistance * viewDistance;
 
     while (chunksThisTick > 0 && !chunkLoadQueue.isEmpty()) {
+
       long[] chunkInfo = chunkLoadQueue.poll();
       int cx = (int) chunkInfo[0];
       int cz = (int) chunkInfo[1];
-      long key = World.getChunkKey(cx, cz);
 
-      // Jetzt wird erst generiert/geladen
+      int dx = cx - pChunkX;
+      int dz = cz - pChunkZ;
+
+      // ❗ Skip wenn nicht mehr relevant
+      if (dx * dx + dz * dz > maxDistSq) {
+        enqueuedChunks.remove(World.getChunkKey(cx, cz));
+        continue;
+      }
+
+      long key = World.getChunkKey(cx, cz);
+      enqueuedChunks.remove(key);
+
       ChunkData data = connection.getServer().getWorld().getOrCreateChunk(cx, cz);
       connection.send(new ChunkDataPacket(data));
       loadedChunks.add(key);
@@ -210,6 +243,10 @@ public class ServerPlayer extends PlayerData {
 
   public Set<Long> getLoadedChunks() {
     return loadedChunks;
+  }
+
+  public Set<Long> getEnqueuedChunks() {
+    return enqueuedChunks;
   }
 
   public ServerConnection getConnection() {

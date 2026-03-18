@@ -1,6 +1,8 @@
 package server.network;
 
 import java.net.Socket;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.network.Connection;
 import common.network.Packet;
@@ -18,6 +20,8 @@ public class ServerConnection extends Connection {
   private final GameServer server;
   private final ServerPacketDispatcher packetDispatcher;
 
+  private final Queue<Packet> incomingPackets = new ConcurrentLinkedQueue<>();
+
   /**
    * Initializes a new server connection, sets up the dispatcher, and starts the listener thread.
    *
@@ -31,6 +35,8 @@ public class ServerConnection extends Connection {
     this.server = server;
     this.packetDispatcher = new ServerPacketDispatcher(this, useCases, context);
 
+    server.getPlayerManager().addConnection(this);
+    
     // Start the background thread for reading incoming data (Connection.run())
     Thread thread = new Thread(this, "Server-Client-" + socket.getInetAddress());
     thread.setDaemon(true);
@@ -45,8 +51,15 @@ public class ServerConnection extends Connection {
    */
   @Override
   protected void handle(Packet packet) {
-    // Enqueue the packet to ensure thread-safe processing in the Main Game Loop
-    server.getPacketQueue().add(new QueuedPacket(this, packet));
+    incomingPackets.add(packet);
+  }
+
+  public Packet pollPacket() {
+    return incomingPackets.poll();
+  }
+
+  public int getQueueSize() {
+    return incomingPackets.size();
   }
 
   /**

@@ -38,9 +38,13 @@ public class ServerWorld extends World {
   public void tick() {
     super.tick();
 
-    if (gameServer.getTick() % 3000 == 0) {
-      saveDirtyChunks();
+    if (gameServer.getTick() % 40 == 0) {
+    	gameServer.getPlayerManager().broadcast(new ChatMessagePacket("chunks " + chunks.size()));
     }
+    
+//    if (gameServer.getTick() % 3000 == 0) {
+//      saveDirtyChunks();
+//    }
   }
 
   public void saveDirtyChunks() {

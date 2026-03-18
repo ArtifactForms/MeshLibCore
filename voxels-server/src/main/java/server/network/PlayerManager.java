@@ -20,7 +20,7 @@ public class PlayerManager {
   /**
    * * List of all active server connections. Thread-safe for concurrent iteration and modification.
    */
-  private static final List<ServerConnection> connections = new CopyOnWriteArrayList<>();
+  private final List<ServerConnection> connections = new CopyOnWriteArrayList<>();
 
   /**
    * Registers a new connection.
@@ -105,5 +105,9 @@ public class PlayerManager {
       if (conn.getPlayer().getUuid().equals(uuid)) return conn.getPlayer();
     }
     return null;
+  }
+  
+  public List<ServerConnection> getConnections() {
+	  return connections;
   }
 }

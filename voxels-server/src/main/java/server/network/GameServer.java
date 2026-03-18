@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.logging.Log;
+import common.network.Packet;
 import server.commands.Command;
 import server.commands.CommandRegistry;
 import server.commands.commands.PrivateMessageCommand;
@@ -43,6 +44,9 @@ import server.world.ServerWorld;
  * loop.
  */
 public class GameServer {
+
+  private static final int MAX_PACKETS_PER_TICK = 2000; // TODO this is config later
+  private static final int MAX_PACKETS_PER_CONNECTION = 100; // TODO this is config later
 
   private long tick = 0;
 
@@ -194,15 +198,34 @@ public class GameServer {
 
   /** Processes all logic for a single tick, including packet dispatching. */
   private void update() {
-    // Process all packets that have arrived since the last tick.
-    // This ensures all handler logic runs on the main thread, avoiding race conditions.
-    QueuedPacket qp;
+    int totalProcessed = 0;
 
-    while ((qp = packetQueue.poll()) != null) {
+    for (ServerConnection conn : playerManager.getConnections()) {
 
-      if (qp.connection().isRunning()) {
-        qp.connection().getPacketDispatcher().dispatch(qp.packet());
+      if (!conn.isRunning()) continue;
+
+      int processed = 0;
+      Packet packet;
+
+      while (processed < MAX_PACKETS_PER_CONNECTION
+          && totalProcessed < MAX_PACKETS_PER_TICK
+          && (packet = conn.pollPacket()) != null) {
+
+        conn.getPacketDispatcher().dispatch(packet);
+
+        processed++;
+        totalProcessed++;
       }
+
+      // 🔍 Debug (optional, aber sehr hilfreich)
+      if (processed == MAX_PACKETS_PER_CONNECTION && conn.getQueueSize() > 0) {
+        Log.warn("[NET] connection limit reached: " + conn.getQueueSize());
+      }
+    }
+
+    // 🔍 Global Debug
+    if (totalProcessed == MAX_PACKETS_PER_TICK) {
+      Log.warn("[NET] global packet limit reached");
     }
 
     scheduler.tick(tick);
@@ -218,6 +241,7 @@ public class GameServer {
       java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
       for (ServerPlayer player : playerManager.getAllPlayers()) {
         allRequiredChunks.addAll(player.getLoadedChunks());
+        allRequiredChunks.addAll(player.getEnqueuedChunks());
       }
       Log.info("Start unload..." + allRequiredChunks.size());
       Log.info("Required chunks: " + allRequiredChunks.size());
