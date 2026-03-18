@@ -30,7 +30,7 @@ public class PlayerMoveHandler {
     // 1. Create and fire the Move Event for internal listeners (e.g., Anti-Cheat or Triggers)
     PlayerMoveEvent event =
         new PlayerMoveEvent(
-            player,
+            player.getUuid(),
             packet.getX(),
             packet.getY(),
             packet.getZ(),

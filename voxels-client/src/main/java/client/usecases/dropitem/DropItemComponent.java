@@ -27,7 +27,7 @@ public class DropItemComponent extends AbstractComponent {
       return;
     }
 
-    if (!input.isKeyPressed(KeyBinds.dropItem)) {
+    if (!input.wasKeyPressed(KeyBinds.dropItem)) {
       return;
     }
 

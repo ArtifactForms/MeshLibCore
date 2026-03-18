@@ -14,6 +14,7 @@ import client.settings.GameSettings;
 import common.world.ChunkData;
 import common.world.ChunkStatus;
 import common.world.World;
+import common.world.WorldMath;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
@@ -68,8 +69,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
     world.processIncomingPackets(2_000_000);
 
-    playerChunkX = (int) Math.floor(playerPosition.x / 16.0);
-    playerChunkZ = (int) Math.floor(playerPosition.z / 16.0);
+    playerChunkX = WorldMath.worldToChunkX(playerPosition);
+    playerChunkZ = WorldMath.worldToChunkZ(playerPosition);
 
     if (playerChunkX != lastPlayerChunkX || playerChunkZ != lastPlayerChunkZ) {
 

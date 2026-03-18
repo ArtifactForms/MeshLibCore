@@ -1,11 +1,17 @@
 package common.player;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import common.player.attribute.Attribute;
 
 class PlayerDataTest {
 
@@ -21,11 +27,14 @@ class PlayerDataTest {
   @Test
   @DisplayName("Constructor should correctly initialize fields and inventory")
   void testInitialization() {
+    float expectedMoveSpeed = PlayerData.DEFAULT_SPEED;
+    float currentMoveSpeed = player.getAttributes().get(Attribute.MOVE_SPEED);
     assertAll(
         "Initial state validation",
         () -> assertEquals(testUuid, player.getUuid()),
         () -> assertEquals(testName, player.getName()),
         () -> assertEquals(PlayerData.DEFAULT_SPEED, player.getSpeed(), 0.001f),
+        () -> assertEquals(expectedMoveSpeed, currentMoveSpeed, 0.001f),
         () -> assertNotNull(player.getInventory()),
         () -> assertEquals(45, player.getInventory().getSize()),
         () -> assertEquals(0f, player.getYaw(), 0.001f),
@@ -93,5 +102,17 @@ class PlayerDataTest {
     player.getPosition().x = 42f;
 
     assertEquals(42f, player.getX(), 0.001f);
+  }
+
+  @Test
+  @DisplayName("Abilities should be initialized by default")
+  void testAbilitiesNotNullByDefault() {
+    assertNotNull(player.getAbilities());
+  }
+
+  @Test
+  @DisplayName("Attributes should be initialized by default")
+  void testAttributesNotNullByDefault() {
+    assertNotNull(player.getAttributes());
   }
 }

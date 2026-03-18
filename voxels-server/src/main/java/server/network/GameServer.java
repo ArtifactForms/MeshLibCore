@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.logging.Log;
+import common.network.Packet;
 import server.commands.Command;
 import server.commands.CommandRegistry;
 import server.commands.commands.PrivateMessageCommand;
@@ -15,6 +16,10 @@ import server.commands.commands.StopCommand;
 import server.commands.commands.TeleportCommand;
 import server.entity.EntityManager;
 import server.events.EventBus;
+import server.gateways.CommandAdapter;
+import server.gateways.CommandGateway;
+import server.gateways.ConfigAdapter;
+import server.gateways.ConfigGateway;
 import server.gateways.EventAdapter;
 import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
@@ -40,6 +45,9 @@ import server.world.ServerWorld;
  */
 public class GameServer {
 
+  private static final int MAX_PACKETS_PER_TICK = 2000; // TODO this is config later
+  private static final int MAX_PACKETS_PER_CONNECTION = 100; // TODO this is config later
+
   private long tick = 0;
 
   private final int port;
@@ -56,6 +64,7 @@ public class GameServer {
   private final PermissionService permissionService;
 
   private UseCaseRegistry useCases;
+  private GatewayContext context;
 
   /**
    * * Thread-safe queue for incoming packets. Packets are added by individual client threads and
@@ -88,8 +97,17 @@ public class GameServer {
     EventGateway eventGateway = new EventAdapter(eventBus);
     PermissionGateway permissionGateway = new PermissionAdapter(permissionService);
     InventoryGateway inventoryGateway = new InventoryAdapter(playerManager);
-    GatewayContext context =
-        new GatewayContext(worldGateway, eventGateway, permissionGateway, inventoryGateway);
+    ConfigGateway configGateway = new ConfigAdapter();
+    CommandGateway commandGateway = new CommandAdapter(commandRegistry);
+
+    context =
+        new GatewayContext(
+            worldGateway,
+            eventGateway,
+            permissionGateway,
+            inventoryGateway,
+            configGateway,
+            commandGateway);
 
     this.useCases = new UseCaseRegistry(context);
   }
@@ -144,7 +162,7 @@ public class GameServer {
         Log.info("New connection: " + socket.getInetAddress());
 
         // ServerConnection starts its own internal read-thread upon instantiation
-        new ServerConnection(this, socket, useCases);
+        new ServerConnection(this, socket, useCases, context);
       }
     } catch (Exception e) {
       if (running) e.printStackTrace();
@@ -180,15 +198,34 @@ public class GameServer {
 
   /** Processes all logic for a single tick, including packet dispatching. */
   private void update() {
-    // Process all packets that have arrived since the last tick.
-    // This ensures all handler logic runs on the main thread, avoiding race conditions.
-    QueuedPacket qp;
+    int totalProcessed = 0;
 
-    while ((qp = packetQueue.poll()) != null) {
+    for (ServerConnection conn : playerManager.getConnections()) {
 
-      if (qp.connection().isRunning()) {
-        qp.connection().getPacketDispatcher().dispatch(qp.packet());
+      if (!conn.isRunning()) continue;
+
+      int processed = 0;
+      Packet packet;
+
+      while (processed < MAX_PACKETS_PER_CONNECTION
+          && totalProcessed < MAX_PACKETS_PER_TICK
+          && (packet = conn.pollPacket()) != null) {
+
+        conn.getPacketDispatcher().dispatch(packet);
+
+        processed++;
+        totalProcessed++;
       }
+
+      // 🔍 Debug (optional, aber sehr hilfreich)
+      if (processed == MAX_PACKETS_PER_CONNECTION && conn.getQueueSize() > 0) {
+        Log.warn("[NET] connection limit reached: " + conn.getQueueSize());
+      }
+    }
+
+    // 🔍 Global Debug
+    if (totalProcessed == MAX_PACKETS_PER_TICK) {
+      Log.warn("[NET] global packet limit reached");
     }
 
     scheduler.tick(tick);
@@ -197,17 +234,18 @@ public class GameServer {
     for (ServerPlayer player : playerManager.getAllPlayers()) {
       player.processStreaming();
     }
-    
+
     entityManager.update(playerManager.getAllPlayers());
-    
+
     if (tick % 200 == 0) {
-        java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
-        for (ServerPlayer player : playerManager.getAllPlayers()) {
-            allRequiredChunks.addAll(player.getLoadedChunks());
-        }
-        Log.info("Start unload..." + allRequiredChunks.size());
-        Log.info("Required chunks: " + allRequiredChunks.size());
-        world.unloadUnusedChunks(allRequiredChunks);
+      java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
+      for (ServerPlayer player : playerManager.getAllPlayers()) {
+        allRequiredChunks.addAll(player.getLoadedChunks());
+        allRequiredChunks.addAll(player.getEnqueuedChunks());
+      }
+      Log.info("Start unload..." + allRequiredChunks.size());
+      Log.info("Required chunks: " + allRequiredChunks.size());
+      world.unloadUnusedChunks(allRequiredChunks);
     }
 
     // Placeholder for world logic (Physics, AI, Tile Entities, etc.)

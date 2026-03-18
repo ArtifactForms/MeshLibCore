@@ -5,5 +5,6 @@ public enum Attribute {
   FLY_SPEED,
   REACH_DISTANCE,
   BREAK_SPEED,
-  JUMP_STRENGTH
+  JUMP_STRENGTH,
+  EYE_HEIGHT
 }

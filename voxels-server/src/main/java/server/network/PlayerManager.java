@@ -20,7 +20,7 @@ public class PlayerManager {
   /**
    * * List of all active server connections. Thread-safe for concurrent iteration and modification.
    */
-  private static final List<ServerConnection> connections = new CopyOnWriteArrayList<>();
+  private final List<ServerConnection> connections = new CopyOnWriteArrayList<>();
 
   /**
    * Registers a new connection.
@@ -86,7 +86,7 @@ public class PlayerManager {
 
   public void handleDisconnect(ServerPlayer player) {
     String defaultQuitMessage = "§e" + player.getName() + " left the game.";
-    PlayerQuitEvent event = new PlayerQuitEvent(player, defaultQuitMessage);
+    PlayerQuitEvent event = new PlayerQuitEvent(player.getUuid(), defaultQuitMessage);
 
     player.getConnection().getServer().getEventBus().fire(event);
 
@@ -105,5 +105,9 @@ public class PlayerManager {
       if (conn.getPlayer().getUuid().equals(uuid)) return conn.getPlayer();
     }
     return null;
+  }
+  
+  public List<ServerConnection> getConnections() {
+	  return connections;
   }
 }

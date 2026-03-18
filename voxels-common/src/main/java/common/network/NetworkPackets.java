@@ -26,12 +26,14 @@ public class NetworkPackets {
     PacketRegistry.register(PlayerSlotUpdatePacket::new);
     PacketRegistry.register(PlayerInventoryFullUpdatePacket::new);
     PacketRegistry.register(InventoryActionPacket::new);
+    PacketRegistry.register(PlayerSlotClearPacket::new);
 
     // World & Blocks
     PacketRegistry.register(BlockUpdatePacket::new);
     PacketRegistry.register(ChunkDataPacket::new);
     PacketRegistry.register(BlockPlacePacket::new);
     PacketRegistry.register(BlockBreakPacket::new);
+    PacketRegistry.register(BlockPickPacket::new);
 
     // Communication & Effects
     PacketRegistry.register(ChatMessagePacket::new);

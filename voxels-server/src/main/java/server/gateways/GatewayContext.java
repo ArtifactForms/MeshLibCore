@@ -4,6 +4,8 @@ public record GatewayContext(
 	    WorldGateway world,
 	    EventGateway events,
 	    PermissionGateway permissions,
-	    InventoryGateway inventory
+	    InventoryGateway inventory,
 //	    PlayerGateway players,
+	    ConfigGateway config,
+	    CommandGateway commands
 	) {}

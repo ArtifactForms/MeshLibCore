@@ -1,19 +1,34 @@
 package server.scheduler;
 
 import java.util.PriorityQueue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerScheduler {
 
+  public static class Task {
+    private boolean cancelled = false;
+
+    public void cancel() {
+      cancelled = true;
+    }
+
+    public boolean isCancelled() {
+      return cancelled;
+    }
+  }
+
   private static class ScheduledTask implements Comparable<ScheduledTask> {
-
-    final long executeTick;
+    long executeTick;
     final long period;
-    final Runnable task;
+    final Runnable runnable;
+    final Task handle;
 
-    ScheduledTask(long executeTick, long period, Runnable task) {
+    ScheduledTask(long executeTick, long period, Runnable runnable, Task handle) {
       this.executeTick = executeTick;
       this.period = period;
-      this.task = task;
+      this.runnable = runnable;
+      this.handle = handle;
     }
 
     @Override
@@ -23,35 +38,52 @@ public class ServerScheduler {
   }
 
   private final PriorityQueue<ScheduledTask> queue = new PriorityQueue<>();
+  private final Set<Task> activeTasks = ConcurrentHashMap.newKeySet();
 
-  public void schedule(long currentTick, long delay, Runnable task) {
-    queue.add(new ScheduledTask(currentTick + delay, -1, task));
+  public Task schedule(long currentTick, long delay, Runnable runnable) {
+    Task handle = new Task();
+    activeTasks.add(handle);
+    queue.add(new ScheduledTask(currentTick + delay, -1, runnable, handle));
+    return handle;
   }
 
-  public void scheduleRepeating(long currentTick, long delay, long period, Runnable task) {
-    queue.add(new ScheduledTask(currentTick + delay, period, task));
+  public Task scheduleRepeating(long currentTick, long delay, long period, Runnable runnable) {
+    Task handle = new Task();
+    activeTasks.add(handle);
+    queue.add(new ScheduledTask(currentTick + delay, period, runnable, handle));
+    return handle;
+  }
+
+  public void cancelAll() {
+    for (Task task : activeTasks) {
+      task.cancel();
+    }
+    activeTasks.clear();
+    queue.clear();
   }
 
   public void tick(long currentTick) {
-
     while (!queue.isEmpty()) {
-
-      ScheduledTask task = queue.peek();
-
-      if (task.executeTick > currentTick) {
-        break;
-      }
+      ScheduledTask sTask = queue.peek();
+      if (sTask.executeTick > currentTick) break;
 
       queue.poll();
 
-      try {
-        task.task.run();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      if (!sTask.handle.isCancelled()) {
+        try {
+          sTask.runnable.run();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
 
-      if (task.period > 0) {
-        queue.add(new ScheduledTask(currentTick + task.period, task.period, task.task));
+        if (sTask.period > 0 && !sTask.handle.isCancelled()) {
+          sTask.executeTick = currentTick + sTask.period;
+          queue.add(sTask);
+        } else {
+          activeTasks.remove(sTask.handle);
+        }
+      } else {
+        activeTasks.remove(sTask.handle);
       }
     }
   }

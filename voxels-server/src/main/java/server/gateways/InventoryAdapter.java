@@ -50,9 +50,21 @@ public class InventoryAdapter implements InventoryGateway {
     inventory.remove(slotIndex, amount);
   }
 
+  @Override
+  public ItemStack getItem(UUID playerId, int slotIndex) {
+    Inventory inventory = getInventory(playerId);
+    return inventory.getSlot(slotIndex);
+  }
+
   private Inventory getInventory(UUID playerId) {
     ServerPlayer player = playerManager.getPlayer(playerId);
     Inventory inventory = player.getInventory();
     return inventory;
+  }
+
+  @Override
+  public int getMaxSlotIndex(UUID playerId) {
+    Inventory inventory = playerManager.getPlayer(playerId).getInventory();
+    return inventory.getSize() - 1;
   }
 }

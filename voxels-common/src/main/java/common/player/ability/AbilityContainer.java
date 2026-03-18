@@ -17,4 +17,8 @@ public class AbilityContainer {
   public void revoke(Ability ability) {
     abilities.remove(ability);
   }
+
+  public void clear() {
+    abilities.clear();
+  }
 }

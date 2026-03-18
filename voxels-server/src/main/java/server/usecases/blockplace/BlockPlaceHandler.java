@@ -5,7 +5,7 @@ import server.network.ServerConnection;
 import server.player.ServerPlayer;
 import server.usecases.blockplace.BlockPlace.BlockPlaceRequest;
 import server.usecases.blockplace.BlockPlace.BlockPlaceResponse;
-import servers.views.BlockPlaceViewImpl;
+import server.views.BlockPlaceViewImpl;
 
 public class BlockPlaceHandler {
 

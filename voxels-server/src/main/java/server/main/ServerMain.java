@@ -13,7 +13,6 @@ public class ServerMain {
   public static void main(String[] args) throws Exception {
 
     Log.setImplementation(new ConsoleLogger("SERVER"));
-
     ServerConfig config = new ServerConfig();
     config.load();
 
