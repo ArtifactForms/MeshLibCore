@@ -6,7 +6,7 @@ import common.game.Inventory;
 import common.player.ability.AbilityContainer;
 import common.player.attribute.Attribute;
 import common.player.attribute.AttributeContainer;
-import common.world.ChunkData;
+import common.world.WorldMath;
 import math.Vector3f;
 
 public class PlayerData {
@@ -94,10 +94,10 @@ public class PlayerData {
   }
 
   public int getChunkX() {
-    return (int) Math.floor(position.x / ChunkData.WIDTH);
+    return WorldMath.worldToChunkX(position);
   }
 
   public int getChunkZ() {
-    return (int) Math.floor(position.z / ChunkData.DEPTH);
+	  return WorldMath.worldToChunkZ(position);
   }
 }

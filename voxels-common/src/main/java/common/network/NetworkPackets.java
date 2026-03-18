@@ -26,6 +26,7 @@ public class NetworkPackets {
     PacketRegistry.register(PlayerSlotUpdatePacket::new);
     PacketRegistry.register(PlayerInventoryFullUpdatePacket::new);
     PacketRegistry.register(InventoryActionPacket::new);
+    PacketRegistry.register(PlayerSlotClearPacket::new);
 
     // World & Blocks
     PacketRegistry.register(BlockUpdatePacket::new);

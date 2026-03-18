@@ -48,7 +48,7 @@ public class ChunkDataPacket implements Packet {
     this.z = z;
     this.data = compressedData;
   }
-  
+
   @Override
   public void write(PacketBuffer out) throws IOException {
     out.writeInt(x);

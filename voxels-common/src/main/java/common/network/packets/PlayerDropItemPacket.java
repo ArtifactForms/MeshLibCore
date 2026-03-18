@@ -8,22 +8,22 @@ import common.network.PacketIds;
 
 public class PlayerDropItemPacket implements Packet {
 
-  private int slot;
+  private int selectedSlot;
 
   public PlayerDropItemPacket() {}
 
-  public PlayerDropItemPacket(int slot) {
-    this.slot = slot;
+  public PlayerDropItemPacket(int selectedSlot) {
+    this.selectedSlot = selectedSlot;
   }
 
   @Override
   public void write(PacketBuffer out) throws IOException {
-    out.writeInt(slot);
+    out.writeInt(selectedSlot);
   }
 
   @Override
   public void read(PacketBuffer in) throws IOException {
-    this.slot = in.readInt();
+    this.selectedSlot = in.readInt();
   }
 
   @Override
@@ -31,7 +31,7 @@ public class PlayerDropItemPacket implements Packet {
     return PacketIds.PLAYER_DROP_ITEM;
   }
 
-  public int getSlot() {
-    return slot;
+  public int getSelectedSlot() {
+    return selectedSlot;
   }
 }
