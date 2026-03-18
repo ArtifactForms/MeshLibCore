@@ -1,13 +1,12 @@
 package server.network;
 
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.network.Connection;
 import common.network.Packet;
+import server.gateways.GatewayContext;
 import server.player.ServerPlayer;
 import server.usecases.UseCaseRegistry;
 
@@ -26,23 +25,23 @@ public class ServerConnection extends Connection {
   private final LinkedBlockingQueue<Packet> outboundQueue = new LinkedBlockingQueue<>();
   private final Thread writerThread;
 
+  private final Queue<Packet> incomingPackets = new ConcurrentLinkedQueue<>();
+
   /**
    * Initializes a new server connection, sets up the dispatcher, and starts the listener thread.
    *
    * @param socket The client socket.
    * @throws Exception If the socket streams cannot be initialized.
    */
-  public ServerConnection(GameServer server, Socket socket, UseCaseRegistry useCases)
+  public ServerConnection(
+      GameServer server, Socket socket, UseCaseRegistry useCases, GatewayContext context)
       throws Exception {
     super(socket);
     this.server = server;
-    this.packetDispatcher = new ServerPacketDispatcher(this, useCases);
+    this.packetDispatcher = new ServerPacketDispatcher(this, useCases, context);
 
-    this.writerThread =
-        new Thread(this::writeLoop, "Server-Client-Writer-" + socket.getInetAddress());
-    this.writerThread.setDaemon(true);
-    this.writerThread.start();
-
+    server.getPlayerManager().addConnection(this);
+    
     // Start the background thread for reading incoming data (Connection.run())
     Thread thread = new Thread(this, "Server-Client-" + socket.getInetAddress());
     thread.setDaemon(true);
@@ -57,8 +56,15 @@ public class ServerConnection extends Connection {
    */
   @Override
   protected void handle(Packet packet) {
-    // Enqueue the packet to ensure thread-safe processing in the Main Game Loop
-    server.getPacketQueue().add(new QueuedPacket(this, packet));
+    incomingPackets.add(packet);
+  }
+
+  public Packet pollPacket() {
+    return incomingPackets.poll();
+  }
+
+  public int getQueueSize() {
+    return incomingPackets.size();
   }
 
   @Override

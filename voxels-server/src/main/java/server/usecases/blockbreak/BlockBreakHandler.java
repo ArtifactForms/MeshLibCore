@@ -5,7 +5,7 @@ import server.network.ServerConnection;
 import server.player.ServerPlayer;
 import server.usecases.blockbreak.BlockBreak.BlockBreakRequest;
 import server.usecases.blockbreak.BlockBreak.BlockBreakResponse;
-import servers.views.BlockBreakViewImpl;
+import server.views.BlockBreakViewImpl;
 
 public class BlockBreakHandler {
 

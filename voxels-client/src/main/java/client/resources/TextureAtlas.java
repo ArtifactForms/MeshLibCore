@@ -31,6 +31,7 @@ public class TextureAtlas {
   private BufferedImage image;
   private BufferedImage overlay;
   private Texture texture;
+  private PerlinNoise noise = new PerlinNoise(0);
 
   public TextureAtlas() {
     createOverlay();
@@ -107,8 +108,8 @@ public class TextureAtlas {
     fill(g2d, Blocks.OAK_WOOD, new Color(111, 87, 51));
     fill(g2d, Blocks.BIRCH_WOOD, new Color(255, 255, 255));
     fill(g2d, Blocks.DIRT, DIRT_COLOR);
-//    fill(g2d, BlockType.WATER, new Color(45, 137, 212, 160));
-//    fill(g2d, Blocks.WATER, new Color(45, 137, 212, 120));
+    //    fill(g2d, BlockType.WATER, new Color(45, 137, 212, 160));
+    //    fill(g2d, Blocks.WATER, new Color(45, 137, 212, 120));
     fill(g2d, Blocks.SNOW, new Color(253, 253, 253));
     fill(g2d, Blocks.SAND, new Color(194, 189, 134));
     fill(g2d, Blocks.CACTUS, new Color(96, 142, 50));
@@ -116,6 +117,12 @@ public class TextureAtlas {
     fill(g2d, Blocks.SPRUCE_WOOD, new Color(91, 49, 56));
     fill(g2d, Blocks.SPRUCE_LEAF, new Color(35, 103, 78));
     fill(g2d, Blocks.BEDROCK, new Color(51, 57, 65));
+
+    // TERRACOTTA
+    fill(g2d, Blocks.BLACK_TERRACOTTA, new Color(16, 18, 28)); // AAP64 color
+    fill(g2d, Blocks.RED_TERRACOTTA, new Color(172, 40, 71)); // AAP64 color
+    fill(g2d, Blocks.GREEN_TERRACOTTA, new Color(0, 101, 84)); // AAP64 color
+    fill(g2d, Blocks.BROWN_TERRACOTTA, new Color(110, 76, 48)); // AAP64 color
 
     drawDebugText(g2d);
   }
@@ -154,6 +161,32 @@ public class TextureAtlas {
     return image;
   }
 
+  //  private void fill(Graphics2D g2d, BlockType blockType, Color color) {
+  //    int row = blockType.getId();
+  //    int baseY = row * tileSize;
+  //
+  //    for (int col = 0; col < 6; col++) {
+  //      int baseX = col * tileSize;
+  //
+  //      // Base color
+  //      g2d.setColor(color);
+  //      g2d.fillRect(baseX, baseY, tileSize, tileSize);
+  //
+  //      if (blockType == Blocks.GRASS_BLOCK && col > 0) {
+  //        // Grass block sides
+  //        g2d.setColor(DIRT_COLOR);
+  //        g2d.fillRect(baseX, baseY + (tileSize / 4), tileSize, tileSize - (tileSize / 4));
+  //      }
+  //
+  //      // Noise
+  //      g2d.drawImage(overlay, baseX, baseY, tileSize, tileSize, null);
+  //
+  //      // Fake light
+  //      //            g2d.setColor(new Color(0, 0, 0, 255 / 6 * col));
+  //      //            g2d.fillRect(baseX, baseY, tileSize, tileSize);
+  //    }
+  //  }
+
   private void fill(Graphics2D g2d, BlockType blockType, Color color) {
     int row = blockType.getId();
     int baseY = row * tileSize;
@@ -161,22 +194,60 @@ public class TextureAtlas {
     for (int col = 0; col < 6; col++) {
       int baseX = col * tileSize;
 
-      // Base color
+      // 1. Basis-Füllung
       g2d.setColor(color);
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
 
+      // 2. Spezial-Behandlung für Terracotta (Struktur-Muster)
+      // Prüft, ob der Block-Name "TERRACOTTA" enthält
+      if (blockType.getName().toUpperCase().contains("TERRACOTTA")) {
+        drawTerracottaPattern(g2d, baseX, baseY, color);
+      }
+
+      // 3. Bestehende Gras-Logik
       if (blockType == Blocks.GRASS_BLOCK && col > 0) {
-        // Grass block sides
         g2d.setColor(DIRT_COLOR);
         g2d.fillRect(baseX, baseY + (tileSize / 4), tileSize, tileSize - (tileSize / 4));
       }
 
-      // Noise
-      g2d.drawImage(overlay, baseX, baseY, tileSize, tileSize, null);
+      // 4. Globales Noise Overlay
+      if (useNoise) {
+        g2d.drawImage(overlay, baseX, baseY, tileSize, tileSize, null);
+      }
+    }
+  }
 
-      // Fake light
-      //            g2d.setColor(new Color(0, 0, 0, 255 / 6 * col));
-      //            g2d.fillRect(baseX, baseY, tileSize, tileSize);
+  private void drawTerracottaPattern(Graphics2D g2d, int x, int y, Color base) {
+    // Erzeuge eine dunklere Akzentfarbe (20% dunkler als Basis)
+    Color darkTone =
+        new Color(
+            Math.max(0, (int) (base.getRed() * 0.8)),
+            Math.max(0, (int) (base.getGreen() * 0.8)),
+            Math.max(0, (int) (base.getBlue() * 0.8)),
+            120 // Alpha für sanftes Blending
+            );
+
+    // Erzeuge eine hellere Akzentfarbe (für "trockene" Stellen)
+    Color lightTone =
+        new Color(
+            Math.min(255, (int) (base.getRed() * 1.1)),
+            Math.min(255, (int) (base.getGreen() * 1.1)),
+            Math.min(255, (int) (base.getBlue() * 1.1)),
+            80);
+
+    // Wir nutzen einen festen Seed pro Block-ID, damit das Muster
+    // auf allen 6 Seiten gleich (oder konsistent) aussieht
+    java.util.Random rand = new java.util.Random(x + y);
+
+    for (int i = 0; i < tileSize; i++) {
+      // Zufällige Position innerhalb der Tile
+      int px = rand.nextInt(tileSize - 4);
+      int py = rand.nextInt(tileSize - 1);
+
+      // Zeichne kleine horizontale Linien (typisch für gepressten Ton/Terracotta)
+      g2d.setColor(rand.nextBoolean() ? darkTone : lightTone);
+      int length = 2 + rand.nextInt(5);
+      g2d.fillRect(x + px, y + py, length, 1);
     }
   }
 

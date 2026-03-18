@@ -1,21 +1,22 @@
 package server.events.events;
 
+import java.util.UUID;
+
 import server.events.GameEvent;
-import server.player.ServerPlayer;
 
 public class PlayerQuitEvent extends GameEvent {
 
-  private final ServerPlayer player;
+  private final UUID playerId;
 
   private String quitMessage;
 
-  public PlayerQuitEvent(ServerPlayer player, String quitMessage) {
-    this.player = player;
+  public PlayerQuitEvent(UUID playerId, String quitMessage) {
+    this.playerId = playerId;
     this.quitMessage = quitMessage;
   }
 
-  public ServerPlayer getPlayer() {
-    return player;
+  public UUID getPlayerId() {
+    return playerId;
   }
 
   public String getQuitMessage() {

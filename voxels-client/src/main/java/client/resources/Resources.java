@@ -13,6 +13,9 @@ public class Resources {
 
   public static final String BLOCK_PLACE_FX_KEY = SoundEffect.BLOCK_PLACE;
   public static final String BLOCK_PLACE_FX_PATH = "block-place-fx.wav";
+  
+  public static final String BLOCK_PICK_SOUND_KEY = SoundEffect.BLOCK_PICK;
+  public static final String BLOCK_PICK_SOUND_PATH = "block-pick.wav";
 
   public static final String FOOT_STEP_GRASS_1_KEY = SoundEffect.FOOT_STEP_GRASS_1;
   public static final String FOOT_STEP_GRASS_1_PATH = "steps/footstep-grass-1.wav";

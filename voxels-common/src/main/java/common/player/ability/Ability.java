@@ -5,6 +5,7 @@ public enum Ability {
   NO_GRAVITY,
   NOCLIP,
   BREAK_BLOCKS,
+  PICK_BLOCKS,
   TAKE_DAMAGE,
   INSTANT_BREAK
 }

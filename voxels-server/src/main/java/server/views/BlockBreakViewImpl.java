@@ -1,4 +1,4 @@
-package servers.views;
+package server.views;
 
 import common.network.packets.BlockUpdatePacket;
 import common.network.packets.ChatMessagePacket;

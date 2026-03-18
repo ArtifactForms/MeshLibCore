@@ -6,6 +6,7 @@ import common.game.ItemStack;
 import common.interaction.BlockTarget;
 import common.interaction.InteractionTarget;
 import common.network.packets.BlockBreakPacket;
+import common.network.packets.BlockPickPacket;
 import common.network.packets.BlockPlacePacket;
 
 public class InteractionController {
@@ -17,13 +18,12 @@ public class InteractionController {
   }
   
   public void pickTarget(InteractionTarget target) {
-	    if (!(target instanceof BlockTarget block)) return;
+	  if (!(target instanceof BlockTarget block)) return;
 
-		 short id = client.getWorld().getBlock(block.x, block.y, block.z).getId();
-	  
 	  Hotbar hotbar = client.getView().getHotbarView().getModel();
 	  int selectedSlot = hotbar.getSelectedSlot();
-	  hotbar.setSlot(selectedSlot, new ItemStack(id, 0));
+	  
+	  client.getNetwork().send(new BlockPickPacket(block.x, block.y, block.z, selectedSlot));
   }
 
   public void breakTarget(InteractionTarget target) {
