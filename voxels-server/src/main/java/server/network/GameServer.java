@@ -56,6 +56,7 @@ public class GameServer {
   private final PermissionService permissionService;
 
   private UseCaseRegistry useCases;
+  private GatewayContext context;
 
   /**
    * * Thread-safe queue for incoming packets. Packets are added by individual client threads and
@@ -88,8 +89,8 @@ public class GameServer {
     EventGateway eventGateway = new EventAdapter(eventBus);
     PermissionGateway permissionGateway = new PermissionAdapter(permissionService);
     InventoryGateway inventoryGateway = new InventoryAdapter(playerManager);
-    GatewayContext context =
-        new GatewayContext(worldGateway, eventGateway, permissionGateway, inventoryGateway);
+
+    context = new GatewayContext(worldGateway, eventGateway, permissionGateway, inventoryGateway);
 
     this.useCases = new UseCaseRegistry(context);
   }
@@ -144,7 +145,7 @@ public class GameServer {
         Log.info("New connection: " + socket.getInetAddress());
 
         // ServerConnection starts its own internal read-thread upon instantiation
-        new ServerConnection(this, socket, useCases);
+        new ServerConnection(this, socket, useCases, context);
       }
     } catch (Exception e) {
       if (running) e.printStackTrace();
@@ -197,17 +198,17 @@ public class GameServer {
     for (ServerPlayer player : playerManager.getAllPlayers()) {
       player.processStreaming();
     }
-    
+
     entityManager.update(playerManager.getAllPlayers());
-    
+
     if (tick % 200 == 0) {
-        java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
-        for (ServerPlayer player : playerManager.getAllPlayers()) {
-            allRequiredChunks.addAll(player.getLoadedChunks());
-        }
-        Log.info("Start unload..." + allRequiredChunks.size());
-        Log.info("Required chunks: " + allRequiredChunks.size());
-        world.unloadUnusedChunks(allRequiredChunks);
+      java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
+      for (ServerPlayer player : playerManager.getAllPlayers()) {
+        allRequiredChunks.addAll(player.getLoadedChunks());
+      }
+      Log.info("Start unload..." + allRequiredChunks.size());
+      Log.info("Required chunks: " + allRequiredChunks.size());
+      world.unloadUnusedChunks(allRequiredChunks);
     }
 
     // Placeholder for world logic (Physics, AI, Tile Entities, etc.)

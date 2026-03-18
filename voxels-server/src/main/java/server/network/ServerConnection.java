@@ -4,6 +4,7 @@ import java.net.Socket;
 
 import common.network.Connection;
 import common.network.Packet;
+import server.gateways.GatewayContext;
 import server.player.ServerPlayer;
 import server.usecases.UseCaseRegistry;
 
@@ -23,11 +24,12 @@ public class ServerConnection extends Connection {
    * @param socket The client socket.
    * @throws Exception If the socket streams cannot be initialized.
    */
-  public ServerConnection(GameServer server, Socket socket, UseCaseRegistry useCases)
+  public ServerConnection(
+      GameServer server, Socket socket, UseCaseRegistry useCases, GatewayContext context)
       throws Exception {
     super(socket);
     this.server = server;
-    this.packetDispatcher = new ServerPacketDispatcher(this, useCases);
+    this.packetDispatcher = new ServerPacketDispatcher(this, useCases, context);
 
     // Start the background thread for reading incoming data (Connection.run())
     Thread thread = new Thread(this, "Server-Client-" + socket.getInetAddress());

@@ -12,6 +12,7 @@ import client.usecases.chat.ChatMessage;
 import common.game.Inventory;
 import common.game.ItemStack;
 import common.network.Packet;
+import common.network.packets.ActionBarPacket;
 import common.network.packets.BlockUpdatePacket;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
@@ -20,6 +21,7 @@ import common.network.packets.ItemSpawnPacket;
 import common.network.packets.PlayerInventoryFullUpdatePacket;
 import common.network.packets.PlayerPositionPacket;
 import common.network.packets.PlayerQuitPacket;
+import common.network.packets.PlayerSlotClearPacket;
 import common.network.packets.PlayerSlotUpdatePacket;
 import common.network.packets.PlayerSpawnPacket;
 import common.network.packets.SoundEffectPacket;
@@ -51,6 +53,8 @@ public class ClientPacketDispatcher {
     register(TitlePacket.class, this::handleTitle);
     register(PlayerSlotUpdatePacket.class, this::handleSlotUpdate);
     register(PlayerInventoryFullUpdatePacket.class, this::handleInventoryFullUpdate);
+    register(ActionBarPacket.class, this::handleActionBar);
+    register(PlayerSlotClearPacket.class, this::handleSlotClear);
   }
 
   private <T extends Packet> void register(Class<T> packetClass, Consumer<T> handler) {
@@ -63,6 +67,15 @@ public class ClientPacketDispatcher {
       handler.accept(packet);
     }
     // Unregistered packets are simply ignored on the client (e.g. PlayerMovePacket)
+  }
+
+  private void handleSlotClear(PlayerSlotClearPacket packet) {
+    client.getPlayer().getInventory().setSlot(packet.getSlotIndex(), null);
+  }
+
+  private void handleActionBar(ActionBarPacket packet) {
+    float duration = packet.getDurationInTicks() / 20f;
+    client.getView().getActionBarView().display(packet.getText(), duration);
   }
 
   // --- Specific Handler Logic ---

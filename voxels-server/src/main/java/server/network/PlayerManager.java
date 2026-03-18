@@ -86,7 +86,7 @@ public class PlayerManager {
 
   public void handleDisconnect(ServerPlayer player) {
     String defaultQuitMessage = "§e" + player.getName() + " left the game.";
-    PlayerQuitEvent event = new PlayerQuitEvent(player, defaultQuitMessage);
+    PlayerQuitEvent event = new PlayerQuitEvent(player.getUuid(), defaultQuitMessage);
 
     player.getConnection().getServer().getEventBus().fire(event);
 

@@ -1,4 +1,4 @@
-package server.network.handlers;
+package server.usecases.join;
 
 import common.game.Inventory;
 import common.game.block.BlockRegistry;
@@ -11,6 +11,9 @@ import common.network.packets.PlayerPositionPacket;
 import common.network.packets.PlayerSpawnPacket;
 import common.world.ChunkData;
 import server.events.events.PlayerJoinEvent;
+import server.events.events.PlayerPreJoinEvent;
+import server.gateways.EventGateway;
+import server.gateways.GatewayContext;
 import server.network.PlayerManager;
 import server.network.ServerConnection;
 import server.player.ServerPlayer;
@@ -19,18 +22,37 @@ public class PlayerJoinHandler {
 
   private final ServerConnection connection;
 
-  public PlayerJoinHandler(ServerConnection connection) {
+  private EventGateway events;
+
+  public PlayerJoinHandler(ServerConnection connection, GatewayContext context) {
     this.connection = connection;
+    this.events = context.events();
   }
 
   public void handle(PlayerJoinPacket packet) {
-
     // Prevent double join (connection already has a player assigned)
     if (connection.getPlayer() != null) {
       return;
     }
 
-    // Create the server-side player object
+    // -------------------------------------
+    // PRE-JOIN EVENT
+    // -------------------------------------
+    // * Whitelist
+    // * Bans
+    // * Maintenance Mode
+    // * etc.
+    PlayerPreJoinEvent preJoinEvent = new PlayerPreJoinEvent(packet.getUuid());
+    events.fire(preJoinEvent);
+    if (preJoinEvent.isCancelled()) {
+      // Send reason?
+      connection.close();
+      return;
+    }
+
+    // -------------------------------------
+    // CREATE
+    // -------------------------------------
     ServerPlayer player = new ServerPlayer(packet.getUuid(), packet.getName(), connection);
     connection.setPlayer(player);
 
@@ -42,16 +64,17 @@ public class PlayerJoinHandler {
     // Default join message
     String joinMessage = "§e" + player.getName() + " ist dem Spiel beigetreten!";
 
+    // -------------------------------------
+    // JOIN EVENT
+    // -------------------------------------
     // Fire join event so other systems can modify spawn or message
-    PlayerJoinEvent event = new PlayerJoinEvent(player, joinMessage, spawnX, spawnY, spawnZ);
+    PlayerJoinEvent event =
+        new PlayerJoinEvent(player.getUuid(), joinMessage, spawnX, spawnY, spawnZ);
     connection.getServer().getEventBus().fire(event);
 
-    // If the event was cancelled, close the connection
-    if (event.isCancelled()) {
-      connection.close();
-      return;
-    }
-
+    // -------------------------------------
+    // APLLY EVENT VALUES
+    // -------------------------------------
     // Apply potentially modified event values
     spawnX = event.getSpawnX();
     spawnY = event.getSpawnY();
@@ -109,6 +132,11 @@ public class PlayerJoinHandler {
     connection.send(
         new PlayerInventoryFullUpdatePacket(
             inventory.getItems(), null, player.getInventoryVersion()));
+
+    // -------------------------------------
+    // PRE-JOIN EVENT
+    // -------------------------------------
+
   }
 
   private void sendInitialChunks() {

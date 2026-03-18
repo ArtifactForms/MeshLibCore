@@ -1,5 +1,6 @@
 package server.gateways;
 
+import common.game.block.BlockType;
 import server.world.ServerWorld;
 
 public class WorldAdapter implements WorldGateway {
@@ -11,12 +12,17 @@ public class WorldAdapter implements WorldGateway {
   }
 
   @Override
-  public short getBlock(int x, int y, int z) { 
+  public short getBlock(int x, int y, int z) {
     return world.getBlock(x, y, z).getId();
   }
 
   @Override
-  public void setBlock(int x, int y, int z, short id) { 
-	  world.setBlock(x, y, z, id);
+  public void setBlock(int x, int y, int z, short id) {
+    world.setBlock(x, y, z, id);
+  }
+
+  @Override
+  public BlockType getBlockType(int x, int y, int z) {
+    return world.getBlock(x, y, z);
   }
 }

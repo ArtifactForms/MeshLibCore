@@ -12,6 +12,7 @@ import common.network.packets.PlayerPositionPacket;
 import common.network.packets.TitlePacket;
 import common.player.PlayerData;
 import common.player.PlayerProperties;
+import common.player.ability.GameModePresets;
 import common.world.ChunkData;
 import common.world.World;
 import server.network.PlayerManager;
@@ -45,6 +46,9 @@ public class ServerPlayer extends PlayerData {
   public ServerPlayer(UUID uuid, String name, ServerConnection connection) {
     super(uuid, name);
     this.connection = connection;
+
+    GameModePresets.applyCreative(getAbilities());
+    GameModePresets.applyCreative(getAttributes());
   }
 
   public void teleport(float x, float y, float z, float yaw, float pitch) {
@@ -89,8 +93,8 @@ public class ServerPlayer extends PlayerData {
     this.pitch = pitch;
 
     // Check if the player crossed a chunk boundary
-    int currentChunkX = Math.floorDiv((int) x, 16);
-    int currentChunkZ = Math.floorDiv((int) z, 16);
+    int currentChunkX = getChunkX();
+    int currentChunkZ = getChunkZ();
 
     if (currentChunkX != lastChunkX || currentChunkZ != lastChunkZ) {
       updateStreaming();
@@ -104,8 +108,8 @@ public class ServerPlayer extends PlayerData {
    * range and unloads those that are too far away.
    */
   public void updateStreaming() {
-    int pChunkX = Math.floorDiv((int) position.x, 16);
-    int pChunkZ = Math.floorDiv((int) position.z, 16);
+    int pChunkX = getChunkX();
+    int pChunkZ = getChunkZ();
 
     java.util.List<long[]> chunksToLoad = new java.util.ArrayList<>();
 

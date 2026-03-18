@@ -1,11 +1,12 @@
 package server.events.events;
 
+import java.util.UUID;
+
 import server.events.CancellableEvent;
-import server.player.ServerPlayer;
 
 public class PlayerMoveEvent extends CancellableEvent {
 
-  private final ServerPlayer player;
+  private final UUID playerId;
 
   private float x;
   private float y;
@@ -14,8 +15,8 @@ public class PlayerMoveEvent extends CancellableEvent {
   private float yaw;
   private float pitch;
 
-  public PlayerMoveEvent(ServerPlayer player, float x, float y, float z, float yaw, float pitch) {
-    this.player = player;
+  public PlayerMoveEvent(UUID playerId, float x, float y, float z, float yaw, float pitch) {
+    this.playerId = playerId;
     this.x = x;
     this.y = y;
     this.z = z;
@@ -23,8 +24,8 @@ public class PlayerMoveEvent extends CancellableEvent {
     this.pitch = pitch;
   }
 
-  public ServerPlayer getPlayer() {
-    return player;
+  public UUID getPlayerId() {
+    return playerId;
   }
 
   public float getX() {

@@ -6,20 +6,21 @@ import server.events.CancellableEvent;
 
 public class BlockBreakEvent extends CancellableEvent {
 
-  private final UUID player;
+  private final UUID playerId;
+
   private final int x;
   private final int y;
   private final int z;
 
   public BlockBreakEvent(UUID player, int x, int y, int z) {
-    this.player = player;
+    this.playerId = player;
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
-  public UUID getPlayer() {
-    return player;
+  public UUID getPlayerId() {
+    return playerId;
   }
 
   public int getX() {

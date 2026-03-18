@@ -1,4 +1,4 @@
-package server.network.handlers;
+package server.usecases.chat;
 
 import java.util.List;
 
