@@ -15,6 +15,10 @@ import server.commands.commands.StopCommand;
 import server.commands.commands.TeleportCommand;
 import server.entity.EntityManager;
 import server.events.EventBus;
+import server.gateways.CommandAdapter;
+import server.gateways.CommandGateway;
+import server.gateways.ConfigAdapter;
+import server.gateways.ConfigGateway;
 import server.gateways.EventAdapter;
 import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
@@ -89,8 +93,17 @@ public class GameServer {
     EventGateway eventGateway = new EventAdapter(eventBus);
     PermissionGateway permissionGateway = new PermissionAdapter(permissionService);
     InventoryGateway inventoryGateway = new InventoryAdapter(playerManager);
+    ConfigGateway configGateway = new ConfigAdapter();
+    CommandGateway commandGateway = new CommandAdapter(commandRegistry);
 
-    context = new GatewayContext(worldGateway, eventGateway, permissionGateway, inventoryGateway);
+    context =
+        new GatewayContext(
+            worldGateway,
+            eventGateway,
+            permissionGateway,
+            inventoryGateway,
+            configGateway,
+            commandGateway);
 
     this.useCases = new UseCaseRegistry(context);
   }

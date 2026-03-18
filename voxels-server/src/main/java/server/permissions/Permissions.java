@@ -13,4 +13,5 @@ public class Permissions {
   public static final String COMMAND_STOP = "command.stop";
   public static final String ADMIN_BYPASS = "admin.bypass";
   public static final String CHAT = "chat";
+  public static final String COMMANDS = "commands";
 }

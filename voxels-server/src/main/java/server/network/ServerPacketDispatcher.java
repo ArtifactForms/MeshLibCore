@@ -48,7 +48,7 @@ public class ServerPacketDispatcher {
     // Register all packet-to-handler mappings
     register(PlayerJoinPacket.class, new PlayerJoinHandler(c, context)::handle);
     register(PlayerMovePacket.class, new PlayerMoveHandler(c)::handle);
-    register(ChatMessagePacket.class, new ChatMessageHandler(c)::handle);
+    register(ChatMessagePacket.class, new ChatMessageHandler(c, context)::handle);
 
     register(BlockPlacePacket.class, new BlockPlaceHandler(c, reg.get(BlockPlace.class))::handle);
     register(BlockBreakPacket.class, new BlockBreakHandler(c, reg.get(BlockBreak.class))::handle);

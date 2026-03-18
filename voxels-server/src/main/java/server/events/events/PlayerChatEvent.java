@@ -8,7 +8,7 @@ public class PlayerChatEvent extends CancellableEvent {
 
   private final UUID playerId;
 
-  private final String message;
+  private String message;
 
   public PlayerChatEvent(UUID playerId, String message) {
     this.playerId = playerId;
@@ -21,5 +21,9 @@ public class PlayerChatEvent extends CancellableEvent {
 
   public String getMessage() {
     return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
   }
 }
