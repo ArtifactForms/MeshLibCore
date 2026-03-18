@@ -4,7 +4,9 @@ import java.util.UUID;
 
 import common.game.Inventory;
 import common.player.ability.AbilityContainer;
+import common.player.attribute.Attribute;
 import common.player.attribute.AttributeContainer;
+import common.world.ChunkData;
 import math.Vector3f;
 
 public class PlayerData {
@@ -17,16 +19,18 @@ public class PlayerData {
   protected float yaw;
   protected float pitch;
 
-  protected float speed = DEFAULT_SPEED;
+  protected final PlayerProperties properties;
+
   protected Vector3f position = new Vector3f();
   protected Inventory inventory;
-  private final PlayerProperties properties;
 
   public PlayerData(UUID uuid, String name) {
     this.uuid = uuid;
     this.name = name;
     this.inventory = new Inventory(9 * 5);
     this.properties = new PlayerProperties();
+
+    getAttributes().set(Attribute.MOVE_SPEED, DEFAULT_SPEED);
   }
 
   public UUID getUuid() {
@@ -58,7 +62,7 @@ public class PlayerData {
   }
 
   public float getSpeed() {
-    return speed;
+    return properties.getAttributes().get(Attribute.MOVE_SPEED);
   }
 
   public Vector3f getPosition() {
@@ -87,5 +91,13 @@ public class PlayerData {
 
   public AttributeContainer getAttributes() {
     return properties.getAttributes();
+  }
+
+  public int getChunkX() {
+    return (int) Math.floor(position.x / ChunkData.WIDTH);
+  }
+
+  public int getChunkZ() {
+    return (int) Math.floor(position.z / ChunkData.DEPTH);
   }
 }
