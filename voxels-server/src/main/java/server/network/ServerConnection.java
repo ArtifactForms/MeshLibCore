@@ -16,9 +16,14 @@ import server.usecases.UseCaseRegistry;
  */
 public class ServerConnection extends Connection {
 
+  private static final int MAX_OUTBOUND_BATCH_SIZE = 64;
+  private static final long WRITER_POLL_TIMEOUT_MS = 10L;
+
   private volatile ServerPlayer player; // Initialized as null until the player officially joins
   private final GameServer server;
   private final ServerPacketDispatcher packetDispatcher;
+  private final LinkedBlockingQueue<Packet> outboundQueue = new LinkedBlockingQueue<>();
+  private final Thread writerThread;
 
   private final Queue<Packet> incomingPackets = new ConcurrentLinkedQueue<>();
 
@@ -62,6 +67,56 @@ public class ServerConnection extends Connection {
     return incomingPackets.size();
   }
 
+  @Override
+  public void send(Packet packet) {
+    if (!running || packet == null) return;
+    outboundQueue.offer(packet);
+  }
+
+  private void writeLoop() {
+    List<Packet> batch = new ArrayList<>(MAX_OUTBOUND_BATCH_SIZE);
+
+    try {
+      while (running || !outboundQueue.isEmpty()) {
+        Packet first = outboundQueue.poll(WRITER_POLL_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+        if (first == null) {
+          continue;
+        }
+
+        batch.add(first);
+        outboundQueue.drainTo(batch, MAX_OUTBOUND_BATCH_SIZE - 1);
+        writeBatch(batch);
+        batch.clear();
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    } finally {
+      if (!batch.isEmpty()) {
+        try {
+          writeBatch(batch);
+        } catch (Exception ignored) {
+        }
+      }
+    }
+  }
+
+  private void writeBatch(List<Packet> batch) {
+    if (batch.isEmpty() || buffer == null) return;
+
+    synchronized (buffer) {
+      try {
+        for (Packet packet : batch) {
+          writePacket(packet);
+        }
+        flushOutput();
+      } catch (Exception e) {
+        Packet failedPacket = batch.get(0);
+        System.err.println("[Network] Failed to send packet " + failedPacket.getId());
+        close();
+      }
+    }
+  }
+
   /**
    * Closes the connection and cleans up resources. Unregisters the connection from the
    * PlayerManager to trigger leave events.
@@ -70,6 +125,7 @@ public class ServerConnection extends Connection {
   public void close() {
     // Close sockets and set running = false via base class
     super.close();
+    writerThread.interrupt();
 
     // Notify manager to handle player logout/cleanup
     server.getPlayerManager().removeConnection(this);
