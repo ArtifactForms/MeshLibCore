@@ -162,7 +162,7 @@ public class ChatMessageHandler {
     // -------------------------------------
     // SPECIFIC COMMAND PERMISSION CHECK
     // -------------------------------------
-    if (hasPermission(playerId, command.getPermission())) {
+    if (!hasPermission(playerId, command.getPermission())) {
       connection.send(new ChatMessagePacket(CommandMessages.NO_PERMISSION));
       return;
     }
