@@ -196,7 +196,8 @@ public class GameServer {
     }
   }
 
-  private void processPackets() {
+  /** Processes all logic for a single tick, including packet dispatching. */
+  private void update() {
     int totalProcessed = 0;
 
     for (ServerConnection conn : playerManager.getConnections()) {
@@ -216,21 +217,16 @@ public class GameServer {
         totalProcessed++;
       }
 
-      // Debug (optional)
+      // 🔍 Debug (optional, aber sehr hilfreich)
       if (processed == MAX_PACKETS_PER_CONNECTION && conn.getQueueSize() > 0) {
         Log.warn("[NET] connection limit reached: " + conn.getQueueSize());
       }
     }
 
-    // Global Debug
+    // 🔍 Global Debug
     if (totalProcessed == MAX_PACKETS_PER_TICK) {
       Log.warn("[NET] global packet limit reached");
     }
-  }
-
-  /** Processes all logic for a single tick, including packet dispatching. */
-  private void update() {
-    processPackets();
 
     scheduler.tick(tick);
 
@@ -264,7 +260,6 @@ public class GameServer {
     running = false;
 
     Log.info("Saving world before shutdown...");
-
     world.saveDirtyChunks();
     Log.info("World saved.");
 
