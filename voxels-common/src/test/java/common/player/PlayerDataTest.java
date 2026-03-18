@@ -1,8 +1,12 @@
 package common.player;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -98,5 +102,17 @@ class PlayerDataTest {
     player.getPosition().x = 42f;
 
     assertEquals(42f, player.getX(), 0.001f);
+  }
+
+  @Test
+  @DisplayName("Abilities should be initialized by default")
+  void testAbilitiesNotNullByDefault() {
+    assertNotNull(player.getAbilities());
+  }
+
+  @Test
+  @DisplayName("Attributes should be initialized by default")
+  void testAttributesNotNullByDefault() {
+    assertNotNull(player.getAttributes());
   }
 }
