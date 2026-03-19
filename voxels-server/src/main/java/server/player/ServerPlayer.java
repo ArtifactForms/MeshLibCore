@@ -24,6 +24,13 @@ import server.network.ServerConnection;
  */
 public class ServerPlayer extends PlayerData {
 
+  private float lastBroadcastX = Float.MAX_VALUE;
+  private float lastBroadcastY = Float.MAX_VALUE;
+  private float lastBroadcastZ = Float.MAX_VALUE;
+
+  private static final float POSITION_THRESHOLD = 0.1f; // minimal movement
+  private static final float VIEW_DISTANCE_BLOCKS = 64f; // ~4 chunks
+
   private int lastChunkX = Integer.MAX_VALUE;
   private int lastChunkZ = Integer.MAX_VALUE;
 
@@ -62,7 +69,7 @@ public class ServerPlayer extends PlayerData {
         new PlayerPositionPacket(uuid, position.x, position.y, position.z, yaw, pitch, true));
 
     // Inform other players of this movement
-    broadcastUpdate();
+//    broadcastUpdate();
   }
 
   /**
@@ -82,7 +89,7 @@ public class ServerPlayer extends PlayerData {
         new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw, pitch));
 
     // Inform other players of this movement
-    broadcastUpdate();
+//    broadcastUpdate();
   }
 
   /**
@@ -93,16 +100,6 @@ public class ServerPlayer extends PlayerData {
     this.position.set(x, y, z);
     this.yaw = yaw;
     this.pitch = pitch;
-
-    // Check if the player crossed a chunk boundary
-    int currentChunkX = getChunkX();
-    int currentChunkZ = getChunkZ();
-
-    if (currentChunkX != lastChunkX || currentChunkZ != lastChunkZ) {
-      updateStreaming();
-      lastChunkX = currentChunkX;
-      lastChunkZ = currentChunkZ;
-    }
   }
 
   /**
@@ -110,6 +107,19 @@ public class ServerPlayer extends PlayerData {
    * range and unloads those that are too far away.
    */
   public void updateStreaming() {
+    // Check if the player crossed a chunk boundary
+    int currentChunkX = getChunkX();
+    int currentChunkZ = getChunkZ();
+    boolean crossedBorder;
+
+    crossedBorder = (currentChunkX != lastChunkX || currentChunkZ != lastChunkZ);
+    lastChunkX = currentChunkX;
+    lastChunkZ = currentChunkZ;
+
+    if (!crossedBorder) {
+      return;
+    }
+
     int pChunkX = getChunkX();
     int pChunkZ = getChunkZ();
 
@@ -153,34 +163,34 @@ public class ServerPlayer extends PlayerData {
 
     // 4. Unload chunks that are out of range (using a small buffer to prevent flickering)
     int unloadDistanceSq = (viewDistance + 2) * (viewDistance + 2);
-    //    loadedChunks.removeIf(
-    //        key -> {
-    //          int cx = World.unpackChunkX(key);
-    //          int cz = World.unpackChunkZ(key);
-    //          int dx = cx - pChunkX;
-    //          int dz = cz - pChunkZ;
-    //          return (dx * dx + dz * dz > unloadDistanceSq);
-    //        });
     loadedChunks.removeIf(
-        key -> { // TODO Send packet
+        key -> {
           int cx = World.unpackChunkX(key);
           int cz = World.unpackChunkZ(key);
-
           int dx = cx - pChunkX;
           int dz = cz - pChunkZ;
-
-          boolean shouldUnload = (dx * dx + dz * dz > unloadDistanceSq);
-
-          if (shouldUnload) {
-            //            connection.send(new ChunkUnloadPacket(cx, cz));
-          }
-
-          return shouldUnload;
+          return (dx * dx + dz * dz > unloadDistanceSq);
         });
+    //    loadedChunks.removeIf(
+    //        key -> { // TODO Send packet
+    //          int cx = World.unpackChunkX(key);
+    //          int cz = World.unpackChunkZ(key);
+    //
+    //          int dx = cx - pChunkX;
+    //          int dz = cz - pChunkZ;
+    //
+    //          boolean shouldUnload = (dx * dx + dz * dz > unloadDistanceSq);
+    //
+    //          if (shouldUnload) {
+    //            //            connection.send(new ChunkUnloadPacket(cx, cz));
+    //          }
+    //
+    //          return shouldUnload;
+    //        });
   }
 
   public void processStreaming() {
-    int chunksThisTick = 4; // FIXME Max 3-4 Chunks pro Tick pro Spieler
+    int chunksThisTick = 4; // IXME Max 3-4 Chunks pro Tick pro Spieler
 
     int pChunkX = getChunkX();
     int pChunkZ = getChunkZ();
@@ -205,26 +215,74 @@ public class ServerPlayer extends PlayerData {
       enqueuedChunks.remove(key);
 
       ChunkData data = connection.getServer().getWorld().getOrCreateChunk(cx, cz);
-      connection.send(new ChunkDataPacket(data));
+      //      connection.send(new ChunkDataPacket(data));
+      connection.enqueueOutbound(new ChunkDataPacket(data));
       loadedChunks.add(key);
 
       chunksThisTick--;
     }
   }
 
-  /** Broadcasts the player's current state to other nearby players. */
-  private void broadcastUpdate() {
-    // Wir erstellen das Paket mit der aktuellen Position und Rotation
-    // Wichtig: Hier wieder dein Y-Fix, falls der Client -Y erwartet!
+  //  /** Broadcasts the player's current state to other nearby players. */
+  //  private void broadcastUpdate() {
+  //    // Wir erstellen das Paket mit der aktuellen Position und Rotation
+  //    PlayerPositionPacket packet =
+  //        new PlayerPositionPacket(uuid, position.x, position.y, position.z, yaw, pitch);
+  //
+  //    // Wir senden es an alle, außer an uns selbst
+  //    PlayerManager playerManager = connection.getServer().getPlayerManager();
+  //    for (ServerPlayer other : playerManager.getAllPlayers()) {
+  //      if (!other.getUuid().equals(this.uuid)) {
+  //        other.connection.send(packet);
+  //      }
+  //    }
+  //  }
+
+  public void broadcastUpdate() {
+
+    float dx = position.x - lastBroadcastX;
+    float dy = position.y - lastBroadcastY;
+    float dz = position.z - lastBroadcastZ;
+
+    float distSq = dx * dx + dy * dy + dz * dz;
+
+    // ❌ Zu kleine Bewegung → skip
+    if (distSq < POSITION_THRESHOLD * POSITION_THRESHOLD) {
+      return;
+    }
+
+    // Update last broadcast position
+    lastBroadcastX = position.x;
+    lastBroadcastY = position.y;
+    lastBroadcastZ = position.z;
+
     PlayerPositionPacket packet =
         new PlayerPositionPacket(uuid, position.x, position.y, position.z, yaw, pitch);
 
-    // Wir senden es an alle, außer an uns selbst
     PlayerManager playerManager = connection.getServer().getPlayerManager();
+
     for (ServerPlayer other : playerManager.getAllPlayers()) {
-      if (!other.getUuid().equals(this.uuid)) {
-        other.connection.send(packet);
+
+      if (other == this) continue;
+
+      // 👉 Sichtbarkeits-Check
+      float odx = other.position.x - this.position.x;
+      float odz = other.position.z - this.position.z;
+
+      float distanceSq = odx * odx + odz * odz;
+
+      if (distanceSq > VIEW_DISTANCE_BLOCKS * VIEW_DISTANCE_BLOCKS) {
+        continue; // ❌ zu weit weg
       }
+
+      // Optional: Chunk-basierter Check (noch besser)
+      long otherChunk = World.getChunkKey(other.getChunkX(), other.getChunkZ());
+      if (!loadedChunks.contains(otherChunk)) {
+        continue; // ❌ Spieler ist nicht im geladenen Bereich
+      }
+
+      // ✅ Senden (über Queue!)
+      other.getConnection().enqueueOutbound(packet);
     }
   }
 

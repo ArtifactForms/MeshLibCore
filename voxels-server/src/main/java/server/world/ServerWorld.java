@@ -39,7 +39,7 @@ public class ServerWorld extends World {
     super.tick();
 
     if (gameServer.getTick() % 40 == 0) {
-      gameServer.getPlayerManager().broadcast(new ChatMessagePacket("chunks " + chunks.size()));
+//      gameServer.getPlayerManager().broadcast(new ChatMessagePacket("[Server-World] chunks-size: " + chunks.size()));
     }
 
     //    if (gameServer.getTick() % 3000 == 0) {
@@ -87,17 +87,17 @@ public class ServerWorld extends World {
       Map.Entry<Long, ChunkData> entry = it.next();
       if (!requiredByPlayers.contains(entry.getKey())) {
         ChunkData data = entry.getValue();
-        if (data.isDirty() && savedThisTick < maxSavesPerCleanup) {
-          repository.save(data);
-          data.setDirty(false);
-          savedThisTick++;
-        }
+//        if (data.isDirty() && savedThisTick < maxSavesPerCleanup) {
+//          repository.save(data);
+//          data.setDirty(false);
+//          savedThisTick++;
+//        }
 
         // Wenn er dirty ist, aber wir das Limit erreicht haben,
         // behalten wir ihn lieber noch 10 Sek im RAM statt zu laggen.
-        if (!data.isDirty()) {
+//        if (!data.isDirty()) {
           it.remove();
-        }
+//        }
       }
     }
   }

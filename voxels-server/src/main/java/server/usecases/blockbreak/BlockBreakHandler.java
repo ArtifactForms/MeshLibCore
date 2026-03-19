@@ -18,6 +18,10 @@ public class BlockBreakHandler {
   }
 
   public void handle(BlockBreakPacket packet) {
+	if (!connection.hasPlayer()) {
+		return;
+	}
+	  
     BlockBreakView view = new BlockBreakViewImpl(connection);
     BlockBreakRequest request = createRequest(connection.getPlayer(), packet);
     BlockBreakResponse presenter = new BlockBreakPresenter(view);

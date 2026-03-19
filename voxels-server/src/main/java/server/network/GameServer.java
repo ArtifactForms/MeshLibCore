@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.logging.Log;
 import common.network.Packet;
+import common.network.packets.ChatMessagePacket;
 import server.commands.Command;
 import server.commands.CommandRegistry;
 import server.commands.commands.PrivateMessageCommand;
@@ -65,6 +66,8 @@ public class GameServer {
 
   private UseCaseRegistry useCases;
   private GatewayContext context;
+  
+  private final TPSCounter tpsCounter = new TPSCounter();
 
   /**
    * * Thread-safe queue for incoming packets. Packets are added by individual client threads and
@@ -179,6 +182,7 @@ public class GameServer {
       // Execute the tick update
       tick++;
       update();
+      tpsCounter.update(tick);
 
       // Calculate timing for a steady 20 Ticks/s (50ms per tick)
       long delta = System.currentTimeMillis() - startTime;
@@ -196,8 +200,7 @@ public class GameServer {
     }
   }
 
-  /** Processes all logic for a single tick, including packet dispatching. */
-  private void update() {
+  private void processIncomingPackets() {
     int totalProcessed = 0;
 
     for (ServerConnection conn : playerManager.getConnections()) {
@@ -217,41 +220,85 @@ public class GameServer {
         totalProcessed++;
       }
 
-      // 🔍 Debug (optional, aber sehr hilfreich)
+      // Debug (optional, but useful)
       if (processed == MAX_PACKETS_PER_CONNECTION && conn.getQueueSize() > 0) {
-        Log.warn("[NET] connection limit reached: " + conn.getQueueSize());
+        //        Log.warn("[NET] connection limit reached: " + conn.getQueueSize());
       }
     }
 
-    // 🔍 Global Debug
+    // Global Debug
     if (totalProcessed == MAX_PACKETS_PER_TICK) {
       Log.warn("[NET] global packet limit reached");
     }
+  }
 
-    scheduler.tick(tick);
+  private void updatePlayers() {
+	  for (ServerPlayer player : playerManager.getAllPlayers()) {
+		  player.broadcastUpdate();
+	  }
+  }
 
-    // Process chunk streaming
-    for (ServerPlayer player : playerManager.getAllPlayers()) {
-      player.processStreaming();
-    }
-
-    entityManager.update(playerManager.getAllPlayers());
-
-    if (tick % 200 == 0) {
-      java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
-      for (ServerPlayer player : playerManager.getAllPlayers()) {
-        allRequiredChunks.addAll(player.getLoadedChunks());
-        allRequiredChunks.addAll(player.getEnqueuedChunks());
-      }
-      Log.info("Start unload..." + allRequiredChunks.size());
-      Log.info("Required chunks: " + allRequiredChunks.size());
-      world.unloadUnusedChunks(allRequiredChunks);
-    }
-
+  private void updateWorld() {
     // Placeholder for world logic (Physics, AI, Tile Entities, etc.)
     if (world != null) {
       world.tick();
     }
+  }
+
+  private void updateChunkStreaming() {
+    for (ServerPlayer player : playerManager.getAllPlayers()) {
+      player.updateStreaming();
+      player.processStreaming();
+    }
+  }
+
+  private void flushNetwork() {
+    int MAX_OUTBOUND_PER_TICK = 10; // TODO config
+    for (ServerConnection conn : getPlayerManager().getConnections()) {
+      conn.flushOutbound(MAX_OUTBOUND_PER_TICK);
+    }
+  }
+
+  private void unloadUnusedChunks() {
+    if (tick % 200 != 0) return;
+    java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
+    for (ServerPlayer player : playerManager.getAllPlayers()) {
+      allRequiredChunks.addAll(player.getLoadedChunks());
+      allRequiredChunks.addAll(player.getEnqueuedChunks());
+    }
+    Log.info("Start unload..." + allRequiredChunks.size());
+    Log.info("Required chunks: " + allRequiredChunks.size());
+    world.unloadUnusedChunks(allRequiredChunks);
+  }
+
+  /** Processes all logic for a single tick, including packet dispatching. */
+  private void update() {
+    // INPUT
+    processIncomingPackets();
+
+    // GAME LOGIC update Game State
+    updatePlayers();
+    updateWorld();
+
+    // STREAMING CHUNKS
+    updateChunkStreaming();
+
+    // ENTITIES
+    entityManager.update(playerManager.getAllPlayers());
+
+    // UNLOAD (cleanup)
+    unloadUnusedChunks();
+
+    scheduler.tick(tick);
+
+    flushNetwork();
+    
+    
+    // TODO DEBUG Remove later
+	if (tick % 100 == 0) {
+		playerManager.broadcast(new ChatMessagePacket("tps: " + tpsCounter.getTps() + ""));
+	}
+    
   }
 
   public void shutdown() {

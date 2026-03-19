@@ -59,7 +59,8 @@ public class PlayerJoinHandler {
     // Calculate spawn position
     int spawnX = 0;
     int spawnZ = 0;
-    int spawnY = connection.getServer().getWorld().getHeightAt(spawnX, spawnZ);
+//    int spawnY = connection.getServer().getWorld().getHeightAt(spawnX, spawnZ);
+    int spawnY = 150;
 
     // Default join message
     String joinMessage = "§e" + player.getName() + " ist dem Spiel beigetreten!";
@@ -82,7 +83,7 @@ public class PlayerJoinHandler {
     joinMessage = event.getJoinMessage();
 
     // Move the player to the spawn position
-    player.move(spawnX, spawnY, spawnZ, 0f, 0f);
+    player.setSilentPosition(spawnX, spawnY, spawnZ, 0f, 0f);
 
     PlayerManager playerManager = connection.getServer().getPlayerManager();
 
@@ -93,7 +94,7 @@ public class PlayerJoinHandler {
     sendInitialChunks();
 
     // Send teleport packet to synchronize client position
-    connection.send(new PlayerPositionPacket(player.getUuid(), spawnX, -spawnY, spawnZ, 0f, 0f));
+    connection.send(new PlayerPositionPacket(player.getUuid(), spawnX, spawnY, spawnZ, 0f, 0f, true));
 
     for (ServerPlayer existingPlayer : playerManager.getAllPlayers()) {
       // Hier ist die UUID-Prüfung gut, falls getAllPlayers ihn schon enthält

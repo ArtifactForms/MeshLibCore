@@ -51,7 +51,7 @@ public class ChatMessageHandler {
     ServerPlayer player = connection.getPlayer();
 
     if (player == null) {
-      //      Log.warn("[CHAT] null_player connection=" + connection.getId());
+//      Log.warn("[CHAT] null_player connection=" + connection.getId());
       return;
     }
 
@@ -123,7 +123,9 @@ public class ChatMessageHandler {
     // -------------------------------------
     // RESPONSE BROADCAST
     // -------------------------------------
-    connection.getServer().getPlayerManager().broadcast(new ChatMessagePacket(finalMessage));
+    String formattedMessage = ChatFormatter.format(config, player, finalMessage);
+    connection.getServer().getPlayerManager().broadcast(new ChatMessagePacket(formattedMessage));
+
     Log.info("[CHAT] broadcast player=" + player.getName() + " message=\"" + finalMessage + "\"");
   }
 

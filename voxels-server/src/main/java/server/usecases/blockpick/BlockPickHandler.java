@@ -63,6 +63,12 @@ public class BlockPickHandler {
 
   public void handle(BlockPickPacket packet) {
     ServerPlayer player = connection.getPlayer();
+    
+    if (player == null) {
+    	// TODO Log
+    	return;
+    }
+    
     UUID playerId = player.getUuid();
 
     // -------------------------------------
