@@ -3,9 +3,6 @@ package server.network;
 import java.io.File;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Queue;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.logging.Log;
 import common.network.Packet;
@@ -66,14 +63,8 @@ public class GameServer {
 
   private UseCaseRegistry useCases;
   private GatewayContext context;
-  
-  private final TPSCounter tpsCounter = new TPSCounter();
 
-  /**
-   * * Thread-safe queue for incoming packets. Packets are added by individual client threads and
-   * consumed by the main game thread.
-   */
-  private final Queue<QueuedPacket> packetQueue = new ConcurrentLinkedQueue<>();
+  private final TPSCounter tpsCounter = new TPSCounter();
 
   public GameServer(int port) {
     this.port = port;
@@ -233,9 +224,9 @@ public class GameServer {
   }
 
   private void updatePlayers() {
-	  for (ServerPlayer player : playerManager.getAllPlayers()) {
-		  player.broadcastUpdate();
-	  }
+    for (ServerPlayer player : playerManager.getAllPlayers()) {
+      player.broadcastUpdate();
+    }
   }
 
   private void updateWorld() {
@@ -292,13 +283,11 @@ public class GameServer {
     scheduler.tick(tick);
 
     flushNetwork();
-    
-    
+
     // TODO DEBUG Remove later
-	if (tick % 100 == 0) {
-		playerManager.broadcast(new ChatMessagePacket("tps: " + tpsCounter.getTps() + ""));
-	}
-    
+    if (tick % 100 == 0) {
+      playerManager.broadcast(new ChatMessagePacket("tps: " + tpsCounter.getTps() + ""));
+    }
   }
 
   public void shutdown() {
@@ -354,19 +343,7 @@ public class GameServer {
     return playerManager;
   }
 
-  public CommandRegistry getCommandRegistry() {
-    return commandRegistry;
-  }
-
   public EntityManager getEntityManager() {
     return entityManager;
-  }
-
-  public Queue<QueuedPacket> getPacketQueue() {
-    return packetQueue;
-  }
-
-  public boolean hasPermission(UUID player, String permission) {
-    return permissionService.hasPermission(player, permission);
   }
 }
