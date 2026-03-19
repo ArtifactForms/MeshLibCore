@@ -29,21 +29,13 @@ public class ClientEntityManager {
     if (player == null) {
       return;
     }
-
-    //    player.setX(x);
-    //    player.setY(y);
-    //    player.setZ(z);
     player.setTargetPosition(x, y, z);
-    player.setYaw(yaw);
-    player.setPitch(pitch);
+    player.setTargetRotation(yaw, pitch);
   }
 
   public void addRemotePlayer(UUID uuid, String name, float x, float y, float z) {
     if (!remotePlayers.containsKey(uuid)) {
       RemotePlayer newPlayer = new RemotePlayer(uuid);
-      //      newPlayer.setX(x);
-      //      newPlayer.setY(y);
-      //      newPlayer.setZ(z);
       newPlayer.setTargetPosition(x, y, z);
       remotePlayers.put(uuid, newPlayer);
       System.out.println("[Client] Player spawned correctly: " + name);
