@@ -17,7 +17,7 @@ public class ConnectToServerController {
 
     String host = "localhost";
     String playerName = "Player";
-    UUID uuid = client.getPlayer().getUuid();
+    UUID uuid = UUID.randomUUID();
 
     ConnectToServerRequest request = new ConnectToServerRequestModel(host, playerName, uuid);
     ConnectToServerPresenter presenter = new ConnectToServerPresenter();

@@ -18,7 +18,7 @@ public class ClientWorld extends World {
   public void applyChunkData(int cx, int cz, short[] blocks) {
     incomingPackets.offer(new ChunkDataPacket(cx, cz, blocks));
   }
-  
+
   public void processIncomingPackets(long budgetInNanos) {
     long startTime = System.nanoTime();
 
