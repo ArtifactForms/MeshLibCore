@@ -5,13 +5,17 @@ import math.Vector3f;
 
 public class RemotePlayer {
 
-  private final Vector3f position = new Vector3f(); // smooth
-  private final Vector3f targetPosition = new Vector3f(); // server
+  private final Vector3f position = new Vector3f();
 
   private float yaw;
   private float pitch;
 
-  private UUID uuid;
+  private final Vector3f targetPosition = new Vector3f();
+
+  private float targetYaw;
+  private float targetPitch;
+
+  private final UUID uuid;
   private String name;
 
   public RemotePlayer(UUID uuid) {
@@ -22,12 +26,52 @@ public class RemotePlayer {
     targetPosition.set(x, y, z);
   }
 
-  public void update(float tpf) {
-    float alpha = 10f * tpf; // smoothing speed
+  public void setTargetRotation(float yaw, float pitch) {
+    this.targetYaw = yaw;
+    this.targetPitch = Math.max(-89f, Math.min(89f, pitch)); // clamp
+  }
 
-    position.x += (targetPosition.x - position.x) * alpha;
-    position.y += (targetPosition.y - position.y) * alpha;
-    position.z += (targetPosition.z - position.z) * alpha;
+  public void update(float deltaTime) {
+
+    // -------------------------
+    // SNAP
+    // -------------------------
+    float dx = targetPosition.x - position.x;
+    float dy = targetPosition.y - position.y;
+    float dz = targetPosition.z - position.z;
+
+    float distSq = dx * dx + dy * dy + dz * dz;
+
+    if (distSq > 25f) { // > 5 blocks
+      position.set(targetPosition);
+      yaw = targetYaw;
+      pitch = targetPitch;
+      return;
+    }
+
+    // -------------------------
+    // SMOOTHING
+    // -------------------------
+    float posAlpha = 10f * deltaTime;
+    float rotAlpha = 15f * deltaTime;
+
+    // Position
+    position.x += dx * posAlpha;
+    position.y += dy * posAlpha;
+    position.z += dz * posAlpha;
+
+    // Rotation
+    yaw = lerpAngle(yaw, targetYaw, rotAlpha);
+    pitch += (targetPitch - pitch) * rotAlpha;
+  }
+
+  private float lerpAngle(float current, float target, float alpha) {
+    float diff = target - current;
+
+    while (diff > 180f) diff -= 360f;
+    while (diff < -180f) diff += 360f;
+
+    return current + diff * alpha;
   }
 
   public float getX() {
@@ -46,19 +90,19 @@ public class RemotePlayer {
     return yaw;
   }
 
-  public void setYaw(float yaw) {
-    this.yaw = yaw;
-  }
-
   public float getPitch() {
     return pitch;
   }
 
-  public void setPitch(float pitch) {
-    this.pitch = pitch;
-  }
-
   public UUID getUuid() {
     return uuid;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }
