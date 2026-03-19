@@ -12,6 +12,11 @@ public class EntitiesComponent extends AbstractComponent implements RenderableCo
   public EntitiesComponent(GameClient client) {
 	  this.client = client;
   }
+  
+  @Override
+  public void update(float tpf) {
+	  client.getEntityManager().update(tpf);
+  }
 	
   @Override
   public void render(Graphics g) {

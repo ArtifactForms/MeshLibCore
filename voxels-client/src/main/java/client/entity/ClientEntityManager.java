@@ -30,9 +30,10 @@ public class ClientEntityManager {
       return;
     }
 
-    player.setX(x);
-    player.setY(y);
-    player.setZ(z);
+    //    player.setX(x);
+    //    player.setY(y);
+    //    player.setZ(z);
+    player.setTargetPosition(x, y, z);
     player.setYaw(yaw);
     player.setPitch(pitch);
   }
@@ -40,9 +41,10 @@ public class ClientEntityManager {
   public void addRemotePlayer(UUID uuid, String name, float x, float y, float z) {
     if (!remotePlayers.containsKey(uuid)) {
       RemotePlayer newPlayer = new RemotePlayer(uuid);
-      newPlayer.setX(x);
-      newPlayer.setY(y);
-      newPlayer.setZ(z);
+      //      newPlayer.setX(x);
+      //      newPlayer.setY(y);
+      //      newPlayer.setZ(z);
+      newPlayer.setTargetPosition(x, y, z);
       remotePlayers.put(uuid, newPlayer);
       System.out.println("[Client] Player spawned correctly: " + name);
     }
@@ -68,6 +70,16 @@ public class ClientEntityManager {
   public void renderAll(Graphics g) {
     renderItems(g);
     renderPlayers(g);
+  }
+
+  public void update(float tpf) {
+    updatePlayers(tpf);
+  }
+
+  private void updatePlayers(float tpf) {
+    for (RemotePlayer player : remotePlayers.values()) {
+      player.update(tpf);
+    }
   }
 
   private void renderPlayers(Graphics g) {

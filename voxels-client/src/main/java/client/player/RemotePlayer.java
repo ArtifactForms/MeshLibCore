@@ -1,12 +1,12 @@
 package client.player;
 
 import java.util.UUID;
+import math.Vector3f;
 
 public class RemotePlayer {
 
-  private float x;
-  private float y;
-  private float z;
+  private final Vector3f position = new Vector3f(); // smooth
+  private final Vector3f targetPosition = new Vector3f(); // server
 
   private float yaw;
   private float pitch;
@@ -18,28 +18,28 @@ public class RemotePlayer {
     this.uuid = uuid;
   }
 
-  public float getX() {
-    return x;
+  public void setTargetPosition(float x, float y, float z) {
+    targetPosition.set(x, y, z);
   }
 
-  public void setX(float x) {
-    this.x = x;
+  public void update(float tpf) {
+    float alpha = 10f * tpf; // smoothing speed
+
+    position.x += (targetPosition.x - position.x) * alpha;
+    position.y += (targetPosition.y - position.y) * alpha;
+    position.z += (targetPosition.z - position.z) * alpha;
+  }
+
+  public float getX() {
+    return position.x;
   }
 
   public float getY() {
-    return y;
-  }
-
-  public void setY(float y) {
-    this.y = y;
+    return position.y;
   }
 
   public float getZ() {
-    return z;
-  }
-
-  public void setZ(float z) {
-    this.z = z;
+    return position.z;
   }
 
   public float getYaw() {
