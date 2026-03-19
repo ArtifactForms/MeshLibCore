@@ -11,7 +11,6 @@ import common.network.packets.ChunkDataPacket;
 import common.network.packets.PlayerPositionPacket;
 import common.network.packets.TitlePacket;
 import common.player.PlayerData;
-import common.player.PlayerProperties;
 import common.player.ability.GameModePresets;
 import common.world.ChunkData;
 import common.world.World;
@@ -35,8 +34,6 @@ public class ServerPlayer extends PlayerData {
   private int lastChunkZ = Integer.MAX_VALUE;
 
   private final ServerConnection connection;
-
-  private final PlayerProperties properties = new PlayerProperties();
 
   /** Thread-safe set of chunks currently loaded on the client side */
   private Set<Long> loadedChunks = Collections.newSetFromMap(new ConcurrentHashMap<>());
@@ -309,10 +306,6 @@ public class ServerPlayer extends PlayerData {
 
   public ServerConnection getConnection() {
     return connection;
-  }
-
-  public PlayerProperties getProperties() {
-    return properties;
   }
 
   public ItemStack getCursorStack() {
