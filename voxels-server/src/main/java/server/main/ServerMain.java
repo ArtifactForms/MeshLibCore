@@ -23,7 +23,7 @@ public class ServerMain {
     Blocks.initialize(); // Important: Initialize before item registration -> ItemRegistry.init();
     ItemRegistry.init();
 
-    GameServer server = new GameServer(port);
+    GameServer server = new GameServer(port, config);
     server.start();
   }
 }

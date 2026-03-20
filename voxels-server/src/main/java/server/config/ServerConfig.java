@@ -12,7 +12,9 @@ public class ServerConfig {
 
   private int port;
   private int maxPlayers;
+  private int maxChatMessageLength;
   private String motd;
+  private String chatFormat;
 
   public void load() {
     File file = new File(FILE_PATH);
@@ -25,7 +27,10 @@ public class ServerConfig {
       props.load(in);
       this.port = Integer.parseInt(props.getProperty("server-port", "25565"));
       this.maxPlayers = Integer.parseInt(props.getProperty("max-players", "10"));
+      this.maxChatMessageLength =
+          Integer.parseInt(props.getProperty("max-chat-message-length", "256"));
       this.motd = props.getProperty("motd", "A Voxel Game Server");
+      this.chatFormat = props.getProperty("chat-format", "{prefix}{name}: {message}");
     } catch (IOException e) {
       System.err.println("Failed to load server.properties, using hardware defaults.");
       this.port = 25565;
@@ -37,7 +42,9 @@ public class ServerConfig {
 
     props.setProperty("server-port", "25565");
     props.setProperty("max-players", "10");
+    props.setProperty("max-chat-message-length", "256");
     props.setProperty("motd", "A Voxel Game Server");
+    props.setProperty("chat-format", "{prefix}{name}: {message}");
     props.setProperty("view-distance", "8");
     props.setProperty("allow-flight", "false");
 
@@ -57,7 +64,15 @@ public class ServerConfig {
     return maxPlayers;
   }
 
+  public int getMaxChatMessageLength() {
+    return maxChatMessageLength;
+  }
+
   public String getMotd() {
     return motd;
+  }
+
+  public String getChatFormat() {
+    return chatFormat;
   }
 }

@@ -6,12 +6,12 @@ import java.net.Socket;
 
 import common.logging.Log;
 import common.network.Packet;
-import common.network.packets.ChatMessagePacket;
 import server.commands.Command;
 import server.commands.CommandRegistry;
 import server.commands.commands.PrivateMessageCommand;
 import server.commands.commands.StopCommand;
 import server.commands.commands.TeleportCommand;
+import server.config.ServerConfig;
 import server.entity.EntityManager;
 import server.events.EventBus;
 import server.gateways.CommandAdapter;
@@ -63,11 +63,14 @@ public class GameServer {
 
   private UseCaseRegistry useCases;
   private GatewayContext context;
+  
+  private final ServerConfig config;
 
   private final TPSCounter tpsCounter = new TPSCounter();
 
-  public GameServer(int port) {
+  public GameServer(int port, ServerConfig config) {
     this.port = port;
+    this.config = config;
 
     File worldFolder = new File("world_data");
     ChunkRepository chunkRepository = new FileChunkRepository(worldFolder);
@@ -91,7 +94,7 @@ public class GameServer {
     EventGateway eventGateway = new EventAdapter(eventBus);
     PermissionGateway permissionGateway = new PermissionAdapter(permissionService);
     InventoryGateway inventoryGateway = new InventoryAdapter(playerManager);
-    ConfigGateway configGateway = new ConfigAdapter();
+    ConfigGateway configGateway = new ConfigAdapter(config);
     CommandGateway commandGateway = new CommandAdapter(commandRegistry);
 
     context =
@@ -284,10 +287,10 @@ public class GameServer {
 
     flushNetwork();
 
-    // TODO DEBUG Remove later
-    if (tick % 100 == 0) {
-      playerManager.broadcast(new ChatMessagePacket("tps: " + tpsCounter.getTps() + ""));
-    }
+//    // TODO DEBUG Remove later
+//    if (tick % 100 == 0) {
+//      playerManager.broadcast(new ChatMessagePacket("tps: " + tpsCounter.getTps() + ""));
+//    }
   }
 
   public void shutdown() {
