@@ -1,6 +1,8 @@
 package client.player;
 
 import java.util.UUID;
+
+import client.models.CharacterModel;
 import math.Vector3f;
 
 public class RemotePlayer {
@@ -18,8 +20,11 @@ public class RemotePlayer {
   private final UUID uuid;
   private String name;
 
+  private final CharacterModel model;
+
   public RemotePlayer(UUID uuid) {
     this.uuid = uuid;
+    this.model = new CharacterModel();
   }
 
   public void setTargetPosition(float x, float y, float z) {
@@ -46,6 +51,10 @@ public class RemotePlayer {
       position.set(targetPosition);
       yaw = targetYaw;
       pitch = targetPitch;
+      
+      model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
+      model.getTransform().setRotation(0, yaw, 0);
+      model.getHead().getTransform().setRotation(-pitch, 0, 0);
       return;
     }
 
@@ -63,6 +72,15 @@ public class RemotePlayer {
     // Rotation
     yaw = lerpAngle(yaw, targetYaw, rotAlpha);
     pitch += (targetPitch - pitch) * rotAlpha;
+
+    // Move model
+    model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
+
+    // Body Rotation (Yaw)
+    model.getTransform().setRotation(0, yaw, 0);
+
+    // Head Rotation (Pitch)
+    model.getHead().getTransform().setRotation(-pitch, 0, 0);
   }
 
   private float lerpAngle(float current, float target, float alpha) {
@@ -104,5 +122,9 @@ public class RemotePlayer {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public CharacterModel getModel() {
+    return model;
   }
 }
