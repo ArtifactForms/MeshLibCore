@@ -29,7 +29,7 @@ public final class Blocks {
   public static final BlockType LEAF = BlockRegistry.register("core:leaf").setOpaque(false);
 
   public static final BlockType GRASS =
-      BlockRegistry.register("core:grass").setSolid(false).setOpaque(false);
+      BlockRegistry.register("core:grass").setSolid(true).setOpaque(false);
 
   public static final BlockType SNOW = BlockRegistry.register("core:snow");
 

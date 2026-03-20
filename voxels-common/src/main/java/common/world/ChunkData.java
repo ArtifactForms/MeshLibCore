@@ -109,7 +109,15 @@ public class ChunkData {
 
   public boolean isSolid(int x, int y, int z) {
     if (!isInside(x, y, z)) return false;
-    return blockData[getIndex(x, y, z)] != Blocks.AIR.getId();
+    
+    short type = blockData[getIndex(x, y, z)];
+    
+    // TODO return block type is solid
+    if (type == Blocks.AIR.getId() || type == Blocks.GRASS.getId()) {
+    	return false;
+    }
+    
+    return true;
   }
 
   public Bounds getChunkBounds() {

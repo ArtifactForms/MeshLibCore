@@ -18,6 +18,7 @@ public class Chunk extends ChunkData {
 
   private volatile StaticGeometry opaqueGeometry;
   private volatile StaticGeometry waterGeometry;
+  private volatile StaticGeometry decorGeometry;
 
   private Future<ChunkMesher.MeshResult> meshFuture;
 
@@ -44,6 +45,7 @@ public class Chunk extends ChunkData {
     this.clear();
     this.opaqueGeometry = null;
     this.waterGeometry = null;
+    this.decorGeometry = null;
     this.status = ChunkStatus.EMPTY;
     this.needsRebuild = false;
   }
@@ -69,6 +71,7 @@ public class Chunk extends ChunkData {
       if (result != null) {
         this.opaqueGeometry = result.opaque;
         this.waterGeometry = result.water;
+        this.decorGeometry = result.decor;
         this.status = ChunkStatus.MESH_READY;
         this.needsRebuild = false;
       }
@@ -93,6 +96,15 @@ public class Chunk extends ChunkData {
       g.pushMatrix();
       g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
       waterGeometry.render(g);
+      g.popMatrix();
+    }
+  }
+
+  public void renderDecor(Graphics g) {
+    if (decorGeometry != null) {
+      g.pushMatrix();
+      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
+      decorGeometry.render(g);
       g.popMatrix();
     }
   }

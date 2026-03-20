@@ -20,7 +20,6 @@ public class BasicWorldGenerator2 implements WorldGenerator {
 	private int seaLevel = 80;
 	private int beachSize = 3;
 	private long seed;
-	private Random rng;
 
 	// Noise layers
 	private PerlinNoise continentNoise;
@@ -73,7 +72,7 @@ public class BasicWorldGenerator2 implements WorldGenerator {
 	public void generate(ChunkData chunk) {
 		Vector3f pos = getPosition(chunk);
 		long chunkSeed = seed ^ ((long) (pos.x * 31 + pos.z * 17));
-		rng = new Random(chunkSeed);
+		Random rng = new Random(chunkSeed);
 
 		for (int x = 0; x < ChunkData.WIDTH; x++) {
 			for (int z = 0; z < ChunkData.DEPTH; z++) {
@@ -114,6 +113,8 @@ public class BasicWorldGenerator2 implements WorldGenerator {
 //    createTrees(chunk);
 		createWater(chunk);
 		// createCaves(chunk);
+		
+		createGrass(chunk);
 	}
 
 	private Vector3f getPosition(ChunkData chunk) {
@@ -191,7 +192,7 @@ public class BasicWorldGenerator2 implements WorldGenerator {
 		return Blocks.GRASS_BLOCK;
 	}
 
-	private void createTrees(ChunkData chunk) {
+	private void createTrees(ChunkData chunk, Random rng) {
 		Vector3f pos = getPosition(chunk);
 
 		boolean[][] treeMap = new boolean[ChunkData.WIDTH][ChunkData.DEPTH];
@@ -321,5 +322,28 @@ public class BasicWorldGenerator2 implements WorldGenerator {
 		}
 
 		return total / max;
+	}
+	
+	private void createGrass(ChunkData chunk) {
+	    Vector3f pos = getPosition(chunk);
+
+	    for (int x = 0; x < ChunkData.WIDTH; x++) {
+	        for (int z = 0; z < ChunkData.DEPTH; z++) {
+
+	            int y = chunk.getHeightValue(x, z);
+
+	            if (chunk.getBlock(x, y, z) != Blocks.GRASS_BLOCK) continue;
+	            if (chunk.getBlock(x, y + 1, z) != Blocks.AIR) continue;
+
+	            float wx = pos.x + x;
+	            float wz = pos.z + z;
+
+	            float n = (float) treeNoise.noise(wx * 0.08f, wz * 0.08f);
+
+	            if (n < 0.45f) {
+	                chunk.setBlockAt(Blocks.GRASS, x, y + 1, z);
+	            }
+	        }
+	    }
 	}
 }

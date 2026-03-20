@@ -127,6 +127,58 @@ public class TextureAtlas {
     drawDebugText(g2d);
   }
 
+  private void drawGrassTexture(Graphics2D g2d, int x, int y) {
+
+	    int size = tileSize;
+
+	    // ❗ WICHTIG: Tile erstmal komplett transparent machen
+	    g2d.setComposite(java.awt.AlphaComposite.Clear);
+	    g2d.fillRect(x, y, size, size);
+
+	    // wieder normal zeichnen
+	    g2d.setComposite(java.awt.AlphaComposite.SrcOver);
+
+//	    Color base = new Color(40, 100, 20);
+	    Color base = new Color(117, 175, 74);
+
+	    java.util.Random rand = new java.util.Random(x * 928371 + y * 123123);
+
+	    for (int i = 0; i < size * 4; i++) {
+
+	        int px = rand.nextInt(size);
+	        int height = 6 + rand.nextInt(size / 2);
+	        int py = y + size - height;
+
+	        // Variation
+	        int variation = rand.nextInt(50) - 25;
+
+	        int r = clamp(base.getRed() + variation, 0, 255);
+	        int g = clamp(base.getGreen() + variation + 30, 0, 255);
+	        int b = clamp(base.getBlue() + variation, 0, 255);
+
+	        g2d.setColor(new Color(r, g, b, 200));
+
+	        // dünne Halme
+	        int width = rand.nextBoolean() ? 1 : 2;
+
+	        g2d.fillRect(x + px, py, width, height);
+	    }
+
+	    // OPTIONAL: paar schräge Halme für natürlicher Look
+	    for (int i = 0; i < size; i++) {
+	        int px = rand.nextInt(size);
+	        int py = y + size - rand.nextInt(size / 2);
+
+	        g2d.setColor(new Color(60, 140, 40, 180));
+
+	        g2d.drawLine(x + px, py, x + px + rand.nextInt(3) - 1, py - 4);
+	    }
+	}
+
+  private int clamp(int v, int min, int max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
   private void drawDebugText(Graphics2D g2d) {
     if (!drawDebugText) return;
 
@@ -194,6 +246,12 @@ public class TextureAtlas {
     for (int col = 0; col < 6; col++) {
       int baseX = col * tileSize;
 
+      
+      if (blockType == Blocks.GRASS) {
+  	    drawGrassTexture(g2d, baseX, baseY);
+  	    continue;
+  	}
+      
       // 1. Basis-Füllung
       g2d.setColor(color);
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
@@ -209,6 +267,7 @@ public class TextureAtlas {
         g2d.setColor(DIRT_COLOR);
         g2d.fillRect(baseX, baseY + (tileSize / 4), tileSize, tileSize - (tileSize / 4));
       }
+
 
       // 4. Globales Noise Overlay
       if (useNoise) {

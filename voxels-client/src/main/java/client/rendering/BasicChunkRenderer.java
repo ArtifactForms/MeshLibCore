@@ -130,6 +130,30 @@ public class BasicChunkRenderer implements ChunkRenderer {
     endWater(g);
 
     g.disableFaceCulling();
+
+    // =========================
+    // DECOR PASS / CUT OUT
+    // =========================
+    g.setShader("voxel.vert", "voxel.frag"); // ✅ SAME SHADER
+
+    g.setUniform("u_cameraPos", client.getPlayerCamera().getTransform().getPosition());
+
+    g.setUniform("u_lightDir", currentLightDir);
+    g.setUniform("u_lightColor", currentLightColor);
+    g.setUniform("u_ambient", currentAmbient);
+
+    Vector3f fogColor = getSkyColor(currentTimeOfDay);
+    g.setUniform("u_fogColor", fogColor);
+    g.setUniform("u_fogDensity", 0.0035f);
+
+    g.disableDepthMask();
+
+    for (Chunk chunk : visibleChunksCache) {
+      chunk.renderDecor(g);
+    }
+
+    g.enableDepthMask();
+    g.resetShader();
   }
 
   private void beginWater(Graphics g) {
