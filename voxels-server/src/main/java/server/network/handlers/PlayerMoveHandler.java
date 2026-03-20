@@ -2,6 +2,8 @@ package server.network.handlers;
 
 import common.network.packets.PlayerMovePacket;
 import server.events.events.PlayerMoveEvent;
+import server.gateways.EventGateway;
+import server.gateways.GatewayContext;
 import server.network.ServerConnection;
 import server.player.ServerPlayer;
 
@@ -13,8 +15,11 @@ public class PlayerMoveHandler {
 
   private final ServerConnection connection;
 
-  public PlayerMoveHandler(ServerConnection connection) {
+  private final EventGateway events;
+
+  public PlayerMoveHandler(ServerConnection connection, GatewayContext context) {
     this.connection = connection;
+    this.events = context.events();
   }
 
   /**
@@ -23,6 +28,7 @@ public class PlayerMoveHandler {
    */
   public void handle(PlayerMovePacket packet) {
     ServerPlayer player = connection.getPlayer();
+
     if (player == null) {
       return;
     }
@@ -37,7 +43,7 @@ public class PlayerMoveHandler {
             packet.getYaw(),
             packet.getPitch());
 
-    connection.getServer().getEventBus().fire(event);
+    events.fire(event);
 
     // If a listener cancelled the movement, stop processing
     if (event.isCancelled()) {

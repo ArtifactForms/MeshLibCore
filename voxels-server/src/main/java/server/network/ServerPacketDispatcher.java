@@ -47,7 +47,7 @@ public class ServerPacketDispatcher {
   public ServerPacketDispatcher(ServerConnection c, UseCaseRegistry reg, GatewayContext context) {
     // Register all packet-to-handler mappings
     register(PlayerJoinPacket.class, new PlayerJoinHandler(c, context)::handle);
-    register(PlayerMovePacket.class, new PlayerMoveHandler(c)::handle);
+    register(PlayerMovePacket.class, new PlayerMoveHandler(c, context)::handle);
     register(ChatMessagePacket.class, new ChatMessageHandler(c, context)::handle);
 
     register(BlockPlacePacket.class, new BlockPlaceHandler(c, reg.get(BlockPlace.class))::handle);
