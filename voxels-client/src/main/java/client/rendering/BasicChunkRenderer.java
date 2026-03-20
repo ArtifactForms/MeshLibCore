@@ -146,13 +146,10 @@ public class BasicChunkRenderer implements ChunkRenderer {
     g.setUniform("u_fogColor", fogColor);
     g.setUniform("u_fogDensity", 0.0035f);
 
-    g.disableDepthMask();
-
     for (Chunk chunk : visibleChunksCache) {
       chunk.renderDecor(g);
     }
 
-    g.enableDepthMask();
     g.resetShader();
   }
 
