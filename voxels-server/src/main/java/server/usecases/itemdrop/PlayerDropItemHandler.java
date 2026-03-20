@@ -88,6 +88,10 @@ public class PlayerDropItemHandler {
     // AMOUNT CHECK
     // -------------------------------------
     ItemStack itemStack = inventory.getItem(playerId, selectedSlot);
+    if (itemStack == null) {
+    	return;
+    }
+    
     if (itemStack.getAmount() <= 0) {
       failAndResync(packet);
       return;
