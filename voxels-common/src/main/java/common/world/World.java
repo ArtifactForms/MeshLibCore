@@ -128,4 +128,8 @@ public class World {
   public long getWorldTime() {
     return worldTime;
   }
+  
+  public int getLoadedChunksCount() {
+	  return chunks.size();
+  }
 }

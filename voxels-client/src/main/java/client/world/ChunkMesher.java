@@ -260,7 +260,7 @@ public class ChunkMesher {
         if (y < 0 || y >= Chunk.HEIGHT) return false;
 
         if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) {
-            return chunk.isBlockSolid(x, y, z);
+            return chunk.isSolid(x, y, z);
         }
 
         Chunk neighbor = chunkManager.getChunk(
@@ -270,7 +270,7 @@ public class ChunkMesher {
 
         if (neighbor == null || !neighbor.isDataReady()) return false;
 
-        return neighbor.isBlockSolid(
+        return neighbor.isSolid(
             Math.floorMod(x, Chunk.WIDTH),
             y,
             Math.floorMod(z, Chunk.DEPTH)

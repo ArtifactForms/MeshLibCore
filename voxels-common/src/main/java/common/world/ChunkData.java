@@ -112,10 +112,6 @@ public class ChunkData {
     return blockData[getIndex(x, y, z)] != Blocks.AIR.getId();
   }
 
-  public boolean isBlockSolid(int x, int y, int z) {
-    return isSolid(x, y, z);
-  }
-
   public Bounds getChunkBounds() {
     Vector3f min = new Vector3f(getChunkX() * WIDTH, 0, getChunkZ() * DEPTH);
     Vector3f max = new Vector3f(min.x + WIDTH, HEIGHT, min.z + DEPTH);
