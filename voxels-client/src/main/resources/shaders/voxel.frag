@@ -1,44 +1,85 @@
 precision mediump float;
+
 uniform sampler2D texture;
+
 uniform vec3 u_fogColor;
 uniform float u_fogDensity;
+
 uniform vec3 u_lightDir;
 uniform vec3 u_lightColor;
 uniform float u_ambient;
+
+uniform vec3 u_cameraPos;
+
 varying vec2 vTexCoord;
 varying float vDist;
 varying vec4 vColor;
 varying vec3 vNormal;
+varying vec3 vWorldPos;
 
 void main() {
-vec4 texCol = texture2D(texture, vTexCoord);
-// Falls Textur transparent ist (z.B. Blätter), hier abbrechen:
-if(texCol.a < 0.1) discard;
 
+    vec4 texCol = texture2D(texture, vTexCoord);
+    if(texCol.a < 0.1) discard;
 
-//float aoStrength = 1.2;
-// vec3 enhancedAO = pow(vColor.rgb, vec3(aoStrength));
-// vec4 blockCol = texCol * vec4(enhancedAO, 1.0);
+    vec4 blockCol = texCol * vColor;
 
-vec4 blockCol = texCol * vColor;
+    // =========================
+    // 💡 LIGHTING
+    // =========================
+    vec3 norm = normalize(vNormal);
+    vec3 lDir = normalize(u_lightDir);
 
-// Licht-Reparatur:
-// Wir normalisieren die Vektoren zur Sicherheit nochmal
-vec3 norm = normalize(vNormal);
-vec3 lDir = normalize(u_lightDir);
+    float diff = max(dot(norm, lDir), 0.0);
+    diff = pow(diff, 1.4);
 
-// Einfache Beleuchtung berechnen
-float diff = max(dot(norm, lDir), 0.0);
+    float shadow = 0.5 + diff * 0.5;
 
-// Mix aus Umgebungslicht und Sonnenlicht
-vec3 lighting = vec3(u_ambient) + (diff * u_lightColor);
+    vec3 lighting = vec3(u_ambient * 0.8) + (shadow * u_lightColor);
+    vec3 color = min(blockCol.rgb * lighting, vec3(1.0));
 
-// Licht auf Block anwenden und auf 1.0 begrenzen
-vec3 lightedRGB = min(blockCol.rgb * lighting, vec3(1.0));
+    // =========================
+    // 🎨 DISTANCE LOOK
+    // =========================
+    float distFactor = clamp(vDist / 200.0, 0.0, 1.0);
 
-// Nebel berechnen
-float fog = exp(-pow(vDist * u_fogDensity, 2.0));
-fog = clamp(fog, 0.0, 1.0);
+    float desaturate = mix(1.0, 0.75, distFactor);
+    float gray = dot(color, vec3(0.299, 0.587, 0.114));
+    color = mix(vec3(gray), color, desaturate);
 
-gl_FragColor = vec4(mix(u_fogColor, lightedRGB, fog), blockCol.a);
+    vec3 atmosphereTint = vec3(0.65, 0.8, 1.0);
+    color = mix(color, atmosphereTint, distFactor * 0.25);
+
+    color = pow(color, vec3(0.9));
+
+    // =========================
+    // 🌫 BASE FOG
+    // =========================
+    float fog = 1.0 - exp(-vDist * u_fogDensity * 0.5);
+    fog *= smoothstep(50.0, 240.0, vDist);
+
+    float horizon = 1.0 - abs(norm.y);
+    fog += horizon * 0.15;
+
+    // =========================
+    // 🌫 HEIGHT FOG (FIXED)
+    // =========================
+    float heightDiff = u_cameraPos.y - vWorldPos.y;
+
+    float heightFog = clamp(heightDiff * 0.04, 0.0, 1.0);
+    heightFog = smoothstep(0.0, 1.0, heightFog);
+
+    float nightBoost = 1.0 - u_ambient;
+
+    fog += heightFog * nightBoost * 0.2;
+
+    // =========================
+    // 🌫 FINAL FOG
+    // =========================
+    fog = pow(fog, 1.3);
+    fog = clamp(fog, 0.0, 0.65);
+
+    vec3 finalColor = mix(color, u_fogColor, fog);
+
+    gl_FragColor = vec4(finalColor, blockCol.a);
 }

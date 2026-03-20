@@ -1,3 +1,5 @@
+precision mediump float;
+
 uniform mat4 projection;
 uniform mat4 modelview;
 
@@ -10,6 +12,7 @@ varying vec4 vColor;
 varying float vDist;
 varying vec2 vWaveUV;
 varying float vHeight;
+varying vec3 vWorldPos;
 
 void main() {
 
@@ -18,13 +21,15 @@ void main() {
     vDist = length(viewPos.xyz);
     vColor = color;
 
-    // Weltkoordinaten
+    // 🌍 Weltkoordinaten für Waves
     vec2 worldXZ = position.xz + u_chunkPos.xz;
-
     vWaveUV = worldXZ * 0.08;
 
-    // Höhe merken (für Tiefenfarbe)
+    // Höhe
     vHeight = position.y;
+
+    // 👉 wichtig für Height Fog
+    vWorldPos = viewPos.xyz;
 
     gl_Position = projection * viewPos;
 }
