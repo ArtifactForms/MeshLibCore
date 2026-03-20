@@ -129,51 +129,46 @@ public class TextureAtlas {
 
   private void drawGrassTexture(Graphics2D g2d, int x, int y) {
 
-	    int size = tileSize;
+    int size = tileSize;
 
-	    // ❗ WICHTIG: Tile erstmal komplett transparent machen
-	    g2d.setComposite(java.awt.AlphaComposite.Clear);
-	    g2d.fillRect(x, y, size, size);
+    g2d.setComposite(java.awt.AlphaComposite.Clear);
+    g2d.fillRect(x, y, size, size);
 
-	    // wieder normal zeichnen
-	    g2d.setComposite(java.awt.AlphaComposite.SrcOver);
+    g2d.setComposite(java.awt.AlphaComposite.SrcOver);
 
-//	    Color base = new Color(40, 100, 20);
-	    Color base = new Color(117, 175, 74);
+    Color base = new Color(117, 175, 74);
 
-	    java.util.Random rand = new java.util.Random(x * 928371 + y * 123123);
+    java.util.Random rand = new java.util.Random(x * 928371 + y * 123123);
 
-	    for (int i = 0; i < size * 4; i++) {
+    for (int i = 0; i < size * 4; i++) {
 
-	        int px = rand.nextInt(size);
-	        int height = 6 + rand.nextInt(size / 2);
-	        int py = y + size - height;
+      int px = rand.nextInt(size);
+      int height = 6 + rand.nextInt(size / 2);
+      int py = y + size - height;
 
-	        // Variation
-	        int variation = rand.nextInt(50) - 25;
+      // Variation
+      int variation = rand.nextInt(50) - 25;
 
-	        int r = clamp(base.getRed() + variation, 0, 255);
-	        int g = clamp(base.getGreen() + variation + 30, 0, 255);
-	        int b = clamp(base.getBlue() + variation, 0, 255);
+      int r = clamp(base.getRed() + variation, 0, 255);
+      int g = clamp(base.getGreen() + variation + 30, 0, 255);
+      int b = clamp(base.getBlue() + variation, 0, 255);
 
-	        g2d.setColor(new Color(r, g, b, 200));
+      g2d.setColor(new Color(r, g, b, 200));
 
-	        // dünne Halme
-	        int width = rand.nextBoolean() ? 1 : 2;
+      int width = rand.nextBoolean() ? 1 : 2;
 
-	        g2d.fillRect(x + px, py, width, height);
-	    }
+      g2d.fillRect(x + px, py, width, height);
+    }
 
-	    // OPTIONAL: paar schräge Halme für natürlicher Look
-	    for (int i = 0; i < size; i++) {
-	        int px = rand.nextInt(size);
-	        int py = y + size - rand.nextInt(size / 2);
+    for (int i = 0; i < size; i++) {
+      int px = rand.nextInt(size);
+      int py = y + size - rand.nextInt(size / 2);
 
-	        g2d.setColor(new Color(60, 140, 40, 180));
+      g2d.setColor(new Color(60, 140, 40, 180));
 
-	        g2d.drawLine(x + px, py, x + px + rand.nextInt(3) - 1, py - 4);
-	    }
-	}
+      g2d.drawLine(x + px, py, x + px + rand.nextInt(3) - 1, py - 4);
+    }
+  }
 
   private int clamp(int v, int min, int max) {
     return Math.max(min, Math.min(max, v));
@@ -246,30 +241,23 @@ public class TextureAtlas {
     for (int col = 0; col < 6; col++) {
       int baseX = col * tileSize;
 
-      
       if (blockType == Blocks.GRASS) {
-  	    drawGrassTexture(g2d, baseX, baseY);
-  	    continue;
-  	}
-      
-      // 1. Basis-Füllung
+        drawGrassTexture(g2d, baseX, baseY);
+        continue;
+      }
+
       g2d.setColor(color);
       g2d.fillRect(baseX, baseY, tileSize, tileSize);
 
-      // 2. Spezial-Behandlung für Terracotta (Struktur-Muster)
-      // Prüft, ob der Block-Name "TERRACOTTA" enthält
       if (blockType.getName().toUpperCase().contains("TERRACOTTA")) {
         drawTerracottaPattern(g2d, baseX, baseY, color);
       }
 
-      // 3. Bestehende Gras-Logik
       if (blockType == Blocks.GRASS_BLOCK && col > 0) {
         g2d.setColor(DIRT_COLOR);
         g2d.fillRect(baseX, baseY + (tileSize / 4), tileSize, tileSize - (tileSize / 4));
       }
 
-
-      // 4. Globales Noise Overlay
       if (useNoise) {
         g2d.drawImage(overlay, baseX, baseY, tileSize, tileSize, null);
       }
@@ -277,7 +265,6 @@ public class TextureAtlas {
   }
 
   private void drawTerracottaPattern(Graphics2D g2d, int x, int y, Color base) {
-    // Erzeuge eine dunklere Akzentfarbe (20% dunkler als Basis)
     Color darkTone =
         new Color(
             Math.max(0, (int) (base.getRed() * 0.8)),
@@ -286,24 +273,19 @@ public class TextureAtlas {
             120 // Alpha für sanftes Blending
             );
 
-    // Erzeuge eine hellere Akzentfarbe (für "trockene" Stellen)
     Color lightTone =
         new Color(
             Math.min(255, (int) (base.getRed() * 1.1)),
             Math.min(255, (int) (base.getGreen() * 1.1)),
             Math.min(255, (int) (base.getBlue() * 1.1)),
             80);
-
-    // Wir nutzen einen festen Seed pro Block-ID, damit das Muster
-    // auf allen 6 Seiten gleich (oder konsistent) aussieht
+    
     java.util.Random rand = new java.util.Random(x + y);
 
     for (int i = 0; i < tileSize; i++) {
-      // Zufällige Position innerhalb der Tile
       int px = rand.nextInt(tileSize - 4);
       int py = rand.nextInt(tileSize - 1);
 
-      // Zeichne kleine horizontale Linien (typisch für gepressten Ton/Terracotta)
       g2d.setColor(rand.nextBoolean() ? darkTone : lightTone);
       int length = 2 + rand.nextInt(5);
       g2d.fillRect(x + px, y + py, length, 1);
@@ -329,7 +311,6 @@ public class TextureAtlas {
     float u1 = u0 + tileU;
     float v1 = v0 + tileV;
 
-    // epsilon gegen bleeding
     u0 += epsilon;
     v0 += epsilon;
     u1 -= epsilon;
