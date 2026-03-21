@@ -7,7 +7,7 @@ import common.logging.Log;
 
 public class ServerConfig {
 
-  private static final String FILE_PATH = "server.properties";
+  private final String filePath;
 
   // Keys
   private static final String SERVER_PORT_KEY = "server-port";
@@ -35,6 +35,14 @@ public class ServerConfig {
   private String motd;
   private String chatFormat;
 
+  public ServerConfig() {
+    this("server.properties"); // default behavior
+  }
+
+  public ServerConfig(String filePath) {
+    this.filePath = filePath;
+  }
+
   public void load() {
 
     // initialize defaults first (safe baseline)
@@ -45,7 +53,7 @@ public class ServerConfig {
     this.motd = DEFAULT_MOTD;
     this.chatFormat = DEFAULT_CHAT_FORMAT;
 
-    File file = new File(FILE_PATH);
+    File file = new File(filePath);
 
     if (!file.exists()) {
       createDefaultConfig(file);
