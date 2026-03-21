@@ -26,7 +26,17 @@ public class ConfigAdapter implements ConfigGateway {
   }
 
   @Override
-  public String getMessageOfTheDay() {
+  public String getMotd() {
     return config.getMotd();
+  }
+
+  @Override
+  public int getPort() {
+    return config.getPort();
+  }
+
+  @Override
+  public int getViewDistance() {
+    return config.getViewDistance();
   }
 }
