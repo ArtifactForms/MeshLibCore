@@ -7,4 +7,6 @@ public interface ConfigGateway {
   int getMaxChatMessageLength();
   
   String getChatFormat();
+  
+  String getMessageOfTheDay();
 }

@@ -24,4 +24,9 @@ public class ConfigAdapter implements ConfigGateway {
   public String getChatFormat() {
     return config.getChatFormat();
   }
+
+  @Override
+  public String getMessageOfTheDay() {
+    return config.getMotd();
+  }
 }
