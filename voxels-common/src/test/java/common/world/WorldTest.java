@@ -393,4 +393,48 @@ class WorldTest {
     }
     assertEquals(ticks, world.getWorldTime());
   }
+
+  @ParameterizedTest
+  @CsvSource({
+    "0, 0.0", // Start of the day
+    "6000, 0.25", // Noon (at 24k ticks)
+    "12000, 0.5", // Sunset
+    "18000, 0.75", // Midnight
+    "24000, 0.0", // Next day (Reset/Cycle)
+    "36000, 0.5" // 1.5 days passed
+  })
+  void testGetTimeOfDay(long ticks, float expectedProgress) {
+    world.setWorldTime(ticks);
+    // delta 1e-5f to account for floating point inaccuracies
+    assertEquals(expectedProgress, world.getTimeOfDay(), 1e-5f);
+  }
+
+  @Test
+  void testTimeOfDayPrecision() {
+    // Verify that worldTime + 1 actually increases the progress value
+    world.setWorldTime(0);
+    float t0 = world.getTimeOfDay();
+    world.tick();
+    float t1 = world.getTimeOfDay();
+
+    assertTrue(t1 > t0, "Time of day should increase after tick");
+    assertEquals(1.0f / World.TICKS_PER_DAY, t1, 1e-7f);
+  }
+
+  @Test
+  void testLargeWorldTime() {
+    // Prevent overflow or precision errors in calculation (theoretically relevant after years of
+    // playtime)
+    long hugeTime = World.TICKS_PER_DAY * 1000000L + 6000;
+    world.setWorldTime(hugeTime);
+
+    assertEquals(0.25f, world.getTimeOfDay(), 1e-5f);
+  }
+
+  @Test
+  void testTickUpdatesWorldTime() {
+    long initialTime = world.getWorldTime();
+    world.tick();
+    assertEquals(initialTime + 1, world.getWorldTime());
+  }
 }

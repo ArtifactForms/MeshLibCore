@@ -12,6 +12,9 @@ import common.game.block.Blocks;
  */
 public class World {
 
+  /** Total ticks for one full day/night cycle */
+  public static final int TICKS_PER_DAY = 24000;
+
   // Chunk dimension constants for internal calculations
   private static final int CHUNK_WIDTH = ChunkData.WIDTH;
   private static final int CHUNK_DEPTH = ChunkData.DEPTH;
@@ -128,8 +131,21 @@ public class World {
   public long getWorldTime() {
     return worldTime;
   }
-  
+
   public int getLoadedChunksCount() {
-	  return chunks.size();
+    return chunks.size();
+  }
+
+  /** Sets the absolute world time. Useful for server sync or commands. */
+  public void setWorldTime(long time) {
+    this.worldTime = time;
+  }
+
+  /**
+   * * Returns the progress of the current day as a value between 0.0 and 1.0. 0.0 = Sunrise, 0.5 =
+   * Sunset (depending on your renderer logic).
+   */
+  public float getTimeOfDay() {
+    return (worldTime % TICKS_PER_DAY) / (float) TICKS_PER_DAY;
   }
 }
