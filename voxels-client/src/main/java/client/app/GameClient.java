@@ -11,6 +11,7 @@ import client.ui.ClientView;
 import client.ui.View;
 import client.world.ChunkManager;
 import client.world.ClientWorld;
+import client.world.ClientWorldOrigin;
 import common.network.NetworkPackets;
 import engine.application.BasicApplication;
 import engine.scene.camera.Camera;
@@ -75,6 +76,10 @@ public class GameClient {
 
   public ClientWorld getWorld() {
     return world;
+  }
+
+  public ClientWorldOrigin getWorldOrigin() {
+    return world.getOrigin();
   }
 
   public ClientPlayer getPlayer() {

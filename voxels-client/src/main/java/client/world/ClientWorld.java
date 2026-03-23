@@ -10,6 +10,7 @@ public class ClientWorld extends World {
   public static final int TICKS_PER_SECOND = 20;
 
   private float fractionalTickCounter = 0;
+  private final ClientWorldOrigin origin = new ClientWorldOrigin();
 
   private ChunkManager chunkManager;
   // Warteschlange für Datenpakete vom Server
@@ -53,6 +54,10 @@ public class ClientWorld extends World {
 
   public void setChunkManager(ChunkManager chunkManager) {
     this.chunkManager = chunkManager;
+  }
+
+  public ClientWorldOrigin getOrigin() {
+    return origin;
   }
 
   public void update(float tpf) {
