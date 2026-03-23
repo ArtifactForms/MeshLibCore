@@ -29,5 +29,6 @@ public class Resources {
   public static final String FOOT_STEP_GRASS_4_KEY = SoundEffect.FOOT_STEP_GRASS_4;
   public static final String FOOT_STEP_GRASS_4_PATH = "steps/footstep-grass-4.wav";
 
-  public static final String GAME_START_BUTTON_TEXT = "PLAY";
+  public static final String GAME_START_BUTTON_TEXT = "START";
+  public static final String GAME_QUIT_BUTTON_TEXT = "QUIT";
 }

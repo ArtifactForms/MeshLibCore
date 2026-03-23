@@ -1,23 +1,26 @@
 package debug;
 
 import client.rendering.RenderSettings;
+import client.usecases.debug.displaychunkborders.DisplayChunkBordersComponent;
 import messages.MessagePrefix;
 import messages.MessageService;
 
 public class DebugController {
 
-  private boolean chunkBordersVisible;
+  private DisplayChunkBordersComponent displayChunkBordersComponent;
   private MessageService messageService;
 
-  public DebugController(MessageService messageService) {
+  public DebugController(
+      MessageService messageService, DisplayChunkBordersComponent displayChunkBordersComponent) {
     this.messageService = messageService;
+    this.displayChunkBordersComponent = displayChunkBordersComponent;
   }
 
-  void onShowHideChunkBorders() {
-	  
+  public void onShowHideChunkBorders() {
+    displayChunkBordersComponent.toggle();
   }
 
-  void onEnableDisableFrustumCulling() {
+  public void onEnableDisableFrustumCulling() {
     RenderSettings.frustum_Culling = !RenderSettings.frustum_Culling;
     String value = RenderSettings.frustum_Culling ? "enabled" : "disabled";
     messageService.displayMessage(MessagePrefix.DEBUG, "Frustum culling: " + value);

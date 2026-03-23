@@ -3,8 +3,13 @@ package client.world;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.world.World;
+import common.world.WorldTime;
 
 public class ClientWorld extends World {
+
+  public static final int TICKS_PER_SECOND = 20;
+
+  private float fractionalTickCounter = 0;
 
   private ChunkManager chunkManager;
   // Warteschlange für Datenpakete vom Server
@@ -48,5 +53,24 @@ public class ClientWorld extends World {
 
   public void setChunkManager(ChunkManager chunkManager) {
     this.chunkManager = chunkManager;
+  }
+
+  public void update(float tpf) {
+    // Wir addieren den Fortschritt auf einen float-Counter
+    fractionalTickCounter += tpf * TICKS_PER_SECOND;
+
+    // Sobald der Counter >= 1 ist, schieben wir die vollen Ticks in worldTime
+    if (fractionalTickCounter >= 1.0f) {
+      int fullTicks = (int) fractionalTickCounter;
+      worldTime += fullTicks;
+      fractionalTickCounter -= fullTicks;
+    }
+  }
+
+  @Override
+  public float getTimeOfDay() {
+    // worldTime (ganze Ticks) + fractionalTickCounter (Nachkommastellen)
+    float preciseTime = worldTime + fractionalTickCounter;
+    return (preciseTime % WorldTime.DAY_LENGTH) / (float) WorldTime.DAY_LENGTH;
   }
 }

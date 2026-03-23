@@ -9,13 +9,16 @@ import client.settings.GameSettings;
 import client.world.Chunk;
 import engine.components.StaticGeometry;
 import engine.rendering.Graphics;
+import engine.rendering.Material;
 import engine.scene.camera.Camera;
 import engine.scene.camera.Frustum;
 import math.Bounds;
+import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.topology.FlipFacesModifier;
+import mesh.modifier.transform.ScaleModifier;
 
 public class BasicChunkRenderer implements ChunkRenderer {
 
@@ -35,11 +38,12 @@ public class BasicChunkRenderer implements ChunkRenderer {
 
   @Override
   public void renderChunks(Graphics g, Collection<Chunk> chunks) {
-
     // =========================
     // TIME + SUN
     // =========================
-    float timeOfDay = (System.currentTimeMillis() % 60000L) / 60000f;
+    float timeOfDay = client.getWorld().getTimeOfDay();
+
+    //    float timeOfDay = (System.currentTimeMillis() % 60000L) / 60000f;
     float angle = timeOfDay * (float) Math.PI * 2f;
 
     Vector3f sunDir =
@@ -86,9 +90,9 @@ public class BasicChunkRenderer implements ChunkRenderer {
     // =========================
     // SKY
     // =========================
-    g.disableDepthMask();
+    //    g.disableDepthMask();
     renderSky(g);
-    g.enableDepthMask();
+    //    g.enableDepthMask();
 
     // =========================
     // Collect visible Chunks
@@ -131,7 +135,6 @@ public class BasicChunkRenderer implements ChunkRenderer {
 
     g.disableFaceCulling();
 
-    // =========================
     // DECOR PASS / CUT OUT
     // =========================
     g.setShader("voxel.vert", "voxel.frag"); // ✅ SAME SHADER
@@ -166,12 +169,12 @@ public class BasicChunkRenderer implements ChunkRenderer {
 
     g.setUniform("u_fogDensity", 0.0035f);
 
-    g.disableDepthMask();
+//    g.disableDepthMask();
   }
 
   private void endWater(Graphics g) {
     g.resetShader();
-    g.enableDepthMask();
+//    g.enableDepthMask();
   }
 
   private void beginFog(Graphics g) {
@@ -255,8 +258,9 @@ public class BasicChunkRenderer implements ChunkRenderer {
 
   static {
     Mesh3D cube = new CubeCreator(0.5f).create();
+    new ScaleModifier(500).modify(cube);
     new FlipFacesModifier().modify(cube);
-    skyGeo = new StaticGeometry(cube);
+    skyGeo = new StaticGeometry(cube, new Material(new Color(0, 0, 0, 0)));
   }
 
   private void renderSkyCube(Graphics g) {

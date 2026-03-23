@@ -4,8 +4,6 @@ import client.settings.KeyBinds;
 import common.game.Hotbar;
 import engine.components.AbstractComponent;
 import engine.runtime.input.Input;
-import input.InputMode;
-import input.InputSettings;
 
 public class HotbarComponent extends AbstractComponent {
 
@@ -19,11 +17,15 @@ public class HotbarComponent extends AbstractComponent {
 
   @Override
   public void onUpdate(float tpf) {
-    if (InputSettings.inputMode != InputMode.GAMEPLAY) {
+    if (isGameplayBlocked()) {
       return;
     }
     handleNumberKeys();
     handleMouseWheel();
+  }
+
+  private boolean isGameplayBlocked() {
+    return getOwner().getScene().getTopScreen().blocksGameplay();
   }
 
   private void handleMouseWheel() {

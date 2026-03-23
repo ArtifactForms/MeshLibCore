@@ -136,7 +136,7 @@ public final class Raycasting {
     while (t <= maxDistance) {
 
       // Check if current voxel contains a solid block
-      if (world.isSolid(x, y, z)) {
+      if (world.getBlock(x, y, z).isSelectable()) {
 
         int placeX = x + hitFace.x;
         int placeY = y + hitFace.y;

@@ -25,6 +25,7 @@ import common.network.packets.PlayerSlotClearPacket;
 import common.network.packets.PlayerSlotUpdatePacket;
 import common.network.packets.PlayerSpawnPacket;
 import common.network.packets.SoundEffectPacket;
+import common.network.packets.TimeUpdatePacket;
 import common.network.packets.TitlePacket;
 import common.network.packets.UpdateSlotPacket;
 import engine.scene.audio.SoundManager;
@@ -55,6 +56,7 @@ public class ClientPacketDispatcher {
     register(PlayerInventoryFullUpdatePacket.class, this::handleInventoryFullUpdate);
     register(ActionBarPacket.class, this::handleActionBar);
     register(PlayerSlotClearPacket.class, this::handleSlotClear);
+    register(TimeUpdatePacket.class, this::handleTimeUpdate);
   }
 
   private <T extends Packet> void register(Class<T> packetClass, Consumer<T> handler) {
@@ -67,6 +69,10 @@ public class ClientPacketDispatcher {
       handler.accept(packet);
     }
     // Unregistered packets are simply ignored on the client (e.g. PlayerMovePacket)
+  }
+  
+  private void handleTimeUpdate(TimeUpdatePacket packet) {
+	  client.getWorld().setWorldTime(packet.getWorldTime());
   }
 
   private void handleSlotClear(PlayerSlotClearPacket packet) {
@@ -119,7 +125,7 @@ public class ClientPacketDispatcher {
       float tolerance = 4f;
 
       if (packet.isTeleport()) {
-
+    	client.getView().getChatView().addMessage(new ChatMessage("Teleport"));
         localPlayer.setPositionFromTeleport(serverX, serverY, serverZ);
 
       } else if (distanceSq > tolerance * tolerance) {

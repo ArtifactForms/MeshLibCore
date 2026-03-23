@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import common.game.Hotbar;
-import common.game.ItemStack;
 import engine.components.AbstractComponent;
 import engine.components.Geometry;
 import engine.components.RenderableComponent;

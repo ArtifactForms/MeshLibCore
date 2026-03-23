@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import client.resources.TextureAtlas;
 import client.ui.GameTextures;
+import common.game.block.BlockRegistry;
+import common.game.block.BlockShape;
 import common.game.block.Blocks;
 import engine.backend.processing.BufferedShape;
 import engine.components.StaticGeometry;
@@ -89,11 +91,13 @@ public class ChunkMesher {
                 for (int z = 0; z < Chunk.DEPTH; z++) {
                     if (visited[x][z]) continue;
                     
-                    int blockId = chunk.getBlockId(x, y, z);
+                    short blockId = chunk.getBlockId(x, y, z);
                     if (blockId == Blocks.AIR.getId() || !shouldRender(blockId, x, y + 1, z)) continue;
 
-                    // TODO ask shape e.g. block, cross
-                    if (blockId == Blocks.GRASS.getId()) continue;
+                    // shape e.g. block, cross
+                    if (BlockRegistry.get(blockId).getShape() == BlockShape.CROSS)
+                    	continue;
+//                    if (blockId == Blocks.GRASS.getId()) continue;
                     
                     // Entscheide, in welches Mesh dieser Block gehört
                     currentShape = (blockId == Blocks.WATER.getId()) ? waterShape : opaqueShape;
@@ -128,13 +132,13 @@ public class ChunkMesher {
         for (int x = 0; x < Chunk.WIDTH; x++) {
             for (int z = 0; z < Chunk.DEPTH; z++) {
                 for (int y = 0; y < Chunk.HEIGHT; y++) {
-                    int blockId = chunk.getBlockId(x, y, z);
+                    short blockId = chunk.getBlockId(x, y, z);
                     if (blockId == Blocks.AIR.getId()) continue;
 
                     // Entscheide, in welches Mesh dieser Block gehört
                     currentShape = (blockId == Blocks.WATER.getId()) ? waterShape : opaqueShape;
 
-                    if (blockId == Blocks.GRASS.getId()) { 
+                    if (BlockRegistry.get(blockId).getShape() == BlockShape.CROSS) { 
                         createBillBoard(x, y, z); 
                         continue; 
                     }

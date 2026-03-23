@@ -16,6 +16,10 @@ public class DebugComponent extends AbstractComponent {
 
   @Override
   public void onUpdate(float tpf) {
+    if (isGameplayBlocked()) {
+      return;
+    }
+
     if (input.wasKeyReleased(KeyBinds.enableDisableFrustumCulling)) {
       controller.onEnableDisableFrustumCulling();
     }
@@ -23,5 +27,9 @@ public class DebugComponent extends AbstractComponent {
     if (input.wasKeyReleased(KeyBinds.showHideChunkBorders)) {
       controller.onShowHideChunkBorders();
     }
+  }
+
+  private boolean isGameplayBlocked() {
+    return getOwner().getScene().getTopScreen().blocksGameplay();
   }
 }

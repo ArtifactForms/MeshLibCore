@@ -23,17 +23,19 @@ public class ClientApplication extends BasicApplication {
 
   private PlayerNetworkSync playerNetworkSync;
   private ChunkStreamingSystem chunkStreamingSystem;
+  private GameClient client;
 
   @Override
   public void onInitialize() {
     setDisplayInfo(true);
-    
+
+    //    BlockLoader.load();
     Blocks.initialize();
     BlockRegistry.freeze();
     ItemRegistry.init();
     GameRecipes.init();
 
-    GameClient client = new GameClient(this);
+    client = new GameClient(this);
     network = client.getNetwork();
     playerNetworkSync = new PlayerNetworkSync(client.getPlayer(), client.getNetwork());
     chunkStreamingSystem = new ChunkStreamingSystem(client.getPlayer(), client.getChunkManager());
@@ -61,6 +63,7 @@ public class ClientApplication extends BasicApplication {
     if (network != null && network.isRunning()) {
       network.update();
     }
+    client.getWorld().update(tpf);
   }
 
   @Override

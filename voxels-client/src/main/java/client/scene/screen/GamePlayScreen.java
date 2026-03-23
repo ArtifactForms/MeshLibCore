@@ -4,7 +4,8 @@ import client.app.GameClient;
 import client.ui.actionbar.ActionBarComponent;
 import client.usecases.chat.ChatViewComponent;
 import engine.components.CrossLineReticle;
-import engine.runtime.input.Input;
+import engine.runtime.input.KeyEvent;
+import engine.runtime.input.MouseEvent;
 import engine.scene.SceneNode;
 import engine.scene.screen.GameScreen;
 
@@ -12,8 +13,7 @@ public class GamePlayScreen extends GameScreen {
 
   private GameClient client;
 
-  public GamePlayScreen(Input input, GameClient client) {
-    super(input);
+  public GamePlayScreen(GameClient client) {
     this.client = client;
     setupWorld();
     setupUI();
@@ -50,6 +50,21 @@ public class GamePlayScreen extends GameScreen {
   }
 
   @Override
+  public boolean capturesMouse() {
+    return true;
+  }
+
+  @Override
+  public boolean isTransparent() {
+    return false;
+  }
+
+  @Override
+  public boolean blocksGameplay() {
+    return false;
+  }
+
+  @Override
   public void onEnter() {}
 
   @Override
@@ -59,7 +74,42 @@ public class GamePlayScreen extends GameScreen {
   public void update(float tpf) {}
 
   @Override
-  public boolean consumeInput() {
+  public boolean onMouseClicked(MouseEvent e) {
+    return false;
+  }
+
+  @Override
+  public boolean onMousePressed(MouseEvent e) {
+    return false;
+  }
+
+  @Override
+  public boolean onMouseMoved(MouseEvent e) {
+    return false;
+  }
+
+  @Override
+  public boolean onMouseDragged(MouseEvent e) {
+    return false;
+  }
+
+  @Override
+  public boolean onMouseReleased(MouseEvent e) {
+    return false;
+  }
+
+  @Override
+  public boolean onKeyPressed(KeyEvent e) {
+    return false;
+  }
+
+  @Override
+  public boolean onKeyReleased(KeyEvent e) {
+    return false;
+  }
+
+  @Override
+  public boolean onKeyTyped(KeyEvent e) {
     return false;
   }
 }

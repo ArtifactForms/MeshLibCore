@@ -4,8 +4,9 @@ import client.app.GameClient;
 import client.cam.CameraManager;
 import client.entity.EntitiesComponent;
 import client.player.PlayerController;
+import client.scene.screen.DebugScreen;
 import client.scene.screen.GamePlayScreen;
-import client.ui.actionbar.ActionBarComponent;
+import client.scene.screen.OverlayTestComponent;
 import client.ui.hotbar.HotbarComponent;
 import client.ui.hotbar.HotbarViewComponent;
 import client.ui.title.TitleTextComponent;
@@ -23,11 +24,7 @@ import client.usecases.openinventory.OpenInventoryComponent;
 import client.usecases.openinventory.OpenInventoryController;
 import common.game.Hotbar;
 import common.game.Inventory;
-import common.game.block.BlockRegistry;
-import common.game.block.BlockType;
-import debug.DebugComponent;
 import debug.DebugController;
-import engine.components.CrossLineReticle;
 import engine.runtime.input.Input;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
@@ -45,12 +42,12 @@ public class GameScene extends Scene {
   private PlayerController playerController;
 
   public GameScene(Input input, GameClient client) {
-    GamePlayScreen screen = new GamePlayScreen(input, client);
+    GamePlayScreen screen = new GamePlayScreen(client);
     pushScreen(screen);
 
     this.client = client;
 
-    setBackground(Color.getColorFromInt(180, 210, 255));
+    setBackground(Color.DARK_GRAY);
 
     this.input = input;
     setupPlayer();
@@ -70,22 +67,34 @@ public class GameScene extends Scene {
     addNode(entities);
     //    view.getActionBarView().display("Test Message", 6);
 
-    setupDebug();
-  }
+    //    setupDebug();
 
-  private void setupDebug() {
+//    OverlayTestComponent overlayComponent = new OverlayTestComponent(input, client);
+//    SceneNode node1 = new SceneNode("", overlayComponent);
+//    addNode(node1);
+    
+    
     ChatMessageService messageService = new ChatMessageService(client.getView().getChatView());
-
-    DebugController controller = new DebugController(messageService);
-    DebugComponent debugComponent = new DebugComponent(input, controller);
-    addNode(new SceneNode("Debug", debugComponent));
-
-    SceneNode debugNode =
-        new SceneNode(
-            "Debug-Chunk",
-            new DisplayChunkBordersComponent(input, client.getPlayer(), messageService));
-    addNode(debugNode);
+    DisplayChunkBordersComponent displayChunkBordersComponent =
+        new DisplayChunkBordersComponent(input, client.getPlayer(), messageService);
+    addNode(new SceneNode("Chunk-Borders", displayChunkBordersComponent));
+    DebugController controller1 = new DebugController(messageService, displayChunkBordersComponent);
+    pushScreen(new DebugScreen(controller1));
   }
+
+  //  private void setupDebug() {
+  //    ChatMessageService messageService = new ChatMessageService(client.getView().getChatView());
+  //
+  //    DebugController controller = new DebugController(messageService);
+  //    DebugComponent debugComponent = new DebugComponent(input, controller);
+  //    addNode(new SceneNode("Debug", debugComponent));
+  //
+  //    SceneNode debugNode =
+  //        new SceneNode(
+  //            "Debug-Chunk",
+  //            new DisplayChunkBordersComponent(input, client.getPlayer(), messageService));
+  //    addNode(debugNode);
+  //  }
 
   private void setupPlayer() {
     player = new SceneNode("Player");
@@ -112,8 +121,9 @@ public class GameScene extends Scene {
   private void setupUI() {
     //    setupActionBar();
     setupHotBar();
-    setupChat();
     setupInventory();
+    setupChat();
+
     //    setupReticle();
     setupTitleView();
   }
@@ -132,11 +142,11 @@ public class GameScene extends Scene {
     SceneNode chatNode = new SceneNode("Chat", chatComponent);
     getUIRoot().addChild(chatNode);
 
-    //    ChatViewComponent chatView = new ChatViewComponent();
-    //    SceneNode chatViewNode = new SceneNode();
-    //    chatViewNode.addComponent(chatView);
-    //    client.getView().setChatView(chatView);
-    //    getUIRoot().addChild(chatViewNode);
+    ChatViewComponent chatView = new ChatViewComponent();
+    SceneNode chatViewNode = new SceneNode();
+    chatViewNode.addComponent(chatView);
+    client.getView().setChatView(chatView);
+    getUIRoot().addChild(chatViewNode);
   }
 
   private void setupHotBar() {
@@ -159,7 +169,8 @@ public class GameScene extends Scene {
   private void setupInventory() {
     Inventory inventory = client.getPlayer().getInventory();
 
-    InventoryViewComponent component = new InventoryViewComponent(input, inventory, client.getNetwork());
+    InventoryViewComponent component =
+        new InventoryViewComponent(input, inventory, client.getNetwork());
     client.getView().setInventoryView(component);
 
     OpenInventoryController controller = new OpenInventoryController(client);

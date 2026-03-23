@@ -18,7 +18,6 @@ import engine.scene.SceneNode;
 import engine.scene.camera.Camera;
 import engine.scene.camera.OrbitCamera;
 import engine.scene.camera.OrbitCameraControl;
-import engine.scene.camera.PerspectiveCamera;
 import math.Vector3f;
 
 public class CameraManager {
@@ -38,7 +37,7 @@ public class CameraManager {
     this.playerController = playerController;
     this.client = client;
     setupOrbitCam();
-    
+
     this.camera = client.getPlayerCamera();
 
     SceneNode control = new SceneNode("", new ControlComponent());

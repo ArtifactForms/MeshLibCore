@@ -8,8 +8,6 @@ import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
 import engine.runtime.input.Input;
-import input.InputMode;
-import input.InputSettings;
 
 public class InteractionComponent extends AbstractComponent implements RenderableComponent {
 
@@ -29,9 +27,9 @@ public class InteractionComponent extends AbstractComponent implements Renderabl
 
   @Override
   public void update(float tpf) {
-	 if (InputSettings.inputMode != InputMode.GAMEPLAY) {
-	        return;
-	 }
+	  if (isGameplayBlocked()) {
+		  return;
+	  }
 	 
     RaycastResult result = targeting.raycast(getOwner());
     currentTarget = result.target;
@@ -61,5 +59,9 @@ public class InteractionComponent extends AbstractComponent implements Renderabl
     }
 
     BlockHighlightRenderer.render(g, block.x, block.y, block.z);
+  }
+  
+  private boolean isGameplayBlocked() {
+	  return getOwner().getScene().getTopScreen().blocksGameplay();
   }
 }

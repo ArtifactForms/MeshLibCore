@@ -1,10 +1,10 @@
 package client.usecases.openinventory;
 
+import client.scene.screen.InventoryScreen;
 import client.settings.KeyBinds;
 import client.ui.cursor.SimpleCursorComponent;
 import engine.components.AbstractComponent;
 import engine.runtime.input.Input;
-import engine.runtime.input.MouseMode;
 import engine.scene.SceneNode;
 
 public class OpenInventoryComponent extends AbstractComponent {
@@ -28,13 +28,13 @@ public class OpenInventoryComponent extends AbstractComponent {
     if (!lastPressed && pressed) {
       inventoryOpen = !inventoryOpen;
       if (inventoryOpen) {
+        getOwner().getScene().pushScreen(new InventoryScreen());
         controller.onInventoryOpen();
-        input.setMouseMode(MouseMode.ABSOLUTE);
         getOwner().getScene().getUIRoot().addChild(cursor);
       } else {
         controller.onInventoryClose();
-        input.setMouseMode(MouseMode.LOCKED);
         getOwner().getScene().getUIRoot().removeChild(cursor);
+        getOwner().getScene().popScreen();
       }
     }
 

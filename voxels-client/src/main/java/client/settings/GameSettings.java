@@ -2,7 +2,7 @@ package client.settings;
 
 public class GameSettings {
 
-  public static boolean textureNoise = false;
+  public static boolean textureNoise = true;
 
   public static boolean textureDebugText = false;
 

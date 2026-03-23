@@ -5,10 +5,7 @@ import client.settings.KeyBinds;
 import engine.components.AbstractComponent;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
-import engine.runtime.input.MouseMode;
 import engine.scene.camera.Camera;
-import input.InputMode;
-import input.InputSettings;
 import math.Mathf;
 import math.Vector3f;
 
@@ -61,7 +58,7 @@ public class PlayerController extends AbstractComponent {
 
   @Override
   public void onUpdate(float tpf) {
-    if (InputSettings.inputMode != InputMode.GAMEPLAY) {
+    if (getOwner().getScene().getTopScreen().blocksGameplay()) {
       return;
     }
 
@@ -245,9 +242,6 @@ public class PlayerController extends AbstractComponent {
 
   @Override
   public void onAttach() {
-
-    input.setMouseMode(MouseMode.LOCKED);
-
     Vector3f pPos = player.getPosition();
 
     syncTargetPosition.set(pPos.x, -pPos.y, pPos.z);
@@ -260,8 +254,7 @@ public class PlayerController extends AbstractComponent {
 
   @Override
   public void onDetach() {
-
-    input.setMouseMode(MouseMode.ABSOLUTE);
+    // Do nothing
   }
 
   public void setMouseSensitivity(float mouseSensitivity) {

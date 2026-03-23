@@ -109,11 +109,6 @@ public class Chunk extends ChunkData {
     }
   }
 
-  public void render(Graphics g) {
-    renderOpaque(g);
-    renderWater(g);
-  }
-
   public void markDirty() {
     this.needsRebuild = true;
   }
