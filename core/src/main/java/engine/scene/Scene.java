@@ -1,8 +1,6 @@
 package engine.scene;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 import engine.components.Transform;
@@ -12,6 +10,8 @@ import engine.scene.audio.AudioSystem;
 import engine.scene.camera.Camera;
 import engine.scene.light.Light;
 import engine.scene.screen.GameScreen;
+import engine.scene.screen.GlobalInput;
+import engine.scene.screen.ScreenManager;
 import engine.system.SceneSystem;
 import engine.system.SceneSystemManager;
 import engine.system.UpdatePhase;
@@ -50,7 +50,7 @@ public class Scene {
 
   private SceneSystemManager systemManager;
 
-  private final Deque<GameScreen> screenStack = new ArrayDeque<>();
+  private final ScreenManager screenManager;
 
   /** Constructs a {@code Scene} with a default name. */
   public Scene() {
@@ -76,6 +76,7 @@ public class Scene {
     this.worldRoot = new SceneNode();
     this.worldRoot.setScene(this);
     this.systemManager = new SceneSystemManager();
+    this.screenManager = new ScreenManager(GlobalInput.input, this);
   }
 
   /**
@@ -135,13 +136,6 @@ public class Scene {
 
       // Update the scene graph during the WORLD_UPDATE phase
       if (phase == UpdatePhase.WORLD_UPDATE) {
-        if (!screenStack.isEmpty()) {
-          screenStack.peek().consumeInput();
-        }
-
-        for (GameScreen screen : screenStack) {
-          screen.update(deltaTime);
-        }
 
         worldRoot.update(deltaTime);
         worldRoot.pruneDestroyedChildren();
@@ -518,24 +512,14 @@ public class Scene {
   }
 
   public void pushScreen(GameScreen screen) {
-    if (!screenStack.isEmpty()) {
-      // Optional: screenStack.peek().onPause();
-    }
-    screenStack.push(screen);
-
-    this.worldRoot.addChild(screen.getRootNode());
-    this.uiRoot.addChild(screen.getUiRootNode());
-
-    screen.onEnter();
+    screenManager.push(screen);
   }
 
   public void popScreen() {
-    if (!screenStack.isEmpty()) {
-      GameScreen top = screenStack.pop();
-      top.onExit();
+    screenManager.pop();
+  }
 
-      this.worldRoot.removeChild(top.getRootNode());
-      this.uiRoot.removeChild(top.getUiRootNode());
-    }
+  public GameScreen getTopScreen() {
+    return screenManager.peek();
   }
 }

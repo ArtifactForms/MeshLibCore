@@ -9,6 +9,7 @@ import engine.runtime.input.GamepadInput;
 import engine.runtime.input.Input;
 import engine.runtime.input.KeyInput;
 import engine.runtime.input.MouseInput;
+import engine.scene.screen.GlobalInput;
 import engine.vbo.VBOFactory;
 import processing.core.PApplet;
 
@@ -60,6 +61,7 @@ public class ProcessingApplication extends PApplet {
     GamepadInput gamepadInput = new JInputGamepadInput();
     Input input = new InputImpl(keyInput, mouseInput, gamepadInput);
     container.setInput(input);
+    GlobalInput.input = input;
   }
 
   @Override
@@ -67,6 +69,8 @@ public class ProcessingApplication extends PApplet {
     colorMode(RGB, 1.0f);
     background(0);
     noLights();
+    noStroke();
+    clear();
     container.update();
     container.render();
   }
