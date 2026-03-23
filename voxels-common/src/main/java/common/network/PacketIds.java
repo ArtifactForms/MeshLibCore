@@ -31,4 +31,5 @@ public class PacketIds {
   public static final int BLOCK_PICK = 27;
   public static final int PLAYER_SLOT_CLEAR = 28;
   public static final int UNLOAD_CHUNK = 29;
+  public static final int TIME_UPDATE = 30;
 }

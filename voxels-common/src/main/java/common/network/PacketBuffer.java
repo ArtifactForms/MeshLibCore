@@ -14,7 +14,7 @@ public class PacketBuffer {
   private DataOutputStream out;
 
   // Max String length to avoid Memory-Exploits
-  private static final int MAX_STRING_LENGTH = Short.MAX_VALUE;
+  public static final int MAX_STRING_LENGTH = Short.MAX_VALUE;
 
   public PacketBuffer(DataInputStream in, DataOutputStream out) {
     this.in = in;

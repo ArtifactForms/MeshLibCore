@@ -1,6 +1,30 @@
 package common.network;
 
-import common.network.packets.*;
+import common.network.packets.ActionBarPacket;
+import common.network.packets.BlockBreakPacket;
+import common.network.packets.BlockPickPacket;
+import common.network.packets.BlockPlacePacket;
+import common.network.packets.BlockUpdatePacket;
+import common.network.packets.ChatMessagePacket;
+import common.network.packets.ChunkDataPacket;
+import common.network.packets.EntityDestroyPacket;
+import common.network.packets.InventoryActionPacket;
+import common.network.packets.ItemPickupPacket;
+import common.network.packets.ItemSpawnPacket;
+import common.network.packets.PlayerDropItemPacket;
+import common.network.packets.PlayerInventoryFullUpdatePacket;
+import common.network.packets.PlayerJoinPacket;
+import common.network.packets.PlayerMovePacket;
+import common.network.packets.PlayerOpenInventoryPacket;
+import common.network.packets.PlayerPositionPacket;
+import common.network.packets.PlayerQuitPacket;
+import common.network.packets.PlayerSlotClearPacket;
+import common.network.packets.PlayerSlotUpdatePacket;
+import common.network.packets.PlayerSpawnPacket;
+import common.network.packets.SoundEffectPacket;
+import common.network.packets.TimeUpdatePacket;
+import common.network.packets.TitlePacket;
+import common.network.packets.UpdateSlotPacket;
 
 /**
  * Utility class to initialize the global packet protocol. This must be called on both Client and
@@ -21,7 +45,7 @@ public class NetworkPackets {
     PacketRegistry.register(PlayerQuitPacket::new);
     PacketRegistry.register(PlayerOpenInventoryPacket::new);
     PacketRegistry.register(PlayerDropItemPacket::new);
-    
+
     // Inventory
     PacketRegistry.register(PlayerSlotUpdatePacket::new);
     PacketRegistry.register(PlayerInventoryFullUpdatePacket::new);
@@ -52,5 +76,8 @@ public class NetworkPackets {
     // HUD
     PacketRegistry.register(ActionBarPacket::new);
     PacketRegistry.register(TitlePacket::new);
+
+    // World & Time
+    PacketRegistry.register(TimeUpdatePacket::new);
   }
 }

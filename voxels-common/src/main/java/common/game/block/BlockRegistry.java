@@ -2,29 +2,38 @@ package common.game.block;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public final class BlockRegistry {
 
+  private static int maxId = 0;
   private static final int MAX_BLOCKS = 4096;
 
   private static final BlockType[] BY_ID = new BlockType[MAX_BLOCKS];
   private static final Map<String, BlockType> BY_NAME = new HashMap<>();
 
-  private static short nextId = 0;
   private static boolean frozen = false;
 
-  public static BlockType register(String name) {
-
+  public static BlockType register(short id, String name) {
     if (frozen) {
-      throw new IllegalStateException("BlockRegistry is frozen. No more blocks can be registered.");
+      throw new IllegalStateException("BlockRegistry is frozen.");
     }
 
-    short id = nextId++;
+    // Safety check: Is ID already taken?
+    if (BY_ID[id] != null) {
+      throw new IllegalStateException(
+          "Block ID " + id + " is already occupied by " + BY_ID[id].getName());
+    }
 
     BlockType block = new BlockType(id, name);
-
     BY_ID[id] = block;
     BY_NAME.put(name, block);
+
+    // Track the highest ID for iteration boundaries
+    if (id > maxId) {
+      maxId = id;
+    }
 
     return block;
   }
@@ -38,23 +47,26 @@ public final class BlockRegistry {
     return BY_NAME.get(name);
   }
 
-  /** Returns all registered blocks. Useful for iteration (items, rendering systems, etc). */
+  /** * Returns an iterable of all non-null blocks. Handles potential gaps in the ID array. */
   public static Iterable<BlockType> getAll() {
     return () ->
-        new java.util.Iterator<>() {
-
+        new Iterator<>() {
           private int index = 0;
 
           @Override
           public boolean hasNext() {
-            while (index < nextId && BY_ID[index] == null) {
+            // Skip null entries until we find a block or reach the end
+            while (index <= maxId && BY_ID[index] == null) {
               index++;
             }
-            return index < nextId;
+            return index <= maxId;
           }
 
           @Override
           public BlockType next() {
+            if (!hasNext()) {
+              throw new NoSuchElementException();
+            }
             return BY_ID[index++];
           }
         };
@@ -64,11 +76,12 @@ public final class BlockRegistry {
     frozen = true;
   }
 
-  public static boolean isFrozen() {
-    return frozen;
+  public static int size() {
+    // Returns the actual count of registered blocks
+    return BY_NAME.size();
   }
 
-  public static int size() {
-    return nextId;
+  public static int getMaxId() {
+    return maxId;
   }
 }

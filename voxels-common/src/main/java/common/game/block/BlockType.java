@@ -11,7 +11,12 @@ public final class BlockType {
   // Performance-critical flags
   private boolean solid = true;
   private boolean opaque = true;
+  private boolean selectable = true;
   private int lightEmission = 0;
+
+  private int r = 255;
+  private int g = 0;
+  private int b = 255;
 
   private BlockShape shape = BlockShape.CUBE;
 
@@ -34,6 +39,25 @@ public final class BlockType {
 
   public boolean hasBehavior(Class<?> type) {
     return behaviors.containsKey(type);
+  }
+
+  public BlockType setMapColor(int r, int g, int b) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    return this;
+  }
+
+  public int getR() {
+    return r;
+  }
+
+  public int getG() {
+    return g;
+  }
+
+  public int getB() {
+    return b;
   }
 
   public short getId() {
@@ -60,6 +84,15 @@ public final class BlockType {
 
   public boolean isOpaque() {
     return opaque;
+  }
+
+  public boolean isSelectable() {
+    return selectable;
+  }
+
+  public BlockType setSelectable(boolean selectable) {
+    this.selectable = selectable;
+    return this;
   }
 
   public BlockType setLightEmission(int value) {

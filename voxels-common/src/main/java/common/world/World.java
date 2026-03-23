@@ -12,9 +12,6 @@ import common.game.block.Blocks;
  */
 public class World {
 
-  /** Total ticks for one full day/night cycle */
-  public static final int TICKS_PER_DAY = 24000;
-
   // Chunk dimension constants for internal calculations
   private static final int CHUNK_WIDTH = ChunkData.WIDTH;
   private static final int CHUNK_DEPTH = ChunkData.DEPTH;
@@ -25,6 +22,7 @@ public class World {
   private static final int MAX_Y = CHUNK_HEIGHT - 1;
 
   protected long worldTime = 0;
+  protected String name = "";
 
   // Thread-safe map to store chunks by a single long key (packed X/Z)
   protected final Map<Long, ChunkData> chunks = new ConcurrentHashMap<>();
@@ -146,6 +144,10 @@ public class World {
    * Sunset (depending on your renderer logic).
    */
   public float getTimeOfDay() {
-    return (worldTime % TICKS_PER_DAY) / (float) TICKS_PER_DAY;
+    return (worldTime % WorldTime.DAY_LENGTH) / (float) WorldTime.DAY_LENGTH;
+  }
+
+  public String getName() {
+    return name;
   }
 }
