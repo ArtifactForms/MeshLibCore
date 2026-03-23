@@ -6,6 +6,7 @@ import java.util.Set;
 
 import common.logging.Log;
 import common.network.packets.ChatMessagePacket;
+import common.network.packets.TimeUpdatePacket;
 import common.world.ChunkData;
 import common.world.World;
 import server.network.GameServer;
@@ -19,13 +20,14 @@ import server.world.generation.WorldGenerator;
  */
 public class ServerWorld extends World {
 
+  private final long seed;
   private final GameServer gameServer;
   private final ChunkRepository repository;
   private WorldGenerator generator;
 
   public ServerWorld(GameServer gameServer, ChunkRepository repository) {
     // TODO Default seed set to 0; consider passing a dynamic seed in the future
-    long seed = 0;
+    seed = 0;
     this.gameServer = gameServer;
     this.repository = repository;
     this.generator = new BasicWorldGenerator2(seed);
@@ -57,6 +59,12 @@ public class ServerWorld extends World {
       }
     }
     gameServer.getPlayerManager().broadcast(new ChatMessagePacket("World saved."));
+  }
+
+  @Override
+  public void setWorldTime(long time) {
+    super.setWorldTime(time);
+    gameServer.getPlayerManager().broadcast(new TimeUpdatePacket(time));
   }
 
   //  public void unloadUnusedChunks(java.util.Set<Long> requiredByPlayers) {
@@ -148,5 +156,9 @@ public class ServerWorld extends World {
       addChunk(data);
     }
     return data;
+  }
+
+  public long getSeed() {
+    return seed;
   }
 }

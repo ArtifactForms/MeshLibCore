@@ -3,14 +3,22 @@ package server.network;
 import java.io.File;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.UUID;
 
 import common.logging.Log;
 import common.network.Packet;
+import common.network.packets.ChatMessagePacket;
 import server.commands.Command;
 import server.commands.CommandRegistry;
+import server.commands.commands.DayCommand;
+import server.commands.commands.NightCommand;
+import server.commands.commands.PositionCommand;
 import server.commands.commands.PrivateMessageCommand;
+import server.commands.commands.SeedCommand;
 import server.commands.commands.StopCommand;
 import server.commands.commands.TeleportCommand;
+import server.commands.commands.TimeCommand;
+import server.commands.commands.TopCommand;
 import server.config.ServerConfig;
 import server.entity.EntityManager;
 import server.events.EventBus;
@@ -63,7 +71,7 @@ public class GameServer {
 
   private UseCaseRegistry useCases;
   private GatewayContext context;
-  
+
   private final ServerConfig config;
 
   private final TPSCounter tpsCounter = new TPSCounter();
@@ -113,6 +121,12 @@ public class GameServer {
     registerCommand(new StopCommand());
     registerCommand(new TeleportCommand());
     registerCommand(new PrivateMessageCommand());
+    registerCommand(new PositionCommand());
+    registerCommand(new TimeCommand());
+    registerCommand(new DayCommand());
+    registerCommand(new NightCommand());
+    registerCommand(new TopCommand());
+    registerCommand(new SeedCommand());
   }
 
   private void registerCommand(Command command) {
@@ -287,10 +301,10 @@ public class GameServer {
 
     flushNetwork();
 
-//    // TODO DEBUG Remove later
-//    if (tick % 100 == 0) {
-//      playerManager.broadcast(new ChatMessagePacket("tps: " + tpsCounter.getTps() + ""));
-//    }
+    //    // TODO DEBUG Remove later
+    //    if (tick % 100 == 0) {
+    //      playerManager.broadcast(new ChatMessagePacket("tps: " + tpsCounter.getTps() + ""));
+    //    }
   }
 
   public void shutdown() {
@@ -348,5 +362,13 @@ public class GameServer {
 
   public EntityManager getEntityManager() {
     return entityManager;
+  }
+
+  public void broadcastMessage(String message) {
+    getPlayerManager().broadcast(new ChatMessagePacket(message));
+  }
+
+  public boolean hasPermission(UUID playerId, String permission) {
+    return permissionService.hasPermission(playerId, permission);
   }
 }

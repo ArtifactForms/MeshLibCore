@@ -32,4 +32,17 @@ public class CommandContext {
   public boolean isConsole() {
     return this.player == null;
   }
+
+  public void reply(String message) {
+    if (isConsole()) {
+      System.out.println("[Command] " + message);
+      return;
+    }
+
+    server.getPlayerManager().getPlayer(player).sendMessage(message);
+  }
+
+  public boolean hasPermission(String permission) {
+    return server.hasPermission(player, permission);
+  }
 }

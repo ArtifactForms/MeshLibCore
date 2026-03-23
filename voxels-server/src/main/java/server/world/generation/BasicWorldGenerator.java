@@ -2,6 +2,8 @@ package server.world.generation;
 
 import java.util.Random;
 
+import common.game.block.BlockIds;
+import common.game.block.BlockRegistry;
 import common.game.block.BlockType;
 import common.game.block.Blocks;
 import common.world.BiomeType;
@@ -139,14 +141,14 @@ public class BasicWorldGenerator implements WorldGenerator {
     if (y > 140) return Blocks.SNOW;
     if (y > 110) {
       return terrainNoise.noise(wx * 0.05f, wz * 0.05f) < 0.7f
-          ? Blocks.STONE
-          : Blocks.COBBLE_STONE;
+          ? BlockRegistry.get(BlockIds.STONE)
+          : BlockRegistry.get(BlockIds.COBBLESTONE);
     }
 
     // Layers: Grass, Dirt, Stone
     if (y == heightValue) return getTopLayer(biome);
     if (y >= heightValue - 3) return Blocks.DIRT;
-    return Blocks.STONE;
+    return BlockRegistry.get(BlockIds.STONE);
   }
 
   private BlockType getTopLayer(BiomeType biome) {

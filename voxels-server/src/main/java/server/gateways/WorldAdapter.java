@@ -25,4 +25,9 @@ public class WorldAdapter implements WorldGateway {
   public BlockType getBlockType(int x, int y, int z) {
     return world.getBlock(x, y, z);
   }
+
+  @Override
+  public long getWorldTime() {
+    return world.getWorldTime();
+  }
 }

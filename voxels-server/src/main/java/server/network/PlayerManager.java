@@ -106,8 +106,15 @@ public class PlayerManager {
     }
     return null;
   }
-  
+
+  public ServerPlayer getPlayerByName(String name) {
+    for (ServerConnection conn : connections) {
+      if (conn.getPlayer().getName().equals(name)) return conn.getPlayer();
+    }
+    return null;
+  }
+
   public List<ServerConnection> getConnections() {
-	  return connections;
+    return connections;
   }
 }

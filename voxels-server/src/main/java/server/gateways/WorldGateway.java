@@ -9,4 +9,6 @@ public interface WorldGateway {
   void setBlock(int x, int y, int z, short id);
   
   BlockType getBlockType(int x, int y, int z);
+  
+  public long getWorldTime();
 }

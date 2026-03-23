@@ -1,5 +1,6 @@
 package server.commands;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,5 +19,9 @@ public class CommandRegistry {
 
   public Command get(String name) {
     return commands.get(name);
+  }
+
+  public Collection<Command> getCommands() {
+    return commands.values();
   }
 }

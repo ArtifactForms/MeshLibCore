@@ -51,7 +51,7 @@ public class ChatMessageHandler {
     ServerPlayer player = connection.getPlayer();
 
     if (player == null) {
-//      Log.warn("[CHAT] null_player connection=" + connection.getId());
+      //      Log.warn("[CHAT] null_player connection=" + connection.getId());
       return;
     }
 
@@ -166,6 +166,14 @@ public class ChatMessageHandler {
     // -------------------------------------
     if (!hasPermission(playerId, command.getPermission())) {
       connection.send(new ChatMessagePacket(CommandMessages.NO_PERMISSION));
+      return;
+    }
+
+    // -------------------------------------
+    // HELP HANDLING
+    // -------------------------------------
+    if (!args.isEmpty() && args.get(0).equalsIgnoreCase("help")) {
+      connection.send(new ChatMessagePacket(command.getUsage()));
       return;
     }
 

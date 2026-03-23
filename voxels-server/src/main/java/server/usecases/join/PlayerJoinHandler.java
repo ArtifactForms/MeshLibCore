@@ -9,11 +9,13 @@ import common.network.packets.PlayerInventoryFullUpdatePacket;
 import common.network.packets.PlayerJoinPacket;
 import common.network.packets.PlayerPositionPacket;
 import common.network.packets.PlayerSpawnPacket;
+import common.network.packets.TimeUpdatePacket;
 import common.world.ChunkData;
 import server.events.events.PlayerJoinEvent;
 import server.events.events.PlayerPreJoinEvent;
 import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
+import server.gateways.WorldGateway;
 import server.network.PlayerManager;
 import server.network.ServerConnection;
 import server.player.ServerPlayer;
@@ -23,10 +25,12 @@ public class PlayerJoinHandler {
   private final ServerConnection connection;
 
   private EventGateway events;
+  private WorldGateway world;
 
   public PlayerJoinHandler(ServerConnection connection, GatewayContext context) {
     this.connection = connection;
     this.events = context.events();
+    this.world = context.world();
   }
 
   public void handle(PlayerJoinPacket packet) {
@@ -34,7 +38,7 @@ public class PlayerJoinHandler {
     if (connection.getPlayer() != null) {
       return;
     }
-    
+
     // -------------------------------------
     // PRE-JOIN EVENT
     // -------------------------------------
@@ -59,8 +63,8 @@ public class PlayerJoinHandler {
     // Calculate spawn position
     int spawnX = 0;
     int spawnZ = 0;
-//    int spawnY = connection.getServer().getWorld().getHeightAt(spawnX, spawnZ);
-    int spawnY = 150;
+    //    int spawnY = connection.getServer().getWorld().getHeightAt(spawnX, spawnZ);
+    int spawnY = 0;
 
     // Default join message
     String joinMessage = "§e" + player.getName() + " ist dem Spiel beigetreten!";
@@ -71,7 +75,7 @@ public class PlayerJoinHandler {
     // Fire join event so other systems can modify spawn or message
     PlayerJoinEvent event =
         new PlayerJoinEvent(player.getUuid(), joinMessage, spawnX, spawnY, spawnZ);
-    connection.getServer().getEventBus().fire(event);
+    events.fire(event);
 
     // -------------------------------------
     // APLLY EVENT VALUES
@@ -82,6 +86,10 @@ public class PlayerJoinHandler {
     spawnZ = event.getSpawnZ();
     joinMessage = event.getJoinMessage();
 
+    
+    // World time
+    connection.send(new TimeUpdatePacket(world.getWorldTime()));
+    
     // Move the player to the spawn position
     player.setSilentPosition(spawnX, spawnY, spawnZ, 0f, 0f);
 
@@ -93,8 +101,9 @@ public class PlayerJoinHandler {
     // Send initial chunks around the spawn position
     sendInitialChunks();
 
-    // Send teleport packet to synchronize client position
-    connection.send(new PlayerPositionPacket(player.getUuid(), spawnX, spawnY, spawnZ, 0f, 0f, true));
+//    // Send teleport packet to synchronize client position
+//    connection.send(
+//        new PlayerPositionPacket(player.getUuid(), spawnX, spawnY, spawnZ, 0f, 0f, true));
 
     for (ServerPlayer existingPlayer : playerManager.getAllPlayers()) {
       // Hier ist die UUID-Prüfung gut, falls getAllPlayers ihn schon enthält
@@ -108,7 +117,7 @@ public class PlayerJoinHandler {
                 existingPlayer.getZ()));
       }
     }
-    
+
     PlayerSpawnPacket spawnNew =
         new PlayerSpawnPacket(player.getUuid(), player.getName(), spawnX, spawnY, spawnZ);
 
@@ -131,7 +140,7 @@ public class PlayerJoinHandler {
     connection.send(
         new PlayerInventoryFullUpdatePacket(
             inventory.getItems(), null, player.getInventoryVersion()));
-
+    
     // -------------------------------------
     // PRE-JOIN EVENT
     // -------------------------------------

@@ -4,6 +4,8 @@ import parse.Flag;
 
 public abstract class AbstractCommand implements Command {
 
+  private static final String[] EMPTY_ARGUMENT_LABELS = new String[] {};
+
   @Override
   public String getSyntax() {
     StringBuilder builder = new StringBuilder();
@@ -29,18 +31,26 @@ public abstract class AbstractCommand implements Command {
   }
 
   @Override
-  public String getDescription() {
-    return "";
+  public String getUsage() {
+    StringBuilder builder = new StringBuilder();
+
+    // Syntax
+    builder.append("/");
+    builder.append(getSyntax());
+
+    // Description (optional)
+    String desc = getDescription();
+    if (desc != null && !desc.isEmpty()) {
+      builder.append(" - ");
+      builder.append(desc);
+    }
+
+    return builder.toString();
   }
 
   @Override
   public boolean allowsFlags() {
     return getFlags().length > 0;
-  }
-
-  @Override
-  public String getPermission() {
-    return "";
   }
 
   @Override
@@ -56,5 +66,10 @@ public abstract class AbstractCommand implements Command {
   @Override
   public String[] getAliases() {
     return new String[] {};
+  }
+
+  @Override
+  public String[] getArgumentLabels() {
+    return EMPTY_ARGUMENT_LABELS;
   }
 }

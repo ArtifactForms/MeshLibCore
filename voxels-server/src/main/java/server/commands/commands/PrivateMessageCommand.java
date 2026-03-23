@@ -11,11 +11,11 @@ import server.player.ServerPlayer;
 public class PrivateMessageCommand extends AbstractCommand {
 
   @Override
-  public void execute(CommandContext context) {
-    List<String> args = context.getArgs();
+  public void execute(CommandContext ctx) {
+    List<String> args = ctx.getArgs();
 
-    UUID uuid = context.getPlayer();
-    GameServer server = context.getServer();
+    UUID uuid = ctx.getPlayer();
+    GameServer server = ctx.getServer();
     ServerPlayer player = server.getPlayerManager().getPlayer(uuid);
 
     player.sendMessage("Das ist ein Test!");
@@ -32,7 +32,12 @@ public class PrivateMessageCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {""};
+  public String getPermission() { // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getDescription() { // TODO Auto-generated method stub
+    return null;
   }
 }

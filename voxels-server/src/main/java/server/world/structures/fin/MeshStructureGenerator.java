@@ -3,6 +3,8 @@ package server.world.structures.fin;
 import java.util.Collection;
 import java.util.Random;
 
+import common.game.block.BlockIds;
+import common.game.block.BlockRegistry;
 import common.game.block.Blocks;
 import common.world.ChunkData;
 import math.Bounds;
@@ -65,7 +67,7 @@ public class MeshStructureGenerator implements StructureGenerator {
       int lz = wz - chunkWorldZ;
 
       if (chunk.isInside(lx, wy, lz)) {
-        chunk.setBlockAt(Blocks.STONE, lx, wy, lz);
+        chunk.setBlockAt(BlockRegistry.get(BlockIds.STONE), lx, wy, lz);
       }
     }
   }

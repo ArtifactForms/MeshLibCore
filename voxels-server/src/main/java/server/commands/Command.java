@@ -8,6 +8,8 @@ public interface Command {
 
   String getName();
 
+  String getUsage();
+
   String getDescription();
 
   String getPermission();

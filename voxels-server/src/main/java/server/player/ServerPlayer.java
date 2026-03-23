@@ -28,7 +28,9 @@ public class ServerPlayer extends PlayerData {
   private float lastBroadcastZ = Float.MAX_VALUE;
 
   private static final float POSITION_THRESHOLD = 0.1f; // minimal movement
-  private static final float VIEW_DISTANCE_BLOCKS = 64f; // ~4 chunks
+  //  private static final float VIEW_DISTANCE_BLOCKS = 64f; // ~4 chunks
+
+  private static final float VIEW_DISTANCE_BLOCKS = 3000; // TODO Remove Test only
 
   private int lastChunkX = Integer.MAX_VALUE;
   private int lastChunkZ = Integer.MAX_VALUE;
@@ -58,15 +60,14 @@ public class ServerPlayer extends PlayerData {
   }
 
   public void teleport(float x, float y, float z, float yaw, float pitch) {
-    //    ignoreNextMovement = true;
+    ignoreNextMovement = true;
     setSilentPosition(x, y, z, yaw, pitch);
 
     // Send correction packet to the client
-    connection.send(
-        new PlayerPositionPacket(uuid, position.x, position.y, position.z, yaw, pitch, true));
+    connection.send(new PlayerPositionPacket(uuid, x, y, z, yaw, pitch, true));
 
     // Inform other players of this movement
-//    broadcastUpdate();
+    //    broadcastUpdate();
   }
 
   /**
@@ -74,20 +75,72 @@ public class ServerPlayer extends PlayerData {
    * back to the client to sync their position (useful for anti-cheat or teleportation).
    */
   public void move(float x, float y, float z, float yaw, float pitch) {
-    //    if (ignoreNextMovement) {
-    //      ignoreNextMovement = false;
-    //      return;
-    //    }
+    if (ignoreNextMovement) {
+      ignoreNextMovement = false;
+      return;
+    }
 
     setSilentPosition(x, y, z, yaw, pitch);
 
     // Send correction packet to the client
-    connection.send(
-        new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw, pitch));
+//    connection.send(
+//        new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw, pitch));
 
     // Inform other players of this movement
-//    broadcastUpdate();
+    //    broadcastUpdate();
   }
+
+//    public void move(float x, float y, float z, float yaw, float pitch) {
+//  
+//      if (ignoreNextMovement) {
+//        ignoreNextMovement = false;
+//        return;
+//      }
+//  
+//      // --------------------------------------------------
+//      // CURRENT SERVER POSITION
+//      // --------------------------------------------------
+//  
+//      float dx = x - position.x;
+//      float dy = y - position.y;
+//      float dz = z - position.z;
+//  
+//      float distSq = dx * dx + dy * dy + dz * dz;
+//  
+//      // --------------------------------------------------
+//      // VALIDATION (ANTI-RUBBERBAND CORE)
+//      // --------------------------------------------------
+//  
+////      float maxAllowed = 10f; // 🔥 tweakbar (z.B. 3–10)
+////      float maxDistSq = maxAllowed * maxAllowed;
+////  
+////      if (distSq > maxDistSq) {
+////  
+////        // ❌ Position ist zu weit weg → REJECT
+////        connection.send(
+////            new PlayerPositionPacket(
+////                getUuid(),
+////                position.x,
+////                position.y,
+////                position.z,
+////                yaw,
+////                pitch,
+////                true // optional teleport flag
+////                ));
+////  
+////        return;
+////      }
+//  
+//      // --------------------------------------------------
+//      // ACCEPT MOVEMENT
+//      // --------------------------------------------------
+//  
+//      setSilentPosition(x, y, z, yaw, pitch);
+//  
+//      // optional: nur wenn nötig senden
+////      connection.send(
+////          new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw, pitch));
+//    }
 
   /**
    * Updates the internal position without sending a confirmation packet. Used when the client's

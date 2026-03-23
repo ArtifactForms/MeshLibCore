@@ -20,7 +20,10 @@ public class ServerMain {
 
     NetworkPackets.register();
 
+//    BlockLoader.load();
     Blocks.initialize(); // Important: Initialize before item registration -> ItemRegistry.init();
+
+
     ItemRegistry.init();
 
     GameServer server = new GameServer(port, config);

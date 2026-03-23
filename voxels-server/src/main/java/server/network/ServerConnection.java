@@ -82,7 +82,7 @@ public class ServerConnection extends Connection {
   public void send(Packet packet) {
 	  enqueueOutbound(packet);
   }
-
+  
   /**
    * Sends queued outbound packets to the client. Should be called once per server tick (can apply
    * throttling).
