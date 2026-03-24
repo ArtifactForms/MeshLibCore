@@ -81,34 +81,7 @@ public class Chunk extends ChunkData {
     }
     meshFuture = null;
   }
-
-  //  public void renderOpaque(Graphics g) {
-  //    if (opaqueGeometry != null) {
-  //      g.pushMatrix();
-  //      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
-  //      opaqueGeometry.render(g);
-  //      g.popMatrix();
-  //    }
-  //  }
-  //
-  //  public void renderWater(Graphics g) {
-  //    if (waterGeometry != null) {
-  //      g.pushMatrix();
-  //      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
-  //      waterGeometry.render(g);
-  //      g.popMatrix();
-  //    }
-  //  }
-  //
-  //  public void renderDecor(Graphics g) {
-  //    if (decorGeometry != null) {
-  //      g.pushMatrix();
-  //      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
-  //      decorGeometry.render(g);
-  //      g.popMatrix();
-  //    }
-  //  }
-
+  
   /**
    * Renders the opaque layer of the chunk relative to the camera to prevent floating point
    * precision jitter.
