@@ -160,6 +160,22 @@ public class Transform extends AbstractComponent {
   }
 
   /**
+   * Stores the current position into the provided vector and returns it.
+   *
+   * <p>This is a performance-optimized alternative to {@link #getPosition()} that avoids allocating
+   * a new {@link Vector3f} instance on every call. It is highly recommended for use in
+   * high-frequency loops, such as rendering or physics updates.
+   *
+   * @param store The vector in which to store the position coordinates. Must not be null.
+   * @return The {@code store} vector, updated with the current position values.
+   * @throws NullPointerException if the provided {@code store} vector is null.
+   */
+  public Vector3f getPosition(Vector3f store) {
+    store.set(position);
+    return store;
+  }
+
+  /**
    * Sets the position of this transform to a specific value.
    *
    * @param position The new position vector to set. Must not be null.
