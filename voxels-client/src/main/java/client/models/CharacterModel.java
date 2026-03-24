@@ -1,6 +1,7 @@
 package client.models;
 
 import engine.components.Geometry;
+import engine.rendering.Graphics;
 import engine.rendering.Material;
 import engine.scene.SceneNode;
 import math.Color;

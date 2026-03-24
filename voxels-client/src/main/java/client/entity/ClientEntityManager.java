@@ -59,9 +59,9 @@ public class ClientEntityManager {
     items.remove(id);
   }
 
-  public void renderAll(Graphics g) {
+  public void renderAll(Graphics g, Vector3f camPos) {
     renderItems(g);
-    renderPlayers(g);
+    renderPlayers(g, camPos);
   }
 
   public void update(float tpf) {
@@ -74,10 +74,10 @@ public class ClientEntityManager {
     }
   }
 
-  private void renderPlayers(Graphics g) {
+  private void renderPlayers(Graphics g, Vector3f camPos) {
 
     for (RemotePlayer player : remotePlayers.values()) {
-      renderRemotePlayer(g, player);
+      renderRemotePlayer(g, player, camPos);
     }
   }
 
@@ -88,7 +88,7 @@ public class ClientEntityManager {
     }
   }
 
-  private void renderRemotePlayer(Graphics g, RemotePlayer player) {
-    RemotePlayerRenderer.render(g, player);
+  private void renderRemotePlayer(Graphics g, RemotePlayer player, Vector3f camPos) {
+    RemotePlayerRenderer.render(g, player, camPos);
   }
 }

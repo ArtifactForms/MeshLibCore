@@ -2,21 +2,21 @@ package client.rendering;
 
 import client.player.RemotePlayer;
 import engine.rendering.Graphics;
-import engine.runtime.debug.core.DebugDraw;
-import math.Color;
 import math.Vector3f;
 
 public class RemotePlayerRenderer {
 
   private RemotePlayerRenderer() {}
 
-  public static void render(Graphics g, RemotePlayer player) {
+  public static void render(Graphics g, RemotePlayer player, Vector3f camPos) {
     float x = player.getX();
     float y = player.getY();
     float z = player.getZ();
 
+    g.pushMatrix();
+    g.translate(x - camPos.x, -(y + camPos.y) - 0.5f, z - camPos.z);
     player.getModel().render(g);
 
-    DebugDraw.drawSphere(new Vector3f(x, y, z), 0.5f, Color.BLUE);
+    g.popMatrix();
   }
 }
