@@ -60,6 +60,17 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
       case ESCAPE:
         controller.closeChat();
         return;
+
+      case ARROW_UP:
+        controller.moveHistoryUp();
+        return;
+
+      case ARROW_DOWN:
+        controller.moveHistoryDown();
+        return;
+
+      default:
+        return;
     }
   }
 
