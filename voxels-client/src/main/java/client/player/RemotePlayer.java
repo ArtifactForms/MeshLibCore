@@ -52,7 +52,7 @@ public class RemotePlayer {
       yaw = targetYaw;
       pitch = targetPitch;
       
-      model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
+//      model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
       model.getTransform().setRotation(0, yaw, 0);
       model.getHead().getTransform().setRotation(-pitch, 0, 0);
       return;
@@ -74,7 +74,7 @@ public class RemotePlayer {
     pitch += (targetPitch - pitch) * rotAlpha;
 
     // Move model
-    model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
+//    model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
 
     // Body Rotation (Yaw)
     model.getTransform().setRotation(0, yaw, 0);
