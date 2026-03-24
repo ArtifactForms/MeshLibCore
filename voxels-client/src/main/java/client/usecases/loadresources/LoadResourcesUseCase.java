@@ -20,5 +20,6 @@ public class LoadResourcesUseCase implements LoadResources {
     SoundManager.addEffect(Resources.FOOT_STEP_GRASS_2_KEY, Resources.FOOT_STEP_GRASS_2_PATH, 3);
     SoundManager.addEffect(Resources.FOOT_STEP_GRASS_3_KEY, Resources.FOOT_STEP_GRASS_3_PATH, 3);
     SoundManager.addEffect(Resources.FOOT_STEP_GRASS_4_KEY, Resources.FOOT_STEP_GRASS_4_PATH, 3);
+    SoundManager.addEffect(Resources.BUTTON_CLICK_KEY, Resources.BUTTON_CLICK_PATH, 3);
   }
 }

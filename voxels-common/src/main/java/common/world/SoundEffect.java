@@ -15,4 +15,6 @@ public class SoundEffect {
   public static final String FOOT_STEP_GRASS_3 = "footstep.grass.three";
   
   public static final String FOOT_STEP_GRASS_4 = "footstep.grass.four";
+  
+  public static final String BUTTON_CLICK = "button.click";
 }

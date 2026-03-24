@@ -2,8 +2,10 @@ package client.ui.button;
 
 import client.ui.core.AbstractUiElement;
 import client.ui.core.UiElement;
+import common.world.SoundEffect;
 import engine.rendering.Graphics;
 import engine.resources.Font;
+import engine.scene.audio.SoundManager;
 import math.Color;
 
 public class SimpleButton extends AbstractUiElement {
@@ -78,6 +80,7 @@ public class SimpleButton extends AbstractUiElement {
   public void onMouseClicked(float mouseX, float mouseY) {
     if (contains(mouseX, mouseY) && callback != null) {
       callback.onButtonClicked();
+      SoundManager.playEffect(SoundEffect.BUTTON_CLICK);
     }
   }
 
