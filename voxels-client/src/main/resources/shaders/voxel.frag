@@ -20,46 +20,36 @@ varying vec3 vWorldPos;
 void main() {
 
     vec4 texCol = texture2D(texture, vTexCoord);
-    // Erhöhter Discard-Schwellenwert für sauberere Kanten bei Gras
     if(texCol.a < 0.1) discard;
 
     vec4 blockCol = texCol * vColor;
 
     // =========================
-    // 💡 LIGHTING (Optimiert für Dekor/Cross-Mesh)
+    // 💡 LIGHTING
     // =========================
     vec3 norm = normalize(vNormal);
     vec3 lDir = normalize(u_lightDir);
 
-    // Nutze abs(), damit beide Seiten des Grases beleuchtet werden
-    float dotProduct = dot(norm, lDir);
-    float diff = abs(dotProduct); 
+    float diff = max(dot(norm, lDir), 0.0);
+    diff = pow(diff, 1.4);
 
-    // "Wrap-Around" Lighting: Verhindert, dass Flächen im 90° Winkel komplett schwarz sind
-    diff = mix(diff, 1.0, 0.15); 
+    float shadow = 0.5 + diff * 0.5;
 
-    // Ambient Anteil: Etwas kräftiger, damit die Vegetation im Schatten "lebt"
-    vec3 ambient = u_ambient * u_lightColor * 0.45; 
-    vec3 diffuse = diff * u_lightColor;
-
-    vec3 lighting = ambient + diffuse;
-    vec3 color = blockCol.rgb * lighting;
+    vec3 lighting = vec3(u_ambient * 0.8) + (shadow * u_lightColor);
+    vec3 color = min(blockCol.rgb * lighting, vec3(1.0));
 
     // =========================
-    // 🎨 DISTANCE LOOK (Atmosphäre)
+    // 🎨 DISTANCE LOOK
     // =========================
     float distFactor = clamp(vDist / 200.0, 0.0, 1.0);
 
-    // Leichte Entsättigung in der Ferne
     float desaturate = mix(1.0, 0.75, distFactor);
     float gray = dot(color, vec3(0.299, 0.587, 0.114));
     color = mix(vec3(gray), color, desaturate);
 
-    // Bläulicher Dunst für die Weitsicht
     vec3 atmosphereTint = vec3(0.65, 0.8, 1.0);
     color = mix(color, atmosphereTint, distFactor * 0.25);
 
-    // Gamma-Korrektur (leichtes Aufhellen der Mitteltöne)
     color = pow(color, vec3(0.9));
 
     // =========================
@@ -68,7 +58,6 @@ void main() {
     float fog = 1.0 - exp(-vDist * u_fogDensity * 0.5);
     fog *= smoothstep(50.0, 240.0, vDist);
 
-    // Horizont-Dunst (stärker bei flachen Winkeln)
     float horizon = 1.0 - abs(norm.y);
     fog += horizon * 0.15;
 
