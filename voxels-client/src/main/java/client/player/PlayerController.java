@@ -92,36 +92,36 @@ public class PlayerController extends AbstractComponent {
       skipNextSync = true;
     }
 
-    // --------------------------------------------------
-    // POSITION SYNC
-    // --------------------------------------------------
-
-    Vector3f camPos = camera.getTransform().getPosition();
-
-    if (!skipNextSync) {
-      camPos.lerpLocal(syncTargetPosition, syncSmoothing * tpf);
-      camera.getTransform().setPosition(camPos);
-    }
-
-    // --------------------------------------------------
-    // ROTATION SYNC
-    // --------------------------------------------------
-
-    Vector3f camRot = camera.getTransform().getRotation();
-
-    float rotDiff = camRot.distance(syncTargetRotation);
-
-    if (rotDiff > Mathf.toRadians(TELEPORT_ROTATION)) {
-
-      camera.getTransform().setRotation(syncTargetRotation);
-
-    } else if (!skipNextSync) {
-
-      camRot.lerpLocal(syncTargetRotation, syncSmoothing * tpf);
-      camera.getTransform().setRotation(camRot);
-    }
-
-    skipNextSync = false;
+    //    // --------------------------------------------------
+    //    // POSITION SYNC
+    //    // --------------------------------------------------
+    //
+    //    Vector3f camPos = camera.getTransform().getPosition();
+    //
+    //    if (!skipNextSync) {
+    //      camPos.lerpLocal(syncTargetPosition, syncSmoothing * tpf);
+    //      camera.getTransform().setPosition(camPos);
+    //    }
+    //
+    //    // --------------------------------------------------
+    //    // ROTATION SYNC
+    //    // --------------------------------------------------
+    //
+    //    Vector3f camRot = camera.getTransform().getRotation();
+    //
+    //    float rotDiff = camRot.distance(syncTargetRotation);
+    //
+    //    if (rotDiff > Mathf.toRadians(TELEPORT_ROTATION)) {
+    //
+    //      camera.getTransform().setRotation(syncTargetRotation);
+    //
+    //    } else if (!skipNextSync) {
+    //
+    //      camRot.lerpLocal(syncTargetRotation, syncSmoothing * tpf);
+    //      camera.getTransform().setRotation(camRot);
+    //    }
+    //
+    //    skipNextSync = false;
 
     // --------------------------------------------------
     // MOUSE LOOK

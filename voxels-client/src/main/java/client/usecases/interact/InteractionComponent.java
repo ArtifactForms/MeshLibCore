@@ -8,6 +8,8 @@ import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
 import engine.runtime.input.Input;
+import engine.scene.CameraMode;
+import math.Vector3f;
 
 public class InteractionComponent extends AbstractComponent implements RenderableComponent {
 
@@ -58,7 +60,31 @@ public class InteractionComponent extends AbstractComponent implements Renderabl
       return;
     }
 
-    BlockHighlightRenderer.render(g, block.x, block.y, block.z);
+    Vector3f camPos = getOwner()
+        .getScene()
+        .getActiveCamera()
+        .getTransform()
+        .getPosition();
+
+    g.pushMatrix();
+
+    float x = block.x;
+    float y = -block.y;
+    float z = block.z;
+
+    if (getOwner().getScene().getCameraMode() == CameraMode.CAMERA_RELATIVE) {
+      g.translate(
+          x - camPos.x,
+          y - camPos.y,
+          z - camPos.z
+      );
+    } else {
+      g.translate(x, y, z);
+    }
+
+    BlockHighlightRenderer.render(g);
+
+    g.popMatrix();
   }
   
   private boolean isGameplayBlocked() {

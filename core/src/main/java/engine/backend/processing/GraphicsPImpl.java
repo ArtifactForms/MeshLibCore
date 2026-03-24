@@ -512,6 +512,32 @@ public class GraphicsPImpl implements Graphics {
     g.camera(eye.x, eye.y, eye.z, target.x, target.y, target.z, 0, 1, 0);
   }
 
+  @Override
+  public void applyCameraRelative(Camera camera) {
+    if (camera == null) {
+      throw new IllegalArgumentException("Camera instance cannot be null.");
+    }
+
+    // =========================
+    // PROJECTION bleibt gleich
+    // =========================
+    Matrix4f proj = camera.getProjectionMatrix();
+    ((PGraphicsOpenGL) g).projection.set(proj.getValues());
+
+    // =========================
+    // VIEW ohne Translation!
+    // =========================
+
+    // Reset
+    g.camera();
+
+    Vector3f forward = camera.getTransform().getForward();
+    Vector3f up = new Vector3f(0, 1, 0);
+
+    // Kamera IMMER im Ursprung
+    g.camera(0, 0, 0, forward.x, forward.y, forward.z, up.x, up.y, up.z);
+  }
+
   // -------------------------------------------------
   // LINE
   // -------------------------------------------------

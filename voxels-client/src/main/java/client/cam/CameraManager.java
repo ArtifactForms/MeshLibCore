@@ -5,7 +5,6 @@ import client.player.PlayerController;
 import client.ray.RaycastMode;
 import client.settings.GameSettings;
 import client.ui.cursor.SimpleCursorComponent;
-import common.network.packets.PlayerMovePacket;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
@@ -13,6 +12,7 @@ import engine.runtime.debug.DebugCameraRenderer;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
 import engine.runtime.input.MouseMode;
+import engine.scene.CameraMode;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.Camera;
@@ -22,6 +22,7 @@ import math.Vector3f;
 
 public class CameraManager {
 
+  private boolean orbit;
   private Input input;
   private Camera camera;
   private OrbitCamera orbitCamera;
@@ -62,14 +63,17 @@ public class CameraManager {
     public void onUpdate(float tpf) {
       Vector3f position = camera.getTransform().getPosition();
 
-      client.getNetwork().send(new PlayerMovePacket(position.x, -position.y, position.z, 0, 0));
+      //      client.getNetwork().send(new PlayerMovePacket(position.x, -position.y, position.z, 0,
+      // 0));
 
       if (input.wasKeyReleased(Key.J)) {
         orbit();
+        getOwner().getScene().setCameraMode(CameraMode.WORLD_SPACE);
       }
 
       if (input.wasKeyReleased(Key.K)) {
         playerCam();
+        getOwner().getScene().setCameraMode(CameraMode.CAMERA_RELATIVE);
       }
 
       if (input.wasKeyPressed(Key.R)) {
@@ -77,11 +81,13 @@ public class CameraManager {
       }
 
       if (input.wasKeyReleased(Key.C)) {
-        orbitCamera.setTarget(camera.getTransform().getPosition());
+        //        orbitCamera.setTarget(camera.getTransform().getPosition());
+        orbitCamera.setTarget(Vector3f.ZERO);
       }
     }
 
     private void orbit() {
+      orbit = true;
       playerController.setActive(false);
       orbitCameraControl.setActive(true);
 
@@ -94,6 +100,7 @@ public class CameraManager {
     }
 
     private void playerCam() {
+      orbit = false;
       playerController.setActive(true);
       orbitCameraControl.setActive(false);
 
@@ -107,7 +114,7 @@ public class CameraManager {
 
     @Override
     public void render(Graphics g) {
-      DebugCameraRenderer.render(g, camera);
+      if (orbit) DebugCameraRenderer.render(g, camera, getOwner().getScene().getCameraMode());
     }
   }
 }

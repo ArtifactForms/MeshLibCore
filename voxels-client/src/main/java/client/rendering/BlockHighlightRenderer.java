@@ -41,37 +41,33 @@ public class BlockHighlightRenderer {
    * @param y world block Y coordinate
    * @param z world block Z coordinate
    */
-  public static void render(Graphics g, int x, int y, int z) {
+  public static void render(Graphics g) {
 
-    float bx = x;
-    float by = -y; // engine uses inverted Y axis
-    float bz = z;
+    float minX = -OFFSET;
+    float maxX = OFFSET;
 
-    float minX = bx - OFFSET;
-    float maxX = bx + OFFSET;
+    float minY = -OFFSET;
+    float maxY = OFFSET;
 
-    float minY = by - OFFSET;
-    float maxY = by + OFFSET;
-
-    float minZ = bz - OFFSET;
-    float maxZ = bz + OFFSET;
+    float minZ = -OFFSET;
+    float maxZ = OFFSET;
 
     g.setColor(color);
     g.strokeWeight(3);
 
-    // bottom square
+    // bottom
     g.drawLine(minX, minY, minZ, maxX, minY, minZ);
     g.drawLine(maxX, minY, minZ, maxX, minY, maxZ);
     g.drawLine(maxX, minY, maxZ, minX, minY, maxZ);
     g.drawLine(minX, minY, maxZ, minX, minY, minZ);
 
-    // top square
+    // top
     g.drawLine(minX, maxY, minZ, maxX, maxY, minZ);
     g.drawLine(maxX, maxY, minZ, maxX, maxY, maxZ);
     g.drawLine(maxX, maxY, maxZ, minX, maxY, maxZ);
     g.drawLine(minX, maxY, maxZ, minX, maxY, minZ);
 
-    // vertical edges
+    // vertical
     g.drawLine(minX, minY, minZ, minX, maxY, minZ);
     g.drawLine(maxX, minY, minZ, maxX, maxY, minZ);
     g.drawLine(maxX, minY, maxZ, maxX, maxY, maxZ);

@@ -6,7 +6,6 @@ import client.entity.EntitiesComponent;
 import client.player.PlayerController;
 import client.scene.screen.DebugScreen;
 import client.scene.screen.GamePlayScreen;
-import client.scene.screen.OverlayTestComponent;
 import client.ui.hotbar.HotbarComponent;
 import client.ui.hotbar.HotbarViewComponent;
 import client.ui.title.TitleTextComponent;
@@ -26,6 +25,7 @@ import common.game.Hotbar;
 import common.game.Inventory;
 import debug.DebugController;
 import engine.runtime.input.Input;
+import engine.scene.CameraMode;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.Camera;
@@ -42,6 +42,8 @@ public class GameScene extends Scene {
   private PlayerController playerController;
 
   public GameScene(Input input, GameClient client) {
+    setCameraMode(CameraMode.CAMERA_RELATIVE);
+
     GamePlayScreen screen = new GamePlayScreen(client);
     pushScreen(screen);
 
@@ -69,11 +71,10 @@ public class GameScene extends Scene {
 
     //    setupDebug();
 
-//    OverlayTestComponent overlayComponent = new OverlayTestComponent(input, client);
-//    SceneNode node1 = new SceneNode("", overlayComponent);
-//    addNode(node1);
-    
-    
+    //    OverlayTestComponent overlayComponent = new OverlayTestComponent(input, client);
+    //    SceneNode node1 = new SceneNode("", overlayComponent);
+    //    addNode(node1);
+
     ChatMessageService messageService = new ChatMessageService(client.getView().getChatView());
     DisplayChunkBordersComponent displayChunkBordersComponent =
         new DisplayChunkBordersComponent(input, client.getPlayer(), messageService);

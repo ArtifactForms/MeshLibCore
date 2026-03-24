@@ -73,5 +73,7 @@ public interface Graphics3D {
 
   void applyCamera(Camera camera);
 
+  void applyCameraRelative(Camera camera);
+
   void resetMatrix();
 }

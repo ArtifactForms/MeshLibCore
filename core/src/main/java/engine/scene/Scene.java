@@ -52,6 +52,8 @@ public class Scene {
 
   private final ScreenManager screenManager;
 
+  private CameraMode cameraMode = CameraMode.WORLD_SPACE;
+
   /** Constructs a {@code Scene} with a default name. */
   public Scene() {
     this(DEFAULT_NAME);
@@ -188,7 +190,12 @@ public class Scene {
     g.clear(background);
 
     if (activeCamera != null) {
-      g.applyCamera(activeCamera);
+      if (cameraMode == CameraMode.WORLD_SPACE) {
+        g.applyCamera(activeCamera);
+      }
+      if (cameraMode == CameraMode.CAMERA_RELATIVE) {
+        g.applyCameraRelative(activeCamera);
+      }
     }
 
     renderLights(g);
@@ -521,5 +528,13 @@ public class Scene {
 
   public GameScreen getTopScreen() {
     return screenManager.peek();
+  }
+
+  public CameraMode getCameraMode() {
+    return cameraMode;
+  }
+
+  public void setCameraMode(CameraMode cameraMode) {
+    this.cameraMode = cameraMode;
   }
 }

@@ -82,31 +82,65 @@ public class Chunk extends ChunkData {
     meshFuture = null;
   }
 
-  public void renderOpaque(Graphics g) {
-    if (opaqueGeometry != null) {
-      g.pushMatrix();
-      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
-      opaqueGeometry.render(g);
-      g.popMatrix();
-    }
+  //  public void renderOpaque(Graphics g) {
+  //    if (opaqueGeometry != null) {
+  //      g.pushMatrix();
+  //      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
+  //      opaqueGeometry.render(g);
+  //      g.popMatrix();
+  //    }
+  //  }
+  //
+  //  public void renderWater(Graphics g) {
+  //    if (waterGeometry != null) {
+  //      g.pushMatrix();
+  //      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
+  //      waterGeometry.render(g);
+  //      g.popMatrix();
+  //    }
+  //  }
+  //
+  //  public void renderDecor(Graphics g) {
+  //    if (decorGeometry != null) {
+  //      g.pushMatrix();
+  //      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
+  //      decorGeometry.render(g);
+  //      g.popMatrix();
+  //    }
+  //  }
+
+  /**
+   * Renders the opaque layer of the chunk relative to the camera to prevent floating point
+   * precision jitter.
+   */
+  public void renderOpaque(Graphics g, Vector3f cameraPos) {
+    if (opaqueGeometry == null) return;
+    renderLayer(g, cameraPos, opaqueGeometry);
   }
 
-  public void renderWater(Graphics g) {
-    if (waterGeometry != null) {
-      g.pushMatrix();
-      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
-      waterGeometry.render(g);
-      g.popMatrix();
-    }
+  /** Renders the water layer. */
+  public void renderWater(Graphics g, Vector3f cameraPos) {
+    if (waterGeometry == null) return;
+    renderLayer(g, cameraPos, waterGeometry);
   }
 
-  public void renderDecor(Graphics g) {
+  /** Renders the decoration/cut-out layer. */
+  public void renderDecor(Graphics g, Vector3f cameraPos) {
     if (decorGeometry != null) {
-      g.pushMatrix();
-      g.translate(worldPosition.x, worldPosition.y, worldPosition.z);
-      decorGeometry.render(g);
-      g.popMatrix();
+      renderLayer(g, cameraPos, decorGeometry);
     }
+  }
+
+  /** Helper to apply the relative transformation and draw the geometry. */
+  private void renderLayer(Graphics g, Vector3f cameraPos, StaticGeometry geometry) {
+    g.pushMatrix();
+    // The core fix: (World Position - Camera Position)
+    g.translate(
+        worldPosition.x - cameraPos.x,
+        worldPosition.y - cameraPos.y,
+        worldPosition.z - cameraPos.z);
+    geometry.render(g);
+    g.popMatrix();
   }
 
   public void markDirty() {
