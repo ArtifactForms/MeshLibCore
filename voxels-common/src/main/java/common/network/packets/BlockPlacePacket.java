@@ -17,11 +17,11 @@ public class BlockPlacePacket implements Packet {
 
   public BlockPlacePacket() {}
 
-  public BlockPlacePacket(int x, int y, int z, int slot, short blockId) {
+  public BlockPlacePacket(int x, int y, int z, int selectedSlot, short blockId) {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.selectedSlot = slot;
+    this.selectedSlot = selectedSlot;
     this.blockId = blockId;
   }
 
