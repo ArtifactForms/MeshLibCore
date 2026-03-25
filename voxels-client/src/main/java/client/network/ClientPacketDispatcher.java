@@ -70,9 +70,9 @@ public class ClientPacketDispatcher {
     }
     // Unregistered packets are simply ignored on the client (e.g. PlayerMovePacket)
   }
-  
+
   private void handleTimeUpdate(TimeUpdatePacket packet) {
-	  client.getWorld().setWorldTime(packet.getWorldTime());
+    client.getWorld().setWorldTime(packet.getWorldTime());
   }
 
   private void handleSlotClear(PlayerSlotClearPacket packet) {
@@ -125,7 +125,6 @@ public class ClientPacketDispatcher {
       float tolerance = 4f;
 
       if (packet.isTeleport()) {
-    	client.getView().getChatView().addMessage(new ChatMessage("Teleport"));
         localPlayer.setPositionFromTeleport(serverX, serverY, serverZ);
 
       } else if (distanceSq > tolerance * tolerance) {
