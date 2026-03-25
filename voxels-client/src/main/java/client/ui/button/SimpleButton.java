@@ -1,7 +1,6 @@
 package client.ui.button;
 
 import client.ui.core.AbstractUiElement;
-import client.ui.core.UiElement;
 import common.world.SoundEffect;
 import engine.rendering.Graphics;
 import engine.resources.Font;
