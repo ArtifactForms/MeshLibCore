@@ -24,6 +24,7 @@ public class KeyBinds {
   public static Key hotbarSlot9 = Key.NUM_9;
   
   public static Key openCloseInventory = Key.E;
+  public static Key openChat = Key.T;
   
   // ------------------------------------------
   // DEBUG

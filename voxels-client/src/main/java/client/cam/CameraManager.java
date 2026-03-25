@@ -61,6 +61,10 @@ public class CameraManager {
 
     @Override
     public void onUpdate(float tpf) {
+      if (getOwner().getScene().getTopScreen().blocksGameplay()) {
+        return;
+      }
+
       Vector3f position = camera.getTransform().getPosition();
 
       //      client.getNetwork().send(new PlayerMovePacket(position.x, -position.y, position.z, 0,
@@ -114,7 +118,7 @@ public class CameraManager {
 
     @Override
     public void render(Graphics g) {
-      if (orbit) DebugCameraRenderer.render(g, camera, getOwner().getScene().getCameraMode());
+      if (orbit) DebugCameraRenderer.render(g, camera, CameraMode.CAMERA_RELATIVE);
     }
   }
 }

@@ -12,7 +12,8 @@ public class BlockPlacePresenter implements BlockPlaceResponse {
 
   @Override
   public void onBlockPlaced(int x, int y, int z, short id) {
-    view.displayBlockUpdate(x, y, z, id);
+    //    view.displayBlockUpdate(x, y, z, id);
+    view.broadcastBlockUpdate(x, y, z, id);
     view.displayBlockPlacedEffect();
   }
 
@@ -29,6 +30,6 @@ public class BlockPlacePresenter implements BlockPlaceResponse {
 
   @Override
   public void onNoItemMatch() {
-	  view.displayErrorMessage("No cheat! Item does not match your inventory!");
+    view.displayErrorMessage("No cheat! Item does not match your inventory!");
   }
 }

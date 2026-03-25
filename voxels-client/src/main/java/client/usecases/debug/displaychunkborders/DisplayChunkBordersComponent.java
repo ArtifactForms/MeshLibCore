@@ -6,6 +6,7 @@ import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
 import engine.runtime.input.Input;
+import engine.scene.CameraMode;
 import math.Vector3f;
 import messages.MessagePrefix;
 import messages.MessageService;
@@ -38,6 +39,6 @@ public class DisplayChunkBordersComponent extends AbstractComponent implements R
     var camera = scene.getActiveCamera();
     Vector3f camPos = camera.getTransform().getPosition();
 
-    ChunkBordersRenderer.render(g, position, camPos, scene.getCameraMode());
+    ChunkBordersRenderer.render(g, position, camPos, CameraMode.CAMERA_RELATIVE);
   }
 }

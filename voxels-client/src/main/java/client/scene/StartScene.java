@@ -36,15 +36,14 @@ public class StartScene extends Scene {
   public StartScene(Input input, GameClient client) {
     this.input = input;
     this.client = client;
+
     setupCamera();
     setupUI();
-    SoundManager.loopSound(Resources.BACKGROUND_MUSIC_KEY);
-
-    setBackground(Color.getColorFromInt(120, 120, 120));
-
+    setupBackground();
     setupRotatingCube();
-
     setupLight();
+
+    SoundManager.loopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
   }
 
   private void setupLight() {
@@ -85,6 +84,81 @@ public class StartScene extends Scene {
     addNode(node);
   }
 
+  private Mesh3D createCube(float radius) {
+    Mesh3D cube = new CubeCreator(radius).create();
+    SurfaceLayer layer = cube.getSurfaceLayer();
+    for (int i = 0; i < 8; i++) layer.addUV(0, 0);
+
+    return cube;
+  }
+
+  private void setupCamera() {
+    PerspectiveCamera camera = new PerspectiveCamera();
+    camera.setTarget(new Vector3f(0, 0, 5));
+    setActiveCamera(camera);
+  }
+
+  private void setupUI() {
+    setupCursor();
+    setupButtons();
+  }
+
+  private void setupBackground() {
+    //    getUIRoot().addChild(new Sprite(Resources.START_SCREEN_BACKGROUND));
+    setBackground(Color.getColorFromInt(120, 120, 120));
+  }
+
+  private void setupCursor() {
+    SimpleCursorComponent cursorComponent = new SimpleCursorComponent(input);
+    SceneNode cursorNode = new SceneNode("Cursor", cursorComponent);
+    getUIRoot().addChild(cursorNode);
+  }
+
+  private void setupButtons() {
+    setupStartButton();
+    setupQuitButton();
+  }
+
+  private void setupStartButton() {
+    SimpleButton button = new SimpleButton(Resources.GAME_START_BUTTON_TEXT, 0, 0, 300, 40);
+    button.setCallback(
+        new ButtonClickCallback() {
+
+          @Override
+          public void onButtonClicked() {
+            SoundManager.stopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
+            SoundManager.loopSound(Resources.BACKGROUND_MUSIC_KEY);
+            startGame();
+          }
+        });
+    UiComponent component = new UiComponent(input, button);
+    SceneNode buttonNode = new SceneNode("Start-Button", component);
+    getUIRoot().addChild(buttonNode);
+  }
+
+  private void setupQuitButton() {
+    SimpleButton button = new SimpleButton(Resources.GAME_QUIT_BUTTON_TEXT, 0, 50, 300, 40);
+    button.setCallback(
+        new ButtonClickCallback() {
+
+          @Override
+          public void onButtonClicked() {
+            System.exit(0);
+          }
+        });
+    UiComponent component = new UiComponent(input, button);
+    SceneNode buttonNode = new SceneNode("Quit-Button", component);
+    getUIRoot().addChild(buttonNode);
+  }
+
+  private void startGame() {
+    if (gameStarted) {
+      return;
+    }
+    gameStarted = true;
+    new StartGame(input, client).execute();
+  }
+
   public void applyBlockTexture(int id, TextureAtlas textureAtlas, Mesh3D cube) {
     SurfaceLayer layer = cube.getSurfaceLayer();
 
@@ -122,79 +196,6 @@ public class StartScene extends Scene {
     layer.setFaceUVIndices(3, new int[] {0, 1, 2, 3});
     layer.setFaceUVIndices(4, new int[] {0, 1, 2, 3});
     layer.setFaceUVIndices(5, new int[] {0, 1, 2, 3});
-  }
-
-  private Mesh3D createCube(float radius) {
-
-    Mesh3D cube = new CubeCreator(radius).create();
-
-    //    new RotateModifier(-Mathf.QUARTER_PI, TransformAxis.Y).modify(cube);
-    //    new RotateModifier(-Mathf.QUARTER_PI, TransformAxis.X).modify(cube);
-
-    //    new ScaleModifier(24, 24, 24).modify(cube);
-
-    SurfaceLayer layer = cube.getSurfaceLayer();
-    for (int i = 0; i < 8; i++) layer.addUV(0, 0);
-
-    return cube;
-  }
-
-  private void setupCamera() {
-    PerspectiveCamera camera = new PerspectiveCamera();
-    camera.setTarget(new Vector3f(0, 0, 5));
-    setActiveCamera(camera);
-  }
-
-  private void setupUI() {
-    setupBackground();
-    setupCursor();
-    setupButtons();
-  }
-
-  private void setupBackground() {
-    //    getUIRoot().addChild(new Sprite(Resources.START_SCREEN_BACKGROUND));
-  }
-
-  private void setupCursor() {
-    SimpleCursorComponent cursorComponent = new SimpleCursorComponent(input);
-    SceneNode cursorNode = new SceneNode("Cursor", cursorComponent);
-    getUIRoot().addChild(cursorNode);
-  }
-
-  private void setupButtons() {
-    SimpleButton button = new SimpleButton(Resources.GAME_START_BUTTON_TEXT, 0, 0, 300, 40);
-    button.setCallback(
-        new ButtonClickCallback() {
-
-          @Override
-          public void onButtonClicked() {
-            startGame();
-          }
-        });
-    UiComponent component = new UiComponent(input, button);
-    SceneNode buttonNode = new SceneNode("Button", component);
-    getUIRoot().addChild(buttonNode);
-
-    SimpleButton button2 = new SimpleButton(Resources.GAME_QUIT_BUTTON_TEXT, 0, 50, 300, 40);
-    button2.setCallback(
-        new ButtonClickCallback() {
-
-          @Override
-          public void onButtonClicked() {
-            System.exit(0);
-          }
-        });
-    UiComponent component2 = new UiComponent(input, button2);
-    SceneNode buttonNode2 = new SceneNode("Button-2", component2);
-    getUIRoot().addChild(buttonNode2);
-  }
-
-  private void startGame() {
-    if (gameStarted) {
-      return;
-    }
-    gameStarted = true;
-    new StartGame(input, client).execute();
   }
 
   public class RotateComponent extends AbstractComponent {

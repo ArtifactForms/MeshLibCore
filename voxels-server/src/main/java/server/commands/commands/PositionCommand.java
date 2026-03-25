@@ -27,7 +27,8 @@ public class PositionCommand extends AbstractCommand {
     ServerPlayer player = ctx.getServer().getPlayerManager().getPlayer(ctx.getPlayer());
 
     if (player == null) {
-      ctx.reply("Player not found.");
+      //      ctx.reply("Player not found.");
+      // TODO Log instead cause we can not reply
       return;
     }
 

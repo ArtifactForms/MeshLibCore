@@ -21,6 +21,12 @@ public class BlockPlaceViewImpl implements BlockPlaceView {
   }
 
   @Override
+  public void broadcastBlockUpdate(int x, int y, int z, short id) {
+    // TODO Filter by player positions
+    connection.getServer().getPlayerManager().broadcast(new BlockUpdatePacket(x, y, z, id));
+  }
+
+  @Override
   public void displayErrorMessage(String message) {
     connection.send(new ChatMessagePacket("§c" + message));
   }

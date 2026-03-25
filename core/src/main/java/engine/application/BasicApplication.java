@@ -84,7 +84,7 @@ public abstract class BasicApplication implements Application {
   public void launch() {
     launch(ApplicationSettings.defaultSettings());
   }
-
+  
   @Override
   public void initialize() {
     viewport = new Viewport(0, 0, settings.getWidth(), settings.getHeight());

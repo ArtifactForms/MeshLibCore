@@ -3,22 +3,15 @@ package server.network;
 import java.io.File;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collection;
 import java.util.UUID;
 
 import common.logging.Log;
 import common.network.Packet;
 import common.network.packets.ChatMessagePacket;
+import server.commands.BaseCommandProvider;
 import server.commands.Command;
 import server.commands.CommandRegistry;
-import server.commands.commands.DayCommand;
-import server.commands.commands.NightCommand;
-import server.commands.commands.PositionCommand;
-import server.commands.commands.PrivateMessageCommand;
-import server.commands.commands.SeedCommand;
-import server.commands.commands.StopCommand;
-import server.commands.commands.TeleportCommand;
-import server.commands.commands.TimeCommand;
-import server.commands.commands.TopCommand;
 import server.config.ServerConfig;
 import server.entity.EntityManager;
 import server.events.EventBus;
@@ -118,20 +111,7 @@ public class GameServer {
   }
 
   private void registerCommands() {
-    registerCommand(new StopCommand());
-    registerCommand(new TeleportCommand());
-    registerCommand(new PrivateMessageCommand());
-    registerCommand(new PositionCommand());
-    registerCommand(new TimeCommand());
-    registerCommand(new DayCommand());
-    registerCommand(new NightCommand());
-    registerCommand(new TopCommand());
-    registerCommand(new SeedCommand());
-  }
-
-  private void registerCommand(Command command) {
-    commandRegistry.register(command);
-    Log.info("Registered command: " + command.getName());
+    new BaseCommandProvider().registerCommands(commandRegistry);
   }
 
   /**
@@ -370,5 +350,9 @@ public class GameServer {
 
   public boolean hasPermission(UUID playerId, String permission) {
     return permissionService.hasPermission(playerId, permission);
+  }
+
+  public Collection<Command> getCommands() {
+    return commandRegistry.getCommands();
   }
 }

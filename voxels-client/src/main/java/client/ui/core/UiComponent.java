@@ -16,11 +16,12 @@ public class UiComponent extends AbstractComponent implements RenderableComponen
   public UiComponent(Input input, UiElement uiElement) {
     this.input = input;
     this.uiElement = uiElement;
-    input.addKeyListener(this);
+    if (input != null) input.addKeyListener(this);
   }
 
   @Override
   public void onUpdate(float tpf) {
+    if (input == null) return;
 
     float mouseX = input.getMouseX();
     float mouseY = input.getMouseY();
@@ -38,6 +39,14 @@ public class UiComponent extends AbstractComponent implements RenderableComponen
     }
 
     lastPressed = pressed;
+  }
+
+  public void onMouseClicked(float mouseX, float mouseY) {
+    uiElement.onMouseClicked(mouseX, mouseY);
+  }
+
+  public void onMouseMoved(float mouseX, float mouseY) {
+    uiElement.onMouse(mouseX, mouseY);
   }
 
   @Override

@@ -207,4 +207,10 @@ public class Inventory {
       throw new IndexOutOfBoundsException("Invalid slot index: " + index);
     }
   }
+
+  public void clear() {
+    for (Slot slot : slots) {
+      slot.clear();
+    }
+  }
 }

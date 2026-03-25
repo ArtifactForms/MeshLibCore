@@ -67,4 +67,10 @@ public class InventoryAdapter implements InventoryGateway {
     Inventory inventory = playerManager.getPlayer(playerId).getInventory();
     return inventory.getSize() - 1;
   }
+
+  @Override
+  public void clear(UUID playerId) {
+    Inventory inventory = playerManager.getPlayer(playerId).getInventory();
+    inventory.clear();
+  }
 }

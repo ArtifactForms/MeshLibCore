@@ -228,7 +228,7 @@ public class InventoryViewComponent extends AbstractComponent
     int screenH = g.getHeight();
 
     if (inventoryOpen) {
-      g.setColor(new Color(0, 0, 0, 0.6f));
+      g.setColor(new Color(0, 0, 0, 0.4f));
       g.fillRect(0, 0, screenW, screenH);
     }
 

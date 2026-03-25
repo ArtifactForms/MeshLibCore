@@ -1,7 +1,5 @@
 package client.usecases.openinventory;
 
-import client.scene.screen.InventoryScreen;
-import client.settings.KeyBinds;
 import client.ui.cursor.SimpleCursorComponent;
 import engine.components.AbstractComponent;
 import engine.runtime.input.Input;
@@ -23,21 +21,21 @@ public class OpenInventoryComponent extends AbstractComponent {
 
   @Override
   public void onUpdate(float tpf) {
-    boolean pressed = input.isKeyPressed(KeyBinds.openCloseInventory);
-
-    if (!lastPressed && pressed) {
-      inventoryOpen = !inventoryOpen;
-      if (inventoryOpen) {
-        getOwner().getScene().pushScreen(new InventoryScreen());
-        controller.onInventoryOpen();
-        getOwner().getScene().getUIRoot().addChild(cursor);
-      } else {
-        controller.onInventoryClose();
-        getOwner().getScene().getUIRoot().removeChild(cursor);
-        getOwner().getScene().popScreen();
-      }
-    }
-
-    lastPressed = pressed;
+//    boolean pressed = input.isKeyPressed(KeyBinds.openCloseInventory);
+//
+//    if (!lastPressed && pressed) {
+//      inventoryOpen = !inventoryOpen;
+//      if (inventoryOpen) {
+//        getOwner().getScene().pushScreen(new InventoryScreen());
+//        controller.onInventoryOpen();
+//        getOwner().getScene().getUIRoot().addChild(cursor);
+//      } else {
+//        controller.onInventoryClose();
+//        getOwner().getScene().getUIRoot().removeChild(cursor);
+//        getOwner().getScene().popScreen();
+//      }
+//    }
+//
+//    lastPressed = pressed;
   }
 }

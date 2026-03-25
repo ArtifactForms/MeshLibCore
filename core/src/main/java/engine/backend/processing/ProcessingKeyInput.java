@@ -65,8 +65,10 @@ public class ProcessingKeyInput implements KeyInput {
 
     public void keyEvent(KeyEvent e) {
         Key key = Key.UNKNOWN;
-
-        if (e.getKey() == ' ') key = Key.SPACE;
+        
+        if (e.getKeyCode() == PApplet.ESC)
+            key = Key.ESCAPE;
+        else if (e.getKey() == ' ') key = Key.SPACE;
         else if (e.getKey() == '\n' || e.getKeyCode() == PApplet.ENTER) key = Key.ENTER;
         else if (e.getKey() == '\b' || e.getKeyCode() == PApplet.BACKSPACE) key = Key.BACKSPACE;
         else if (e.getKeyCode() != 0) key = codedKeysMap.getOrDefault(e.getKeyCode(), 

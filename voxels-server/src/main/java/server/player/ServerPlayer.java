@@ -83,64 +83,65 @@ public class ServerPlayer extends PlayerData {
     setSilentPosition(x, y, z, yaw, pitch);
 
     // Send correction packet to the client
-//    connection.send(
-//        new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw, pitch));
+    //    connection.send(
+    //        new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw, pitch));
 
     // Inform other players of this movement
     //    broadcastUpdate();
   }
 
-//    public void move(float x, float y, float z, float yaw, float pitch) {
-//  
-//      if (ignoreNextMovement) {
-//        ignoreNextMovement = false;
-//        return;
-//      }
-//  
-//      // --------------------------------------------------
-//      // CURRENT SERVER POSITION
-//      // --------------------------------------------------
-//  
-//      float dx = x - position.x;
-//      float dy = y - position.y;
-//      float dz = z - position.z;
-//  
-//      float distSq = dx * dx + dy * dy + dz * dz;
-//  
-//      // --------------------------------------------------
-//      // VALIDATION (ANTI-RUBBERBAND CORE)
-//      // --------------------------------------------------
-//  
-////      float maxAllowed = 10f; // 🔥 tweakbar (z.B. 3–10)
-////      float maxDistSq = maxAllowed * maxAllowed;
-////  
-////      if (distSq > maxDistSq) {
-////  
-////        // ❌ Position ist zu weit weg → REJECT
-////        connection.send(
-////            new PlayerPositionPacket(
-////                getUuid(),
-////                position.x,
-////                position.y,
-////                position.z,
-////                yaw,
-////                pitch,
-////                true // optional teleport flag
-////                ));
-////  
-////        return;
-////      }
-//  
-//      // --------------------------------------------------
-//      // ACCEPT MOVEMENT
-//      // --------------------------------------------------
-//  
-//      setSilentPosition(x, y, z, yaw, pitch);
-//  
-//      // optional: nur wenn nötig senden
-////      connection.send(
-////          new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw, pitch));
-//    }
+  //    public void move(float x, float y, float z, float yaw, float pitch) {
+  //
+  //      if (ignoreNextMovement) {
+  //        ignoreNextMovement = false;
+  //        return;
+  //      }
+  //
+  //      // --------------------------------------------------
+  //      // CURRENT SERVER POSITION
+  //      // --------------------------------------------------
+  //
+  //      float dx = x - position.x;
+  //      float dy = y - position.y;
+  //      float dz = z - position.z;
+  //
+  //      float distSq = dx * dx + dy * dy + dz * dz;
+  //
+  //      // --------------------------------------------------
+  //      // VALIDATION (ANTI-RUBBERBAND CORE)
+  //      // --------------------------------------------------
+  //
+  ////      float maxAllowed = 10f; // 🔥 tweakbar (z.B. 3–10)
+  ////      float maxDistSq = maxAllowed * maxAllowed;
+  ////
+  ////      if (distSq > maxDistSq) {
+  ////
+  ////        // ❌ Position ist zu weit weg → REJECT
+  ////        connection.send(
+  ////            new PlayerPositionPacket(
+  ////                getUuid(),
+  ////                position.x,
+  ////                position.y,
+  ////                position.z,
+  ////                yaw,
+  ////                pitch,
+  ////                true // optional teleport flag
+  ////                ));
+  ////
+  ////        return;
+  ////      }
+  //
+  //      // --------------------------------------------------
+  //      // ACCEPT MOVEMENT
+  //      // --------------------------------------------------
+  //
+  //      setSilentPosition(x, y, z, yaw, pitch);
+  //
+  //      // optional: nur wenn nötig senden
+  ////      connection.send(
+  ////          new PlayerPositionPacket(getUuid(), position.x, position.y, position.z, yaw,
+  // pitch));
+  //    }
 
   /**
    * Updates the internal position without sending a confirmation packet. Used when the client's

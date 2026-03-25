@@ -4,15 +4,11 @@ import client.app.GameClient;
 import client.cam.CameraManager;
 import client.entity.EntitiesComponent;
 import client.player.PlayerController;
-import client.scene.screen.DebugScreen;
 import client.scene.screen.GamePlayScreen;
 import client.ui.hotbar.HotbarComponent;
 import client.ui.hotbar.HotbarViewComponent;
 import client.ui.title.TitleTextComponent;
-import client.usecases.chat.ChatComponent;
-import client.usecases.chat.ChatController;
 import client.usecases.chat.ChatViewComponent;
-import client.usecases.chat.SendChatMessageController;
 import client.usecases.debug.displaychunkborders.DisplayChunkBordersComponent;
 import client.usecases.dropitem.DropItemComponent;
 import client.usecases.interact.InteractionComponent;
@@ -44,6 +40,8 @@ public class GameScene extends Scene {
   public GameScene(Input input, GameClient client) {
     setCameraMode(CameraMode.CAMERA_RELATIVE);
 
+    //    pushScreen(new DebugScreen(controller1));
+
     GamePlayScreen screen = new GamePlayScreen(client);
     pushScreen(screen);
 
@@ -67,7 +65,6 @@ public class GameScene extends Scene {
     SceneNode entities = new SceneNode("Entities");
     entities.addComponent(new EntitiesComponent(client));
     addNode(entities);
-    //    view.getActionBarView().display("Test Message", 6);
 
     //    setupDebug();
 
@@ -79,23 +76,10 @@ public class GameScene extends Scene {
     DisplayChunkBordersComponent displayChunkBordersComponent =
         new DisplayChunkBordersComponent(input, client.getPlayer(), messageService);
     addNode(new SceneNode("Chunk-Borders", displayChunkBordersComponent));
-    DebugController controller1 = new DebugController(messageService, displayChunkBordersComponent);
-    pushScreen(new DebugScreen(controller1));
+    DebugController debugController =
+        new DebugController(messageService, displayChunkBordersComponent);
+    screen.setDebugController(debugController);
   }
-
-  //  private void setupDebug() {
-  //    ChatMessageService messageService = new ChatMessageService(client.getView().getChatView());
-  //
-  //    DebugController controller = new DebugController(messageService);
-  //    DebugComponent debugComponent = new DebugComponent(input, controller);
-  //    addNode(new SceneNode("Debug", debugComponent));
-  //
-  //    SceneNode debugNode =
-  //        new SceneNode(
-  //            "Debug-Chunk",
-  //            new DisplayChunkBordersComponent(input, client.getPlayer(), messageService));
-  //    addNode(debugNode);
-  //  }
 
   private void setupPlayer() {
     player = new SceneNode("Player");
@@ -137,11 +121,11 @@ public class GameScene extends Scene {
   }
 
   private void setupChat() {
-    SendChatMessageController controller = new SendChatMessageController(client);
-    ChatController chatController = new ChatController(controller);
-    ChatComponent chatComponent = new ChatComponent(input, chatController);
-    SceneNode chatNode = new SceneNode("Chat", chatComponent);
-    getUIRoot().addChild(chatNode);
+    //    SendChatMessageController controller = new SendChatMessageController(client);
+    //    ChatController chatController = new ChatController(controller);
+    //    ChatComponent chatComponent = new ChatComponent(input, chatController);
+    //    SceneNode chatNode = new SceneNode("Chat", chatComponent);
+    //    getUIRoot().addChild(chatNode);
 
     ChatViewComponent chatView = new ChatViewComponent();
     SceneNode chatViewNode = new SceneNode();
