@@ -264,6 +264,7 @@ public class Scene {
    * <p>Subclasses may override {@link #onExit()} to implement custom behavior.
    */
   public final void exit() {
+    screenManager.onExit();
     onExit();
   }
 

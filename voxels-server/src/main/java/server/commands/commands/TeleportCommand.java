@@ -15,6 +15,11 @@ public class TeleportCommand extends AbstractCommand {
   }
 
   @Override
+  public String[] getAliases() {
+    return new String[] {"teleport"};
+  }
+
+  @Override
   public String getDescription() {
     return "Teleports to coordinates or another player.";
   }

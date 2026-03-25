@@ -33,11 +33,22 @@ public class TextureAtlas {
   private Texture texture;
   private PerlinNoise noise = new PerlinNoise(0);
 
+  private boolean useAtlasImage = false;
+
   public TextureAtlas() {
-    createOverlay();
-    createTextureImage();
-    createAllUVCoordinates();
-    createTexture();
+
+    if (useAtlasImage) {
+      texture = TextureManager.getInstance().loadTexture("atlas.png");
+      width = texture.getWidth();
+      height = texture.getHeight();
+      rows = height / tileSize;
+      createAllUVCoordinates();
+    } else {
+      createOverlay();
+      createTextureImage();
+      createAllUVCoordinates();
+      createTexture();
+    }
   }
 
   public int getWidth() {
@@ -87,83 +98,83 @@ public class TextureAtlas {
     }
   }
 
-    private void createTextureImage() {
-      if (GameSettings.dynamicTextures) {
-        image = new DynamicAtlasBuilder(tileSize).build(false);
-        return;
-      }
-  
-      image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g2d = (Graphics2D) image.getGraphics();
-  
-      g2d.setColor(Color.GRAY);
-      if (fillTextureBackground) g2d.fillRect(0, 0, width, height);
-  
-      fill(g2d, Blocks.AIR, new Color(0, 0, 0, 0));
-      fill(g2d, Blocks.STONE, new Color(123, 123, 123));
-      fill(g2d, Blocks.COBBLE_STONE, new Color(108, 108, 108));
-      fill(g2d, Blocks.GRASS_BLOCK, new Color(117, 175, 74));
-      fill(g2d, Blocks.GRASS, new Color(37, 82, 12));
-      fill(g2d, Blocks.LEAF, new Color(66, 175, 29));
-      fill(g2d, Blocks.OAK_WOOD, new Color(111, 87, 51));
-      fill(g2d, Blocks.BIRCH_WOOD, new Color(255, 255, 255));
-      fill(g2d, Blocks.DIRT, DIRT_COLOR);
-      //    fill(g2d, BlockType.WATER, new Color(45, 137, 212, 160));
-      //    fill(g2d, Blocks.WATER, new Color(45, 137, 212, 120));
-      fill(g2d, Blocks.SNOW, new Color(253, 253, 253));
-      fill(g2d, Blocks.SAND, new Color(194, 189, 134));
-      fill(g2d, Blocks.CACTUS, new Color(96, 142, 50));
-      fill(g2d, Blocks.GRAVEL, new Color(180, 180, 180));
-      fill(g2d, Blocks.SPRUCE_WOOD, new Color(91, 49, 56));
-      fill(g2d, Blocks.SPRUCE_LEAF, new Color(35, 103, 78));
-      fill(g2d, Blocks.BEDROCK, new Color(51, 57, 65));
-  
-      // TERRACOTTA
-      fill(g2d, Blocks.BLACK_TERRACOTTA, new Color(16, 18, 28)); // AAP64 color
-      fill(g2d, Blocks.RED_TERRACOTTA, new Color(172, 40, 71)); // AAP64 color
-      fill(g2d, Blocks.GREEN_TERRACOTTA, new Color(0, 101, 84)); // AAP64 color
-      fill(g2d, Blocks.BROWN_TERRACOTTA, new Color(110, 76, 48)); // AAP64 color
-  
-      drawDebugText(g2d);
+  private void createTextureImage() {
+    if (GameSettings.dynamicTextures) {
+      image = new DynamicAtlasBuilder(tileSize).build(false);
+      return;
     }
 
-//  private void createTextureImage() {
-//	    if (GameSettings.dynamicTextures) {
-//	        image = new DynamicAtlasBuilder(tileSize).build(false);
-//	        return;
-//	    }
-//
-//	    image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-//	    Graphics2D g2d = (Graphics2D) image.getGraphics();
-//
-//	    // 1. Optional: Fill background if enabled
-//	    if (fillTextureBackground) {
-//	        g2d.setColor(Color.GRAY);
-//	        g2d.fillRect(0, 0, width, height);
-//	    }
-//
-//	    // 2. Iterate through all blocks from the registry
-//	    for (BlockType block : BlockRegistry.getAll()) {
-//	        
-//	        Color color;
-//	        
-//	        // Special case for AIR: always fully transparent
-//	        if (block.getId() == 0) {
-//	            color = new Color(0, 0, 0, 0);
-//	        } else {
-//	            // Create color using your getR(), getG(), getB() methods
-//	            color = new Color(block.getR(), block.getG(), block.getB());
-//	        }
-//	        
-//	        // Use your existing fill method to draw the block into the atlas
-//	        fill(g2d, block, color);
-//	    }
-//
-//	    drawDebugText(g2d);
-//	    
-//	    // 3. Clean up
-//	    g2d.dispose();
-//	}
+    image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = (Graphics2D) image.getGraphics();
+
+    g2d.setColor(Color.GRAY);
+    if (fillTextureBackground) g2d.fillRect(0, 0, width, height);
+
+    fill(g2d, Blocks.AIR, new Color(0, 0, 0, 0));
+    fill(g2d, Blocks.STONE, new Color(123, 123, 123));
+    fill(g2d, Blocks.COBBLE_STONE, new Color(108, 108, 108));
+    fill(g2d, Blocks.GRASS_BLOCK, new Color(117, 175, 74));
+    fill(g2d, Blocks.GRASS, new Color(37, 82, 12));
+    fill(g2d, Blocks.LEAF, new Color(66, 175, 29));
+    fill(g2d, Blocks.OAK_WOOD, new Color(111, 87, 51));
+    fill(g2d, Blocks.BIRCH_WOOD, new Color(255, 255, 255));
+    fill(g2d, Blocks.DIRT, DIRT_COLOR);
+    //    fill(g2d, BlockType.WATER, new Color(45, 137, 212, 160));
+    //    fill(g2d, Blocks.WATER, new Color(45, 137, 212, 120));
+    fill(g2d, Blocks.SNOW, new Color(253, 253, 253));
+    fill(g2d, Blocks.SAND, new Color(194, 189, 134));
+    fill(g2d, Blocks.CACTUS, new Color(96, 142, 50));
+    fill(g2d, Blocks.GRAVEL, new Color(180, 180, 180));
+    fill(g2d, Blocks.SPRUCE_WOOD, new Color(91, 49, 56));
+    fill(g2d, Blocks.SPRUCE_LEAF, new Color(35, 103, 78));
+    fill(g2d, Blocks.BEDROCK, new Color(51, 57, 65));
+
+    // TERRACOTTA
+    fill(g2d, Blocks.BLACK_TERRACOTTA, new Color(16, 18, 28)); // AAP64 color
+    fill(g2d, Blocks.RED_TERRACOTTA, new Color(172, 40, 71)); // AAP64 color
+    fill(g2d, Blocks.GREEN_TERRACOTTA, new Color(0, 101, 84)); // AAP64 color
+    fill(g2d, Blocks.BROWN_TERRACOTTA, new Color(110, 76, 48)); // AAP64 color
+
+    drawDebugText(g2d);
+  }
+
+  //  private void createTextureImage() {
+  //	    if (GameSettings.dynamicTextures) {
+  //	        image = new DynamicAtlasBuilder(tileSize).build(false);
+  //	        return;
+  //	    }
+  //
+  //	    image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+  //	    Graphics2D g2d = (Graphics2D) image.getGraphics();
+  //
+  //	    // 1. Optional: Fill background if enabled
+  //	    if (fillTextureBackground) {
+  //	        g2d.setColor(Color.GRAY);
+  //	        g2d.fillRect(0, 0, width, height);
+  //	    }
+  //
+  //	    // 2. Iterate through all blocks from the registry
+  //	    for (BlockType block : BlockRegistry.getAll()) {
+  //
+  //	        Color color;
+  //
+  //	        // Special case for AIR: always fully transparent
+  //	        if (block.getId() == 0) {
+  //	            color = new Color(0, 0, 0, 0);
+  //	        } else {
+  //	            // Create color using your getR(), getG(), getB() methods
+  //	            color = new Color(block.getR(), block.getG(), block.getB());
+  //	        }
+  //
+  //	        // Use your existing fill method to draw the block into the atlas
+  //	        fill(g2d, block, color);
+  //	    }
+  //
+  //	    drawDebugText(g2d);
+  //
+  //	    // 3. Clean up
+  //	    g2d.dispose();
+  //	}
 
   private void drawGrassTexture(Graphics2D g2d, int x, int y) {
 

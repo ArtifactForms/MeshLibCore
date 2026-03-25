@@ -5,7 +5,7 @@ public record GatewayContext(
 	    EventGateway events,
 	    PermissionGateway permissions,
 	    InventoryGateway inventory,
-//	    PlayerGateway players,
 	    ConfigGateway config,
-	    CommandGateway commands
+	    CommandGateway commands,
+	    PlayerGateway players
 	) {}

@@ -6,6 +6,7 @@ import client.scene.StartScene;
 import client.usecases.loadresources.LoadResourcesUseCase;
 import client.world.ChunkStreamingSystem;
 import common.game.ItemRegistry;
+import common.game.block.BlockLoader;
 import common.game.block.BlockRegistry;
 import common.game.block.Blocks;
 import common.game.crafting.GameRecipes;
@@ -29,8 +30,9 @@ public class ClientApplication extends BasicApplication {
   public void onInitialize() {
     setDisplayInfo(true);
 
-    //    BlockLoader.load();
+
     Blocks.initialize();
+    BlockLoader.load();
     BlockRegistry.freeze();
     ItemRegistry.init();
     GameRecipes.init();

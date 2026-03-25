@@ -7,6 +7,7 @@ import client.ui.cursor.SimpleCursorComponent;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
+import engine.runtime.input.Key;
 import engine.runtime.input.KeyEvent;
 import engine.runtime.input.MouseEvent;
 import engine.scene.SceneNode;
@@ -39,7 +40,7 @@ public class MenuScreen extends GameScreen {
 
           @Override
           public void onButtonClicked() {
-            getScene().popScreen();
+            close();
           }
         });
     backToGameButton = new UiComponent(null, button);
@@ -60,6 +61,10 @@ public class MenuScreen extends GameScreen {
     quitButton = new UiComponent(null, button);
     SceneNode buttonNode = new SceneNode("Quit-Button", quitButton);
     uiRoot.addChild(buttonNode);
+  }
+
+  private void close() {
+    getScene().popScreen();
   }
 
   @Override
@@ -126,6 +131,10 @@ public class MenuScreen extends GameScreen {
 
   @Override
   public boolean onKeyPressed(KeyEvent e) {
+    if (e.getKey() == Key.ESCAPE) {
+      close();
+      return true;
+    }
     return true;
   }
 

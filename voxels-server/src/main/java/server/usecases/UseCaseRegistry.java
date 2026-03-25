@@ -8,6 +8,8 @@ import server.usecases.blockbreak.BlockBreak;
 import server.usecases.blockbreak.BlockBreakUseCase;
 import server.usecases.blockplace.BlockPlace;
 import server.usecases.blockplace.BlockPlaceUseCase;
+import server.usecases.changegamemode.ChangeGameModeUseCase;
+import server.usecases.changegamemode.ChangeGamemode;
 
 public class UseCaseRegistry {
   private final Map<Class<?>, Object> useCases = new HashMap<>();
@@ -15,6 +17,7 @@ public class UseCaseRegistry {
   public UseCaseRegistry(GatewayContext context) {
     register(BlockBreak.class, new BlockBreakUseCase(context));
     register(BlockPlace.class, new BlockPlaceUseCase(context));
+    register(ChangeGamemode.class, new ChangeGameModeUseCase(context));
   }
 
   private <T> void register(Class<T> type, T instance) {

@@ -24,6 +24,12 @@ public class ScreenManager implements KeyListener, MouseListener {
     input.addMouseListener(this);
   }
 
+  public void onExit() {
+    stack.clear();
+    input.removeKeyListener(this);
+    input.removeMouseListener(this);
+  }
+
   public void push(GameScreen screen) {
     if (screen == null) {
       throw new IllegalArgumentException("Screen cannot be null.");

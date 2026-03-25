@@ -97,7 +97,7 @@ public class ChatScreen extends GameScreen {
 
   @Override
   public boolean capturesMouse() {
-    return false;
+    return true;
   }
 
   @Override

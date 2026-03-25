@@ -15,6 +15,8 @@ import common.network.Packet;
  */
 public class ClientNetwork extends Connection {
 
+  private final GameClient client;
+
   /** Dispatcher responsible for routing packets to their respective handlers */
   private final ClientPacketDispatcher packetDispatcher;
 
@@ -27,6 +29,7 @@ public class ClientNetwork extends Connection {
   public ClientNetwork(GameClient client) throws Exception {
     // Initialize the base connection without a socket (socket is set in connect())
     super(null);
+    this.client = client;
     this.packetDispatcher = new ClientPacketDispatcher(client);
   }
 
@@ -71,5 +74,10 @@ public class ClientNetwork extends Connection {
         packetDispatcher.dispatch(packet);
       }
     }
+  }
+
+  @Override
+  public void onClose() {
+    client.onConnectionClosed();
   }
 }

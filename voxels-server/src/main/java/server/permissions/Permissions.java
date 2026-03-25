@@ -38,6 +38,8 @@ public class Permissions {
   public static final String COMMAND_SERVER_STOP = "command.server.stop";
 
   public static final String COMMAND_INVENTORY = "command.inventory";
-  
+
   public static final String COMMAND_HELP = "command.help";
+
+  public static final String COMMAND_GAMEMODE = "command.gamemode";
 }

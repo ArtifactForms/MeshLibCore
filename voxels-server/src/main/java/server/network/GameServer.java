@@ -26,6 +26,8 @@ import server.gateways.InventoryAdapter;
 import server.gateways.InventoryGateway;
 import server.gateways.PermissionAdapter;
 import server.gateways.PermissionGateway;
+import server.gateways.PlayerAdapter;
+import server.gateways.PlayerGateway;
 import server.gateways.WorldAdapter;
 import server.gateways.WorldGateway;
 import server.permissions.AlwaysGrantPermissionService;
@@ -97,6 +99,7 @@ public class GameServer {
     InventoryGateway inventoryGateway = new InventoryAdapter(playerManager);
     ConfigGateway configGateway = new ConfigAdapter(config);
     CommandGateway commandGateway = new CommandAdapter(commandRegistry);
+    PlayerGateway playerGateway = new PlayerAdapter(playerManager);
 
     context =
         new GatewayContext(
@@ -105,7 +108,8 @@ public class GameServer {
             permissionGateway,
             inventoryGateway,
             configGateway,
-            commandGateway);
+            commandGateway,
+            playerGateway);
 
     this.useCases = new UseCaseRegistry(context);
   }
@@ -354,5 +358,9 @@ public class GameServer {
 
   public Collection<Command> getCommands() {
     return commandRegistry.getCommands();
+  }
+
+  public UseCaseRegistry getUseCases() {
+    return useCases;
   }
 }

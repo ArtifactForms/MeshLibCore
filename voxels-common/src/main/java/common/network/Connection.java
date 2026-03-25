@@ -92,6 +92,11 @@ public abstract class Connection implements Runnable {
       System.out.println("[Network] Connection resources cleaned up.");
     } catch (IOException ignored) {
     }
+    onClose();
+  }
+
+  public void onClose() {
+    // Implementation is left to subclasses
   }
 
   /** @return true if the connection is active and the read-loop is running. */

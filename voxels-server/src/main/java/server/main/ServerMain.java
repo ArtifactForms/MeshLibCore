@@ -1,6 +1,7 @@
 package server.main;
 
 import common.game.ItemRegistry;
+import common.game.block.BlockLoader;
 import common.game.block.Blocks;
 import common.logging.ConsoleLogger;
 import common.logging.Log;
@@ -20,9 +21,9 @@ public class ServerMain {
 
     NetworkPackets.register();
 
-//    BlockLoader.load();
-    Blocks.initialize(); // Important: Initialize before item registration -> ItemRegistry.init();
 
+    Blocks.initialize(); // Important: Initialize before item registration -> ItemRegistry.init();
+    BlockLoader.load();
 
     ItemRegistry.init();
 

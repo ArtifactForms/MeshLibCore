@@ -14,6 +14,7 @@ import engine.components.AbstractComponent;
 import engine.components.StaticGeometry;
 import engine.rendering.Material;
 import engine.runtime.input.Input;
+import engine.runtime.input.MouseMode;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.audio.SoundManager;
@@ -215,5 +216,10 @@ public class StartScene extends Scene {
           .getTransform()
           .setPosition(getOwner().getTransform().getPosition().set(0, -15 + hover, 80));
     }
+  }
+
+  @Override
+  public void onEnter() {
+    input.setMouseMode(MouseMode.ABSOLUTE);
   }
 }

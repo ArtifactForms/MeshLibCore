@@ -45,6 +45,8 @@ public class TopCommand extends AbstractCommand {
 
     player.teleport(x, topY + 1.5f, z, player.getYaw(), player.getPitch());
 
+    ctx.reply("Teleported to top.");
+
     Log.info(player.getName() + " teleported to top.");
   }
 

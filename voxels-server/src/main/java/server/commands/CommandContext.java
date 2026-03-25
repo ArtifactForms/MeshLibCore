@@ -3,7 +3,9 @@ package server.commands;
 import java.util.List;
 import java.util.UUID;
 
+import server.gateways.GatewayContext;
 import server.network.GameServer;
+import server.usecases.UseCaseRegistry;
 
 public class CommandContext {
 
@@ -44,5 +46,9 @@ public class CommandContext {
 
   public boolean hasPermission(String permission) {
     return server.hasPermission(player, permission);
+  }
+  
+  public UseCaseRegistry getUseCases() {
+	  return server.getUseCases();
   }
 }
