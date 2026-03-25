@@ -37,4 +37,11 @@ public class BlockBreakPresenter implements BlockBreakResponse {
     view.displayBlockUpdate(x, y, z, oldId);
     view.displayErrorMessage("You don't have permission to break this.");
   }
+
+  @Override
+  public void onNoAbilityToInstantBreak(int x, int y, int z, short oldId) {
+    view.displayBlockUpdate(x, y, z, oldId);
+    // TODO Decide to remove - No message needed
+    view.displayErrorMessage("You don't have the ability to instant break this.");
+  }
 }

@@ -34,5 +34,7 @@ public interface BlockBreak {
     void onTooFarAway(int x, int y, int z, short oldId);
 
     void onNoPermission(int x, int y, int z, short oldId);
+
+    void onNoAbilityToInstantBreak(int x, int y, int z, short oldId);
   }
 }

@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.UUID;
 
 import common.game.block.Blocks;
+import common.player.ability.Ability;
+import common.player.ability.AbilityContainer;
 import server.events.events.BlockBreakEvent;
 import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
 import server.gateways.PermissionGateway;
+import server.gateways.PlayerGateway;
 import server.gateways.WorldGateway;
 import server.usecases.blockbreak.validation.BlockBreakRule;
 import server.usecases.blockbreak.validation.CannotBreakBedrockRule;
@@ -20,12 +23,14 @@ public class BlockBreakUseCase implements BlockBreak {
   private WorldGateway worldGateway;
   private EventGateway eventGateway;
   private PermissionGateway permissionGateway;
+  private PlayerGateway playerGateway;
   private List<BlockBreakRule> rules;
 
   public BlockBreakUseCase(GatewayContext gateways) {
     this.worldGateway = gateways.world();
     this.eventGateway = gateways.events();
     this.permissionGateway = gateways.permissions();
+    this.playerGateway = gateways.players();
     initializeRules();
   }
 
@@ -44,6 +49,12 @@ public class BlockBreakUseCase implements BlockBreak {
     int z = request.getZ();
 
     short oldId = worldGateway.getBlock(x, y, z);
+
+    AbilityContainer abilities = playerGateway.getAbilities(player);
+    if (!abilities.has(Ability.INSTANT_BREAK)) {
+      response.onNoAbilityToInstantBreak(x, y, z, oldId);
+      return;
+    }
 
     if (isInvalid(request, response, oldId)) {
       return;
