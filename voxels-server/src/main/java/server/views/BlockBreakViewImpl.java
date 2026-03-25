@@ -22,12 +22,12 @@ public class BlockBreakViewImpl implements BlockBreakView {
 
   @Override
   public void displayErrorMessage(String message) {
-    connection.send(new ChatMessagePacket("§c" + message));
+    connection.send(new ChatMessagePacket(message));
   }
 
   @Override
   public void displaySuccessMessage(String message) {
-    connection.send(new ChatMessagePacket("§a" + message));
+    connection.send(new ChatMessagePacket(message));
   }
 
   @Override
