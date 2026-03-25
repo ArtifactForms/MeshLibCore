@@ -34,7 +34,6 @@ public class ChatViewComponent extends AbstractComponent implements RenderableCo
 
   @Override
   public void render(Graphics g) {
-
     if (messages.isEmpty()) return;
 
     g.setFont(font);
@@ -42,52 +41,47 @@ public class ChatViewComponent extends AbstractComponent implements RenderableCo
     int offsetX = 20;
     int baseY = g.getHeight() - 80;
     int lineHeight = 26;
+    int padding = 10;
 
-    int rendered = 0;
-
+    List<ChatMessage> visibleNow = new LinkedList<>();
     for (int i = messages.size() - 1; i >= 0; i--) {
-
       ChatMessage msg = messages.get(i);
-
       float age = (System.currentTimeMillis() - msg.getTimestamp()) / 1000f;
 
-      float alpha = 1f;
-
-      if (!chatOpen) {
-
-        if (age > MESSAGE_LIFETIME + FADE_TIME) {
-          continue;
-        }
-
-        if (age > MESSAGE_LIFETIME) {
-          float fade = (age - MESSAGE_LIFETIME) / FADE_TIME;
-          alpha = 1f - fade;
-        }
+      if (!chatOpen && age > MESSAGE_LIFETIME + FADE_TIME) {
+        continue;
       }
+      visibleNow.add(msg);
+      if (visibleNow.size() >= VISIBLE_MESSAGES) break;
+    }
 
+    if (visibleNow.isEmpty()) return;
+
+    int bgHeight = visibleNow.size() * lineHeight + padding;
+    int bgY = baseY - (visibleNow.size() - 1) * lineHeight - 20;
+    int bgWidth = 400;
+
+    float bgAlpha = chatOpen ? 1.0f : getAlphaForMessage(visibleNow.get(0));
+
+    g.setColor(new Color(0, 0, 0, 0.5f * bgAlpha));
+    g.fillRect(offsetX - 5, bgY, bgWidth, bgHeight);
+
+    int rendered = 0;
+    for (ChatMessage msg : visibleNow) {
+      float alpha = chatOpen ? 1.0f : getAlphaForMessage(msg);
       int y = baseY - rendered * lineHeight;
 
-      drawMessage(g, msg, offsetX, y, alpha);
-
+      g.setColor(new Color(1, 1, 1, alpha));
+      g.text(msg.getText(), offsetX, y);
       rendered++;
-
-      if (rendered >= VISIBLE_MESSAGES) break;
     }
   }
 
-  private void drawMessage(Graphics g, ChatMessage msg, int x, int y, float alpha) {
-
-    String text = msg.getText();
-
-    float width = g.textWidth(text) + 10;
-
-    // background
-    g.setColor(new Color(0, 0, 0, 120 * alpha));
-    g.fillRect(x - 5, y - 20, width, 24);
-
-    // text
-    g.setColor(new Color(255, 255, 255, 255 * alpha));
-    g.text(text, x, y);
+  private float getAlphaForMessage(ChatMessage msg) {
+    float age = (System.currentTimeMillis() - msg.getTimestamp()) / 1000f;
+    if (age <= MESSAGE_LIFETIME) return 1f;
+    float fade = (age - MESSAGE_LIFETIME) / FADE_TIME;
+    return Math.max(0, 1f - fade);
   }
 
   public void setChatOpen(boolean open) {
