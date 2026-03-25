@@ -118,6 +118,7 @@ public class BasicChunkRenderer implements ChunkRenderer {
     for (Chunk chunk : visibleChunksCache) {
       tempVec.set(chunk.getWorldPosition()).subtractLocal(camPos);
       g.setUniform("u_chunkPos", tempVec);
+      g.setUniform("u_worldChunkPos", chunk.getWorldPosition());
       chunk.renderWater(g, camPos);
     }
   }
