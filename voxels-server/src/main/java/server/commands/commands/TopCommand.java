@@ -50,11 +50,6 @@ public class TopCommand extends AbstractCommand {
     Log.info(player.getName() + " teleported to top.");
   }
 
-  @Override
-  public String[] getArgumentLabels() {
-    return new String[] {};
-  }
-
   private int findTopY(CommandContext ctx, int x, int z) {
     return ctx.getServer().getWorld().getHeightAt(x, z) + 1;
   }
