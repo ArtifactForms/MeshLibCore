@@ -32,7 +32,7 @@ public class BasicWorldGenerator2 implements WorldGenerator {
   private PerlinNoise3 caveNoise;
 
   // Terrain params
-  private float terrainScale = 0.01f;
+  private float terrainScale = 0.005f;
   private int heightMultiplier = 180;
   private int octaves = 3;
   private float persistence = 0.5f;
@@ -114,7 +114,7 @@ public class BasicWorldGenerator2 implements WorldGenerator {
     // --- Feature Layers ---
     //    createTrees(chunk);
     createWater(chunk);
-//    createCaves(chunk);
+    //    createCaves(chunk);
 
     createGrass(chunk);
   }

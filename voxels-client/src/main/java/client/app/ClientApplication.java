@@ -28,7 +28,7 @@ public class ClientApplication extends BasicApplication {
 
   @Override
   public void onInitialize() {
-    setDisplayInfo(true);
+    setDisplayInfo(false);
 
 
     Blocks.initialize();

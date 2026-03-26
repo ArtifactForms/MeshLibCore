@@ -25,4 +25,10 @@ public class DebugController {
     String value = RenderSettings.frustum_Culling ? "enabled" : "disabled";
     messageService.displayMessage(MessagePrefix.DEBUG, "Frustum culling: " + value);
   }
+
+  public void onEnableDisableChunkBounds() {
+    RenderSettings.debugChunkBounds = !RenderSettings.debugChunkBounds;
+    String value = RenderSettings.debugChunkBounds ? "enabled" : "disabled";
+    messageService.displayMessage(MessagePrefix.DEBUG, "Chunk bounds: " + value);
+  }
 }

@@ -81,7 +81,7 @@ public class Chunk extends ChunkData {
     }
     meshFuture = null;
   }
-  
+
   /**
    * Renders the opaque layer of the chunk relative to the camera to prevent floating point
    * precision jitter.
@@ -140,11 +140,58 @@ public class Chunk extends ChunkData {
     return worldPosition;
   }
 
-  public Bounds getMeshBounds() {
-    // Für Culling nutzen wir meist das opake Mesh
-    if (opaqueGeometry != null) {
-      return opaqueGeometry.getLocalBounds();
+  public Bounds getMeshBounds(Bounds store) {
+    if (store == null) {
+      throw new IllegalArgumentException("store must not be null");
     }
-    return null;
+
+    boolean initialized = false;
+
+    if (opaqueGeometry != null) {
+      store.set(opaqueGeometry.getLocalBounds());
+      initialized = true;
+    }
+
+    if (waterGeometry != null) {
+      if (!initialized) {
+        store.set(waterGeometry.getLocalBounds());
+        initialized = true;
+      } else {
+        mergeBoundsInPlace(store, waterGeometry.getLocalBounds());
+      }
+    }
+
+    if (decorGeometry != null) {
+      if (!initialized) {
+        store.set(decorGeometry.getLocalBounds());
+        initialized = true;
+      } else {
+        mergeBoundsInPlace(store, decorGeometry.getLocalBounds());
+      }
+    }
+
+    // Optional: fallback wenn alles null
+    if (!initialized) {
+      store.setMin(0, 0, 0);
+      store.setMax(0, 0, 0);
+    }
+
+    return store;
+  }
+
+  private void mergeBoundsInPlace(Bounds target, Bounds other) {
+    Vector3f min = target.getMin();
+    Vector3f max = target.getMax();
+
+    Vector3f omin = other.getMin();
+    Vector3f omax = other.getMax();
+
+    if (omin.x < min.x) min.x = omin.x;
+    if (omin.y < min.y) min.y = omin.y;
+    if (omin.z < min.z) min.z = omin.z;
+
+    if (omax.x > max.x) max.x = omax.x;
+    if (omax.y > max.y) max.y = omax.y;
+    if (omax.z > max.z) max.z = omax.z;
   }
 }

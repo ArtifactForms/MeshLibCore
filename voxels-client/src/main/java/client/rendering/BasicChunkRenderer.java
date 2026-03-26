@@ -8,11 +8,13 @@ import client.app.GameClient;
 import client.settings.GameSettings;
 import client.world.Chunk;
 import engine.rendering.Graphics;
+import engine.runtime.debug.core.DebugDraw;
 import engine.scene.CameraMode;
 import engine.scene.camera.Camera;
 import engine.scene.camera.Frustum;
 import engine.scene.camera.PerspectiveCamera;
 import math.Bounds;
+import math.Color;
 import math.Matrix4f;
 import math.Vector3f;
 
@@ -32,6 +34,7 @@ public class BasicChunkRenderer implements ChunkRenderer {
   private static final Vector3f ZERO = new Vector3f(0, 0, 0);
 
   private Bounds worldBounds = new Bounds(new Vector3f(), new Vector3f());
+  private Bounds meshBounds = new Bounds(new Vector3f(), new Vector3f());
 
   private final Vector3f camPos = new Vector3f();
   private final Frustum frustum = new Frustum();
@@ -135,31 +138,28 @@ public class BasicChunkRenderer implements ChunkRenderer {
   private boolean isChunkVisible(Frustum frustum, Chunk chunk, Vector3f camPos) {
     if (!RenderSettings.frustum_Culling) return true;
 
-    Bounds meshBounds = chunk.getMeshBounds();
+    chunk.getMeshBounds(meshBounds);
 
-    if (meshBounds != null) {
-      Vector3f pos = chunk.getWorldPosition();
+    Vector3f pos = chunk.getWorldPosition();
 
-      // WORLD → CAMERA RELATIVE
-      tempMin.set(meshBounds.getMin()).addLocal(pos).subtractLocal(camPos);
-      tempMax.set(meshBounds.getMax()).addLocal(pos).subtractLocal(camPos);
+    // WORLD → CAMERA RELATIVE
+    tempMin.set(meshBounds.getMin()).addLocal(pos).subtractLocal(camPos);
+    tempMax.set(meshBounds.getMax()).addLocal(pos).subtractLocal(camPos);
 
-      float padding = 1f;
+    float padding = 1f;
 
-      tempMin.subtractLocal(padding, padding, padding);
-      tempMax.addLocal(padding, padding, padding);
+    tempMin.subtractLocal(padding, padding, padding);
+    tempMax.addLocal(padding, padding, padding);
 
-      worldBounds.setMinMax(tempMin, tempMax);
-      return frustum.intersectsAABB(worldBounds);
-    }
-
-    // fallback
-    Bounds bounds = chunk.getChunkBounds();
-
-    tempMin.set(bounds.getMin()).subtractLocal(camPos);
-    tempMax.set(bounds.getMax()).subtractLocal(camPos);
     worldBounds.setMinMax(tempMin, tempMax);
 
-    return frustum.intersectsAABB(worldBounds);
+    boolean intersects = frustum.intersectsAABB(worldBounds);
+
+    if (RenderSettings.debugChunkBounds) {
+      Bounds b = new Bounds(worldBounds.getMin(), worldBounds.getMax());
+      DebugDraw.drawBounds(b, intersects ? Color.GREEN : Color.RED);
+    }
+
+    return intersects;
   }
 }

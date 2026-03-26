@@ -45,7 +45,7 @@ public class ServerPlayer extends PlayerData {
   private final java.util.Queue<long[]> chunkLoadQueue =
       new java.util.concurrent.LinkedBlockingQueue<>();
 
-  private int viewDistance = 12;
+  private int viewDistance = 14;
   private boolean ignoreNextMovement = false;
 
   private int inventoryVersion = 0;

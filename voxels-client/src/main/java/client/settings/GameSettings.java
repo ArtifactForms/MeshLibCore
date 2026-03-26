@@ -10,7 +10,7 @@ public class GameSettings {
 
   public static boolean textureBorder = false;
 
-  public static int renderDistance = 12;
+  public static int renderDistance = 14;
 
   public static float flySpeed = 16;
   

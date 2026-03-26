@@ -370,6 +370,48 @@ public class Bounds {
   }
 
   /**
+   * Sets the minimum corner of this bounding box using the given coordinates.
+   *
+   * <p>This method directly modifies the internal {@link Vector3f} instance representing the
+   * minimum corner, avoiding object allocation. It is intended for performance-critical code paths
+   * such as real-time bounds updates, merging operations, or spatial queries.
+   *
+   * <p><strong>Important:</strong> This method does not perform validation to ensure that the
+   * minimum remains less than or equal to the maximum. It is the caller's responsibility to
+   * maintain a valid bounding box.
+   *
+   * @param minX the x-coordinate of the minimum corner
+   * @param minY the y-coordinate of the minimum corner
+   * @param minZ the z-coordinate of the minimum corner
+   */
+  public void setMin(float minX, float minY, float minZ) {
+    min.x = minX;
+    min.y = minY;
+    min.z = minZ;
+  }
+
+  /**
+   * Sets the maximum corner of this bounding box using the given coordinates.
+   *
+   * <p>This method directly modifies the internal {@link Vector3f} instance representing the
+   * maximum corner, avoiding object allocation. It is intended for performance-critical code paths
+   * such as real-time bounds updates, merging operations, or spatial queries.
+   *
+   * <p><strong>Important:</strong> This method does not perform validation to ensure that the
+   * maximum remains greater than or equal to the minimum. It is the caller's responsibility to
+   * maintain a valid bounding box.
+   *
+   * @param maxX the x-coordinate of the maximum corner
+   * @param maxY the y-coordinate of the maximum corner
+   * @param maxZ the z-coordinate of the maximum corner
+   */
+  public void setMax(float maxX, float maxY, float maxZ) {
+    max.x = maxX;
+    max.y = maxY;
+    max.z = maxZ;
+  }
+
+  /**
    * Returns a string representation of the Bounds object. The string includes the minimum and
    * maximum points of the bounds.
    *

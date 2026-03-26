@@ -152,6 +152,7 @@ public class GamePlayScreen extends GameScreen {
       debugController.onShowHideChunkBorders();
       return true;
     }
+
     if (e.getKey() == KeyBinds.enableDisableFrustumCulling) {
       debugController.onEnableDisableFrustumCulling();
     }
@@ -159,6 +160,10 @@ public class GamePlayScreen extends GameScreen {
     if (e.getKey() == Key.ESCAPE) {
       getScene().pushScreen(new MenuScreen());
       return true;
+    }
+
+    if (e.getKey() == KeyBinds.enableDisableChunkBounds) {
+      debugController.onEnableDisableChunkBounds();
     }
 
     if (e.getKey() == KeyBinds.openCloseInventory) {
