@@ -7,7 +7,6 @@ import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.PlayerInventoryFullUpdatePacket;
 import common.network.packets.PlayerJoinPacket;
-import common.network.packets.PlayerPositionPacket;
 import common.network.packets.PlayerSpawnPacket;
 import common.network.packets.TimeUpdatePacket;
 import common.world.ChunkData;
