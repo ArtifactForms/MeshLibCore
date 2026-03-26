@@ -11,7 +11,7 @@ import common.world.ChunkData;
 import common.world.World;
 import server.network.GameServer;
 import server.persistance.ChunkRepository;
-import server.world.generation.BasicWorldGenerator3;
+import server.world.generation.BasicWorldGenerator2;
 import server.world.generation.WorldGenerator;
 
 /**
@@ -30,7 +30,7 @@ public class ServerWorld extends World {
     seed = 0;
     this.gameServer = gameServer;
     this.repository = repository;
-    this.generator = new BasicWorldGenerator3(seed);
+    this.generator = new BasicWorldGenerator2(seed);
 
     //        this.generator = new BasicWorldGenerator(seed);
     //        this.generator = new FlatWorldGenerator("1*bedrock,4*dirt,1*grass_block");
