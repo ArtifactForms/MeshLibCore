@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import common.game.GameMode;
+import common.network.packets.GameModeUpdatePacket;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
 import server.permissions.Permissions;
@@ -38,6 +39,7 @@ public class ChangeGameModeCommand extends AbstractCommand {
     ChangeGamemode changeUseCase = ctx.getServer().getUseCases().get(ChangeGamemode.class);
 
     if (changeUseCase.execute(playerId, gameMode)) {
+      ctx.getServer().getPlayerManager().send(playerId, new GameModeUpdatePacket(gameMode));
       ctx.reply("Gamemode set to: " + gameMode.name().toLowerCase());
     } else {
       ctx.reply("Failed to update gamemode. Are you online?");
@@ -63,10 +65,10 @@ public class ChangeGameModeCommand extends AbstractCommand {
   public String getName() {
     return "gamemode";
   }
-  
+
   @Override
   public String[] getArgumentLabels() {
-	  return new String[] {"survival|creative|0|1|s|c"};
+    return new String[] {"survival|creative|0|1|s|c"};
   }
 
   @Override

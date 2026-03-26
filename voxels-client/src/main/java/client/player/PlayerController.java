@@ -6,6 +6,7 @@ import engine.components.AbstractComponent;
 import engine.runtime.input.Input;
 import engine.runtime.input.Key;
 import engine.scene.camera.Camera;
+import engine.scene.screen.GameScreen;
 import math.Mathf;
 import math.Vector3f;
 
@@ -58,9 +59,11 @@ public class PlayerController extends AbstractComponent {
 
   @Override
   public void onUpdate(float tpf) {
-    if (getOwner().getScene().getTopScreen().blocksGameplay()) {
-      return;
-    }
+	GameScreen screen = getOwner().getScene().getTopScreen();
+	
+	if (screen == null || screen.blocksGameplay()) {
+		return;
+	}
 
     if (client.getView().getChatView().isOpen()) return;
 

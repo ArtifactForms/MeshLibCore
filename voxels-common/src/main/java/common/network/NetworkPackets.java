@@ -8,6 +8,7 @@ import common.network.packets.BlockUpdatePacket;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.EntityDestroyPacket;
+import common.network.packets.GameModeUpdatePacket;
 import common.network.packets.InventoryActionPacket;
 import common.network.packets.ItemPickupPacket;
 import common.network.packets.ItemSpawnPacket;
@@ -22,6 +23,7 @@ import common.network.packets.PlayerSlotClearPacket;
 import common.network.packets.PlayerSlotUpdatePacket;
 import common.network.packets.PlayerSpawnPacket;
 import common.network.packets.SoundEffectPacket;
+import common.network.packets.StartMiningPacket;
 import common.network.packets.TimeUpdatePacket;
 import common.network.packets.TitlePacket;
 import common.network.packets.UpdateSlotPacket;
@@ -45,6 +47,9 @@ public class NetworkPackets {
     PacketRegistry.register(PlayerQuitPacket::new);
     PacketRegistry.register(PlayerOpenInventoryPacket::new);
     PacketRegistry.register(PlayerDropItemPacket::new);
+
+    PacketRegistry.register(StartMiningPacket::new);
+    PacketRegistry.register(GameModeUpdatePacket::new);
 
     // Inventory
     PacketRegistry.register(PlayerSlotUpdatePacket::new);

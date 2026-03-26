@@ -61,6 +61,14 @@ public class PacketBuffer {
     out.writeLong(v);
   }
 
+  public byte readByte() throws IOException {
+    return in.readByte();
+  }
+
+  public void writeByte(byte v) throws IOException {
+    out.writeByte(v);
+  }
+
   public void writeString(String s) throws IOException {
     if (s == null) {
       writeInt(-1);

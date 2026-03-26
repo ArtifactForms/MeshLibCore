@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import common.game.GameMode;
 import common.player.attribute.Attribute;
 
 class PlayerDataTest {
@@ -114,5 +115,16 @@ class PlayerDataTest {
   @DisplayName("Attributes should be initialized by default")
   void testAttributesNotNullByDefault() {
     assertNotNull(player.getAttributes());
+  }
+
+  @Test
+  void testGameModeIsSurvivalBýDefautlt() {
+    assertEquals(GameMode.SURVIVAL, player.getGameMode());
+  }
+
+  @Test
+  void testGetSetGameMode() {
+    player.setGameMode(GameMode.CREATIVE);
+    assertEquals(GameMode.CREATIVE, player.getGameMode());
   }
 }

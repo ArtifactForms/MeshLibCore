@@ -3,16 +3,27 @@ package client.scene.screen;
 import client.app.GameClient;
 import client.settings.KeyBinds;
 import client.ui.actionbar.ActionBarComponent;
+import client.ui.hotbar.HotbarComponent;
+import client.ui.hotbar.HotbarViewComponent;
 import client.usecases.chat.ChatController;
 import client.usecases.chat.ChatViewComponent;
 import client.usecases.chat.SendChatMessageController;
+import client.usecases.dropitem.DropItemComponent;
+import common.game.Hotbar;
+import common.game.HotbarListener;
+import common.game.Inventory;
+import common.game.Item;
+import common.game.ItemRegistry;
+import common.game.ItemStack;
 import debug.DebugController;
 import engine.components.CrossLineReticle;
+import engine.runtime.input.Input;
 import engine.runtime.input.Key;
 import engine.runtime.input.KeyEvent;
 import engine.runtime.input.MouseEvent;
 import engine.scene.SceneNode;
 import engine.scene.screen.GameScreen;
+import engine.scene.screen.GlobalInput;
 
 public class GamePlayScreen extends GameScreen {
 
@@ -38,6 +49,7 @@ public class GamePlayScreen extends GameScreen {
     setupChatView();
     setupActionBar();
     setupReticle();
+    setupHotBar();
   }
 
   private void setupReticle() {
@@ -57,6 +69,27 @@ public class GamePlayScreen extends GameScreen {
     chatViewNode.addComponent(chatView);
     client.getView().setChatView(chatView);
     uiRoot.addChild(chatViewNode);
+  }
+
+  private void setupHotBar() {
+    Hotbar hotbar = new Hotbar(client.getPlayer().getInventory());
+    hotbar.addListener(new SlotSelectionFeedBack());
+
+    // TODO remove input
+    Input input = GlobalInput.input;
+
+    HotbarComponent control = new HotbarComponent(input, hotbar);
+    HotbarViewComponent view = new HotbarViewComponent(hotbar);
+    DropItemComponent dropItemComponent = new DropItemComponent(input, client, hotbar);
+
+    client.getView().setHotbarView(view);
+
+    SceneNode hotbarNode = new SceneNode("Hotbar");
+    hotbarNode.addComponent(control);
+    hotbarNode.addComponent(view);
+    hotbarNode.addComponent(dropItemComponent);
+
+    uiRoot.addChild(hotbarNode);
   }
 
   @Override
@@ -148,5 +181,24 @@ public class GamePlayScreen extends GameScreen {
 
   public void setDebugController(DebugController debugController) {
     this.debugController = debugController;
+  }
+
+  public class SlotSelectionFeedBack implements HotbarListener {
+
+    @Override
+    public void onSlotChanged(Hotbar hotbar) {
+      Inventory inventory = client.getPlayer().getInventory();
+      ItemStack stack = inventory.getSlot(hotbar.getSelectedSlot());
+
+      if (stack == null) {
+        return;
+      }
+
+      Item item = ItemRegistry.getItem(stack.getItemId());
+
+      if (item != null) {
+        client.getView().getActionBarView().display(item.getName(), 2);
+      }
+    }
   }
 }

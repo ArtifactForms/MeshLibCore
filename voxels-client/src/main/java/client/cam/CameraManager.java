@@ -3,6 +3,7 @@ package client.cam;
 import client.app.GameClient;
 import client.player.PlayerController;
 import client.ray.RaycastMode;
+import client.scene.GameScene;
 import client.settings.GameSettings;
 import client.ui.cursor.SimpleCursorComponent;
 import engine.components.AbstractComponent;
@@ -18,6 +19,7 @@ import engine.scene.SceneNode;
 import engine.scene.camera.Camera;
 import engine.scene.camera.OrbitCamera;
 import engine.scene.camera.OrbitCameraControl;
+import engine.scene.screen.GameScreen;
 import math.Vector3f;
 
 public class CameraManager {
@@ -61,8 +63,9 @@ public class CameraManager {
 
     @Override
     public void onUpdate(float tpf) {
-      if (getOwner().getScene().getTopScreen().blocksGameplay()) {
-        return;
+      GameScreen screen = getOwner().getScene().getTopScreen();
+      if (screen == null || screen.blocksGameplay()) {
+    	  return;
       }
 
       Vector3f position = camera.getTransform().getPosition();

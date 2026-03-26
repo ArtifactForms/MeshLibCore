@@ -2,6 +2,7 @@ package common.player;
 
 import java.util.UUID;
 
+import common.game.GameMode;
 import common.game.Inventory;
 import common.player.ability.AbilityContainer;
 import common.player.attribute.Attribute;
@@ -24,11 +25,14 @@ public class PlayerData {
   protected Vector3f position = new Vector3f();
   protected Inventory inventory;
 
+  protected GameMode gameMode;
+
   public PlayerData(UUID uuid, String name) {
     this.uuid = uuid;
     this.name = name;
     this.inventory = new Inventory(9 * 5);
     this.properties = new PlayerProperties();
+    this.gameMode = GameMode.SURVIVAL;
 
     getAttributes().set(Attribute.MOVE_SPEED, DEFAULT_SPEED);
   }
@@ -98,6 +102,14 @@ public class PlayerData {
   }
 
   public int getChunkZ() {
-	  return WorldMath.worldToChunkZ(position);
+    return WorldMath.worldToChunkZ(position);
+  }
+
+  public GameMode getGameMode() {
+    return gameMode;
+  }
+
+  public void setGameMode(GameMode gameMode) {
+    this.gameMode = gameMode;
   }
 }

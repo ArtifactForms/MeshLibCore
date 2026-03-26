@@ -9,6 +9,7 @@ import client.app.GameClient;
 import client.player.ClientPlayer;
 import client.ui.title.Title;
 import client.usecases.chat.ChatMessage;
+import common.game.GameMode;
 import common.game.Inventory;
 import common.game.ItemStack;
 import common.network.Packet;
@@ -17,6 +18,7 @@ import common.network.packets.BlockUpdatePacket;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
 import common.network.packets.EntityDestroyPacket;
+import common.network.packets.GameModeUpdatePacket;
 import common.network.packets.ItemSpawnPacket;
 import common.network.packets.PlayerInventoryFullUpdatePacket;
 import common.network.packets.PlayerPositionPacket;
@@ -57,6 +59,7 @@ public class ClientPacketDispatcher {
     register(ActionBarPacket.class, this::handleActionBar);
     register(PlayerSlotClearPacket.class, this::handleSlotClear);
     register(TimeUpdatePacket.class, this::handleTimeUpdate);
+    register(GameModeUpdatePacket.class, this::handleGameModeUpdate);
   }
 
   private <T extends Packet> void register(Class<T> packetClass, Consumer<T> handler) {
@@ -198,5 +201,10 @@ public class ClientPacketDispatcher {
     int inventoryVersion = packet.getInventoryVersion();
     client.getView().getInventoryView().setInventoryVersion(inventoryVersion);
     client.getView().getInventoryView().setCursorStack(packet.getCursorStack());
+  }
+
+  private void handleGameModeUpdate(GameModeUpdatePacket packet) {
+    GameMode gameMode = packet.getGameMode();
+    client.getPlayer().setGameMode(gameMode);
   }
 }

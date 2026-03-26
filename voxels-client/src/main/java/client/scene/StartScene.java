@@ -43,8 +43,6 @@ public class StartScene extends Scene {
     setupBackground();
     setupRotatingCube();
     setupLight();
-
-    SoundManager.loopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
   }
 
   private void setupLight() {
@@ -128,7 +126,6 @@ public class StartScene extends Scene {
           @Override
           public void onButtonClicked() {
             SoundManager.stopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
-            SoundManager.loopSound(Resources.BACKGROUND_MUSIC_KEY);
             startGame();
           }
         });
@@ -221,5 +218,11 @@ public class StartScene extends Scene {
   @Override
   public void onEnter() {
     input.setMouseMode(MouseMode.ABSOLUTE);
+    SoundManager.loopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
+  }
+
+  @Override
+  public void onExit() {
+    SoundManager.stopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
   }
 }

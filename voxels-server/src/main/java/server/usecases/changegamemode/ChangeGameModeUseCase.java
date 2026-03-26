@@ -37,12 +37,14 @@ public class ChangeGameModeUseCase implements ChangeGamemode {
     if (gameMode == GameMode.CREATIVE) {
       GameModePresets.applyCreative(abilities);
       GameModePresets.applyCreative(attributes);
+      playerGateway.setGameMode(playerId, gameMode);
       return true;
     }
 
     if (gameMode == GameMode.SURVIVAL) {
       GameModePresets.applySurvival(abilities);
       GameModePresets.applySurvival(attributes);
+      playerGateway.setGameMode(playerId, gameMode);
       return true;
     }
 

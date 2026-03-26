@@ -74,6 +74,16 @@ public class PlayerManager {
     }
   }
 
+  public void send(UUID playerId, Packet packet) {
+    for (ServerConnection conn : connections) {
+      if (conn.isRunning()
+          && conn.getPlayer() != null
+          && conn.getPlayer().getUuid().equals(playerId)) {
+        conn.send(packet);
+      }
+    }
+  }
+
   public void removePlayer(ServerPlayer player) {
     // Finde die Verbindung, die zu diesem Player gehört
     for (ServerConnection conn : connections) {

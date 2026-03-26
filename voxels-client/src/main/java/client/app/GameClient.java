@@ -6,18 +6,16 @@ import client.entity.ClientEntityManager;
 import client.network.ClientNetwork;
 import client.player.ClientPlayer;
 import client.ray.RaycastMode;
+import client.scene.ConnectionLostScene;
 import client.scene.SceneManager;
-import client.scene.StartScene;
 import client.ui.ClientView;
 import client.ui.View;
 import client.world.ChunkManager;
 import client.world.ClientWorld;
 import common.network.NetworkPackets;
 import engine.application.BasicApplication;
-import engine.runtime.input.Input;
 import engine.scene.camera.Camera;
 import engine.scene.camera.PerspectiveCamera;
-import engine.scene.screen.GlobalInput;
 
 public class GameClient {
 
@@ -63,9 +61,9 @@ public class GameClient {
       e.printStackTrace();
     }
   }
-  
+
   public void onConnectionClosed() {
-	  sceneManager.setActiveScene(new StartScene(GlobalInput.input, this));
+    sceneManager.setActiveScene(new ConnectionLostScene(this));
   }
 
   public ClientNetwork getNetwork() {

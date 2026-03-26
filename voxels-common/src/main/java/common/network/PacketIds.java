@@ -32,4 +32,6 @@ public class PacketIds {
   public static final int PLAYER_SLOT_CLEAR = 28;
   public static final int UNLOAD_CHUNK = 29;
   public static final int TIME_UPDATE = 30;
+  public static final int START_MINING = 31;
+  public static final int SYNC_GAMEMODE = 32;
 }

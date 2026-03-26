@@ -1,5 +1,6 @@
 package client.scene.screen;
 
+import client.ui.SimpleLabel;
 import client.ui.button.ButtonClickCallback;
 import client.ui.button.SimpleButton;
 import client.ui.core.UiComponent;
@@ -28,13 +29,21 @@ public class MenuScreen extends GameScreen {
   }
 
   private void setupUI() {
+    setupLabel();
     setupQuitButton();
     setupBackToGameButton();
     uiRoot.addChild(new SceneNode("", new SimpleCursorComponent(GlobalInput.input)));
   }
 
+  private void setupLabel() {
+    SimpleLabel label = new SimpleLabel("GAME MENU", 0, -100, 300, 40);
+    UiComponent labelComponent = new UiComponent(null, label);
+    SceneNode node = new SceneNode("Label", labelComponent);
+    uiRoot.addChild(node);
+  }
+
   private void setupBackToGameButton() {
-    SimpleButton button = new SimpleButton("Back to Game", 0, 0, 300, 40);
+    SimpleButton button = new SimpleButton("Back to Game", 0, -50, 300, 40);
     button.setCallback(
         new ButtonClickCallback() {
 
@@ -49,7 +58,7 @@ public class MenuScreen extends GameScreen {
   }
 
   private void setupQuitButton() {
-    SimpleButton button = new SimpleButton("Quit", 0, 50, 300, 40);
+    SimpleButton button = new SimpleButton("Quit", 0, 0, 300, 40);
     button.setCallback(
         new ButtonClickCallback() {
 

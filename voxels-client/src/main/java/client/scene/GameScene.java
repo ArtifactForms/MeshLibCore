@@ -4,6 +4,7 @@ import client.app.GameClient;
 import client.cam.CameraManager;
 import client.entity.EntitiesComponent;
 import client.player.PlayerController;
+import client.resources.Resources;
 import client.scene.screen.GamePlayScreen;
 import client.ui.hotbar.HotbarComponent;
 import client.ui.hotbar.HotbarViewComponent;
@@ -24,6 +25,7 @@ import engine.runtime.input.Input;
 import engine.scene.CameraMode;
 import engine.scene.Scene;
 import engine.scene.SceneNode;
+import engine.scene.audio.SoundManager;
 import engine.scene.camera.Camera;
 import math.Color;
 import messages.ChatMessageService;
@@ -81,6 +83,16 @@ public class GameScene extends Scene {
     screen.setDebugController(debugController);
   }
 
+  @Override
+  public void onEnter() {
+    SoundManager.loopSound(Resources.BACKGROUND_MUSIC_KEY);
+  }
+
+  @Override
+  public void onExit() {
+    SoundManager.stopSound(Resources.BACKGROUND_MUSIC_KEY);
+  }
+
   private void setupPlayer() {
     player = new SceneNode("Player");
 
@@ -105,7 +117,7 @@ public class GameScene extends Scene {
 
   private void setupUI() {
     //    setupActionBar();
-    setupHotBar();
+    //    setupHotBar();
     setupInventory();
     setupChat();
 
@@ -134,22 +146,22 @@ public class GameScene extends Scene {
     getUIRoot().addChild(chatViewNode);
   }
 
-  private void setupHotBar() {
-    Hotbar hotbar = new Hotbar(client.getPlayer().getInventory());
-
-    HotbarComponent control = new HotbarComponent(input, hotbar);
-    HotbarViewComponent view = new HotbarViewComponent(hotbar);
-    DropItemComponent dropItemComponent = new DropItemComponent(input, client, hotbar);
-
-    client.getView().setHotbarView(view);
-
-    SceneNode hotbarNode = new SceneNode("Hotbar");
-    hotbarNode.addComponent(control);
-    hotbarNode.addComponent(view);
-    hotbarNode.addComponent(dropItemComponent);
-
-    getUIRoot().addChild(hotbarNode);
-  }
+  //  private void setupHotBar() {
+  //    Hotbar hotbar = new Hotbar(client.getPlayer().getInventory());
+  //
+  //    HotbarComponent control = new HotbarComponent(input, hotbar);
+  //    HotbarViewComponent view = new HotbarViewComponent(hotbar);
+  //    DropItemComponent dropItemComponent = new DropItemComponent(input, client, hotbar);
+  //
+  //    client.getView().setHotbarView(view);
+  //
+  //    SceneNode hotbarNode = new SceneNode("Hotbar");
+  //    hotbarNode.addComponent(control);
+  //    hotbarNode.addComponent(view);
+  //    hotbarNode.addComponent(dropItemComponent);
+  //
+  //    getUIRoot().addChild(hotbarNode);
+  //  }
 
   private void setupInventory() {
     Inventory inventory = client.getPlayer().getInventory();

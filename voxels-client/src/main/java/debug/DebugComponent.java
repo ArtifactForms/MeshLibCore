@@ -3,6 +3,7 @@ package debug;
 import client.settings.KeyBinds;
 import engine.components.AbstractComponent;
 import engine.runtime.input.Input;
+import engine.scene.screen.GameScreen;
 
 public class DebugComponent extends AbstractComponent {
 
@@ -30,6 +31,11 @@ public class DebugComponent extends AbstractComponent {
   }
 
   private boolean isGameplayBlocked() {
-    return getOwner().getScene().getTopScreen().blocksGameplay();
+    GameScreen screen = getOwner().getScene().getTopScreen();
+    if (screen == null) {
+      return false;
+    } else {
+      return screen.blocksGameplay();
+    }
   }
 }

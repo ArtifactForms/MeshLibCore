@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import common.game.block.Blocks;
-import common.player.ability.Ability;
-import common.player.ability.AbilityContainer;
 import server.events.events.BlockBreakEvent;
 import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
@@ -50,11 +48,12 @@ public class BlockBreakUseCase implements BlockBreak {
 
     short oldId = worldGateway.getBlock(x, y, z);
 
-    AbilityContainer abilities = playerGateway.getAbilities(player);
-    if (!abilities.has(Ability.INSTANT_BREAK)) {
-      response.onNoAbilityToInstantBreak(x, y, z, oldId);
-      return;
-    }
+     // TODO Check start stop mining
+//    AbilityContainer abilities = playerGateway.getAbilities(player);
+//    if (!abilities.has(Ability.INSTANT_BREAK)) {
+//      response.onNoAbilityToInstantBreak(x, y, z, oldId);
+//      return;
+//    }
 
     if (isInvalid(request, response, oldId)) {
       return;

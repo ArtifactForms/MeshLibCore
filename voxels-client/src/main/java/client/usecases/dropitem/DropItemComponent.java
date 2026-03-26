@@ -6,6 +6,7 @@ import common.game.Hotbar;
 import common.network.packets.PlayerDropItemPacket;
 import engine.components.AbstractComponent;
 import engine.runtime.input.Input;
+import engine.scene.screen.GameScreen;
 
 public class DropItemComponent extends AbstractComponent {
 
@@ -36,6 +37,11 @@ public class DropItemComponent extends AbstractComponent {
   }
 
   private boolean isGameplayBlocked() {
-    return getOwner().getScene().getTopScreen().blocksGameplay();
+    GameScreen screen = getOwner().getScene().getTopScreen();
+    if (screen == null) {
+      return false;
+    } else {
+      return screen.blocksGameplay();
+    }
   }
 }

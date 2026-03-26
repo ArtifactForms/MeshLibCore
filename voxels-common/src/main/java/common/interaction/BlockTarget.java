@@ -1,5 +1,7 @@
 package common.interaction;
 
+import java.util.Objects;
+
 import common.world.BlockFace;
 
 public class BlockTarget implements InteractionTarget {
@@ -22,5 +24,25 @@ public class BlockTarget implements InteractionTarget {
     this.placeY = py;
     this.placeZ = pz;
     this.face = face;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(face, placeX, placeY, placeZ, x, y, z);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
+    BlockTarget other = (BlockTarget) obj;
+    return face == other.face
+        && placeX == other.placeX
+        && placeY == other.placeY
+        && placeZ == other.placeZ
+        && x == other.x
+        && y == other.y
+        && z == other.z;
   }
 }

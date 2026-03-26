@@ -1,6 +1,7 @@
 package client.usecases.interact;
 
 import client.app.GameClient;
+import common.game.GameMode;
 import common.game.Hotbar;
 import common.game.ItemStack;
 import common.interaction.BlockTarget;
@@ -8,6 +9,8 @@ import common.interaction.InteractionTarget;
 import common.network.packets.BlockBreakPacket;
 import common.network.packets.BlockPickPacket;
 import common.network.packets.BlockPlacePacket;
+import common.network.packets.StartMiningPacket;
+import common.player.PlayerData;
 
 public class InteractionController {
 
@@ -53,6 +56,41 @@ public class InteractionController {
             selectedSlot,
             id));
   }
+  
+  public void startMining(InteractionTarget target) {
+	  
+	  if (!(target instanceof BlockTarget)) return;
+	  
+	  Hotbar hotbar = client.getView().getHotbarView().getModel();
+	  int selectedSlot = hotbar.getSelectedSlot();
+	  BlockTarget block = (BlockTarget) target;
+	  PlayerData player = client.getPlayer();
+	  
+	  client.getNetwork().send(
+	    new StartMiningPacket(
+		    block.x, 
+		    block.y, 
+		    block.z, 
+		    selectedSlot, 
+		    block.face, 
+		    player.getPitch(), 
+		    player.getYaw()));
+  }
+  
+  public void stopMining() {
+	  
+  }
+  
+  public float getBreakTime(BlockTarget block) {
+	  PlayerData player = client.getPlayer();  
+	  
+	    if (player.getGameMode() == GameMode.CREATIVE) {
+	        return 0.0f;
+	    }
+	    // Später: return block.getHardness(); 
+	    // Blumen/Fackeln hätten hier 0.0f, Stein z.B. 1.5f
+	    return 0.5f; 
+	}
 
   private void breakBlock(BlockTarget block) {
 
