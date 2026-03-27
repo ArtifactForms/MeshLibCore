@@ -41,13 +41,9 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private final ConcurrentHashMap<Chunk, Boolean> dataQueueSet = new ConcurrentHashMap<>();
   private final ConcurrentHashMap<Chunk, Boolean> meshQueueSet = new ConcurrentHashMap<>();
 
-  private static final int MAX_DATA_PER_FRAME = 30;
-  private static final int MAX_MESH_PER_FRAME = 15;
-
   private int playerChunkX;
   private int playerChunkZ;
   private volatile Vector3f playerPosition = new Vector3f();
-  private float worldTime;
 
   private ChunkRenderer chunkRenderer;
 
@@ -65,8 +61,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   @Override
   public void onUpdate(float tpf) {
-    worldTime += tpf * 0.1f;
-
     world.processIncomingPackets(2_000_000);
 
     playerChunkX = WorldMath.worldToChunkX(playerPosition);
@@ -112,27 +106,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
       }
     }
   }
-
-  //  private void processQueues() {
-  //    long startTime = System.nanoTime();
-  //    long budgetInNanos = 2_000_000; // 2ms budget
-  //
-  //    while (!meshQueue.isEmpty() && (System.nanoTime() - startTime) < budgetInNanos) {
-  //      Chunk chunk = meshQueue.poll();
-  //      if (chunk == null) continue;
-  //
-  //      meshQueueSet.remove(chunk);
-  //
-  //      if (!activeChunks.containsValue(chunk)) continue;
-  //
-  //      if ((chunk.getStatus() == ChunkStatus.DATA_READY || chunk.needsRebuild())
-  //          && neighborsReady(chunk.getChunkX(), chunk.getChunkZ())) {
-  //        chunk.scheduleMeshGeneration(this);
-  //      }
-  //
-  //      chunk.updateMesh();
-  //    }
-  //  }
 
   private void processQueues() {
     long startTime = System.nanoTime();
@@ -210,22 +183,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     recycleChunksOutsideRadius(playerChunkX, playerChunkZ);
   }
 
-  //  private void recycleChunksOutsideRadius(int centerX, int centerZ) {
-  //    int r2 = (bufferDistance + 1) * (bufferDistance + 1);
-  //    activeChunks
-  //        .values()
-  //        .removeIf(
-  //            chunk -> {
-  //              int dx = chunk.getChunkX() - centerX;
-  //              int dz = chunk.getChunkZ() - centerZ;
-  //              if (dx * dx + dz * dz > r2) {
-  //                recycleChunk(chunk);
-  //                return true;
-  //              }
-  //              return false;
-  //            });
-  //  }
-
   private void recycleChunksOutsideRadius(int centerX, int centerZ) {
     int r2 = (bufferDistance + 1) * (bufferDistance + 1);
     long currentTime = System.currentTimeMillis();
@@ -269,71 +226,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   public void render(Graphics g) {
     chunkRenderer.renderChunks(g, activeChunks.values());
   }
-
-  //  @Override
-  //  public void render(Graphics g) {
-  //
-  ////	  / 1. Sonnenhöhe bestimmen (geht von -1 bis 1)
-  //	  float sunY = (float) Math.sin(worldTime);
-  //
-  //	  // 2. Einen Faktor berechnen, der weich zwischen 0 (Nacht) und 1 (Tag) gleitet
-  //	  // Wir mappen sunY von [-1, 1] auf [0, 1]
-  //	  float dayFactor = sunY * 0.5f + 0.5f;
-  //
-  //	  // 3. Farben definieren
-  //	  Vector3f nightSky = new Vector3f(0.05f, 0.07f, 0.15f); // Dunkelblau
-  //	  Vector3f daySky = new Vector3f(0.6f, 0.75f, 0.9f);    // Hellblau
-  //
-  //	  Vector3f nightSun = new Vector3f(0.2f, 0.3f, 0.5f);   // Schwaches Mondlicht
-  //	  Vector3f daySun = new Vector3f(1.0f, 0.95f, 0.8f);    // Gelbe Sonne
-  //
-  //	  // 4. Weich mischen (Linear Interpolation / Lerp)
-  //	  float r = nightSky.x + dayFactor * (daySky.x - nightSky.x);
-  //	  float gr = nightSky.y + dayFactor * (daySky.y - nightSky.y);
-  //	  float b = nightSky.z + dayFactor * (daySky.z - nightSky.z);
-  //	  Vector3f currentSky = new Vector3f(r, gr, b);
-  //
-  //	  float sr = nightSun.x + dayFactor * (daySun.x - nightSun.x);
-  //	  float sg = nightSun.y + dayFactor * (daySun.y - nightSun.y);
-  //	  float sb = nightSun.z + dayFactor * (daySun.z - nightSun.z);
-  //	  Vector3f currentSun = new Vector3f(sr, sg, sb);
-  //
-  //	  // 5. Umgebungslicht anpassen
-  //	  float currentAmbient = 0.2f + (dayFactor * 0.4f);
-  //
-  //	  // 6. An Shader senden
-  //	  g.setUniform("u_fogColor", currentSky);
-  //	  g.setUniform("u_lightColor", currentSun);
-  //	  g.setUniform("u_ambient", currentAmbient);
-  //
-  //    getOwner().getScene().setBackground(new Color(currentSky.x, currentSky.y, currentSky.z));
-  //
-  //    //    Color skyColor = Color.getColorFromInt(180, 210, 255);
-  //
-  //    g.setShader("voxel.vert", "voxel.frag");
-  //    g.setUniform("u_fogColor", new Color(currentSky.x, currentSky.y, currentSky.z));
-  //
-  //    g.setUniform("u_lightDir", new Vector3f(0.2f, 1.0f, 0.4f));
-  //    g.setUniform("u_lightColor", new Vector3f(0.8f, 0.8f, 0.7f)); // Etwas schwächeres Weiß
-  //    g.setUniform("u_ambient", 0.5f); // Mehr Grundhelligkeit
-  //
-  //    float blocks = 8.0f * 16.0f;
-  //
-  //    float density = 1.5f / blocks;
-  //    g.setUniform("u_fogDensity", density);
-  //
-  //    g.enableFaceCulling();
-  //
-  //    for (Chunk chunk : activeChunks.values()) {
-  //      if (isWithinRenderDistance(chunk)) {
-  //        chunk.render(g);
-  //      }
-  //    }
-  //
-  //    g.disableFaceCulling();
-  //
-  //    g.resetShader();
-  //  }
 
   public void setBlockAt(int x, int y, int z, short id) {
     int cx = Math.floorDiv(x, 16);
