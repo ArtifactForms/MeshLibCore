@@ -334,17 +334,6 @@ public class ChunkMesher {
         return 0.6f + (ao / 3.0f) * 0.4f; 
     }
 
-//    private void createBillBoard(int x, int y, int z) {
-//        // Billboards (Gras) landen immer im opaken Mesh (oder einem Cutout-Mesh, falls vorhanden)
-//        currentShape = decorShape;
-//        int[] uvIdx = textureAtlas.getUVIndices(chunk.getBlockId(x, y, z), 0);
-//        Vector2f[] vuv = {uvs.get(uvIdx[0]), uvs.get(uvIdx[1]), uvs.get(uvIdx[2]), uvs.get(uvIdx[3])};
-//        currentShape.color(0.9f, 0.9f, 0.9f);
-//        currentShape.vertex(radius+x, -radius-y, radius+z, vuv[0].x, vuv[0].y); currentShape.vertex(-radius+x, -radius-y, -radius+z, vuv[1].x, vuv[1].y);
-//        currentShape.vertex(-radius+x, radius-y, -radius+z, vuv[2].x, vuv[2].y); currentShape.vertex(radius+x, radius-y, radius+z, vuv[3].x, vuv[3].y);
-//        currentShape.vertex(radius+x, -radius-y, -radius+z, vuv[0].x, vuv[0].y); currentShape.vertex(-radius+x, -radius-y, radius+z, vuv[1].x, vuv[1].y);
-//        currentShape.vertex(-radius+x, radius-y, radius+z, vuv[2].x, vuv[2].y); currentShape.vertex(radius+x, radius-y, -radius+z, vuv[3].x, vuv[3].y);
-//    }
     private void createBillBoard(int x, int y, int z) {
 
         currentShape = decorShape;
