@@ -1,47 +1,111 @@
 package client.rendering;
 
+import common.game.block.BlockShape;
 import engine.rendering.Graphics;
 import math.Color;
 
 /**
- * Renders the wireframe highlight around the currently targeted block.
+ * Renders a wireframe highlight for the currently targeted block.
  *
- * <p>This is the visual outline shown when the player points at a block (similar to Minecraft's
- * block selection box).
+ * <p>This renderer is responsible for drawing the selection outline that appears when the player is
+ * pointing at a block.
  *
- * <p>The renderer draws a slightly enlarged wireframe cube around the block to avoid z-fighting
- * with the block's actual mesh. This is achieved using a small {@link #OFFSET}.
+ * <h3>Supported Shapes</h3>
  *
- * <p>Important coordinate note: The engine uses an inverted Y-axis for rendering, therefore the
- * block Y coordinate is negated before rendering.
+ * <ul>
+ *   <li>{@link BlockShape#CUBE} - Standard block outline (wireframe cube)
+ *   <li>{@link BlockShape#CROSS} - Cross-shaped blocks (e.g. plants), rendered as two intersecting
+ *       vertical quads
+ * </ul>
  *
- * <p>This class is stateless and designed as a simple static renderer.
+ * <h3>Z-Fighting Prevention</h3>
+ *
+ * <p>To avoid z-fighting with the actual block geometry, the highlight is rendered slightly larger
+ * than the block itself using a small offset.
+ *
+ * <h3>Coordinate System</h3>
+ *
+ * <p>The engine uses an inverted Y-axis for rendering. This class assumes that transformations
+ * (including Y inversion and world positioning) are already applied externally.
+ *
+ * <p>This class is stateless and only provides static rendering methods.
  */
 public class BlockHighlightRenderer {
 
-  /** Color of the highlight lines (semi-transparent white). */
-  private static final Color color = new Color(1, 1, 1, 0.4f);
+  /** Color of the highlight lines (semi-transparent black). */
+  private static final Color COLOR = new Color(0, 0, 0, 0.6f);
 
   /**
-   * Small offset added to the cube bounds to prevent z-fighting with the block surface. A value
-   * slightly larger than the block half-size (0.5) ensures the wireframe is rendered just outside
-   * the block.
+   * Small offset added to the block bounds to prevent z-fighting.
+   *
+   * <p>Slightly larger than half block size (0.5).
    */
-  private static final float OFFSET = 0.504f;
+  private static final float OFFSET = 0.5001f;
 
   private BlockHighlightRenderer() {
-    // No instances
+    // Utility class
   }
 
   /**
-   * Renders the highlight box for a block at the given world coordinates.
+   * Renders a highlight for the given block shape.
    *
    * @param g the graphics context
-   * @param x world block X coordinate
-   * @param y world block Y coordinate
-   * @param z world block Z coordinate
+   * @param shape the block shape to render
    */
-  public static void render(Graphics g) {
+  public static void render(Graphics g, BlockShape shape) {
+    if (shape == BlockShape.CUBE) {
+      renderCube(g);
+    } else if (shape == BlockShape.CROSS) {
+      renderCross(g);
+    }
+  }
+
+  /**
+   * Renders a cross-shaped highlight.
+   *
+   * <p>This is used for blocks like plants or grass. The shape consists of two vertical quads that
+   * intersect diagonally:
+   *
+   * <pre>
+   * Top View:
+   *
+   *   \  /
+   *    \/
+   *    /\
+   *   /  \
+   * </pre>
+   *
+   * <p>Each quad is rendered as a wireframe rectangle.
+   */
+  private static void renderCross(Graphics g) {
+
+    float minY = -OFFSET;
+    float maxY = OFFSET;
+
+    float size = OFFSET;
+
+    g.setColor(COLOR);
+    g.strokeWeight(2);
+
+    // --- First quad (\ direction) ---
+    g.drawLine(-size, minY, -size, size, minY, size);
+    g.drawLine(size, minY, size, size, maxY, size);
+    g.drawLine(size, maxY, size, -size, maxY, -size);
+    g.drawLine(-size, maxY, -size, -size, minY, -size);
+
+    // --- Second quad (/ direction) ---
+    g.drawLine(-size, minY, size, size, minY, -size);
+    g.drawLine(size, minY, -size, size, maxY, -size);
+    g.drawLine(size, maxY, -size, -size, maxY, size);
+    g.drawLine(-size, maxY, size, -size, minY, size);
+  }
+
+  /**
+   * Renders a standard cube-shaped highlight.
+   *
+   * <p>The cube is slightly enlarged using {@link #OFFSET} to prevent z-fighting.
+   */
+  private static void renderCube(Graphics g) {
 
     float minX = -OFFSET;
     float maxX = OFFSET;
@@ -52,22 +116,22 @@ public class BlockHighlightRenderer {
     float minZ = -OFFSET;
     float maxZ = OFFSET;
 
-    g.setColor(color);
-    g.strokeWeight(3);
+    g.setColor(COLOR);
+    g.strokeWeight(2);
 
-    // bottom
+    // --- Bottom face ---
     g.drawLine(minX, minY, minZ, maxX, minY, minZ);
     g.drawLine(maxX, minY, minZ, maxX, minY, maxZ);
     g.drawLine(maxX, minY, maxZ, minX, minY, maxZ);
     g.drawLine(minX, minY, maxZ, minX, minY, minZ);
 
-    // top
+    // --- Top face ---
     g.drawLine(minX, maxY, minZ, maxX, maxY, minZ);
     g.drawLine(maxX, maxY, minZ, maxX, maxY, maxZ);
     g.drawLine(maxX, maxY, maxZ, minX, maxY, maxZ);
     g.drawLine(minX, maxY, maxZ, minX, maxY, minZ);
 
-    // vertical
+    // --- Vertical edges ---
     g.drawLine(minX, minY, minZ, minX, maxY, minZ);
     g.drawLine(maxX, minY, minZ, maxX, maxY, minZ);
     g.drawLine(maxX, minY, maxZ, maxX, maxY, maxZ);
