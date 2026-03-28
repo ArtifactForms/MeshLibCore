@@ -57,6 +57,7 @@ public class ChunkCommand extends AbstractCommand {
 
     // 1. Clear the block data
     Arrays.fill(data.getRawBlockData(), (short) 0);
+    Arrays.fill(data.getRawHeightMap(), 0);
 
     // 2. Update the target chunk for all nearby players
     sendUpdateToNearbyPlayers(server, data, 8);
