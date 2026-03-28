@@ -27,6 +27,8 @@ import common.network.packets.StartMiningPacket;
 import common.network.packets.TimeUpdatePacket;
 import common.network.packets.TitlePacket;
 import common.network.packets.UpdateSlotPacket;
+import common.network.packets.system.PingPacket;
+import common.network.packets.system.PongPacket;
 
 /**
  * Utility class to initialize the global packet protocol. This must be called on both Client and
@@ -84,5 +86,9 @@ public class NetworkPackets {
 
     // World & Time
     PacketRegistry.register(TimeUpdatePacket::new);
+
+    // System
+    PacketRegistry.register(PingPacket::new);
+    PacketRegistry.register(PongPacket::new);
   }
 }

@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import common.game.block.BlockShape;
+import common.game.block.BlockType;
+import common.game.block.Blocks;
 import common.interaction.BlockTarget;
 import common.interaction.InteractionTarget;
 import common.world.BlockFace;
@@ -20,7 +23,8 @@ class BlockTargetTest {
     int placeX = 10, placeY = 65, placeZ = -5;
     BlockFace face = BlockFace.UP;
 
-    BlockTarget target = new BlockTarget(targetX, targetY, targetZ, placeX, placeY, placeZ, face);
+    BlockTarget target =
+        new BlockTarget(targetX, targetY, targetZ, placeX, placeY, placeZ, face, Blocks.BEDROCK);
 
     // Verify target coordinates
     assertEquals(targetX, target.x, "Target block X-coordinate is incorrect");
@@ -32,6 +36,8 @@ class BlockTargetTest {
     assertEquals(placeY, target.placeY, "Placement Y-coordinate is incorrect");
     assertEquals(placeZ, target.placeZ, "Placement Z-coordinate is incorrect");
 
+    assertEquals(Blocks.BEDROCK, target.type);
+
     // Verify the face
     assertEquals(BlockFace.UP, target.face, "BlockFace was not stored correctly");
   }
@@ -39,7 +45,7 @@ class BlockTargetTest {
   @Test
   void testInteractionTargetInterface() {
     // Ensure BlockTarget correctly implements the interface (type check)
-    BlockTarget target = new BlockTarget(0, 0, 0, 0, 1, 0, BlockFace.UP);
+    BlockTarget target = new BlockTarget(0, 0, 0, 0, 1, 0, BlockFace.UP, Blocks.AIR);
 
     assertNotNull(target, "Instance should not be null");
     assertTrue(target instanceof InteractionTarget, "BlockTarget must implement InteractionTarget");
@@ -48,7 +54,7 @@ class BlockTargetTest {
   @Test
   void testNegativeCoordinates() {
     // Test for coordinates in the negative range (crucial for voxel worlds)
-    BlockTarget target = new BlockTarget(-16, 10, -1, -17, 10, -1, BlockFace.WEST);
+    BlockTarget target = new BlockTarget(-16, 10, -1, -17, 10, -1, BlockFace.WEST, Blocks.AIR);
 
     assertEquals(-16, target.x, "Negative target X should be allowed");
     assertEquals(-17, target.placeX, "Negative placement X should be allowed");

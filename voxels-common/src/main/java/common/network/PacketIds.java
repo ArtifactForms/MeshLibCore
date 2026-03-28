@@ -34,4 +34,6 @@ public class PacketIds {
   public static final int TIME_UPDATE = 30;
   public static final int START_MINING = 31;
   public static final int SYNC_GAMEMODE = 32;
+  public static final int PING = 33;
+  public static final int PONG = 34;
 }

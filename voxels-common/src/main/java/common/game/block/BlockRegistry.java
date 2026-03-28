@@ -43,6 +43,22 @@ public final class BlockRegistry {
     return BY_ID[id];
   }
 
+  /**
+   * Retrieves the {@link BlockType} for the given ID without performing range or null checks.
+   *
+   * <p><b>Performance Note:</b> This is the fastest way to access block data, intended for use in
+   * performance-critical loops (e.g., mesh generation). <b>Warning:</b> Passing an ID that is
+   * negative or greater than {@link #MAX_BLOCKS} will result in an {@link
+   * ArrayIndexOutOfBoundsException}.
+   *
+   * @param id the short ID of the block to retrieve.
+   * @return the BlockType associated with the ID.
+   * @throws ArrayIndexOutOfBoundsException if the ID is out of range.
+   */
+  public static BlockType getTypeUnsafe(short id) {
+    return BY_ID[id];
+  }
+
   public static BlockType get(String name) {
     return BY_NAME.get(name);
   }

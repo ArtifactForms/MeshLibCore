@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import common.network.packets.system.PingPacket;
+import common.network.packets.system.PongPacket;
+
 /**
  * Base class for all network connections. Runs a background thread to read incoming packets and
  * provides a synchronized method to send packets.
@@ -46,6 +49,7 @@ public abstract class Connection implements Runnable {
         }
 
         packet.read(buffer);
+
         handle(packet);
       }
     } catch (IOException e) {
