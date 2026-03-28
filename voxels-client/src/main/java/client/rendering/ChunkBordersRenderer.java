@@ -12,7 +12,6 @@ import engine.resources.Texture;
 import engine.resources.TextureManager;
 import engine.resources.TextureWrapMode;
 import engine.scene.CameraMode;
-import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
@@ -94,39 +93,35 @@ public class ChunkBordersRenderer {
   }
 
   public static void render(Graphics g, Vector3f position, Vector3f camPos, CameraMode mode) {
-
     int cx = (int) Math.floor(position.x / (float) ChunkData.WIDTH);
     int cz = (int) Math.floor(position.z / (float) ChunkData.DEPTH);
 
-    float worldX = cx * 16;
+    float worldX = cx * ChunkData.WIDTH;
     float worldZ = cz * ChunkData.DEPTH;
 
-    float tx = worldX + (ChunkData.WIDTH / 2.0f) + 0.5f;
-    float tz = worldZ + (ChunkData.DEPTH / 2.0f) + 0.5f;
-    float ty = -0.5f; // 🔥 FIX: invert Y
+    float tx = worldX + (ChunkData.WIDTH / 2.0f) - 0.5f;
+    float tz = worldZ + (ChunkData.DEPTH / 2.0f) - 0.5f;
 
     g.pushMatrix();
 
+    // Kamera-Relative Translation
     if (mode == CameraMode.CAMERA_RELATIVE) {
-      g.translate(tx - camPos.x, ty - camPos.y, tz - camPos.z);
+      g.translate(tx - camPos.x, 0 - camPos.y, tz - camPos.z);
     } else {
-      g.translate(tx, ty, tz);
+      g.translate(tx, 0, tz);
     }
 
-    g.strokeWeight(5);
-    g.setColor(Color.BLUE);
     renderSectionLines(g);
 
     g.popMatrix();
   }
 
   private static void renderSectionLines(Graphics g) {
-    int sectionHeight = DIM;
+    int sectionHeight = DIM; // 16
     int sectionsCount = ChunkData.HEIGHT / sectionHeight;
 
-    for (int i = 1; i <= sectionsCount; i++) {
-      float worldY = i * sectionHeight - (sectionHeight / 2f);
-      float renderY = -worldY; // 🔥 FIX: klare Inversion
+    for (int i = 0; i < sectionsCount; i++) {
+      float renderY = -(i * sectionHeight + (sectionHeight / 2.0f)) + 0.5f;
 
       g.pushMatrix();
       g.translate(0, renderY, 0);
