@@ -30,6 +30,7 @@ import common.network.packets.SoundEffectPacket;
 import common.network.packets.TimeUpdatePacket;
 import common.network.packets.TitlePacket;
 import common.network.packets.UpdateSlotPacket;
+import common.network.packets.system.PongPacket;
 import engine.scene.audio.SoundManager;
 
 /** Handles incoming packets from the server and routes them to the client-side logic. */
@@ -60,6 +61,7 @@ public class ClientPacketDispatcher {
     register(PlayerSlotClearPacket.class, this::handleSlotClear);
     register(TimeUpdatePacket.class, this::handleTimeUpdate);
     register(GameModeUpdatePacket.class, this::handleGameModeUpdate);
+    register(PongPacket.class, this::handlePong);
   }
 
   private <T extends Packet> void register(Class<T> packetClass, Consumer<T> handler) {
@@ -72,6 +74,10 @@ public class ClientPacketDispatcher {
       handler.accept(packet);
     }
     // Unregistered packets are simply ignored on the client (e.g. PlayerMovePacket)
+  }
+
+  private void handlePong(PongPacket packet) {
+    client.getPingTracker().update(packet.getTime());
   }
 
   private void handleTimeUpdate(TimeUpdatePacket packet) {

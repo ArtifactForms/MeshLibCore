@@ -22,8 +22,8 @@ public interface ClientView {
   void setInventoryView(InventoryView inventoryView);
 
   InventoryView getInventoryView();
-  
+
   TitleView getTitleView();
-  
+
   void setTitleView(TitleView titleView);
 }

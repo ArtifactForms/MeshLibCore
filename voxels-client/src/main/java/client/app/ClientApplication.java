@@ -1,6 +1,7 @@
 package client.app;
 
 import client.network.ClientNetwork;
+import client.network.PingSystem;
 import client.player.PlayerNetworkSync;
 import client.scene.StartScene;
 import client.usecases.loadresources.LoadResourcesUseCase;
@@ -25,11 +26,11 @@ public class ClientApplication extends BasicApplication {
   private PlayerNetworkSync playerNetworkSync;
   private ChunkStreamingSystem chunkStreamingSystem;
   private GameClient client;
+  private PingSystem pingSystem;
 
   @Override
   public void onInitialize() {
     setDisplayInfo(false);
-
 
     Blocks.initialize();
     BlockLoader.load();
@@ -39,6 +40,7 @@ public class ClientApplication extends BasicApplication {
 
     client = new GameClient(this);
     network = client.getNetwork();
+    pingSystem = new PingSystem(network);
     playerNetworkSync = new PlayerNetworkSync(client.getPlayer(), client.getNetwork());
     chunkStreamingSystem = new ChunkStreamingSystem(client.getPlayer(), client.getChunkManager());
 
@@ -64,6 +66,7 @@ public class ClientApplication extends BasicApplication {
     // This ensures the scene is working with the most recent server data.
     if (network != null && network.isRunning()) {
       network.update();
+      pingSystem.update();
     }
     client.getWorld().update(tpf);
   }

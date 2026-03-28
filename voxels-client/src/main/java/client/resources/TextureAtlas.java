@@ -22,7 +22,7 @@ public class TextureAtlas {
   private boolean drawDebugText = GameSettings.textureDebugText;
   private boolean fillTextureBackground = GameSettings.textureBackground;
   private float epsilon = 0.002f; // Small margin to prevent texture bleeding
-  private int tileSize = 32;
+  public static int tileSize = 16;
   private int columns = 6; // 6 faces per block
   private int rows = BlockRegistry.size();
   private int width = tileSize * columns;

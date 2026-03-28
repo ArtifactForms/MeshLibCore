@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import client.entity.ClientEntityManager;
 import client.network.ClientNetwork;
+import client.network.PingTracker;
 import client.player.ClientPlayer;
 import client.ray.RaycastMode;
 import client.scene.ConnectionLostScene;
@@ -18,6 +19,8 @@ import engine.scene.camera.Camera;
 import engine.scene.camera.PerspectiveCamera;
 
 public class GameClient {
+
+  private final PingTracker pingTracker = new PingTracker();
 
   private ClientNetwork network;
   private ClientView view;
@@ -104,5 +107,9 @@ public class GameClient {
 
   public SceneManager getSceneManager() {
     return sceneManager;
+  }
+
+  public PingTracker getPingTracker() {
+    return pingTracker;
   }
 }

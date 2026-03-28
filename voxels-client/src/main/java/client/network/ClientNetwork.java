@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import client.app.GameClient;
 import common.network.Connection;
 import common.network.Packet;
+import common.network.packets.system.PongPacket;
 
 /**
  * Manages the client-side network connection. This class inherits from {@link Connection} and
@@ -59,6 +60,11 @@ public class ClientNetwork extends Connection {
    */
   @Override
   protected void handle(Packet packet) {
+	  if (packet instanceof PongPacket pong) {
+		  client.getPingTracker().update(pong.getTime());
+		    return;
+	  }
+	  
     // Do not process logic here! Add to queue for main-thread synchronization.
     packetQueue.add(packet);
   }

@@ -1,6 +1,7 @@
 package client.ray;
 
 import client.world.Chunk;
+import common.game.block.BlockType;
 import common.interaction.BlockTarget;
 import common.world.BlockFace;
 import common.world.World;
@@ -135,6 +136,7 @@ public final class Raycasting {
 
     while (t <= maxDistance) {
 
+      BlockType type = world.getBlock(x, y, z);
       // Check if current voxel contains a solid block
       if (world.getBlock(x, y, z).isSelectable()) {
 
@@ -142,7 +144,7 @@ public final class Raycasting {
         int placeY = y + hitFace.y;
         int placeZ = z + hitFace.z;
 
-        BlockTarget target = new BlockTarget(x, y, z, placeX, placeY, placeZ, hitFace);
+        BlockTarget target = new BlockTarget(x, y, z, placeX, placeY, placeZ, hitFace, type);
 
         return new RaycastResult(true, target);
       }

@@ -2,6 +2,7 @@ package client.scene.screen;
 
 import client.app.GameClient;
 import client.settings.KeyBinds;
+import client.ui.PingComponent;
 import client.ui.actionbar.ActionBarComponent;
 import client.ui.hotbar.HotbarComponent;
 import client.ui.hotbar.HotbarViewComponent;
@@ -50,6 +51,9 @@ public class GamePlayScreen extends GameScreen {
     setupActionBar();
     setupReticle();
     setupHotBar();
+
+    SceneNode node = new SceneNode("Ping", new PingComponent(client));
+    uiRoot.addChild(node);
   }
 
   private void setupReticle() {

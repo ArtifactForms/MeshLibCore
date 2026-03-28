@@ -134,7 +134,7 @@ public class InteractionComponent extends AbstractComponent implements Renderabl
     }
 
     // Render block outline
-    BlockHighlightRenderer.render(g);
+    BlockHighlightRenderer.render(g, block.type.getShape());
 
     // Render crack overlay if currently mining
     if (miningTimer > 0) {
