@@ -95,6 +95,10 @@ public class KeyCharacterMapper {
       return Key.values()[Key.NUM_0.ordinal() + (keyCode - 48)];
     }
 
+    if (keyCode >= 97 && keyCode <= 108) {
+        return Key.values()[Key.F1.ordinal() + (keyCode - 97)];
+      }
+
     return Key.UNKNOWN;
   }
 }

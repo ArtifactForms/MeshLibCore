@@ -16,6 +16,7 @@ import processing.event.KeyEvent;
 public class ProcessingKeyInput implements KeyInput {
 
     private static final HashMap<Integer, Key> codedKeysMap = new HashMap<>();
+    
     static {
         codedKeysMap.put(PApplet.SHIFT, Key.SHIFT);
         codedKeysMap.put(PApplet.ALT, Key.ALT);
@@ -24,6 +25,19 @@ public class ProcessingKeyInput implements KeyInput {
         codedKeysMap.put(PApplet.DOWN, Key.ARROW_DOWN);
         codedKeysMap.put(PApplet.LEFT, Key.ARROW_LEFT);
         codedKeysMap.put(PApplet.RIGHT, Key.ARROW_RIGHT);
+        
+        codedKeysMap.put(97, Key.F1);
+        codedKeysMap.put(98, Key.F2);
+        codedKeysMap.put(99, Key.F3);
+        codedKeysMap.put(100, Key.F4);
+        codedKeysMap.put(101, Key.F5);
+        codedKeysMap.put(102, Key.F6);
+        codedKeysMap.put(103, Key.F7);
+        codedKeysMap.put(104, Key.F8);
+        codedKeysMap.put(105, Key.F9);
+        codedKeysMap.put(106, Key.F10);
+        codedKeysMap.put(107, Key.F11);
+        codedKeysMap.put(108, Key.F12);
     }
 
     private final PApplet applet;
@@ -83,7 +97,7 @@ public class ProcessingKeyInput implements KeyInput {
             case KeyEvent.TYPE -> handleTyped(key, e);
         }
     }
-
+    
     private void handlePress(Key key, KeyEvent e) {
         inputState.onKeyPressed(key);
         fireKeyPressed(new engine.runtime.input.KeyEvent(key, e.getKey()));
