@@ -1,7 +1,6 @@
 package client.world;
 
-import java.util.ArrayList;
-
+import java.util.Arrays;
 import client.resources.TextureAtlas;
 import client.ui.GameTextures;
 import common.game.block.BlockRegistry;
@@ -18,42 +17,33 @@ import math.Vector2f;
 public class ChunkMesher {
 
     private static final int TOP = 0, BOTTOM = 1, FRONT = 2, BACK = 3, RIGHT = 4, LEFT = 5;
-    private static float radius = 0.5f; 
+    private static final float radius = 0.5f;
 
-    private Chunk chunk;
-    private ChunkManager chunkManager;
-    
-    // Zwei Shapes für die Trennung von opaken und transparenten Objekten
+    private final Chunk chunk;
+    private final ChunkManager chunkManager;
+
     private BufferedShape opaqueShape;
     private BufferedShape waterShape;
     private BufferedShape decorShape;
-    private BufferedShape currentShape; // Zeiger auf das aktuell aktive Mesh
+    private BufferedShape currentShape;
 
-    private static ArrayList<Vector2f> uvs;
-    public static Material sharedMaterial;
-    private static TextureAtlas textureAtlas;
+    public static final Material sharedMaterial;
+    private static final TextureAtlas textureAtlas;
+
+    private short[] localCache;
+    private static final int P_WIDTH = Chunk.WIDTH + 2;
+    private static final int P_DEPTH = Chunk.DEPTH + 2;
+
+    private static final ThreadLocal<short[]> CACHE_HOLDER = ThreadLocal.withInitial(() -> 
+        new short[P_WIDTH * Chunk.HEIGHT * P_DEPTH]);
 
     static {
         sharedMaterial = new Material();
         textureAtlas = GameTextures.TEXTURE_ATLAS;
         Texture texture = textureAtlas.getTexture();
-        texture.setFilterMode(FilterMode.POINT); 
-        texture.setTextureWrapMode(TextureWrapMode.REPEAT);
+        texture.setFilterMode(FilterMode.POINT);
+        texture.setTextureWrapMode(TextureWrapMode.CLAMP);
         sharedMaterial.setDiffuseTexture(texture);
-        uvs = textureAtlas.getUVCoordinates();
-    }
-
-    // Container-Klasse für die Rückgabe beider Meshes
-    public static class MeshResult {
-        public final StaticGeometry opaque;
-        public final StaticGeometry water;
-        public final StaticGeometry decor;
-
-        public MeshResult(StaticGeometry opaque, StaticGeometry water, StaticGeometry decor) {
-            this.opaque = opaque;
-            this.water = water;
-            this.decor = decor;
-        }
     }
 
     public ChunkMesher(Chunk chunk, ChunkManager chunkManager) {
@@ -61,7 +51,18 @@ public class ChunkMesher {
         this.chunkManager = chunkManager;
     }
 
+    public static class MeshResult {
+        public final StaticGeometry opaque, water, decor;
+        public MeshResult(StaticGeometry o, StaticGeometry w, StaticGeometry d) {
+            this.opaque = o; this.water = w; this.decor = d;
+        }
+    }
+
     public MeshResult createMesh() {
+        long startTime = System.nanoTime();
+    	
+        fillCache();
+
         opaqueShape = new BufferedShape(sharedMaterial);
         waterShape = new BufferedShape(sharedMaterial);
         decorShape = new BufferedShape(sharedMaterial);
@@ -70,12 +71,34 @@ public class ChunkMesher {
         waterShape.begin(BufferedShape.QUADS);
         decorShape.begin(BufferedShape.QUADS);
 
-        greedyTopFaces(); 
-        generateSideFaces();
+        for (int x = 0; x < Chunk.WIDTH; x++) {
+            for (int y = 0; y < Chunk.HEIGHT; y++) {
+                for (int z = 0; z < Chunk.DEPTH; z++) {
+                    short blockId = chunk.getBlockId(x, y, z);
+                    if (blockId == Blocks.AIR.getId()) continue;
+                    if (BlockRegistry.getTypeUnsafe(blockId).getShape() == BlockShape.CROSS) continue;
 
+                    currentShape = (blockId == Blocks.WATER.getId()) ? waterShape : opaqueShape;
+
+                    for (int face = 0; face < 6; face++) {
+                        if (shouldRender(blockId, x, y, z, face)) {
+                            addSingleFace(x, y, z, blockId, face);
+                        }
+                    }
+                }
+            }
+        }
+        
+        generateDecor();
         opaqueShape.end();
         waterShape.end();
         decorShape.end();
+        
+//        long endTime = System.nanoTime();
+//        double durationMs = (endTime - startTime) / 1_000_000.0;
+        
+//        System.out.format("Chunk [%d, %d] meshed in: %.3f ms%n", 
+//                          chunk.getChunkX(), chunk.getChunkZ(), durationMs);
 
         return new MeshResult(
             new StaticGeometry(opaqueShape.getVBO(), sharedMaterial),
@@ -83,293 +106,172 @@ public class ChunkMesher {
             new StaticGeometry(decorShape.getVBO(), sharedMaterial)
         );
     }
-    
-    private void greedyTopFaces() {
-        for (int y = 0; y < Chunk.HEIGHT; y++) {
-            boolean[][] visited = new boolean[Chunk.WIDTH][Chunk.DEPTH];
-            for (int x = 0; x < Chunk.WIDTH; x++) {
-                for (int z = 0; z < Chunk.DEPTH; z++) {
-                    if (visited[x][z]) continue;
-                    
-                    short blockId = chunk.getBlockId(x, y, z);
-                    if (blockId == Blocks.AIR.getId() || !shouldRender(blockId, x, y + 1, z)) continue;
 
-                    // shape e.g. block, cross
-                    if (BlockRegistry.get(blockId).getShape() == BlockShape.CROSS)
-                    	continue;
-//                    if (blockId == Blocks.GRASS.getId()) continue;
-                    
-                    // Entscheide, in welches Mesh dieser Block gehört
-                    currentShape = (blockId == Blocks.WATER.getId()) ? waterShape : opaqueShape;
+    /**
+     * AO-Berechnung mit Berücksichtigung der invertierten Y-Achse im Rendering.
+     * Wenn Rendering -Y up ist, müssen wir bei der Abfrage der Welt-Daten (+Y up) umdenken.
+     */
+    private float getAO(int sx1, int sy1, int sz1, int sx2, int sy2, int sz2, int cx, int cy, int cz) {
+        int s1 = isSolidFast(sx1, sy1, sz1) ? 1 : 0;
+        int s2 = isSolidFast(sx2, sy2, sz2) ? 1 : 0;
+        int c = isSolidFast(cx, cy, cz) ? 1 : 0;
 
-                    int width = 1;
-                    while (x + width < Chunk.WIDTH && !visited[x + width][z] && 
-                           chunk.getBlockId(x + width, y, z) == blockId && shouldRender(blockId, x + width, y + 1, z)) {
-                        width++;
-                    }
-
-                    int depth = 1;
-                    outer:
-                    while (z + depth < Chunk.DEPTH) {
-                        for (int k = 0; k < width; k++) {
-                            if (visited[x + k][z + depth] || chunk.getBlockId(x + k, y, z + depth) != blockId || 
-                                !shouldRender(blockId, x + k, y + 1, z + depth)) break outer;
-                        }
-                        depth++;
-                    }
-
-                    for (int dx = 0; dx < width; dx++)
-                        for (int dz = 0; dz < depth; dz++)
-                            visited[x + dx][z + dz] = true;
-
-                    addTopQuad(x, y, z, width, depth, blockId);
-                }
-            }
-        }
+        if (s1 == 1 && s2 == 1) return 0.45f;
+        return 1.0f - (s1 + s2 + c) * 0.18f;
     }
 
-    private void generateSideFaces() {
-        for (int x = 0; x < Chunk.WIDTH; x++) {
-            for (int z = 0; z < Chunk.DEPTH; z++) {
-                for (int y = 0; y < Chunk.HEIGHT; y++) {
-                    short blockId = chunk.getBlockId(x, y, z);
-                    if (blockId == Blocks.AIR.getId()) continue;
-
-                    // Entscheide, in welches Mesh dieser Block gehört
-                    currentShape = (blockId == Blocks.WATER.getId()) ? waterShape : opaqueShape;
-
-                    if (BlockRegistry.get(blockId).getShape() == BlockShape.CROSS) { 
-                        createBillBoard(x, y, z); 
-                        continue; 
-                    }
-
-                    if (shouldRender(blockId, x, y - 1, z)) addFace(BOTTOM, x, y, z);
-                    if (shouldRender(blockId, x, y, z + 1)) addFace(FRONT, x, y, z);
-                    if (shouldRender(blockId, x, y, z - 1)) addFace(BACK, x, y, z);
-                    if (shouldRender(blockId, x + 1, y, z)) addFace(RIGHT, x, y, z);
-                    if (shouldRender(blockId, x - 1, y, z)) addFace(LEFT, x, y, z);
-                }
-            }
-        }
-    }
-
-    private void addTopQuad(int x, int y, int z, int width, int depth, int blockId) {
-        Vector2f[] uv = textureAtlas.getUVCoordinates(blockId, TOP);
-        float minX = x - radius;
-        float minZ = z - radius;
-        float yPos = -radius - y;
-
-        for (int dx = 0; dx < width; dx++) {
-            for (int dz = 0; dz < depth; dz++) {
-                int bx = x + dx, bz = z + dz;
-                float a0 = aoBrightness(vertexAO(isSolid(bx-1, y+1, bz), isSolid(bx, y+1, bz-1), isSolid(bx-1, y+1, bz-1)));
-                float a1 = aoBrightness(vertexAO(isSolid(bx+1, y+1, bz), isSolid(bx, y+1, bz-1), isSolid(bx+1, y+1, bz-1)));
-                float a2 = aoBrightness(vertexAO(isSolid(bx-1, y+1, bz+1), isSolid(bx, y+1, bz+1), isSolid(bx-1, y+1, bz+1)));
-                float a3 = aoBrightness(vertexAO(isSolid(bx+1, y+1, bz+1), isSolid(bx, y+1, bz+1), isSolid(bx+1, y+1, bz+1)));
-
-                drawCorrectedQuad(minX + dx, yPos, minZ + dz, 1, 1, uv, 1.0f, a0, a1, a2, a3, TOP);
-            }
-        }
-    }
-
-    private void addFace(int face, int x, int y, int z) {
-        int blockId = chunk.getBlockId(x, y, z);
+    private void addSingleFace(int x, int y, int z, short blockId, int face) {
         Vector2f[] uv = textureAtlas.getUVCoordinates(blockId, face);
-        
-        if (face != TOP && face != BOTTOM) {
-            uv = new Vector2f[]{new Vector2f(uv[0].x, uv[2].y), new Vector2f(uv[1].x, uv[3].y), new Vector2f(uv[2].x, uv[0].y), new Vector2f(uv[3].x, uv[1].y)};
-        } 
+        float baseLight = switch (face) { 
+            case FRONT, BACK -> 0.85f; 
+            case LEFT, RIGHT -> 0.7f; 
+            case BOTTOM -> 0.5f; 
+            default -> 1.0f; 
+        };
 
-        float light = switch (face) { case FRONT, BACK -> 0.85f; case LEFT, RIGHT -> 0.7f; case BOTTOM -> 0.5f; default -> 1.0f; };
+        float xf = x - radius, yf = y - radius, zf = z - radius;
         float a0, a1, a2, a3;
 
         switch (face) {
+            case TOP -> {
+                yf += 1.0f;
+                // Welt-Y bleibt y+1 für TOP face, aber wir prüfen die Ecken
+                a0 = getAO(x-1, y+1, z, x, y+1, z-1, x-1, y+1, z-1) * baseLight;
+                a1 = getAO(x-1, y+1, z, x, y+1, z+1, x-1, y+1, z+1) * baseLight;
+                a2 = getAO(x+1, y+1, z, x, y+1, z+1, x+1, y+1, z+1) * baseLight;
+                a3 = getAO(x+1, y+1, z, x, y+1, z-1, x+1, y+1, z-1) * baseLight;
+                drawFace(xf, -yf, zf, xf, -yf, zf+1, xf+1, -yf, zf+1, xf+1, -yf, zf, a0, a1, a2, a3, uv);
+            }
+            case BOTTOM -> {
+                a0 = getAO(x-1, y-1, z, x, y-1, z-1, x-1, y-1, z-1) * baseLight;
+                a1 = getAO(x+1, y-1, z, x, y-1, z-1, x+1, y-1, z-1) * baseLight;
+                a2 = getAO(x+1, y-1, z, x, y-1, z+1, x+1, y-1, z+1) * baseLight;
+                a3 = getAO(x-1, y-1, z, x, y-1, z+1, x-1, y-1, z+1) * baseLight;
+                drawFace(xf, -yf, zf, xf+1, -yf, zf, xf+1, -yf, zf+1, xf, -yf, zf+1, a0, a1, a2, a3, uv);
+            }
             case FRONT -> {
-                a0 = aoBrightness(vertexAO(isSolid(x+1, y, z+1), isSolid(x, y-1, z+1), isSolid(x+1, y-1, z+1)));
-                a1 = aoBrightness(vertexAO(isSolid(x-1, y, z+1), isSolid(x, y-1, z+1), isSolid(x-1, y-1, z+1)));
-                a2 = aoBrightness(vertexAO(isSolid(x-1, y, z+1), isSolid(x, y+1, z+1), isSolid(x-1, y+1, z+1)));
-                a3 = aoBrightness(vertexAO(isSolid(x+1, y, z+1), isSolid(x, y+1, z+1), isSolid(x+1, y+1, z+1)));
-                drawCorrectedQuad(x-radius, -radius-y, z+radius, 1, 1, uv, light, a0, a1, a2, a3, FRONT);
+                zf += 1.0f;
+                // INVERSION: Wenn Rendering -Y up ist, ist die "obere" Ecke des Quads in der Welt y-1
+                a0 = getAO(x-1, y, z+1, x, y-1, z+1, x-1, y-1, z+1) * baseLight; // Oben Links im Rendering
+                a1 = getAO(x+1, y, z+1, x, y-1, z+1, x+1, y-1, z+1) * baseLight; // Oben Rechts im Rendering
+                a2 = getAO(x+1, y, z+1, x, y+1, z+1, x+1, y+1, z+1) * baseLight; // Unten Rechts im Rendering
+                a3 = getAO(x-1, y, z+1, x, y+1, z+1, x-1, y+1, z+1) * baseLight; // Unten Links im Rendering
+                drawFace(xf, -yf, zf, xf+1, -yf, zf, xf+1, -yf-1, zf, xf, -yf-1, zf, a0, a1, a2, a3, uv);
             }
             case BACK -> {
-                a0 = aoBrightness(vertexAO(isSolid(x-1, y, z-1), isSolid(x, y-1, z-1), isSolid(x-1, y-1, z-1)));
-                a1 = aoBrightness(vertexAO(isSolid(x+1, y, z-1), isSolid(x, y-1, z-1), isSolid(x+1, y-1, z-1)));
-                a2 = aoBrightness(vertexAO(isSolid(x+1, y, z-1), isSolid(x, y+1, z-1), isSolid(x+1, y+1, z-1)));
-                a3 = aoBrightness(vertexAO(isSolid(x-1, y, z-1), isSolid(x, y+1, z-1), isSolid(x-1, y+1, z-1)));
-                drawCorrectedQuad(x-radius, -radius-y, z-radius, 1, 1, uv, light, a0, a1, a2, a3, BACK);
+                a0 = getAO(x+1, y, z-1, x, y-1, z-1, x+1, y-1, z-1) * baseLight;
+                a1 = getAO(x-1, y, z-1, x, y-1, z-1, x-1, y-1, z-1) * baseLight;
+                a2 = getAO(x-1, y, z-1, x, y+1, z-1, x-1, y+1, z-1) * baseLight;
+                a3 = getAO(x+1, y, z-1, x, y+1, z-1, x+1, y+1, z-1) * baseLight;
+                drawFace(xf+1, -yf, zf, xf, -yf, zf, xf, -yf-1, zf, xf+1, -yf-1, zf, a0, a1, a2, a3, uv);
             }
             case RIGHT -> {
-                a0 = aoBrightness(vertexAO(isSolid(x+1, y, z-1), isSolid(x+1, y-1, z), isSolid(x+1, y-1, z-1)));
-                a1 = aoBrightness(vertexAO(isSolid(x+1, y, z+1), isSolid(x+1, y-1, z), isSolid(x+1, y-1, z+1)));
-                a2 = aoBrightness(vertexAO(isSolid(x+1, y, z+1), isSolid(x+1, y+1, z), isSolid(x+1, y+1, z+1)));
-                a3 = aoBrightness(vertexAO(isSolid(x+1, y, z-1), isSolid(x+1, y+1, z), isSolid(x+1, y+1, z-1)));
-                drawCorrectedQuad(x+radius, -radius-y, z-radius, 1, 1, uv, light, a0, a1, a2, a3, RIGHT);
+                xf += 1.0f;
+                a0 = getAO(x+1, y, z+1, x+1, y-1, z, x+1, y-1, z+1) * baseLight;
+                a1 = getAO(x+1, y, z-1, x+1, y-1, z, x+1, y-1, z-1) * baseLight;
+                a2 = getAO(x+1, y, z-1, x+1, y+1, z, x+1, y+1, z-1) * baseLight;
+                a3 = getAO(x+1, y, z+1, x+1, y+1, z, x+1, y+1, z+1) * baseLight;
+                drawFace(xf, -yf, zf+1, xf, -yf, zf, xf, -yf-1, zf, xf, -yf-1, zf+1, a0, a1, a2, a3, uv);
             }
             case LEFT -> {
-                a0 = aoBrightness(vertexAO(isSolid(x-1, y, z+1), isSolid(x-1, y-1, z), isSolid(x-1, y-1, z+1)));
-                a1 = aoBrightness(vertexAO(isSolid(x-1, y, z-1), isSolid(x-1, y-1, z), isSolid(x-1, y-1, z-1)));
-                a2 = aoBrightness(vertexAO(isSolid(x-1, y, z-1), isSolid(x-1, y+1, z), isSolid(x-1, y+1, z-1)));
-                a3 = aoBrightness(vertexAO(isSolid(x-1, y, z+1), isSolid(x-1, y+1, z), isSolid(x-1, y+1, z+1)));
-                drawCorrectedQuad(x-radius, -radius-y, z-radius, 1, 1, uv, light, a0, a1, a2, a3, LEFT);
+                a0 = getAO(x-1, y, z-1, x-1, y-1, z, x-1, y-1, z-1) * baseLight;
+                a1 = getAO(x-1, y, z+1, x-1, y-1, z, x-1, y-1, z+1) * baseLight;
+                a2 = getAO(x-1, y, z+1, x-1, y+1, z, x-1, y+1, z+1) * baseLight;
+                a3 = getAO(x-1, y, z-1, x-1, y+1, z, x-1, y+1, z-1) * baseLight;
+                drawFace(xf, -yf, zf, xf, -yf, zf+1, xf, -yf-1, zf+1, xf, -yf-1, zf, a0, a1, a2, a3, uv);
             }
-            case BOTTOM -> drawCorrectedQuad(x-radius, radius-y, z-radius, 1, 1, uv, light, 1, 1, 1, 1, BOTTOM);
         }
     }
 
-    private void drawCorrectedQuad(float x, float y, float z, float w, float d, Vector2f[] uv, float light, float a0, float a1, float a2, float a3, int face) {
-        boolean flip = (a0 + a3 > a1 + a2); 
-
-        if (face == TOP) {
-            if (!flip) {
-                drawV(x + w, y, z, uv[0], a1 * light); drawV(x, y, z, uv[1], a0 * light);
-                drawV(x, y, z + d, uv[2], a2 * light); drawV(x + w, y, z + d, uv[3], a3 * light);
-            } else {
-                drawV(x, y, z, uv[1], a0 * light); drawV(x, y, z + d, uv[2], a2 * light);
-                drawV(x + w, y, z + d, uv[3], a3 * light); drawV(x + w, y, z, uv[0], a1 * light);
-            }
-        } else if (face == FRONT) {
-            if (!flip) {
-                drawV(x + w, y, z, uv[0], a0 * light); drawV(x, y, z, uv[1], a1 * light);
-                drawV(x, y + 1, z, uv[2], a2 * light); drawV(x + w, y + 1, z, uv[3], a3 * light);
-            } else {
-                drawV(x, y, z, uv[1], a1 * light); drawV(x, y + 1, z, uv[2], a2 * light);
-                drawV(x + w, y + 1, z, uv[3], a3 * light); drawV(x + w, y, z, uv[0], a0 * light);
-            }
-        } else if (face == BACK) {
-            if (!flip) {
-                drawV(x, y, z, uv[0], a0 * light); drawV(x + w, y, z, uv[1], a1 * light);
-                drawV(x + w, y + 1, z, uv[2], a2 * light); drawV(x, y + 1, z, uv[3], a3 * light);
-            } else {
-                drawV(x + w, y, z, uv[1], a1 * light); drawV(x + w, y + 1, z, uv[2], a2 * light);
-                drawV(x, y + 1, z, uv[3], a3 * light); drawV(x, y, z, uv[0], a0 * light);
-            }
-        } else if (face == RIGHT) {
-            if (!flip) {
-                drawV(x, y, z, uv[0], a0 * light); drawV(x, y, z + d, uv[1], a1 * light);
-                drawV(x, y + 1, z + d, uv[2], a2 * light); drawV(x, y + 1, z, uv[3], a3 * light);
-            } else {
-                drawV(x, y, z + d, uv[1], a1 * light); drawV(x, y + 1, z + d, uv[2], a2 * light);
-                drawV(x, y + 1, z, uv[3], a3 * light); drawV(x, y, z, uv[0], a0 * light);
-            }
-        } else if (face == LEFT) {
-            if (!flip) {
-                drawV(x, y, z + d, uv[0], a0 * light); drawV(x, y, z, uv[1], a1 * light);
-                drawV(x, y + 1, z, uv[2], a2 * light); drawV(x, y + 1, z + d, uv[3], a3 * light);
-            } else {
-                drawV(x, y, z, uv[1], a1 * light); drawV(x, y + 1, z, uv[2], a2 * light);
-                drawV(x, y + 1, z + d, uv[3], a3 * light); drawV(x, y, z + d, uv[0], a0 * light);
-            }
-        } else if (face == BOTTOM) {
-            drawV(x+w, y, z, uv[0], light); drawV(x+w, y, z+d, uv[1], light);
-            drawV(x, y, z+d, uv[2], light); drawV(x, y, z, uv[3], light);
+    private void drawFace(float x1, float y1, float z1, float x2, float y2, float z2, 
+                          float x3, float y3, float z3, float x4, float y4, float z4, 
+                          float a0, float a1, float a2, float a3, Vector2f[] uv) {
+        
+        if (a0 + a2 < a1 + a3) {
+            currentShape.color(a1, a1, a1); currentShape.vertex(x2, y2, z2, uv[0].x, uv[1].y);
+            currentShape.color(a2, a2, a2); currentShape.vertex(x3, y3, z3, uv[0].x, uv[2].y);
+            currentShape.color(a3, a3, a3); currentShape.vertex(x4, y4, z4, uv[1].x, uv[2].y);
+            currentShape.color(a0, a0, a0); currentShape.vertex(x1, y1, z1, uv[1].x, uv[1].y);
+        } else {
+            currentShape.color(a0, a0, a0); currentShape.vertex(x1, y1, z1, uv[1].x, uv[1].y);
+            currentShape.color(a1, a1, a1); currentShape.vertex(x2, y2, z2, uv[0].x, uv[1].y);
+            currentShape.color(a2, a2, a2); currentShape.vertex(x3, y3, z3, uv[0].x, uv[2].y);
+            currentShape.color(a3, a3, a3); currentShape.vertex(x4, y4, z4, uv[1].x, uv[2].y);
         }
     }
 
-    private void drawV(float x, float y, float z, Vector2f uv, float c) {
-        currentShape.color(c, c, c); 
-        currentShape.vertex(x, y, z, uv.x, uv.y);
-    }
-
-    private boolean isSolid(int x, int y, int z) {
-        if (y < 0 || y >= Chunk.HEIGHT) return false;
-
-        if (x >= 0 && x < Chunk.WIDTH && z >= 0 && z < Chunk.DEPTH) {
-            return chunk.isSolid(x, y, z);
+    public boolean shouldRender(int myId, int x, int y, int z, int face) {
+        int nx = x, ny = y, nz = z;
+        switch (face) {
+            case TOP -> ny++; case BOTTOM -> ny--;
+            case FRONT -> nz++; case BACK -> nz--;
+            case RIGHT -> nx++; case LEFT -> nx--;
         }
-
-        Chunk neighbor = chunkManager.getChunk(
-            chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0),
-            chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0)
-        );
-
-        if (neighbor == null || !neighbor.isDataReady()) return false;
-
-        return neighbor.isSolid(
-            Math.floorMod(x, Chunk.WIDTH),
-            y,
-            Math.floorMod(z, Chunk.DEPTH)
-        );
-    }
-
-    private int getBlockData(int x, int y, int z) {
-        if (x >= 0 && x < Chunk.WIDTH && y >= 0 && y < Chunk.HEIGHT && z >= 0 && z < Chunk.DEPTH) {
-            return chunk.getBlockId(x, y, z);
-        }
-
-        Chunk neighbor = chunkManager.getChunk(
-            chunk.getChunkX() + (x < 0 ? -1 : x >= Chunk.WIDTH ? 1 : 0),
-            chunk.getChunkZ() + (z < 0 ? -1 : z >= Chunk.DEPTH ? 1 : 0)
-        );
-
-        if (neighbor != null && neighbor.isDataReady()) {
-            return neighbor.getBlockId(Math.floorMod(x, Chunk.WIDTH), y, Math.floorMod(z, Chunk.DEPTH));
-        }
-
-        return Blocks.AIR.getId();
-    }
-
-    public boolean shouldRender(int myId, int x, int y, int z) {
-        if (y < 0) return false;
-        if (y >= Chunk.HEIGHT) return true;
-        int neighborId = getBlockData(x, y, z);
-
-        // Spezielle Logik für Wasser:
-        // Wasser zeigt Faces gegen Luft und andere Blöcke, aber nicht gegen Wasser.
-        if (myId == Blocks.WATER.getId()) {
-            return neighborId != Blocks.WATER.getId() && neighborId == Blocks.AIR.getId();
-        }
-
-        // Andere Blöcke zeigen Faces gegen Wasser (da Wasser transparent ist)
+        if (ny < 0) return false;
+        if (ny >= Chunk.HEIGHT) return true;
+        int neighborId = getBlockDataFast(nx, ny, nz);
+        if (myId == Blocks.WATER.getId()) return neighborId == Blocks.AIR.getId();
         if (neighborId == Blocks.WATER.getId()) return true;
-
-        return !isSolid(x, y, z);
+        return !isSolidFast(nx, ny, nz);
     }
 
-    private int vertexAO(boolean s1, boolean s2, boolean c) {
-        if (s1 && s2) return 0;
-        return 3 - ( (s1?1:0) + (s2?1:0) + (c?1:0) );
+    private void fillCache() {
+        this.localCache = CACHE_HOLDER.get();
+        Arrays.fill(localCache, (short) 0);
+        for (int ox = -1; ox <= 1; ox++) {
+            for (int oz = -1; oz <= 1; oz++) {
+                Chunk neighbor = chunkManager.getChunk(chunk.getChunkX() + ox, chunk.getChunkZ() + oz);
+                if (neighbor == null || !neighbor.isDataReady()) continue;
+                for (int x = 0; x < Chunk.WIDTH; x++) {
+                    for (int z = 0; z < Chunk.DEPTH; z++) {
+                        for (int y = 0; y < Chunk.HEIGHT; y++) {
+                            int cx = x + 1 + (ox * Chunk.WIDTH);
+                            int cz = z + 1 + (oz * Chunk.DEPTH);
+                            if (cx >= 0 && cx < P_WIDTH && cz >= 0 && cz < P_DEPTH) {
+                                localCache[(cx * Chunk.HEIGHT * P_DEPTH) + (y * P_DEPTH) + cz] = neighbor.getBlockId(x, y, z);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    private float aoBrightness(int ao) { 
-        return 0.6f + (ao / 3.0f) * 0.4f; 
+    private int getBlockDataFast(int x, int y, int z) {
+        if (y < 0 || y >= Chunk.HEIGHT) return 0;
+        int idx = ((x + 1) * Chunk.HEIGHT * P_DEPTH) + (y * P_DEPTH) + (z + 1);
+        return (idx < 0 || idx >= localCache.length) ? 0 : localCache[idx];
+    }
+
+    private boolean isSolidFast(int x, int y, int z) {
+        int id = getBlockDataFast(x, y, z);
+        return id != 0 && BlockRegistry.getTypeUnsafe((short)id).isSolid();
+    }
+
+    private void generateDecor() {
+        for (int x = 0; x < Chunk.WIDTH; x++) {
+            for (int z = 0; z < Chunk.DEPTH; z++) {
+                for (int y = 0; y < Chunk.HEIGHT; y++) {
+                    short id = chunk.getBlockId(x, y, z);
+                    if (id != 0 && BlockRegistry.getTypeUnsafe(id).getShape() == BlockShape.CROSS) createBillBoard(x, y, z);
+                }
+            }
+        }
     }
 
     private void createBillBoard(int x, int y, int z) {
-
         currentShape = decorShape;
-
-        int blockId = chunk.getBlockId(x, y, z);
-        int[] uvIdx = textureAtlas.getUVIndices(blockId, 0);
-
-        Vector2f[] uv = {
-            uvs.get(uvIdx[0]),
-            uvs.get(uvIdx[1]),
-            uvs.get(uvIdx[2]),
-            uvs.get(uvIdx[3])
-        };
-
-        float cx = x;
-        float cy = -y;
-        float cz = z;
-
-        float h = 1.0f;
-        float half = 0.5f;
-
-        currentShape.color(1,1,1);
-
-        // 🔥 Rotation 45°
-        float s = 0.7071f * half; // sin(45°) * half
-
-        // 🌿 Quad 1 (+45°)
-        currentShape.vertex(cx - s, cy - radius, cz - s, uv[0].x, uv[0].y);
-        currentShape.vertex(cx + s, cy - radius, cz + s, uv[1].x, uv[1].y);
-        currentShape.vertex(cx + s, cy + h - radius, cz + s, uv[2].x, uv[2].y);
-        currentShape.vertex(cx - s, cy + h - radius, cz - s, uv[3].x, uv[3].y);
-
-        // 🌿 Quad 2 (-45°)
-        currentShape.vertex(cx - s, cy - radius, cz + s, uv[0].x, uv[0].y);
-        currentShape.vertex(cx + s, cy - radius, cz - s, uv[1].x, uv[1].y);
-        currentShape.vertex(cx + s, cy + h - radius, cz - s, uv[2].x, uv[2].y);
-        currentShape.vertex(cx - s, cy + h - radius, cz + s, uv[3].x, uv[3].y);
+        short blockId = chunk.getBlockId(x, y, z);
+        Vector2f[] uv = textureAtlas.getUVCoordinates(blockId, 0);
+        float cx = x, cy = y, cz = z, h = 1.0f, off = 0.5f;
+        currentShape.color(1, 1, 1);
+        currentShape.vertex(cx - off, -cy + radius, cz - off, uv[1].x, uv[1].y); 
+        currentShape.vertex(cx + off, -cy + radius, cz + off, uv[0].x, uv[1].y);
+        currentShape.vertex(cx + off, -cy - h + radius, cz + off, uv[0].x, uv[2].y); 
+        currentShape.vertex(cx - off, -cy - h + radius, cz - off, uv[1].x, uv[2].y);
+        currentShape.vertex(cx - off, -cy + radius, cz + off, uv[1].x, uv[1].y); 
+        currentShape.vertex(cx + off, -cy + radius, cz - off, uv[0].x, uv[1].y);
+        currentShape.vertex(cx + off, -cy - h + radius, cz - off, uv[0].x, uv[2].y); 
+        currentShape.vertex(cx - off, -cy - h + radius, cz + off, uv[1].x, uv[2].y);
     }
 }
