@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.network.Connection;
 import common.network.Packet;
+import common.network.packets.system.PingPacket;
+import common.network.packets.system.PongPacket;
 import server.gateways.GatewayContext;
 import server.player.ServerPlayer;
 import server.usecases.UseCaseRegistry;
@@ -49,6 +51,12 @@ public class ServerConnection extends Connection {
   /** Called by base class when a packet is received */
   @Override
   protected void handle(Packet packet) {
+	     // TODO spam protection
+      if (packet instanceof PingPacket ping) {
+          send(new PongPacket(ping.getTime()));
+          return;
+      }
+	  
     incomingPackets.add(packet);
   }
 
@@ -61,11 +69,11 @@ public class ServerConnection extends Connection {
     return incomingPackets.size();
   }
 
-//  @Override
-//  public void send(Packet packet) {
-//    if (!running || packet == null) return;
-//    enqueueOutbound(packet);
-//  }
+  //  @Override
+  //  public void send(Packet packet) {
+  //    if (!running || packet == null) return;
+  //    enqueueOutbound(packet);
+  //  }
 
   // ============================
   // Outbound Handling
@@ -77,12 +85,16 @@ public class ServerConnection extends Connection {
       outgoingPackets.add(packet);
     }
   }
-  
+
   @Override
   public void send(Packet packet) {
-	  enqueueOutbound(packet);
+    enqueueOutbound(packet);
   }
-  
+
+  public void sendImmediate(Packet packet) {
+    super.send(packet);
+  }
+
   /**
    * Sends queued outbound packets to the client. Should be called once per server tick (can apply
    * throttling).
@@ -129,9 +141,9 @@ public class ServerConnection extends Connection {
   public ServerPlayer getPlayer() {
     return player;
   }
-  
+
   public boolean hasPlayer() {
-	  return player!= null;
+    return player != null;
   }
 
   public void setPlayer(ServerPlayer player) {

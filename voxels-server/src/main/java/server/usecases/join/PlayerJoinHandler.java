@@ -85,10 +85,9 @@ public class PlayerJoinHandler {
     spawnZ = event.getSpawnZ();
     joinMessage = event.getJoinMessage();
 
-    
     // World time
     connection.send(new TimeUpdatePacket(world.getWorldTime()));
-    
+
     // Move the player to the spawn position
     player.setSilentPosition(spawnX, spawnY, spawnZ, 0f, 0f);
 
@@ -100,9 +99,9 @@ public class PlayerJoinHandler {
     // Send initial chunks around the spawn position
     sendInitialChunks();
 
-//    // Send teleport packet to synchronize client position
-//    connection.send(
-//        new PlayerPositionPacket(player.getUuid(), spawnX, spawnY, spawnZ, 0f, 0f, true));
+    //    // Send teleport packet to synchronize client position
+    //    connection.send(
+    //        new PlayerPositionPacket(player.getUuid(), spawnX, spawnY, spawnZ, 0f, 0f, true));
 
     for (ServerPlayer existingPlayer : playerManager.getAllPlayers()) {
       // Hier ist die UUID-Prüfung gut, falls getAllPlayers ihn schon enthält
@@ -139,7 +138,7 @@ public class PlayerJoinHandler {
     connection.send(
         new PlayerInventoryFullUpdatePacket(
             inventory.getItems(), null, player.getInventoryVersion()));
-    
+
     // -------------------------------------
     // PRE-JOIN EVENT
     // -------------------------------------

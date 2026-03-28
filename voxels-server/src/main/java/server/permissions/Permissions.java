@@ -42,4 +42,6 @@ public class Permissions {
   public static final String COMMAND_HELP = "command.help";
 
   public static final String COMMAND_GAMEMODE = "command.gamemode";
+  
+  public static final String COMMAND_CHUNK = "command.chunk";
 }

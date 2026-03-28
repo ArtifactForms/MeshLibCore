@@ -31,6 +31,7 @@ public class ServerWorld extends World {
     this.gameServer = gameServer;
     this.repository = repository;
     this.generator = new BasicWorldGenerator2(seed);
+//    this.generator = new BasicWorldGenerator4(seed);
 
     //        this.generator = new BasicWorldGenerator(seed);
     //        this.generator = new FlatWorldGenerator("1*bedrock,4*dirt,1*grass_block");

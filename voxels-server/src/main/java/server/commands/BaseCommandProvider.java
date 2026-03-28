@@ -3,6 +3,7 @@ package server.commands;
 import common.logging.Log;
 import server.commands.commands.ChangeGameModeCommand;
 import server.commands.commands.DayCommand;
+import server.commands.commands.ChunkCommand;
 import server.commands.commands.HelpCommand;
 import server.commands.commands.InventoryCommand;
 import server.commands.commands.NightCommand;
@@ -30,6 +31,7 @@ public class BaseCommandProvider implements CommandProvider {
     registerCommand(new TimeCommand(), registry);
     registerCommand(new TopCommand(), registry);
     registerCommand(new ChangeGameModeCommand(), registry);
+    registerCommand(new ChunkCommand(), registry);
   }
 
   private void registerCommand(Command command, CommandRegistry registry) {
