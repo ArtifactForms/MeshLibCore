@@ -13,6 +13,7 @@ public class ApplicationSettings {
   private boolean fullscreen;
   private String title;
   private boolean useGamePadInput;
+  private boolean ignoreExitOnEscape;
 
   /**
    * Constructs an ApplicationSettings instance with default values:
@@ -30,6 +31,7 @@ public class ApplicationSettings {
     this.fullscreen = false;
     this.title = DEFAULT_TITLE;
     this.useGamePadInput = false;
+    this.ignoreExitOnEscape = false;
   }
 
   /**
@@ -130,6 +132,29 @@ public class ApplicationSettings {
    */
   public ApplicationSettings setUseGamePadInput(boolean useGamePadInput) {
     this.useGamePadInput = useGamePadInput;
+    return this;
+  }
+
+  /**
+   * Checks whether the application should ignore the Escape key for closing the program. * @return
+   * {@code true} if the application stays open when Escape is pressed, {@code false} if it should
+   * exit.
+   */
+  public boolean isIgnoreExitOnEscape() {
+    return ignoreExitOnEscape;
+  }
+
+  /**
+   * Sets whether the application should ignore the Escape key for closing the program.
+   *
+   * <p>This is useful for preventing accidental exits when the user is in a menu or a specific game
+   * state where Escape is needed for other actions.
+   *
+   * @param ignoreExitOnEscape {@code true} to disable exit on Escape, {@code false} to enable it.
+   * @return This {@code ApplicationSettings} instance for method chaining.
+   */
+  public ApplicationSettings setIgnoreExitOnEscape(boolean ignoreExitOnEscape) {
+    this.ignoreExitOnEscape = ignoreExitOnEscape;
     return this;
   }
 }

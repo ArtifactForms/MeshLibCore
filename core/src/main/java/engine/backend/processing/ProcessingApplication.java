@@ -94,7 +94,11 @@ public class ProcessingApplication extends PApplet {
 
   @Override
   public void exit() {
-    //    container.cleanup();
-    //    super.exit();
+    if (settings.isIgnoreExitOnEscape()) {
+      return;
+    } else {
+      super.exit();
+    }
+    // container.cleanup();
   }
 }
