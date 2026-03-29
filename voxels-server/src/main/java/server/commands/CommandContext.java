@@ -3,7 +3,6 @@ package server.commands;
 import java.util.List;
 import java.util.UUID;
 
-import server.gateways.GatewayContext;
 import server.network.GameServer;
 import server.usecases.UseCaseRegistry;
 
