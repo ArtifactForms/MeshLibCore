@@ -32,6 +32,7 @@ public class Permissions {
 
   public static final String COMMAND_WORLD_TIME = "world.command.time";
   public static final String COMMAND_WORLD_SEED = "world.seed";
+  public static final String COMMAND_WORLD_SAVE = "world.save";
 
   public static final String COMMAND_WORLD_POSITION = "world.command.position";
 

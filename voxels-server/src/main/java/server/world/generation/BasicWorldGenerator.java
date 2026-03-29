@@ -290,4 +290,9 @@ public class BasicWorldGenerator implements WorldGenerator {
 
     return total / max;
   }
+
+  @Override
+  public long getSeed() {
+    return seed;
+  }
 }

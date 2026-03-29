@@ -8,7 +8,6 @@ import client.ui.cursor.SimpleCursorComponent;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
-import engine.runtime.input.Key;
 import engine.runtime.input.KeyEvent;
 import engine.runtime.input.MouseEvent;
 import engine.scene.SceneNode;
@@ -140,10 +139,10 @@ public class MenuScreen extends GameScreen {
 
   @Override
   public boolean onKeyPressed(KeyEvent e) {
-    if (e.getKey() == Key.ESCAPE) {
-      close();
-      return true;
-    }
+//    if (e.getKey() == Key.ESCAPE) {
+//      close();
+//      return true;
+//    }
     return true;
   }
 

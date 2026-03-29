@@ -31,4 +31,9 @@ public class FlatWorldGenerator implements WorldGenerator {
       }
     }
   }
+
+  @Override
+  public long getSeed() {
+    return 0;
+  }
 }

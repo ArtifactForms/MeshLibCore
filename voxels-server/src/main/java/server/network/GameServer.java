@@ -38,6 +38,9 @@ import server.player.ServerPlayer;
 import server.scheduler.ServerScheduler;
 import server.usecases.UseCaseRegistry;
 import server.world.ServerWorld;
+import server.world.WorldNetworkSystem;
+import server.world.generation.BasicWorldGenerator2;
+import server.world.generation.WorldGenerator;
 
 /**
  * The core server class that manages the network lifecycle and the main game loop. It coordinates
@@ -80,21 +83,27 @@ public class GameServer {
 
     this.scheduler = new ServerScheduler();
     this.commandRegistry = new CommandRegistry();
+
     this.eventBus = new EventBus();
+    EventGateway events = new EventAdapter(eventBus);
+
     this.playerManager = new PlayerManager();
     this.entityManager = new EntityManager(this);
-    this.world = new ServerWorld(this, chunkRepository);
+
+    WorldGenerator worldGenerator = new BasicWorldGenerator2(0);
+    this.world = new ServerWorld(worldGenerator, chunkRepository, events);
 
     this.permissionService = new AlwaysGrantPermissionService();
     //    this.permissionService = new AlwaysDenyPermissionService();
 
-    initUseCases();
+    initUseCases(events);
     registerCommands();
+
+    new WorldNetworkSystem(events, playerManager);
   }
 
-  private void initUseCases() {
+  private void initUseCases(EventGateway eventGateway) {
     WorldGateway worldGateway = new WorldAdapter(world);
-    EventGateway eventGateway = new EventAdapter(eventBus);
     PermissionGateway permissionGateway = new PermissionAdapter(permissionService);
     InventoryGateway inventoryGateway = new InventoryAdapter(playerManager);
     ConfigGateway configGateway = new ConfigAdapter(config);

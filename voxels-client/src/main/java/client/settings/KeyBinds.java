@@ -30,7 +30,7 @@ public class KeyBinds {
   // DEBUG
   // ------------------------------------------
   
-  public static Key showHideChunkBorders = Key.H;
+  public static Key showHideChunkBorders = Key.G;
   public static Key enableDisableFrustumCulling = Key.F;
   public static Key enableDisableChunkBounds = Key.M;
 }

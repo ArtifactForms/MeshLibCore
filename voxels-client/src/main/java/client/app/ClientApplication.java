@@ -30,7 +30,7 @@ public class ClientApplication extends BasicApplication {
 
   @Override
   public void onInitialize() {
-    setDisplayInfo(false);
+    setDisplayInfo(true);
 
     Blocks.initialize();
     BlockLoader.load();

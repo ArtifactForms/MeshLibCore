@@ -757,4 +757,15 @@ class ChunkDataTest {
       assertEquals(expected, chunk.getHeightValue(0, 0));
     }
   }
+
+  @Test
+  void isNotDirtyByDefault() {
+    assertFalse(chunk.isDirty());
+  }
+
+  @Test
+  void makeDirty() {
+    chunk.setDirty(true);
+    assertTrue(chunk.isDirty());
+  }
 }

@@ -68,104 +68,107 @@ public class BasicWorldGenerator2 implements WorldGenerator {
 
     structureManager.register(new TreeStructureGenerator());
   }
-  
+
   @Override
   public void generate(ChunkData chunk) {
-      Vector3f pos = getPosition(chunk);
-      long chunkSeed = seed ^ ((long) (pos.x * 31 + pos.z * 17));
-      Random rng = new Random(chunkSeed);
+    Vector3f pos = getPosition(chunk);
+    long chunkSeed = seed ^ ((long) (pos.x * 31 + pos.z * 17));
+    Random rng = new Random(chunkSeed);
 
-      for (int x = 0; x < ChunkData.WIDTH; x++) {
-          for (int z = 0; z < ChunkData.DEPTH; z++) {
-              float wx = pos.x + x;
-              float wz = pos.z + z;
+    for (int x = 0; x < ChunkData.WIDTH; x++) {
+      for (int z = 0; z < ChunkData.DEPTH; z++) {
+        float wx = pos.x + x;
+        float wz = pos.z + z;
 
-              // --- Biome Layer (Whittaker System) ---
-              // Wir nutzen unterschiedliche Offsets, damit Temp und Moist nicht identisch sind
-              float temp = generateOctaveNoise(biomeNoise, wx, wz, 0.001f, 2, 0.5f, 2.0f);
-              float moisture = generateOctaveNoise(biomeNoise, wx + 5000, wz + 5000, 0.001f, 2, 0.5f, 2.0f);
-              
-              BiomeType biome = BiomeProvider.getBiome(temp, moisture);
+        // --- Biome Layer (Whittaker System) ---
+        // Wir nutzen unterschiedliche Offsets, damit Temp und Moist nicht identisch sind
+        float temp = generateOctaveNoise(biomeNoise, wx, wz, 0.001f, 2, 0.5f, 2.0f);
+        float moisture =
+            generateOctaveNoise(biomeNoise, wx + 5000, wz + 5000, 0.001f, 2, 0.5f, 2.0f);
 
-              // --- Terrain Generation ---
-              float continent = generateOctaveNoise(continentNoise, wx, wz, 0.0005f, 3, 0.5f, 2f);
-              float terrain = generateOctaveNoise(terrainNoise, wx, wz, terrainScale, octaves, persistence, lacunarity);
+        BiomeType biome = BiomeProvider.getBiome(temp, moisture);
 
-              // Biome beeinflussen die Höhe (z.B. Wüste flacher, Wald hügeliger)
-              // Hier nutzen wir beispielhaft Biome-spezifische Multiplikatoren
-              float biomeHeightMod = (biome == BiomeType.DESERT) ? 0.6f : 1.0f;
-              
-              float finalHeight = (continent * 0.7f + terrain * 0.3f) * biomeHeightMod;
-              int heightValue = (int) Mathf.map(finalHeight, 0, 1, 0, heightMultiplier);
+        // --- Terrain Generation ---
+        float continent = generateOctaveNoise(continentNoise, wx, wz, 0.0005f, 3, 0.5f, 2f);
+        float terrain =
+            generateOctaveNoise(
+                terrainNoise, wx, wz, terrainScale, octaves, persistence, lacunarity);
 
-              // --- River Layer ---
-              float river = Mathf.abs((float) riverNoise.noise(wx * 0.001f, wz * 0.001f));
-              if (river < 0.02f) heightValue -= 10; 
+        // Biome beeinflussen die Höhe (z.B. Wüste flacher, Wald hügeliger)
+        // Hier nutzen wir beispielhaft Biome-spezifische Multiplikatoren
+        float biomeHeightMod = (biome == BiomeType.DESERT) ? 0.6f : 1.0f;
 
-              chunk.setHeightValue(heightValue, x, z);
+        float finalHeight = (continent * 0.7f + terrain * 0.3f) * biomeHeightMod;
+        int heightValue = (int) Mathf.map(finalHeight, 0, 1, 0, heightMultiplier);
 
-              // --- Block Layer ---
-              for (int y = 0; y <= heightValue; y++) {
-                  // Wir übergeben das neue Whittaker-Biom an die Block-Logik
-                  BlockType blockType = getBlockType(x, y, z, heightValue, biome, chunk);
-                  chunk.setBlockAt(blockType, x, y, z);
-              }
-          }
+        // --- River Layer ---
+        float river = Mathf.abs((float) riverNoise.noise(wx * 0.001f, wz * 0.001f));
+        if (river < 0.02f) heightValue -= 10;
+
+        chunk.setHeightValue(heightValue, x, z);
+
+        // --- Block Layer ---
+        for (int y = 0; y <= heightValue; y++) {
+          // Wir übergeben das neue Whittaker-Biom an die Block-Logik
+          BlockType blockType = getBlockType(x, y, z, heightValue, biome, chunk);
+          chunk.setBlockAt(blockType, x, y, z);
+        }
       }
+    }
 
-      structureManager.generateStructures(chunk, seed);
-      createWater(chunk); // Hier könnte man nun auch Eis für SNOW-Biome einbauen
-      createGrass(chunk);
+    structureManager.generateStructures(chunk, seed);
+    createWater(chunk); // Hier könnte man nun auch Eis für SNOW-Biome einbauen
+    createGrass(chunk);
   }
 
-//  @Override
-//  public void generate(ChunkData chunk) {
-//    Vector3f pos = getPosition(chunk);
-//    long chunkSeed = seed ^ ((long) (pos.x * 31 + pos.z * 17));
-//    Random rng = new Random(chunkSeed);
-//
-//    for (int x = 0; x < ChunkData.WIDTH; x++) {
-//      for (int z = 0; z < ChunkData.DEPTH; z++) {
-//        float wx = pos.x + x;
-//        float wz = pos.z + z;
-//
-//        // --- Biome Layer ---
-//        BiomeType biome = getBiomeAt(wx, wz);
-//
-//        // --- Continent + Terrain Layer ---
-//        float continent = generateOctaveNoise(continentNoise, wx, wz, 0.0005f, 3, 0.5f, 2f);
-//        float terrain =
-//            generateOctaveNoise(
-//                terrainNoise, wx, wz, terrainScale, octaves, persistence, lacunarity);
-//
-//        float finalHeight = continent * 0.7f + terrain * 0.3f;
-//        int heightValue = (int) Mathf.map(finalHeight, 0, 1, 0, heightMultiplier);
-//
-//        // --- River Layer ---
-//        float river = Mathf.abs((float) riverNoise.noise(wx * 0.001f, wz * 0.001f));
-//        if (river < 0.02f) heightValue -= 10; // river carve
-//
-//        // chunk.getHeightMap()[x + z * ChunkData.WIDTH] = heightValue;
-//        chunk.setHeightValue(heightValue, x, z);
-//
-//        // --- Block Layer ---
-//        for (int y = 0; y <= heightValue; y++) {
-//          BlockType blockType = getBlockType(x, y, z, heightValue, biome, chunk);
-//          chunk.setBlockAt(blockType, x, y, z);
-//        }
-//      }
-//    }
-//
-//    // structures
-//    structureManager.generateStructures(chunk, seed);
-//
-//    // --- Feature Layers ---
-//    //    createTrees(chunk);
-//    createWater(chunk);
-//    //    createCaves(chunk);
-//
-//    createGrass(chunk);
-//  }
+  //  @Override
+  //  public void generate(ChunkData chunk) {
+  //    Vector3f pos = getPosition(chunk);
+  //    long chunkSeed = seed ^ ((long) (pos.x * 31 + pos.z * 17));
+  //    Random rng = new Random(chunkSeed);
+  //
+  //    for (int x = 0; x < ChunkData.WIDTH; x++) {
+  //      for (int z = 0; z < ChunkData.DEPTH; z++) {
+  //        float wx = pos.x + x;
+  //        float wz = pos.z + z;
+  //
+  //        // --- Biome Layer ---
+  //        BiomeType biome = getBiomeAt(wx, wz);
+  //
+  //        // --- Continent + Terrain Layer ---
+  //        float continent = generateOctaveNoise(continentNoise, wx, wz, 0.0005f, 3, 0.5f, 2f);
+  //        float terrain =
+  //            generateOctaveNoise(
+  //                terrainNoise, wx, wz, terrainScale, octaves, persistence, lacunarity);
+  //
+  //        float finalHeight = continent * 0.7f + terrain * 0.3f;
+  //        int heightValue = (int) Mathf.map(finalHeight, 0, 1, 0, heightMultiplier);
+  //
+  //        // --- River Layer ---
+  //        float river = Mathf.abs((float) riverNoise.noise(wx * 0.001f, wz * 0.001f));
+  //        if (river < 0.02f) heightValue -= 10; // river carve
+  //
+  //        // chunk.getHeightMap()[x + z * ChunkData.WIDTH] = heightValue;
+  //        chunk.setHeightValue(heightValue, x, z);
+  //
+  //        // --- Block Layer ---
+  //        for (int y = 0; y <= heightValue; y++) {
+  //          BlockType blockType = getBlockType(x, y, z, heightValue, biome, chunk);
+  //          chunk.setBlockAt(blockType, x, y, z);
+  //        }
+  //      }
+  //    }
+  //
+  //    // structures
+  //    structureManager.generateStructures(chunk, seed);
+  //
+  //    // --- Feature Layers ---
+  //    //    createTrees(chunk);
+  //    createWater(chunk);
+  //    //    createCaves(chunk);
+  //
+  //    createGrass(chunk);
+  //  }
 
   private Vector3f getPosition(ChunkData chunk) {
     float cwX = chunk.getChunkX() * ChunkData.WIDTH;
@@ -415,5 +418,10 @@ public class BasicWorldGenerator2 implements WorldGenerator {
         }
       }
     }
+  }
+
+  @Override
+  public long getSeed() {
+    return seed;
   }
 }

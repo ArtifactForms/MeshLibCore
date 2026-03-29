@@ -9,6 +9,7 @@ import server.commands.commands.InventoryCommand;
 import server.commands.commands.NightCommand;
 import server.commands.commands.PositionCommand;
 import server.commands.commands.PrivateMessageCommand;
+import server.commands.commands.SaveCommand;
 import server.commands.commands.SeedCommand;
 import server.commands.commands.StopCommand;
 import server.commands.commands.TeleportCommand;
@@ -32,6 +33,7 @@ public class BaseCommandProvider implements CommandProvider {
     registerCommand(new TopCommand(), registry);
     registerCommand(new ChangeGameModeCommand(), registry);
     registerCommand(new ChunkCommand(), registry);
+    registerCommand(new SaveCommand(), registry);
   }
 
   private void registerCommand(Command command, CommandRegistry registry) {

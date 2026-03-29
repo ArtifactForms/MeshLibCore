@@ -5,4 +5,6 @@ import common.world.ChunkData;
 public interface WorldGenerator {
 
   public void generate(ChunkData chunk);
+
+  public long getSeed();
 }
