@@ -66,7 +66,7 @@ public class PlayerJoinHandler {
     int spawnY = 0;
 
     // Default join message
-    String joinMessage = "§e" + player.getName() + " ist dem Spiel beigetreten!";
+    String joinMessage = player.getName() + " joined the game!";
 
     // -------------------------------------
     // JOIN EVENT
