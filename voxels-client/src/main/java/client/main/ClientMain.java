@@ -7,6 +7,7 @@ public class ClientMain {
 
   public static void main(String[] args) {
     ClientApplication application = new ClientApplication();
-    application.launch(ApplicationSettings.defaultSettings().setFullscreen(true));
+    application.launch(
+        ApplicationSettings.defaultSettings().setFullscreen(true).setIgnoreExitOnEscape(true));
   }
 }
