@@ -57,6 +57,8 @@ public abstract class BasicApplication implements Application {
   public abstract void onUpdate(float tpf);
 
   public abstract void onRender(Graphics g);
+  
+  private Font font = new Font("Lucida Sans", 12, Font.PLAIN);
 
   public void onRenderUI(Graphics g) {
     // Do nothing
@@ -201,7 +203,7 @@ public abstract class BasicApplication implements Application {
 
   private void renderDebugUi(Graphics g) {
     if (!displayInfo) return;
-    g.setFont(new Font("Lucida Sans", 12, Font.PLAIN));
+    g.setFont(font);
     debugOverlay.render(g);
     Debug.getInstance().render(g);
   }
