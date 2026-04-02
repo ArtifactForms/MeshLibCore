@@ -21,7 +21,8 @@ public class World {
   private static final int MIN_Y = 0;
   private static final int MAX_Y = CHUNK_HEIGHT - 1;
 
-  protected long worldTime = 0;
+  protected final WorldTimeState worldTime = new WorldTimeState();
+
   protected String name = "";
 
   // Thread-safe map to store chunks by a single long key (packed X/Z)
@@ -30,7 +31,7 @@ public class World {
   // --- World update ---
 
   public void tick() {
-    worldTime++;
+    worldTime.tick();
     for (ChunkData chunk : chunks.values()) {
       tickChunk(chunk);
     }
@@ -126,28 +127,37 @@ public class World {
     return (int) (key & 0xFFFFFFFFL);
   }
 
-  public long getWorldTime() {
-    return worldTime;
-  }
-
   public int getLoadedChunksCount() {
     return chunks.size();
   }
 
-  /** Sets the absolute world time. Useful for server sync or commands. */
-  public void setWorldTime(long time) {
-    this.worldTime = time;
-  }
-
-  /**
-   * * Returns the progress of the current day as a value between 0.0 and 1.0. 0.0 = Sunrise, 0.5 =
-   * Sunset (depending on your renderer logic).
-   */
-  public float getTimeOfDay() {
-    return (worldTime % WorldTime.DAY_LENGTH) / (float) WorldTime.DAY_LENGTH;
-  }
-
   public String getName() {
     return name;
+  }
+
+  // --- World time ---
+  
+  public long getDay() {
+	  return worldTime.getDay();
+  }
+
+  public long getWorldTime() {
+    return worldTime.getWorldTime();
+  }
+
+  public void setWorldTime(long worldTime) {
+    this.worldTime.setWorldTime(worldTime);
+  }
+
+  public float getTimeOfDayNormalized() {
+    return worldTime.getTimeOfDayNormalized();
+  }
+
+  public long getTimeOfDay() {
+    return worldTime.getTimeOfDay();
+  }
+  
+  public void setTimeOfDay(long timeOfDay) {
+    this.worldTime.setTimeOfDay(timeOfDay);
   }
 }

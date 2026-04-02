@@ -406,16 +406,16 @@ class WorldTest {
   void testGetTimeOfDay(long ticks, float expectedProgress) {
     world.setWorldTime(ticks);
     // delta 1e-5f to account for floating point inaccuracies
-    assertEquals(expectedProgress, world.getTimeOfDay(), 1e-5f);
+    assertEquals(expectedProgress, world.getTimeOfDayNormalized(), 1e-5f);
   }
 
   @Test
   void testTimeOfDayPrecision() {
     // Verify that worldTime + 1 actually increases the progress value
     world.setWorldTime(0);
-    float t0 = world.getTimeOfDay();
+    float t0 = world.getTimeOfDayNormalized();
     world.tick();
-    float t1 = world.getTimeOfDay();
+    float t1 = world.getTimeOfDayNormalized();
 
     assertTrue(t1 > t0, "Time of day should increase after tick");
     assertEquals(1.0f / WorldTime.DAY_LENGTH, t1, 1e-7f);
@@ -428,7 +428,7 @@ class WorldTest {
     long hugeTime = WorldTime.DAY_LENGTH * 1000000L + 6000;
     world.setWorldTime(hugeTime);
 
-    assertEquals(0.25f, world.getTimeOfDay(), 1e-5f);
+    assertEquals(0.25f, world.getTimeOfDayNormalized(), 1e-5f);
   }
 
   @Test
@@ -436,5 +436,45 @@ class WorldTest {
     long initialTime = world.getWorldTime();
     world.tick();
     assertEquals(initialTime + 1, world.getWorldTime());
+  }
+
+  @Test
+  void testDefaultName() {
+    assertEquals("", world.getName());
+  }
+
+  @Test
+  void testZeroLoadedChunksByDefault() {
+    assertEquals(0, world.getLoadedChunksCount());
+  }
+
+  @Test
+  void testGetChunkCountReturnsOneAfterAddingChunk() {
+    ChunkData chunkData = new ChunkData(0, 0);
+    world.addChunk(chunkData);
+    assertEquals(1, world.getLoadedChunksCount());
+  }
+
+  @Test
+  void testGetLoadedChunkCountReturnsOneAfterAddingChunksWithSameCoordinates() {
+    ChunkData chunkData1 = new ChunkData(10, 20);
+    ChunkData chunkData2 = new ChunkData(10, 20);
+    world.addChunk(chunkData1);
+    world.addChunk(chunkData2);
+    assertEquals(1, world.getLoadedChunksCount());
+  }
+
+  @Test
+  void testGetLoadedChunkCountAfterAddingAndRemovingChunk() {
+    ChunkData chunkData1 = new ChunkData(8, -1);
+    world.addChunk(chunkData1);
+    world.removeChunk(8, -1);
+    assertEquals(0, world.getLoadedChunksCount());
+  }
+
+  @Test
+  void testGetChunkFromEmptyWorldReturnsNull() {
+    ChunkData chunkData = world.getChunk(0, 0);
+    assertNull(chunkData);
   }
 }
