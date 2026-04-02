@@ -5,18 +5,25 @@ import java.util.UUID;
 import server.events.GameEvent;
 
 /**
- * Event fired when a player joins the server.
+ * Event fired when a player is joining the server and is about to be initialized.
  *
- * <p>This event is triggered after the player has been authenticated and is about to be fully
- * initialized in the game world. At this stage, the server has already validated the connection and
- * created the player context, but has not yet finalized spawn position or broadcasted the join
- * message.
+ * <p>This event is triggered after the player has passed all pre-join checks (e.g. whitelist, bans)
+ * but before they are fully spawned into the world.
+ *
+ * <p>At this stage:
+ *
+ * <ul>
+ *   <li>The player is accepted and will join the server
+ *   <li>The spawn position can still be modified
+ *   <li>The join message can still be changed or suppressed
+ * </ul>
  *
  * <p>Listeners may:
  *
  * <ul>
  *   <li>Modify the player's spawn position
  *   <li>Customize or suppress the join message
+ *   <li>Initialize player state (kits, stats, etc.)
  * </ul>
  *
  * <p>This event is typically used for:
@@ -24,11 +31,11 @@ import server.events.GameEvent;
  * <ul>
  *   <li>Spawn management systems
  *   <li>Custom join messages or localization
- *   <li>Player initialization logic (kits, stats, etc.)
+ *   <li>Player initialization logic
  * </ul>
  *
- * <p>Note: This event assumes that all player identification and connection validation has already
- * been performed by the calling system.
+ * <p>Note: The player is not yet fully present in the world. Systems that depend on a fully
+ * initialized player should use {@link PlayerPostJoinEvent}.
  */
 public class PlayerJoinEvent extends GameEvent {
 
