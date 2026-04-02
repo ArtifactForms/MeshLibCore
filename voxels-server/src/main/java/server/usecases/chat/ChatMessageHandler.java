@@ -1,17 +1,10 @@
 package server.usecases.chat;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import common.logging.Log;
 import common.network.packets.ChatMessagePacket;
-import server.commands.Command;
-import server.commands.CommandContext;
-import server.commands.CommandMessages;
 import server.events.events.PlayerChatEvent;
-import server.gateways.CommandGateway;
 import server.gateways.ConfigGateway;
 import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
@@ -27,14 +20,12 @@ public class ChatMessageHandler {
   private final PermissionGateway permissions;
   private final EventGateway events;
   private final ConfigGateway config;
-  private final CommandGateway commands;
 
   public ChatMessageHandler(ServerConnection connection, GatewayContext context) {
     this.connection = connection;
     this.permissions = context.permissions();
     this.events = context.events();
     this.config = context.config();
-    this.commands = context.commands();
   }
 
   private boolean hasPermission(UUID uuid, String permission) {
@@ -90,7 +81,7 @@ public class ChatMessageHandler {
     // COMMAND CHECK
     // -------------------------------------
     if (message.startsWith("/")) {
-      handleCommand(playerId, message);
+      connection.getServer().dispatchCommand(playerId, message);
       return;
     }
 
@@ -127,61 +118,5 @@ public class ChatMessageHandler {
     connection.getServer().getPlayerManager().broadcast(new ChatMessagePacket(formattedMessage));
 
     Log.info("[CHAT] broadcast player=" + player.getName() + " message=\"" + finalMessage + "\"");
-  }
-
-  private void handleCommand(UUID playerId, String message) {
-    // -------------------------------------
-    // GENERAL COMMAND PERMISSION CHECK
-    // -------------------------------------
-    if (!permissions.hasPermission(playerId, Permissions.COMMANDS)) {
-      connection.send(new ChatMessagePacket(ChatMessageMessages.NO_COMMAND_PERMISSION));
-      return;
-    }
-
-    // -------------------------------------
-    // PROCESS COMMAND
-    // -------------------------------------
-    String rawInput = message.substring(1).trim();
-
-    if (rawInput.isEmpty()) {
-      Log.debug("[COMMAND] player=" + playerId + " rejected=empty_command");
-      return;
-    }
-
-    String[] parts = rawInput.split("\\s+");
-    String commandName = parts[0].toLowerCase();
-
-    List<String> args = new ArrayList<>(Arrays.asList(parts).subList(1, parts.length));
-
-    Command command = commands.getCommand(commandName);
-
-    if (command == null) {
-      connection.send(new ChatMessagePacket(CommandMessages.UNKNOWN_COMMAND));
-      Log.debug("[COMMAND] player=" + playerId + " unknown=\"" + commandName + "\"");
-      return;
-    }
-
-    // -------------------------------------
-    // SPECIFIC COMMAND PERMISSION CHECK
-    // -------------------------------------
-    if (!hasPermission(playerId, command.getPermission())) {
-      connection.send(new ChatMessagePacket(CommandMessages.NO_PERMISSION));
-      return;
-    }
-
-    // -------------------------------------
-    // HELP HANDLING
-    // -------------------------------------
-    if (!args.isEmpty() && args.get(0).equalsIgnoreCase("help")) {
-      connection.send(new ChatMessagePacket(command.getUsage()));
-      return;
-    }
-
-    // -------------------------------------
-    // COMMAND EXECUTION
-    // -------------------------------------
-    CommandContext context = new CommandContext(playerId, args, connection.getServer());
-    command.execute(context);
-    Log.info("[COMMAND] player=" + playerId + " executed=" + commandName);
   }
 }

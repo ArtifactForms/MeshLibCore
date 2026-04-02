@@ -3,6 +3,7 @@ package server.world;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.TimeUpdatePacket;
 import server.events.events.world.ChunkLoadedEvent;
+import server.events.events.world.ChunkUnloadedEvent;
 import server.events.events.world.WorldSavedEvent;
 import server.events.events.world.WorldTimeChangedEevent;
 import server.gateways.EventGateway;
@@ -17,6 +18,7 @@ public class WorldNetworkSystem {
     events.register(WorldSavedEvent.class, this::onWorldSaved);
     events.register(WorldTimeChangedEevent.class, this::onWorldTimeChanged);
     events.register(ChunkLoadedEvent.class, this::onChunkLoaded);
+    events.register(ChunkUnloadedEvent.class, this::onChunkUnload);
   }
 
   private void onWorldSaved(WorldSavedEvent e) {
@@ -28,10 +30,18 @@ public class WorldNetworkSystem {
   }
 
   private void onChunkLoaded(ChunkLoadedEvent event) {
-//    int chunkX = event.getData().getChunkX();
-//    int chunkZ = event.getData().getChunkZ();
-//    String message = "Chunk loaded " + chunkX + "," + chunkZ;
-//    broadcastMessage(message);
+    //    int chunkX = event.getData().getChunkX();
+    //    int chunkZ = event.getData().getChunkZ();
+    //    String message = "Chunk loaded " + chunkX + "," + chunkZ;
+    //    broadcastMessage(message);
+  }
+
+  private void onChunkUnload(ChunkUnloadedEvent event) {
+    //    int chunkX = event.getData().getChunkX();
+    //    int chunkZ = event.getData().getChunkZ();
+    //    String message = "Chunk unloaded " + chunkX + "," + chunkZ + " loaded: " +
+    // event.getLoadedChunksCount();
+    //    broadcastMessage(message);
   }
 
   private void broadcastMessage(String message) {

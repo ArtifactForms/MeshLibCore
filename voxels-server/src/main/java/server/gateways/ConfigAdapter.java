@@ -39,4 +39,9 @@ public class ConfigAdapter implements ConfigGateway {
   public int getViewDistance() {
     return config.getViewDistance();
   }
+
+  @Override
+  public String getCommandMessagePrefix() { 
+    return config.getCommandMessagePrefix();
+  }
 }

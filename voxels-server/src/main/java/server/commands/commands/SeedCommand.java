@@ -2,15 +2,19 @@ package server.commands.commands;
 
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.WorldGateway;
 import server.permissions.Permissions;
-import server.world.ServerWorld;
 
 public class SeedCommand extends AbstractCommand {
 
+  private final WorldGateway world;
+
+  public SeedCommand(WorldGateway world) {
+    this.world = world;
+  }
+
   @Override
   public void execute(CommandContext ctx) {
-    ServerWorld world = ctx.getServer().getWorld();
-
     long seed = world.getSeed();
 
     ctx.reply("World Seed: " + seed);

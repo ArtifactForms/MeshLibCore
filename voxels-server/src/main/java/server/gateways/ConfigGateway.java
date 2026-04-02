@@ -13,4 +13,6 @@ public interface ConfigGateway {
   String getChatFormat();
 
   int getViewDistance();
+  
+  String getCommandMessagePrefix();
 }

@@ -1,31 +1,25 @@
 package server.commands.commands;
 
 import common.logging.Log;
+import common.world.ChunkData;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.WorldGateway;
 import server.permissions.Permissions;
 import server.player.ServerPlayer;
 
 public class TopCommand extends AbstractCommand {
 
-  @Override
-  public String getName() {
-    return "top";
-  }
+  private final WorldGateway world;
 
-  @Override
-  public String getDescription() {
-    return "Teleports you to the highest solid block.";
+  public TopCommand(WorldGateway world) {
+    this.world = world;
   }
 
   @Override
   public void execute(CommandContext ctx) {
-
-    // -------------------------------------
-    // CONSOLE CHECK
-    // -------------------------------------
     if (ctx.isConsole()) {
-      ctx.reply("This command can only be used by a player.");
+      Log.warn("[Command] Only players can use this command.");
       return;
     }
 
@@ -36,9 +30,9 @@ public class TopCommand extends AbstractCommand {
     int x = (int) player.getX();
     int z = (int) player.getZ();
 
-    int topY = findTopY(ctx, x, z);
+    int topY = world.getHeightAt(x, z);
 
-    if (topY == -1) {
+    if (topY < 0 || topY >= ChunkData.HEIGHT) {
       Log.warn("No valid top position found.");
       return;
     }
@@ -50,8 +44,14 @@ public class TopCommand extends AbstractCommand {
     Log.info(player.getName() + " teleported to top.");
   }
 
-  private int findTopY(CommandContext ctx, int x, int z) {
-    return ctx.getServer().getWorld().getHeightAt(x, z) + 1;
+  @Override
+  public String getName() {
+    return "top";
+  }
+
+  @Override
+  public String getDescription() {
+    return "Teleports you to the highest solid block.";
   }
 
   @Override

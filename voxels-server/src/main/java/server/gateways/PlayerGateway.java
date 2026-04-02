@@ -13,4 +13,8 @@ public interface PlayerGateway {
   AbilityContainer getAbilities(UUID playerId);
 
   void setGameMode(UUID playerId, GameMode gameMode);
+  
+  void kick(String name);
+  
+  String getName(UUID playerId);
 }

@@ -3,16 +3,21 @@ package server.commands.commands;
 import java.util.List;
 import java.util.Locale;
 
-import common.logging.Log;
-import common.world.World;
 import common.world.WorldTime;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.WorldGateway;
 import server.permissions.Permissions;
 
 public class TimeCommand extends AbstractCommand {
 
   private static final long DAY_LENGTH = 24000;
+
+  private final WorldGateway world;
+
+  public TimeCommand(WorldGateway world) {
+    this.world = world;
+  }
 
   @Override
   public String getName() {
@@ -28,14 +33,19 @@ public class TimeCommand extends AbstractCommand {
   public void execute(CommandContext ctx) {
 
     var args = ctx.getArgs();
-    World world = ctx.getServer().getWorld();
 
     // -------------------------------------
     // /time  → GET
     // -------------------------------------
     if (args.isEmpty()) {
       long current = normalizeTime(world.getWorldTime());
-      ctx.reply("Current time: " + current);
+      ctx.reply(
+          "Day time: "
+              + current
+              + " World time: "
+              + world.getWorldTime()
+              + " Day: "
+              + world.getDay());
       return;
     }
 
@@ -45,7 +55,7 @@ public class TimeCommand extends AbstractCommand {
     // /time set <value>
     // -------------------------------------
     if (sub.equals("set")) {
-      handleSet(ctx, world, args);
+      handleSet(ctx, args);
       return;
     }
 
@@ -53,38 +63,21 @@ public class TimeCommand extends AbstractCommand {
     // /time add <value>
     // -------------------------------------
     if (sub.equals("add")) {
-      handleAdd(ctx, world, args);
+      handleAdd(ctx, args);
       return;
     }
 
     // -------------------------------------
     // /time <keyword|value> (shortcut)
     // -------------------------------------
-    handleSetShortcut(ctx, world, sub);
+    handleSetShortcut(ctx, sub);
   }
 
   // -------------------------------------
   // SUBCOMMANDS
   // -------------------------------------
 
-  private void handleSet(CommandContext ctx, World world, List<String> args) {
-    if (args.size() < 2) {
-      ctx.reply("Usage: /time set <value|keyword>");
-      return;
-    }
-
-    String input = args.get(1).toLowerCase(Locale.ROOT);
-    long newTime = parseTime(input, ctx);
-    if (newTime == -1) return;
-
-    newTime = normalizeTime(newTime);
-    world.setWorldTime(newTime);
-
-    ctx.reply("Time set to " + input + " (" + newTime + ")");
-    Log.info("World time set to " + newTime + " (Input: " + input + ")");
-  }
-
-  private void handleAdd(CommandContext ctx, World world, List<String> args) {
+  private void handleAdd(CommandContext ctx, List<String> args) {
     if (args.size() < 2) {
       ctx.reply("Usage: /time add <value>");
       return;
@@ -92,27 +85,40 @@ public class TimeCommand extends AbstractCommand {
 
     try {
       long delta = Long.parseLong(args.get(1));
-      long newTime = normalizeTime(world.getWorldTime() + delta);
+
+      long newTime = world.getWorldTime() + delta;
 
       world.setWorldTime(newTime);
 
       ctx.reply("Time advanced by " + delta + " → " + newTime);
-      Log.info("World time increased by " + delta + " → " + newTime);
 
     } catch (NumberFormatException e) {
       ctx.reply("Invalid number: '" + args.get(1) + "'");
     }
   }
 
-  private void handleSetShortcut(CommandContext ctx, World world, String input) {
-    long newTime = parseTime(input, ctx);
-    if (newTime == -1) return;
+  private void handleSetShortcut(CommandContext ctx, String input) {
+    long timeOfDay = parseTime(input, ctx);
+    if (timeOfDay == -1) return;
 
-    newTime = normalizeTime(newTime);
-    world.setWorldTime(newTime);
+    world.setTimeOfDay(timeOfDay);
 
-    ctx.reply("Time set to " + input + " (" + newTime + ")");
-    Log.info("World time set to " + newTime + " (Input: " + input + ")");
+    ctx.reply("Time set to " + input + " (" + timeOfDay + ")");
+  }
+
+  private void handleSet(CommandContext ctx, List<String> args) {
+    if (args.size() < 2) {
+      ctx.reply("Usage: /time set <value|keyword>");
+      return;
+    }
+
+    String input = args.get(1).toLowerCase(Locale.ROOT);
+    long timeOfDay = parseTime(input, ctx);
+    if (timeOfDay == -1) return;
+
+    world.setTimeOfDay(timeOfDay);
+
+    ctx.reply("Time set to " + input + " (" + timeOfDay + ")");
   }
 
   // -------------------------------------
@@ -120,15 +126,17 @@ public class TimeCommand extends AbstractCommand {
   // -------------------------------------
 
   private long parseTime(String input, CommandContext ctx) {
-    long time = WorldTime.getTicksFromKeyword(input);
-
-    if (time != -1) return time;
+    try {
+      return WorldTime.getTicksFromKeyword(input);
+    } catch (IllegalArgumentException ignored) {
+      // no keyword → try number
+    }
 
     try {
       return Long.parseLong(input);
     } catch (NumberFormatException e) {
       ctx.reply("Invalid time value: '" + input + "'");
-      return -1;
+      return -1; // TODO exception
     }
   }
 
@@ -148,5 +156,10 @@ public class TimeCommand extends AbstractCommand {
   @Override
   public String[] getArgumentLabels() {
     return new String[] {"set|add|value"};
+  }
+
+  @Override
+  public String[] getAliases() {
+    return new String[] {"daytime"};
   }
 }

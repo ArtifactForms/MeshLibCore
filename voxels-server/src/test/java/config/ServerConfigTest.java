@@ -38,7 +38,8 @@ public class ServerConfigTest {
     assertEquals(8, config.getViewDistance());
     assertEquals(256, config.getMaxChatMessageLength());
     assertEquals("A Voxel Server", config.getMotd());
-    assertEquals("{prefix}{name}: {message}", config.getChatFormat());
+    assertEquals("§7{prefix}§6{name}§f: {message}", config.getChatFormat());
+    assertEquals("[SERVER]", config.getCommandMessagePrefix());
   }
 
   // Invalid values → fallback to defaults

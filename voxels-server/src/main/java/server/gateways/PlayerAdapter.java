@@ -33,4 +33,21 @@ public class PlayerAdapter implements PlayerGateway {
     ServerPlayer player = playerManager.getPlayer(playerId);
     player.setGameMode(gameMode);
   }
+
+  @Override
+  public void kick(String name) {
+    ServerPlayer player = playerManager.getPlayerByName(name);
+    if (player != null) {
+      playerManager.kick(player);
+    }
+  }
+
+  @Override
+  public String getName(UUID playerId) {
+    ServerPlayer player = playerManager.getPlayer(playerId);
+    if (player != null) {
+      return player.getName();
+    }
+    return null;
+  }
 }

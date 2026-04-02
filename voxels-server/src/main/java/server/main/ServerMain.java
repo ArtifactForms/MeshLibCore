@@ -14,13 +14,14 @@ public class ServerMain {
   public static void main(String[] args) throws Exception {
 
     Log.setImplementation(new ConsoleLogger("SERVER"));
+    //    Log.setImplementation(new EmptyLogger());
+
     ServerConfig config = new ServerConfig();
     config.load();
 
     int port = config.getPort();
 
     NetworkPackets.register();
-
 
     Blocks.initialize(); // Important: Initialize before item registration -> ItemRegistry.init();
     BlockLoader.load();

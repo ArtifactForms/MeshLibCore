@@ -6,22 +6,24 @@ import java.util.Map;
 
 public class CommandRegistry {
 
-  private Map<String, Command> commands = new HashMap<>();
+  private Map<String, Command> uniqueCommands = new HashMap<>();
+
+  private Map<String, Command> lookupMap = new HashMap<>();
 
   public void register(Command command) {
+    uniqueCommands.put(command.getName(), command);
 
-    commands.put(command.getName(), command);
-
+    lookupMap.put(command.getName(), command);
     for (String alias : command.getAliases()) {
-      commands.put(alias, command);
+      lookupMap.put(alias, command);
     }
   }
 
   public Command get(String name) {
-    return commands.get(name);
+    return lookupMap.get(name);
   }
 
   public Collection<Command> getCommands() {
-    return commands.values();
+    return uniqueCommands.values();
   }
 }

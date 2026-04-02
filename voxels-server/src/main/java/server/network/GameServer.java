@@ -11,6 +11,7 @@ import common.network.Packet;
 import common.network.packets.ChatMessagePacket;
 import server.commands.BaseCommandProvider;
 import server.commands.Command;
+import server.commands.CommandDispatcher;
 import server.commands.CommandRegistry;
 import server.config.ServerConfig;
 import server.entity.EntityManager;
@@ -59,7 +60,10 @@ public class GameServer {
   private ServerSocket serverSocket;
 
   private final ServerScheduler scheduler;
+
   private final CommandRegistry commandRegistry;
+  private final CommandDispatcher commandDispatcher;
+
   private final EventBus eventBus;
   private final PlayerManager playerManager;
   private final EntityManager entityManager;
@@ -77,12 +81,11 @@ public class GameServer {
   public GameServer(int port, ServerConfig config) {
     this.port = port;
     this.config = config;
+    this.commandRegistry = new CommandRegistry();
+    this.scheduler = new ServerScheduler();
 
     File worldFolder = new File("world_data");
     ChunkRepository chunkRepository = new FileChunkRepository(worldFolder);
-
-    this.scheduler = new ServerScheduler();
-    this.commandRegistry = new CommandRegistry();
 
     this.eventBus = new EventBus();
     EventGateway events = new EventAdapter(eventBus);
@@ -98,6 +101,8 @@ public class GameServer {
 
     initUseCases(events);
     registerCommands();
+
+    commandDispatcher = new CommandDispatcher(this, context);
 
     new WorldNetworkSystem(events, playerManager);
   }
@@ -124,7 +129,7 @@ public class GameServer {
   }
 
   private void registerCommands() {
-    new BaseCommandProvider().registerCommands(commandRegistry);
+    new BaseCommandProvider().registerCommands(commandRegistry, context);
   }
 
   /**
@@ -152,9 +157,43 @@ public class GameServer {
     acceptorThread.setDaemon(true);
     acceptorThread.start();
 
-    // THREAD 2: Main Game Loop
+    // THREAD 2: Console Thread
+    Thread consoleThread = new Thread(this::consoleLoop, "Console-Reader");
+    consoleThread.setDaemon(true);
+    consoleThread.start();
+
+    // THREAD 3: Main Game Loop
     // Handles game logic and packet processing in synchronous ticks.
     gameLoop();
+  }
+
+  private void consoleLoop() {
+    java.util.Scanner scanner = new java.util.Scanner(System.in);
+
+    while (running) {
+      try {
+        String line = scanner.nextLine();
+
+        if (line == null || line.isEmpty()) continue;
+
+        handleConsoleCommand(line);
+
+      } catch (Exception e) {
+        Log.error("Console error: " + e.getMessage());
+      }
+    }
+  }
+
+  private void handleConsoleCommand(String input) {
+    runNextTick(() -> executeConsoleCommand(input));
+  }
+
+  private void executeConsoleCommand(String input) {
+    dispatchCommand(null, input);
+  }
+
+  public void dispatchCommand(UUID playerId, String input) {
+    commandDispatcher.dispatchCommand(playerId, input);
   }
 
   /** Continuously listens for new client connections. */
@@ -261,14 +300,14 @@ public class GameServer {
   }
 
   private void unloadUnusedChunks() {
-    if (tick % 200 != 0) return;
+    if (tick % 80 != 0) return;
     java.util.Set<Long> allRequiredChunks = new java.util.HashSet<>();
     for (ServerPlayer player : playerManager.getAllPlayers()) {
       allRequiredChunks.addAll(player.getLoadedChunks());
       allRequiredChunks.addAll(player.getEnqueuedChunks());
     }
-    Log.info("Start unload..." + allRequiredChunks.size());
-    Log.info("Required chunks: " + allRequiredChunks.size());
+    //    Log.info("Start unload..." + allRequiredChunks.size());
+    //    Log.info("Required chunks: " + allRequiredChunks.size());
     world.unloadUnusedChunks(allRequiredChunks);
   }
 

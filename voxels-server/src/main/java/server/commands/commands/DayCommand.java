@@ -1,19 +1,24 @@
 package server.commands.commands;
 
-import common.world.World;
 import common.world.WorldTime;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.WorldGateway;
 import server.permissions.Permissions;
 
 public class DayCommand extends AbstractCommand {
 
+  private final WorldGateway world;
+
+  public DayCommand(WorldGateway world) {
+    this.world = world;
+  }
+
   @Override
   public void execute(CommandContext ctx) {
-    World world = ctx.getServer().getWorld();
-
     long time = WorldTime.getTicksFromKeyword("day");
-    world.setWorldTime(time);
+//    world.setWorldTime(time);
+    world.setTimeOfDay(time);
 
     ctx.reply("Time set to day (" + time + ")");
   }

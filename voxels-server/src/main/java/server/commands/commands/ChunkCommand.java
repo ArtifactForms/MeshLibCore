@@ -1,7 +1,7 @@
 package server.commands.commands;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 
 import common.network.packets.ChunkDataPacket;
@@ -32,18 +32,19 @@ public class ChunkCommand extends AbstractCommand {
 
     // Check if there are any arguments
     if (ctx.getArgs().isEmpty()) {
-      player.sendMessage("Usage: /chunk clear");
+      ctx.reply("Usage: /chunk clear");
       return;
     }
 
     String sub = ctx.getArgs().get(0).toLowerCase(Locale.ROOT);
 
     if (sub.equals("clear")) {
-      handleClear(player, ctx.getServer());
+      handleClear(player, ctx);
     }
   }
 
-  private void handleClear(ServerPlayer player, GameServer server) {
+  private void handleClear(ServerPlayer player, CommandContext ctx) {
+    GameServer server = ctx.getServer();
     int chunkX = player.getChunkX();
     int chunkZ = player.getChunkZ();
 
@@ -51,7 +52,7 @@ public class ChunkCommand extends AbstractCommand {
     ChunkData data = world.getChunk(chunkX, chunkZ);
 
     if (data == null) {
-      player.sendMessage("Error: Could not find chunk data for your position.");
+      ctx.reply("Error: Could not find chunk data for your position.");
       return;
     }
 
@@ -66,12 +67,12 @@ public class ChunkCommand extends AbstractCommand {
     // 3. Trigger neighbor remesh to fix Ambient Occlusion and Culling
     triggerNeighborUpdate(world, server, chunkX, chunkZ);
 
-    player.sendMessage("Chunk [" + chunkX + ", " + chunkZ + "] cleared and neighbors updated.");
+    ctx.reply("Chunk [" + chunkX + ", " + chunkZ + "] cleared and neighbors updated.");
   }
 
   private void sendUpdateToNearbyPlayers(GameServer server, ChunkData data, int radius) {
     ChunkDataPacket packet = new ChunkDataPacket(data);
-    List<ServerPlayer> players = server.getPlayerManager().getAllPlayers();
+    Collection<ServerPlayer> players = server.getPlayerManager().getAllPlayers();
 
     for (ServerPlayer p : players) {
       int dx = Math.abs(p.getChunkX() - data.getChunkX());

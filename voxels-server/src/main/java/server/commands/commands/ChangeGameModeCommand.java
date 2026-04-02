@@ -15,12 +15,12 @@ public class ChangeGameModeCommand extends AbstractCommand {
 
   @Override
   public void execute(CommandContext ctx) {
-    UUID playerId = ctx.getPlayer();
-
-    if (playerId == null) {
+    if (ctx.isConsole()) {
       ctx.reply("This command can only be executed by a player.");
       return;
     }
+
+    UUID playerId = ctx.getPlayer();
 
     List<String> args = ctx.getArgs();
     if (args.isEmpty()) {

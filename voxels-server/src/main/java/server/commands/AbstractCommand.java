@@ -6,6 +6,19 @@ public abstract class AbstractCommand implements Command {
 
   private static final String[] EMPTY_ARGUMENT_LABELS = new String[] {};
 
+  private static final String[] EMPTY_ALIASES = new String[] {};
+
+  private static final Flag[] EMPTY_FLAGS = new Flag[] {};
+
+  @Override
+  public abstract void execute(CommandContext ctx);
+
+  @Override
+  public abstract String getName();
+
+  @Override
+  public abstract String getDescription();
+
   @Override
   public String getSyntax() {
     StringBuilder builder = new StringBuilder();
@@ -55,7 +68,7 @@ public abstract class AbstractCommand implements Command {
 
   @Override
   public Flag[] getFlags() {
-    return new Flag[] {};
+    return EMPTY_FLAGS;
   }
 
   @Override
@@ -65,7 +78,7 @@ public abstract class AbstractCommand implements Command {
 
   @Override
   public String[] getAliases() {
-    return new String[] {};
+    return EMPTY_ALIASES;
   }
 
   @Override

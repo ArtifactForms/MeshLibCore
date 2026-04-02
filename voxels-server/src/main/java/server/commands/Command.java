@@ -4,7 +4,7 @@ import parse.Flag;
 
 public interface Command {
 
-  void execute(CommandContext context);
+  void execute(CommandContext ctx);
 
   String getName();
 

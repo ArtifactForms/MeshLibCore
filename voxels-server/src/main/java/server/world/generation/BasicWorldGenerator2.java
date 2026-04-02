@@ -215,6 +215,8 @@ public class BasicWorldGenerator2 implements WorldGenerator {
       int x, int y, int z, int heightValue, BiomeType biome, ChunkData chunk) {
     float wx = getPosition(chunk).x + x;
     float wz = getPosition(chunk).z + z;
+    
+    if (y == 0) return Blocks.BEDROCK;
 
     // Beaches
     if (y < seaLevel - beachSize - 8) return Blocks.GRAVEL;

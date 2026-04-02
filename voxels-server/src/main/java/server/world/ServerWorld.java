@@ -8,6 +8,7 @@ import common.logging.Log;
 import common.world.ChunkData;
 import common.world.World;
 import server.events.events.world.ChunkLoadedEvent;
+import server.events.events.world.ChunkUnloadedEvent;
 import server.events.events.world.WorldSavedEvent;
 import server.events.events.world.WorldTimeChangedEevent;
 import server.gateways.EventGateway;
@@ -48,33 +49,63 @@ public class ServerWorld extends World {
   }
 
   public void unloadUnusedChunks(Set<Long> requiredByPlayers) {
-    int savedThisTick = 0;
-    int maxSavesPerCleanup = 10; // Nur 10 Dateien pro Cleanup schreiben!
+    int savedInThisPass = 0;
+    int maxSavesPerPass = 20; // Etwas höher ansetzen
 
     Iterator<Map.Entry<Long, ChunkData>> it = chunks.entrySet().iterator();
     while (it.hasNext()) {
       Map.Entry<Long, ChunkData> entry = it.next();
-      if (!requiredByPlayers.contains(entry.getKey())) {
-        ChunkData data = entry.getValue();
-        //        if (data.isDirty() && savedThisTick < maxSavesPerCleanup) {
-        //          repository.save(data);
-        //          data.setDirty(false);
-        //          savedThisTick++;
-        //        }
+      Long chunkKey = entry.getKey();
+      ChunkData chunk = entry.getValue();
 
-        // Wenn er dirty ist, aber wir das Limit erreicht haben,
-        // behalten wir ihn lieber noch 10 Sek im RAM statt zu laggen.
-        //        if (!data.isDirty()) {
+      if (!requiredByPlayers.contains(chunkKey)) {
+        if (chunk.isDirty()) {
+          // Nur löschen, wenn wir noch Speicherkapazität in diesem Tick haben
+          if (savedInThisPass < maxSavesPerPass) {
+            repository.save(chunk);
+            chunk.setDirty(false);
+            savedInThisPass++;
+          } else {
+            // Wenn dirty und Limit erreicht -> im RAM lassen
+            continue;
+          }
+        }
+
+        // Event feuern und DEFINITIV entfernen
+        events.fire(new ChunkUnloadedEvent(chunk, getLoadedChunksCount()));
         it.remove();
-        //        }
       }
     }
   }
 
+  //  public void unloadUnusedChunks(Set<Long> requiredByPlayers) {
+  //    int savedThisTick = 0;
+  //    int maxSavesPerCleanup = 10; // Nur 10 Dateien pro Cleanup schreiben!
+  //
+  //    Iterator<Map.Entry<Long, ChunkData>> it = chunks.entrySet().iterator();
+  //    while (it.hasNext()) {
+  //      Map.Entry<Long, ChunkData> entry = it.next();
+  //      if (!requiredByPlayers.contains(entry.getKey())) {
+  //        ChunkData data = entry.getValue();
+  //        //        if (data.isDirty() && savedThisTick < maxSavesPerCleanup) {
+  //        //          repository.save(data);
+  //        //          data.setDirty(false);
+  //        //          savedThisTick++;
+  //        //        }
+  //
+  //        // Wenn er dirty ist, aber wir das Limit erreicht haben,
+  //        // behalten wir ihn lieber noch 10 Sek im RAM statt zu laggen.
+  //        //        if (!data.isDirty()) {
+  //        it.remove();
+  //        //        }
+  //      }
+  //    }
+  //  }
+
   /**
-   * Retrieves an existing chunk or generates a new one if it doesn't exist. * @param cx Chunk X
-   * coordinate
+   * Retrieves an existing chunk or generates a new one if it doesn't exist.
    *
+   * @param cx Chunk X coordinate
    * @param cz Chunk Z coordinate
    * @return The ChunkData for the specified coordinates
    */
@@ -90,6 +121,7 @@ public class ServerWorld extends World {
                   () -> {
                     ChunkData newChunk = new ChunkData(cx, cz);
                     generator.generate(newChunk);
+                    newChunk.setDirty(false);
                     return newChunk;
                   });
 
@@ -108,6 +140,12 @@ public class ServerWorld extends World {
   @Override
   public void setWorldTime(long time) {
     super.setWorldTime(time);
-    events.fire(new WorldTimeChangedEevent(time));
+    events.fire(new WorldTimeChangedEevent(worldTime.getWorldTime()));
+  }
+
+  @Override
+  public void setTimeOfDay(long timeOfDay) {
+    super.setTimeOfDay(timeOfDay);
+    events.fire(new WorldTimeChangedEevent(worldTime.getWorldTime()));
   }
 }

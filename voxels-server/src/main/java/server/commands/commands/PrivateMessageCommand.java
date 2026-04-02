@@ -3,6 +3,7 @@ package server.commands.commands;
 import java.util.List;
 import java.util.UUID;
 
+import common.network.packets.ChatMessagePacket;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
 import server.network.GameServer;
@@ -18,7 +19,7 @@ public class PrivateMessageCommand extends AbstractCommand {
     GameServer server = ctx.getServer();
     ServerPlayer player = server.getPlayerManager().getPlayer(uuid);
 
-    player.sendMessage("Das ist ein Test!");
+    ctx.getServer().getPlayerManager().send(uuid, new ChatMessagePacket("Test!"));
   }
 
   @Override

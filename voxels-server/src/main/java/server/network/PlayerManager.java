@@ -1,10 +1,13 @@
 package server.network;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
+import common.network.Connection;
 import common.network.Packet;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.PlayerQuitPacket;
@@ -21,6 +24,8 @@ public class PlayerManager {
    * * List of all active server connections. Thread-safe for concurrent iteration and modification.
    */
   private final List<ServerConnection> connections = new CopyOnWriteArrayList<>();
+
+  private final Map<UUID, ServerPlayer> players = new ConcurrentHashMap<>();
 
   /**
    * Registers a new connection.
@@ -47,51 +52,46 @@ public class PlayerManager {
     }
   }
 
-  /**
-   * Retrieves all currently active and non-null player objects.
-   *
-   * @return A list of all active ServerPlayers.
-   */
-  public List<ServerPlayer> getAllPlayers() {
-    return connections
-        .stream()
-        .map(ServerConnection::getPlayer)
-        .filter(player -> player != null)
-        .collect(Collectors.toList());
-  }
-
-  /**
-   * Sends a packet to all running connections. Safe to call while the connection list is being
-   * modified elsewhere.
-   *
-   * @param packet The packet to be broadcasted.
-   */
   public void broadcast(Packet packet) {
-    for (ServerConnection conn : connections) {
-      if (conn.isRunning()) {
-        conn.send(packet);
+    for (ServerPlayer player : players.values()) {
+      if (player.getConnection() != null && player.getConnection().isRunning()) {
+        player.getConnection().send(packet);
       }
     }
+  }
+
+  public Collection<ServerPlayer> getAllPlayers() {
+    return players.values();
   }
 
   public void send(UUID playerId, Packet packet) {
-    for (ServerConnection conn : connections) {
-      if (conn.isRunning()
-          && conn.getPlayer() != null
-          && conn.getPlayer().getUuid().equals(playerId)) {
-        conn.send(packet);
+    ServerPlayer player = players.get(playerId);
+    if (player != null && player.getConnection() != null) {
+      Connection connection = player.getConnection();
+      if (connection.isRunning()) {
+        connection.send(packet);
       }
     }
   }
 
+  public void addPlayer(ServerPlayer player) {
+    if (player == null) return;
+
+    players.put(player.getUuid(), player);
+  }
+
   public void removePlayer(ServerPlayer player) {
-    // Finde die Verbindung, die zu diesem Player gehört
-    for (ServerConnection conn : connections) {
-      if (conn.getPlayer() != null && conn.getPlayer().equals(player)) {
-        connections.remove(conn);
-        break;
-      }
-    }
+    if (player == null) return;
+
+    players.remove(player.getUuid());
+
+    connections.remove(player.getConnection());
+  }
+
+  public void kick(ServerPlayer player) {
+    if (player == null) return;
+
+    player.getConnection().close();
   }
 
   public void handleDisconnect(ServerPlayer player) {
@@ -111,15 +111,14 @@ public class PlayerManager {
   }
 
   public ServerPlayer getPlayer(UUID uuid) {
-    for (ServerConnection conn : connections) {
-      if (conn.getPlayer().getUuid().equals(uuid)) return conn.getPlayer();
-    }
-    return null;
+    return players.get(uuid);
   }
 
   public ServerPlayer getPlayerByName(String name) {
-    for (ServerConnection conn : connections) {
-      if (conn.getPlayer().getName().equals(name)) return conn.getPlayer();
+    for (ServerPlayer player : players.values()) {
+      if (player.getName().equals(name)) {
+        return player;
+      }
     }
     return null;
   }

@@ -1,17 +1,21 @@
 package server.commands.commands;
 
-import common.world.World;
 import common.world.WorldTime;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.WorldGateway;
 import server.permissions.Permissions;
 
 public class NightCommand extends AbstractCommand {
 
+  private final WorldGateway world;
+
+  public NightCommand(WorldGateway world) {
+    this.world = world;
+  }
+
   @Override
   public void execute(CommandContext ctx) {
-    World world = ctx.getServer().getWorld();
-
     long time = WorldTime.getTicksFromKeyword("night");
     world.setWorldTime(time);
 
@@ -27,7 +31,7 @@ public class NightCommand extends AbstractCommand {
   public String getPermission() {
     return Permissions.COMMAND_WORLD_TIME;
   }
-  
+
   @Override
   public String getDescription() {
     return "Sets the current world time to night.";

@@ -58,6 +58,7 @@ public class PlayerJoinHandler {
     // -------------------------------------
     ServerPlayer player = new ServerPlayer(packet.getUuid(), packet.getName(), connection);
     connection.setPlayer(player);
+    connection.getServer().getPlayerManager().addPlayer(player);
 
     // Calculate spawn position
     int spawnX = 0;
