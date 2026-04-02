@@ -33,7 +33,7 @@ public class Resources {
   public static final String FOOT_STEP_GRASS_4_KEY = SoundEffect.FOOT_STEP_GRASS_4;
   public static final String FOOT_STEP_GRASS_4_PATH = "steps/footstep-grass-4.wav";
 
-  public static final String GAME_START_BUTTON_TEXT = "Play";
+  public static final String GAME_MULTIPLAYER_BUTTON_TEXT = "Multiplayer";
   public static final String GAME_QUIT_BUTTON_TEXT = "Quit";
 
   public static final String BUTTON_CLICK_KEY = SoundEffect.BUTTON_CLICK;

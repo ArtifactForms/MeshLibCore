@@ -1,11 +1,15 @@
 package client.usecases.connecttoserver;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import client.network.ClientNetwork;
 import common.network.packets.PlayerJoinPacket;
 
 public class ConnectToServerUseCase implements ConnectToServer {
 
   private ClientNetwork network;
+  private ExecutorService executor = Executors.newSingleThreadExecutor();
 
   public ConnectToServerUseCase(ClientNetwork network) {
     this.network = network;
@@ -13,11 +17,19 @@ public class ConnectToServerUseCase implements ConnectToServer {
 
   @Override
   public void execute(ConnectToServerRequest request, ConnectToServerResponse response) {
-    try {
-      network.connect(request.getHost());
-      network.send(new PlayerJoinPacket(request.getPlayerUuid(), request.getPlayerName()));
-    } catch (Exception e) {
-      response.onError(e.getMessage());
-    }
+    response.onConnecting();
+
+    executor.submit(
+        () -> {
+          try {
+            network.connect(request.getHost(), request.getPort());
+            network.send(new PlayerJoinPacket(request.getPlayerUuid(), request.getPlayerName()));
+
+            response.onConnected();
+
+          } catch (Exception e) {
+            response.onError("Could not connect to the server.");
+          }
+        });
   }
 }

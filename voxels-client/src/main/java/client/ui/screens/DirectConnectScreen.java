@@ -45,7 +45,7 @@ public class DirectConnectScreen extends Scene {
 
     SimpleButton connectButton = new SimpleButton("Connect", 0, 120, 140, 40);
 
-    connectButton.setCallback(() -> controller.connect());
+//    connectButton.setCallback(() -> controller.connect());
 
     container.add(hostLabel);
     container.add(hostField);

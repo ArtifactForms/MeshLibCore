@@ -1,7 +1,6 @@
 package client.models;
 
 import engine.components.Geometry;
-import engine.rendering.Graphics;
 import engine.rendering.Material;
 import engine.scene.SceneNode;
 import math.Color;
@@ -21,6 +20,7 @@ public class CharacterModel extends SceneNode {
   private Color legColor = Color.getColorFromInt(101, 59, 195);
   private Color torsoColor = Color.getColorFromInt(226, 94, 195);
   private Color armColor = Color.getColorFromInt(101, 59, 195);
+  private Color eyeColor = Color.getColorFromInt(40, 40, 40); // Neu hinzugefügt
 
   public CharacterModel() {
     build();
@@ -29,7 +29,7 @@ public class CharacterModel extends SceneNode {
   private void build() {
 
     // -------------------------
-    // DIMENSIONS
+    // DIMENSIONS (Original)
     // -------------------------
     float legH = 0.4f;
     float torsoH = 0.5f;
@@ -44,7 +44,7 @@ public class CharacterModel extends SceneNode {
     float armW = 0.12f;
 
     // -------------------------
-    // LEGS (Root = Feet Level!)
+    // LEGS (Original)
     // -------------------------
     leftLeg = createPart("LeftLeg", 0.15f, legH, 0.15f, legColor);
     rightLeg = createPart("RightLeg", 0.15f, legH, 0.15f, legColor);
@@ -56,7 +56,7 @@ public class CharacterModel extends SceneNode {
     addChild(rightLeg);
 
     // -------------------------
-    // TORSO
+    // TORSO (Original)
     // -------------------------
     torso = createPart("Torso", torsoW, torsoH, 0.25f, torsoColor);
     torso.getTransform().translate(0, -(legH + torsoHalf), 0);
@@ -64,7 +64,7 @@ public class CharacterModel extends SceneNode {
     addChild(torso);
 
     // -------------------------
-    // ARMS
+    // ARMS (Original)
     // -------------------------
     leftArm = createPart("LeftArm", armW, armH, armW, armColor);
     rightArm = createPart("RightArm", armW, armH, armW, armColor);
@@ -78,17 +78,34 @@ public class CharacterModel extends SceneNode {
     torso.addChild(rightArm);
 
     // -------------------------
-    // HEAD
+    // HEAD (Original)
     // -------------------------
     head = createPart("Head", 0.6f, headH, 0.6f, Color.getColorFromInt(236, 216, 185));
-
     head.getTransform().translate(0, -(torsoHalf + headHalf), 0);
 
     torso.addChild(head);
+
+    // -------------------------
+    // EYES (Ergänzung ohne Reständerung)
+    // -------------------------
+    float eyeSize = 0.08f;
+    // Wir setzen sie vor den Kopf (Z-Achse)
+    // Da der Kopf 0.6f tief ist, ist die Vorderseite bei 0.3f
+    float eyeZ = 0.31f; 
+    float eyeY = -0.1f; // Relativ zum Kopf-Zentrum nach oben/unten
+    float eyeX = 0.15f; // Abstand von der Mitte
+
+    SceneNode leftEye = createPart("LeftEye", eyeSize, eyeSize, 0.02f, eyeColor);
+    leftEye.getTransform().translate(-eyeX, eyeY, eyeZ);
+
+    SceneNode rightEye = createPart("RightEye", eyeSize, eyeSize, 0.02f, eyeColor);
+    rightEye.getTransform().translate(eyeX, eyeY, eyeZ);
+
+    head.addChild(leftEye);
+    head.addChild(rightEye);
   }
 
   private SceneNode createPart(String name, float sx, float sy, float sz, Color color) {
-
     Mesh3D mesh = new CubeCreator(0.5f).create();
     new ScaleModifier(sx, sy, sz).modify(mesh);
 
@@ -98,27 +115,11 @@ public class CharacterModel extends SceneNode {
     return new SceneNode(name, geometry);
   }
 
-  public SceneNode getHead() {
-    return head;
-  }
-
-  public SceneNode getLeftArm() {
-    return leftArm;
-  }
-
-  public SceneNode getRightArm() {
-    return rightArm;
-  }
-
-  public SceneNode getLeftLeg() {
-    return leftLeg;
-  }
-
-  public SceneNode getRightLeg() {
-    return rightLeg;
-  }
-
-  public SceneNode getTorso() {
-    return torso;
-  }
+  // Getter...
+  public SceneNode getHead() { return head; }
+  public SceneNode getLeftArm() { return leftArm; }
+  public SceneNode getRightArm() { return rightArm; }
+  public SceneNode getLeftLeg() { return leftLeg; }
+  public SceneNode getRightLeg() { return rightLeg; }
+  public SceneNode getTorso() { return torso; }
 }

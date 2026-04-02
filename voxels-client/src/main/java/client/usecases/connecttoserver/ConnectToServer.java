@@ -10,6 +10,8 @@ public interface ConnectToServer {
 
     String getHost();
 
+    int getPort();
+
     String getPlayerName();
 
     UUID getPlayerUuid();

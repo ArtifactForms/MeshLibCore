@@ -119,14 +119,14 @@ public class StartScene extends Scene {
   }
 
   private void setupStartButton() {
-    SimpleButton button = new SimpleButton(Resources.GAME_START_BUTTON_TEXT, 0, 0, 300, 40);
+    SimpleButton button = new SimpleButton(Resources.GAME_MULTIPLAYER_BUTTON_TEXT, 0, 0, 300, 40);
     button.setCallback(
         new ButtonClickCallback() {
 
           @Override
           public void onButtonClicked() {
-            SoundManager.stopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
-            startGame();
+            //            startGame();
+            client.getSceneManager().setActiveScene(new DirectConnectScene(input, client));
           }
         });
     UiComponent component = new UiComponent(input, button);
@@ -223,6 +223,6 @@ public class StartScene extends Scene {
 
   @Override
   public void onExit() {
-    SoundManager.stopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
+//    SoundManager.stopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
   }
 }

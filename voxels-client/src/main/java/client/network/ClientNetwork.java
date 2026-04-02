@@ -39,8 +39,8 @@ public class ClientNetwork extends Connection {
    *
    * @throws Exception if the connection fails or streams cannot be initialized.
    */
-  public void connect(String host) throws Exception {
-    this.socket = new Socket(host, 25565);
+  public void connect(String host, int port) throws Exception {
+    this.socket = new Socket(host, port);
     this.initStreams();
 
     this.running = true;

@@ -10,6 +10,11 @@ public class ChatMessage {
     this.timestamp = System.currentTimeMillis();
   }
 
+  public ChatMessage(String text, long timeStamp) {
+    this.text = text;
+    this.timestamp = timeStamp;
+  }
+
   public String getText() {
     return text;
   }

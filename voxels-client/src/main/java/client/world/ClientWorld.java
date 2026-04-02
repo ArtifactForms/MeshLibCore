@@ -62,15 +62,16 @@ public class ClientWorld extends World {
     // Sobald der Counter >= 1 ist, schieben wir die vollen Ticks in worldTime
     if (fractionalTickCounter >= 1.0f) {
       int fullTicks = (int) fractionalTickCounter;
-      worldTime += fullTicks;
+//      worldTime += fullTicks;
+      tick();
       fractionalTickCounter -= fullTicks;
     }
   }
 
-  @Override
-  public float getTimeOfDay() {
-    // worldTime (ganze Ticks) + fractionalTickCounter (Nachkommastellen)
-    float preciseTime = worldTime + fractionalTickCounter;
-    return (preciseTime % WorldTime.DAY_LENGTH) / (float) WorldTime.DAY_LENGTH;
-  }
+//  @Override
+//  public float getTimeOfDay() {
+//    // worldTime (ganze Ticks) + fractionalTickCounter (Nachkommastellen)
+//    float preciseTime = worldTime + fractionalTickCounter;
+//    return (preciseTime % WorldTime.DAY_LENGTH) / (float) WorldTime.DAY_LENGTH;
+//  }
 }

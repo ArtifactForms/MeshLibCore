@@ -61,7 +61,8 @@ public class BasicChunkRenderer implements ChunkRenderer {
   }
 
   private void updateLightingState() {
-    currentTimeOfDay = client.getWorld().getTimeOfDay();
+//    currentTimeOfDay = client.getWorld().getTimeOfDay();
+	  currentTimeOfDay = client.getWorld().getTimeOfDayNormalized();
     sky.update(currentTimeOfDay);
   }
 

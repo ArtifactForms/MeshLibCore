@@ -17,7 +17,7 @@ public class StartGame {
 
   public void execute() {
 
-    new ConnectToServerController(client).connect();
+//    new ConnectToServerController(client).connect();
 
     // Switch scene
     GameScene scene = new GameScene(input, client);

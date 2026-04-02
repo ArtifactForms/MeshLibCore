@@ -7,7 +7,7 @@ void main() {
 
     vec3 dir = normalize(vDir);
 
-    float angle = u_timeOfDay * 3.14159 * 2.0;
+    float angle = u_timeOfDay * 6.28318 - 1.57079;
 
     vec3 sunDir = normalize(vec3(
         sin(angle),

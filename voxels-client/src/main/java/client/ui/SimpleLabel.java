@@ -15,6 +15,7 @@ public class SimpleLabel extends AbstractUiElement {
   private int height;
   private String text;
   private Color foreground = Color.getColorFromInt(228, 228, 228);
+  private TextAlignment alignment = TextAlignment.CENTER;
 
   private static final Font FONT = new Font("monogram-extended", 40, Font.PLAIN);
 
@@ -39,14 +40,36 @@ public class SimpleLabel extends AbstractUiElement {
     g.setFont(FONT);
 
     float textWidth = g.textWidth(text);
+    float textX;
 
-    // center horizontally
-    float textX = x + (width - textWidth) * 0.5f;
+    switch (alignment) {
+      case LEFT:
+        textX = x;
+        break;
+      case RIGHT:
+        textX = x + (width - textWidth);
+        break;
+      case CENTER:
+      default:
+        textX = x + (width - textWidth) * 0.5f;
+        break;
+    }
 
-    // simple vertical placement (baseline inside button)
     float textY = y + height * 0.7f;
 
     g.text(text, textX, textY);
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  public TextAlignment getAlignment() {
+    return alignment;
+  }
+
+  public void setAlignment(TextAlignment alignment) {
+    this.alignment = alignment;
   }
 
   @Override

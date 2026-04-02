@@ -13,6 +13,7 @@ import common.game.block.Blocks;
 import common.game.crafting.GameRecipes;
 import engine.application.BasicApplication;
 import engine.rendering.Graphics;
+import engine.runtime.input.Key;
 
 /**
  * The main entry point for the Voxel Client. Manages the high-level lifecycle of the application,
@@ -30,7 +31,7 @@ public class ClientApplication extends BasicApplication {
 
   @Override
   public void onInitialize() {
-    setDisplayInfo(true);
+    setDisplayInfo(false);
 
     Blocks.initialize();
     BlockLoader.load();
@@ -59,6 +60,10 @@ public class ClientApplication extends BasicApplication {
 
   @Override
   public void onUpdate(float tpf) {
+    if (input.wasKeyPressed(Key.F2)) {
+      setDisplayInfo(!isDisplayInfoVisible());
+    }
+
     playerNetworkSync.update();
     chunkStreamingSystem.update();
     // --- NETWORK UPDATE ---

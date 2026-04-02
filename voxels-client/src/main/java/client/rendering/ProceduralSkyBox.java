@@ -23,7 +23,7 @@ public class ProceduralSkyBox {
   private final Vector3f currentSkyColor = new Vector3f();
   private final Vector3f currentLightDir = new Vector3f();
   private final Vector3f currentLightColor = new Vector3f();
-  
+
   private float currentAmbient;
 
   private final Vector3f tempVec = new Vector3f();
@@ -38,11 +38,11 @@ public class ProceduralSkyBox {
   }
 
   public void update(float timeOfDay) {
-    float angle = timeOfDay * (float) Math.PI * 2f;
-    sunDir.set((float) Math.sin(angle), (float) Math.cos(angle), 0.2f).normalizeLocal();
+	float angle = timeOfDay * (float) Math.PI * 2f - (float) Math.PI / 2f;
+    sunDir.set((float) Math.sin(angle), (float) -Math.cos(angle), 0.2f).normalizeLocal();
     moonDir.set(sunDir).negateLocal();
 
-    float sunHeight = Math.max(0f, Math.min(1f, sunDir.y * 0.5f + 0.5f));
+    float sunHeight = Math.max(0f, Math.min(1f, -sunDir.y * 0.5f + 0.5f));
     float dayFactor = sunHeight;
     float nightFactor = 1.0f - dayFactor;
 
