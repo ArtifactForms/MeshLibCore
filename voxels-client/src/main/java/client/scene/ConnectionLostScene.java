@@ -15,18 +15,20 @@ import math.Color;
 
 public class ConnectionLostScene extends Scene {
 
-  private GameClient client;
+  private final GameClient client;
+  private final String reason;
   private Input input;
 
-  public ConnectionLostScene(GameClient client) {
+  public ConnectionLostScene(GameClient client, String reason) {
     this.client = client;
+    this.reason = reason;
     this.input = GlobalInput.input;
     setupUI();
   }
-  
+
   @Override
   public void onEnter() {
-	  input.setMouseMode(MouseMode.ABSOLUTE);
+    input.setMouseMode(MouseMode.ABSOLUTE);
   }
 
   private void setupUI() {
@@ -41,7 +43,7 @@ public class ConnectionLostScene extends Scene {
   }
 
   private void setupLabel() {
-    SimpleLabel label = new SimpleLabel("Connection to server lost", 0, 0, 300, 40);
+    SimpleLabel label = new SimpleLabel("Connection to server lost. " + reason, 0, 0, 300, 40);
     UiComponent component = new UiComponent(null, label);
     SceneNode node = new SceneNode("Connection-Lost-Label", component);
     getUIRoot().addChild(node);

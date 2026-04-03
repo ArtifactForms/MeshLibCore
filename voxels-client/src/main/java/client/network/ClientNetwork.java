@@ -5,6 +5,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import client.app.GameClient;
+import client.scene.ConnectionLostScene;
 import common.network.Connection;
 import common.network.Packet;
 import common.network.packets.system.PongPacket;
@@ -84,6 +85,9 @@ public class ClientNetwork extends Connection {
 
   @Override
   public void onClose() {
+	    if (!(client.getSceneManager().getActiveScene() instanceof ConnectionLostScene)) {
+	        client.getSceneManager().setActiveScene(new ConnectionLostScene(client, "Connection timed out or server closed."));
+	    }
     client.onConnectionClosed();
   }
 }

@@ -17,4 +17,8 @@ public class SceneManager {
   public void setActiveScene(Scene scene) {
     application.setActiveScene(scene);
   }
+
+  public Scene getActiveScene() {
+    return application.getActiveScene();
+  }
 }

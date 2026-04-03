@@ -10,9 +10,9 @@ public class UiContainer extends AbstractUiElement {
 
   private List<UiElement> children = new ArrayList<>();
   private Layout layout;
-  
+
   public UiContainer(int x, int y, int width, int height) {
-	  super(x, y, width, height);
+    super(x, y, width, height);
   }
 
   public void add(UiElement element) {

@@ -7,7 +7,6 @@ import client.network.ClientNetwork;
 import client.network.PingTracker;
 import client.player.ClientPlayer;
 import client.ray.RaycastMode;
-import client.scene.ConnectionLostScene;
 import client.scene.SceneManager;
 import client.ui.ClientView;
 import client.ui.View;
@@ -66,7 +65,7 @@ public class GameClient {
   }
 
   public void onConnectionClosed() {
-    sceneManager.setActiveScene(new ConnectionLostScene(this));
+//    sceneManager.setActiveScene(new ConnectionLostScene(this));
   }
 
   public ClientNetwork getNetwork() {

@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import client.app.GameClient;
 import client.player.ClientPlayer;
+import client.scene.ConnectionLostScene;
 import client.ui.title.Title;
 import client.usecases.chat.ChatMessage;
 import common.game.GameMode;
@@ -17,6 +18,7 @@ import common.network.packets.ActionBarPacket;
 import common.network.packets.BlockUpdatePacket;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
+import common.network.packets.DisconnectPacket;
 import common.network.packets.EntityDestroyPacket;
 import common.network.packets.GameModeUpdatePacket;
 import common.network.packets.ItemSpawnPacket;
@@ -62,6 +64,7 @@ public class ClientPacketDispatcher {
     register(TimeUpdatePacket.class, this::handleTimeUpdate);
     register(GameModeUpdatePacket.class, this::handleGameModeUpdate);
     register(PongPacket.class, this::handlePong);
+    register(DisconnectPacket.class, this::handleDisconnect);
   }
 
   private <T extends Packet> void register(Class<T> packetClass, Consumer<T> handler) {
@@ -74,6 +77,13 @@ public class ClientPacketDispatcher {
       handler.accept(packet);
     }
     // Unregistered packets are simply ignored on the client (e.g. PlayerMovePacket)
+  }
+
+  private void handleDisconnect(DisconnectPacket packet) {
+    String reason = packet.getReason();
+    ConnectionLostScene scene = new ConnectionLostScene(client, reason);
+    client.getSceneManager().setActiveScene(scene);
+    System.out.println("Disconnect");
   }
 
   private void handlePong(PongPacket packet) {

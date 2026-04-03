@@ -30,7 +30,6 @@ public class DirectConnectScene extends Scene implements ConnectToServerView {
   private TextField serverAddressField;
   private TextField playerNameField;
   private SimpleLabel messageLabel;
-  private MouseMode oldMouseMode;
   private ConnectToServerView view;
 
   public DirectConnectScene(Input input, GameClient client) {
@@ -52,9 +51,7 @@ public class DirectConnectScene extends Scene implements ConnectToServerView {
   }
 
   @Override
-  public void onExit() {
-    input.setMouseMode(oldMouseMode);
-  }
+  public void onExit() {}
 
   private void setupUI() {
     setupLabel();

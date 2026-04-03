@@ -45,10 +45,10 @@ public abstract class AbstractUiElement implements UiElement {
   public int getHeight() {
     return height;
   }
-  
+
   @Override
   public void setLayout(Layout layout) {
-	  this.layout = layout;
+    this.layout = layout;
   }
 
   @Override

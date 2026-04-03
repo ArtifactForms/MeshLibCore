@@ -103,7 +103,6 @@ public class StartScene extends Scene {
   }
 
   private void setupBackground() {
-    //    getUIRoot().addChild(new Sprite(Resources.START_SCREEN_BACKGROUND));
     setBackground(Color.getColorFromInt(120, 120, 120));
   }
 
@@ -119,7 +118,7 @@ public class StartScene extends Scene {
   }
 
   private void setupStartButton() {
-    SimpleButton button = new SimpleButton(Resources.GAME_MULTIPLAYER_BUTTON_TEXT, 0, 0, 300, 40);
+    SimpleButton button = new SimpleButton(Resources.GAME_MULTIPLAYER_BUTTON_TEXT, 0, 50, 400, 40);
     button.setCallback(
         new ButtonClickCallback() {
 
@@ -135,7 +134,7 @@ public class StartScene extends Scene {
   }
 
   private void setupQuitButton() {
-    SimpleButton button = new SimpleButton(Resources.GAME_QUIT_BUTTON_TEXT, 0, 50, 300, 40);
+    SimpleButton button = new SimpleButton(Resources.GAME_QUIT_BUTTON_TEXT, 0, 100, 400, 40);
     button.setCallback(
         new ButtonClickCallback() {
 
@@ -223,6 +222,6 @@ public class StartScene extends Scene {
 
   @Override
   public void onExit() {
-//    SoundManager.stopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
+    //    SoundManager.stopSound(Resources.MENU_BACKGROUND_MUSIC_KEY);
   }
 }

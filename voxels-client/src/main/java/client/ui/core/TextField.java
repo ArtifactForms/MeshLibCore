@@ -24,6 +24,10 @@ public class TextField extends AbstractUiElement {
   private Color border = Color.getColorFromInt(80, 80, 80);
   private Color foreground = Color.getColorFromInt(228, 228, 228);
 
+  public TextField() {
+	  
+  }
+  
   public TextField(int offsetX, int offsetY, int width, int height) {
     this.offsetX = offsetX;
     this.offsetY = offsetY;
