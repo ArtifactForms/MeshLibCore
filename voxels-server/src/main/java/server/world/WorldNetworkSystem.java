@@ -5,7 +5,7 @@ import common.network.packets.TimeUpdatePacket;
 import server.events.events.world.ChunkLoadedEvent;
 import server.events.events.world.ChunkUnloadedEvent;
 import server.events.events.world.WorldSavedEvent;
-import server.events.events.world.WorldTimeChangedEevent;
+import server.events.events.world.WorldTimeChangedEvent;
 import server.gateways.EventGateway;
 import server.network.PlayerManager;
 
@@ -16,7 +16,7 @@ public class WorldNetworkSystem {
   public WorldNetworkSystem(EventGateway events, PlayerManager playerManager) {
     this.playerManager = playerManager;
     events.register(WorldSavedEvent.class, this::onWorldSaved);
-    events.register(WorldTimeChangedEevent.class, this::onWorldTimeChanged);
+    events.register(WorldTimeChangedEvent.class, this::onWorldTimeChanged);
     events.register(ChunkLoadedEvent.class, this::onChunkLoaded);
     events.register(ChunkUnloadedEvent.class, this::onChunkUnload);
   }
@@ -25,7 +25,7 @@ public class WorldNetworkSystem {
     broadcastMessage("World saved: " + e.getSavedChunksCount() + " dirty chunks saved.");
   }
 
-  private void onWorldTimeChanged(WorldTimeChangedEevent e) {
+  private void onWorldTimeChanged(WorldTimeChangedEvent e) {
     playerManager.broadcast(new TimeUpdatePacket(e.getTime()));
   }
 

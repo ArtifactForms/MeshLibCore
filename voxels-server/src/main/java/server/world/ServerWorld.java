@@ -10,7 +10,7 @@ import common.world.World;
 import server.events.events.world.ChunkLoadedEvent;
 import server.events.events.world.ChunkUnloadedEvent;
 import server.events.events.world.WorldSavedEvent;
-import server.events.events.world.WorldTimeChangedEevent;
+import server.events.events.world.WorldTimeChangedEvent;
 import server.gateways.EventGateway;
 import server.persistance.ChunkRepository;
 import server.world.generation.WorldGenerator;
@@ -140,12 +140,12 @@ public class ServerWorld extends World {
   @Override
   public void setWorldTime(long time) {
     super.setWorldTime(time);
-    events.fire(new WorldTimeChangedEevent(worldTime.getWorldTime()));
+    events.fire(new WorldTimeChangedEvent(worldTime.getWorldTime()));
   }
 
   @Override
   public void setTimeOfDay(long timeOfDay) {
     super.setTimeOfDay(timeOfDay);
-    events.fire(new WorldTimeChangedEevent(worldTime.getWorldTime()));
+    events.fire(new WorldTimeChangedEvent(worldTime.getWorldTime()));
   }
 }
