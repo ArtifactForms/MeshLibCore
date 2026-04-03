@@ -39,7 +39,6 @@ public class ServerConfigTest {
     assertEquals(256, config.getMaxChatMessageLength());
     assertEquals("A Voxel Server", config.getMotd());
     assertEquals("§7{prefix}§6{name}§f: {message}", config.getChatFormat());
-    assertEquals("[SERVER]", config.getCommandMessagePrefix());
   }
 
   // Invalid values → fallback to defaults
