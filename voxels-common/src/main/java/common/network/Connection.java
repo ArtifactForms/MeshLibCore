@@ -5,9 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import common.network.packets.system.PingPacket;
-import common.network.packets.system.PongPacket;
-
 /**
  * Base class for all network connections. Runs a background thread to read incoming packets and
  * provides a synchronized method to send packets.
@@ -66,19 +63,21 @@ public abstract class Connection implements Runnable {
    * from multiple threads.
    */
   public void send(Packet packet) {
-    if (!running || buffer == null) return;
+	  if (!running || buffer == null) return;
 
-    synchronized (buffer) {
-      try {
-        buffer.writeInt(packet.getId());
-        packet.write(buffer);
-        out.flush();
-      } catch (Exception e) {
-        System.err.println("[Network] Failed to send packet " + packet.getId());
-        close();
-      }
-    }
-  }
+	  synchronized (buffer) {
+	    try {
+	      buffer.writeInt(packet.getId());
+	      packet.write(buffer);
+
+	      buffer.flush();
+	      out.flush();
+	    } catch (Exception e) {
+	      System.err.println("[Network] Failed to send packet " + packet.getId());
+	      close();
+	    }
+	  }
+	}
 
   /**
    * Handover point for received packets. Implementations should typically queue the packet for the
@@ -97,6 +96,21 @@ public abstract class Connection implements Runnable {
     } catch (IOException ignored) {
     }
     onClose();
+  }
+
+  public void close(Packet finalPacket) {
+    if (!running) return;
+
+    try {
+      send(finalPacket);
+      out.flush();
+      socket.shutdownOutput();
+      Thread.sleep(50);
+    } catch (Exception e) {
+      System.err.println("[Network] Error during graceful close: " + e.getMessage());
+    } finally {
+      close();
+    }
   }
 
   public void onClose() {

@@ -21,6 +21,10 @@ public class PacketBuffer {
     this.out = out;
   }
 
+  public void flush() throws IOException {
+    out.flush();
+  }
+
   public boolean readBoolean() throws IOException {
     return in.readBoolean();
   }

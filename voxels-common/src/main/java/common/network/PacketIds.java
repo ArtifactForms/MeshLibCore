@@ -36,4 +36,5 @@ public class PacketIds {
   public static final int SYNC_GAMEMODE = 32;
   public static final int PING = 33;
   public static final int PONG = 34;
+  public static final int DISCONNECT = 35;
 }

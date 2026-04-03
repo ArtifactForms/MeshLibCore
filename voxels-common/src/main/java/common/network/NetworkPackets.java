@@ -7,6 +7,7 @@ import common.network.packets.BlockPlacePacket;
 import common.network.packets.BlockUpdatePacket;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
+import common.network.packets.DisconnectPacket;
 import common.network.packets.EntityDestroyPacket;
 import common.network.packets.GameModeUpdatePacket;
 import common.network.packets.InventoryActionPacket;
@@ -90,5 +91,6 @@ public class NetworkPackets {
     // System
     PacketRegistry.register(PingPacket::new);
     PacketRegistry.register(PongPacket::new);
+    PacketRegistry.register(DisconnectPacket::new);
   }
 }
