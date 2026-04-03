@@ -10,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import common.network.Connection;
 import common.network.Packet;
 import common.network.packets.ChatMessagePacket;
+import common.network.packets.DisconnectPacket;
 import common.network.packets.PlayerQuitPacket;
 import server.events.events.PlayerQuitEvent;
 import server.player.ServerPlayer;
@@ -88,21 +89,36 @@ public class PlayerManager {
     connections.remove(player.getConnection());
   }
 
-  public void kick(ServerPlayer player) {
+  public void kick(ServerPlayer player, String reason) {
     if (player == null) return;
 
-    player.getConnection().close();
+    ServerConnection connection = player.getConnection();
+    if (connection == null) return;
+
+    connection.sendImmediate(new DisconnectPacket(reason));
+
+    try {
+      Thread.sleep(10);
+    } catch (InterruptedException ignored) {
+    }
+
+    connection.close();
   }
 
   public void handleDisconnect(ServerPlayer player) {
     String defaultQuitMessage = "§e" + player.getName() + " left the game.";
-    PlayerQuitEvent event = new PlayerQuitEvent(player.getUuid(), defaultQuitMessage);
 
+    // 1. Remove player FIRST (state change)
+    removePlayer(player);
+
+    // 2. Fire event AFTER state change
+    PlayerQuitEvent event = new PlayerQuitEvent(player.getUuid(), defaultQuitMessage);
     player.getConnection().getServer().getEventBus().fire(event);
 
-    removePlayer(player);
+    // 3. Inform clients about entity removal
     broadcast(new PlayerQuitPacket(player.getUuid()));
 
+    // 4. Broadcast (possibly modified) quit message
     if (event.getQuitMessage() != null && !event.getQuitMessage().isEmpty()) {
       broadcast(new ChatMessagePacket(event.getQuitMessage()));
     }

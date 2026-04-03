@@ -1,5 +1,7 @@
 package server.network.handlers;
 
+import java.util.UUID;
+
 import common.network.packets.PlayerMovePacket;
 import server.events.events.PlayerMoveEvent;
 import server.gateways.EventGateway;
@@ -33,15 +35,25 @@ public class PlayerMoveHandler {
       return;
     }
 
-    // 1. Create and fire the Move Event for internal listeners (e.g., Anti-Cheat or Triggers)
+    UUID playerId = player.getUuid();
+
+    float fromX = player.getX();
+    float fromY = player.getY();
+    float fromZ = player.getZ();
+    float fromYaw = player.getYaw();
+    float fromPitch = player.getPitch();
+
+    float toX = packet.getX();
+    float toY = packet.getY();
+    float toZ = packet.getZ();
+    float toYaw = packet.getYaw();
+    float toPitch = packet.getPitch();
+
     PlayerMoveEvent event =
         new PlayerMoveEvent(
-            player.getUuid(),
-            packet.getX(),
-            packet.getY(),
-            packet.getZ(),
-            packet.getYaw(),
-            packet.getPitch());
+            playerId, fromX, fromY, fromZ, fromYaw, fromPitch, toX, toY, toZ, toYaw, toPitch);
+
+    // 1. Create and fire the Move Event for internal listeners (e.g., Anti-Cheat or Triggers)
 
     events.fire(event);
 
@@ -51,11 +63,11 @@ public class PlayerMoveHandler {
       return;
     }
 
-    float x = event.getX();
-    float y = event.getY();
-    float z = event.getZ();
-    float yaw = event.getYaw();
-    float pitch = event.getPitch();
+    float x = event.getToX();
+    float y = event.getToY();
+    float z = event.getToZ();
+    float yaw = event.getToYaw();
+    float pitch = event.getToPitch();
 
     player.move(x, y, z, yaw, pitch);
 

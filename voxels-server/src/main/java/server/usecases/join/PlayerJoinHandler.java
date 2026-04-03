@@ -61,10 +61,11 @@ public class PlayerJoinHandler {
     connection.getServer().getPlayerManager().addPlayer(player);
 
     // Calculate spawn position
+    // TODO Set world spawn location
     int spawnX = 0;
     int spawnZ = 0;
     //    int spawnY = connection.getServer().getWorld().getHeightAt(spawnX, spawnZ);
-    int spawnY = 0;
+    int spawnY = 100;
 
     // Default join message
     String joinMessage = player.getName() + " joined the game!";
@@ -90,7 +91,8 @@ public class PlayerJoinHandler {
     connection.send(new TimeUpdatePacket(world.getWorldTime()));
 
     // Move the player to the spawn position
-    player.setSilentPosition(spawnX, spawnY, spawnZ, 0f, 0f);
+    //    player.setSilentPosition(spawnX, spawnY, spawnZ, 0f, 0f);
+    player.teleport(spawnX, spawnY, spawnZ, 0f, 0f);
 
     PlayerManager playerManager = connection.getServer().getPlayerManager();
 

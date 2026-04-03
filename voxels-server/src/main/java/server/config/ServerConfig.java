@@ -16,7 +16,7 @@ public class ServerConfig {
   private static final String CHAT_FORMAT_KEY = "chat-format";
   private static final String VIEW_DISTANCE_KEY = "view-distance";
   private static final String MAX_CHAT_MESSAGE_LENGTH_KEY = "max-chat-message-length";
-  private static final String COMMAND_MESSAGE_PREFIX_KEY = "[SERVER]";
+  private static final String SERVER_PREFIX_KEY = "server-prefix";
 
   // Defaults (single source of truth)
   private static final int DEFAULT_PORT = 25565;
@@ -26,7 +26,7 @@ public class ServerConfig {
 
   private static final String DEFAULT_MOTD = "A Voxel Server";
   private static final String DEFAULT_CHAT_FORMAT = "§7{prefix}§6{name}§f: {message}";
-  private static final String DEFAULT_COMMAND_MESSAGE_PREFIX = "[SERVER]";
+  private static final String DEFAULT_SERVER_PREFIX = "§7[SERVER]§r";
 
   private final Properties props = new Properties();
 
@@ -36,7 +36,7 @@ public class ServerConfig {
   private int viewDistance;
   private String motd;
   private String chatFormat;
-  private String commandMessagePrefix;
+  private String serverPrefix;
 
   public ServerConfig() {
     this("server.properties"); // default behavior
@@ -70,12 +70,9 @@ public class ServerConfig {
       this.maxPlayers = parseInt(MAX_PLAYERS_KEY, DEFAULT_MAX_PLAYERS);
       this.maxChatMessageLength = parseInt(MAX_CHAT_MESSAGE_LENGTH_KEY, DEFAULT_MAX_CHAT_LENGTH);
       this.viewDistance = parseInt(VIEW_DISTANCE_KEY, DEFAULT_VIEW_DISTANCE);
-
       this.motd = props.getProperty(MOTD_KEY, DEFAULT_MOTD);
       this.chatFormat = props.getProperty(CHAT_FORMAT_KEY, DEFAULT_CHAT_FORMAT);
-
-      this.commandMessagePrefix =
-          props.getProperty(COMMAND_MESSAGE_PREFIX_KEY, DEFAULT_COMMAND_MESSAGE_PREFIX);
+      this.serverPrefix = props.getProperty(SERVER_PREFIX_KEY, DEFAULT_SERVER_PREFIX);
 
       // Optional: ensure missing values get written back
       saveIfMissing(file);
@@ -94,7 +91,7 @@ public class ServerConfig {
     props.setProperty(MOTD_KEY, DEFAULT_MOTD);
     props.setProperty(CHAT_FORMAT_KEY, DEFAULT_CHAT_FORMAT);
     props.setProperty(VIEW_DISTANCE_KEY, String.valueOf(DEFAULT_VIEW_DISTANCE));
-    props.setProperty(COMMAND_MESSAGE_PREFIX_KEY, DEFAULT_COMMAND_MESSAGE_PREFIX);
+    props.setProperty(SERVER_PREFIX_KEY, DEFAULT_SERVER_PREFIX);
 
     save(file);
   }
@@ -108,7 +105,7 @@ public class ServerConfig {
     changed |= setIfMissing(MOTD_KEY, DEFAULT_MOTD);
     changed |= setIfMissing(CHAT_FORMAT_KEY, DEFAULT_CHAT_FORMAT);
     changed |= setIfMissing(VIEW_DISTANCE_KEY, DEFAULT_VIEW_DISTANCE);
-    changed |= setIfMissing(COMMAND_MESSAGE_PREFIX_KEY, DEFAULT_COMMAND_MESSAGE_PREFIX);
+    changed |= setIfMissing(SERVER_PREFIX_KEY, DEFAULT_SERVER_PREFIX);
 
     if (changed) {
       Log.info("Updating server.properties with missing values...");
@@ -170,7 +167,7 @@ public class ServerConfig {
     return viewDistance;
   }
 
-  public String getCommandMessagePrefix() {
-    return commandMessagePrefix;
+  public String getServerPrefix() {
+    return serverPrefix;
   }
 }

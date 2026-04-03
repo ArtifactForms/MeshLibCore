@@ -36,8 +36,8 @@ public class ConsoleCommandReader implements Runnable {
   }
 
   private void handleCommand(String input) {
-	  
-	  System.out.println("INPUT");
+
+    System.out.println("INPUT");
     // Farbcode-Konvertierung
     input = translateColors(input);
 
@@ -52,19 +52,21 @@ public class ConsoleCommandReader implements Runnable {
       return;
     }
 
-    CommandContext ctx = new CommandContext(null, args, server, gatewayContext);
+    CommandContext ctx =
+        new CommandContext(
+            null, args, server, gatewayContext.permissions(), gatewayContext.messages());
 
     command.execute(ctx);
   }
 
   private String translateColors(String input) {
-	  System.out.println("TRANSLATE CALLED!");
-	  
-	  for (char c : input.toCharArray()) {
-		    System.out.println("CHAR: " + c + " CODE: " + (int) c);
-		  }
+    System.out.println("TRANSLATE CALLED!");
 
-		  return input.replace("&", "§");
-//    return input.replace("&", "§");
+    for (char c : input.toCharArray()) {
+      System.out.println("CHAR: " + c + " CODE: " + (int) c);
+    }
+
+    return input.replace("&", "§");
+    //    return input.replace("&", "§");
   }
 }

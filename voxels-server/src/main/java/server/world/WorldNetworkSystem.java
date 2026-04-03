@@ -1,19 +1,22 @@
 package server.world;
 
-import common.network.packets.ChatMessagePacket;
 import common.network.packets.TimeUpdatePacket;
 import server.events.events.world.ChunkLoadedEvent;
 import server.events.events.world.ChunkUnloadedEvent;
 import server.events.events.world.WorldSavedEvent;
 import server.events.events.world.WorldTimeChangedEvent;
 import server.gateways.EventGateway;
+import server.gateways.MessageGateway;
 import server.network.PlayerManager;
 
 public class WorldNetworkSystem {
 
-  private PlayerManager playerManager;
+  private final MessageGateway messages;
+  private final PlayerManager playerManager;
 
-  public WorldNetworkSystem(EventGateway events, PlayerManager playerManager) {
+  public WorldNetworkSystem(
+      EventGateway events, MessageGateway messages, PlayerManager playerManager) {
+    this.messages = messages;
     this.playerManager = playerManager;
     events.register(WorldSavedEvent.class, this::onWorldSaved);
     events.register(WorldTimeChangedEvent.class, this::onWorldTimeChanged);
@@ -45,6 +48,6 @@ public class WorldNetworkSystem {
   }
 
   private void broadcastMessage(String message) {
-    playerManager.broadcast(new ChatMessagePacket(message));
+    messages.broadcastMessage(message);
   }
 }

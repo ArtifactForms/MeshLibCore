@@ -1,15 +1,16 @@
 package server.commands;
 
-import common.logging.Log;
 import server.commands.commands.BroadcastCommand;
 import server.commands.commands.ChangeGameModeCommand;
-import server.commands.commands.DayCommand;
-import server.commands.commands.EchoCommand;
 import server.commands.commands.ChunkCommand;
+import server.commands.commands.DayCommand;
+import server.commands.commands.DeopCommand;
+import server.commands.commands.EchoCommand;
 import server.commands.commands.HelpCommand;
 import server.commands.commands.InventoryCommand;
 import server.commands.commands.KickCommand;
 import server.commands.commands.NightCommand;
+import server.commands.commands.OpCommand;
 import server.commands.commands.PlayersCommand;
 import server.commands.commands.PositionCommand;
 import server.commands.commands.PrivateMessageCommand;
@@ -26,29 +27,26 @@ public class BaseCommandProvider implements CommandProvider {
 
   @Override
   public void registerCommands(CommandRegistry registry, GatewayContext ctx) {
-    registerCommand(new BroadcastCommand(), registry);
-    registerCommand(new ChangeGameModeCommand(), registry);
-    registerCommand(new ChunkCommand(), registry);
-    registerCommand(new DayCommand(ctx.world()), registry);
-    registerCommand(new EchoCommand(), registry);
-    registerCommand(new HelpCommand(ctx.commands()), registry);
-    registerCommand(new InventoryCommand(), registry);
-    registerCommand(new KickCommand(ctx.players()), registry);
-    registerCommand(new NightCommand(ctx.world()), registry);
-    registerCommand(new PlayersCommand(ctx.config()), registry);
-    registerCommand(new PositionCommand(), registry);
-    registerCommand(new PrivateMessageCommand(), registry);
-    registerCommand(new SaveCommand(), registry);
-    registerCommand(new SeedCommand(ctx.world()), registry);
-    registerCommand(new StopCommand(), registry);
-    registerCommand(new TeleportCommand(), registry);
-    registerCommand(new TimeCommand(ctx.world()), registry);
-    registerCommand(new TopCommand(ctx.world()), registry);
-    registerCommand(new WhoAmICommand(ctx.players()), registry);
-  }
-
-  private void registerCommand(Command command, CommandRegistry registry) {
-    registry.register(command);
-    Log.info("Registered command: " + command.getClass().getSimpleName());
+    registry.register(new TeleportCommand());
+    registry.register(new BroadcastCommand());
+    registry.register(new ChangeGameModeCommand());
+    registry.register(new ChunkCommand());
+    registry.register(new EchoCommand());
+    registry.register(new HelpCommand(ctx.commands()));
+    registry.register(new InventoryCommand());
+    registry.register(new KickCommand(ctx.players()));
+    registry.register(new PlayersCommand(ctx.players(), ctx.config()));
+    registry.register(new PositionCommand());
+    registry.register(new PrivateMessageCommand(ctx.players(), ctx.messages()));
+    registry.register(new StopCommand(ctx.server(), ctx.players()));
+    registry.register(new WhoAmICommand(ctx.players()));
+    registry.register(new DayCommand(ctx.world()));
+    registry.register(new NightCommand(ctx.world()));
+    registry.register(new TimeCommand(ctx.world()));
+    registry.register(new TopCommand(ctx.world(), ctx.players()));
+    registry.register(new SaveCommand(ctx.world()));
+    registry.register(new SeedCommand(ctx.world()));
+    registry.register(new OpCommand(ctx.permissions(), ctx.players(), ctx.messages()));
+    registry.register(new DeopCommand(ctx.permissions(), ctx.players(), ctx.messages()));
   }
 }

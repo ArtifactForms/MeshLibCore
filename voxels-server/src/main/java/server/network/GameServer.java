@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import common.logging.Log;
 import common.network.Packet;
-import common.network.packets.ChatMessagePacket;
 import server.commands.BaseCommandProvider;
 import server.commands.Command;
 import server.commands.CommandDispatcher;
@@ -25,14 +24,19 @@ import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
 import server.gateways.InventoryAdapter;
 import server.gateways.InventoryGateway;
+import server.gateways.MessageAdapter;
+import server.gateways.MessageGateway;
 import server.gateways.PermissionAdapter;
 import server.gateways.PermissionGateway;
 import server.gateways.PlayerAdapter;
 import server.gateways.PlayerGateway;
+import server.gateways.ServerAdapter;
+import server.gateways.ServerGateway;
 import server.gateways.WorldAdapter;
 import server.gateways.WorldGateway;
-import server.permissions.AlwaysGrantPermissionService;
+import server.modules.Module;
 import server.permissions.PermissionService;
+import server.permissions.SimplePermissionService;
 import server.persistance.ChunkRepository;
 import server.persistance.FileChunkRepository;
 import server.player.ServerPlayer;
@@ -96,15 +100,22 @@ public class GameServer {
     WorldGenerator worldGenerator = new BasicWorldGenerator2(0);
     this.world = new ServerWorld(worldGenerator, chunkRepository, events);
 
-    this.permissionService = new AlwaysGrantPermissionService();
+    //    this.permissionService = new AlwaysGrantPermissionService();
     //    this.permissionService = new AlwaysDenyPermissionService();
+    this.permissionService = new SimplePermissionService();
 
     initUseCases(events);
     registerCommands();
 
     commandDispatcher = new CommandDispatcher(this, context);
 
-    new WorldNetworkSystem(events, playerManager);
+    new WorldNetworkSystem(events, context.messages(), playerManager);
+  }
+
+  public void registerModule(Module module) {
+    module.registerCommands(commandRegistry, context);
+    module.registerEvents(eventBus, context);
+    module.onEnable();
   }
 
   private void initUseCases(EventGateway eventGateway) {
@@ -114,6 +125,8 @@ public class GameServer {
     ConfigGateway configGateway = new ConfigAdapter(config);
     CommandGateway commandGateway = new CommandAdapter(commandRegistry);
     PlayerGateway playerGateway = new PlayerAdapter(playerManager);
+    MessageGateway messages = new MessageAdapter(playerManager, config.getServerPrefix());
+    ServerGateway server = new ServerAdapter(this);
 
     context =
         new GatewayContext(
@@ -123,7 +136,9 @@ public class GameServer {
             inventoryGateway,
             configGateway,
             commandGateway,
-            playerGateway);
+            playerGateway,
+            messages,
+            server);
 
     this.useCases = new UseCaseRegistry(context);
   }
@@ -396,13 +411,13 @@ public class GameServer {
     return entityManager;
   }
 
-  public void broadcastMessage(String message) {
-    getPlayerManager().broadcast(new ChatMessagePacket(message));
-  }
+  //  public void broadcastMessage(String message) {
+  //    getPlayerManager().broadcast(new ChatMessagePacket(message));
+  //  }
 
-  public boolean hasPermission(UUID playerId, String permission) {
-    return permissionService.hasPermission(playerId, permission);
-  }
+  //  public boolean hasPermission(UUID playerId, String permission) {
+  //    return permissionService.hasPermission(playerId, permission);
+  //  }
 
   public Collection<Command> getCommands() {
     return commandRegistry.getCommands();

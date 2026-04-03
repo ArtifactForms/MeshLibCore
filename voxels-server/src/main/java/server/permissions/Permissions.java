@@ -24,9 +24,13 @@ public class Permissions {
   // COMMAND PERMISSIONS
   // -------------------------------------
 
+  public static final String COMMAND_OP = "command.admin.op";
+
+  public static final String COMMAND_DEOP = "command.admin.deop";
+
   public static final String COMMANDS = "commands";
 
-  public static final String COMMAND_STOP = "command.stop";
+  public static final String COMMAND_STOP = "command.stop"; // FIXME Check duplicate
 
   public static final String COMMAND_ECHO = "command.echo";
 
@@ -38,17 +42,17 @@ public class Permissions {
 
   public static final String COMMAND_TOP = "command.top";
 
-  public static final String COMMAND_WORLD_TIME = "world.command.time";
+  public static final String COMMAND_WORLD_TIME = "command.world.time";
 
-  public static final String COMMAND_WORLD_SEED = "world.seed";
+  public static final String COMMAND_WORLD_SEED = "command.world.seed";
 
-  public static final String COMMAND_WORLD_SAVE = "world.save";
+  public static final String COMMAND_WORLD_SAVE = "command.world.save";
 
   public static final String COMMAND_KICK = "command.kick";
 
   public static final String COMMAND_PLAYERS = "command.players";
 
-  public static final String COMMAND_WORLD_POSITION = "world.command.position";
+  public static final String COMMAND_WORLD_POSITION = "command.world.position";
 
   public static final String COMMAND_SERVER_STOP = "command.server.stop";
 
@@ -63,4 +67,6 @@ public class Permissions {
   public static final String COMMAND_UUID = "command.uuid";
 
   public static final String COMMAND_BROADCAST = "command.broadcast";
+
+  public static final String COMMAND_MSG = "command.msg";
 }

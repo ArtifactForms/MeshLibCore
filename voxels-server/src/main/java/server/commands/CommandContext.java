@@ -3,38 +3,42 @@ package server.commands;
 import java.util.List;
 import java.util.UUID;
 
-import common.network.packets.ChatMessagePacket;
-import server.gateways.GatewayContext;
+import server.gateways.MessageGateway;
+import server.gateways.PermissionGateway;
 import server.network.GameServer;
 import server.usecases.UseCaseRegistry;
 
 public class CommandContext {
 
   private final UUID player;
-  private final String prefix;
   private final List<String> args;
   private final GameServer server;
-  private final GatewayContext gatewayContext;
+  private final PermissionGateway permissions;
+  private final MessageGateway messages;
 
   public CommandContext(
-      UUID player, List<String> args, GameServer server, GatewayContext gatewayContext) {
+      UUID player,
+      List<String> args,
+      GameServer server,
+      PermissionGateway permissions,
+      MessageGateway messages) {
     this.player = player;
-    this.prefix = gatewayContext.config().getCommandMessagePrefix();
     this.args = args;
     this.server = server;
-    this.gatewayContext = gatewayContext;
+    this.permissions = permissions;
+    this.messages = messages;
   }
 
   public void reply(String message) {
     if (isConsole()) {
-      System.out.println("[Command] " + message);
+      messages.sendCosoleMessage("[Command] " + message);
       return;
     }
-    server.getPlayerManager().send(player, new ChatMessagePacket(prefix + " " + message));
+    messages.sendMessage(player, message);
   }
 
   public void broadcast(String message) {
-    server.getPlayerManager().broadcast(new ChatMessagePacket(prefix + " " + message));
+    messages.broadcastMessage(message);
   }
 
   public UUID getPlayer() {
@@ -45,6 +49,7 @@ public class CommandContext {
     return args;
   }
 
+  @Deprecated
   public GameServer getServer() {
     return server;
   }
@@ -54,7 +59,7 @@ public class CommandContext {
   }
 
   public boolean hasPermission(String permission) {
-    return gatewayContext.permissions().hasPermission(player, permission);
+    return permissions.hasPermission(player, permission);
   }
 
   public UseCaseRegistry getUseCases() {

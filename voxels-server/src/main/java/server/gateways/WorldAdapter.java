@@ -55,4 +55,9 @@ public class WorldAdapter implements WorldGateway {
   public long getDay() {
     return world.getDay();
   }
+
+  @Override
+  public void saveDirtyChunks() {
+    world.saveDirtyChunks();
+  }
 }

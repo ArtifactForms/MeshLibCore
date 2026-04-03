@@ -10,6 +10,8 @@ import server.permissions.Permissions;
 
 public class HelpCommand extends AbstractCommand {
 
+  private static final int PAGE_SIZE = 8;
+
   private final CommandGateway commands;
 
   public HelpCommand(CommandGateway commands) {
@@ -72,8 +74,7 @@ public class HelpCommand extends AbstractCommand {
             .sorted((a, b) -> a.getName().compareToIgnoreCase(b.getName()))
             .toList();
 
-    int pageSize = 8;
-    int totalPages = (int) Math.ceil((double) available.size() / pageSize);
+    int totalPages = (int) Math.ceil((double) available.size() / PAGE_SIZE);
     int page = 1;
 
     if (totalPages == 0) {
@@ -89,8 +90,8 @@ public class HelpCommand extends AbstractCommand {
       }
     }
 
-    int start = (page - 1) * pageSize;
-    int end = Math.min(start + pageSize, available.size());
+    int start = (page - 1) * PAGE_SIZE;
+    int end = Math.min(start + PAGE_SIZE, available.size());
 
     StringBuilder sb = new StringBuilder();
     sb.append("§e--- Help (").append(page).append("/").append(totalPages).append(") ---\n");

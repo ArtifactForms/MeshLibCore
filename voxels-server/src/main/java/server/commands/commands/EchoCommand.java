@@ -22,10 +22,10 @@ public class EchoCommand extends AbstractCommand {
   public String getName() {
     return "echo";
   }
-  
+
   @Override
   public String[] getArgumentLabels() {
-	  return new String[] {"message"};
+    return new String[] {"message"};
   }
 
   @Override

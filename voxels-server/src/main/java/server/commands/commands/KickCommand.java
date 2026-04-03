@@ -1,12 +1,15 @@
 package server.commands.commands;
 
+import java.util.UUID;
+
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
 import server.gateways.PlayerGateway;
 import server.permissions.Permissions;
-import server.player.ServerPlayer;
 
 public class KickCommand extends AbstractCommand {
+
+  private static final String DEFAULT_REASON = "Kicked by an operator.";
 
   private final PlayerGateway players;
 
@@ -23,28 +26,24 @@ public class KickCommand extends AbstractCommand {
       return;
     }
 
-    // 1. Spieler suchen
-    String targetName = args.get(0);
-    ServerPlayer target = ctx.getServer().getPlayerManager().getPlayerByName(targetName);
+    String playerName = args.get(0);
+    UUID playerId = players.getPlayerIdByName(playerName);
 
-    if (target == null) {
-      ctx.reply("§cPlayer '" + targetName + "' is not online.");
+    if (playerId == null) {
+      ctx.reply("§cPlayer '" + playerName + "' is not online or unknown.");
       return;
     }
 
-    // 2. Grund zusammenbauen (Default, falls kein Grund angegeben wurde)
-    String reason = "Kicked by an operator.";
+    String reason = DEFAULT_REASON;
     if (args.size() > 1) {
       reason = String.join(" ", args.subList(1, args.size()));
     }
 
-    // 3. Kick ausführen
-    // Wir nutzen Farbcodes, damit der Spieler im Disconnect-Screen sieht, warum er fliegt
-    //    target.kick("§cYou were kicked from the server.\n§7Reason: §f" + reason);
-    ctx.getServer().getPlayerManager().kick(target);
+    String message = "You were kicked from the server.\nReason: " + reason;
 
-    // Feedback für den Admin und den Server-Log
-    ctx.reply("§aPlayer " + target.getName() + " has been kicked.");
+    players.kick(playerId, message);
+
+    ctx.reply("§aPlayer " + playerName + " has been kicked.");
   }
 
   @Override

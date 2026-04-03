@@ -3,10 +3,19 @@ package server.commands.commands;
 import common.logging.Log;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.PlayerGateway;
+import server.gateways.ServerGateway;
 import server.permissions.Permissions;
-import server.player.ServerPlayer;
 
 public class StopCommand extends AbstractCommand {
+
+  private final ServerGateway server;
+  private final PlayerGateway players;
+
+  public StopCommand(ServerGateway server, PlayerGateway players) {
+    this.server = server;
+    this.players = players;
+  }
 
   @Override
   public void execute(CommandContext ctx) {
@@ -19,14 +28,14 @@ public class StopCommand extends AbstractCommand {
     if (ctx.isConsole()) {
       executor = "Console";
     } else {
-      ServerPlayer player = ctx.getServer().getPlayerManager().getPlayer(ctx.getPlayer());
-      executor = (player != null) ? player.getName() : ctx.getPlayer().toString();
+      String playerName = players.getName(ctx.getPlayer());
+      executor = (playerName != null) ? playerName : ctx.getPlayer().toString();
     }
 
     // -------------------------------------
     // BROADCAST FIRST (important!)
     // -------------------------------------
-    ctx.getServer().broadcastMessage("Server is shutting down...");
+    ctx.broadcast("Server is shutting down...");
 
     // -------------------------------------
     // LOG
@@ -36,7 +45,7 @@ public class StopCommand extends AbstractCommand {
     // -------------------------------------
     // SHUTDOWN
     // -------------------------------------
-    ctx.getServer().shutdown();
+    server.shutdown();
   }
 
   @Override

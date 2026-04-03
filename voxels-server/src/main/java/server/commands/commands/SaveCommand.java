@@ -2,13 +2,20 @@ package server.commands.commands;
 
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.WorldGateway;
 import server.permissions.Permissions;
 
 public class SaveCommand extends AbstractCommand {
 
+  private WorldGateway world;
+
+  public SaveCommand(WorldGateway world) {
+    this.world = world;
+  }
+
   @Override
   public void execute(CommandContext context) {
-    context.getServer().getWorld().saveDirtyChunks();
+    world.saveDirtyChunks();
   }
 
   @Override

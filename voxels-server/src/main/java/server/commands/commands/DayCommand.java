@@ -17,7 +17,6 @@ public class DayCommand extends AbstractCommand {
   @Override
   public void execute(CommandContext ctx) {
     long time = WorldTime.getTicksFromKeyword("day");
-//    world.setWorldTime(time);
     world.setTimeOfDay(time);
 
     ctx.reply("Time set to day (" + time + ")");

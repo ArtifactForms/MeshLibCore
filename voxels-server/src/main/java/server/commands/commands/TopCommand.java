@@ -2,18 +2,21 @@ package server.commands.commands;
 
 import common.logging.Log;
 import common.world.ChunkData;
+import common.world.Location;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.PlayerGateway;
 import server.gateways.WorldGateway;
 import server.permissions.Permissions;
-import server.player.ServerPlayer;
 
 public class TopCommand extends AbstractCommand {
 
   private final WorldGateway world;
+  private final PlayerGateway players;
 
-  public TopCommand(WorldGateway world) {
+  public TopCommand(WorldGateway world, PlayerGateway players) {
     this.world = world;
+    this.players = players;
   }
 
   @Override
@@ -23,12 +26,14 @@ public class TopCommand extends AbstractCommand {
       return;
     }
 
-    ServerPlayer player = ctx.getServer().getPlayerManager().getPlayer(ctx.getPlayer());
+    Location location = players.getLocation(ctx.getPlayer());
+    if (location == null) {
+      ctx.reply("An error occured.");
+      return;
+    }
 
-    if (player == null) return;
-
-    int x = (int) player.getX();
-    int z = (int) player.getZ();
+    int x = (int) location.getX();
+    int z = (int) location.getZ();
 
     int topY = world.getHeightAt(x, z);
 
@@ -37,11 +42,13 @@ public class TopCommand extends AbstractCommand {
       return;
     }
 
-    player.teleport(x, topY + 1.5f, z, player.getYaw(), player.getPitch());
+    location.set(x, topY + 1.5f, z);
+
+    players.teleport(ctx.getPlayer(), location);
 
     ctx.reply("Teleported to top.");
 
-    Log.info(player.getName() + " teleported to top.");
+    Log.info(players.getName(ctx.getPlayer()) + " teleported to top.");
   }
 
   @Override

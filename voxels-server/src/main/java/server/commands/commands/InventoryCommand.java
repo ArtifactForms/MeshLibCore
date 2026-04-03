@@ -10,7 +10,7 @@ import server.permissions.Permissions;
 import server.player.ServerPlayer;
 
 public class InventoryCommand extends AbstractCommand {
-
+	
   @Override
   public void execute(CommandContext ctx) {
     // -------------------------------------

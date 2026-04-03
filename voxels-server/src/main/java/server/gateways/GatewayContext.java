@@ -7,5 +7,7 @@ public record GatewayContext(
 	    InventoryGateway inventory,
 	    ConfigGateway config,
 	    CommandGateway commands,
-	    PlayerGateway players
+	    PlayerGateway players,
+	    MessageGateway messages,
+	    ServerGateway server
 	) {}

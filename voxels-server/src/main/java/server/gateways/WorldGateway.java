@@ -21,4 +21,6 @@ public interface WorldGateway {
   int getHeightAt(int x, int z);
   
   long getDay();
+  
+  void saveDirtyChunks();
 }

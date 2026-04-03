@@ -41,7 +41,7 @@ public class ConfigAdapter implements ConfigGateway {
   }
 
   @Override
-  public String getCommandMessagePrefix() { 
-    return config.getCommandMessagePrefix();
+  public String getServerPrefix() {
+    return config.getServerPrefix();
   }
 }
