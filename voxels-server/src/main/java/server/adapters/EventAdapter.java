@@ -1,7 +1,8 @@
-package server.gateways;
+package server.adapters;
 
 import server.events.EventBus;
 import server.events.GameEvent;
+import server.gateways.EventGateway;
 
 public class EventAdapter implements EventGateway {
 

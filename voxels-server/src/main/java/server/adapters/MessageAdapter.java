@@ -1,8 +1,9 @@
-package server.gateways;
+package server.adapters;
 
 import java.util.UUID;
 
 import common.network.packets.ChatMessagePacket;
+import server.gateways.MessageGateway;
 import server.network.PlayerManager;
 
 public class MessageAdapter implements MessageGateway {

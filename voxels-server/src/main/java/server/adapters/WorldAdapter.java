@@ -1,6 +1,7 @@
-package server.gateways;
+package server.adapters;
 
 import common.game.block.BlockType;
+import server.gateways.WorldGateway;
 import server.world.ServerWorld;
 
 public class WorldAdapter implements WorldGateway {

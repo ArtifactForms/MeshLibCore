@@ -1,9 +1,10 @@
-package server.gateways;
+package server.adapters;
 
 import java.util.Collection;
 
 import server.commands.Command;
 import server.commands.CommandRegistry;
+import server.gateways.CommandGateway;
 
 public class CommandAdapter implements CommandGateway {
 

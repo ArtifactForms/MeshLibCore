@@ -1,4 +1,4 @@
-package server.gateways;
+package server.adapters;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -7,6 +7,7 @@ import common.game.GameMode;
 import common.player.ability.AbilityContainer;
 import common.player.attribute.AttributeContainer;
 import common.world.Location;
+import server.gateways.PlayerGateway;
 import server.network.PlayerManager;
 import server.player.ServerPlayer;
 

@@ -1,9 +1,10 @@
-package server.gateways;
+package server.adapters;
 
 import java.util.UUID;
 
 import common.game.Inventory;
 import common.game.ItemStack;
+import server.gateways.InventoryGateway;
 import server.network.PlayerManager;
 import server.player.ServerPlayer;
 

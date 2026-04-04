@@ -1,6 +1,7 @@
-package server.gateways;
+package server.adapters;
 
 import server.config.ServerConfig;
+import server.gateways.ConfigGateway;
 
 public class ConfigAdapter implements ConfigGateway {
 

@@ -1,5 +1,6 @@
-package server.gateways;
+package server.adapters;
 
+import server.gateways.ServerGateway;
 import server.network.GameServer;
 
 public class ServerAdapter implements ServerGateway {

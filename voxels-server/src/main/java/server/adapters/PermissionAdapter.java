@@ -1,7 +1,8 @@
-package server.gateways;
+package server.adapters;
 
 import java.util.UUID;
 
+import server.gateways.PermissionGateway;
 import server.permissions.PermissionService;
 
 public class PermissionAdapter implements PermissionGateway {
