@@ -20,6 +20,7 @@ import common.game.block.Blocks;
 public class DynamicAtlasBuilder {
 
   private final int tileSize;
+
   private final String resourcePath = "/assets/textures/blocks/";
 
   public DynamicAtlasBuilder(int tileSize) {
