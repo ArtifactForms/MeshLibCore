@@ -11,15 +11,23 @@ import mesh.modifier.transform.ScaleModifier;
 public class CharacterModel extends SceneNode {
 
   private SceneNode head;
+
   private SceneNode torso;
+
   private SceneNode leftArm;
+
   private SceneNode rightArm;
+
   private SceneNode leftLeg;
+
   private SceneNode rightLeg;
 
   private Color legColor = Color.getColorFromInt(101, 59, 195);
+
   private Color torsoColor = Color.getColorFromInt(226, 94, 195);
+
   private Color armColor = Color.getColorFromInt(101, 59, 195);
+
   private Color eyeColor = Color.getColorFromInt(40, 40, 40); // Neu hinzugefügt
 
   public CharacterModel() {
@@ -91,7 +99,7 @@ public class CharacterModel extends SceneNode {
     float eyeSize = 0.08f;
     // Wir setzen sie vor den Kopf (Z-Achse)
     // Da der Kopf 0.6f tief ist, ist die Vorderseite bei 0.3f
-    float eyeZ = 0.31f; 
+    float eyeZ = 0.31f;
     float eyeY = -0.1f; // Relativ zum Kopf-Zentrum nach oben/unten
     float eyeX = 0.15f; // Abstand von der Mitte
 
@@ -116,10 +124,27 @@ public class CharacterModel extends SceneNode {
   }
 
   // Getter...
-  public SceneNode getHead() { return head; }
-  public SceneNode getLeftArm() { return leftArm; }
-  public SceneNode getRightArm() { return rightArm; }
-  public SceneNode getLeftLeg() { return leftLeg; }
-  public SceneNode getRightLeg() { return rightLeg; }
-  public SceneNode getTorso() { return torso; }
+  public SceneNode getHead() {
+    return head;
+  }
+
+  public SceneNode getLeftArm() {
+    return leftArm;
+  }
+
+  public SceneNode getRightArm() {
+    return rightArm;
+  }
+
+  public SceneNode getLeftLeg() {
+    return leftLeg;
+  }
+
+  public SceneNode getRightLeg() {
+    return rightLeg;
+  }
+
+  public SceneNode getTorso() {
+    return torso;
+  }
 }
