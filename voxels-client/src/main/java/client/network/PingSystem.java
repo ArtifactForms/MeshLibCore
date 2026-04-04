@@ -4,10 +4,11 @@ import common.network.packets.system.PingPacket;
 
 public class PingSystem {
 
+  private static final long INTERVAL = 2_000_000_000L; // 2 sec in ns
+
   private final ClientNetwork network;
 
   private long lastPingTime;
-  private static final long INTERVAL = 2_000_000_000L; // 2 sec in ns
 
   public PingSystem(ClientNetwork network) {
     this.network = network;
