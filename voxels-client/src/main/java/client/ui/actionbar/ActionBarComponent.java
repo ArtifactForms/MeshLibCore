@@ -10,7 +10,9 @@ public class ActionBarComponent extends AbstractComponent
     implements RenderableComponent, ActionBarView {
 
   private String text = "";
+
   private float displayTimer = 0;
+
   private Font font;
 
   public ActionBarComponent() {
