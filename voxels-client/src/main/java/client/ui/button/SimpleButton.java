@@ -10,16 +10,27 @@ import math.Color;
 public class SimpleButton extends AbstractUiElement {
 
   private int offsetX;
+
   private int offsetY;
+
   private int x;
+
   private int y;
+
   private int width;
+
   private int height;
+
   private boolean hover;
+
   private String text;
+
   private Color background = Color.getColorFromInt(120, 120, 120);
+
   private Color foreground = Color.getColorFromInt(228, 228, 228);
+
   private Color hoverBackground = Color.getColorFromInt(100, 100, 100);
+
   private ButtonClickCallback callback;
 
   private static final Font FONT = new Font("monogram-extended", 40, Font.PLAIN);
