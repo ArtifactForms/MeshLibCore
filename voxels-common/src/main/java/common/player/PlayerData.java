@@ -15,14 +15,17 @@ public class PlayerData {
   public static final float DEFAULT_SPEED = 12f;
 
   protected final UUID uuid;
+
   protected final String name;
 
   protected float yaw;
+
   protected float pitch;
 
   protected final PlayerProperties properties;
 
   protected Vector3f position = new Vector3f();
+
   protected Inventory inventory;
 
   protected GameMode gameMode;
