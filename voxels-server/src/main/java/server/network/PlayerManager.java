@@ -10,7 +10,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import common.network.Connection;
 import common.network.Packet;
 import common.network.packets.ChatMessagePacket;
-import common.network.packets.DisconnectPacket;
 import common.network.packets.PlayerQuitPacket;
 import server.events.events.PlayerQuitEvent;
 import server.player.ServerPlayer;
@@ -95,10 +94,8 @@ public class PlayerManager {
     ServerConnection connection = player.getConnection();
     if (connection == null) return;
 
-    connection.sendImmediate(new DisconnectPacket(reason));
-
     try {
-      Thread.sleep(10);
+      Thread.sleep(20);
     } catch (InterruptedException ignored) {
     }
 

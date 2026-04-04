@@ -1,17 +1,18 @@
 package server.network;
 
-import common.logging.Log;
-
 public class TPSCounter {
 
   private long totalTicks;
+
   private long lastTpsTime = System.currentTimeMillis();
+
   private int ticksThisSecond = 0;
+
   private double currentTps = 20.0;
 
   public void update(long tick) {
-	this.totalTicks = tick;
-	
+    this.totalTicks = tick;
+
     ticksThisSecond++;
 
     long now = System.currentTimeMillis();
@@ -22,9 +23,9 @@ public class TPSCounter {
       ticksThisSecond = 0;
       lastTpsTime = now;
 
-//      if (tick % 100 == 0) {
-//  	    Log.info(String.format("TPS: %.2f", currentTps));
-//      }
+      //      if (tick % 100 == 0) {
+      //  	    Log.info(String.format("TPS: %.2f", currentTps));
+      //      }
     }
   }
 

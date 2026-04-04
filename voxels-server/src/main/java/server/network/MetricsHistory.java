@@ -1,7 +1,9 @@
 package server.network;
+
 public class MetricsHistory {
 
   private final long[] tickDurations;
+
   private int index = 0;
 
   public MetricsHistory(int size) {

@@ -6,26 +6,36 @@ public class TickMetrics {
   public long tickStart;
 
   public long processPacketsTime;
+  
   public long updatePlayersTime;
+  
   public long chunkStreamingTime;
+  
   public long entityUpdateTime;
+  
   public long flushNetworkTime;
+  
   public long unloadChunksTime;
 
   public long tickDuration;
 
   // ---- counters
   public int inboundPackets;
+  
   public int outboundPackets;
 
   public int loadedChunks;
+  
   public int generatedChunks;
+  
   public int recompressedChunks;
 
   public int chunksInMemory;
+  
   public int dirtyChunks;
 
   public int saveQueueSize;
+  
   public long saveDuration;
 
   public void reset() {
