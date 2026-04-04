@@ -10,11 +10,17 @@ import common.world.BlockFace;
 public class StartMiningPacket implements Packet {
 
   private int x;
+
   private int y;
+
   private int z;
+
   private int selectedSlot;
+
   private BlockFace face;
+
   private float pitch;
+
   private float yaw;
 
   public StartMiningPacket() {}

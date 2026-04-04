@@ -10,7 +10,9 @@ import common.network.PacketIds;
 public class PlayerInventoryFullUpdatePacket implements Packet {
 
   private ItemStack[] items;
+
   private ItemStack cursorStack;
+
   private int inventoryVersion;
 
   public PlayerInventoryFullUpdatePacket() {}

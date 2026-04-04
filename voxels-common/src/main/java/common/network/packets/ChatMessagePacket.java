@@ -30,7 +30,7 @@ public class ChatMessagePacket implements Packet {
   public int getId() {
     return PacketIds.CHAT_MESSAGE;
   }
-  
+
   public String getMessage() {
     return message;
   }

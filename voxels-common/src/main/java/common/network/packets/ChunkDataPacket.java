@@ -21,6 +21,7 @@ public class ChunkDataPacket implements Packet {
   private static final int COMPRESSION_BUFFER_SIZE = 1024;
 
   private int x;
+
   private int z;
 
   /** Compressed block data */

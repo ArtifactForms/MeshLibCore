@@ -9,8 +9,11 @@ import common.network.PacketIds;
 public class BlockPlacePacket implements Packet {
 
   private int x;
+
   private int y;
+
   private int z;
+
   private int selectedSlot;
 
   private short blockId;

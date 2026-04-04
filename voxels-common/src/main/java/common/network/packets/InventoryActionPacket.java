@@ -9,8 +9,11 @@ import common.network.PacketIds;
 public class InventoryActionPacket implements Packet {
 
   private int slot;
+
   private int mouseButton;
+
   private int actionType;
+
   private int inventoryVersion;
 
   public InventoryActionPacket() {}

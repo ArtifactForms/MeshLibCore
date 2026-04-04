@@ -9,6 +9,7 @@ import common.network.PacketIds;
 public class ChunkUnloadPacket implements Packet {
 
   public int chunkX;
+
   public int chunkZ;
 
   public ChunkUnloadPacket(int chunkX, int chunkZ) {

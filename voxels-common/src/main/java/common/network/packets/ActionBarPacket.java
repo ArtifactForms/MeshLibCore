@@ -9,6 +9,7 @@ import common.network.PacketIds;
 public class ActionBarPacket implements Packet {
 
   private String text;
+
   private int durationInTicks;
 
   public ActionBarPacket() {}

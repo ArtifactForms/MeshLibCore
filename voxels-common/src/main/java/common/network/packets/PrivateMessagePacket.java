@@ -10,7 +10,9 @@ import common.network.PacketIds;
 public class PrivateMessagePacket implements Packet {
 
   private UUID sender;
+
   private UUID target;
+
   private String message;
 
   public PrivateMessagePacket() {}

@@ -9,8 +9,11 @@ import common.network.PacketIds;
 public class BlockUpdatePacket implements Packet {
 
   private int x;
+
   private int y;
+
   private int z;
+
   private short blockId;
 
   public BlockUpdatePacket() {}

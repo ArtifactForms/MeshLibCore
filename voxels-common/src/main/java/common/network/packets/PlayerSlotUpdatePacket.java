@@ -9,7 +9,9 @@ import common.network.PacketIds;
 public class PlayerSlotUpdatePacket implements Packet {
 
   private int slotIndex;
+
   private short itemId;
+
   private int amount;
 
   public PlayerSlotUpdatePacket() {}

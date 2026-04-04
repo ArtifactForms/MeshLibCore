@@ -14,9 +14,13 @@ import common.network.PacketIds;
 public class PlayerSpawnPacket implements Packet {
 
   private UUID uuid;
+
   private String name;
+
   private float x;
+
   private float y;
+
   private float z;
 
   /** Required for PacketRegistry */

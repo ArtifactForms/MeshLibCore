@@ -14,10 +14,17 @@ import common.network.PacketIds;
 public class PlayerPositionPacket implements Packet {
 
   private UUID playerUuid;
+
   private float x;
+
   private float y;
+
   private float z;
-  private float yaw, pitch;
+
+  private float yaw;
+
+  private float pitch;
+
   private boolean teleport;
 
   /** Required for PacketRegistry */
@@ -51,7 +58,7 @@ public class PlayerPositionPacket implements Packet {
     // Write Rotation
     out.writeFloat(yaw);
     out.writeFloat(pitch);
-    
+
     out.writeBoolean(teleport);
   }
 
@@ -68,7 +75,7 @@ public class PlayerPositionPacket implements Packet {
     // Read Rotation
     this.yaw = in.readFloat();
     this.pitch = in.readFloat();
-    
+
     this.teleport = in.readBoolean();
   }
 

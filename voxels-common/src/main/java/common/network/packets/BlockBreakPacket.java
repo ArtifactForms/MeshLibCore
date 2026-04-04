@@ -9,7 +9,9 @@ import common.network.PacketIds;
 public class BlockBreakPacket implements Packet {
 
   private int x;
+
   private int y;
+
   private int z;
 
   public BlockBreakPacket() {}

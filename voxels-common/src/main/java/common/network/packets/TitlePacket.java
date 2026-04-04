@@ -35,10 +35,13 @@ import common.network.ServerToClientPacket;
 public class TitlePacket implements Packet, ServerToClientPacket {
 
   private String title;
+
   private String subtitle;
 
   private int fadeInTicks;
+
   private int stayTicks;
+
   private int fadeOutTicks;
 
   /** Default constructor used for deserialization. */

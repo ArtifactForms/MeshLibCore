@@ -12,8 +12,15 @@ import common.network.PacketIds;
  */
 public class PlayerMovePacket implements Packet {
 
-  private float x, y, z;
-  private float yaw, pitch;
+  private float x;
+
+  private float y;
+
+  private float z;
+
+  private float yaw;
+
+  private float pitch;
 
   /** Required for PacketRegistry */
   public PlayerMovePacket() {}

@@ -8,7 +8,9 @@ import common.network.PacketBuffer;
 import common.network.PacketIds;
 
 public class ItemPickupPacket implements Packet {
+
   private long itemEntityId;
+
   private UUID playerUuid;
 
   public ItemPickupPacket() {}

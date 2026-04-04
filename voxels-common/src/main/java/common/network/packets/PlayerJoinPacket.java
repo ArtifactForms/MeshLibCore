@@ -14,6 +14,7 @@ import common.network.PacketIds;
 public class PlayerJoinPacket implements Packet {
 
   private UUID uuid;
+
   private String name;
 
   /** Required empty constructor for reflection-based packet instantiation. */
