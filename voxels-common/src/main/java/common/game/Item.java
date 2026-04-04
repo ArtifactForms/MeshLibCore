@@ -3,7 +3,9 @@ package common.game;
 public class Item {
 
   private final short id;
+
   private final String name;
+
   private final int maxStackSize;
 
   public Item(short id, String name, int maxStackSize) {

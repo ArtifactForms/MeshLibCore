@@ -18,9 +18,13 @@ public class ConsoleLogger implements Logger {
 
   // ANSI Color Codes
   private static final String RESET = "\u001B[0m";
+
   private static final String GREEN = "\u001B[32m";
+
   private static final String YELLOW = "\u001B[33m";
+
   private static final String RED = "\u001B[31m";
+
   private static final String BLUE = "\u001B[34m";
 
   private final String context;

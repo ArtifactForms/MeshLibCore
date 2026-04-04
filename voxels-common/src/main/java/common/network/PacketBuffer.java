@@ -11,6 +11,7 @@ import common.game.ItemStack;
 public class PacketBuffer {
 
   private DataInputStream in;
+
   private DataOutputStream out;
 
   // Max String length to avoid Memory-Exploits

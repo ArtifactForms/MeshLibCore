@@ -3,38 +3,72 @@ package common.network;
 public class PacketIds {
 
   public static final int PLAYER_MOVE = 1;
+
   public static final int BLOCK_UPDATE = 2;
+
   public static final int PLAYER_JOIN = 3;
+
   public static final int PLAYER_SPAWN = 4;
+
   public static final int PLAYER_POSITION = 5;
+
   public static final int CHAT_MESSAGE = 6;
+
   public static final int CHUNK_DATA = 7;
+
   public static final int BLOCK_PLACE = 8;
+
   public static final int BLOCK_BREAK = 9;
+
   public static final int SOUND_EFFECT = 10;
+
   public static final int ITEM_PICKUP = 11;
+
   public static final int ENTITY_DESTROY = 12;
+
   public static final int ITEM_SPAWN = 13;
+
   public static final int UPDATE_SLOT = 14;
+
   public static final int OPEN_INVENTORY = 15;
+
   public static final int ACTION_BAR = 16;
+
   public static final int PLAYER_QUIT = 17;
+
   public static final int PRIVATE_MESSAGE = 18;
+
   public static final int PLAYER_OPEN_INVENTORY = 19;
+
   public static final int TITLE = 20;
+
   public static final int PLAYER_DROP_ITEM = 21;
+
   public static final int PLAYER_SLOT_UPDATE = 22;
+
   public static final int PLAYER_INVENTORY_FULL_UPDATE = 23;
+
   public static final int INVENTORY_CLICK = 24;
+
   public static final int INVENTORY_ACTION = 25;
+
   public static final int HANDSHAKE = 26;
+
   public static final int BLOCK_PICK = 27;
+
   public static final int PLAYER_SLOT_CLEAR = 28;
+
   public static final int UNLOAD_CHUNK = 29;
+
   public static final int TIME_UPDATE = 30;
+
   public static final int START_MINING = 31;
+
   public static final int SYNC_GAMEMODE = 32;
+
   public static final int PING = 33;
+
   public static final int PONG = 34;
+
   public static final int DISCONNECT = 35;
 }

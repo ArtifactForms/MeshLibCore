@@ -12,9 +12,13 @@ import java.net.Socket;
 public abstract class Connection implements Runnable {
 
   protected Socket socket;
+
   protected DataInputStream in;
+
   protected DataOutputStream out;
+
   protected PacketBuffer buffer;
+
   protected volatile boolean running = true;
 
   public Connection(Socket socket) throws Exception {
@@ -63,21 +67,21 @@ public abstract class Connection implements Runnable {
    * from multiple threads.
    */
   public void send(Packet packet) {
-	  if (!running || buffer == null) return;
+    if (!running || buffer == null) return;
 
-	  synchronized (buffer) {
-	    try {
-	      buffer.writeInt(packet.getId());
-	      packet.write(buffer);
+    synchronized (buffer) {
+      try {
+        buffer.writeInt(packet.getId());
+        packet.write(buffer);
 
-	      buffer.flush();
-	      out.flush();
-	    } catch (Exception e) {
-	      System.err.println("[Network] Failed to send packet " + packet.getId());
-	      close();
-	    }
-	  }
-	}
+        buffer.flush();
+        out.flush();
+      } catch (Exception e) {
+        System.err.println("[Network] Failed to send packet " + packet.getId());
+        close();
+      }
+    }
+  }
 
   /**
    * Handover point for received packets. Implementations should typically queue the packet for the
