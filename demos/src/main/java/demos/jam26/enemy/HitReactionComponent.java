@@ -11,9 +11,11 @@ public class HitReactionComponent extends AbstractComponent {
 
   // Hit scale reaction
   private float timer = 0f;
+
   private final float duration = 0.1f;
 
   private Vector3f baseScale;
+
   private boolean wasHit;
 
   @Override

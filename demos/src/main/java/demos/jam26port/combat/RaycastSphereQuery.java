@@ -9,6 +9,7 @@ import math.Ray3f;
 public final class RaycastSphereQuery implements SceneNodeVisitor {
 
   private final Ray3f ray;
+
   private RaycastHit closestHit;
 
   public RaycastSphereQuery(Ray3f ray) {

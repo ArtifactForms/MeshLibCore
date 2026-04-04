@@ -8,10 +8,12 @@ import math.Vector3f;
 public abstract class PickupComponent extends AbstractComponent {
 
   protected float pickupRadius = 32f;
+
   protected boolean collected = false;
 
   // juice
   private float popTime = 0.15f;
+
   private float timer = 0f;
 
   @Override

@@ -9,7 +9,9 @@ import math.Vector3f;
 public class GridCollisionComponent extends AbstractComponent implements MovementFilter {
 
   private final TileMap map;
+
   private final float radius;
+
   private final float tileSize;
 
   public GridCollisionComponent(TileMap map, float radius, float tileSize) {

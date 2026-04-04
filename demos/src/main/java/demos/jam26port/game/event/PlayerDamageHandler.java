@@ -8,6 +8,7 @@ import engine.scene.audio.SoundManager;
 public class PlayerDamageHandler implements GameEventHandler {
 
   private final PlayerContext player;
+  
   private final GameUi ui;
 
   public PlayerDamageHandler(PlayerContext player, GameUi ui) {

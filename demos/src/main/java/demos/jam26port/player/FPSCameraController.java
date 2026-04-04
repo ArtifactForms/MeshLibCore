@@ -14,24 +14,35 @@ import math.Vector3f;
 public class FPSCameraController extends AbstractComponent {
 
   private static final float DEFAULT_MOUSE_SENSITIVITY = 10f;
+
   private static final float DEFAULT_MOVE_SPEED = 20f;
+
   private static final float MAX_PITCH = 80f;
+
   private static final float MIN_PITCH = -80f;
 
   private final Input input;
+
   private final Camera camera;
 
   private float mouseSensitivity = DEFAULT_MOUSE_SENSITIVITY;
+
   private float moveSpeed = DEFAULT_MOVE_SPEED;
+
   private float acceleration = 12f;
+
   private float deceleration = 10f;
+
   private float speedBoostMultiplier = 2.5f;
 
   private float smoothedMouseX = 0f;
+
   private float smoothedMouseY = 0f;
+
   private float mouseSmoothingFactor = 0.25f;
 
   private final Vector3f currentVelocity = new Vector3f();
+
   private final Vector3f targetVelocity = new Vector3f();
 
   // Head bob

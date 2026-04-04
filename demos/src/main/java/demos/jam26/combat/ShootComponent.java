@@ -19,10 +19,15 @@ import math.Color;
 import math.Ray3f;
 
 public class ShootComponent extends AbstractComponent {
+
   private final Input input;
+
   private final float range = 1000f;
+
   private boolean lastPressed;
+
   private Bounds bounds;
+
   private Ray3f ray;
 
   public ShootComponent(Input input) {

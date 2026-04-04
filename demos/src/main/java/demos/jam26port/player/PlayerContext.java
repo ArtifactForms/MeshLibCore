@@ -13,6 +13,7 @@ import math.Vector3f;
 public final class PlayerContext {
 
   private final HealthComponent health;
+
   private final PerspectiveCamera camera;
 
   public PlayerContext(HealthComponent health, PerspectiveCamera camera) {

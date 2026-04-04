@@ -43,21 +43,29 @@ public class DungeonCrawlerGame extends BasicApplication {
   }
 
   private boolean debug = true;
+
   private boolean drawDebugNormals = false;
 
   private Scene scene;
+
   private Mesh3D levelMesh;
+
   private LevelBuilder levelBuilder;
+
   private TileMap tileMap;
+
   private HealthComponent health;
+
   private PerspectiveCamera camera;
 
   private SceneNode uiRoot;
 
   private PlayerContext player;
+
   private GameWorldContext world;
 
   private PointLight light;
+
   private SceneNode lightNode;
 
   @Override

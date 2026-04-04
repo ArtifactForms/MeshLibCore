@@ -14,16 +14,23 @@ import math.Mathf;
 public class MapGenerator {
 
   private int chunkSize;
-  //  private int chunkSize = 481;
-  //  private int chunkSize = 961;
+
   private int mapWidth;
+
   private int mapHeight;
+
   private int seed = 221;
+
   private int octaves = 4;
+
   private float scale = 50;
+
   private float persistance = 0.5f;
+
   private float lacunarity = 2f;
+
   private float[][] heightMap;
+
   private TerrainType[] regions;
 
   /** Constructs a new {@code MapGenerator} and initializes the height map and terrain regions. */
@@ -111,7 +118,9 @@ public class MapGenerator {
   public class TerrainType {
 
     public float height;
+
     public String name;
+
     public Color color;
 
     /**

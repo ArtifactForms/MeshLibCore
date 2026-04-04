@@ -15,12 +15,19 @@ import mesh.next.surface.SurfaceLayer;
 public class LevelBuilder {
 
   private float tileSize;
+
   private float halfTileSize;
+
   private TileMap tileMap;
+
   private Mesh3D levelMesh;
+
   private Texture texture;
+
   private Vector3f playerSpawn = new Vector3f();
+
   private Vector3f exit = new Vector3f();
+
   private Vector3f lobbySpawn = new Vector3f();
 
   public LevelBuilder(TileMap tileMap) {

@@ -13,6 +13,7 @@ public class TileMap {
   public static final int TILE_SIZE = 32;
 
   private BufferedImage levelImage;
+
   private BufferedImage overlayImage;
 
   public TileMap() {

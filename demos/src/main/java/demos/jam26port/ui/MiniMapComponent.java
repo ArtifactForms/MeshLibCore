@@ -14,13 +14,17 @@ import math.Vector3f;
 public class MiniMapComponent extends AbstractComponent implements RenderableComponent {
 
   private static final float BORDER_PADDING = 4f;
+
   private static final float PLAYER_MARKER_SIZE = 8f;
 
   private final TileMap tileMap;
+
   private final Scene scene;
 
   private float x = 0;
+
   private float y = 0;
+
   private float size = 300;
 
   /** Tiles around player. */

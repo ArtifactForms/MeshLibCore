@@ -10,6 +10,7 @@ import mesh.creator.primitives.CubeCreator;
 public class ChunkBoxDisplay extends AbstractComponent implements RenderableComponent {
 
   private Color color = Color.WHITE;
+
   private Mesh3D chunkBoxMesh;
 
   public ChunkBoxDisplay(int chunkSize) {

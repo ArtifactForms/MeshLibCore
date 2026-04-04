@@ -8,8 +8,11 @@ import math.Vector3f;
 public class EnemyAttackComponent extends AbstractComponent {
 
   private float attackRange;
+
   private float damage;
+
   private float attackCooldown;
+
   private float cooldownTimer = 0f;
 
   private WorldContext world;

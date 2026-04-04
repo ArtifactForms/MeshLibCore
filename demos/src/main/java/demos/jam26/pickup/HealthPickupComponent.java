@@ -7,6 +7,7 @@ import engine.scene.audio.SoundManager;
 public class HealthPickupComponent extends PickupComponent {
 
   private int amount;
+
   private PlayerHealthComponent health;
 
   public HealthPickupComponent(PlayerHealthComponent health, int amount) {

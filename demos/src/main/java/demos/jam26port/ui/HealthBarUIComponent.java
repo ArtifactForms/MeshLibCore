@@ -11,13 +11,17 @@ import math.Mathf;
 public class HealthBarUIComponent extends AbstractComponent implements RenderableComponent {
 
   private static final float BORDER_PADDING = 2f;
+
   private static final float BG_ALPHA = 0.5f;
 
   private final PlayerHealthComponent health;
 
   private float x;
+
   private float y;
+
   private float width;
+
   private float height;
 
   public HealthBarUIComponent(PlayerHealthComponent health) {

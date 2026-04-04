@@ -10,8 +10,11 @@ import math.Vector3f;
 public class ExitTriggerComponent extends AbstractComponent {
 
   private float triggerRadius;
+
   private boolean triggered;
+
   private SceneNode title;
+
   private Vector3f lobbySpawn;
 
   public ExitTriggerComponent(SceneNode title, Vector3f lobbySpawn) {

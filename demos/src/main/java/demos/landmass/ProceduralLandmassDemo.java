@@ -43,14 +43,20 @@ public class ProceduralLandmassDemo extends BasicApplication {
 
   // Configuration fields
   private int levelOfDetail = 0; // Level of detail for the terrain mesh (0 - 6)
-  //  private int chunkSize = 960; // TODO Note that the size has to fit LOD
-  private int chunkSize = 480;
-  private int chunkScale = 4;
-  private DrawMode drawMode = DrawMode.COLOR_MAP;
-  private Scene scene;
-  //  private EndlessTerrain endlessTerrain;
 
-  //  private LoadingScreen loadingScreen;
+  // private int chunkSize = 960; // TODO Note that the size has to fit LOD
+
+  private int chunkSize = 480;
+
+  private int chunkScale = 4;
+
+  private DrawMode drawMode = DrawMode.COLOR_MAP;
+
+  private Scene scene;
+
+  // private EndlessTerrain endlessTerrain;
+
+  // private LoadingScreen loadingScreen;
   private RoundReticle roundReticle;
 
   public static void main(String[] args) {
@@ -67,7 +73,7 @@ public class ProceduralLandmassDemo extends BasicApplication {
     setupUI();
     setupCamera();
     runTerrainCreation();
-    //    endlessTerrain = new EndlessTerrain(scene, chunkSize * chunkScale);
+    // endlessTerrain = new EndlessTerrain(scene, chunkSize * chunkScale);
   }
 
   private void runTerrainCreation() {

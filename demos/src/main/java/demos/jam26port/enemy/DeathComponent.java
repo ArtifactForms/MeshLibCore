@@ -18,7 +18,9 @@ public class DeathComponent extends AbstractComponent {
   private float timer = 0f;
 
   private final Time time;
+  
   private Vector3f baseScale;
+  
   private Vector3f fallDir;
 
   public DeathComponent(Time time) {

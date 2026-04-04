@@ -9,12 +9,19 @@ import math.Color;
 public class TitleTextComponent extends AbstractComponent implements RenderableComponent {
 
   private final float fadeInTime;
+
   private final float stayTime;
+
   private final float fadeOutTime;
+
   private float currentTime;
+
   private boolean finished;
+
   private Font font;
+
   private String text;
+
   private Color color;
 
   public TitleTextComponent(Title title) {

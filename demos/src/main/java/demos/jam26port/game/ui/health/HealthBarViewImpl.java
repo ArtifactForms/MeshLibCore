@@ -7,21 +7,28 @@ import math.Mathf;
 public class HealthBarViewImpl implements HealthBarView {
 
   private static final float BORDER_PADDING = 2f;
+
   private static final float BG_ALPHA = 0.5f;
 
   // shake tuning
   private static final float SHAKE_FREQUENCY = 20f; // oscillations speed (rad/sec)
+
   private static final float SHAKE_AMPLITUDE = 30f; // max pixels at full punch
+
   private static final float PUNCH_DECAY_SPEED = 2f; // energy per second
 
   // layout
   private float baseX = 20;
+
   private float baseY = 20;
+
   private float width = 200;
+
   private float height = 16;
 
   // animation state
   private float targetHealth = 1f;
+
   private float displayedHealth = 1f;
 
   // tuning
@@ -29,7 +36,9 @@ public class HealthBarViewImpl implements HealthBarView {
 
   // juice
   private float punch = 0f;
+
   private float shakeTime = 0f;
+
   private float shakeOffsetX = 0f;
 
   @Override

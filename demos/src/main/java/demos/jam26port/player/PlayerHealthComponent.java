@@ -6,6 +6,7 @@ import engine.components.AbstractComponent;
 public class PlayerHealthComponent extends AbstractComponent {
 
   private float maxHealth = 100f;
+
   private float health = 100f;
 
   private boolean dead = false;
@@ -18,10 +19,10 @@ public class PlayerHealthComponent extends AbstractComponent {
       health = 0f;
       die();
     }
-    
+
     HitFlashComponent hitFlash = getOwner().getComponent(HitFlashComponent.class);
     if (hitFlash != null) {
-	hitFlash.trigger(1);
+      hitFlash.trigger(1);
     }
   }
 

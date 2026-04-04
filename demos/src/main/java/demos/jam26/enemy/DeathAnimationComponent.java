@@ -8,9 +8,11 @@ import math.Mathf;
 public class DeathAnimationComponent extends AbstractComponent {
 
   private boolean dying = false;
+
   private float timer = 0f;
 
   private static final float DURATION = 0.5f;
+
   private static final int FRAME_COUNT = 7;
 
   public void die() {

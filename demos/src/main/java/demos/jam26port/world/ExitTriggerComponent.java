@@ -7,7 +7,9 @@ import math.Vector3f;
 public class ExitTriggerComponent extends AbstractComponent {
 
   private float triggerRadius;
+
   private boolean triggered;
+
   private WorldContext world;
 
   public ExitTriggerComponent(WorldContext world) {

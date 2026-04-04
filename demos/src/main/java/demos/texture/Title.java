@@ -3,11 +3,17 @@ package demos.texture;
 import math.Color;
 
 public class Title {
+
   private final float fadeInTime;
+
   private final float fadeOutTime;
+
   private final float stayTime;
+
   private final int size;
+
   private final Color color;
+
   private final String text;
 
   private Title(Builder builder) {
