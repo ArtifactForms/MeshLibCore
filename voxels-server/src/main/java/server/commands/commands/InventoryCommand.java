@@ -2,46 +2,51 @@ package server.commands.commands;
 
 import java.util.Locale;
 
-import common.game.Inventory;
-import common.network.packets.PlayerInventoryFullUpdatePacket;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.MessageGateway;
 import server.permissions.Permissions;
-import server.player.ServerPlayer;
+import server.usecases.inventoryclear.InventoryClear;
+import server.usecases.inventoryclear.InventoryClear.InventoryClearRequest;
+import server.usecases.inventoryclear.InventoryClear.InventoryClearResponse;
+import server.usecases.inventoryclear.InventoryClearPresenter;
+import server.usecases.inventoryclear.InventoryClearRequestModel;
 
 public class InventoryCommand extends AbstractCommand {
-	
+
+  private final MessageGateway messages;
+
+  public InventoryCommand(MessageGateway messages) {
+    this.messages = messages;
+  }
+
   @Override
   public void execute(CommandContext ctx) {
-    // -------------------------------------
-    // CONSOLE CHECK
-    // -------------------------------------
     if (ctx.isConsole()) {
       ctx.reply("This command can only be used by a player.");
       return;
     }
 
-    ServerPlayer player = ctx.getServer().getPlayerManager().getPlayer(ctx.getPlayer());
-    if (player == null) {
-      // TODO Log
+    if (ctx.getArgs().isEmpty()) {
+      ctx.reply("Usage: /inventory clear");
       return;
     }
 
     String sub = ctx.getArgs().get(0).toLowerCase(Locale.ROOT);
 
     if (!sub.equals("clear")) {
+      ctx.reply("Unknown subcommand.");
       return;
     }
 
-    Inventory inventory = player.getInventory();
-    inventory.clear();
-    player.incrementInventoryVersion();
+    executeUseCase(ctx);
+  }
 
-    player
-        .getConnection()
-        .send(
-            new PlayerInventoryFullUpdatePacket(
-                inventory.getItems(), null, player.getInventoryVersion()));
+  private void executeUseCase(CommandContext ctx) {
+    InventoryClear useCase = ctx.getUseCases().get(InventoryClear.class);
+    InventoryClearRequest request = new InventoryClearRequestModel(ctx.getPlayer());
+    InventoryClearResponse response = new InventoryClearPresenter(messages);
+    useCase.execute(request, response);
   }
 
   @Override

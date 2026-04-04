@@ -18,7 +18,13 @@ public interface InventoryGateway {
 
   ItemStack getItem(UUID playerId, int slotIndex);
 
+  ItemStack[] getItems(UUID playerId);
+
   int getMaxSlotIndex(UUID playerId);
 
   void clear(UUID playerId);
+
+  void incrementInventoryVersion(UUID playerId);
+
+  int getInventoryVersion(UUID playerId);
 }

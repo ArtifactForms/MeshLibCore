@@ -20,7 +20,7 @@ public class ClientPlayer extends PlayerData {
   }
 
   public void setPositionFromTeleport(float x, float y, float z) {
-    this.position.set(x, y, z);
+    this.position.setPosition(x, y, z);
     this.teleportDirty = true;
   }
 }

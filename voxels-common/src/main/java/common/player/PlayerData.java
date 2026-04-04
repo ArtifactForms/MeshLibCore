@@ -7,6 +7,7 @@ import common.game.Inventory;
 import common.player.ability.AbilityContainer;
 import common.player.attribute.Attribute;
 import common.player.attribute.AttributeContainer;
+import common.world.Location;
 import common.world.WorldMath;
 import math.Vector3f;
 
@@ -18,13 +19,11 @@ public class PlayerData {
 
   protected final String name;
 
-  protected float yaw;
-
-  protected float pitch;
-
   protected final PlayerProperties properties;
 
-  protected Vector3f position = new Vector3f();
+  protected final Vector3f tmpPosition = new Vector3f();
+
+  protected Location position = new Location();
 
   protected Inventory inventory;
 
@@ -53,19 +52,19 @@ public class PlayerData {
   }
 
   public float getYaw() {
-    return yaw;
+    return position.getYaw();
   }
 
   public void setYaw(float yaw) {
-    this.yaw = yaw;
+    position.setYaw(yaw);
   }
 
   public float getPitch() {
-    return pitch;
+    return position.getPitch();
   }
 
   public void setPitch(float pitch) {
-    this.pitch = pitch;
+    position.setPitch(pitch);
   }
 
   public float getSpeed() {
@@ -73,23 +72,26 @@ public class PlayerData {
   }
 
   public Vector3f getPosition() {
-    return position;
+    tmpPosition.setX((float) position.getX());
+    tmpPosition.setY((float) position.getY());
+    tmpPosition.setZ((float) position.getZ());
+    return tmpPosition;
   }
 
   public void setPosition(float x, float y, float z) {
-    position.set(x, y, z);
+    position.setPosition(x, y, z);
   }
 
   public float getX() {
-    return position.x;
+    return (float) position.getX();
   }
 
   public float getY() {
-    return position.y;
+    return (float) position.getY();
   }
 
   public float getZ() {
-    return position.z;
+    return (float) position.getZ();
   }
 
   public AbilityContainer getAbilities() {

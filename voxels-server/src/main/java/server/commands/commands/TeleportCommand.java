@@ -1,13 +1,22 @@
 package server.commands.commands;
 
+import java.util.UUID;
+
 import common.logging.Log;
 import common.world.ChunkData;
+import common.world.Location;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.PlayerGateway;
 import server.permissions.Permissions;
-import server.player.ServerPlayer;
 
 public class TeleportCommand extends AbstractCommand {
+
+  private final PlayerGateway players;
+
+  public TeleportCommand(PlayerGateway players) {
+    this.players = players;
+  }
 
   @Override
   public String getName() {
@@ -32,10 +41,6 @@ public class TeleportCommand extends AbstractCommand {
       return;
     }
 
-    ServerPlayer player = ctx.getServer().getPlayerManager().getPlayer(ctx.getPlayer());
-
-    if (player == null) return;
-
     var args = ctx.getArgs();
 
     // -------------------------------------
@@ -48,7 +53,7 @@ public class TeleportCommand extends AbstractCommand {
         return;
       }
 
-      handleCoordinateTeleport(player, args);
+      handleCoordinateTeleport(ctx, args);
       return;
     }
 
@@ -62,7 +67,7 @@ public class TeleportCommand extends AbstractCommand {
         return;
       }
 
-      handlePlayerTeleport(ctx, player, args.get(0));
+      handlePlayerTeleport(ctx, args.get(0));
       return;
     }
 
@@ -75,11 +80,11 @@ public class TeleportCommand extends AbstractCommand {
   // =========================================================
   // COORDINATE TELEPORT
   // =========================================================
-  private void handleCoordinateTeleport(ServerPlayer player, java.util.List<String> args) {
+  private void handleCoordinateTeleport(CommandContext ctx, java.util.List<String> args) {
     try {
-      float x = Float.parseFloat(args.get(0));
-      float y = Float.parseFloat(args.get(1));
-      float z = Float.parseFloat(args.get(2));
+      double x = Float.parseFloat(args.get(0));
+      double y = Float.parseFloat(args.get(1));
+      double z = Float.parseFloat(args.get(2));
 
       // -------------------------------------
       // VALIDATION
@@ -98,9 +103,12 @@ public class TeleportCommand extends AbstractCommand {
       // -------------------------------------
       // TELEPORT
       // -------------------------------------
-      player.teleport(x, y, z, player.getYaw(), player.getPitch());
 
-      Log.info(player.getName() + " teleported to " + x + ", " + y + ", " + z);
+      Location location = players.getLocation(ctx.getPlayer());
+      Location dest = new Location(x, y, z, location.getPitch(), location.getYaw());
+      players.teleport(ctx.getPlayer(), dest);
+
+      Log.info(players.getName(ctx.getPlayer()) + " teleported to " + x + ", " + y + ", " + z);
 
     } catch (NumberFormatException e) {
       Log.warn("Invalid coordinates.");
@@ -110,26 +118,26 @@ public class TeleportCommand extends AbstractCommand {
   // =========================================================
   // PLAYER TELEPORT
   // =========================================================
-  private void handlePlayerTeleport(CommandContext ctx, ServerPlayer player, String targetName) {
+  private void handlePlayerTeleport(CommandContext ctx, String targetName) {
+    String playerName = players.getName(ctx.getPlayer());
+    UUID targetId = players.getPlayerIdByName(targetName);
 
-    ServerPlayer target = ctx.getServer().getPlayerManager().getPlayerByName(targetName);
-
-    if (target == null) {
+    if (targetId == null) {
       Log.warn("Player not found: " + targetName);
       return;
     }
 
-    player.teleport(
-        target.getX(), target.getY(), target.getZ(), target.getYaw(), target.getPitch());
+    Location dest = players.getLocation(targetId);
+    players.teleport(ctx.getPlayer(), dest);
 
-    Log.info(player.getName() + " teleported to " + target.getName());
+    Log.info(playerName + " teleported to " + targetName);
   }
 
   // =========================================================
   // UTILS
   // =========================================================
-  private boolean isFinite(float v) {
-    return !Float.isNaN(v) && !Float.isInfinite(v);
+  private boolean isFinite(double v) {
+    return !Double.isNaN(v) && !Double.isInfinite(v);
   }
 
   @Override

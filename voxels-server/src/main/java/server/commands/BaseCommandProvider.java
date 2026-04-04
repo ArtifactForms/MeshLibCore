@@ -27,16 +27,16 @@ public class BaseCommandProvider implements CommandProvider {
 
   @Override
   public void registerCommands(CommandRegistry registry, GatewayContext ctx) {
-    registry.register(new TeleportCommand());
+    registry.register(new TeleportCommand(ctx.players()));
     registry.register(new BroadcastCommand());
     registry.register(new ChangeGameModeCommand());
     registry.register(new ChunkCommand());
     registry.register(new EchoCommand());
     registry.register(new HelpCommand(ctx.commands()));
-    registry.register(new InventoryCommand());
+    registry.register(new InventoryCommand(ctx.messages()));
     registry.register(new KickCommand(ctx.players(), ctx.events()));
     registry.register(new PlayersCommand(ctx.players(), ctx.config()));
-    registry.register(new PositionCommand());
+    registry.register(new PositionCommand(ctx.players()));
     registry.register(new PrivateMessageCommand(ctx.players(), ctx.messages()));
     registry.register(new StopCommand(ctx.server(), ctx.players()));
     registry.register(new WhoAmICommand(ctx.players()));

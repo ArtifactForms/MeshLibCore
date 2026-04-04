@@ -57,6 +57,12 @@ public class InventoryAdapter implements InventoryGateway {
     return inventory.getSlot(slotIndex);
   }
 
+  @Override
+  public ItemStack[] getItems(UUID playerId) {
+    Inventory inventory = getInventory(playerId);
+    return inventory.getItems();
+  }
+
   private Inventory getInventory(UUID playerId) {
     ServerPlayer player = playerManager.getPlayer(playerId);
     Inventory inventory = player.getInventory();
@@ -73,5 +79,17 @@ public class InventoryAdapter implements InventoryGateway {
   public void clear(UUID playerId) {
     Inventory inventory = playerManager.getPlayer(playerId).getInventory();
     inventory.clear();
+  }
+
+  @Override
+  public void incrementInventoryVersion(UUID playerId) {
+    ServerPlayer player = playerManager.getPlayer(playerId);
+    player.incrementInventoryVersion();
+  }
+
+  @Override
+  public int getInventoryVersion(UUID playerId) {
+    ServerPlayer player = playerManager.getPlayer(playerId);
+    return player.getInventoryVersion();
   }
 }

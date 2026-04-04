@@ -2,54 +2,51 @@ package server.commands.commands;
 
 import java.util.Locale;
 
-import math.Vector3f;
+import common.world.Location;
+import common.world.WorldMath;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.PlayerGateway;
 import server.permissions.Permissions;
-import server.player.ServerPlayer;
 
 public class PositionCommand extends AbstractCommand {
 
+  private final PlayerGateway players;
+
+  public PositionCommand(PlayerGateway players) {
+    this.players = players;
+  }
+
   @Override
   public void execute(CommandContext ctx) {
-
-    // -------------------------------------
-    // CONSOLE CHECK
-    // -------------------------------------
     if (ctx.isConsole()) {
       ctx.reply("This command can only be used by a player.");
       return;
     }
 
-    // -------------------------------------
-    // GET PLAYER
-    // -------------------------------------
-    ServerPlayer player = ctx.getServer().getPlayerManager().getPlayer(ctx.getPlayer());
+    Location loc = players.getLocation(ctx.getPlayer());
+    if (loc == null) return; // should not happen
 
-    if (player == null) {
-      //      ctx.reply("Player not found.");
-      // TODO Log instead cause we can not reply
-      return;
-    }
+    int chunkX = WorldMath.worldToChunkX(loc);
+    int chunkZ = WorldMath.worldToChunkZ(loc);
 
-    // -------------------------------------
-    // DATA
-    // -------------------------------------
-    Vector3f pos = player.getPosition();
+    ctx.reply(formatPosition(loc));
+    ctx.reply(formatChunk(chunkX, chunkZ));
+  }
 
-    int chunkX = player.getChunkX();
-    int chunkZ = player.getChunkZ();
+  private String formatPosition(Location loc) {
+    return String.format(
+        Locale.ROOT,
+        "Position: X=%.2f Y=%.2f Z=%.2f | Yaw=%.2f Pitch=%.2f",
+        loc.getX(),
+        loc.getY(),
+        loc.getZ(),
+        Math.toDegrees(loc.getYaw()),
+        Math.toDegrees(loc.getPitch()));
+  }
 
-    // -------------------------------------
-    // OUTPUT
-    // -------------------------------------
-    String positionStr =
-        String.format(Locale.ROOT, "Position: X=%.2f Y=%.2f Z=%.2f", pos.x, pos.y, pos.z);
-
-    String chunkStr = "Chunk: X=" + chunkX + " Z=" + chunkZ;
-
-    ctx.reply(positionStr);
-    ctx.reply(chunkStr);
+  private String formatChunk(int x, int z) {
+    return "Chunk: X=" + x + " Z=" + z;
   }
 
   @Override

@@ -21,9 +21,9 @@ import server.network.ServerConnection;
  */
 public class ServerPlayer extends PlayerData {
 
-  private float lastBroadcastX = Float.MAX_VALUE;
-  private float lastBroadcastY = Float.MAX_VALUE;
-  private float lastBroadcastZ = Float.MAX_VALUE;
+  private double lastBroadcastX = Double.MAX_VALUE;
+  private double lastBroadcastY = Double.MAX_VALUE;
+  private double lastBroadcastZ = Double.MAX_VALUE;
 
   private static final float POSITION_THRESHOLD = 0.1f; // minimal movement
   //  private static final float VIEW_DISTANCE_BLOCKS = 64f; // ~4 chunks
@@ -147,9 +147,9 @@ public class ServerPlayer extends PlayerData {
    * movement is accepted by the server logic.
    */
   public void setSilentPosition(float x, float y, float z, float yaw, float pitch) {
-    this.position.set(x, y, z);
-    this.yaw = yaw;
-    this.pitch = pitch;
+    this.position.setPosition(x, y, z);
+    this.position.setYaw(yaw);
+    this.position.setPitch(pitch);
   }
 
   /**
@@ -290,11 +290,11 @@ public class ServerPlayer extends PlayerData {
 
   public void broadcastUpdate() {
 
-    float dx = position.x - lastBroadcastX;
-    float dy = position.y - lastBroadcastY;
-    float dz = position.z - lastBroadcastZ;
+    double dx = position.getX() - lastBroadcastX;
+    double dy = position.getY() - lastBroadcastY;
+    double dz = position.getZ() - lastBroadcastZ;
 
-    float distSq = dx * dx + dy * dy + dz * dz;
+    double distSq = dx * dx + dy * dy + dz * dz;
 
     // ❌ Zu kleine Bewegung → skip
     if (distSq < POSITION_THRESHOLD * POSITION_THRESHOLD) {
@@ -302,12 +302,12 @@ public class ServerPlayer extends PlayerData {
     }
 
     // Update last broadcast position
-    lastBroadcastX = position.x;
-    lastBroadcastY = position.y;
-    lastBroadcastZ = position.z;
+    lastBroadcastX = position.getX();
+    lastBroadcastY = position.getY();
+    lastBroadcastZ = position.getZ();
 
     PlayerPositionPacket packet =
-        new PlayerPositionPacket(uuid, position.x, position.y, position.z, yaw, pitch);
+        new PlayerPositionPacket(uuid, position.getX(), position.getY(), position.getZ(), position.getYaw(), position.getPitch());
 
     PlayerManager playerManager = connection.getServer().getPlayerManager();
 
@@ -316,10 +316,10 @@ public class ServerPlayer extends PlayerData {
       if (other == this) continue;
 
       // 👉 Sichtbarkeits-Check
-      float odx = other.position.x - this.position.x;
-      float odz = other.position.z - this.position.z;
+      double odx = other.position.getX() - this.position.getX();
+      double odz = other.position.getZ() - this.position.getZ();
 
-      float distanceSq = odx * odx + odz * odz;
+      double distanceSq = odx * odx + odz * odz;
 
       if (distanceSq > VIEW_DISTANCE_BLOCKS * VIEW_DISTANCE_BLOCKS) {
         continue; // ❌ zu weit weg

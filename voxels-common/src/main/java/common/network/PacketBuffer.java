@@ -58,6 +58,14 @@ public class PacketBuffer {
     out.writeFloat(v);
   }
 
+  public double readDouble() throws IOException {
+    return in.readDouble();
+  }
+
+  public void writeDouble(double v) throws IOException {
+    out.writeDouble(v);
+  }
+
   public long readLong() throws IOException {
     return in.readLong();
   }

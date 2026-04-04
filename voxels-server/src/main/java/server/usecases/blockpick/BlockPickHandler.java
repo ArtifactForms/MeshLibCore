@@ -10,6 +10,7 @@ import common.logging.Log;
 import common.network.packets.ActionBarPacket;
 import common.network.packets.BlockPickPacket;
 import common.network.packets.ChatMessagePacket;
+import common.network.packets.PlayerSlotClearPacket;
 import common.network.packets.PlayerSlotUpdatePacket;
 import common.player.ability.Ability;
 import common.player.attribute.Attribute;
@@ -56,8 +57,12 @@ public class BlockPickHandler {
       return;
     }
     ItemStack itemStack = inventory.getItem(connection.getPlayer().getUuid(), slotIndex);
-    connection.send(
-        new PlayerSlotUpdatePacket(slotIndex, itemStack.getItemId(), itemStack.getAmount()));
+    if (itemStack == null) {
+      connection.send(new PlayerSlotClearPacket(slotIndex));
+    } else {
+      connection.send(
+          new PlayerSlotUpdatePacket(slotIndex, itemStack.getItemId(), itemStack.getAmount()));
+    }
   }
 
   private void failAndResync(BlockPickPacket packet) {

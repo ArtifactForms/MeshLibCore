@@ -15,11 +15,11 @@ public class PlayerPositionPacket implements Packet {
 
   private UUID playerUuid;
 
-  private float x;
+  private double x;
 
-  private float y;
+  private double y;
 
-  private float z;
+  private double z;
 
   private float yaw;
 
@@ -30,12 +30,13 @@ public class PlayerPositionPacket implements Packet {
   /** Required for PacketRegistry */
   public PlayerPositionPacket() {}
 
-  public PlayerPositionPacket(UUID playerUuid, float x, float y, float z, float yaw, float pitch) {
+  public PlayerPositionPacket(
+      UUID playerUuid, double x, double y, double z, float yaw, float pitch) {
     this(playerUuid, x, y, z, yaw, pitch, false);
   }
 
   public PlayerPositionPacket(
-      UUID playerUuid, float x, float y, float z, float yaw, float pitch, boolean teleport) {
+      UUID playerUuid, double x, double y, double z, float yaw, float pitch, boolean teleport) {
     this.playerUuid = playerUuid;
     this.x = x;
     this.y = y;
@@ -51,9 +52,9 @@ public class PlayerPositionPacket implements Packet {
     out.writeUuid(playerUuid);
 
     // Write Position
-    out.writeFloat(x);
-    out.writeFloat(y);
-    out.writeFloat(z);
+    out.writeDouble(x);
+    out.writeDouble(y);
+    out.writeDouble(z);
 
     // Write Rotation
     out.writeFloat(yaw);
@@ -68,9 +69,9 @@ public class PlayerPositionPacket implements Packet {
     this.playerUuid = in.readUuid();
 
     // Read Position
-    this.x = in.readFloat();
-    this.y = in.readFloat();
-    this.z = in.readFloat();
+    this.x = in.readDouble();
+    this.y = in.readDouble();
+    this.z = in.readDouble();
 
     // Read Rotation
     this.yaw = in.readFloat();
@@ -89,15 +90,15 @@ public class PlayerPositionPacket implements Packet {
     return playerUuid;
   }
 
-  public float getX() {
+  public double getX() {
     return x;
   }
 
-  public float getY() {
+  public double getY() {
     return y;
   }
 
-  public float getZ() {
+  public double getZ() {
     return z;
   }
 

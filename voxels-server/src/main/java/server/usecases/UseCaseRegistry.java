@@ -10,6 +10,8 @@ import server.usecases.blockplace.BlockPlace;
 import server.usecases.blockplace.BlockPlaceUseCase;
 import server.usecases.changegamemode.ChangeGameModeUseCase;
 import server.usecases.changegamemode.ChangeGamemode;
+import server.usecases.inventoryclear.InventoryClear;
+import server.usecases.inventoryclear.InventoryClearUseCase;
 
 public class UseCaseRegistry {
 
@@ -19,6 +21,7 @@ public class UseCaseRegistry {
     register(BlockBreak.class, new BlockBreakUseCase(context));
     register(BlockPlace.class, new BlockPlaceUseCase(context));
     register(ChangeGamemode.class, new ChangeGameModeUseCase(context));
+    register(InventoryClear.class, new InventoryClearUseCase(context));
   }
 
   private <T> void register(Class<T> type, T instance) {

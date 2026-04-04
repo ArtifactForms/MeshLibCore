@@ -131,9 +131,9 @@ public class ClientPacketDispatcher {
     if (id.equals(client.getPlayer().getUuid())) {
       ClientPlayer localPlayer = client.getPlayer();
 
-      float serverX = packet.getX();
-      float serverY = packet.getY();
-      float serverZ = packet.getZ();
+      float serverX = (float) packet.getX();
+      float serverY = (float) packet.getY();
+      float serverZ = (float) packet.getZ();
 
       float dx = serverX - localPlayer.getPosition().x;
       float dy = serverY - localPlayer.getPosition().y;
@@ -157,7 +157,12 @@ public class ClientPacketDispatcher {
       client
           .getEntityManager()
           .updateRemotePlayer(
-              id, packet.getX(), packet.getY(), packet.getZ(), packet.getYaw(), packet.getPitch());
+              id,
+              (float) packet.getX(),
+              (float) packet.getY(),
+              (float) packet.getZ(),
+              packet.getYaw(),
+              packet.getPitch());
     }
   }
 

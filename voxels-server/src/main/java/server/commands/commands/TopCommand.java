@@ -43,7 +43,7 @@ public class TopCommand extends AbstractCommand {
       return;
     }
 
-    location.set(x, topY + 1.5f, z);
+    location.setPosition(x, topY + 1.5f, z);
 
     players.teleport(ctx.getPlayer(), location);
 

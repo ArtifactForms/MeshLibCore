@@ -35,10 +35,11 @@ import server.gateways.PlayerGateway;
 import server.gateways.ServerGateway;
 import server.gateways.WorldGateway;
 import server.modules.Module;
+import server.permissions.AlwaysGrantPermissionService;
 import server.permissions.PermissionService;
-import server.permissions.SimplePermissionService;
 import server.persistance.ChunkRepository;
 import server.persistance.FileChunkRepository;
+import server.player.PlayerSyncListener;
 import server.player.ServerPlayer;
 import server.scheduler.ServerScheduler;
 import server.usecases.UseCaseRegistry;
@@ -108,9 +109,9 @@ public class GameServer {
     WorldGenerator worldGenerator = new BasicWorldGenerator2(0);
     this.world = new ServerWorld(worldGenerator, chunkRepository, events);
 
-    //    this.permissionService = new AlwaysGrantPermissionService();
-    //    this.permissionService = new AlwaysDenyPermissionService();
-    this.permissionService = new SimplePermissionService();
+    this.permissionService = new AlwaysGrantPermissionService();
+    // this.permissionService = new AlwaysDenyPermissionService();
+    // this.permissionService = new SimplePermissionService();
 
     initUseCases(events);
     registerCommands();
@@ -118,6 +119,12 @@ public class GameServer {
     commandDispatcher = new CommandDispatcher(this, context);
 
     new WorldNetworkSystem(events, context.messages(), playerManager);
+
+    registerListeners();
+  }
+
+  private void registerListeners() {
+    new PlayerSyncListener(playerManager, context.events());
   }
 
   public void registerModule(Module module) {
