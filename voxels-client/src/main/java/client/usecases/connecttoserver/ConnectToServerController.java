@@ -8,6 +8,7 @@ import client.usecases.connecttoserver.ConnectToServer.ConnectToServerRequest;
 public class ConnectToServerController {
 
   private GameClient client;
+
   private ConnectToServerView view;
 
   public ConnectToServerController(GameClient client, ConnectToServerView view) {

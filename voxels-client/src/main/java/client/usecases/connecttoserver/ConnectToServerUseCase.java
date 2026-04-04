@@ -9,6 +9,7 @@ import common.network.packets.PlayerJoinPacket;
 public class ConnectToServerUseCase implements ConnectToServer {
 
   private ClientNetwork network;
+
   private ExecutorService executor = Executors.newSingleThreadExecutor();
 
   public ConnectToServerUseCase(ClientNetwork network) {

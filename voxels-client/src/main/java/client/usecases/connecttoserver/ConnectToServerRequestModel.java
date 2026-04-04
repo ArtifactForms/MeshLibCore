@@ -7,8 +7,11 @@ import client.usecases.connecttoserver.ConnectToServer.ConnectToServerRequest;
 public class ConnectToServerRequestModel implements ConnectToServerRequest {
 
   private String host;
+
   private int port;
+
   private String playerName;
+
   private UUID playerUuid;
 
   public ConnectToServerRequestModel(String host, int port, String playerName, UUID playerUuid) {
