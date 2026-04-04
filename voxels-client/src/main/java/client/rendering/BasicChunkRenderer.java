@@ -23,10 +23,13 @@ public class BasicChunkRenderer implements ChunkRenderer {
   private final ProceduralSkyBox sky = new ProceduralSkyBox(500);
 
   private final Vector3f tempMin = new Vector3f();
+
   private final Vector3f tempMax = new Vector3f();
+
   private final Vector3f tempVec = new Vector3f();
 
   private final List<Chunk> visibleChunksCache = new ArrayList<>();
+
   private final GameClient client;
 
   private float currentTimeOfDay;
@@ -34,9 +37,11 @@ public class BasicChunkRenderer implements ChunkRenderer {
   private static final Vector3f ZERO = new Vector3f(0, 0, 0);
 
   private Bounds worldBounds = new Bounds(new Vector3f(), new Vector3f());
+
   private Bounds meshBounds = new Bounds(new Vector3f(), new Vector3f());
 
   private final Vector3f camPos = new Vector3f();
+
   private final Frustum frustum = new Frustum();
 
   public BasicChunkRenderer(GameClient client) {
@@ -61,8 +66,8 @@ public class BasicChunkRenderer implements ChunkRenderer {
   }
 
   private void updateLightingState() {
-//    currentTimeOfDay = client.getWorld().getTimeOfDay();
-	  currentTimeOfDay = client.getWorld().getTimeOfDayNormalized();
+    //    currentTimeOfDay = client.getWorld().getTimeOfDay();
+    currentTimeOfDay = client.getWorld().getTimeOfDayNormalized();
     sky.update(currentTimeOfDay);
   }
 
