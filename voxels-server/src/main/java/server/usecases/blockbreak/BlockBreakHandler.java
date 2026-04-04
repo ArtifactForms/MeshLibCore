@@ -10,6 +10,7 @@ import server.views.BlockBreakViewImpl;
 public class BlockBreakHandler {
 
   private final BlockBreak useCase;
+
   private final ServerConnection connection;
 
   public BlockBreakHandler(ServerConnection connection, BlockBreak useCase) {
@@ -18,10 +19,10 @@ public class BlockBreakHandler {
   }
 
   public void handle(BlockBreakPacket packet) {
-	if (!connection.hasPlayer()) {
-		return;
-	}
-	  
+    if (!connection.hasPlayer()) {
+      return;
+    }
+
     BlockBreakView view = new BlockBreakViewImpl(connection);
     BlockBreakRequest request = createRequest(connection.getPlayer(), packet);
     BlockBreakResponse presenter = new BlockBreakPresenter(view);

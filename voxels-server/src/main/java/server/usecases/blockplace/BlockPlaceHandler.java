@@ -10,6 +10,7 @@ import server.views.BlockPlaceViewImpl;
 public class BlockPlaceHandler {
 
   private final BlockPlace useCase;
+
   private final ServerConnection connection;
 
   public BlockPlaceHandler(ServerConnection connection, BlockPlace useCase) {

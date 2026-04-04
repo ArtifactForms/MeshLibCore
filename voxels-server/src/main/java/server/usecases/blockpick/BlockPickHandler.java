@@ -30,8 +30,11 @@ public class BlockPickHandler {
   private final ServerConnection connection;
 
   private final EventGateway events;
+
   private final PermissionGateway permissions;
+
   private final InventoryGateway inventory;
+
   private final WorldGateway world;
 
   public BlockPickHandler(ServerConnection connection, GatewayContext context) {
@@ -63,12 +66,12 @@ public class BlockPickHandler {
 
   public void handle(BlockPickPacket packet) {
     ServerPlayer player = connection.getPlayer();
-    
+
     if (player == null) {
-    	// TODO Log
-    	return;
+      // TODO Log
+      return;
     }
-    
+
     UUID playerId = player.getUuid();
 
     // -------------------------------------

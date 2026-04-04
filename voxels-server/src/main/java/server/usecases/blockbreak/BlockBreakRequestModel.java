@@ -7,11 +7,17 @@ import server.usecases.blockbreak.BlockBreak.BlockBreakRequest;
 public class BlockBreakRequestModel implements BlockBreakRequest {
 
   private final UUID player;
+
   private final int x;
+
   private final int y;
+
   private final int z;
+
   private final float playerX;
+
   private final float playerY;
+
   private final float playerZ;
 
   public BlockBreakRequestModel(

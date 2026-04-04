@@ -5,6 +5,7 @@ import common.game.block.BlockRegistry;
 import common.game.block.BlockType;
 import common.network.packets.ChatMessagePacket;
 import common.network.packets.ChunkDataPacket;
+import common.network.packets.DisconnectPacket;
 import common.network.packets.PlayerInventoryFullUpdatePacket;
 import common.network.packets.PlayerJoinPacket;
 import common.network.packets.PlayerSpawnPacket;
@@ -24,6 +25,7 @@ public class PlayerJoinHandler {
   private final ServerConnection connection;
 
   private EventGateway events;
+
   private WorldGateway world;
 
   public PlayerJoinHandler(ServerConnection connection, GatewayContext context) {
@@ -32,9 +34,35 @@ public class PlayerJoinHandler {
     this.world = context.world();
   }
 
+  private boolean isNameValid(String name) {
+    if (name == null || name.isEmpty()) return false;
+    if (name.contains(" ")) return false;
+
+    int minLength = 3;
+    int maxLength = 16;
+
+    if (name.length() > maxLength) return false;
+    if (name.length() < minLength) return false;
+
+    return true;
+  }
+
   public void handle(PlayerJoinPacket packet) {
     // Prevent double join (connection already has a player assigned)
     if (connection.getPlayer() != null) {
+      return;
+    }
+
+    String playerName = packet.getName();
+    if (!isNameValid(playerName)) {
+      connection.sendImmediate(new DisconnectPacket("Invalid player name."));
+
+      try {
+        Thread.sleep(20);
+      } catch (InterruptedException ignored) {
+      }
+
+      connection.close();
       return;
     }
 
@@ -56,7 +84,7 @@ public class PlayerJoinHandler {
     // -------------------------------------
     // CREATE
     // -------------------------------------
-    ServerPlayer player = new ServerPlayer(packet.getUuid(), packet.getName(), connection);
+    ServerPlayer player = new ServerPlayer(packet.getUuid(), playerName, connection);
     connection.setPlayer(player);
     connection.getServer().getPlayerManager().addPlayer(player);
 

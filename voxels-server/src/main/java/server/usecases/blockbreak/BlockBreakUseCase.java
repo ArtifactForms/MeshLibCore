@@ -19,9 +19,13 @@ import server.usecases.blockbreak.validation.PermissionRule;
 public class BlockBreakUseCase implements BlockBreak {
 
   private WorldGateway worldGateway;
+
   private EventGateway eventGateway;
+
   private PermissionGateway permissionGateway;
+
   private PlayerGateway playerGateway;
+
   private List<BlockBreakRule> rules;
 
   public BlockBreakUseCase(GatewayContext gateways) {
@@ -48,12 +52,12 @@ public class BlockBreakUseCase implements BlockBreak {
 
     short oldId = worldGateway.getBlock(x, y, z);
 
-     // TODO Check start stop mining
-//    AbilityContainer abilities = playerGateway.getAbilities(player);
-//    if (!abilities.has(Ability.INSTANT_BREAK)) {
-//      response.onNoAbilityToInstantBreak(x, y, z, oldId);
-//      return;
-//    }
+    // TODO Check start stop mining
+    //    AbilityContainer abilities = playerGateway.getAbilities(player);
+    //    if (!abilities.has(Ability.INSTANT_BREAK)) {
+    //      response.onNoAbilityToInstantBreak(x, y, z, oldId);
+    //      return;
+    //    }
 
     if (isInvalid(request, response, oldId)) {
       return;

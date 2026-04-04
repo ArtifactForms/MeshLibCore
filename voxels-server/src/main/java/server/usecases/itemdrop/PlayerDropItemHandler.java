@@ -28,7 +28,9 @@ public class PlayerDropItemHandler {
   private final ServerConnection connection;
 
   private InventoryGateway inventory;
+
   private EventGateway events;
+
   private PermissionGateway permissions;
 
   public PlayerDropItemHandler(ServerConnection connection, GatewayContext context) {
@@ -89,9 +91,9 @@ public class PlayerDropItemHandler {
     // -------------------------------------
     ItemStack itemStack = inventory.getItem(playerId, selectedSlot);
     if (itemStack == null) {
-    	return;
+      return;
     }
-    
+
     if (itemStack.getAmount() <= 0) {
       failAndResync(packet);
       return;

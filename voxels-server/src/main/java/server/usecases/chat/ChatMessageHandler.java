@@ -18,7 +18,9 @@ public class ChatMessageHandler {
   private final ServerConnection connection;
 
   private final PermissionGateway permissions;
+
   private final EventGateway events;
+
   private final ConfigGateway config;
 
   public ChatMessageHandler(ServerConnection connection, GatewayContext context) {

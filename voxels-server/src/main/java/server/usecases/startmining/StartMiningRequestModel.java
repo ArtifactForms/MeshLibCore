@@ -8,12 +8,19 @@ import server.usecases.startmining.StartMining.StartMiningRequest;
 public class StartMiningRequestModel implements StartMiningRequest {
 
   private final UUID playerId;
+
   private final int x;
+
   private final int y;
+
   private final int z;
+
   private final int selectedSlot;
+
   private BlockFace blockFace;
+
   private final float pitch;
+
   private final float yaw;
 
   public StartMiningRequestModel(

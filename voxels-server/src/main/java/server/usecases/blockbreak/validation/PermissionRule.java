@@ -6,6 +6,7 @@ import server.usecases.blockbreak.BlockBreak.BlockBreakRequest;
 import server.usecases.blockbreak.BlockBreak.BlockBreakResponse;
 
 public class PermissionRule implements BlockBreakRule {
+
   private final PermissionGateway permissions;
 
   public PermissionRule(PermissionGateway permissions) {

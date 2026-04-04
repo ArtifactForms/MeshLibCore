@@ -17,7 +17,9 @@ import server.usecases.blockplace.validation.PermissionRule;
 public class BlockPlaceUseCase implements BlockPlace {
 
   private WorldGateway worldGateway;
+
   private EventGateway eventGateway;
+
   private PermissionGateway permissionGateway;
 
   private final List<BlockPlaceRule> rules = new ArrayList<>();

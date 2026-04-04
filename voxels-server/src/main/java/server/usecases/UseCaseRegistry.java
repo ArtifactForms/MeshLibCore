@@ -12,6 +12,7 @@ import server.usecases.changegamemode.ChangeGameModeUseCase;
 import server.usecases.changegamemode.ChangeGamemode;
 
 public class UseCaseRegistry {
+
   private final Map<Class<?>, Object> useCases = new HashMap<>();
 
   public UseCaseRegistry(GatewayContext context) {

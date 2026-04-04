@@ -5,14 +5,23 @@ import java.util.UUID;
 import server.usecases.blockplace.BlockPlace.BlockPlaceRequest;
 
 public class BlockPlaceRequestModel implements BlockPlaceRequest {
+
   private final UUID player;
+
   private final int x;
+
   private final int y;
+
   private final int z;
+
   private final short blockId;
+
   private final float playerX;
+
   private final float playerY;
+
   private final float playerZ;
+
   private final int selectedSlot;
 
   public BlockPlaceRequestModel(
