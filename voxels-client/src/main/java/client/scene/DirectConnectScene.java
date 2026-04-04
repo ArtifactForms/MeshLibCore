@@ -23,13 +23,19 @@ import math.Color;
 public class DirectConnectScene extends Scene implements ConnectToServerView {
 
   private static final int WIDTH = 600;
+
   private static final int HEIGHT = 40;
 
   private Input input;
+
   private GameClient client;
+
   private TextField serverAddressField;
+
   private TextField playerNameField;
+
   private SimpleLabel messageLabel;
+
   private ConnectToServerView view;
 
   public DirectConnectScene(Input input, GameClient client) {

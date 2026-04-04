@@ -18,6 +18,7 @@ import math.Color;
 public class MenuScreen extends GameScreen {
 
   private UiComponent quitButton;
+
   private UiComponent backToGameButton;
 
   public MenuScreen() {
@@ -139,10 +140,10 @@ public class MenuScreen extends GameScreen {
 
   @Override
   public boolean onKeyPressed(KeyEvent e) {
-//    if (e.getKey() == Key.ESCAPE) {
-//      close();
-//      return true;
-//    }
+    //    if (e.getKey() == Key.ESCAPE) {
+    //      close();
+    //      return true;
+    //    }
     return true;
   }
 

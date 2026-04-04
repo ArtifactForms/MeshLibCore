@@ -16,7 +16,9 @@ import math.Color;
 public class ConnectionLostScene extends Scene {
 
   private final GameClient client;
+
   private final String reason;
+
   private Input input;
 
   public ConnectionLostScene(GameClient client, String reason) {

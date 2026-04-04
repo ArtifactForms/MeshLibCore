@@ -6,19 +6,15 @@ import client.entity.EntitiesComponent;
 import client.player.PlayerController;
 import client.resources.Resources;
 import client.scene.screen.GamePlayScreen;
-import client.ui.hotbar.HotbarComponent;
-import client.ui.hotbar.HotbarViewComponent;
 import client.ui.title.TitleTextComponent;
 import client.usecases.chat.ChatViewComponent;
 import client.usecases.debug.displaychunkborders.DisplayChunkBordersComponent;
-import client.usecases.dropitem.DropItemComponent;
 import client.usecases.interact.InteractionComponent;
 import client.usecases.interact.InteractionController;
 import client.usecases.interact.TargetingService;
 import client.usecases.openinventory.InventoryViewComponent;
 import client.usecases.openinventory.OpenInventoryComponent;
 import client.usecases.openinventory.OpenInventoryController;
-import common.game.Hotbar;
 import common.game.Inventory;
 import debug.DebugController;
 import engine.runtime.input.Input;
@@ -33,10 +29,15 @@ import messages.ChatMessageService;
 public class GameScene extends Scene {
 
   private Input input;
+
   private SkyBox skyBox;
+
   private SceneNode player;
+
   //  private ActionBarComponent actionBar;
+
   private GameClient client;
+
   private PlayerController playerController;
 
   public GameScene(Input input, GameClient client) {

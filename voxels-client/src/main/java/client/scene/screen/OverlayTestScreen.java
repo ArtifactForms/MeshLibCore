@@ -15,8 +15,11 @@ import math.Color;
 public class OverlayTestScreen extends GameScreen {
 
   private boolean justOpened;
+
   private GameClient client;
+
   private SimpleCursorComponent component;
+
   private SceneNode cursor;
 
   public OverlayTestScreen(GameClient client) {

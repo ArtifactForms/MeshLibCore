@@ -29,8 +29,11 @@ import engine.scene.screen.GlobalInput;
 public class GamePlayScreen extends GameScreen {
 
   private final GameClient client;
+
   private final SendChatMessageController controller;
+
   private final ChatController chatController;
+
   private DebugController debugController;
 
   public GamePlayScreen(GameClient client) {

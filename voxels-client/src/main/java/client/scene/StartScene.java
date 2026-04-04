@@ -31,7 +31,9 @@ import mesh.next.surface.SurfaceLayer;
 public class StartScene extends Scene {
 
   private Input input;
+
   private boolean gameStarted;
+
   private GameClient client;
 
   public StartScene(Input input, GameClient client) {

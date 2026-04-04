@@ -14,7 +14,9 @@ import math.Color;
 public class ChatScreen extends GameScreen {
 
   private final ChatController controller;
+
   private final Font font = new Font("monogram-extended", 32, Font.PLAIN);
+
   private boolean ignoreNextTyped = false;
 
   public ChatScreen(ChatController controller) {

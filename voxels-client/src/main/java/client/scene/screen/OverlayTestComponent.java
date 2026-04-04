@@ -8,6 +8,7 @@ import engine.runtime.input.Key;
 public class OverlayTestComponent extends AbstractComponent {
 
   private Input input;
+
   private GameClient client;
 
   public OverlayTestComponent(Input input, GameClient client) {
