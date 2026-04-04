@@ -27,22 +27,29 @@ import math.Vector3f;
 public class ChunkManager extends AbstractComponent implements RenderableComponent {
 
   private int renderDistance;
+
   private int bufferDistance;
 
   private int lastPlayerChunkX = Integer.MIN_VALUE;
+
   private int lastPlayerChunkZ = Integer.MIN_VALUE;
 
   private final ConcurrentLinkedDeque<Chunk> chunkPool = new ConcurrentLinkedDeque<>();
+
   private final Map<Long, Chunk> activeChunks = new ConcurrentHashMap<>();
 
   private final ConcurrentLinkedQueue<Chunk> dataQueue = new ConcurrentLinkedQueue<>();
+
   private final ConcurrentLinkedQueue<Chunk> meshQueue = new ConcurrentLinkedQueue<>();
 
   private final ConcurrentHashMap<Chunk, Boolean> dataQueueSet = new ConcurrentHashMap<>();
+
   private final ConcurrentHashMap<Chunk, Boolean> meshQueueSet = new ConcurrentHashMap<>();
 
   private int playerChunkX;
+
   private int playerChunkZ;
+
   private volatile Vector3f playerPosition = new Vector3f();
 
   private ChunkRenderer chunkRenderer;

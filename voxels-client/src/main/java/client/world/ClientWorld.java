@@ -3,7 +3,6 @@ package client.world;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.world.World;
-import common.world.WorldTime;
 
 public class ClientWorld extends World {
 
@@ -12,6 +11,7 @@ public class ClientWorld extends World {
   private float fractionalTickCounter = 0;
 
   private ChunkManager chunkManager;
+  
   // Warteschlange für Datenpakete vom Server
   private final ConcurrentLinkedQueue<ChunkDataPacket> incomingPackets =
       new ConcurrentLinkedQueue<>();

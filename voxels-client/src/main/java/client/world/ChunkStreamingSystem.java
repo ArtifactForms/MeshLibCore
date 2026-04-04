@@ -6,6 +6,7 @@ import math.Vector3f;
 public class ChunkStreamingSystem {
 
   private final ClientPlayer player;
+
   private final ChunkManager chunkManager;
 
   public ChunkStreamingSystem(ClientPlayer player, ChunkManager chunkManager) {

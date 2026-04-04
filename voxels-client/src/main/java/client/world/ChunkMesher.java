@@ -16,22 +16,40 @@ import math.Vector2f;
 
 public class ChunkMesher {
 
-    private static final int TOP = 0, BOTTOM = 1, FRONT = 2, BACK = 3, RIGHT = 4, LEFT = 5;
+    private static final int TOP = 0;
+    		
+    private static final int BOTTOM = 1;
+    
+    private static final int FRONT = 2;
+    
+    private static final int BACK = 3;
+    
+    private static final int RIGHT = 4;
+    
+    private static final int LEFT = 5;
+    
     private static final float radius = 0.5f;
 
     private final Chunk chunk;
+    
     private final ChunkManager chunkManager;
 
     private BufferedShape opaqueShape;
+    
     private BufferedShape waterShape;
+    
     private BufferedShape decorShape;
+    
     private BufferedShape currentShape;
 
     public static final Material sharedMaterial;
+    
     private static final TextureAtlas textureAtlas;
 
     private short[] localCache;
+    
     private static final int P_WIDTH = Chunk.WIDTH + 2;
+    
     private static final int P_DEPTH = Chunk.DEPTH + 2;
 
     private static final ThreadLocal<short[]> CACHE_HOLDER = ThreadLocal.withInitial(() -> 

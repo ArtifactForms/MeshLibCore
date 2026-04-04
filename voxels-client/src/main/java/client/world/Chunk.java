@@ -17,13 +17,17 @@ public class Chunk extends ChunkData {
   private final Vector3f worldPosition = new Vector3f();
 
   private volatile StaticGeometry opaqueGeometry;
+
   private volatile StaticGeometry waterGeometry;
+
   private volatile StaticGeometry decorGeometry;
 
   private Future<ChunkMesher.MeshResult> meshFuture;
 
   private volatile int generation = 0;
+
   private volatile boolean needsRebuild = false;
+
   private volatile ChunkStatus status = ChunkStatus.EMPTY;
 
   public Chunk(int x, int z) {
