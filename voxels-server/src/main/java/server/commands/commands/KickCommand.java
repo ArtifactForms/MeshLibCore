@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.events.events.PlayerKickEvent;
+import server.gateways.EventGateway;
 import server.gateways.PlayerGateway;
 import server.permissions.Permissions;
 
@@ -12,9 +14,11 @@ public class KickCommand extends AbstractCommand {
   private static final String DEFAULT_REASON = "Kicked by an operator.";
 
   private final PlayerGateway players;
+  private final EventGateway events;
 
-  public KickCommand(PlayerGateway players) {
+  public KickCommand(PlayerGateway players, EventGateway events) {
     this.players = players;
+    this.events = events;
   }
 
   @Override
@@ -39,7 +43,15 @@ public class KickCommand extends AbstractCommand {
       reason = String.join(" ", args.subList(1, args.size()));
     }
 
-    String message = "You were kicked from the server.\nReason: " + reason;
+    PlayerKickEvent event = new PlayerKickEvent(playerId, playerName, reason);
+    events.fire(event);
+
+    if (event.isCancelled()) {
+      ctx.reply("Kick event was cancelled by a subsystem.");
+      return;
+    }
+
+    String message = "You were kicked from the server.\nReason: " + event.getReason();
 
     players.kick(playerId, message);
 
