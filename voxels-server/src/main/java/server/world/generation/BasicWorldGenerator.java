@@ -16,23 +16,35 @@ import math.Vector3f;
 public class BasicWorldGenerator implements WorldGenerator {
 
   private int seaLevel = 80;
+
   private int beachSize = 3;
+
   private long seed;
+
   private Random rng;
 
   // Noise layers
   private PerlinNoise continentNoise;
+
   private PerlinNoise terrainNoise;
+
   private PerlinNoise biomeNoise;
+
   private PerlinNoise treeNoise;
+
   private PerlinNoise riverNoise;
+
   private PerlinNoise3 caveNoise;
 
   // Terrain params
   private float terrainScale = 0.01f;
+
   private int heightMultiplier = 180;
+
   private int octaves = 3;
+
   private float persistence = 0.5f;
+
   private float lacunarity = 2.0f;
 
   public BasicWorldGenerator(long seed) {

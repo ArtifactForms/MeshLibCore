@@ -22,6 +22,7 @@ public class RockFormationStructure implements VoxelStructure {
 
   // Cache, damit wir pro Seed nur einmal voxelizen
   private final Map<Long, Collection<Voxel>> voxelCache = new HashMap<>();
+
   private final Map<Long, Bounds> boundsCache = new HashMap<>();
 
   @Override

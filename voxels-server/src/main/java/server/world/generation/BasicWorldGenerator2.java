@@ -19,22 +19,33 @@ import server.world.structures.fin.TreeStructureGenerator;
 public class BasicWorldGenerator2 implements WorldGenerator {
 
   private int seaLevel = 80;
+
   private int beachSize = 3;
+
   private long seed;
 
   // Noise layers
   private PerlinNoise continentNoise;
+
   private PerlinNoise terrainNoise;
+
   private PerlinNoise biomeNoise;
+
   private PerlinNoise treeNoise;
+
   private PerlinNoise riverNoise;
+
   private PerlinNoise3 caveNoise;
 
   // Terrain params
   private float terrainScale = 0.005f;
+
   private int heightMultiplier = 180;
+
   private int octaves = 3;
+
   private float persistence = 0.5f;
+
   private float lacunarity = 2.0f;
 
   //  private float terrainScale = 0.04f;
@@ -215,7 +226,7 @@ public class BasicWorldGenerator2 implements WorldGenerator {
       int x, int y, int z, int heightValue, BiomeType biome, ChunkData chunk) {
     float wx = getPosition(chunk).x + x;
     float wz = getPosition(chunk).z + z;
-    
+
     if (y == 0) return Blocks.BEDROCK;
 
     // Beaches

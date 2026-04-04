@@ -5,7 +5,6 @@ import java.util.Random;
 
 import common.game.block.BlockIds;
 import common.game.block.BlockRegistry;
-import common.game.block.Blocks;
 import common.world.ChunkData;
 import math.Bounds;
 import math.Vector3f;
@@ -14,7 +13,9 @@ import voxels.Voxel;
 public class MeshStructureGenerator implements StructureGenerator {
 
   private final VoxelStructure structure;
+
   private final int maxRadius;
+
   private final float spawnChance;
 
   public MeshStructureGenerator(VoxelStructure structure, int maxRadius, float spawnChance) {

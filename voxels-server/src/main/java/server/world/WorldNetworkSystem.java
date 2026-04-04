@@ -12,6 +12,7 @@ import server.network.PlayerManager;
 public class WorldNetworkSystem {
 
   private final MessageGateway messages;
+
   private final PlayerManager playerManager;
 
   public WorldNetworkSystem(

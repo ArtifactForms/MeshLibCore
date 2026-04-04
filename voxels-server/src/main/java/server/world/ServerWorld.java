@@ -22,7 +22,9 @@ import server.world.generation.WorldGenerator;
 public class ServerWorld extends World {
 
   private final ChunkRepository repository;
+
   private final WorldGenerator generator;
+
   private final EventGateway events;
 
   public ServerWorld(WorldGenerator generator, ChunkRepository repository, EventGateway events) {
