@@ -3,7 +3,6 @@ package client.app;
 import client.network.ClientNetwork;
 import client.network.PingSystem;
 import client.player.PlayerNetworkSync;
-import client.scene.DirectConnectScene;
 import client.scene.StartScene;
 import client.usecases.loadresources.LoadResourcesUseCase;
 import client.world.ChunkStreamingSystem;
