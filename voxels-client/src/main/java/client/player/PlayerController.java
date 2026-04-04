@@ -15,6 +15,7 @@ public class PlayerController extends AbstractComponent {
   private static final float DEFAULT_MOUSE_SENSITIVITY = 10f;
 
   private static final float MAX_VERTICAL_ANGLE = 80f;
+
   private static final float MIN_VERTICAL_ANGLE = -80f;
 
   private static final float TELEPORT_ROTATION = 90f;
@@ -22,11 +23,15 @@ public class PlayerController extends AbstractComponent {
   private float mouseSensitivity = DEFAULT_MOUSE_SENSITIVITY;
 
   private float smoothedMouseX = 0f;
+
   private float smoothedMouseY = 0f;
+
   private float mouseSmoothingFactor = 0.25f;
 
   private float acceleration = 10f;
+
   private float deceleration = 8f;
+
   private float speedBoostMultiplier = 3f;
 
   private float syncSmoothing = 10f;
@@ -34,15 +39,21 @@ public class PlayerController extends AbstractComponent {
   private boolean skipNextSync = false;
 
   private final Vector3f currentVelocity = new Vector3f();
+
   private final Vector3f targetVelocity = new Vector3f();
+
   private final Vector3f target = new Vector3f();
 
   private final Vector3f syncTargetPosition = new Vector3f();
+
   private final Vector3f syncTargetRotation = new Vector3f();
 
   private final Input input;
+
   private final Camera camera;
+
   private final GameClient client;
+
   private final ClientPlayer player;
 
   public PlayerController(Input input, Camera camera, GameClient client) {
@@ -59,11 +70,11 @@ public class PlayerController extends AbstractComponent {
 
   @Override
   public void onUpdate(float tpf) {
-	GameScreen screen = getOwner().getScene().getTopScreen();
-	
-	if (screen == null || screen.blocksGameplay()) {
-		return;
-	}
+    GameScreen screen = getOwner().getScene().getTopScreen();
+
+    if (screen == null || screen.blocksGameplay()) {
+      return;
+    }
 
     if (client.getView().getChatView().isOpen()) return;
 
