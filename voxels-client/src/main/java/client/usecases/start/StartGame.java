@@ -2,7 +2,6 @@ package client.usecases.start;
 
 import client.app.GameClient;
 import client.scene.GameScene;
-import client.usecases.connecttoserver.ConnectToServerController;
 import engine.runtime.input.Input;
 
 public class StartGame {
