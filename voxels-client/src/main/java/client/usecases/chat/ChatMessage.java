@@ -3,6 +3,7 @@ package client.usecases.chat;
 public class ChatMessage {
 
   private final String text;
+
   private final long timestamp;
 
   public ChatMessage(String text) {

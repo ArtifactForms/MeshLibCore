@@ -12,9 +12,11 @@ import math.Color;
 public class ChatViewComponent extends AbstractComponent implements RenderableComponent, ChatView {
 
   private static final int MAX_BUFFER = 200;
+  
   private static final int VISIBLE_MESSAGES = 20;
 
   private static final float MESSAGE_LIFETIME = 10f; // seconds before fade
+  
   private static final float FADE_TIME = 3f;
 
   private final List<ChatMessage> messages = new LinkedList<>();

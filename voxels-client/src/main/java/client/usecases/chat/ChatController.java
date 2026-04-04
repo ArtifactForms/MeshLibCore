@@ -6,14 +6,19 @@ import java.util.List;
 public class ChatController {
 
   private static final int MAX_MESSAGE_LENGTH = 256;
+
   private static final int MAX_HISTORY_SIZE = 50;
 
   private final StringBuilder buffer = new StringBuilder();
+
   private int cursor = 0;
+
   private boolean open = false;
 
   private final List<String> history = new ArrayList<>();
+
   private int historyIndex = -1;
+
   private String currentDraft = "";
 
   private final SendChatMessageController sendController;

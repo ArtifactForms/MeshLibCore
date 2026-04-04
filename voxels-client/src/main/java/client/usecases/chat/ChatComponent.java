@@ -13,6 +13,7 @@ import math.Color;
 public class ChatComponent extends AbstractComponent implements KeyListener, RenderableComponent {
 
   private final ChatController controller;
+
   private final Input input;
 
   private boolean ignoreNextTyped = false;
