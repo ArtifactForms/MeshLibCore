@@ -12,7 +12,9 @@ import server.gateways.GatewayContext;
 public class ConsoleCommandReader implements Runnable {
 
   private final CommandRegistry registry;
+
   private final GameServer server;
+
   private final GatewayContext gatewayContext;
 
   public ConsoleCommandReader(
