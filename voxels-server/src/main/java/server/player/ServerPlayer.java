@@ -5,14 +5,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import common.game.GameMode;
 import common.game.ItemStack;
 import common.network.packets.ChunkDataPacket;
-import common.network.packets.GameModeUpdatePacket;
 import common.network.packets.PlayerPositionPacket;
 import common.network.packets.TitlePacket;
 import common.player.PlayerData;
-import common.player.ability.GameModePresets;
 import common.world.ChunkData;
 import common.world.World;
 import server.network.PlayerManager;
@@ -56,9 +53,9 @@ public class ServerPlayer extends PlayerData {
     super(uuid, name);
     this.connection = connection;
 
-//    GameModePresets.applyCreative(getAbilities());
-//    GameModePresets.applyCreative(getAttributes());
-//    connection.send(new GameModeUpdatePacket(GameMode.CREATIVE));
+    //    GameModePresets.applyCreative(getAbilities());
+    //    GameModePresets.applyCreative(getAttributes());
+    //    connection.send(new GameModeUpdatePacket(GameMode.CREATIVE));
   }
 
   public void teleport(float x, float y, float z, float yaw, float pitch) {
