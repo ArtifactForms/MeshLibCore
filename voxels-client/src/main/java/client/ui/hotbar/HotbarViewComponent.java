@@ -24,18 +24,26 @@ public class HotbarViewComponent extends AbstractComponent
 
   // Hotbar configuration
   private static final int SCALE = 4;
+
   private static final int SIZE = 16;
+
   private static final int BORDER = 1;
+
   private static final int MARGIN = 20;
+
   private static final int SLOTS = Hotbar.SIZE;
 
   // Hotbar dimensions
   private final int slotSize = SIZE * SCALE;
+
   private final int scaledWidth = calculateScaledWidth();
+
   private final int scaledHeight = calculateScaledHeight();
 
   private final Texture texture;
+
   private final Mesh3D plane;
+
   private final Geometry geometry;
 
   // Model
@@ -150,15 +158,15 @@ public class HotbarViewComponent extends AbstractComponent
     g.setColor(Color.WHITE);
     g.drawRect(x, -slotSize / 2, slotSize, slotSize);
 
-//    for (int i = 0; i < SLOTS; i++) {
-//
-//      ItemStack itemStack = hotbar.getSlot(i);
-//      if (itemStack == null) continue;
-//
-//      int x1 = (i * slotSize) - (scaledWidth / 2) + slotSize / 2;
-//
-//      iconRenderer.render(g, itemStack.getItemId(), itemStack.getAmount(), x1, 0);
-//    }
+    //    for (int i = 0; i < SLOTS; i++) {
+    //
+    //      ItemStack itemStack = hotbar.getSlot(i);
+    //      if (itemStack == null) continue;
+    //
+    //      int x1 = (i * slotSize) - (scaledWidth / 2) + slotSize / 2;
+    //
+    //      iconRenderer.render(g, itemStack.getItemId(), itemStack.getAmount(), x1, 0);
+    //    }
 
     g.popMatrix();
   }

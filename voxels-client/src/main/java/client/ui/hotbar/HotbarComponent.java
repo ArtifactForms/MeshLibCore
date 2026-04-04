@@ -9,6 +9,7 @@ import engine.scene.screen.GameScreen;
 public class HotbarComponent extends AbstractComponent {
 
   private Input input;
+
   private Hotbar hotbar;
 
   public HotbarComponent(Input input, Hotbar hotbar) {

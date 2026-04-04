@@ -19,7 +19,9 @@ import mesh.next.surface.SurfaceLayer;
 public class HotbarBlockIconRenderer {
 
   private Mesh3D cube;
+
   private Geometry geometry;
+
   private TextureAtlas textureAtlas;
 
   public HotbarBlockIconRenderer() {
@@ -91,7 +93,7 @@ public class HotbarBlockIconRenderer {
     g.pushMatrix();
 
     g.translate(x, y, 0);
-    
+
     applyBlockTexture(id);
     geometry.render(g);
 
