@@ -13,17 +13,23 @@ public class TitleTextComponent extends AbstractComponent
     implements RenderableComponent, TitleView {
 
   private float fadeInTime;
+
   private float stayTime;
+
   private float fadeOutTime;
+
   private float currentTime;
+
   private boolean finished;
 
   private Color color;
 
   private String text;
+
   private Font font;
 
   private String subtitle;
+
   private Font subtitleFont;
 
   private final Queue<Title> queue = new ArrayDeque<>();

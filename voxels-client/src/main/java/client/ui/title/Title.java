@@ -3,9 +3,13 @@ package client.ui.title;
 public class Title {
 
   private final String title;
+
   private final String subtitle;
+
   private final float fadeInTime;
+
   private final float stayTime;
+
   private final float fadeOutTime;
 
   public Title(String title, String subtitle, float fadeInTime, float stayTime, float fadeOutTime) {
