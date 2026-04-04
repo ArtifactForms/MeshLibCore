@@ -34,7 +34,7 @@ public class BaseCommandProvider implements CommandProvider {
     registry.register(new EchoCommand());
     registry.register(new HelpCommand(ctx.commands()));
     registry.register(new InventoryCommand());
-    registry.register(new KickCommand(ctx.players()));
+    registry.register(new KickCommand(ctx.players(), ctx.events()));
     registry.register(new PlayersCommand(ctx.players(), ctx.config()));
     registry.register(new PositionCommand());
     registry.register(new PrivateMessageCommand(ctx.players(), ctx.messages()));

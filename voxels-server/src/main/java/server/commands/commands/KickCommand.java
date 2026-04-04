@@ -30,32 +30,37 @@ public class KickCommand extends AbstractCommand {
       return;
     }
 
-    String playerName = args.get(0);
-    UUID playerId = players.getPlayerIdByName(playerName);
+    String inputName = args.get(0);
+    UUID playerId = players.getPlayerIdByName(inputName);
 
     if (playerId == null) {
-      ctx.reply("§cPlayer '" + playerName + "' is not online or unknown.");
+      ctx.reply("§cPlayer '" + inputName + "' is not online or unknown.");
       return;
     }
+
+    if (!ctx.isConsole() && ctx.getPlayer().equals(playerId)) {
+      ctx.reply("§cYou cannot kick yourself.");
+      return;
+    }
+
+    String actualName = players.getName(playerId);
 
     String reason = DEFAULT_REASON;
     if (args.size() > 1) {
       reason = String.join(" ", args.subList(1, args.size()));
     }
 
-    PlayerKickEvent event = new PlayerKickEvent(playerId, playerName, reason);
+    PlayerKickEvent event = new PlayerKickEvent(playerId, actualName, reason);
     events.fire(event);
 
     if (event.isCancelled()) {
-      ctx.reply("Kick event was cancelled by a subsystem.");
+      ctx.reply("§cUnable to kick player.");
       return;
     }
 
-    String message = "You were kicked from the server.\nReason: " + event.getReason();
+    players.kick(playerId, event.getReason());
 
-    players.kick(playerId, message);
-
-    ctx.reply("§aPlayer " + playerName + " has been kicked.");
+    ctx.reply("§aPlayer " + actualName + " has been kicked.");
   }
 
   @Override
