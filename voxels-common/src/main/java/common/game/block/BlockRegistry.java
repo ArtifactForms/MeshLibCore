@@ -8,9 +8,11 @@ import java.util.NoSuchElementException;
 public final class BlockRegistry {
 
   private static int maxId = 0;
+
   private static final int MAX_BLOCKS = 4096;
 
   private static final BlockType[] BY_ID = new BlockType[MAX_BLOCKS];
+
   private static final Map<String, BlockType> BY_NAME = new HashMap<>();
 
   private static boolean frozen = false;

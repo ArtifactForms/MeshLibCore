@@ -8,13 +8,18 @@ import math.Vector3f;
  * and velocity.
  */
 public class ItemEntity {
+
   private final long entityId;
+
   private final BlockType blockType;
+
   private Vector3f position;
+
   private Vector3f velocity;
 
   // Constants for simple physics
   private static final float GRAVITY = -0.02f;
+
   private static final float DRAG = 0.98f;
 
   public ItemEntity(long id, BlockType type, Vector3f pos) {
@@ -91,7 +96,7 @@ public class ItemEntity {
   }
 
   public void applyDropImpulse(Vector3f direction) {
-	  
+
     velocity.x = direction.x * 0.25f;
     velocity.y = 0.25f;
     velocity.z = direction.z * 0.25f;

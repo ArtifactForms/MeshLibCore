@@ -6,16 +6,22 @@ import java.util.Map;
 public final class BlockType {
 
   private final short id;
+
   private final String name;
 
   // Performance-critical flags
   private boolean solid = true;
+
   private boolean opaque = true;
+
   private boolean selectable = true;
+
   private int lightEmission = 0;
 
   private int r = 255;
+
   private int g = 0;
+
   private int b = 255;
 
   private BlockShape shape = BlockShape.CUBE;

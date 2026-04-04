@@ -72,23 +72,17 @@ public final class Blocks {
 
   public static final BlockType BROWN_TERRACOTTA =
       BlockRegistry.register((short) 22, "core:brown_terracotta");
-  
-  
-  
-  
-  
-  
-  
-//  public static final BlockType WHITE_CLOTH = BlockRegistry.register((short) 23, "core:white_cloth");
-//  public static final BlockType ORANGE_CLOTH = BlockRegistry.register((short) 23, "core:orange_cloth");
-//  public static final BlockType MAGENTA_CLOTH = BlockRegistry.register((short) 23, "core:magenta_cloth");
-//  public static final BlockType LIGHT_BLUE_CLOTH = BlockRegistry.register((short) 23, "core:light_blue_cloth");
-//  public static final BlockType LIGHT_BLUE_CLOTH = BlockRegistry.register((short) 23, "core:light_blue_cloth");
-  
-  
-  
-  
-  
+
+  //  public static final BlockType WHITE_CLOTH = BlockRegistry.register((short) 23,
+  // "core:white_cloth");
+  //  public static final BlockType ORANGE_CLOTH = BlockRegistry.register((short) 23,
+  // "core:orange_cloth");
+  //  public static final BlockType MAGENTA_CLOTH = BlockRegistry.register((short) 23,
+  // "core:magenta_cloth");
+  //  public static final BlockType LIGHT_BLUE_CLOTH = BlockRegistry.register((short) 23,
+  // "core:light_blue_cloth");
+  //  public static final BlockType LIGHT_BLUE_CLOTH = BlockRegistry.register((short) 23,
+  // "core:light_blue_cloth");
 
   /** Static initializer to ensure all blocks are registered when the class is loaded. */
   public static void initialize() {

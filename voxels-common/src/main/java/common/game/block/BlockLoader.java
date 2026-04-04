@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.stream.Stream;
 
 public class BlockLoader {
+
   private static final Gson gson = new Gson();
 
   public static void load() {
