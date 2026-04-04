@@ -25,8 +25,11 @@ public class ClientApplication extends BasicApplication {
   private ClientNetwork network;
 
   private PlayerNetworkSync playerNetworkSync;
+
   private ChunkStreamingSystem chunkStreamingSystem;
+
   private GameClient client;
+
   private PingSystem pingSystem;
 
   @Override

@@ -22,15 +22,21 @@ public class GameClient {
   private final PingTracker pingTracker = new PingTracker();
 
   private ClientNetwork network;
+
   private ClientView view;
+
   private ClientWorld world;
 
   private ClientPlayer player;
+
   private Camera playerCamera;
+
   private RaycastMode raycastMode = RaycastMode.CROSS_HAIR;
 
   private ChunkManager chunkManager;
+
   private SceneManager sceneManager;
+
   private ClientEntityManager entityManager;
 
   public GameClient(BasicApplication application) {
@@ -65,7 +71,7 @@ public class GameClient {
   }
 
   public void onConnectionClosed() {
-//    sceneManager.setActiveScene(new ConnectionLostScene(this));
+    //    sceneManager.setActiveScene(new ConnectionLostScene(this));
   }
 
   public ClientNetwork getNetwork() {
