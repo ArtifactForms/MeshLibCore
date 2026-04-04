@@ -8,9 +8,13 @@ import client.usecases.chat.ChatView;
 public class View implements ClientView {
 
   private ActionBarView actionBarView;
+
   private HotbarView hotbarView;
+
   private ChatView chatView;
+
   private InventoryView inventoryView;
+
   private TitleView titleView;
 
   public View() {}

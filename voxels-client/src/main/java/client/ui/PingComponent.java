@@ -10,6 +10,7 @@ import math.Color;
 public class PingComponent extends AbstractComponent implements RenderableComponent {
 
   private GameClient client;
+
   private Font font;
 
   public PingComponent(GameClient client) {

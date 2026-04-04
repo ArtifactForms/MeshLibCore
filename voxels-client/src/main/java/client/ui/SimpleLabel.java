@@ -7,17 +7,25 @@ import math.Color;
 
 public class SimpleLabel extends AbstractUiElement {
 
-  private int offsetX;
-  private int offsetY;
-  private int x;
-  private int y;
-  private int width;
-  private int height;
-  private String text;
-  private Color foreground = Color.getColorFromInt(228, 228, 228);
-  private TextAlignment alignment = TextAlignment.CENTER;
-
   private static final Font FONT = new Font("monogram-extended", 40, Font.PLAIN);
+
+  private int offsetX;
+
+  private int offsetY;
+
+  private int x;
+
+  private int y;
+
+  private int width;
+
+  private int height;
+
+  private String text;
+
+  private Color foreground = Color.getColorFromInt(228, 228, 228);
+
+  private TextAlignment alignment = TextAlignment.CENTER;
 
   public SimpleLabel(String text, int x, int y, int width, int height) {
     this.text = text;

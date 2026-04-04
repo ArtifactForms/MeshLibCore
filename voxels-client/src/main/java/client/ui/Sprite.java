@@ -22,9 +22,9 @@ public class Sprite extends SceneNode {
     int width = texture.getWidth();
     int height = texture.getHeight();
     Material material = new Material();
-    material.setDiffuseTexture(texture);  
+    material.setDiffuseTexture(texture);
     Mesh3D mesh = new PlaneCreatorUV(0.5f).create();
-    
+
     new RotateModifier(-Mathf.HALF_PI, TransformAxis.X).modify(mesh);
     new ScaleModifier(width, height, 1).modify(mesh);
     new TranslateModifier(width * 0.5f, height * 0.5f, 0).modify(mesh);
