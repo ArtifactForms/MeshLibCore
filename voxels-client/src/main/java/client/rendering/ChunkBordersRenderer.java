@@ -22,8 +22,11 @@ import mesh.selection.FaceSelection;
 public class ChunkBordersRenderer {
 
   private static boolean label = false;
+
   private static final int DIM = 16;
+
   private static final float PADDING = 0.002f; // Small padding to avoid Z-fighting
+
   private static final StaticGeometry CUBE;
 
   private ChunkBordersRenderer() {
