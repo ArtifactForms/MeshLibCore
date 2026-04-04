@@ -55,27 +55,35 @@ import server.world.generation.WorldGenerator;
 public class GameServer {
 
   private static final int MAX_PACKETS_PER_TICK = 2000; // TODO this is config later
+
   private static final int MAX_PACKETS_PER_CONNECTION = 100; // TODO this is config later
 
   private long tick = 0;
 
   private final int port;
+
   private volatile boolean running = true;
+
   private ServerSocket serverSocket;
 
   private final ServerScheduler scheduler;
 
   private final CommandRegistry commandRegistry;
+
   private final CommandDispatcher commandDispatcher;
 
   private final EventBus eventBus;
+
   private final PlayerManager playerManager;
+
   private final EntityManager entityManager;
+
   private ServerWorld world;
 
   private final PermissionService permissionService;
 
   private UseCaseRegistry useCases;
+
   private GatewayContext context;
 
   private final ServerConfig config;
