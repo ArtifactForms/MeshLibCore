@@ -13,15 +13,21 @@ import mesh.modifier.transform.ScaleModifier;
 public class ProceduralSkyBox {
 
   private final Vector3f sunDir = new Vector3f();
+
   private final Vector3f moonDir = new Vector3f();
 
   private final Vector3f dayColor = new Vector3f(1.0f, 0.95f, 0.8f);
+
   private final Vector3f nightColor = new Vector3f(0.2f, 0.3f, 0.5f);
+
   private final Vector3f skyDayColor = new Vector3f(0.6f, 0.75f, 1.0f);
+
   private final Vector3f skyNightColor = new Vector3f(0.05f, 0.08f, 0.15f);
 
   private final Vector3f currentSkyColor = new Vector3f();
+
   private final Vector3f currentLightDir = new Vector3f();
+
   private final Vector3f currentLightColor = new Vector3f();
 
   private float currentAmbient;
@@ -38,7 +44,7 @@ public class ProceduralSkyBox {
   }
 
   public void update(float timeOfDay) {
-	float angle = timeOfDay * (float) Math.PI * 2f - (float) Math.PI / 2f;
+    float angle = timeOfDay * (float) Math.PI * 2f - (float) Math.PI / 2f;
     sunDir.set((float) Math.sin(angle), (float) -Math.cos(angle), 0.2f).normalizeLocal();
     moonDir.set(sunDir).negateLocal();
 
