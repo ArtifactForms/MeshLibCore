@@ -6,9 +6,13 @@ import engine.runtime.input.KeyEvent;
 public abstract class AbstractUiElement implements UiElement {
 
   protected int x;
+
   protected int y;
+
   protected int width;
+
   protected int height;
+
   protected Layout layout;
 
   public AbstractUiElement() {}

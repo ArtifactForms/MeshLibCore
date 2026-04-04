@@ -7,11 +7,13 @@ import math.Color;
 
 public class Label extends AbstractUiElement {
 
-  private int x;
-  private int y;
-  private String text;
-
   private static final Font FONT = new Font("monogram-extended", 40, Font.PLAIN);
+
+  private int x;
+
+  private int y;
+
+  private String text;
 
   public Label(String text, int x, int y) {
     this.text = text;

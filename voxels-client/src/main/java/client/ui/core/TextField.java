@@ -10,18 +10,23 @@ public class TextField extends AbstractUiElement {
   private static final Font FONT = new Font("monogram-extended", 40, Font.PLAIN);
 
   private int offsetX;
+  
   private int offsetY;
 
   private int x;
+  
   private int y;
 
   private StringBuilder text = new StringBuilder();
+  
   private boolean focused = false;
 
   private int cursorPosition = 0;
 
   private Color background = Color.getColorFromInt(40, 40, 40);
+  
   private Color border = Color.getColorFromInt(80, 80, 80);
+  
   private Color foreground = Color.getColorFromInt(228, 228, 228);
 
   public TextField() {

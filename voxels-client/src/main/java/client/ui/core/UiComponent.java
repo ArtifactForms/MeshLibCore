@@ -10,7 +10,9 @@ import engine.runtime.input.KeyListener;
 public class UiComponent extends AbstractComponent implements RenderableComponent, KeyListener {
 
   private boolean lastPressed;
+
   private UiElement uiElement;
+
   private Input input;
 
   public UiComponent(Input input, UiElement uiElement) {

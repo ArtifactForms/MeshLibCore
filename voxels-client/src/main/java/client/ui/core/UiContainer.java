@@ -9,6 +9,7 @@ import engine.runtime.input.KeyEvent;
 public class UiContainer extends AbstractUiElement {
 
   private List<UiElement> children = new ArrayList<>();
+
   private Layout layout;
 
   public UiContainer(int x, int y, int width, int height) {
