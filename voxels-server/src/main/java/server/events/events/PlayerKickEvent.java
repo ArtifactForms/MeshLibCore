@@ -31,7 +31,9 @@ import server.events.CancellableEvent;
 public class PlayerKickEvent extends CancellableEvent {
 
   private final UUID playerId;
+
   private final String playerName;
+
   private String reason;
 
   /**

@@ -31,18 +31,24 @@ public class PlayerMoveEvent extends CancellableEvent {
 
   // Immutable "from"
   private final float fromX;
+
   private final float fromY;
+
   private final float fromZ;
 
   private final float fromYaw;
+
   private final float fromPitch;
 
   // Mutable "to"
   private float toX;
+
   private float toY;
+
   private float toZ;
 
   private float toYaw;
+
   private float toPitch;
 
   public PlayerMoveEvent(
