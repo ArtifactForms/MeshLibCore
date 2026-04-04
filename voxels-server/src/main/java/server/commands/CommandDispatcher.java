@@ -16,9 +16,13 @@ import server.permissions.Permissions;
 public class CommandDispatcher {
 
   private final GameServer server;
+
   private final GatewayContext context;
+
   private final PermissionGateway permissions;
+
   private final CommandGateway commands;
+
   private final EventGateway events;
 
   public CommandDispatcher(GameServer server, GatewayContext context) {

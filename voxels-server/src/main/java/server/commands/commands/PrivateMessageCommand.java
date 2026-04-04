@@ -13,6 +13,7 @@ import server.permissions.Permissions;
 public class PrivateMessageCommand extends AbstractCommand {
 
   private final PlayerGateway players;
+
   private final MessageGateway messages;
 
   public PrivateMessageCommand(PlayerGateway players, MessageGateway messages) {

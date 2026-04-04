@@ -10,6 +10,7 @@ import server.permissions.Permissions;
 public class StopCommand extends AbstractCommand {
 
   private final ServerGateway server;
+
   private final PlayerGateway players;
 
   public StopCommand(ServerGateway server, PlayerGateway players) {

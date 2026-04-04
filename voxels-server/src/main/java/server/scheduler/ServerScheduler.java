@@ -19,9 +19,13 @@ public class ServerScheduler {
   }
 
   private static class ScheduledTask implements Comparable<ScheduledTask> {
+
     long executeTick;
+
     final long period;
+
     final Runnable runnable;
+
     final Task handle;
 
     ScheduledTask(long executeTick, long period, Runnable runnable, Task handle) {
@@ -38,6 +42,7 @@ public class ServerScheduler {
   }
 
   private final PriorityQueue<ScheduledTask> queue = new PriorityQueue<>();
+
   private final Set<Task> activeTasks = ConcurrentHashMap.newKeySet();
 
   public Task schedule(long currentTick, long delay, Runnable runnable) {

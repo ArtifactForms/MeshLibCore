@@ -11,21 +11,32 @@ public class ServerConfig {
 
   // Keys
   private static final String SERVER_PORT_KEY = "server-port";
+
   private static final String MAX_PLAYERS_KEY = "max-players";
+
   private static final String MOTD_KEY = "motd";
+
   private static final String CHAT_FORMAT_KEY = "chat-format";
+
   private static final String VIEW_DISTANCE_KEY = "view-distance";
+
   private static final String MAX_CHAT_MESSAGE_LENGTH_KEY = "max-chat-message-length";
+
   private static final String SERVER_PREFIX_KEY = "server-prefix";
 
   // Defaults (single source of truth)
   private static final int DEFAULT_PORT = 25565;
+
   private static final int DEFAULT_MAX_PLAYERS = 10;
+
   private static final int DEFAULT_VIEW_DISTANCE = 8;
+
   private static final int DEFAULT_MAX_CHAT_LENGTH = 256;
 
   private static final String DEFAULT_MOTD = "A Voxel Server";
+
   private static final String DEFAULT_CHAT_FORMAT = "§7{prefix}§6{name}§f: {message}";
+
   private static final String DEFAULT_SERVER_PREFIX = "§7[SERVER]§r";
 
   private final Properties props = new Properties();

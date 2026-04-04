@@ -12,6 +12,7 @@ import server.permissions.Permissions;
 public class PlayersCommand extends AbstractCommand {
 
   private final PlayerGateway players;
+
   private final ConfigGateway config;
 
   public PlayersCommand(PlayerGateway players, ConfigGateway config) {

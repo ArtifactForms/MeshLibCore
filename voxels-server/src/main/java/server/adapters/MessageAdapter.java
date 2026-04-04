@@ -9,6 +9,7 @@ import server.network.PlayerManager;
 public class MessageAdapter implements MessageGateway {
 
   private final PlayerManager playerManager;
+
   private final String prefix;
 
   public MessageAdapter(PlayerManager playerManager, String prefix) {

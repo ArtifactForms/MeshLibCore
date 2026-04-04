@@ -11,9 +11,13 @@ import server.usecases.UseCaseRegistry;
 public class CommandContext {
 
   private final UUID player;
+
   private final List<String> args;
+
   private final GameServer server;
+
   private final PermissionGateway permissions;
+
   private final MessageGateway messages;
 
   public CommandContext(

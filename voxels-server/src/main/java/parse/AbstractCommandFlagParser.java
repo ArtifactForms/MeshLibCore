@@ -8,8 +8,11 @@ import server.commands.Command;
 public abstract class AbstractCommandFlagParser implements FlagParseListener {
 
   private boolean invalid;
+
   private Command command;
+
   private FlagParser parser;
+
   private List<String> invalidArguments;
 
   public AbstractCommandFlagParser(Command command) {

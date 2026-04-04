@@ -14,6 +14,7 @@ public class KickCommand extends AbstractCommand {
   private static final String DEFAULT_REASON = "Kicked by an operator.";
 
   private final PlayerGateway players;
+
   private final EventGateway events;
 
   public KickCommand(PlayerGateway players, EventGateway events) {

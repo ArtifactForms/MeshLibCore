@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class HotbarTest {
 
   private Inventory inventory;
+
   private Hotbar hotbar;
 
   @BeforeEach

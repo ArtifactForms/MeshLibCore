@@ -12,6 +12,7 @@ import server.permissions.Permissions;
 public class TopCommand extends AbstractCommand {
 
   private final WorldGateway world;
+
   private final PlayerGateway players;
 
   public TopCommand(WorldGateway world, PlayerGateway players) {

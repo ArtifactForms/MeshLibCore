@@ -5,7 +5,9 @@ public class DimensionFlag extends Flag {
   private static final String REGEX_DIMENSION = "[\\d]{1,}(,\\d{1,}){2}";
 
   private int width;
+
   private int height;
+
   private int depth;
 
   public DimensionFlag(String name) {

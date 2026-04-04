@@ -7,7 +7,9 @@ import java.util.List;
 public class FlagParser {
 
   private List<Flag> flags;
+
   private HashMap<String, Flag> flagMap;
+
   private List<FlagParseListener> listeners;
 
   public FlagParser() {

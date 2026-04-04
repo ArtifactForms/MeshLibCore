@@ -13,7 +13,9 @@ import server.permissions.Permissions;
 public class DeopCommand extends AbstractCommand {
 
   private final PermissionGateway permissions;
+
   private final PlayerGateway players;
+
   private final MessageGateway messages;
 
   public DeopCommand(
