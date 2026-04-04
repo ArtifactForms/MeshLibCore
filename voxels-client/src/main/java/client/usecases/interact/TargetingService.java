@@ -11,6 +11,7 @@ import engine.scene.camera.Camera;
 public class TargetingService {
 
   private final Input input;
+
   private final GameClient client;
 
   public TargetingService(Input input, GameClient client) {

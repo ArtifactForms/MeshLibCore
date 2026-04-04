@@ -14,7 +14,9 @@ import messages.MessageService;
 public class DisplayChunkBordersComponent extends AbstractComponent implements RenderableComponent {
 
   private boolean visible;
+
   private ClientPlayer player;
+
   private MessageService messageService;
 
   public DisplayChunkBordersComponent(

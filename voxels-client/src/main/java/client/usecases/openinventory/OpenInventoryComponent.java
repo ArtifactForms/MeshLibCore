@@ -8,9 +8,13 @@ import engine.scene.SceneNode;
 public class OpenInventoryComponent extends AbstractComponent {
 
   private boolean inventoryOpen;
+
   private boolean lastPressed;
+
   private Input input;
+
   private OpenInventoryController controller;
+
   private SceneNode cursor;
 
   public OpenInventoryComponent(Input input, OpenInventoryController controller) {
@@ -21,21 +25,21 @@ public class OpenInventoryComponent extends AbstractComponent {
 
   @Override
   public void onUpdate(float tpf) {
-//    boolean pressed = input.isKeyPressed(KeyBinds.openCloseInventory);
-//
-//    if (!lastPressed && pressed) {
-//      inventoryOpen = !inventoryOpen;
-//      if (inventoryOpen) {
-//        getOwner().getScene().pushScreen(new InventoryScreen());
-//        controller.onInventoryOpen();
-//        getOwner().getScene().getUIRoot().addChild(cursor);
-//      } else {
-//        controller.onInventoryClose();
-//        getOwner().getScene().getUIRoot().removeChild(cursor);
-//        getOwner().getScene().popScreen();
-//      }
-//    }
-//
-//    lastPressed = pressed;
+    //    boolean pressed = input.isKeyPressed(KeyBinds.openCloseInventory);
+    //
+    //    if (!lastPressed && pressed) {
+    //      inventoryOpen = !inventoryOpen;
+    //      if (inventoryOpen) {
+    //        getOwner().getScene().pushScreen(new InventoryScreen());
+    //        controller.onInventoryOpen();
+    //        getOwner().getScene().getUIRoot().addChild(cursor);
+    //      } else {
+    //        controller.onInventoryClose();
+    //        getOwner().getScene().getUIRoot().removeChild(cursor);
+    //        getOwner().getScene().popScreen();
+    //      }
+    //    }
+    //
+    //    lastPressed = pressed;
   }
 }

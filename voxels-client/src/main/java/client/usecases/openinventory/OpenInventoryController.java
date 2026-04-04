@@ -8,7 +8,9 @@ import input.InputSettings;
 public class OpenInventoryController {
 
   private GameClient client;
+
   private InventoryView view;
+
   private InputMode oldInputMode;
 
   public OpenInventoryController(GameClient client) {

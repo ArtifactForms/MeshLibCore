@@ -16,12 +16,15 @@ import math.Vector3f;
 public class InteractionComponent extends AbstractComponent implements RenderableComponent {
 
   private final Input input;
+  
   private final InteractionController controller;
+  
   private final TargetingService targeting;
 
   private InteractionTarget currentTarget;
 
   private float miningTimer = 0.0f;
+  
   private InteractionTarget lastTarget;
 
   public InteractionComponent(Input input,

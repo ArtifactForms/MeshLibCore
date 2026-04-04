@@ -33,32 +33,40 @@ public class InventoryViewComponent extends AbstractComponent
     implements RenderableComponent, InventoryView {
 
   private Input input;
+
   private Inventory inventory;
 
   private static final int SCALE = 4;
+
   private static final int SIZE = 16;
+
   private static final int BORDER = 1;
 
   private static final int HOTBAR_SIZE = 9;
 
   private final int WIDTH = 9;
+
   private final int HEIGHT;
 
   private final int slotSize;
 
   private Texture texture;
+
   private Geometry geometry;
 
   private boolean inventoryOpen = false;
+
   private int hoveredSlot = -1;
 
   private HotbarBlockIconRenderer iconRenderer = new HotbarBlockIconRenderer();
 
   private int inventoryVersion = 0;
+
   private ItemStack cursorStack = null;
 
   // Drag Distribution
   private boolean dragDistributeActive = false;
+
   private Set<Integer> dragVisitedSlots = new HashSet<>();
 
   private TooltipRenderer tooltipRenderer = new DefaultTooltipRenderer();
@@ -383,9 +391,9 @@ public class InventoryViewComponent extends AbstractComponent
   public void setCursorStack(ItemStack stack) {
     this.cursorStack = stack;
   }
-  
+
   @Override
   public void setInventoryVersion(int inventoryVersion) {
-	  this.inventoryVersion = inventoryVersion;
+    this.inventoryVersion = inventoryVersion;
   }
 }

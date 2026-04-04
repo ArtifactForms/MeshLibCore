@@ -11,7 +11,9 @@ import engine.scene.screen.GameScreen;
 public class DropItemComponent extends AbstractComponent {
 
   private Input input;
+
   private Hotbar hotbar;
+
   private GameClient client;
 
   public DropItemComponent(Input input, GameClient client, Hotbar hotbar) {
