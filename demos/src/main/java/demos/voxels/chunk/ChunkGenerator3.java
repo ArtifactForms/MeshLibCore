@@ -12,23 +12,35 @@ import math.Vector3f;
 public class ChunkGenerator3 implements ChunkGenerator {
 
   private int seaLevel = 80;
+
   private int beachSize = 3;
+
   private long seed;
+
   private Random rng;
 
   // Noise layers
   private PerlinNoise continentNoise;
+
   private PerlinNoise terrainNoise;
+
   private PerlinNoise biomeNoise;
+
   private PerlinNoise treeNoise;
+
   private PerlinNoise riverNoise;
+
   private PerlinNoise3 caveNoise;
 
   // Terrain params
   private float terrainScale = 0.01f;
+
   private int heightMultiplier = 180;
+
   private int octaves = 3;
+
   private float persistence = 0.5f;
+
   private float lacunarity = 2.0f;
 
   public ChunkGenerator3(long seed) {
@@ -81,7 +93,7 @@ public class ChunkGenerator3 implements ChunkGenerator {
     // --- Feature Layers ---
     createTrees(chunk);
     createWater(chunk);
-//    createCaves(chunk);
+    //    createCaves(chunk);
   }
 
   private void createCaves(Chunk chunk) {
@@ -177,7 +189,7 @@ public class ChunkGenerator3 implements ChunkGenerator {
       }
     }
   }
-  
+
   private boolean isAreaClear(boolean[][] treeMap, int x, int z, int radius) {
     int startX = Math.max(x - radius, 0);
     int endX = Math.min(x + radius, Chunk.WIDTH - 1);

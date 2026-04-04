@@ -12,21 +12,31 @@ import demos.voxels.world.BlockType;
 public class ChunkGenerator4 implements ChunkGenerator {
 
   private int seaLevel = 63;
+
   private int beachSize = 3;
 
   private long seed = 0; // Global seed
+
   private int baseHeight = 0;
+
   private float scale = 0.003f; // Base noise scale
+
   private int heightMultiplier = 200;
 
   private int octaves = 4; // Number of octaves
+
   private float persistence = 0.5f; // Controls amplitude decay per octave
+
   private float lacunarity = 2.0f; // Controls frequency increase per octave
 
   private Random rng;
+
   private PerlinNoise noise;
+
   private PerlinNoise biomeNoise;
+
   private PerlinNoise3 caveNoise;
+
   private PerlinNoise noise3;
 
   public ChunkGenerator4(long seed) {
@@ -71,7 +81,7 @@ public class ChunkGenerator4 implements ChunkGenerator {
 
     createTrees(chunk);
     createWater(chunk);
-//    createCave(chunk);
+    //    createCave(chunk);
   }
 
   private void createCave(Chunk chunk) {

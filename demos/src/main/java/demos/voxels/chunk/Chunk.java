@@ -14,19 +14,24 @@ import math.Vector3f;
 public class Chunk {
 
   public static final int WIDTH = 16;
+
   public static final int DEPTH = 16;
+
   public static final int HEIGHT = 384;
 
   private static final ExecutorService executorService =
       Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1));
 
   private final short[] blockData;
+
   private final int[] heightMap;
 
   private Vector3f position;
+
   private StaticGeometry geometry;
 
   private Future<StaticGeometry> meshFuture;
+
   private Future<?> dataFuture;
 
   private volatile ChunkStatus status = ChunkStatus.EMPTY;

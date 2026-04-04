@@ -10,9 +10,13 @@ import demos.voxels.world.BlockType;
 public class ChunkGenerator2 implements ChunkGenerator {
 
   private long seed = 1323; // Global seed
+
   private int baseHeight = 0;
+
   private float scale = 0.01f; // Noise scale
+
   private float dirtScale = 0.1f;
+
   private int heightMultiplier = 60;
 
   public void generate(Chunk chunk) {

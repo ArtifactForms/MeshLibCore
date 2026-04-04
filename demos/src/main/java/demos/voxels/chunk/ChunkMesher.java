@@ -15,13 +15,19 @@ import math.Vector2f;
 public class ChunkMesher {
 
     private static final int TOP = 0, BOTTOM = 5, FRONT = 1, BACK = 4, RIGHT = 2, LEFT = 3;
+    
     private static float radius = 0.5f;
 
     private Chunk chunk;
+    
     private ChunkManager chunkManager;
+    
     private BufferedShape shape;
+    
     private static ArrayList<Vector2f> uvs;
+    
     public static Material sharedMaterial;
+    
     private static TextureAtlas2 textureAtlas;
 
     static {

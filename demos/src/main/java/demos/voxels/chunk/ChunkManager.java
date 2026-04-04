@@ -25,38 +25,49 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private World world;
 
   private int renderDistance;
+
   private int bufferDistance;
 
   private int lastPlayerChunkX = Integer.MIN_VALUE;
+
   private int lastPlayerChunkZ = Integer.MIN_VALUE;
 
   private boolean debugVisualsEnabled = false;
+
   private Mesh3D debugBox;
 
   private final Player player;
+
   private final Vector3f playerPosition;
 
   private final ConcurrentLinkedDeque<Chunk> chunkPool;
+
   private volatile Map<Long, Chunk> activeChunks;
 
   private final AtomicInteger recycledChunks = new AtomicInteger();
+
   private int chunksRenderedLastFrame;
 
   // Queue system
   private final ConcurrentLinkedQueue<Chunk> dataQueue = new ConcurrentLinkedQueue<>();
+
   private final ConcurrentLinkedQueue<Chunk> meshQueue = new ConcurrentLinkedQueue<>();
 
   // Queue tracking
   private final ConcurrentHashMap<Chunk, Boolean> dataQueueSet = new ConcurrentHashMap<>();
+
   private final ConcurrentHashMap<Chunk, Boolean> meshQueueSet = new ConcurrentHashMap<>();
 
   private static final int MAX_DATA_PER_FRAME = 30;
+
   private static final int MAX_MESH_PER_FRAME = 10;
 
   private int playerChunkX;
+
   private int playerChunkZ;
 
   private Camera camera;
+
   private Frustum frustum = new Frustum();
 
   public ChunkManager(Player player, Camera camera) {
