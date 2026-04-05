@@ -15,6 +15,7 @@ import server.gateways.PlayerGateway;
 public class ChangeGameModeUseCase implements ChangeGamemode {
 
   private final EventGateway events;
+
   private final PlayerGateway players;
 
   public ChangeGameModeUseCase(GatewayContext context) {
