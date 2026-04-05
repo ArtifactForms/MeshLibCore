@@ -68,7 +68,7 @@ public class HotbarTest {
   // --- Inventory Integration Tests ---
 
   @Test
-  void testGetSelected_ReturnsCorrectItem() {
+  void testGetSelectedReturnsCorrectItem() {
     ItemStack item = new ItemStack((short) 5, 10);
     inventory.setSlot(3, item); // Put item in inventory slot 3
 
@@ -141,7 +141,7 @@ public class HotbarTest {
   }
 
   @Test
-  void testGetSlot_RetrievesCorrectItem() {
+  void testGetSlotRetrievesCorrectItem() {
     // 1. Prepare data in the underlying inventory
     ItemStack item3 = new ItemStack((short) 10, 5);
     ItemStack item8 = new ItemStack((short) 20, 1);
