@@ -8,6 +8,7 @@ import math.Vector3f;
 public abstract class PickupComponent extends AbstractComponent {
 
   protected float pickupRadius = 32f;
+
   protected boolean collected = false;
 
   protected final PlayerContext player;
