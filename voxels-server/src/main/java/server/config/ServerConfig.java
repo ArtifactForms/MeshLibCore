@@ -42,11 +42,17 @@ public class ServerConfig {
   private final Properties props = new Properties();
 
   private int port;
+
   private int maxPlayers;
+
   private int maxChatMessageLength;
+
   private int viewDistance;
+
   private String motd;
+
   private String chatFormat;
+
   private String serverPrefix;
 
   public ServerConfig() {
