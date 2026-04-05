@@ -6,6 +6,7 @@ import java.util.HashSet;
 public class VoxelCircleCreator implements VoxelCreator {
 
   private final int radius;
+
   private final Voxel center;
 
   public VoxelCircleCreator(int radius) {

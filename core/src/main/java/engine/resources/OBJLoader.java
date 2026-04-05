@@ -12,7 +12,6 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.SubMesh;
-import mesh.util.VertexNormals;
 
 public class OBJLoader implements ModelLoaderStrategy {
 
@@ -33,10 +32,15 @@ public class OBJLoader implements ModelLoaderStrategy {
   private static final String USE_MATERIAL = "usemtl";
 
   private Mesh3D mesh;
+
   private SubMesh currentSubMesh;
+
   private Model model;
+
   private String directoryPath;
+
   private ArrayList<Vector3f> vertexNormals;
+
   private int parsedFaceCount;
 
   public OBJLoader() {

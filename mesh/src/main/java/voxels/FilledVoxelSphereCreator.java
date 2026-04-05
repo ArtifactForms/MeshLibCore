@@ -6,7 +6,9 @@ import java.util.HashSet;
 public class FilledVoxelSphereCreator implements VoxelCreator {
 
   private final int radius;
+
   private final Voxel center;
+
   private final SamplingMode samplingMode;
 
   public FilledVoxelSphereCreator(int radius) {

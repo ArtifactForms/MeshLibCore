@@ -11,8 +11,11 @@ import voxels.mesh.MeshVoxelizer;
 public class RockCreator implements VoxelCreator {
 
   private int width;
+
   private int height;
+
   private int depth;
+
   private int subdivisions = 1;
 
   public RockCreator(int width, int height, int depth, int subdivisions) {
