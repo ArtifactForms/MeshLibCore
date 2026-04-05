@@ -9,9 +9,13 @@ import mesh.Mesh3D;
 import mesh.SubMesh;
 
 public class Model {
+
   private String name;
+
   private Mesh3D mesh;
+
   private List<SubMesh> meshes;
+
   private List<Material> materials;
 
   public Model(String name) {

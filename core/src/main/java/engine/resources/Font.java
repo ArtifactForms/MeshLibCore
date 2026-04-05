@@ -25,11 +25,15 @@ public class Font {
 
   // Font style constants
   public static final int PLAIN = 0;
+
   public static final int BOLD = 1;
+
   public static final int ITALIC = 2;
 
   private final String name;
+
   private final int size;
+
   private final int style;
 
   /**

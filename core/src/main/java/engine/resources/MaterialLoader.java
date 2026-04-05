@@ -13,13 +13,21 @@ import javax.imageio.ImageIO;
 import engine.rendering.Material;
 
 public class MaterialLoader {
+
   private static final String KEY_NEW_MATERIAL = "newmtl";
+
   private static final String KEY_SHININESS = "Ns";
+
   private static final String KEY_AMBIENT_COLOR = "Ka";
+
   private static final String KEY_DIFFUSE_COLOR = "Kd";
+
   private static final String KEY_SPECULAR_COLOR = "Ks";
+
   private static final String KEY_DISSOLVE = "d"; // opacity
+
   private static final String KEY_DIFFUSE_MAP = "map_Kd";
+
   private static final String KEY_OPACITY_MAP = "map_d";
 
   private Map<String, Material> materials = new HashMap<>();

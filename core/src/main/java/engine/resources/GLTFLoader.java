@@ -20,6 +20,7 @@ import mesh.SubMesh;
 public class GLTFLoader implements ModelLoaderStrategy {
 
   private Mesh3D mesh;
+  
   private Model model;
 
   // =========================================================

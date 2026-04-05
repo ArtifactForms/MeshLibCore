@@ -15,13 +15,21 @@ import mesh.SubMesh;
 import mesh.util.VertexNormals;
 
 public class OBJLoader implements ModelLoaderStrategy {
+
   private static final String COMMENT = "#";
+
   private static final String OBJECT = "o";
+
   private static final String GEOMETRIC_VERTEX = "v";
+
   private static final String VERTEX_NORMAL = "vn";
+
   private static final String TEXTURE_VERTEX = "vt";
+
   private static final String FACE = "f";
+
   private static final String MATERIAL_LIB = "mtllib";
+
   private static final String USE_MATERIAL = "usemtl";
 
   private Mesh3D mesh;
@@ -103,12 +111,12 @@ public class OBJLoader implements ModelLoaderStrategy {
   }
 
   private void applyNormals() {
-	  // TODO vertex normals support
-//    if (vertexNormals.isEmpty()) {
-//      mesh.setVertexNormals(VertexNormals.calculate(mesh));
-//    } else {
-//      mesh.setVertexNormals(vertexNormals);
-//    }
+    // TODO vertex normals support
+    //    if (vertexNormals.isEmpty()) {
+    //      mesh.setVertexNormals(VertexNormals.calculate(mesh));
+    //    } else {
+    //      mesh.setVertexNormals(vertexNormals);
+    //    }
   }
 
   private void loadMaterials(String[] parts) throws IOException {
