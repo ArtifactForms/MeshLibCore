@@ -11,7 +11,9 @@ import engine.runtime.debug.core.render.DebugRenderer;
 public final class DebugContext {
 
   private boolean visible = true;
+
   private final List<DebugCommand> commands = new ArrayList<>();
+
   private final DebugRenderer renderer = new DebugRenderer();
 
   public void submit(DebugCommand cmd) {

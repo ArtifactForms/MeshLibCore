@@ -6,6 +6,7 @@ import engine.runtime.input.Key;
 public class ButtonBinding {
 
   public final Action action;
+
   public final Key key;
 
   public ButtonBinding(Action action, Key key) {

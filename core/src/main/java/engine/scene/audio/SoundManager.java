@@ -6,6 +6,7 @@ import java.util.Map;
 public final class SoundManager {
 
   private static final Map<String, Sound> sounds = new HashMap<>();
+
   private static final Map<String, SoundEffect> effects = new HashMap<>();
 
   private SoundManager() {}

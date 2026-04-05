@@ -13,6 +13,7 @@ public final class DebugRenderer {
   private static final class BatchKey {
 
     final Class<? extends DebugCommand> type;
+
     final DebugDepthMode depthMode;
 
     BatchKey(Class<? extends DebugCommand> type, DebugDepthMode depthMode) {

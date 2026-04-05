@@ -12,8 +12,11 @@ import math.Vector3f;
 public class AudioSource extends AbstractComponent {
 
   private Sound sound;
+
   private float maxDistance; // Max distance for sound attenuation
+
   private float volume; // Volume of the sound
+
   private boolean loop; // Whether the sound should loop
 
   /**
@@ -87,7 +90,7 @@ public class AudioSource extends AbstractComponent {
     float pan = Mathf.clamp(dotProduct, -1.0f, 1.0f);
 
     // Apply the pan to the sound object
-//    sound.setPan(pan);
+    //    sound.setPan(pan);
   }
 
   // TODO Other methods for controlling playback, volume, pitch, etc.

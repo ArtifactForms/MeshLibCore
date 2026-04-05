@@ -3,7 +3,9 @@ package engine.runtime.input;
 public class MouseEvent {
 
   private final int x;
+
   private final int y;
+
   private final int button;
 
   public MouseEvent(int x, int y, int button) {

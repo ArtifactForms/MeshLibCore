@@ -7,7 +7,9 @@ import math.Vector2f;
 public class Axis2DBinding {
 
   public final Action action;
+
   public final Key key;
+
   public final Vector2f value;
 
   public Axis2DBinding(Action action, Key key, Vector2f value) {

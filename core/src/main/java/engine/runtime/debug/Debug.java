@@ -6,9 +6,11 @@ import engine.rendering.Graphics;
 public class Debug {
 
   private FloatHistoryGraphRenderer tpfGraph;
+
   private FloatHistory tpfHistory = new FloatHistory(300);
 
   private FloatHistory fpsHistory = new FloatHistory(300);
+
   FloatHistoryGraphRenderer fpsGraph;
 
   private static final Debug INSTANCE = new Debug();

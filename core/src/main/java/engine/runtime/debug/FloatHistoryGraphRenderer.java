@@ -6,8 +6,11 @@ import math.Color;
 public class FloatHistoryGraphRenderer {
 
   private final String label;
+
   private final String unit;
+
   private final FloatHistory history;
+
   private final FloatScalingStrategy scalingStrategy;
 
   private float[] referenceLines = new float[0];

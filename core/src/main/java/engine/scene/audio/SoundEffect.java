@@ -6,6 +6,7 @@ import java.util.List;
 public class SoundEffect {
 
   private final List<Sound> pool;
+
   private int index = 0;
 
   public SoundEffect(String filePath, int poolSize) {

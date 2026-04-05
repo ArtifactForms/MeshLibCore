@@ -13,10 +13,15 @@ public final class DebugGridRenderer implements DebugCommandRenderer<DebugGridCo
   }
 
   int cells;
+
   Vector3f origin;
+
   float spacing;
+
   float majorLineEvery;
+
   Color majorColor;
+
   Color minorColor;
 
   public void render(Graphics g, DebugGridCommand cmd) {

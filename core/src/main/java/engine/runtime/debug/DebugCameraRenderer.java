@@ -15,6 +15,7 @@ import math.Vector3f;
 public class DebugCameraRenderer {
 
   private static final float LENGTH = 500;
+
   private static final FrustumGeometry GEOM = new FrustumGeometry();
 
   private DebugCameraRenderer() {

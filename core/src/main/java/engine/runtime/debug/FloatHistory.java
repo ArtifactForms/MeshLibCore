@@ -3,7 +3,9 @@ package engine.runtime.debug;
 public class FloatHistory {
 
   private final float[] values;
+
   private int writeIndex = 0;
+
   private int size = 0;
 
   public FloatHistory(int capacity) {

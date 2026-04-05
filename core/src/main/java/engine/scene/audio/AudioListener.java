@@ -3,7 +3,9 @@ package engine.scene.audio;
 import math.Vector3f;
 
 public class AudioListener {
+
   private Vector3f position;
+
   private Vector3f forward;
 
   public AudioListener() {

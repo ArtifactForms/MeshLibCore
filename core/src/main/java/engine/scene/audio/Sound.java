@@ -13,23 +13,25 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import math.Mathf;
 
 public class Sound {
+
   private Clip clip;
+
   private FloatControl panControl;
 
   public Sound(InputStream stream) {
-	  try {
-	    AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
-	    clip = AudioSystem.getClip();
-	    clip.open(audioStream);
+    try {
+      AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
+      clip = AudioSystem.getClip();
+      clip.open(audioStream);
 
-	    if (clip.isControlSupported(FloatControl.Type.PAN)) {
-	      panControl = (FloatControl) clip.getControl(FloatControl.Type.PAN);
-	    }
+      if (clip.isControlSupported(FloatControl.Type.PAN)) {
+        panControl = (FloatControl) clip.getControl(FloatControl.Type.PAN);
+      }
 
-	  } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-	    e.printStackTrace();
-	  }
-	}
+    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+      e.printStackTrace();
+    }
+  }
 
   public void play() {
     if (clip != null) {
