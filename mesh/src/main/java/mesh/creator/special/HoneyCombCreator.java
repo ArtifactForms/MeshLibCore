@@ -265,8 +265,11 @@ public class HoneyCombCreator implements IMeshCreator {
 
   /** Represents a directed edge between two vertices. */
   private static final class DirectedEdge {
+
     final int a;
+
     final int b;
+
     int count = 1;
 
     DirectedEdge(int a, int b) {
@@ -280,7 +283,9 @@ public class HoneyCombCreator implements IMeshCreator {
    * direction doesn't affect equality.
    */
   private static final class EdgeKey {
+
     final int a;
+
     final int b;
 
     EdgeKey(int v1, int v2) {

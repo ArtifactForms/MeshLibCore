@@ -33,6 +33,7 @@ public enum BiomeType {
   SNOW(1.1f, 0.9f);
 
   private final float heightInfluence;
+
   private final float scaleModifier;
 
   BiomeType(float heightInfluence, float scaleModifier) {

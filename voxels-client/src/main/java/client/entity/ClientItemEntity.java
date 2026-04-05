@@ -32,8 +32,11 @@ public class ClientItemEntity {
 
   // Physics Constants
   private static final float GRAVITY = -0.015f;
+
   private static final float AIR_DRAG = 0.98f;
+
   private static final float GROUND_FRICTION = 0.8f;
+
   private static final float BOUNCE_RESTITUTION = -0.4f; // 40% energy retention on bounce
 
   static {

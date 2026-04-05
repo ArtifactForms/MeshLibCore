@@ -75,7 +75,9 @@ public class WorldStreamer extends AbstractComponent {
           });
 
   private Scene scene;
+
   private int currentAnchorChunkX = Integer.MIN_VALUE;
+
   private int currentAnchorChunkZ = Integer.MIN_VALUE;
 
   // -------------------

@@ -34,7 +34,7 @@ public class GameScene extends Scene {
 
   private SceneNode player;
 
-  //  private ActionBarComponent actionBar;
+  // private ActionBarComponent actionBar;
 
   private GameClient client;
 
@@ -43,7 +43,7 @@ public class GameScene extends Scene {
   public GameScene(Input input, GameClient client) {
     setCameraMode(CameraMode.CAMERA_RELATIVE);
 
-    //    pushScreen(new DebugScreen(controller1));
+    // pushScreen(new DebugScreen(controller1));
 
     GamePlayScreen screen = new GamePlayScreen(client);
     pushScreen(screen);

@@ -17,7 +17,9 @@ import common.player.attribute.Attribute;
 class PlayerDataTest {
 
   private PlayerData player;
+
   private final UUID testUuid = UUID.randomUUID();
+
   private final String testName = "Gonzo";
 
   @BeforeEach

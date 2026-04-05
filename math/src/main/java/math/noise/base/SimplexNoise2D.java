@@ -30,6 +30,7 @@ public final class SimplexNoise2D implements Noise2D {
 
   // Skewing and unskewing factors for 2D
   private static final float F2 = 0.366025403f; // (sqrt(3) - 1) / 2
+
   private static final float G2 = 0.211324865f; // (3 - sqrt(3)) / 6
 
   // 12 gradient directions (isotropic)

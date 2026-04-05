@@ -24,13 +24,17 @@ import math.Vector3f;
 public class GameWorldContext implements WorldContext {
 
   private float eyeHeight = 40;
+
   private PlayerContext player;
 
   private final TileMap tileMap;
+
   private final Scene scene;
 
   private Vector3f lobbySpawn;
+
   private Vector3f levelSpawn;
+
   private GameUi ui;
 
   private List<GameEventHandler> eventHandlers;

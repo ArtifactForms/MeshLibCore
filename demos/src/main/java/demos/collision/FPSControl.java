@@ -46,6 +46,7 @@ public class FPSControl extends AbstractComponent {
   private float eyeHeightOffset = 0.8f;
 
   private final Input input;
+
   private final MovementInputConsumer consumer;
 
   public FPSControl(Input input, MovementInputConsumer consumer) {

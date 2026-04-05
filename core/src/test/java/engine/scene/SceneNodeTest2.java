@@ -108,7 +108,9 @@ public class SceneNodeTest2 {
   public class TestComponent extends AbstractComponent {
 
     public int attachCount = 0;
+
     public int detachCount = 0;
+
     public boolean attached = false;
 
     @Override

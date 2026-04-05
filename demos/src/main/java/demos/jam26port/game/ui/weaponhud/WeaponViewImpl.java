@@ -8,9 +8,11 @@ import engine.resources.ResourceManager;
 public class WeaponViewImpl implements WeaponView {
 
   private int pixelScale = 4;
+
   private int offsetX = 0;
 
   private int width = 256;
+
   private int height = 62;
 
   private Image image;

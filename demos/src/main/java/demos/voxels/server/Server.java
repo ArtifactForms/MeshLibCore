@@ -35,7 +35,9 @@ public class Server {
   private class ClientHandler implements Runnable {
 
     private final Socket socket;
+
     private PrintWriter out;
+
     private BufferedReader in;
 
     public ClientHandler(Socket socket) {

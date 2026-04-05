@@ -50,11 +50,17 @@ public class Title {
   }
 
   public static class Builder {
+
     private float fadeInTime = 1.0f;
+
     private float fadeOutTime = 1.0f;
+
     private float stayTime = 2.0f;
+
     private int size = 100;
+
     private Color color = Color.WHITE;
+
     private String text = "Default Text";
 
     public Builder fadeInTime(float fadeInTime) {

@@ -8,6 +8,7 @@ import messages.MessageService;
 public class DebugController {
 
   private DisplayChunkBordersComponent displayChunkBordersComponent;
+
   private MessageService messageService;
 
   public DebugController(

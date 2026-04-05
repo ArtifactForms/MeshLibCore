@@ -8,6 +8,7 @@ import engine.scene.screen.GameScreen;
 public class DebugComponent extends AbstractComponent {
 
   private Input input;
+
   private DebugController controller;
 
   public DebugComponent(Input input, DebugController controller) {

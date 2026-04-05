@@ -6,52 +6,57 @@ import java.util.*;
 
 public class PackageStructurePrinter {
 
-	private static class Node {
-		String name;
-		boolean isClass;
-		Map<String, Node> children = new TreeMap<>();
+  private static class Node {
 
-		Node(String name, boolean isClass) {
-			this.name = name;
-			this.isClass = isClass;
-		}
-	}
+    String name;
 
-	public static void main(String[] args) throws IOException {
-		Path sourceRoot = Paths.get("src/");
-		Node root = new Node(sourceRoot.getFileName().toString(), false);
+    boolean isClass;
 
-		try (var paths = Files.walk(sourceRoot)) {
-			paths.filter(p -> p.toString().endsWith(".java")).forEach(p -> insert(root, sourceRoot.relativize(p)));
-		}
+    Map<String, Node> children = new TreeMap<>();
 
-		print(root, "", true);
-	}
+    Node(String name, boolean isClass) {
+      this.name = name;
+      this.isClass = isClass;
+    }
+  }
 
-	private static void insert(Node root, Path relativePath) {
-		Node current = root;
+  public static void main(String[] args) throws IOException {
+    Path sourceRoot = Paths.get("src/");
+    Node root = new Node(sourceRoot.getFileName().toString(), false);
 
-		for (int i = 0; i < relativePath.getNameCount(); i++) {
-			String part = relativePath.getName(i).toString();
+    try (var paths = Files.walk(sourceRoot)) {
+      paths
+          .filter(p -> p.toString().endsWith(".java"))
+          .forEach(p -> insert(root, sourceRoot.relativize(p)));
+    }
 
-			boolean isClass = part.endsWith(".java");
-			String name = isClass ? part.replace(".java", "") : part;
+    print(root, "", true);
+  }
 
-			current = current.children.computeIfAbsent(name, n -> new Node(n, isClass));
-		}
-	}
+  private static void insert(Node root, Path relativePath) {
+    Node current = root;
 
-	private static void print(Node node, String prefix, boolean isLast) {
-		if (!node.name.isEmpty()) {
-			System.out.println(prefix + (isLast ? "└── " : "├── ") + node.name);
-			prefix += isLast ? "    " : "│   ";
-		}
+    for (int i = 0; i < relativePath.getNameCount(); i++) {
+      String part = relativePath.getName(i).toString();
 
-		int size = node.children.size();
-		int index = 0;
+      boolean isClass = part.endsWith(".java");
+      String name = isClass ? part.replace(".java", "") : part;
 
-		for (Node child : node.children.values()) {
-			print(child, prefix, ++index == size);
-		}
-	}
+      current = current.children.computeIfAbsent(name, n -> new Node(n, isClass));
+    }
+  }
+
+  private static void print(Node node, String prefix, boolean isLast) {
+    if (!node.name.isEmpty()) {
+      System.out.println(prefix + (isLast ? "└── " : "├── ") + node.name);
+      prefix += isLast ? "    " : "│   ";
+    }
+
+    int size = node.children.size();
+    int index = 0;
+
+    for (Node child : node.children.values()) {
+      print(child, prefix, ++index == size);
+    }
+  }
 }

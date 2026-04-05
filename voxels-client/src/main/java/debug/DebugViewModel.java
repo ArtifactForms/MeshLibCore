@@ -3,6 +3,7 @@ package debug;
 public class DebugViewModel {
 
   private int playerChunkX;
+
   private int playerChunkZ;
 
   public int getPlayerChunkX() {

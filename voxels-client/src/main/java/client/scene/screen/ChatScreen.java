@@ -140,6 +140,7 @@ public class ChatScreen extends GameScreen {
   public class ChatRenderer extends AbstractComponent implements RenderableComponent {
 
     private float cursorTimer = 0;
+
     private static final float BLINK_SPEED = 6.0f;
 
     @Override
