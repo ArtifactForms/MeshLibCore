@@ -1,6 +1,5 @@
 package engine.backend.processing;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import engine.rendering.Material;
@@ -20,10 +19,15 @@ import processing.core.PGraphics;
 import processing.core.PShape;
 
 public class VBOProcessing implements VBO {
+
   private PShape shape;
+
   private PGraphics graphics;
+
   private int faceCount;
+
   private int vertexCount;
+
   private Bounds bounds;
 
   public VBOProcessing(PGraphics graphics) {

@@ -11,10 +11,20 @@ import processing.opengl.PShapeOpenGL;
 public class BufferedShape {
 
   public static final int TRIANGLES = PApplet.TRIANGLES;
+
   public static final int QUADS = PApplet.QUADS;
 
-  private float minX, minY, minZ;
-  private float maxX, maxY, maxZ;
+  private float minX;
+
+  private float minY;
+
+  private float minZ;
+
+  private float maxX;
+
+  private float maxY;
+
+  private float maxZ;
 
   private PShapeOpenGL shape;
   private Material material;

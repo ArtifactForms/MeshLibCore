@@ -41,7 +41,9 @@ public class ProcessingKeyInput implements KeyInput {
     }
 
     private final PApplet applet;
+    
     private final InputState inputState = new InputState();
+    
     private final List<KeyListener> listeners = new ArrayList<>();
 
     public ProcessingKeyInput(PApplet applet) {

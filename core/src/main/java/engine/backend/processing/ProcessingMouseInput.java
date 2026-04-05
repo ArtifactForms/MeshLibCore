@@ -17,8 +17,11 @@ public class ProcessingMouseInput implements MouseInput {
   private float mouseWheelDelta = 0;
 
   private float mouseX;
+
   private float mouseY;
+
   private float pMouseX;
+
   private float pMouseY;
 
   private MouseMode mouseMode = MouseMode.ABSOLUTE;
@@ -29,8 +32,11 @@ public class ProcessingMouseInput implements MouseInput {
 
   // Button state tracking
   private final boolean[] currentButtons = new boolean[3];
+
   private final boolean[] lastButtons = new boolean[3];
+
   private final boolean[] pressedButtons = new boolean[3];
+
   private final boolean[] releasedButtons = new boolean[3];
 
   public ProcessingMouseInput(PApplet applet) {
