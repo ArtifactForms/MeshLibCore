@@ -7,6 +7,7 @@ import java.util.UUID;
 import common.game.GameMode;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.commands.CommandMessages;
 import server.gateways.MessageGateway;
 import server.permissions.Permissions;
 import server.usecases.changegamemode.ChangeGameModePresenter;
@@ -26,11 +27,9 @@ public class ChangeGameModeCommand extends AbstractCommand {
   @Override
   public void execute(CommandContext ctx) {
     if (ctx.isConsole()) {
-      ctx.reply("This command can only be executed by a player.");
+      ctx.reply(CommandMessages.PLAYERS_ONLY);
       return;
     }
-
-    UUID playerId = ctx.getPlayer();
 
     List<String> args = ctx.getArgs();
     if (args.isEmpty()) {
@@ -46,6 +45,11 @@ public class ChangeGameModeCommand extends AbstractCommand {
       return;
     }
 
+    executeUseCase(ctx, gameMode);
+  }
+
+  private void executeUseCase(CommandContext ctx, GameMode gameMode) {
+    UUID playerId = ctx.getPlayer();
     ChangeGamemode changeUseCase = ctx.getUseCases().get(ChangeGamemode.class);
     ChangeGameModeRequest request = new ChangeGameModeRequestModel(playerId, gameMode);
     ChangeGameModeResponse response = new ChangeGameModePresenter(messages);
