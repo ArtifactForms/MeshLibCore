@@ -47,10 +47,15 @@ import mesh.next.surface.SurfaceLayer;
 public final class Sprite {
 
   private final TextureAtlas atlas;
+
   private int row;
+
   private int col;
+
   private float width = 1f;
+
   private float height = 1f;
+
   private boolean topLeft = false;
 
   /**

@@ -53,11 +53,17 @@ public class TextureAtlas {
   private static final float DEFAULT_EPSILON_PX = 0.25f;
 
   private final Texture texture;
+
   private final int rows;
+
   private final int cols;
+
   private final int tileSizePx;
+
   private final float widthPx;
+
   private final float heightPx;
+
   private final float epsPx;
 
   /**
