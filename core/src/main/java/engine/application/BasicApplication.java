@@ -46,7 +46,7 @@ public abstract class BasicApplication implements Application {
   private DebugContext debugContext;
 
   private CollisionSystem collisionSystem;
-  
+
   private Font font = new Font("Lucida Sans", 12, Font.PLAIN);
 
   public BasicApplication() {
