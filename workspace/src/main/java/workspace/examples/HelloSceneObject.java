@@ -10,15 +10,15 @@ import workspace.render.Mesh3DRenderer;
 
 public class HelloSceneObject extends PApplet {
 
-  public static void main(String[] args) {
-    PApplet.main(HelloSceneObject.class.getName());
-  }
-
   Mesh3D mesh;
 
   Mesh3DRenderer renderer;
 
   Workspace workspace;
+
+  public static void main(String[] args) {
+    PApplet.main(HelloSceneObject.class.getName());
+  }
 
   @Override
   public void settings() {

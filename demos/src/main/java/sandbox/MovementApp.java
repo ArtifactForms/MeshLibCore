@@ -16,14 +16,14 @@ import mesh.creator.primitives.CapsuleCreator;
 
 public class MovementApp extends BasicApplication {
 
+  private Scene scene;
+
+  private SceneNode player;
+
   public static void main(String[] args) {
     MovementApp app = new MovementApp();
     app.launch(ApplicationSettings.defaultSettings().setFullscreen(true));
   }
-
-  private Scene scene;
-
-  private SceneNode player;
 
   @Override
   public void onInitialize() {

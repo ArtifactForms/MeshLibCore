@@ -24,13 +24,6 @@ import math.Vector3f;
 
 public class VoxelGameDemo extends BasicApplication {
 
-  public static void main(String[] args) {
-    VoxelGameDemo application = new VoxelGameDemo();
-    ApplicationSettings settings = new ApplicationSettings();
-    settings.setFullscreen(true);
-    application.launch(settings);
-  }
-
   private float speed = GameSettings.flySpeed;
 
   private SkyBox skyBox;
@@ -58,6 +51,13 @@ public class VoxelGameDemo extends BasicApplication {
   private TextDisplay display;
 
   private SceneNode uiRoot;
+
+  public static void main(String[] args) {
+    VoxelGameDemo application = new VoxelGameDemo();
+    ApplicationSettings settings = new ApplicationSettings();
+    settings.setFullscreen(true);
+    application.launch(settings);
+  }
 
   @Override
   public void onInitialize() {
