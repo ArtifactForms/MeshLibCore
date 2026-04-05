@@ -70,7 +70,13 @@ public class ChunkMesher {
     }
 
     public static class MeshResult {
-        public final StaticGeometry opaque, water, decor;
+    	
+        public final StaticGeometry opaque;
+        
+        public final StaticGeometry water;
+        
+        public final StaticGeometry decor;
+        
         public MeshResult(StaticGeometry o, StaticGeometry w, StaticGeometry d) {
             this.opaque = o; this.water = w; this.decor = d;
         }

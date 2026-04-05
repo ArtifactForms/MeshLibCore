@@ -491,7 +491,9 @@ public class WorldStreamer extends AbstractComponent {
   }
 
   private static class MeshBuildResult {
+	  
     private final long regionKey;
+    
     private final Mesh3D mesh;
 
     private MeshBuildResult(long regionKey, Mesh3D mesh) {

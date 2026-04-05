@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 class ChatControllerTest {
 
   private SendChatMessageController sendController;
+  
   private ChatController chat;
 
   @BeforeEach

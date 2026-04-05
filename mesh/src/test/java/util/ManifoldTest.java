@@ -58,6 +58,7 @@ public class ManifoldTest {
   private static class UndirectedEdge {
 
     private final int a;
+    
     private final int b;
 
     public UndirectedEdge(int a, int b) {

@@ -8,6 +8,7 @@ import math.Vector2f;
 public class SurfaceLayer {
 
   private final List<Vector2f> uvs = new ArrayList<>();
+
   private final List<int[]> faceUvIndices = new ArrayList<>();
 
   public void addUV(float u, float v) {

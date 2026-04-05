@@ -21,6 +21,7 @@ import common.game.ItemStack;
 class PacketBufferTest {
 
   private ByteArrayOutputStream byteOut;
+
   private PacketBuffer writeBuffer;
 
   @BeforeEach

@@ -66,7 +66,12 @@ class WorldPropertyTest {
   }
 
   static class WorldCoord {
-    int x, y, z;
+	  
+    int x;
+    
+    int y;
+    
+    int z;
 
     WorldCoord(int x, int y, int z) {
       this.x = x;

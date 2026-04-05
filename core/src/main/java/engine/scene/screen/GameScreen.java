@@ -8,6 +8,7 @@ import engine.scene.SceneNode;
 public abstract class GameScreen {
 
   protected SceneNode root;
+
   protected SceneNode uiRoot;
 
   public GameScreen() {

@@ -15,6 +15,7 @@ public abstract class PickupComponent extends AbstractComponent {
 
   // juice
   private float popTime = 0.15f;
+
   private float timer = 0f;
 
   protected PickupComponent(PlayerContext player) {

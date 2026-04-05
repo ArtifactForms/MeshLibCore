@@ -31,6 +31,7 @@ public class MaterialLoader {
   private static final String KEY_OPACITY_MAP = "map_d";
 
   private Map<String, Material> materials = new HashMap<>();
+
   private String directoryPath;
 
   public Map<String, Material> loadMaterials(String filePath) throws IOException {
