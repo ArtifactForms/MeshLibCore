@@ -19,10 +19,13 @@ import mesh.next.surface.SurfaceLayer;
 public class Billboard extends SceneNode {
 
   private final float width;
+
   private final float height;
+
   private final Texture texture;
 
   private UVRect uv;
+
   private Mesh3D mesh;
 
   public Billboard(Texture texture, float size) {
@@ -88,7 +91,7 @@ public class Billboard extends SceneNode {
     surfaceLayer.getUvAt(1).set(uv.uMax, uv.vMin);
     surfaceLayer.getUvAt(2).set(uv.uMax, uv.vMax);
     surfaceLayer.getUvAt(3).set(uv.uMin, uv.vMax);
-    
+
     surfaceLayer.setFaceUVIndices(0, new int[] {0, 1, 2, 3});
   }
 

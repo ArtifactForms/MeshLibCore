@@ -3,6 +3,7 @@ package engine.vbo;
 public class VBOFactory {
 
   private static VBOFactory instance;
+
   private static VBOCreationStrategy strategy;
 
   private VBOFactory() {}

@@ -18,7 +18,10 @@ package engine.scene.light;
  */
 public enum LightType {
   POINT,
+
   DIRECTIONAL,
+
   SPOT,
+
   AMBIENT
 }

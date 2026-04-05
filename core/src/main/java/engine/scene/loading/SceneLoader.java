@@ -30,6 +30,7 @@ import engine.scene.Scene;
 public class SceneLoader {
 
   private SceneLoadJob currentJob;
+
   private Thread worker;
 
   /**

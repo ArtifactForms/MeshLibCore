@@ -16,7 +16,9 @@ import math.Mathf;
 public class SceneLoadJob implements LoadTask {
 
   private final SceneFactory factory;
+
   private volatile float progress;
+
   private Scene result;
 
   /**

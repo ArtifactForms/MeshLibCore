@@ -28,9 +28,11 @@ public class OrbitCameraControl extends AbstractComponent {
   private static final float DEFAULT_ZOOM_SENSITIVITY = 10.0f;
 
   private final Input input;
+
   private final OrbitCamera camera;
 
   private float rotateSensitivity = DEFAULT_ROTATE_SENSITIVITY;
+
   private float zoomSensitivity = DEFAULT_ZOOM_SENSITIVITY;
 
   /**

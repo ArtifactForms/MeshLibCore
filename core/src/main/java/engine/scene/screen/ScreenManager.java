@@ -14,7 +14,9 @@ import engine.scene.Scene;
 public class ScreenManager implements KeyListener, MouseListener {
 
   private Input input;
+
   private final Scene scene;
+
   private final Deque<GameScreen> stack = new ArrayDeque<>();
 
   public ScreenManager(Input input, Scene scene) {
