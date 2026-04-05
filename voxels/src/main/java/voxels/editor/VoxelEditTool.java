@@ -266,9 +266,20 @@ public class VoxelEditTool extends AbstractComponent implements RenderableCompon
   }
 
   private static class RaycastResult {
+
     private final boolean hit;
-    private final int blockX, blockY, blockZ;
-    private final int placeX, placeY, placeZ;
+
+    private final int blockX;
+
+    private final int blockY;
+
+    private final int blockZ;
+
+    private final int placeX;
+
+    private final int placeY;
+
+    private final int placeZ;
 
     private RaycastResult(boolean hit, int bx, int by, int bz, int px, int py, int pz) {
       this.hit = hit;

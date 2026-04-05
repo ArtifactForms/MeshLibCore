@@ -10,18 +10,22 @@ import math.Vector3f;
 public class MiniMapViewImpl implements MinimapView {
 
   private static final float BORDER_PADDING = 4f;
+
   private static final float PLAYER_MARKER_SIZE = 8f;
 
   private final TileMap tileMap;
 
   private float x = 0;
+
   private float y = 0;
+
   private float size = 300;
 
   /** Tiles around player. */
   private int viewRadius = 20;
 
   int playerTileX;
+
   int playerTileY;
 
   public MiniMapViewImpl(TileMap tileMap) {
