@@ -314,7 +314,9 @@ public class HoneyCombCreator implements IMeshCreator {
 
   /** Key based on XZ coordinates for vertex merging. */
   private static final class VertexKey {
+
     final float x;
+
     final float z;
 
     VertexKey(float x, float z) {

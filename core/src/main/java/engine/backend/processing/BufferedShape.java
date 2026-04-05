@@ -27,6 +27,7 @@ public class BufferedShape {
   private float maxZ;
 
   private PShapeOpenGL shape;
+
   private Material material;
 
   public BufferedShape(Material material) {
