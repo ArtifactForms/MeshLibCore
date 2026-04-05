@@ -61,7 +61,13 @@ class ChunkDataPropertyTest {
   }
 
   static class BlockOp {
-    int x, y, z;
+
+    int x;
+
+    int y;
+
+    int z;
+
     short id;
 
     BlockOp(int x, int y, int z, short id) {

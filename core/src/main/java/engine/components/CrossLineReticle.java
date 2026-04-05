@@ -1,11 +1,3 @@
-/**
- * The CrossLineReticle class represents a visual reticle consisting of cross lines rendered on a
- * plane. It is designed to be part of a 3D scene and implements the {@link RenderableComponent}
- * interface for rendering capabilities.
- *
- * <p>The reticle is created as a textured plane using a {@link Mesh3D} and is configurable with
- * parameters like radius, thickness, and color. The texture is generated dynamically.
- */
 package engine.components;
 
 import java.awt.Graphics2D;
@@ -22,6 +14,14 @@ import mesh.Mesh3D;
 import mesh.creator.primitives.PlaneCreatorUV;
 import mesh.modifier.transform.RotateXModifier;
 
+/**
+ * The CrossLineReticle class represents a visual reticle consisting of cross lines rendered on a
+ * plane. It is designed to be part of a 3D scene and implements the {@link RenderableComponent}
+ * interface for rendering capabilities.
+ *
+ * <p>The reticle is created as a textured plane using a {@link Mesh3D} and is configurable with
+ * parameters like radius, thickness, and color. The texture is generated dynamically.
+ */
 public class CrossLineReticle extends AbstractComponent implements RenderableComponent {
 
   /** The geometry of holding shape and texture. */
@@ -98,13 +98,19 @@ public class CrossLineReticle extends AbstractComponent implements RenderableCom
    * @param tpf The time per frame in seconds.
    */
   @Override
-  public void onUpdate(float tpf) {}
+  public void onUpdate(float tpf) {
+    // Do nothing
+  }
 
   /** Called when the component is attached to a {@link engine.SceneNode}. */
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Do nothing
+  }
 
   /** Called when the component is detached from a {@link engine.SceneNode}. */
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Do nothing
+  }
 }
