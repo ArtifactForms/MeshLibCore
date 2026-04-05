@@ -14,7 +14,7 @@ public class ItemStackTest {
   }
 
   @Test
-  void testStackCreation_NegativeAmountThrows() {
+  void testStackCreationNegativeAmountThrows() {
     assertThrows(
         IllegalArgumentException.class,
         () -> {
@@ -23,7 +23,7 @@ public class ItemStackTest {
   }
 
   @Test
-  void testAdd_PartialFit() {
+  void testAddPartialFit() {
     ItemStack stack = new ItemStack((short) 1, 40);
 
     int remainder = stack.add(30, 64);
@@ -33,7 +33,7 @@ public class ItemStackTest {
   }
 
   @Test
-  void testAdd_PerfectFit() {
+  void testAddPerfectFit() {
     ItemStack stack = new ItemStack((short) 1, 50);
 
     int remainder = stack.add(14, 64);
@@ -43,7 +43,7 @@ public class ItemStackTest {
   }
 
   @Test
-  void testAdd_AlreadyFull() {
+  void testAddAlreadyFull() {
     ItemStack stack = new ItemStack((short) 1, 64);
 
     int remainder = stack.add(10, 64);
@@ -53,7 +53,7 @@ public class ItemStackTest {
   }
 
   @Test
-  void testAdd_InvalidMaxStackSize() {
+  void testAddInvalidMaxStackSize() {
     ItemStack stack = new ItemStack((short) 1, 10);
 
     assertThrows(
@@ -64,7 +64,7 @@ public class ItemStackTest {
   }
 
   @Test
-  void testAdd_NonPositiveAmountDoesNothing() {
+  void testAddNonPositiveAmountDoesNothing() {
     ItemStack stack = new ItemStack((short) 1, 10);
 
     int remainder = stack.add(0, 64);
@@ -74,7 +74,7 @@ public class ItemStackTest {
   }
 
   @Test
-  void testCopy_Integrity() {
+  void testCopyIntegrity() {
     ItemStack original = new ItemStack((short) 42, 10);
     ItemStack copy = original.copy();
 
@@ -151,28 +151,28 @@ public class ItemStackTest {
   }
 
   @Test
-  void testEquals_Reflexive() {
+  void testEqualsReflexive() {
     ItemStack stack = new ItemStack((short) 3, 7);
 
     assertEquals(stack, stack);
   }
 
   @Test
-  void testEquals_Null() {
+  void testEqualsNull() {
     ItemStack stack = new ItemStack((short) 3, 7);
 
     assertNotEquals(stack, null);
   }
 
   @Test
-  void testEquals_DifferentType() {
+  void testEqualsDifferentType() {
     ItemStack stack = new ItemStack((short) 3, 7);
 
     assertNotEquals(stack, "notAnItemStack");
   }
 
   @Test
-  void testAdd_NegativeAmountDoesNothing() {
+  void testAddNegativeAmountDoesNothing() {
     ItemStack stack = new ItemStack((short) 1, 10);
 
     int remainder = stack.add(-5, 64);

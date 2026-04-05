@@ -165,7 +165,7 @@ public class HotbarTest {
   }
 
   @Test
-  void testSetSlot_UpdatesInventory() {
+  void testSetSlotUpdatesInventory() {
     ItemStack newItem = new ItemStack((short) 50, 64);
 
     // 1. Set via Hotbar
@@ -179,13 +179,13 @@ public class HotbarTest {
   }
 
   @Test
-  void testGetSlot_EmptySlotReturnsNull() {
+  void testGetSlotEmptySlotReturnsNull() {
     // Ensure that an empty inventory slot returns null through the hotbar
     assertNull(hotbar.getSlot(5), "Empty inventory slot should result in null from hotbar");
   }
 
   @Test
-  void testSlotAccess_Bounds() {
+  void testSlotAccessBounds() {
     // The Hotbar implementation delegates to inventory.getSlot(index)
     // We should verify that it throws the expected exception for out-of-bounds
     assertThrows(IndexOutOfBoundsException.class, () -> hotbar.getSlot(-1));

@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class PacketBufferStringTest {
 
   @Test
-  void writeString_maxLength_ok() throws IOException {
+  void writeStringMaxLengthOk() throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PacketBuffer buffer =
         new PacketBuffer(
@@ -31,7 +31,7 @@ public class PacketBufferStringTest {
   }
 
   @Test
-  void writeString_tooLong_throws() {
+  void writeStringTooLongThrows() {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PacketBuffer buffer =
         new PacketBuffer(
@@ -46,7 +46,7 @@ public class PacketBufferStringTest {
   }
 
   @Test
-  void readString_lengthTooLarge_throws() throws IOException {
+  void readStringLengthTooLargeThrows() throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     DataOutputStream out = new DataOutputStream(baos);
 
@@ -61,7 +61,7 @@ public class PacketBufferStringTest {
   }
 
   @Test
-  void readString_negativeLength_throws() throws IOException {
+  void readStringNegativeLengthThrows() throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     DataOutputStream out = new DataOutputStream(baos);
 
@@ -76,7 +76,7 @@ public class PacketBufferStringTest {
   }
 
   @Test
-  void writeAndReadString_roundtrip_ok() throws IOException {
+  void writeAndReadStringRoundtripOk() throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
     PacketBuffer writeBuffer =

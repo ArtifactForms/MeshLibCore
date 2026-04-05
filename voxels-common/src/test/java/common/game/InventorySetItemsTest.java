@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class InventorySetItemsTest {
 
   @Test
-  void testSetItems_StandardCase() {
+  void testSetItemsStandardCase() {
     Inventory inv = new Inventory(3);
     ItemStack item1 = new ItemStack((short) 1, 10);
     ItemStack item2 = new ItemStack((short) 5, 20);
@@ -22,7 +22,7 @@ public class InventorySetItemsTest {
   }
 
   @Test
-  void testSetItems_DefensiveCopying() {
+  void testSetItemsDefensiveCopying() {
     Inventory inv = new Inventory(1);
     ItemStack originalStack = new ItemStack((short) 1, 10);
     ItemStack[] array = new ItemStack[] {originalStack};
@@ -40,7 +40,7 @@ public class InventorySetItemsTest {
   }
 
   @Test
-  void testSetItems_WithShorterArray() {
+  void testSetItemsWithShorterArray() {
     Inventory inv = new Inventory(5);
     // Fill it first
     inv.addItem((short) 1, 10);
@@ -56,7 +56,7 @@ public class InventorySetItemsTest {
   }
 
   @Test
-  void testSetItems_WithLongerArray() {
+  void testSetItemsWithLongerArray() {
     Inventory inv = new Inventory(2);
     // Provide 3 items for a 2-slot inventory
     ItemStack[] longerArray =
@@ -71,7 +71,7 @@ public class InventorySetItemsTest {
   }
 
   @Test
-  void testSetItems_NullArgument() {
+  void testSetItemsNullArgument() {
     Inventory inv = new Inventory(5);
     assertThrows(
         IllegalArgumentException.class,
@@ -80,7 +80,7 @@ public class InventorySetItemsTest {
   }
 
   @Test
-  void testSetItems_IntegrityValidation() {
+  void testSetItemsIntegrityValidation() {
     Inventory inv = new Inventory(3);
     ItemStack[] items = new ItemStack[] {new ItemStack((short) 1, 10)};
 

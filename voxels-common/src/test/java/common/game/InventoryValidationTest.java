@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 public class InventoryValidationTest {
 
   @Test
-  void testValidate_EmptyInventoryIsPassing() {
+  void testValidateEmptyInventoryIsPassing() {
     Inventory inv = new Inventory(5);
     // A fresh, empty inventory should always be valid
     assertDoesNotThrow(inv::validateInventory);
   }
 
   @Test
-  void testValidate_ThrowsOnZeroAmount() {
+  void testValidateThrowsOnZeroAmount() {
     Inventory inv = new Inventory(5);
     inv.addItem((short) 1, 10);
 
@@ -30,7 +30,7 @@ public class InventoryValidationTest {
   }
 
   @Test
-  void testSetAmount_ThrowsOnNegativeAmount() {
+  void testSetAmountThrowsOnNegativeAmount() {
     Inventory inv = new Inventory(5);
     inv.addItem((short) 1, 10);
 
@@ -40,7 +40,7 @@ public class InventoryValidationTest {
   }
 
   @Test
-  void testValidate_ThrowsOnStackOverflow() {
+  void testValidateThrowsOnStackOverflow() {
     Inventory inv = new Inventory(5);
     inv.addItem((short) 1, 10);
 
@@ -57,7 +57,7 @@ public class InventoryValidationTest {
   }
 
   @Test
-  void testValidate_ThrowsOnDuplicateReference() throws Exception {
+  void testValidateThrowsOnDuplicateReference() throws Exception {
     Inventory inv = new Inventory(5);
     ItemStack sharedStack = new ItemStack((short) 1, 10);
 
