@@ -6,9 +6,12 @@ import engine.runtime.debug.core.config.DebugLayer;
 public abstract class DebugCommand {
 
   public static final float PERSISTENT = -1f;
+
   public static final float ONE_FRAME = 0;
 
   /**
+   *
+   *
    * <pre>
    * Time To Live (seconds).
    *  ttl == 0 : one frame

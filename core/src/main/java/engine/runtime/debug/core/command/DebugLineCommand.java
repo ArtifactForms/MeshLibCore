@@ -6,7 +6,9 @@ import math.Vector3f;
 public final class DebugLineCommand extends DebugCommand {
 
   public final Vector3f a;
+
   public final Vector3f b;
+
   public final Color color;
 
   public DebugLineCommand(Vector3f a, Vector3f b, Color color) {

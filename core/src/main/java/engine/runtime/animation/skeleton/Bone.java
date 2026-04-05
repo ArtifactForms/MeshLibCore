@@ -9,13 +9,21 @@ import math.Matrix4f;
 public class Bone {
 
   private final String name;
+
   private Bone parent;
+
   private final List<Bone> children;
+
   private Matrix4f localTransform;
+
   private Matrix4f globalTransform;
+
   private Matrix4f inverseBindPose;
+
   private boolean transformDirty = true;
+
   private float weight;
+
   private int index;
 
   public Bone(String name) {
@@ -117,7 +125,7 @@ public class Bone {
   }
 
   public void setInverseBindPose(Matrix4f bindPose) {
-//    this.inverseBindPose = bindPose.invert();
+    //    this.inverseBindPose = bindPose.invert();
   }
 
   public float getWeight() {
