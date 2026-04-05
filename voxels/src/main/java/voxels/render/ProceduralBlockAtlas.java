@@ -63,7 +63,9 @@ public class ProceduralBlockAtlas {
   };
 
   private final Texture texture;
+
   private final float[] uvData;
+
   private final boolean flipVForProcessing;
 
   public ProceduralBlockAtlas() {
