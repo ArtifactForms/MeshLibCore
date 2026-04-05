@@ -15,8 +15,11 @@ import math.noise.Noise3D;
 public final class CellularNoise3D implements Noise3D {
 
   private final long seed;
+  
   private final float cellSize;
+  
   private final CellularDistance distanceType;
+  
   private final CellularResult resultType;
 
   public CellularNoise3D(

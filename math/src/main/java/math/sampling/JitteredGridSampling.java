@@ -41,6 +41,7 @@ import math.Vector2f;
 public final class JitteredGridSampling implements PointSampler2D {
 
   private final float cellSize;
+
   private final float jitter;
 
   /**

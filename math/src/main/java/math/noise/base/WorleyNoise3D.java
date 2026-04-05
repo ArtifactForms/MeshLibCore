@@ -23,7 +23,9 @@ import math.noise.Noise3D;
 public final class WorleyNoise3D implements Noise3D {
 
   private final long seed;
+  
   private final float cellSize;
+  
   private final CellularDistance metric;
 
   /**

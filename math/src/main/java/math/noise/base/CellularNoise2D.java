@@ -12,8 +12,11 @@ import math.noise.Noise2D;
 public final class CellularNoise2D implements Noise2D {
 
   private final long seed;
+  
   private final float cellSize;
+  
   private final CellularDistance distanceType;
+  
   private final CellularResult resultType;
 
   public CellularNoise2D(

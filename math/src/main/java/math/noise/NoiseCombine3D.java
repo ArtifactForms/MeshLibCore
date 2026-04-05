@@ -27,7 +27,9 @@ import java.util.Objects;
 public final class NoiseCombine3D implements Noise3D {
 
   private final Noise3D a;
+  
   private final Noise3D b;
+  
   private final CombineMode mode;
 
   /**

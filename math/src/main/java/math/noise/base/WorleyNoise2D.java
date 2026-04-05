@@ -23,7 +23,9 @@ import math.noise.Noise2D;
 public final class WorleyNoise2D implements Noise2D {
 
   private final long seed;
+  
   private final float cellSize;
+  
   private final CellularDistance metric;
 
   public WorleyNoise2D(long seed, float cellSize, CellularDistance metric) {

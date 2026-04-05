@@ -134,6 +134,14 @@ public class Color {
     return new Color(clampR / 255f, clampG / 255f, clampB / 255f);
   }
 
+  public static Color getColorFromInt(int r, int g, int b, int a) {
+    int clampR = Mathf.clampInt(r, 0, 255);
+    int clampG = Mathf.clampInt(g, 0, 255);
+    int clampB = Mathf.clampInt(b, 0, 255);
+    int clampA = Mathf.clampInt(a, 0, 255);
+    return new Color(clampR / 255f, clampG / 255f, clampB / 255f, clampA / 255f);
+  }
+
   /**
    * Adds the components of a given color to those of this color creating a new color object. Each
    * component is added separately. If the provided color is null, an exception is thrown.

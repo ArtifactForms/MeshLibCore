@@ -33,6 +33,7 @@ import math.Mathf;
 public final class RadialNoise2D implements Noise2D {
 
   private final float frequency;
+
   private final float phase;
 
   /**

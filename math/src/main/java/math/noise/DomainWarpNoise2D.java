@@ -9,12 +9,15 @@ package math.noise;
 public final class DomainWarpNoise2D implements Noise2D {
 
   private final Noise2D source;
+
   private final Noise2D warp;
 
   private final float warpFrequency;
+
   private final float warpStrength;
 
   private final float offsetX;
+
   private final float offsetY;
 
   /** Simple domain warp with one warp noise. */

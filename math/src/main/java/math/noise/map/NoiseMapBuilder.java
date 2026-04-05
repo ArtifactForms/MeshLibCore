@@ -18,17 +18,24 @@ public final class NoiseMapBuilder {
   private final Noise2D noise;
 
   private float scale = 1f;
+
   private float offsetX = 0f;
+
   private float offsetY = 0f;
 
   private boolean normalize = false;
+
   private boolean clamp01 = false;
 
   // --- Remap configuration ---
   private boolean remap = false;
+
   private float remapInMin;
+
   private float remapInMax;
+
   private float remapOutMin;
+
   private float remapOutMax;
 
   public NoiseMapBuilder(Noise2D noise) {

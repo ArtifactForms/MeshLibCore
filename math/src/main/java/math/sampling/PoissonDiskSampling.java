@@ -30,6 +30,7 @@ import math.Vector2f;
 public final class PoissonDiskSampling implements PointSampler2D {
 
   private final float minDistance;
+
   private final int maxAttempts;
 
   /**

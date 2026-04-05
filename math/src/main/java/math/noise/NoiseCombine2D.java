@@ -27,7 +27,9 @@ import java.util.Objects;
 public final class NoiseCombine2D implements Noise2D {
 
   private final Noise2D a;
+  
   private final Noise2D b;
+  
   private final CombineMode mode;
 
   /**

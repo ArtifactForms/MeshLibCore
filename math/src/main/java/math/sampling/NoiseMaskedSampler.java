@@ -18,8 +18,11 @@ import math.noise.Noise2D;
 public final class NoiseMaskedSampler implements PointSampler2D {
 
   private final PointSampler2D baseSampler;
+
   private final Noise2D noise;
+
   private final float threshold;
+
   private final float scale;
 
   /**
