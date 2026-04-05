@@ -106,8 +106,12 @@ public class RotationComponent extends AbstractComponent {
   }
 
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Do nothing
+  }
 
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Do nothing
+  }
 }

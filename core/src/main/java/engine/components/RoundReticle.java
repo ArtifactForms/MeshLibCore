@@ -82,15 +82,21 @@ public class RoundReticle extends AbstractComponent implements RenderableCompone
    * @param tpf time per frame, used for animations or updates.
    */
   @Override
-  public void onUpdate(float tpf) {}
+  public void onUpdate(float tpf) {
+    // Do nothing
+  }
 
   /** Called when the component is attached to a {@link engine.SceneNode}. */
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Do nothing
+  }
 
   /** Called when the component is detached from a {@link engine.SceneNode}. */
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Do nothing
+  }
 
   /**
    * Gets the outer radius of the reticle.

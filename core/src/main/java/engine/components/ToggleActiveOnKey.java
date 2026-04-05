@@ -46,8 +46,12 @@ public class ToggleActiveOnKey extends AbstractComponent {
   }
 
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Do nothing
+  }
 
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Do nothing
+  }
 }

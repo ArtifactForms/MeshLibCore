@@ -176,8 +176,12 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
   }
 
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Do nothing
+  }
 
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Do nothing
+  }
 }

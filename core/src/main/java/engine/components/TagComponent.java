@@ -121,7 +121,9 @@ public class TagComponent extends AbstractComponent {
    * <p>Currently unused.
    */
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Do nothing
+  }
 
   /**
    * Called when this component is detached from a scene node.
@@ -129,7 +131,9 @@ public class TagComponent extends AbstractComponent {
    * <p>Currently unused.
    */
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Do nothing
+  }
 
   /**
    * Updates the component.
@@ -140,5 +144,7 @@ public class TagComponent extends AbstractComponent {
    * @param tpf Time per frame (delta time)
    */
   @Override
-  public void onUpdate(float tpf) {}
+  public void onUpdate(float tpf) {
+    // Do nothing
+  }
 }

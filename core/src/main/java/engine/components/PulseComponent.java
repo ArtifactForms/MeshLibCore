@@ -95,5 +95,7 @@ public class PulseComponent extends OscillationComponent {
    * <p>This implementation performs no action.
    */
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Do nothing
+  }
 }

@@ -173,11 +173,17 @@ public class StaticGeometry extends AbstractComponent
   }
 
   @Override
-  public void onUpdate(float tpf) {}
+  public void onUpdate(float tpf) {
+    // Do nothing
+  }
 
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Do nothing
+  }
 
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Do nothing
+  }
 }
