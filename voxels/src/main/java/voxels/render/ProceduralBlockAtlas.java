@@ -48,7 +48,9 @@ public class ProceduralBlockAtlas {
   private static final int TILE_TYPE_COUNT = 8;
 
   private static final int TILE_SIZE = 32;
+
   private static final int COLUMNS = 6;
+
   private static final float EPSILON = 0.0015f;
 
   private static final float[] FACE_SHADE = {
