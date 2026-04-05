@@ -47,9 +47,11 @@ public class ServerPlayer extends PlayerData {
       new java.util.concurrent.LinkedBlockingQueue<>();
 
   private int viewDistance = 14;
+
   private boolean ignoreNextMovement = false;
 
   private int inventoryVersion = 0;
+
   private ItemStack cursorStack;
 
   public ServerPlayer(UUID uuid, String name, ServerConnection connection) {
