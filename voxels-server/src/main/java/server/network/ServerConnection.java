@@ -19,7 +19,9 @@ import server.usecases.UseCaseRegistry;
 public class ServerConnection extends Connection {
 
   private volatile ServerPlayer player; // Initialized after player joins
+  
   private final GameServer server;
+  
   private final ServerPacketDispatcher packetDispatcher;
 
   /** Thread-safe queue for incoming packets (main thread will poll) */

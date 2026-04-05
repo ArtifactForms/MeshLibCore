@@ -4,6 +4,7 @@ import math.Vector3f;
 import server.player.ServerPlayer;
 
 public class DistanceValidator implements BlockActionValidator {
+
   private final float maxReach;
 
   public DistanceValidator(float maxReach) {

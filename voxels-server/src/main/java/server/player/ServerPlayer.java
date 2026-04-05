@@ -22,7 +22,9 @@ import server.network.ServerConnection;
 public class ServerPlayer extends PlayerData {
 
   private double lastBroadcastX = Double.MAX_VALUE;
+
   private double lastBroadcastY = Double.MAX_VALUE;
+
   private double lastBroadcastZ = Double.MAX_VALUE;
 
   private static final float POSITION_THRESHOLD = 0.1f; // minimal movement
@@ -31,6 +33,7 @@ public class ServerPlayer extends PlayerData {
   private static final float VIEW_DISTANCE_BLOCKS = 3000; // TODO Remove Test only
 
   private int lastChunkX = Integer.MAX_VALUE;
+
   private int lastChunkZ = Integer.MAX_VALUE;
 
   private final ServerConnection connection;
@@ -307,7 +310,13 @@ public class ServerPlayer extends PlayerData {
     lastBroadcastZ = position.getZ();
 
     PlayerPositionPacket packet =
-        new PlayerPositionPacket(uuid, position.getX(), position.getY(), position.getZ(), position.getYaw(), position.getPitch());
+        new PlayerPositionPacket(
+            uuid,
+            position.getX(),
+            position.getY(),
+            position.getZ(),
+            position.getYaw(),
+            position.getPitch());
 
     PlayerManager playerManager = connection.getServer().getPlayerManager();
 

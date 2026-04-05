@@ -11,6 +11,7 @@ public class AsyncChunkSaver {
   private final ArrayBlockingQueue<Runnable> saveQueue = new ArrayBlockingQueue<>(QUEUE_SIZE);
 
   private volatile boolean running = true;
+
   private final Thread workerThread;
 
   public AsyncChunkSaver() {
