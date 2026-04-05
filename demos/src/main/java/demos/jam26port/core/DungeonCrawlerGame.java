@@ -35,13 +35,6 @@ import mesh.geometry.MeshGeometryUtil;
 
 public class DungeonCrawlerGame extends BasicApplication {
 
-  public static void main(String[] args) {
-    ApplicationSettings settings = ApplicationSettings.defaultSettings();
-    settings.setFullscreen(true);
-    DungeonCrawlerGame game = new DungeonCrawlerGame();
-    game.launch(settings);
-  }
-
   private boolean debug = true;
 
   private boolean drawDebugNormals = false;
@@ -67,6 +60,13 @@ public class DungeonCrawlerGame extends BasicApplication {
   private PointLight light;
 
   private SceneNode lightNode;
+
+  public static void main(String[] args) {
+    ApplicationSettings settings = ApplicationSettings.defaultSettings();
+    settings.setFullscreen(true);
+    DungeonCrawlerGame game = new DungeonCrawlerGame();
+    game.launch(settings);
+  }
 
   @Override
   public void onInitialize() {
