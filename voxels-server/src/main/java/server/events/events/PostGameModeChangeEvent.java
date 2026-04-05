@@ -8,9 +8,9 @@ import server.events.GameEvent;
 /**
  * Event fired after a player's game mode has been successfully changed.
  *
- * <p>This event is dispatched once the new {@link GameMode} has already been applied
- * to the player. It is intended for post-processing logic such as syncing state,
- * updating UI, triggering effects, or notifying other systems.
+ * <p>This event is dispatched once the new {@link GameMode} has already been applied to the player.
+ * It is intended for post-processing logic such as syncing state, updating UI, triggering effects,
+ * or notifying other systems.
  *
  * <p>This event is not cancellable.
  *
@@ -18,14 +18,10 @@ import server.events.GameEvent;
  */
 public class PostGameModeChangeEvent extends GameEvent {
 
-  /**
-   * The unique identifier of the player whose game mode was changed.
-   */
+  /** The unique identifier of the player whose game mode was changed. */
   private final UUID playerId;
 
-  /**
-   * The new game mode applied to the player.
-   */
+  /** The new game mode applied to the player. */
   private final GameMode gameMode;
 
   /**
