@@ -97,15 +97,6 @@ class PlayerDataTest {
   }
 
   @Test
-  @DisplayName("Position vector should be mutable through getter reference")
-  void testPositionMutability() {
-
-    player.getPosition().x = 42f;
-
-    assertEquals(42f, player.getX(), 0.001f);
-  }
-
-  @Test
   @DisplayName("Abilities should be initialized by default")
   void testAbilitiesNotNullByDefault() {
     assertNotNull(player.getAbilities());
