@@ -17,6 +17,7 @@ import mesh.modifier.transform.SnapToGroundModifier;
 public class ChunkVisualizer1 extends AbstractComponent implements RenderableComponent {
 
   private final Mesh3D plane;
+
   private final Mesh3D chunk;
 
   /** Constructs a new ChunkVisualizer with a plane and chunk representation. */

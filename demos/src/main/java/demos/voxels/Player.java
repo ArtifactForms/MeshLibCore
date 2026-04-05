@@ -6,9 +6,13 @@ import math.Vector3f;
 public class Player {
 
   private Vector3f position;
+
   private Vector3f velocity;
+
   private float width = 0.6f;
+
   private float height = 1.8f;
+
   private boolean grounded;
 
   public Player() {

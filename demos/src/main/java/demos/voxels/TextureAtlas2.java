@@ -16,17 +16,29 @@ public class TextureAtlas2 {
   private static final Color DIRT_COLOR = new Color(151, 109, 76);
 
   private boolean useNoise = GameSettings.textureNoise;
+
   private boolean drawDebugText = GameSettings.textureDebugText;
+
   private boolean fillTextureBackground = GameSettings.textureBackground;
+
   private float epsilon = 0.002f; // Small margin to prevent texture bleeding
+
   private int tileSize = 128;
+
   private int columns = 6; // 6 faces per block
+
   private int rows = BlockType.values().length;
+
   private int width = tileSize * columns;
+
   private int height = tileSize * rows;
+
   private ArrayList<Vector2f> uvCoordinates;
+
   private BufferedImage image;
+
   private BufferedImage overlay;
+
   private Texture texture;
 
   public TextureAtlas2() {
@@ -151,8 +163,8 @@ public class TextureAtlas2 {
       g2d.drawImage(overlay, baseX, baseY, tileSize, tileSize, null);
 
       // Fake light
-//      g2d.setColor(new Color(0, 0, 0, 255 / 6 * col));
-//      g2d.fillRect(baseX, baseY, tileSize, tileSize);
+      //      g2d.setColor(new Color(0, 0, 0, 255 / 6 * col));
+      //      g2d.fillRect(baseX, baseY, tileSize, tileSize);
     }
   }
 
@@ -171,31 +183,28 @@ public class TextureAtlas2 {
   //  }
   public Vector2f[] getUVCoordinates(int blockId, int face) {
 
-	    int col = face;
-	    int row = blockId;
+    int col = face;
+    int row = blockId;
 
-	    float tileU = 1f / columns;
-	    float tileV = 1f / rows;
+    float tileU = 1f / columns;
+    float tileV = 1f / rows;
 
-	    float u0 = col * tileU;
-	    float v0 = row * tileV;
+    float u0 = col * tileU;
+    float v0 = row * tileV;
 
-	    float u1 = u0 + tileU;
-	    float v1 = v0 + tileV;
+    float u1 = u0 + tileU;
+    float v1 = v0 + tileV;
 
-	    // epsilon gegen bleeding
-	    u0 += epsilon;
-	    v0 += epsilon;
-	    u1 -= epsilon;
-	    v1 -= epsilon;
+    // epsilon gegen bleeding
+    u0 += epsilon;
+    v0 += epsilon;
+    u1 -= epsilon;
+    v1 -= epsilon;
 
-	    return new Vector2f[]{
-	        new Vector2f(u1, v1),
-	        new Vector2f(u0, v1),
-	        new Vector2f(u0, v0),
-	        new Vector2f(u1, v0)
-	    };
-	}
+    return new Vector2f[] {
+      new Vector2f(u1, v1), new Vector2f(u0, v1), new Vector2f(u0, v0), new Vector2f(u1, v0)
+    };
+  }
 
   public ArrayList<Vector2f> getUVCoordinates() {
     return uvCoordinates;

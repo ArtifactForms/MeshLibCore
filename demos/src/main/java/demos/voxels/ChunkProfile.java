@@ -9,7 +9,9 @@ import engine.runtime.debug.DebugOverlay;
 public class ChunkProfile extends AbstractComponent implements RenderableComponent {
 
   private DebugOverlay overlay;
+
   private Player player;
+
   private ChunkManager chunkManager;
 
   public ChunkProfile(Player player, ChunkManager chunkManager) {

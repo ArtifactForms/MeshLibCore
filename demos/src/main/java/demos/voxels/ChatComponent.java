@@ -18,10 +18,15 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
   private static final int MAX_MESSAGE_LENGTH = 256;
 
   private final StringBuilder textBuffer = new StringBuilder();
+
   private boolean textInputEnabled = false;
+
   private final Input input;
+
   private final Camera camera;
+
   private int cursorPosition = 0;
+
   private final EventManager eventManager;
 
   public ChatComponent(Input input, Camera camera, EventManager eventManager) {

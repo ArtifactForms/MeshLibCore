@@ -14,7 +14,17 @@ import math.Vector2f;
 
 public class ChunkMesher {
 
-    private static final int TOP = 0, BOTTOM = 5, FRONT = 1, BACK = 4, RIGHT = 2, LEFT = 3;
+    private static final int TOP = 0;
+    
+    private static final int BOTTOM = 5;
+    
+    private static final int FRONT = 1;
+    
+    private static final int BACK = 4;
+    
+    private static final int RIGHT = 2;
+    
+    private static final int LEFT = 3;
     
     private static float radius = 0.5f;
 

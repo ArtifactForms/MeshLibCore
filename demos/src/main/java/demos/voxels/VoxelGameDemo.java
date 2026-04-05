@@ -32,20 +32,31 @@ public class VoxelGameDemo extends BasicApplication {
   }
 
   private float speed = GameSettings.flySpeed;
+
   private SkyBox skyBox;
+
   private Player player;
+
   private Scene scene;
+
   private SceneNode chunkBorders;
 
   private long seed = 1324;
+
   private ChunkManager chunkManager;
+
   private World world;
+
   private EventManager eventManager;
+
   private Client client;
+
   private PerspectiveCamera camera;
 
   private SceneNode playerNode;
+
   private TextDisplay display;
+
   private SceneNode uiRoot;
 
   @Override
@@ -62,10 +73,8 @@ public class VoxelGameDemo extends BasicApplication {
     setupSkyBox();
     setupTestCube();
 
-
-
     setupCamera();
-    
+
     setupChunkManager();
     world = new World(chunkManager, seed);
 
@@ -89,15 +98,15 @@ public class VoxelGameDemo extends BasicApplication {
     //            .start();
 
     //    SceneNode rayNode = new SceneNode("Ray", new RayVisualizer(camera));
-//    SceneNode rayNode = new SceneNode("Ray", new RayBlockDetector(camera, world, display));
+    //    SceneNode rayNode = new SceneNode("Ray", new RayBlockDetector(camera, world, display));
     //    scene.addNode(rayNode);
 
     setupUI();
     setupPlayer();
-    
-   BlockInteractionComponent component = new BlockInteractionComponent(world, input, display);
-   SceneNode rayNode1 = new SceneNode("", component);
-   scene.addNode(rayNode1);
+
+    BlockInteractionComponent component = new BlockInteractionComponent(world, input, display);
+    SceneNode rayNode1 = new SceneNode("", component);
+    scene.addNode(rayNode1);
   }
 
   private void setupPlayer() {

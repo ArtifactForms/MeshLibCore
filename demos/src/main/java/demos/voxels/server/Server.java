@@ -7,6 +7,7 @@ import java.util.*;
 public class Server {
 
   private static final int PORT = 23456;
+
   private final List<ClientHandler> clients = new ArrayList<>();
 
   public static void main(String[] args) {

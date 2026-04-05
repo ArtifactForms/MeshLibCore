@@ -15,18 +15,31 @@ public class TextureAtlas {
   private static final Color DIRT_COLOR = new Color(151, 109, 76);
 
   private int hueDegreePerCoulmn = 5;
+
   private boolean useNoise = GameSettings.textureNoise;
+
   private boolean drawDebugText = GameSettings.textureDebugText;
+
   private boolean fillTextureBackground = GameSettings.textureBackground;
+
   private float epsilon = 0.002f; // Small margin to prevent texture bleeding
+
   private int tileSize = 128;
+
   private int columns = 6; // 6 faces per block
+
   private int rows = BlockType.values().length;
+
   private int width = tileSize * columns;
+
   private int height = tileSize * rows;
+
   private ArrayList<Vector2f> uvCoordinates;
+
   private BufferedImage image;
+
   private BufferedImage overlay;
+
   private Texture texture;
 
   public TextureAtlas() {

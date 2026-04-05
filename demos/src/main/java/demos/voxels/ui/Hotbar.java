@@ -22,18 +22,26 @@ public class Hotbar extends AbstractComponent implements RenderableComponent {
 
   // Hotbar configuration
   private static final int SCALE = 4;
+
   private static final int SIZE = 16;
+
   private static final int BORDER = 1;
+
   private static final int MARGIN = 20;
+
   private static final int SLOTS = 9;
 
   // Hotbar dimensions
   private final int slotSize = SIZE * SCALE;
+
   private final int scaledWidth = calculateScaledWidth();
+
   private final int scaledHeight = calculateScaledHeight();
 
   private final Texture texture;
+
   private final Mesh3D plane;
+
   private final Geometry geometry;
 
   public Hotbar() {

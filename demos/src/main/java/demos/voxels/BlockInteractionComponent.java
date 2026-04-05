@@ -21,11 +21,17 @@ import mesh.creator.primitives.CubeCreator;
 public class BlockInteractionComponent extends AbstractComponent implements RenderableComponent {
 
   private boolean lastPressed;
+
   private boolean lastPressedRight;
+
   private World world;
+
   private Input input;
+
   private RaycastResult lastHit = RaycastResult.miss();
+
   private TextDisplay display;
+
   private StaticGeometry geometry;
 
   public BlockInteractionComponent(World world, Input input, TextDisplay display) {
@@ -62,28 +68,27 @@ public class BlockInteractionComponent extends AbstractComponent implements Rend
 
     lastPressed = pressed;
     lastPressedRight = pressedRight;
-    
-    
-//    if (lastPressedRight && !pressedRight) {
-//        int px = lastHit.placeX;
-//        int py = lastHit.placeY;
-//        int pz = lastHit.placeZ;
-//
-//        // 1. Hole die Spieler-Position
-//        Vector3f pPos = player.getPosition();
-//        
-//        // 2. Prüfe, ob die Platzierung mit dem Spieler kollidiert
-//        // Da Voxel ganze Zahlen sind, nutzen wir Math.floor für die Spieler-Position
-//        boolean collidesWithPlayer = 
-//            (px == (int)Math.floor(pPos.x + 0.5f) && 
-//             pz == (int)Math.floor(pPos.z + 0.5f) &&
-//             (py == (int)Math.floor(-pPos.y) || py == (int)Math.floor(-pPos.y + 1)));
-//
-//        if (!collidesWithPlayer) {
-//            world.setBlock(px, py, pz, BlockType.STONE);
-//        }
-//    }
-    
+
+    //    if (lastPressedRight && !pressedRight) {
+    //        int px = lastHit.placeX;
+    //        int py = lastHit.placeY;
+    //        int pz = lastHit.placeZ;
+    //
+    //        // 1. Hole die Spieler-Position
+    //        Vector3f pPos = player.getPosition();
+    //
+    //        // 2. Prüfe, ob die Platzierung mit dem Spieler kollidiert
+    //        // Da Voxel ganze Zahlen sind, nutzen wir Math.floor für die Spieler-Position
+    //        boolean collidesWithPlayer =
+    //            (px == (int)Math.floor(pPos.x + 0.5f) &&
+    //             pz == (int)Math.floor(pPos.z + 0.5f) &&
+    //             (py == (int)Math.floor(-pPos.y) || py == (int)Math.floor(-pPos.y + 1)));
+    //
+    //        if (!collidesWithPlayer) {
+    //            world.setBlock(px, py, pz, BlockType.STONE);
+    //        }
+    //    }
+
   }
 
   @Override

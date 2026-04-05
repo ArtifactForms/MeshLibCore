@@ -8,57 +8,61 @@ import demos.voxels.client.event.EventListener;
 import demos.voxels.client.event.MessageSentEvent;
 
 public class Client implements EventListener {
+
   private static final String SERVER_ADDRESS = "localhost";
+
   private static final int SERVER_PORT = 23456;
 
   private PrintWriter out;
+
   private BufferedReader in;
+
   private BufferedReader userInput;
 
   public Client() {
     userInput = new BufferedReader(new InputStreamReader(System.in));
   }
 
-    public void connect() {
-      try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT)) {
-        System.out.println("Connected to server at " + SERVER_ADDRESS + ":" + SERVER_PORT);
-  
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
-  
-        // Start a new thread to listen for incoming server messages
-        new Thread(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    listenForServerMessages();
-                  }
-                })
-            .start();
-  
-        // Main thread for sending messages to the server
-        listenForUserInput();
-  
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+  public void connect() {
+    try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT)) {
+      System.out.println("Connected to server at " + SERVER_ADDRESS + ":" + SERVER_PORT);
 
-//  public void connect() {
-//    try {
-//      Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-//      System.out.println("Connected to server at " + SERVER_ADDRESS + ":" + SERVER_PORT);
-//
-//      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//      out = new PrintWriter(socket.getOutputStream(), true);
-//
-//      // Nur Listener-Thread starten
-//      new Thread(this::listenForServerMessages).start();
-//
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//  }
+      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      out = new PrintWriter(socket.getOutputStream(), true);
+
+      // Start a new thread to listen for incoming server messages
+      new Thread(
+              new Runnable() {
+                @Override
+                public void run() {
+                  listenForServerMessages();
+                }
+              })
+          .start();
+
+      // Main thread for sending messages to the server
+      listenForUserInput();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  //  public void connect() {
+  //    try {
+  //      Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+  //      System.out.println("Connected to server at " + SERVER_ADDRESS + ":" + SERVER_PORT);
+  //
+  //      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+  //      out = new PrintWriter(socket.getOutputStream(), true);
+  //
+  //      // Nur Listener-Thread starten
+  //      new Thread(this::listenForServerMessages).start();
+  //
+  //    } catch (IOException e) {
+  //      e.printStackTrace();
+  //    }
+  //  }
 
   private void listenForServerMessages() {
     try {
