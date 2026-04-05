@@ -17,6 +17,7 @@ public class FloatHistoryGraphRenderer {
 
   // UI tuning
   private final int headerHeight = 22;
+
   private final int padding = 6;
 
   public FloatHistoryGraphRenderer(

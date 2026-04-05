@@ -58,6 +58,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   // Füge eine Map für den Lösch-Timer hinzu
   private final Map<Long, Long> deletionQueue = new ConcurrentHashMap<>();
+
   private static final long DELETION_DELAY_MS = 2000; // 2 Sekunden Puffer
 
   public ChunkManager(GameClient client) {

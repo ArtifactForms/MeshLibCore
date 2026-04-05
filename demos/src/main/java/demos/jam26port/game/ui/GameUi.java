@@ -24,8 +24,11 @@ public class GameUi {
   private SceneNode uiRoot;
 
   private HealthBarComponent healthBar;
+
   private TitleDisplayComponent title;
+
   private MiniMapComponent miniMap;
+
   private HitFlashComponent hitFlash;
 
   public GameUi(SceneNode uiRoot, TileMap tileMap) {

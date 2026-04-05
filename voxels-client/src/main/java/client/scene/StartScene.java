@@ -198,7 +198,9 @@ public class StartScene extends Scene {
   }
 
   public class RotateComponent extends AbstractComponent {
+
     private float time;
+
     private float speed = 0.5f;
 
     @Override
