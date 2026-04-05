@@ -14,9 +14,11 @@ import math.Vector3f;
 public class CameraFollowComponent extends AbstractComponent {
 
   private final Camera camera;
+
   private final SceneNode target;
 
   private Vector3f offset;
+
   private float smoothness = 0f; // 0 = no smoothing (instant)
 
   /**
