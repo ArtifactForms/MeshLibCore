@@ -9,10 +9,15 @@ public class ApplicationSettings {
   private static final String DEFAULT_TITLE = "Untitled-Application";
 
   private int width;
+
   private int height;
+
   private boolean fullscreen;
+
   private String title;
+
   private boolean useGamePadInput;
+
   private boolean ignoreExitOnEscape;
 
   /**
