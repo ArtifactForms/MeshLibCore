@@ -55,11 +55,6 @@ import math.Vector3f;
  */
 public class MultiCameraIntegrationApp extends BasicApplication {
 
-  public static void main(String[] args) {
-    MultiCameraIntegrationApp app = new MultiCameraIntegrationApp();
-    app.launch(ApplicationSettings.defaultSettings().setFullscreen(true));
-  }
-
   private Scene scene;
 
   private OrbitCamera orbitCamera;
@@ -69,6 +64,11 @@ public class MultiCameraIntegrationApp extends BasicApplication {
   private PerspectiveCamera perspectiveCamera;
 
   private SceneNode perspectiveCameraNode;
+
+  public static void main(String[] args) {
+    MultiCameraIntegrationApp app = new MultiCameraIntegrationApp();
+    app.launch(ApplicationSettings.defaultSettings().setFullscreen(true));
+  }
 
   @Override
   public void onInitialize() {

@@ -10,37 +10,6 @@ import engine.runtime.debug.core.config.DebugDepthMode;
 
 public final class DebugRenderer {
 
-  private static final class BatchKey {
-
-    final Class<? extends DebugCommand> type;
-
-    final DebugDepthMode depthMode;
-
-    BatchKey(Class<? extends DebugCommand> type, DebugDepthMode depthMode) {
-      this.type = type;
-      this.depthMode = depthMode;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o instanceof BatchKey)) {
-        return false;
-      }
-      BatchKey other = (BatchKey) o;
-      return type == other.type && depthMode == other.depthMode;
-    }
-
-    @Override
-    public int hashCode() {
-      int result = type.hashCode();
-      result = 31 * result + depthMode.hashCode();
-      return result;
-    }
-  }
-
   private final Map<Class<? extends DebugCommand>, DebugCommandRenderer<?>> renderers =
       new HashMap<>();
 
@@ -99,6 +68,37 @@ public final class DebugRenderer {
       case DEPTH_TESTED:
         g.enableDepthTest();
         break;
+    }
+  }
+
+  private static final class BatchKey {
+
+    final Class<? extends DebugCommand> type;
+
+    final DebugDepthMode depthMode;
+
+    BatchKey(Class<? extends DebugCommand> type, DebugDepthMode depthMode) {
+      this.type = type;
+      this.depthMode = depthMode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (!(o instanceof BatchKey)) {
+        return false;
+      }
+      BatchKey other = (BatchKey) o;
+      return type == other.type && depthMode == other.depthMode;
+    }
+
+    @Override
+    public int hashCode() {
+      int result = type.hashCode();
+      result = 31 * result + depthMode.hashCode();
+      return result;
     }
   }
 }

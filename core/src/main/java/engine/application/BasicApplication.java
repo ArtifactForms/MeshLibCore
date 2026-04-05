@@ -46,6 +46,8 @@ public abstract class BasicApplication implements Application {
   private DebugContext debugContext;
 
   private CollisionSystem collisionSystem;
+  
+  private Font font = new Font("Lucida Sans", 12, Font.PLAIN);
 
   public BasicApplication() {
     this.timer = new Time();
@@ -57,8 +59,6 @@ public abstract class BasicApplication implements Application {
   public abstract void onUpdate(float tpf);
 
   public abstract void onRender(Graphics g);
-  
-  private Font font = new Font("Lucida Sans", 12, Font.PLAIN);
 
   public void onRenderUI(Graphics g) {
     // Do nothing
