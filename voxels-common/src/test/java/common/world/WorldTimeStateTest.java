@@ -23,12 +23,12 @@ class WorldTimeStateTest {
   // ------------------------------------
 
   @Test
-  void worldTime_shouldBeZero_byDefault() {
+  void worldTimeShouldBeZeroByDefault() {
     assertEquals(0, time.getWorldTime());
   }
 
   @Test
-  void day_shouldBeZero_byDefault() {
+  void dayShouldBeZeroByDefault() {
     assertEquals(0, time.getDay());
   }
 
@@ -37,14 +37,14 @@ class WorldTimeStateTest {
   // ------------------------------------
 
   @Test
-  void tick_shouldIncreaseWorldTimeByOne() {
+  void tickShouldIncreaseWorldTimeByOne() {
     time.tick();
     assertEquals(1, time.getWorldTime());
   }
 
   @ParameterizedTest
   @ValueSource(longs = {1, 2, 3, 60, 120, 8234})
-  void tick_shouldAccumulateCorrectly(long tickCount) {
+  void tickShouldAccumulateCorrectly(long tickCount) {
     for (long i = 0; i < tickCount; i++) {
       time.tick();
     }
@@ -52,7 +52,7 @@ class WorldTimeStateTest {
   }
 
   @Test
-  void tick_shouldWrapToNextDay_whenEndOfDayReached() {
+  void tickShouldWrapToNextDayWhenEndOfDayReached() {
     time.setWorldTime(WorldTime.DAY_LENGTH - 1);
 
     time.tick();
@@ -67,13 +67,13 @@ class WorldTimeStateTest {
 
   @ParameterizedTest
   @ValueSource(longs = {0, 45, 223, 100000234})
-  void setWorldTime_shouldStoreExactValue(long worldTime) {
+  void setWorldTimeShouldStoreExactValue(long worldTime) {
     time.setWorldTime(worldTime);
     assertEquals(worldTime, time.getWorldTime());
   }
 
   @Test
-  void setWorldTime_shouldThrowException_whenNegative() {
+  void setWorldTimeShouldThrowExceptionWhenNegative() {
     assertThrows(IllegalArgumentException.class, () -> time.setWorldTime(-1));
   }
 
@@ -149,7 +149,7 @@ class WorldTimeStateTest {
   }
 
   @Test
-  void largeWorldTime_shouldCalculateDayAndTimeCorrectly() {
+  void largeWorldTimeShouldCalculateDayAndTimeCorrectly() {
     long manyDays = 1_000_000L * WorldTime.DAY_LENGTH;
     long offset = 1234L;
     time.setWorldTime(manyDays + offset);
@@ -182,7 +182,7 @@ class WorldTimeStateTest {
   // ------------------------------------
 
   @Test
-  void getDay_shouldReturnCorrectDay_forExactDayBoundaries() {
+  void getDayShouldReturnCorrectDayForExactDayBoundaries() {
     time.setWorldTime(WorldTime.DAY_LENGTH);
     assertEquals(1, time.getDay());
 
@@ -191,7 +191,7 @@ class WorldTimeStateTest {
   }
 
   @Test
-  void getDay_shouldIncreaseOnlyAfterFullDayPassed() {
+  void getDayShouldIncreaseOnlyAfterFullDayPassed() {
     time.setWorldTime(WorldTime.DAY_LENGTH * 2 + 1);
     assertEquals(2, time.getDay());
   }
@@ -201,7 +201,7 @@ class WorldTimeStateTest {
   // ------------------------------------
 
   @Test
-  void getTimeOfDay_shouldWrapWithinDayLength() {
+  void getTimeOfDayShouldWrapWithinDayLength() {
     time.setWorldTime(WorldTime.DAY_LENGTH + 500);
     assertEquals(500, time.getTimeOfDay());
   }
@@ -211,7 +211,7 @@ class WorldTimeStateTest {
   // ------------------------------------
 
   @Test
-  void setTimeOfDay_shouldPreserveCurrentDay() {
+  void setTimeOfDayShouldPreserveCurrentDay() {
     time.setWorldTime(WorldTime.DAY_LENGTH * 2 + 123);
 
     time.setTimeOfDay(WorldTime.NOON);
@@ -225,19 +225,19 @@ class WorldTimeStateTest {
   // ------------------------------------
 
   @Test
-  void normalizedTime_shouldBeZero_atStartOfDay() {
+  void normalizedTimeShouldBeZero_atStartOfDay() {
     time.setWorldTime(0);
     assertEquals(0.0f, time.getTimeOfDayNormalized());
   }
 
   @Test
-  void normalizedTime_shouldBeHalf_atMidDay() {
+  void normalizedTimeShouldBeHalfAtMidDay() {
     time.setWorldTime(WorldTime.DAY_LENGTH / 2);
     assertEquals(0.5f, time.getTimeOfDayNormalized());
   }
 
   @Test
-  void normalizedTime_shouldBeCloseToOne_atEndOfDay() {
+  void normalizedTimeShouldBeCloseToOneAtEndOfDay() {
     time.setWorldTime(WorldTime.DAY_LENGTH - 1);
 
     float expected = (WorldTime.DAY_LENGTH - 1) / (float) WorldTime.DAY_LENGTH;
@@ -245,14 +245,14 @@ class WorldTimeStateTest {
   }
 
   @Test
-  void normalizedTime_shouldWrapAfterFullDay() {
+  void normalizedTimeShouldWrapAfterFullDay() {
     time.setWorldTime(WorldTime.DAY_LENGTH);
 
     assertEquals(0.0f, time.getTimeOfDayNormalized());
   }
 
   @Test
-  void normalizedTime_shouldWrapCorrectly_forArbitraryValue() {
+  void normalizedTimeShouldWrapCorrectlyForArbitraryValue() {
     time.setWorldTime(WorldTime.DAY_LENGTH + 6000);
 
     assertEquals(6000f / WorldTime.DAY_LENGTH, time.getTimeOfDayNormalized());
