@@ -16,24 +16,35 @@ public class CharacterControllerComponent extends AbstractComponent
     implements MovementInputConsumer {
 
   private final ColliderComponent collider;
+
   private final Vector3f velocity = new Vector3f();
+
   private final Vector3f pendingInput = new Vector3f();
 
   // --- Platform Handling ---
   private SceneNode groundNode = null;
+
   private final Vector3f lastGroundPosition = new Vector3f();
 
   // --- Configuration ---
   private float moveSpeed = 11f;
+
   private float gravity = 18.0f;
+
   private float jumpSpeed = 7f;
+
   private float skinWidth = 0.005f;
+
   private int maxIterations = 5;
+
   private float stepHeight = 0.4f;
+
   private float slopeLimitCos = 0.7f;
+
   private boolean grounded = false;
 
   private static final Vector3f WORLD_UP = new Vector3f(0, -1, 0);
+
   private static final Vector3f WORLD_DOWN = new Vector3f(0, 1, 0);
 
   public CharacterControllerComponent(ColliderComponent collider) {

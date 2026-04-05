@@ -9,20 +9,27 @@ import java.awt.image.BufferedImage;
 public class PrototypeGridTexture {
 
   private int width;
+
   private int height;
 
   private int labelFontSize = 16;
+
   private int subLabelFontSize = 12;
+
   private String label = "Prototype";
+
   private String subLabel;
 
   private int majorCellSize = 128;
+
   private int gridCellSize = 16;
 
   private float majorCheckerAlpha = 0.2f;
+
   private float minorCheckerAlpha = 0.2f;
 
   private Color backgroundColor = Color.LIGHT_GRAY;
+
   private Color borderColor = Color.WHITE;
 
   private boolean antialias;

@@ -9,8 +9,11 @@ import java.awt.image.BufferedImage;
 public class CheckerBoardPainter implements Painter {
 
   private int cellSize;
+
   private Color darkColor;
+
   private Color lightColor;
+
   private BufferedImage texture;
 
   public CheckerBoardPainter() {

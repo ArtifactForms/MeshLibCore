@@ -9,7 +9,9 @@ import math.Vector3f;
 public class CapsuleSweepComponent extends AbstractComponent {
 
   private Vector3f previousPos;
+
   private static final float EPSILON = 0.0001f;
+
   private ColliderComponent colliderComponent;
 
   public CapsuleSweepComponent(ColliderComponent colliderComponent) {
@@ -30,7 +32,7 @@ public class CapsuleSweepComponent extends AbstractComponent {
       throw new IllegalStateException(
           "CapsuleSweepComponent requires PhysicsQuerySystem to be registered in the Scene.");
     }
-    
+
     Vector3f currentPos = getOwner().getWorldPosition();
 
     // delta = current - previous

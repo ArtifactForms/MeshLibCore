@@ -17,16 +17,18 @@ import mesh.creator.primitives.CapsuleCreator;
 public class PlayerFactory {
 
   private final Color capsuleColor = Color.BLUE;
+
   private final Key jumpKey = Key.N;
+
   private final Vector3f spawnLocation = new Vector3f(0, -10, 0);
+
   private Input input;
 
   public SceneNode createTestCapsulePlayer(Input input, Settings settings) {
     SceneNode player = new SceneNode("Player");
 
     // 1. Visual representation
-    if (!settings.isFpsControlEnabled())
-    	player.addComponent(createGeometry(settings));
+    if (!settings.isFpsControlEnabled()) player.addComponent(createGeometry(settings));
 
     // 2. Physics and collision
     ColliderComponent collider =

@@ -27,14 +27,19 @@ import math.Vector3f;
 public class FPSControl extends AbstractComponent {
 
   private static final float DEFAULT_MOUSE_SENSITIVITY = 10f;
+
   private static final float MAX_PITCH = 80f;
+
   private static final float MIN_PITCH = -80f;
 
   private float mouseSensitivity = DEFAULT_MOUSE_SENSITIVITY;
+
   private float mouseSmoothingFactor = 0.25f;
 
   private float smoothedMouseX = 0f;
+
   private float smoothedMouseY = 0f;
+
   private float currentPitch = 0f;
 
   /** Vertical camera offset relative to the player position. */

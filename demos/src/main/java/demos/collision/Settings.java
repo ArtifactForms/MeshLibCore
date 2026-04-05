@@ -3,10 +3,15 @@ package demos.collision;
 public class Settings {
 
   private float stepHeight = 0.3f;
+
   private float radius = 0.5f;
+
   private float halfHeight = 1.0f; // Half-height of the cylindrical section
+
   private float speed = 12f;
+
   private boolean cameraFollowEnabled = false;
+
   private boolean fpsControlEnabled = true;
 
   public float getCapsuleRadius() {
@@ -36,8 +41,8 @@ public class Settings {
   public boolean isCameraFollowEnabled() {
     return cameraFollowEnabled;
   }
-  
+
   public boolean isFpsControlEnabled() {
-	  return fpsControlEnabled;
+    return fpsControlEnabled;
   }
 }

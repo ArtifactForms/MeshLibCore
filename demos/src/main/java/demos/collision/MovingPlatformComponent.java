@@ -10,8 +10,11 @@ import math.Vector3f;
 public class MovingPlatformComponent extends AbstractComponent {
 
   private Vector3f startPos;
+
   private float distance = 10f;
+
   private float speed = 2f;
+
   private float time = 0;
 
   @Override

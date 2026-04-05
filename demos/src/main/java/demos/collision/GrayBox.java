@@ -26,6 +26,7 @@ public class GrayBox {
   private float scale;
 
   private static Texture texture;
+
   private static Material debugMaterial;
 
   static {
