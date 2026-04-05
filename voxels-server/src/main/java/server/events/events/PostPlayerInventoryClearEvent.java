@@ -2,13 +2,13 @@ package server.events.events;
 
 import java.util.UUID;
 
-import server.events.CancellableEvent;
+import server.events.GameEvent;
 
-public class PlayerInventoryClearedEvent extends CancellableEvent {
+public class PlayerInventoryClearEvent extends GameEvent {
 
   private final UUID playerId;
 
-  public PlayerInventoryClearedEvent(UUID playerId) {
+  public PlayerInventoryClearEvent(UUID playerId) {
     this.playerId = playerId;
   }
 

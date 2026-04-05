@@ -2,7 +2,7 @@ package server.usecases.inventoryclear;
 
 import java.util.UUID;
 
-import server.events.events.PlayerInventoryClearedEvent;
+import server.events.events.PlayerInventoryClearEvent;
 import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
 import server.gateways.InventoryGateway;
@@ -30,7 +30,7 @@ public class InventoryClearUseCase implements InventoryClear {
     inventories.clear(playerId);
     inventories.incrementInventoryVersion(playerId);
 
-    PlayerInventoryClearedEvent event = new PlayerInventoryClearedEvent(playerId);
+    PlayerInventoryClearEvent event = new PlayerInventoryClearEvent(playerId);
     events.fire(event);
 
     response.onInventoryCleared(playerId, playerName);
