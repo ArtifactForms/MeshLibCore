@@ -19,9 +19,13 @@ public class HoneyCombCreator implements IMeshCreator {
 
   // --- Configuration Fields ---
   private int rowCount = 2;
+
   private int colCount = 2;
+
   private float cellRadius = 0.5f;
+
   private float innerScale = 0.9f;
+
   private float height = 0.2f;
 
   // --- State Management ---
