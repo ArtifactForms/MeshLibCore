@@ -29,7 +29,7 @@ public class BaseCommandProvider implements CommandProvider {
   public void registerCommands(CommandRegistry registry, GatewayContext ctx) {
     registry.register(new TeleportCommand(ctx.players()));
     registry.register(new BroadcastCommand());
-    registry.register(new ChangeGameModeCommand());
+    registry.register(new ChangeGameModeCommand(ctx.messages()));
     registry.register(new ChunkCommand());
     registry.register(new EchoCommand());
     registry.register(new HelpCommand(ctx.commands()));

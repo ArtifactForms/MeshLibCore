@@ -5,13 +5,23 @@ import java.util.Locale;
 import java.util.UUID;
 
 import common.game.GameMode;
-import common.network.packets.GameModeUpdatePacket;
 import server.commands.AbstractCommand;
 import server.commands.CommandContext;
+import server.gateways.MessageGateway;
 import server.permissions.Permissions;
+import server.usecases.changegamemode.ChangeGameModePresenter;
+import server.usecases.changegamemode.ChangeGameModeRequestModel;
 import server.usecases.changegamemode.ChangeGamemode;
+import server.usecases.changegamemode.ChangeGamemode.ChangeGameModeRequest;
+import server.usecases.changegamemode.ChangeGamemode.ChangeGameModeResponse;
 
 public class ChangeGameModeCommand extends AbstractCommand {
+
+  private MessageGateway messages;
+
+  public ChangeGameModeCommand(MessageGateway messages) {
+    this.messages = messages;
+  }
 
   @Override
   public void execute(CommandContext ctx) {
@@ -36,14 +46,10 @@ public class ChangeGameModeCommand extends AbstractCommand {
       return;
     }
 
-    ChangeGamemode changeUseCase = ctx.getServer().getUseCases().get(ChangeGamemode.class);
-
-    if (changeUseCase.execute(playerId, gameMode)) {
-      ctx.getServer().getPlayerManager().send(playerId, new GameModeUpdatePacket(gameMode));
-      ctx.reply("Gamemode set to: " + gameMode.name().toLowerCase());
-    } else {
-      ctx.reply("Failed to update gamemode. Are you online?");
-    }
+    ChangeGamemode changeUseCase = ctx.getUseCases().get(ChangeGamemode.class);
+    ChangeGameModeRequest request = new ChangeGameModeRequestModel(playerId, gameMode);
+    ChangeGameModeResponse response = new ChangeGameModePresenter(messages);
+    changeUseCase.execute(request, response);
   }
 
   private GameMode parseGameMode(String arg) {

@@ -7,48 +7,61 @@ import common.player.ability.AbilityContainer;
 import common.player.ability.GameModePresets;
 import common.player.attribute.AttributeContainer;
 import server.events.events.ChangeGameModeEvent;
+import server.events.events.PostGameModeChangeEvent;
 import server.gateways.EventGateway;
 import server.gateways.GatewayContext;
 import server.gateways.PlayerGateway;
 
 public class ChangeGameModeUseCase implements ChangeGamemode {
 
-  private EventGateway eventGateway;
+  private EventGateway events;
 
-  private PlayerGateway playerGateway;
+  private PlayerGateway players;
 
   public ChangeGameModeUseCase(GatewayContext context) {
-    eventGateway = context.events();
-    playerGateway = context.players();
+    events = context.events();
+    players = context.players();
   }
 
   @Override
-  public boolean execute(UUID playerId, GameMode gameMode) {
+  public void execute(ChangeGameModeRequest request, ChangeGameModeResponse response) {
+    UUID playerId = request.getPlayerId();
+    GameMode gameMode = request.getGameMode();
 
     ChangeGameModeEvent event = new ChangeGameModeEvent(playerId, gameMode);
-    eventGateway.fire(event);
+    events.fire(event);
 
     if (event.isCancelled()) {
-      return false;
+      response.onFailed(playerId);
+      return;
     }
 
-    AbilityContainer abilities = playerGateway.getAbilities(playerId);
-    AttributeContainer attributes = playerGateway.getAttributes(playerId);
+    AbilityContainer abilities = players.getAbilities(playerId);
+    AttributeContainer attributes = players.getAttributes(playerId);
+
+    boolean changed = false;
 
     if (gameMode == GameMode.CREATIVE) {
       GameModePresets.applyCreative(abilities);
       GameModePresets.applyCreative(attributes);
-      playerGateway.setGameMode(playerId, gameMode);
-      return true;
+      players.setGameMode(playerId, gameMode);
+      changed = true;
     }
 
     if (gameMode == GameMode.SURVIVAL) {
       GameModePresets.applySurvival(abilities);
       GameModePresets.applySurvival(attributes);
-      playerGateway.setGameMode(playerId, gameMode);
-      return true;
+      players.setGameMode(playerId, gameMode);
+      changed = true;
     }
 
-    return false;
+    if (changed) {
+      PostGameModeChangeEvent postEvent = new PostGameModeChangeEvent(playerId, gameMode);
+      events.fire(postEvent);
+      response.onGameModeChanged(playerId, gameMode);
+      return;
+    }
+
+    response.onFailed(playerId);
   }
 }

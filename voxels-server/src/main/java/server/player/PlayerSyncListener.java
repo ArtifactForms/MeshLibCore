@@ -4,8 +4,10 @@ import java.util.UUID;
 
 import common.game.Inventory;
 import common.game.ItemStack;
+import common.network.packets.GameModeUpdatePacket;
 import common.network.packets.PlayerInventoryFullUpdatePacket;
 import server.events.events.PlayerInventoryClearedEvent;
+import server.events.events.PostGameModeChangeEvent;
 import server.gateways.EventGateway;
 import server.network.PlayerManager;
 
@@ -15,10 +17,11 @@ public class PlayerSyncListener {
 
   public PlayerSyncListener(PlayerManager playerManager, EventGateway events) {
     this.playerManager = playerManager;
-    events.register(PlayerInventoryClearedEvent.class, e -> onInventoryCleared(e));
+    events.register(PlayerInventoryClearedEvent.class, e -> onInventoryClearedEvent(e));
+    events.register(PostGameModeChangeEvent.class, e -> onPostGameModeChangeEvent(e));
   }
 
-  public void onInventoryCleared(PlayerInventoryClearedEvent e) {
+  private void onInventoryClearedEvent(PlayerInventoryClearedEvent e) {
     UUID playerId = e.getPlayerId();
     ServerPlayer player = playerManager.getPlayer(playerId);
 
@@ -32,5 +35,9 @@ public class PlayerSyncListener {
         e.getPlayerId(),
         new PlayerInventoryFullUpdatePacket(
             inventory.getItems(), cursorStack, player.getInventoryVersion()));
+  }
+
+  private void onPostGameModeChangeEvent(PostGameModeChangeEvent e) {
+    playerManager.send(e.getPlayerId(), new GameModeUpdatePacket(e.getGameMode()));
   }
 }
