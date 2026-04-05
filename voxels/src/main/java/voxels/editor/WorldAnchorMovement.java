@@ -12,12 +12,17 @@ import math.Vector3f;
 public class WorldAnchorMovement extends AbstractComponent implements RenderableComponent {
 
   private Key leftKey = Key.ARROW_LEFT;
+
   private Key rightKey = Key.ARROW_RIGHT;
+
   private Key forwardKey = Key.ARROW_UP;
+
   private Key backwardKey = Key.ARROW_DOWN;
 
   private float speed = 64;
+
   private Input input;
+
   private WorldAnchor anchor;
 
   public WorldAnchorMovement(Input input, WorldAnchor anchor) {

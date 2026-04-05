@@ -18,19 +18,31 @@ import java.awt.image.BufferedImage;
 public class ProceduralBlockAtlas {
 
   public static final int FACE_TOP = 0;
+
   public static final int FACE_FRONT = 1;
+
   public static final int FACE_RIGHT = 2;
+
   public static final int FACE_LEFT = 3;
+
   public static final int FACE_BACK = 4;
+
   public static final int FACE_BOTTOM = 5;
 
   private static final int TILE_AIR = 0;
+
   private static final int TILE_STONE = 1;
+
   private static final int TILE_DIRT = 2;
+
   private static final int TILE_GRASS_TOP = 3;
+
   private static final int TILE_GRASS_SIDE = 4;
+
   private static final int TILE_LOG_SIDE = 5;
+
   private static final int TILE_LEAF = 6;
+
   private static final int TILE_LOG_TOP = 7;
 
   private static final int TILE_TYPE_COUNT = 8;
@@ -113,7 +125,10 @@ public class ProceduralBlockAtlas {
 
             // Two-tone grass side: green top band + dirt below.
             if (tileType == TILE_GRASS_SIDE) {
-              source = localY < TILE_SIZE / 4 ? new Color(92, 140, 58, 255) : new Color(124, 88, 56, 255);
+              source =
+                  localY < TILE_SIZE / 4
+                      ? new Color(92, 140, 58, 255)
+                      : new Color(124, 88, 56, 255);
             }
 
             float n = noise.sample((px + tileType * 17) * 0.24f, (py + face * 29) * 0.24f);
@@ -165,10 +180,9 @@ public class ProceduralBlockAtlas {
     return out;
   }
 
-
-
   private int flippedAtlasRow(int row) {
-    // Processing backend samples V with flipped orientation compared to the generated BufferedImage.
+    // Processing backend samples V with flipped orientation compared to the generated
+    // BufferedImage.
     // Address this by mapping logical atlas rows from top->bottom onto UV rows from bottom->top.
     if (!flipVForProcessing) {
       return row;

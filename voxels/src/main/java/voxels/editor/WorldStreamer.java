@@ -22,31 +22,45 @@ import java.util.concurrent.*;
 public class WorldStreamer extends AbstractComponent {
 
   private final WorldAnchor anchor;
+
   private final VoxelWorld world;
+
   private final NoiseTerrainGenerator generator;
+
   private final RegionRenderSystem renderSystem;
+
   private final int chunkRadius;
+
   private final int unloadRadius;
 
   private final int maxChunkGenerationsPerFrame;
+
   private final int maxChunkUnloadsPerFrame;
+
   private final int maxRegionMeshSubmissionsPerFrame;
+
   private final int maxRegionMeshAppliesPerFrame;
 
   private final Map<Long, SceneNode> regionNodes = new HashMap<>();
 
   private final Deque<Long> pendingGeneration = new ArrayDeque<>();
+
   private final Set<Long> pendingGenerationSet = new HashSet<>();
 
   private final Deque<Long> pendingUnload = new ArrayDeque<>();
+
   private final Set<Long> pendingUnloadSet = new HashSet<>();
 
   private final Deque<Long> pendingDirtyRegions = new ArrayDeque<>();
+
   private final Set<Long> pendingDirtyRegionSet = new HashSet<>();
 
   private final Set<Long> inFlightRegionBuilds = new HashSet<>();
+
   private final Set<Long> dirtyAfterBuild = new HashSet<>();
-  private final ConcurrentLinkedQueue<MeshBuildResult> completedMeshBuilds = new ConcurrentLinkedQueue<>();
+
+  private final ConcurrentLinkedQueue<MeshBuildResult> completedMeshBuilds =
+      new ConcurrentLinkedQueue<>();
 
   private ProceduralBlockAtlas blockAtlas;
   private Material regionMaterial;

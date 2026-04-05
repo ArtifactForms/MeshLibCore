@@ -9,6 +9,7 @@ public class Region {
   public static final int REGION_SIZE = 2; // 2x2 chunks
 
   private final int regionX;
+
   private final int regionZ;
 
   private final Map<Long, Chunk> chunks = new LinkedHashMap<>();

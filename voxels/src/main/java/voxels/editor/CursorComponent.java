@@ -9,6 +9,7 @@ import math.Color;
 public class CursorComponent extends AbstractComponent implements RenderableComponent {
 
   private int halfSize = 10;
+
   private Input input;
 
   public CursorComponent(Input input) {

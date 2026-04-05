@@ -5,6 +5,7 @@ import voxels.world.Chunk;
 public class WorldAnchor {
 
   private float x;
+
   private float z;
 
   public void move(float dx, float dz) {

@@ -10,12 +10,15 @@ import voxels.world.VoxelWorld;
 public class ChunkMesher2 {
 
   private static final float blockSize = 1.0f;
+
   private static final float radius = blockSize * 0.5f;
 
   private int nextIndex;
+
   private Mesh3D mesh;
 
   private Chunk chunk;
+
   private VoxelWorld world;
 
   public Mesh3D create(Chunk chunk, VoxelWorld world) {

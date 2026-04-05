@@ -5,15 +5,21 @@ import java.util.Arrays;
 public final class Chunk {
 
   public static final int SIZE_X = 16;
+
   public static final int SIZE_Y = 384;
+
   public static final int SIZE_Z = 16;
 
   private int chunkX;
+
   private int chunkZ;
 
   private final short[] blocks;
+
   private final int[] heightMap;
+
   private int minHeight;
+
   private int maxHeight;
 
   public Chunk(int chunkX, int chunkZ) {

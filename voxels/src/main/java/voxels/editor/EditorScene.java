@@ -17,8 +17,11 @@ import voxels.world.VoxelWorld;
 public class EditorScene extends Scene {
 
   private Input input;
+
   private WorldAnchor anchor;
+
   private VoxelWorld world;
+
   private RegionRenderSystem renderSystem;
 
   public EditorScene(Input input) {
@@ -33,11 +36,10 @@ public class EditorScene extends Scene {
 
     setupCamera();
     setupUI();
-//    setupLight();
+    // setupLight();
     setupWorld();
     setupStreaming();
-  
-  
+
     addNode(new DefaultTestCube(10));
   }
 
@@ -53,7 +55,8 @@ public class EditorScene extends Scene {
 
     NoiseTerrainGenerator generator = new NoiseTerrainGenerator(seed);
     WorldStreamer streamer =
-        new WorldStreamer(anchor, world, generator, renderSystem, visibleChunkRadius, unloadChunkRadius);
+        new WorldStreamer(
+            anchor, world, generator, renderSystem, visibleChunkRadius, unloadChunkRadius);
 
     SceneNode streamingNode = new SceneNode("World-Streamer", streamer);
     addNode(streamingNode);

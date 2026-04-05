@@ -10,13 +10,14 @@ import voxels.world.VoxelWorld;
 public class ChunkMesher {
 
   private Mesh3D mesh;
+
   private int nextIndex;
 
   private Chunk chunk;
+
   private VoxelWorld world;
 
   public Mesh3D create(Chunk chunk, VoxelWorld world) {
-
     this.chunk = chunk;
     this.world = world;
     this.mesh = new Mesh3D();

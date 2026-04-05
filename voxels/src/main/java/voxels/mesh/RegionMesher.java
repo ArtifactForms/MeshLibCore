@@ -12,8 +12,11 @@ import voxels.world.VoxelWorld;
 public class RegionMesher {
 
   private Mesh3D mesh;
+
   private int nextIndex;
+
   private BlockAccess blocks;
+
   private final ProceduralBlockAtlas atlas;
 
   public RegionMesher(ProceduralBlockAtlas atlas) {

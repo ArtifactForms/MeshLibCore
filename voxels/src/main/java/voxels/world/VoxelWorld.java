@@ -5,6 +5,7 @@ import java.util.*;
 public class VoxelWorld implements BlockAccess {
 
   private final Map<Long, Chunk> chunks = new HashMap<>();
+
   private final Map<Long, Region> regions = new HashMap<>();
 
   public void addChunk(Chunk chunk) {
@@ -70,7 +71,6 @@ public class VoxelWorld implements BlockAccess {
   public Region getRegion(int regionX, int regionZ) {
     return regions.get(key(regionX, regionZ));
   }
-
 
   public boolean setBlockWorld(int worldX, int worldY, int worldZ, short id) {
     if (worldY < 0 || worldY >= Chunk.SIZE_Y) {

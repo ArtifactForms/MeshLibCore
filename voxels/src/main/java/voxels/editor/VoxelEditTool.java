@@ -24,13 +24,17 @@ public class VoxelEditTool extends AbstractComponent implements RenderableCompon
   private static final float MAX_DISTANCE = 10000;
 
   private final Input input;
+
   private final VoxelWorld world;
+
   private final WorldStreamer streamer;
 
   private short selectedBlock = Blocks.STONE;
+
   private int brushRadius = 20;
 
   private boolean lastLeftPressed;
+
   private RaycastResult lastHit = RaycastResult.miss();
 
   public VoxelEditTool(Input input, VoxelWorld world, WorldStreamer streamer) {
