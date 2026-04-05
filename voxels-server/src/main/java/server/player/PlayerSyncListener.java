@@ -6,7 +6,7 @@ import common.game.Inventory;
 import common.game.ItemStack;
 import common.network.packets.GameModeUpdatePacket;
 import common.network.packets.PlayerInventoryFullUpdatePacket;
-import server.events.events.PlayerInventoryClearedEvent;
+import server.events.events.PostPlayerInventoryClearEvent;
 import server.events.events.PostGameModeChangeEvent;
 import server.gateways.EventGateway;
 import server.network.PlayerManager;
@@ -17,11 +17,11 @@ public class PlayerSyncListener {
 
   public PlayerSyncListener(PlayerManager playerManager, EventGateway events) {
     this.playerManager = playerManager;
-    events.register(PlayerInventoryClearedEvent.class, e -> onInventoryClearedEvent(e));
+    events.register(PostPlayerInventoryClearEvent.class, e -> onInventoryClearedEvent(e));
     events.register(PostGameModeChangeEvent.class, e -> onPostGameModeChangeEvent(e));
   }
 
-  private void onInventoryClearedEvent(PlayerInventoryClearedEvent e) {
+  private void onInventoryClearedEvent(PostPlayerInventoryClearEvent e) {
     UUID playerId = e.getPlayerId();
     ServerPlayer player = playerManager.getPlayer(playerId);
 
