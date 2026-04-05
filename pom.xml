@@ -13,6 +13,19 @@
 		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<release>17</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<modules>
 		<module>math</module>
 		<module>mesh</module>
