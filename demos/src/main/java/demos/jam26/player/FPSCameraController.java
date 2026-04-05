@@ -47,10 +47,15 @@ public class FPSCameraController extends AbstractComponent {
 
   // Head bob
   private float bobTime = 0f;
+
   private float bobSpeed = 10f;
+
   private float bobAmount = 0.015f;
+
   private float sideAmount = 0.0025f;
+
   private float bobFade = 0f;
+
   private boolean headBob = true;
 
   public FPSCameraController(Input input, PerspectiveCamera camera) {

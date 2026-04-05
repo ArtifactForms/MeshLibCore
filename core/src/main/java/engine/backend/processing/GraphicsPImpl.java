@@ -49,7 +49,9 @@ public class GraphicsPImpl implements Graphics {
   private boolean smoothShading;
 
   private final java.util.Map shaderCache = new java.util.HashMap();
+
   private String currentShaderKey = "";
+
   private PShader activeShader;
 
   public GraphicsPImpl(PApplet p) {
