@@ -15,13 +15,17 @@ import math.Vector3f;
 public class ChunkData {
 
   public static final int WIDTH = 16;
+
   public static final int DEPTH = 16;
+
   public static final int HEIGHT = 384;
 
   protected short[] blockData;
+
   protected final int[] heightMap;
 
   protected int chunkX;
+
   protected int chunkZ;
 
   protected boolean dirty = false;
