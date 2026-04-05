@@ -49,6 +49,8 @@ public class Permissions {
   public static final String COMMAND_PLAYERS = "command.players";
 
   public static final String COMMAND_WORLD_POSITION = "command.world.position";
+  
+  public static final String COMMAND_WORLD_POSITION_OTHERS = "command.world.position.others";
 
   public static final String COMMAND_SERVER_STOP = "command.server.stop";
 

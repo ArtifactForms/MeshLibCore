@@ -1,6 +1,8 @@
 package server.commands.commands;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import common.world.Location;
 import common.world.WorldMath;
@@ -24,9 +26,46 @@ public class PositionCommand extends AbstractCommand {
       return;
     }
 
-    Location loc = players.getLocation(ctx.getPlayer());
-    if (loc == null) return; // should not happen
+    UUID target = resolveTargetPlayer(ctx);
+    if (target == null) {
+      return;
+    }
 
+    Location loc = players.getLocation(target);
+    if (loc == null) {
+      // should not happen, but fail silently or log if needed
+      return;
+    }
+
+    sendPosition(ctx, loc);
+  }
+
+  private UUID resolveTargetPlayer(CommandContext ctx) {
+    List<String> args = ctx.getArgs();
+
+    // Self
+    if (args.isEmpty()) {
+      return ctx.getPlayer();
+    }
+
+    // Other player → permission check
+    if (!ctx.hasPermission(Permissions.COMMAND_WORLD_POSITION_OTHERS)) {
+      ctx.reply("You don't have permission to view other players' positions.");
+      return null;
+    }
+
+    String name = args.get(0);
+    UUID playerId = players.getPlayerIdByName(name);
+
+    if (playerId == null) {
+      ctx.reply("No such player.");
+      return null;
+    }
+
+    return playerId;
+  }
+
+  private void sendPosition(CommandContext ctx, Location loc) {
     int chunkX = WorldMath.worldToChunkX(loc);
     int chunkZ = WorldMath.worldToChunkZ(loc);
 
@@ -50,6 +89,11 @@ public class PositionCommand extends AbstractCommand {
   }
 
   @Override
+  public String[] getArgumentLabels() {
+    return new String[] {"player"};
+  }
+
+  @Override
   public String getName() {
     return "pos";
   }
@@ -61,11 +105,11 @@ public class PositionCommand extends AbstractCommand {
 
   @Override
   public String getDescription() {
-    return "Displays your current world coordinates and chunk indices.";
+    return "Displays your or another player's coordinates and chunk location.";
   }
 
   @Override
   public String[] getAliases() {
-    return new String[] {"position"};
+    return new String[] {"position", "coords"};
   }
 }
