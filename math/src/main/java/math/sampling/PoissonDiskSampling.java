@@ -142,6 +142,7 @@ public final class PoissonDiskSampling implements PointSampler2D {
   private static boolean isInside(Vector2f p, float width, float height) {
     return p.x >= 0 && p.y >= 0 && p.x < width && p.y < height;
   }
+
   /**
    * Tests whether a candidate point maintains the minimum required distance to all nearby points
    * using a grid-based acceleration structure.
