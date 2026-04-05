@@ -16,10 +16,13 @@ import math.Color;
 public class StartScreenComponent extends AbstractComponent implements RenderableComponent {
 
   private Input input;
+
   private Image image;
+
   private WorldContext world;
 
   private float blinkTime = 0f;
+
   private float blinkSpeed = 2.5f; // higher = faster blinking
 
   public StartScreenComponent(WorldContext world, Input input) {
