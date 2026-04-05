@@ -25,7 +25,7 @@ class ChatControllerTest {
   // =========================
 
   @Test
-  void openChat_setsOpenState() {
+  void openChatSetsOpenState() {
 
     chat.openChat();
 
@@ -33,7 +33,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void closeChat_resetsState() {
+  void closeChatResetsState() {
 
     chat.openChat();
     chat.insert('H');
@@ -51,7 +51,7 @@ class ChatControllerTest {
   // =========================
 
   @Test
-  void insert_addsCharacter() {
+  void insertAddsCharacter() {
 
     chat.insert('A');
 
@@ -60,7 +60,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void insert_multipleCharacters() {
+  void insertMultipleCharacters() {
 
     chat.insert('H');
     chat.insert('i');
@@ -70,7 +70,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void insert_respectsCursorPosition() {
+  void insertRespectsCursorPosition() {
 
     chat.insert('H');
     chat.insert('o');
@@ -86,7 +86,7 @@ class ChatControllerTest {
   // =========================
 
   @Test
-  void moveLeft_movesCursorLeft() {
+  void moveLeftMovesCursorLeft() {
 
     chat.insert('A');
     chat.insert('B');
@@ -97,7 +97,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void moveLeft_doesNotGoBelowZero() {
+  void moveLeftDoesNotGoBelowZero() {
 
     chat.moveLeft();
 
@@ -105,7 +105,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void moveRight_movesCursorRight() {
+  void moveRightMovesCursorRight() {
 
     chat.insert('A');
 
@@ -120,7 +120,7 @@ class ChatControllerTest {
   // =========================
 
   @Test
-  void backspace_removesCharacterBeforeCursor() {
+  void backspaceRemovesCharacterBeforeCursor() {
 
     chat.insert('A');
     chat.insert('B');
@@ -132,7 +132,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void backspace_doesNothingAtStart() {
+  void backspaceDoesNothingAtStart() {
 
     chat.insert('A');
     chat.moveLeft();
@@ -148,7 +148,7 @@ class ChatControllerTest {
   // =========================
 
   @Test
-  void delete_removesCharacterAtCursor() {
+  void deleteRemovesCharacterAtCursor() {
 
     chat.insert('A');
     chat.insert('B');
@@ -161,7 +161,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void delete_doesNothingAtEnd() {
+  void deleteDoesNothingAtEnd() {
 
     chat.insert('A');
     chat.insert('B');
@@ -176,7 +176,7 @@ class ChatControllerTest {
   // =========================
 
   @Test
-  void send_sendsMessage() {
+  void sendSendsMessage() {
 
     chat.insert('H');
     chat.insert('i');
@@ -187,7 +187,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void send_doesNotSendEmptyMessage() {
+  void sendDoesNotSendEmptyMessage() {
 
     chat.insert(' ');
     chat.insert(' ');
@@ -198,7 +198,7 @@ class ChatControllerTest {
   }
 
   @Test
-  void send_resetsChatState() {
+  void sendResetsChatState() {
 
     chat.insert('H');
 
@@ -208,5 +208,4 @@ class ChatControllerTest {
     assertEquals(0, chat.getCursor());
     assertFalse(chat.isOpen());
   }
-
 }
