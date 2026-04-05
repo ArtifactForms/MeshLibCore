@@ -3,6 +3,7 @@ package server.usecases.blockbreak;
 import server.usecases.blockbreak.BlockBreak.BlockBreakResponse;
 
 public class BlockBreakPresenter implements BlockBreakResponse {
+
   private final BlockBreakView view;
 
   public BlockBreakPresenter(BlockBreakView view) {
