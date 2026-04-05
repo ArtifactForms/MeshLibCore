@@ -5,6 +5,7 @@ import common.world.ChunkData;
 public class ChunkUnloadedEvent extends WorldEvent {
 
   private final ChunkData data;
+  
   private final int loadedChunksCount;
 
   public ChunkUnloadedEvent(ChunkData data, int loadedChunksCount) {
