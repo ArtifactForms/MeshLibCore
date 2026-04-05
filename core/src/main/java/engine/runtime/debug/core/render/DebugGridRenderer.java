@@ -7,11 +7,6 @@ import math.Vector3f;
 
 public final class DebugGridRenderer implements DebugCommandRenderer<DebugGridCommand> {
 
-  @Override
-  public Class<DebugGridCommand> getCommandType() {
-    return DebugGridCommand.class;
-  }
-
   int cells;
 
   Vector3f origin;
@@ -23,6 +18,11 @@ public final class DebugGridRenderer implements DebugCommandRenderer<DebugGridCo
   Color majorColor;
 
   Color minorColor;
+
+  @Override
+  public Class<DebugGridCommand> getCommandType() {
+    return DebugGridCommand.class;
+  }
 
   public void render(Graphics g, DebugGridCommand cmd) {
     set(cmd);
