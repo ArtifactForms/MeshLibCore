@@ -9,6 +9,7 @@ import math.Vector3f;
 public class EntitiesComponent extends AbstractComponent implements RenderableComponent {
 
   private Vector3f camPos = new Vector3f();
+
   private GameClient client;
 
   public EntitiesComponent(GameClient client) {

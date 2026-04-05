@@ -17,6 +17,7 @@ public class ClientEntityManager {
   private static final Map<Long, ClientItemEntity> items = new ConcurrentHashMap<>();
 
   private final Map<UUID, RemotePlayer> remotePlayers = new HashMap<>();
+
   private final ClientWorld world;
 
   public ClientEntityManager(ClientWorld world) {

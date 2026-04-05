@@ -19,9 +19,13 @@ public class ClientItemEntity {
   private static StaticGeometry geometry;
 
   private final long entityId;
+
   private final BlockType blockType;
+
   private Vector3f position;
+
   private Vector3f velocity;
+
   private float rotation = 0;
 
   private ClientWorld world;

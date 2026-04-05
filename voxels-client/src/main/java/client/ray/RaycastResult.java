@@ -5,6 +5,7 @@ import common.interaction.InteractionTarget;
 public class RaycastResult {
 
   public final boolean hit;
+
   public final InteractionTarget target;
 
   public RaycastResult(boolean hit, InteractionTarget target) {

@@ -10,14 +10,17 @@ public class RemotePlayer {
   private final Vector3f position = new Vector3f();
 
   private float yaw;
+
   private float pitch;
 
   private final Vector3f targetPosition = new Vector3f();
 
   private float targetYaw;
+
   private float targetPitch;
 
   private final UUID uuid;
+
   private String name;
 
   private final CharacterModel model;
@@ -51,8 +54,8 @@ public class RemotePlayer {
       position.set(targetPosition);
       yaw = targetYaw;
       pitch = targetPitch;
-      
-//      model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
+
+      //      model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
       model.getTransform().setRotation(0, yaw, 0);
       model.getHead().getTransform().setRotation(-pitch, 0, 0);
       return;
@@ -74,7 +77,7 @@ public class RemotePlayer {
     pitch += (targetPitch - pitch) * rotAlpha;
 
     // Move model
-//    model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
+    //    model.getTransform().setPosition(position.x, -position.y - 0.5f, position.z);
 
     // Body Rotation (Yaw)
     model.getTransform().setRotation(0, yaw, 0);

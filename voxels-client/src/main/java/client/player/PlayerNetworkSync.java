@@ -6,28 +6,21 @@ import math.Vector3f;
 
 public class PlayerNetworkSync {
 
-    private final ClientPlayer player;
-    private final ClientNetwork network;
+  private final ClientPlayer player;
 
-    public PlayerNetworkSync(ClientPlayer player, ClientNetwork network) {
-        this.player = player;
-        this.network = network;
-    }
+  private final ClientNetwork network;
 
-    public void update() {
+  public PlayerNetworkSync(ClientPlayer player, ClientNetwork network) {
+    this.player = player;
+    this.network = network;
+  }
 
-        if(network == null) return;
+  public void update() {
 
-        Vector3f pos = player.getPosition();
+    if (network == null) return;
 
-        network.send(
-            new PlayerMovePacket(
-                pos.x,
-                pos.y,
-                pos.z,
-                player.getYaw(),
-                player.getPitch()
-            )
-        );
-    }
+    Vector3f pos = player.getPosition();
+
+    network.send(new PlayerMovePacket(pos.x, pos.y, pos.z, player.getYaw(), player.getPitch()));
+  }
 }
