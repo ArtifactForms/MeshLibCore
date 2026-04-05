@@ -14,13 +14,12 @@ import server.gateways.PlayerGateway;
 
 public class ChangeGameModeUseCase implements ChangeGamemode {
 
-  private EventGateway events;
-
-  private PlayerGateway players;
+  private final EventGateway events;
+  private final PlayerGateway players;
 
   public ChangeGameModeUseCase(GatewayContext context) {
-    events = context.events();
-    players = context.players();
+    this.events = context.events();
+    this.players = context.players();
   }
 
   @Override
@@ -39,29 +38,33 @@ public class ChangeGameModeUseCase implements ChangeGamemode {
     AbilityContainer abilities = players.getAbilities(playerId);
     AttributeContainer attributes = players.getAttributes(playerId);
 
-    boolean changed = false;
-
-    if (gameMode == GameMode.CREATIVE) {
-      GameModePresets.applyCreative(abilities);
-      GameModePresets.applyCreative(attributes);
-      players.setGameMode(playerId, gameMode);
-      changed = true;
-    }
-
-    if (gameMode == GameMode.SURVIVAL) {
-      GameModePresets.applySurvival(abilities);
-      GameModePresets.applySurvival(attributes);
-      players.setGameMode(playerId, gameMode);
-      changed = true;
-    }
-
-    if (changed) {
-      PostGameModeChangeEvent postEvent = new PostGameModeChangeEvent(playerId, gameMode);
-      events.fire(postEvent);
-      response.onGameModeChanged(playerId, gameMode);
+    if (!applyGameMode(gameMode, abilities, attributes)) {
+      response.onFailed(playerId);
       return;
     }
 
-    response.onFailed(playerId);
+    players.setGameMode(playerId, gameMode);
+
+    events.fire(new PostGameModeChangeEvent(playerId, gameMode));
+    response.onGameModeChanged(playerId, gameMode);
+  }
+
+  private boolean applyGameMode(
+      GameMode gameMode, AbilityContainer abilities, AttributeContainer attributes) {
+
+    switch (gameMode) {
+      case CREATIVE:
+        GameModePresets.applyCreative(abilities);
+        GameModePresets.applyCreative(attributes);
+        return true;
+
+      case SURVIVAL:
+        GameModePresets.applySurvival(abilities);
+        GameModePresets.applySurvival(attributes);
+        return true;
+
+      default:
+        return false;
+    }
   }
 }

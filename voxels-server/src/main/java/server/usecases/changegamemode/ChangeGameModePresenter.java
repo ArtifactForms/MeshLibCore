@@ -16,11 +16,13 @@ public class ChangeGameModePresenter implements ChangeGameModeResponse {
 
   @Override
   public void onGameModeChanged(UUID playerId, GameMode gameMode) {
-    messages.sendMessage(playerId, "Gamemode set to: " + gameMode.name().toLowerCase());
+    String value = gameMode.name().toLowerCase();
+    String message = ChangeGameModeMessages.ON_CHANGED.replace("%gameMode%", value);
+    messages.sendMessage(playerId, message);
   }
 
   @Override
   public void onFailed(UUID playerId) {
-    messages.sendMessage(playerId, "Failed to update gamemode. Are you online?");
+    messages.sendMessage(playerId, ChangeGameModeMessages.ON_FAILED);
   }
 }
