@@ -14,11 +14,14 @@ public class World {
 
   // Chunk dimension constants for internal calculations
   private static final int CHUNK_WIDTH = ChunkData.WIDTH;
+
   private static final int CHUNK_DEPTH = ChunkData.DEPTH;
+
   private static final int CHUNK_HEIGHT = ChunkData.HEIGHT;
 
   // Vertical world limits to prevent out-of-bounds access
   private static final int MIN_Y = 0;
+
   private static final int MAX_Y = CHUNK_HEIGHT - 1;
 
   protected final WorldTimeState worldTime = new WorldTimeState();
@@ -136,9 +139,9 @@ public class World {
   }
 
   // --- World time ---
-  
+
   public long getDay() {
-	  return worldTime.getDay();
+    return worldTime.getDay();
   }
 
   public long getWorldTime() {
@@ -156,7 +159,7 @@ public class World {
   public long getTimeOfDay() {
     return worldTime.getTimeOfDay();
   }
-  
+
   public void setTimeOfDay(long timeOfDay) {
     this.worldTime.setTimeOfDay(timeOfDay);
   }
