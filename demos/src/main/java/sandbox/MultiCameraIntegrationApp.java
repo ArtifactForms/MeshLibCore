@@ -63,9 +63,11 @@ public class MultiCameraIntegrationApp extends BasicApplication {
   private Scene scene;
 
   private OrbitCamera orbitCamera;
+
   private SceneNode orbitCameraNode;
 
   private PerspectiveCamera perspectiveCamera;
+
   private SceneNode perspectiveCameraNode;
 
   @Override
@@ -173,7 +175,9 @@ public class MultiCameraIntegrationApp extends BasicApplication {
   private class CursorComponent extends AbstractComponent implements RenderableComponent {
 
     private float x;
+
     private float y;
+
     private float radius = 5;
 
     @Override

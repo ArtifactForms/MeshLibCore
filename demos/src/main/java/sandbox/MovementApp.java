@@ -22,6 +22,7 @@ public class MovementApp extends BasicApplication {
   }
 
   private Scene scene;
+
   private SceneNode player;
 
   @Override
@@ -44,9 +45,9 @@ public class MovementApp extends BasicApplication {
   @Override
   public void onUpdate(float tpf) {
     DebugDraw.drawGrid(new Vector3f(), 100, 0.5f, 5, Color.LIGHT_GRAY, Color.GRAY);
-    
+
     Vector3f position = player.getWorldPosition();
-    
+
     Vector3f forward = player.getTransform().getForward();
     DebugDraw.drawRay(position, forward, 10, Color.YELLOW);
   }
