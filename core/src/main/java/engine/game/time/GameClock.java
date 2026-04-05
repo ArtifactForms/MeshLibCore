@@ -18,7 +18,9 @@ package engine.game.time;
 public final class GameClock {
 
   private float time = 0f;
+
   private float scale = 1f;
+
   private boolean paused = false;
 
   /**

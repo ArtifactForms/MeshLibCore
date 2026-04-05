@@ -14,6 +14,7 @@ import engine.scene.SceneNode;
 public class CollisionSystem {
 
   private final Set<CollisionPair> previousPairs = new HashSet<>();
+
   private final Set<CollisionPair> currentPairs = new HashSet<>();
 
   // tmp buffer per frame

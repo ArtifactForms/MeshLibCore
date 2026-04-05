@@ -10,11 +10,19 @@ public class CharacterMeshCreator implements IMeshCreator {
 
   private final float headSize = 0.6f;
 
-  private final float torsoW = 0.4f, torsoH = 0.5f, torsoD = 0.25f;
-  
-  private final float armW = 0.12f, armH = 0.4f;
-  
-  private final float legW = 0.15f, legH = 0.4f;
+  private final float torsoW = 0.4f;
+
+  private float torsoH = 0.5f;
+
+  private float torsoD = 0.25f;
+
+  private final float armW = 0.12f;
+
+  private final float armH = 0.4f;
+
+  private final float legW = 0.15f;
+
+  private final float legH = 0.4f;
 
   private final float brimSize = 0.7f;
 
