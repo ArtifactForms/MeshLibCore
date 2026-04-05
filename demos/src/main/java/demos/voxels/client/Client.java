@@ -1,7 +1,10 @@
 package demos.voxels.client;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 import demos.voxels.client.event.Event;
 import demos.voxels.client.event.EventListener;
