@@ -63,6 +63,7 @@ public class WorldStreamer extends AbstractComponent {
       new ConcurrentLinkedQueue<>();
 
   private ProceduralBlockAtlas blockAtlas;
+
   private Material regionMaterial;
 
   private final ExecutorService meshExecutor =
