@@ -10,7 +10,7 @@ import mesh.Mesh3D;
 class MeshAnalysisTest {
 
   @Test
-  void edgeCount_triangle() {
+  void edgeCountTriangle() {
     Mesh mesh = new Mesh3D();
 
     int v0 = mesh.addVertex(0, 0, 0);
@@ -23,7 +23,7 @@ class MeshAnalysisTest {
   }
 
   @Test
-  void edgeCount_quad() {
+  void edgeCountQuad() {
     Mesh mesh = new Mesh3D();
 
     int v0 = mesh.addVertex(0, 0, 0);
@@ -37,7 +37,7 @@ class MeshAnalysisTest {
   }
 
   @Test
-  void edgeCount_twoTriangles_sharedEdge() {
+  void edgeCountTwoTriangles_sharedEdge() {
     Mesh mesh = new Mesh3D();
 
     int v0 = mesh.addVertex(0, 0, 0);
