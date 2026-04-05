@@ -14,18 +14,24 @@ public class World {
 
   // Chunk dimension constants for internal calculations
   private static final int CHUNK_WIDTH = Chunk.WIDTH;
+
   private static final int CHUNK_DEPTH = Chunk.DEPTH;
+
   private static final int CHUNK_HEIGHT = Chunk.HEIGHT;
 
   // Vertical world limits to prevent out-of-bounds access
   private static final int MIN_Y = 0;
+
   private static final int MAX_Y = CHUNK_HEIGHT - 1;
 
   private long seed;
+
   private String name;
+
   private UUID uniqueId;
 
   private final ChunkManager chunkManager;
+
   private ChunkGenerator chunkGenerator;
 
   public World(ChunkManager chunkManager, long seed) {
