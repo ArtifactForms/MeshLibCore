@@ -66,7 +66,7 @@ class ChunkDataTest {
   }
 
   @Test
-  void testHeightMapUpdate_Removal() {
+  void testHeightMapUpdateRemoval() {
     short dirtId = 2;
     chunk.setBlockId(dirtId, 0, 10, 0);
     chunk.setBlockId(dirtId, 0, 20, 0);
