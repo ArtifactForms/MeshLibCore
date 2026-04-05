@@ -6,7 +6,9 @@ import math.Vector3f;
 public class RaycastHit {
 
   private final SceneNode target;
+
   private final Vector3f point;
+
   private final float distance;
 
   public RaycastHit(SceneNode target, Vector3f point, float distance) {

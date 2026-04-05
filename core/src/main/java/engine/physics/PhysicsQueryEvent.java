@@ -6,7 +6,9 @@ import math.Vector3f;
 public class PhysicsQueryEvent {
 
   private ColliderComponent source;
+
   private Vector3f delta;
+
   private SweepResult result;
 
   public PhysicsQueryEvent(ColliderComponent source, Vector3f delta, SweepResult result) {

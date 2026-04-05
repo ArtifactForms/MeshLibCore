@@ -5,6 +5,7 @@ import engine.physics.collision.component.ColliderComponent;
 public final class CollisionPair {
 
   private final ColliderComponent a;
+
   private final ColliderComponent b;
 
   public CollisionPair(ColliderComponent a, ColliderComponent b) {

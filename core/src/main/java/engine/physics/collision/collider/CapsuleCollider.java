@@ -5,6 +5,7 @@ import math.Vector3f;
 public final class CapsuleCollider extends AbstractCollider {
 
   private final float radius;
+
   private final float halfHeight;
 
   public CapsuleCollider(float radius, float halfHeight) {

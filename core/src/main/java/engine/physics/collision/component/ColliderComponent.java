@@ -13,6 +13,7 @@ import math.Vector3f;
 public class ColliderComponent extends AbstractComponent {
 
   private final Collider collider;
+
   private boolean isTrigger = false;
 
   private final List<CollisionListener> listeners = new ArrayList<>();

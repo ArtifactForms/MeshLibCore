@@ -51,17 +51,23 @@ public final class AnimatedSprite {
   private final TextureAtlas atlas;
 
   private Frame[] frames = new Frame[0];
+
   private float frameDuration = 0.1f;
+
   private boolean loop = true;
+
   private boolean topLeft = false;
 
   private int frameIndex = 0;
+
   private float accumulator = 0f;
 
   private Sprite sprite;
+
   private Mesh3D mesh;
 
   private float width = 1f;
+
   private float height = 1f;
 
   private AnimatedSprite(TextureAtlas atlas) {

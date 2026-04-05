@@ -5,7 +5,9 @@ import engine.physics.collision.component.ColliderComponent;
 public class RaycastResult {
 
   private final boolean hit;
+
   private final Float distance;
+
   private final ColliderComponent collider;
 
   public RaycastResult(boolean hit, ColliderComponent collider, Float distance) {
@@ -21,8 +23,8 @@ public class RaycastResult {
   public Float distance() {
     return distance;
   }
-  
+
   public ColliderComponent getCollider() {
-	  return collider;
+    return collider;
   }
 }
