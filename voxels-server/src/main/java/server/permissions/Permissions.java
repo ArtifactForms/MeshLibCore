@@ -2,10 +2,6 @@ package server.permissions;
 
 public class Permissions {
 
-  private Permissions() {
-    // No instances
-  }
-
   public static final String BLOCK_BREAK = "block.break";
 
   public static final String BLOCK_PLACE = "block.place";
@@ -69,4 +65,8 @@ public class Permissions {
   public static final String COMMAND_BROADCAST = "command.broadcast";
 
   public static final String COMMAND_MSG = "command.msg";
+
+  private Permissions() {
+    // No instances
+  }
 }
