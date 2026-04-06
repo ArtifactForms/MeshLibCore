@@ -22,13 +22,4 @@ public class ChunkBoxDisplay extends AbstractComponent implements RenderableComp
     g.setColor(color);
     g.drawFaces(chunkBoxMesh);
   }
-
-  @Override
-  public void onUpdate(float tpf) {}
-
-  @Override
-  public void onAttach() {}
-
-  @Override
-  public void onDetach() {}
 }
