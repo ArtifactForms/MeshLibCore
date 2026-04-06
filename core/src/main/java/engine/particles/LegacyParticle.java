@@ -42,7 +42,8 @@ public class LegacyParticle {
    * @param acceleration Acceleration vector affecting the particle.
    * @param lifetime Total time (seconds) this particle will live.
    */
-  public LegacyParticle(Vector3f position, Vector3f velocity, Vector3f acceleration, float lifetime) {
+  public LegacyParticle(
+      Vector3f position, Vector3f velocity, Vector3f acceleration, float lifetime) {
     this.position = new Vector3f(position);
     this.oldPosition = new Vector3f(position);
     this.velocity = velocity;

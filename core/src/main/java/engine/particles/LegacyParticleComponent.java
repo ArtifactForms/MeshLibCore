@@ -9,8 +9,8 @@ import engine.rendering.Graphics;
  * and renderer.
  *
  * <p>This class implements the {@link RenderableComponent} interface, allowing it to integrate
- * seamlessly with the rendering system. It uses a {@link LegacyParticleEmitter} to handle the logic of
- * particle spawning and updates, while delegating rendering operations to a {@link
+ * seamlessly with the rendering system. It uses a {@link LegacyParticleEmitter} to handle the logic
+ * of particle spawning and updates, while delegating rendering operations to a {@link
  * LegacyParticleRenderer}.
  *
  * <p>The ParticleComponent ensures proper lifecycle management by handling initialization, updates,

@@ -23,7 +23,7 @@ public class LegacyDefaultParticleRenderer implements LegacyParticleRenderer {
       Vector3f position = particle.getPosition();
       g.pushMatrix();
       g.translate(position.x, position.y, position.z);
-//      			g.fillOval(0, 0, 0.1f, 0.1f);
+      //      			g.fillOval(0, 0, 0.1f, 0.1f);
       g.fillFaces(mesh);
       g.popMatrix();
     }
