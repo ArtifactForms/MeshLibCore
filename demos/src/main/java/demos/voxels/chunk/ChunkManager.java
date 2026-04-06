@@ -355,10 +355,4 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   public int getChunksRenderedLastFrame() {
     return chunksRenderedLastFrame;
   }
-
-  @Override
-  public void onAttach() {}
-
-  @Override
-  public void onDetach() {}
 }
