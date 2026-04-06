@@ -22,20 +22,28 @@ public class Label extends AbstractUiElement {
   }
 
   @Override
-  public void onMouse(float x, float y) {}
-
-  @Override
-  public void onMouseClicked(float x, float y) {}
-
-  @Override
-  public void onMousePressed(float mouseX, float mouseY) {}
-
-  @Override
-  public void onKeyPressed(KeyEvent e) { // TODO Auto-generated method stub
+  public void onMouse(float x, float y) {
+    // Not used by labels
   }
 
   @Override
-  public void onKeyTyped(KeyEvent e) { // TODO Auto-generated method stub
+  public void onMouseClicked(float x, float y) {
+    // Not used by labels
+  }
+
+  @Override
+  public void onMousePressed(float mouseX, float mouseY) {
+    // Not used by labels
+  }
+
+  @Override
+  public void onKeyPressed(KeyEvent e) {
+    // Not used by labels
+  }
+
+  @Override
+  public void onKeyTyped(KeyEvent e) {
+    // Not used by labels
   }
 
   @Override
