@@ -37,7 +37,8 @@ public class FpsGraph {
     // Draw FPS values as a line graph
     g.setColor(Color.RED);
     int i = 0;
-    int prevX = x, prevY = y + height;
+    int prevX = x;
+    int prevY = y + height;
     float step = (float) width / (float) fpsValues.size();
 
     for (float fps : fpsValues) {
