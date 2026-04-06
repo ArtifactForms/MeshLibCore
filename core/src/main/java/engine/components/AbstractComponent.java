@@ -23,16 +23,24 @@ public abstract class AbstractComponent implements Component {
   protected SceneNode owner;
 
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Implementation is left to subclasses
+  }
 
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Implementation is left to subclasses
+  }
 
   @Override
-  public void onUpdate(float tpf) {}
+  public void onUpdate(float tpf) {
+    // Implementation is left to subclasses
+  }
 
   @Override
-  public void onAttachToScene(Scene scene) {}
+  public void onAttachToScene(Scene scene) {
+    // Implementation is left to subclasses
+  }
 
   @Override
   public void setOwner(SceneNode owner) {
