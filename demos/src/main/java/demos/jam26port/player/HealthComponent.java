@@ -35,9 +35,13 @@ public class HealthComponent extends AbstractComponent {
         });
   }
 
-  protected void onPlayerDeath() {}
+  protected void onPlayerDeath() {
+    // TODO implement
+  }
 
-  protected void onPlayerDamaged() {}
+  protected void onPlayerDamaged() {
+    // TODO implement
+  }
 
   public void applyDamage(float amount) {
     health.applyDamage(amount);
