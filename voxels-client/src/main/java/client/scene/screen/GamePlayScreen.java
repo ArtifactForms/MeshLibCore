@@ -124,7 +124,9 @@ public class GamePlayScreen extends GameScreen {
   }
 
   @Override
-  public void update(float tpf) {}
+  public void update(float tpf) {
+    // Do nothing
+  }
 
   @Override
   public boolean onMouseClicked(MouseEvent e) {
