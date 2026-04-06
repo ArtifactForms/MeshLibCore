@@ -9,6 +9,8 @@ import math.Color;
 public class ActionBarComponent extends AbstractComponent
     implements RenderableComponent, ActionBarView {
 
+  private static final int MARGIN_BOTTOM = 110;
+
   private String text = "";
 
   private float displayTimer = 0;
@@ -29,7 +31,7 @@ public class ActionBarComponent extends AbstractComponent
 
     float alpha = getAlpha();
     float x = (g.getWidth() - g.textWidth(text)) * 0.5f;
-    float y = g.getHeight() - 110;
+    float y = g.getHeight() - MARGIN_BOTTOM;
 
     // Render Shadow (Black with current alpha)
     g.setColor(new Color(0, 0, 0, alpha * 0.7f));
