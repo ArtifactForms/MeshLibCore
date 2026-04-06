@@ -88,8 +88,8 @@ public class TranslateModifier implements IMeshModifier {
     }
 
     for (int i = 0; i < mesh.getVertexCount(); i++) {
-    	Vector3f vertex = mesh.getVertexAt(i);
-        vertex.addLocal(delta);
+      Vector3f vertex = mesh.getVertexAt(i);
+      vertex.addLocal(delta);
     }
 
     return mesh;

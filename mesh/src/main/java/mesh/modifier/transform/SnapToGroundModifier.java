@@ -99,8 +99,8 @@ public class SnapToGroundModifier implements IMeshModifier {
   private float findHighestPoint() {
     float max = mesh.getVertexAt(0).y;
     for (int i = 0; i < mesh.getVertexCount(); i++) {
-    	Vector3f vertex = mesh.getVertexAt(i);
-        max = vertex.y > max ? vertex.y : max;
+      Vector3f vertex = mesh.getVertexAt(i);
+      max = vertex.y > max ? vertex.y : max;
     }
     return max;
   }
