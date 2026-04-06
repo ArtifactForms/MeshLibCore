@@ -5,8 +5,6 @@ import workspace.Workspace;
 
 public class WS_MinimalSetup extends PApplet {
 
-  private Workspace workspace;
-
   public static void main(String[] args) {
     PApplet.main(WS_MinimalSetup.class.getName());
   }
@@ -18,7 +16,7 @@ public class WS_MinimalSetup extends PApplet {
 
   @Override
   public void setup() {
-    workspace = new Workspace(this);
+    new Workspace(this);
   }
 
   @Override
