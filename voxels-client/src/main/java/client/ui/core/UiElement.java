@@ -16,6 +16,8 @@ public interface UiElement extends Layoutable {
   void onKeyPressed(KeyEvent e);
 
   void onKeyTyped(KeyEvent e);
+  
+  void onKeyReleased(KeyEvent e);
 
   void setLayout(Layout layout);
 }
