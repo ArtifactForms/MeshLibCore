@@ -81,11 +81,17 @@ public class SimpleLabel extends AbstractUiElement {
   }
 
   @Override
-  public void onMouseClicked(float mouseX, float mouseY) {}
+  public void onMouseClicked(float mouseX, float mouseY) {
+    // Not used by labels
+  }
 
   @Override
-  public void onMousePressed(float mouseX, float mouseY) {}
+  public void onMousePressed(float mouseX, float mouseY) {
+    // Not used by labels
+  }
 
   @Override
-  public void onMouse(float x, float y) {}
+  public void onMouse(float x, float y) {
+    // Not used by labels
+  }
 }
