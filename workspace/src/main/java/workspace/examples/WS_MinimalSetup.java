@@ -20,5 +20,7 @@ public class WS_MinimalSetup extends PApplet {
   }
 
   @Override
-  public void draw() {}
+  public void draw() {
+    // Drawing goes here
+  }
 }
