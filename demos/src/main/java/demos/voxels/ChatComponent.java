@@ -23,21 +23,19 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
 
   private final Input input;
 
-  private final Camera camera;
-
   private int cursorPosition = 0;
 
   private final EventManager eventManager;
 
   public ChatComponent(Input input, Camera camera, EventManager eventManager) {
     this.input = input;
-    this.camera = camera;
     this.eventManager = eventManager;
-    input.addKeyListener(this);
   }
 
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    input.addKeyListener(this);
+  }
 
   @Override
   public void onDetach() {
@@ -45,7 +43,9 @@ public class ChatComponent extends AbstractComponent implements KeyListener, Ren
   }
 
   @Override
-  public void onUpdate(float tpf) {}
+  public void onUpdate(float tpf) {
+    // Do nothing
+  }
 
   // =========================================================
   // Rendering
