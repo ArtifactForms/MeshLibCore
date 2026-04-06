@@ -53,8 +53,12 @@ public class MovementApp extends BasicApplication {
   }
 
   @Override
-  public void onRender(Graphics g) {}
+  public void onRender(Graphics g) {
+    // Nothing to render here..
+  }
 
   @Override
-  public void onCleanup() {}
+  public void onCleanup() {
+    // Nothing to clean up in this setup.
+  }
 }
