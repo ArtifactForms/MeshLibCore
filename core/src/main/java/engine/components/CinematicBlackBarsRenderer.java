@@ -172,10 +172,4 @@ public class CinematicBlackBarsRenderer extends AbstractComponent implements Ren
   private void renderBottomBar(Graphics g) {
     g.fillRect(0, g.getHeight() - (int) currentSize, g.getWidth(), (int) currentSize);
   }
-
-  @Override
-  public void onAttach() {}
-
-  @Override
-  public void onDetach() {}
 }

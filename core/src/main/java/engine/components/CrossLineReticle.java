@@ -91,26 +91,4 @@ public class CrossLineReticle extends AbstractComponent implements RenderableCom
     g2d.fillRect(0, radius - (thickness / 2), size, thickness);
     return image;
   }
-
-  /**
-   * Called during each update cycle. This reticle does not require updates.
-   *
-   * @param tpf The time per frame in seconds.
-   */
-  @Override
-  public void onUpdate(float tpf) {
-    // Do nothing
-  }
-
-  /** Called when the component is attached to a {@link engine.SceneNode}. */
-  @Override
-  public void onAttach() {
-    // Do nothing
-  }
-
-  /** Called when the component is detached from a {@link engine.SceneNode}. */
-  @Override
-  public void onDetach() {
-    // Do nothing
-  }
 }

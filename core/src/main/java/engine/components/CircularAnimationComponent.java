@@ -83,10 +83,4 @@ public class CircularAnimationComponent extends AbstractComponent {
     // Set the new position while maintaining the current Y-coordinate
     transform.setPosition(x, transform.getPosition().y, z);
   }
-
-  @Override
-  public void onAttach() {}
-
-  @Override
-  public void onDetach() {}
 }

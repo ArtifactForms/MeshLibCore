@@ -87,14 +87,4 @@ public class FloatComponent extends OscillationComponent {
 
     getOwner().getTransform().setPosition(pos);
   }
-
-  /**
-   * Called when the component is detached from its owner.
-   *
-   * <p>This implementation performs no action.
-   */
-  @Override
-  public void onDetach() {
-    // Do nothing
-  }
 }

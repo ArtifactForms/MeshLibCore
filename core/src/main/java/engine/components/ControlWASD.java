@@ -295,14 +295,4 @@ public class ControlWASD extends AbstractComponent {
   public void setBackwardKey(Key backwardKey) {
     this.backwardKey = backwardKey;
   }
-
-  /** Called when the component is attached to a {@link SceneNode}. Override for custom behavior. */
-  @Override
-  public void onAttach() {}
-
-  /**
-   * Called when the component is detached from a {@link SceneNode}. Override for custom behavior.
-   */
-  @Override
-  public void onDetach() {}
 }

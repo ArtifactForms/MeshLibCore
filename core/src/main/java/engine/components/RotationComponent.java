@@ -104,14 +104,4 @@ public class RotationComponent extends AbstractComponent {
   public float getAngularSpeed() {
     return angularSpeed;
   }
-
-  @Override
-  public void onAttach() {
-    // Do nothing
-  }
-
-  @Override
-  public void onDetach() {
-    // Do nothing
-  }
 }

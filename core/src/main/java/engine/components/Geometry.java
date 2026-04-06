@@ -177,11 +177,11 @@ public class Geometry extends AbstractComponent implements RenderableComponent, 
 
   @Override
   public void onAttach() {
-    // Do nothing
+    // Placeholder for potential attach behavior
   }
 
   @Override
   public void onDetach() {
-    // Do nothing
+    // Placeholder for potential attach behavior
   }
 }
