@@ -300,8 +300,12 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   }
 
   @Override
-  public void onAttach() {}
+  public void onAttach() {
+    // Placeholder for attach logic
+  }
 
   @Override
-  public void onDetach() {}
+  public void onDetach() {
+    // Placeholder for detach logic
+  }
 }
