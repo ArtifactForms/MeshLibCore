@@ -26,7 +26,9 @@ public class InputActions {
   }
 
   /** Called by the Input implementation once per frame */
-  public void update() {}
+  public void update() {
+	  // TODO implement
+  }
 
   public void bindButton(Action action, Key key) {
     buttonBindings
