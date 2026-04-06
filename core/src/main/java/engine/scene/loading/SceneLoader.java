@@ -31,8 +31,6 @@ public class SceneLoader {
 
   private SceneLoadJob currentJob;
 
-  private Thread worker;
-
   /**
    * Starts loading a scene asynchronously using the given factory.
    *
@@ -46,7 +44,7 @@ public class SceneLoader {
   public void load(SceneFactory factory, Consumer<Scene> onFinished) {
     currentJob = new SceneLoadJob(factory);
 
-    worker =
+    Thread worker =
         new Thread(
             () -> {
               currentJob.run();
