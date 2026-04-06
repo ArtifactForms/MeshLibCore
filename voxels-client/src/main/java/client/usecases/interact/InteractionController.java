@@ -78,17 +78,19 @@ public class InteractionController {
   }
   
   public void stopMining() {
-	  
+	  // TODO implement
   }
   
   public float getBreakTime(BlockTarget block) {
-	  PlayerData player = client.getPlayer();  
-	  
+	    PlayerData player = client.getPlayer();  
+	    
+	    // In creative mode, blocks break instantly
 	    if (player.getGameMode() == GameMode.CREATIVE) {
 	        return 0.0f;
 	    }
-	    // Später: return block.getHardness(); 
-	    // Blumen/Fackeln hätten hier 0.0f, Stein z.B. 1.5f
+
+	    // TODO Later: return block.getHardness();
+	    // Flowers/torches would have 0.0f here, stone for example ~1.5f
 	    return 0.5f; 
 	}
 
