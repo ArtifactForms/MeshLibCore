@@ -55,12 +55,6 @@ public class CameraFollowComponent extends AbstractComponent {
     }
   }
 
-  @Override
-  public void onAttach() {}
-
-  @Override
-  public void onDetach() {}
-
   /** Sets the follow offset. */
   public void setOffset(Vector3f offset) {
     this.offset.set(offset);
