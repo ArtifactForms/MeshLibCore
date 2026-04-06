@@ -57,10 +57,4 @@ public class ActionBarComponent extends AbstractComponent
     this.text = message;
     this.displayTimer = duration;
   }
-
-  @Override
-  public void onAttach() {}
-
-  @Override
-  public void onDetach() {}
 }
