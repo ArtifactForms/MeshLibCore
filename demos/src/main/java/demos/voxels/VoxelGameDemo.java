@@ -228,8 +228,12 @@ public class VoxelGameDemo extends BasicApplication {
   }
 
   @Override
-  public void onRender(Graphics g) {}
+  public void onRender(Graphics g) {
+    // Do nothing
+  }
 
   @Override
-  public void onCleanup() {}
+  public void onCleanup() {
+    // Do nothing
+  }
 }
