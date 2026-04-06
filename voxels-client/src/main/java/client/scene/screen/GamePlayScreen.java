@@ -61,7 +61,6 @@ public class GamePlayScreen extends GameScreen {
 
   private void setupReticle() {
     uiRoot.addChild(new SceneNode("Cross-Hair", new CrossLineReticle()));
-    //    uiRoot.addChild(new SceneNode("Reticle", new RoundReticle()));
   }
 
   private void setupActionBar() {
@@ -115,10 +114,14 @@ public class GamePlayScreen extends GameScreen {
   }
 
   @Override
-  public void onEnter() {}
+  public void onEnter() {
+    // Do nothing
+  }
 
   @Override
-  public void onExit() {}
+  public void onExit() {
+    // Do nothing
+  }
 
   @Override
   public void update(float tpf) {}
