@@ -33,10 +33,4 @@ public class BillboardComponent extends AbstractComponent {
 
     getOwner().getTransform().setForward(dir);
   }
-
-  @Override
-  public void onAttach() {}
-
-  @Override
-  public void onDetach() {}
 }
