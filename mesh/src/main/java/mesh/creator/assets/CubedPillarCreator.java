@@ -4,92 +4,92 @@ import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.topology.ExtrudeModifier;
+import mesh.modifier.transform.TransformAxis;
+import mesh.modifier.transform.TranslateModifier;
 import mesh.selection.FaceSelection;
 
 public class CubedPillarCreator implements IMeshCreator {
 
-    private int segmentCount;
+  private int segmentCount;
 
-    private float segmentRadius;
+  private float segmentRadius;
 
-    private float extrude;
+  private float extrude;
 
-    private Mesh3D mesh;
+  private Mesh3D mesh;
 
-    private FaceSelection selection;
+  private FaceSelection selection;
 
-    public CubedPillarCreator() {
-        this(5, 0.5f, 0.05f);
+  public CubedPillarCreator() {
+    this(5, 0.5f, 0.05f);
+  }
+
+  public CubedPillarCreator(int segmentCount, float segmentRadius, float extrude) {
+    this.segmentCount = segmentCount;
+    this.segmentRadius = segmentRadius;
+    this.extrude = extrude;
+  }
+
+  @Override
+  public Mesh3D create() {
+    createBaseMesh();
+    select();
+    extrude();
+    snapToGround();
+    return mesh;
+  }
+
+  private void extrude() {
+    for (int i = 0; i < segmentCount - 1; i++) {
+      extrude(0.9f, extrude);
+      extrude(1.1f, extrude);
+      extrude(1, getExtrudeHeight());
     }
+  }
 
-    public CubedPillarCreator(int segmentCount, float segmentRadius,
-            float extrude) {
-        this.segmentCount = segmentCount;
-        this.segmentRadius = segmentRadius;
-        this.extrude = extrude;
-    }
+  private void extrude(float scale, float amount) {
+    new ExtrudeModifier(scale, amount).modify(mesh, selection.getFaces());
+  }
 
-    @Override
-    public Mesh3D create() {
-        createBaseMesh();
-        select();
-        extrude();
-        snapToGround();
-        return mesh;
-    }
+  private void select() {
+    selection = new FaceSelection(mesh);
+    selection.selectTopFaces();
+  }
 
-    private void extrude() {
-        for (int i = 0; i < segmentCount - 1; i++) {
-            extrude(0.9f, extrude);
-            extrude(1.1f, extrude);
-            extrude(1, getExtrudeHeight());
-        }
-    }
+  private void createBaseMesh() {
+    CubeCreator creator = new CubeCreator(segmentRadius);
+    mesh = creator.create();
+  }
 
-    private void extrude(float scale, float amount) {
-        new ExtrudeModifier(scale, amount).modify(mesh, selection.getFaces());
-    }
+  private void snapToGround() {
+    new TranslateModifier(-segmentRadius, TransformAxis.Y).modify(mesh);
+  }
 
-    private void select() {
-        selection = new FaceSelection(mesh);
-        selection.selectTopFaces();
-    }
+  private float getExtrudeHeight() {
+    return segmentRadius + segmentRadius - extrude - extrude;
+  }
 
-    private void createBaseMesh() {
-        CubeCreator creator = new CubeCreator(segmentRadius);
-        mesh = creator.create();
-    }
+  public float getExtrude() {
+    return extrude;
+  }
 
-    private void snapToGround() {
-        mesh.translateY(-segmentRadius);
-    }
+  public void setExtrude(float extrude) {
+    this.extrude = extrude;
+  }
 
-    private float getExtrudeHeight() {
-        return segmentRadius + segmentRadius - extrude - extrude;
-    }
+  public int getSegmentCount() {
+    return segmentCount;
+  }
 
-    public float getExtrude() {
-        return extrude;
-    }
+  public void setSegmentCount(int segmentCount) {
+    this.segmentCount = segmentCount;
+  }
 
-    public void setExtrude(float extrude) {
-        this.extrude = extrude;
-    }
+  public float getSegmentRadius() {
+    return segmentRadius;
+  }
 
-    public int getSegmentCount() {
-        return segmentCount;
-    }
-
-    public void setSegmentCount(int segmentCount) {
-        this.segmentCount = segmentCount;
-    }
-
-    public float getSegmentRadius() {
-        return segmentRadius;
-    }
-
-    public void setSegmentRadius(float segmentRadius) {
-        this.segmentRadius = segmentRadius;
-    }
-
+  public void setSegmentRadius(float segmentRadius) {
+    this.segmentRadius = segmentRadius;
+  }
 }
