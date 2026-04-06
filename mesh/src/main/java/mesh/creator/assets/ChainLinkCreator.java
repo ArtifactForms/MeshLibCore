@@ -1,7 +1,6 @@
 package mesh.creator.assets;
 
 import math.Mathf;
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.modifier.transform.RotateModifier;
