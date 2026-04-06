@@ -57,37 +57,36 @@ public abstract class AbstractUiElement implements UiElement {
 
   @Override
   public void onMouseClicked(float mouseX, float mouseY) {
-    // TODO Auto-generated method stub
-
+    // Implementation is left to subclasses
   }
 
   @Override
   public void onMousePressed(float mouseX, float mouseY) {
-    // TODO Auto-generated method stub
-
+    // Implementation is left to subclasses
   }
 
   @Override
   public void onMouse(float mouseX, float mouseY) {
-    // TODO Auto-generated method stub
-
+    // Implementation is left to subclasses
   }
 
   @Override
   public void render(Graphics graphics) {
-    // TODO Auto-generated method stub
-
+    // Implementation is left to subclasses
   }
 
   @Override
   public void onKeyPressed(KeyEvent e) {
-    // TODO Auto-generated method stub
-
+    // Implementation is left to subclasses
   }
 
   @Override
   public void onKeyTyped(KeyEvent e) {
-    // TODO Auto-generated method stub
+    // Implementation is left to subclasses
+  }
 
+  @Override
+  public void onKeyReleased(KeyEvent e) {
+    // Implementation is left to subclasses
   }
 }

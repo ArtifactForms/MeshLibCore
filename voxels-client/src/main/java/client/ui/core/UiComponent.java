@@ -62,7 +62,9 @@ public class UiComponent extends AbstractComponent implements RenderableComponen
   }
 
   @Override
-  public void onKeyReleased(KeyEvent e) {}
+  public void onKeyReleased(KeyEvent e) {
+    uiElement.onKeyReleased(e);
+  }
 
   @Override
   public void onKeyTyped(KeyEvent e) {
