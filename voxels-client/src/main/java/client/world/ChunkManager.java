@@ -26,6 +26,8 @@ import math.Vector3f;
  */
 public class ChunkManager extends AbstractComponent implements RenderableComponent {
 
+  private static final int DEFAULT_ORIGIN_SHIFT_THRESHOLD_CHUNKS = 4;
+
   private int renderDistance;
 
   private int bufferDistance;
@@ -55,6 +57,8 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
   private ChunkRenderer chunkRenderer;
 
   private ClientWorld world;
+  private final ClientWorldOrigin origin;
+  private int originShiftThresholdChunks = DEFAULT_ORIGIN_SHIFT_THRESHOLD_CHUNKS;
 
   // Füge eine Map für den Lösch-Timer hinzu
   private final Map<Long, Long> deletionQueue = new ConcurrentHashMap<>();
@@ -63,6 +67,7 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   public ChunkManager(GameClient client) {
     this.world = client.getWorld();
+    this.origin = world.getOrigin();
     this.chunkRenderer = new BasicChunkRenderer(client);
     setRenderDistance(GameSettings.renderDistance);
   }
@@ -73,6 +78,11 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
     playerChunkX = WorldMath.worldToChunkX(playerPosition);
     playerChunkZ = WorldMath.worldToChunkZ(playerPosition);
+
+    if (origin.isOutsideShiftThreshold(
+        playerChunkX, playerChunkZ, originShiftThresholdChunks)) {
+      origin.setOriginChunk(playerChunkX, playerChunkZ);
+    }
 
     if (playerChunkX != lastPlayerChunkX || playerChunkZ != lastPlayerChunkZ) {
 
@@ -297,6 +307,21 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   public void updatePlayerPosition(float x, float y, float z) {
     playerPosition.set(x, y, z);
+  }
+
+  public ClientWorldOrigin getOrigin() {
+    return origin;
+  }
+
+  public int getOriginShiftThresholdChunks() {
+    return originShiftThresholdChunks;
+  }
+
+  public void setOriginShiftThresholdChunks(int originShiftThresholdChunks) {
+    if (originShiftThresholdChunks < 0) {
+      throw new IllegalArgumentException("Origin shift threshold must be >= 0.");
+    }
+    this.originShiftThresholdChunks = originShiftThresholdChunks;
   }
 
   @Override
