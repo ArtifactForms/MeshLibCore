@@ -1,9 +1,6 @@
 package workspace.ui.elements;
 
-import workspace.laf.UiConstants;
-import workspace.laf.UiValues;
 import workspace.ui.UiComponent;
-import workspace.ui.renderer.EditorMenuRenderer;
 
 /**
  * Represents an editor menu component in the UI.
