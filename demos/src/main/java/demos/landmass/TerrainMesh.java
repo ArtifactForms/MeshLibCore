@@ -24,8 +24,8 @@ import mesh.Mesh3D;
  * insights and inspiration for this implementation.
  *
  * <p>For more details, watch the tutorial: <a
- * href="https://www.youtube.com/watch?v=4RpVBYW1r5M&list=PLFt_AvWsXl0eBW2EiBtl_sxmDtSgZBxB3&index=5">
- * Procedural Landmass Generation (E05: Mesh)</a>
+ * href="https://www.youtube.com/watch?v=4RpVBYW1r5M&list=PLFt_AvWsXl0eBW2EiBtl_
+ * sxmDtSgZBxB3&index=5"> Procedural Landmass Generation (E05: Mesh)</a>
  */
 public class TerrainMesh {
 
