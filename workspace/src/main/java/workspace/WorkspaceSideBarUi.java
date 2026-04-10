@@ -13,7 +13,7 @@ public class WorkspaceSideBarUi extends UiComponent implements ModelListener {
 
   private int xOffset = 20;
 
-  private int yOffset = 20;
+  private int yOffset = 80;
 
   private UiCheckBox gridCheckBox;
 

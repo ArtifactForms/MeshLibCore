@@ -1,6 +1,9 @@
 package workspace.ui.elements;
 
+import workspace.laf.UiConstants;
+import workspace.laf.UiValues;
 import workspace.ui.UiComponent;
+import workspace.ui.renderer.EditorMenuRenderer;
 
 /**
  * Represents an editor menu component in the UI.
@@ -10,14 +13,15 @@ import workspace.ui.UiComponent;
  */
 public class UiEditorMenu extends UiComponent {
 
-  private String text; // The menu's display text.
+  /** The menu's display text. */
+  private String text;
 
   /** Constructs a new {@code UiEditorMenu} with default styles. */
   public UiEditorMenu() {
-//    setText("");
-//    setForeground(UiValues.getColor(UiConstants.KEY_MENU_FOREGROUND_COLOR));
-//    setBackground(UiValues.getColor(UiConstants.KEY_MENU_BACKGROUND_COLOR));
-//    setRenderer(new EditorMenuRenderer());
+    setText("");
+    setForeground(UiValues.getColor(UiConstants.KEY_MENU_FOREGROUND_COLOR));
+    setBackground(UiValues.getColor(UiConstants.KEY_MENU_BACKGROUND_COLOR));
+    setRenderer(new EditorMenuRenderer());
   }
 
   /**
