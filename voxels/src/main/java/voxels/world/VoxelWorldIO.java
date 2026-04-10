@@ -9,7 +9,8 @@ public final class VoxelWorldIO {
 
   private VoxelWorldIO() {}
 
-  public static void saveChunk(VoxelWorld world, int chunkX, int chunkZ, Path root) throws IOException {
+  public static void saveChunk(VoxelWorld world, int chunkX, int chunkZ, Path root)
+      throws IOException {
     Chunk chunk = world.getChunk(chunkX, chunkZ);
     if (chunk == null) {
       return;
@@ -18,7 +19,8 @@ public final class VoxelWorldIO {
     Files.createDirectories(root);
     Path path = chunkPath(root, chunkX, chunkZ);
 
-    try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(path)))) {
+    try (DataOutputStream out =
+        new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(path)))) {
       out.writeInt(1); // format version
       out.writeInt(chunkX);
       out.writeInt(chunkZ);
@@ -39,7 +41,8 @@ public final class VoxelWorldIO {
       return null;
     }
 
-    try (DataInputStream in = new DataInputStream(new BufferedInputStream(Files.newInputStream(path)))) {
+    try (DataInputStream in =
+        new DataInputStream(new BufferedInputStream(Files.newInputStream(path)))) {
       int version = in.readInt();
       if (version != 1) {
         throw new IOException("Unsupported chunk format version: " + version);
@@ -75,8 +78,6 @@ public final class VoxelWorldIO {
       return chunk;
     }
   }
-
-
 
   public static void saveLoadedChunks(VoxelWorld world, Path root) throws IOException {
     for (Chunk chunk : world.getChunks()) {
@@ -139,4 +140,3 @@ public final class VoxelWorldIO {
     return root.resolve("chunk_" + chunkX + "_" + chunkZ + ".bin");
   }
 }
-
