@@ -34,14 +34,14 @@ public record BiomeStop(float height, Color color) {
    * Creates a new biome stop.
    *
    * @throws IllegalArgumentException if {@code height} is outside {@code [0,1]}
-   * @throws NullPointerException if {@code color} is {@code null}
+   * @throws IllegalArgumentException if {@code color} is {@code null}
    */
   public BiomeStop {
     if (height < 0f || height > 1f) {
       throw new IllegalArgumentException("Height must be in [0,1]");
     }
     if (color == null) {
-      throw new NullPointerException("Color must not be null");
+      throw new IllegalArgumentException("Color must not be null");
     }
   }
 }

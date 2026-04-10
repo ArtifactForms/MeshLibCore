@@ -19,14 +19,14 @@ public class LineBorder implements Border {
    * @param size The thickness of the border. Must be non-negative.
    * @param color The color of the border. Cannot be null.
    * @throws IllegalArgumentException if size is negative.
-   * @throws NullPointerException if color is null.
+   * @throws IllegalArgumentException if color is null.
    */
   public LineBorder(int size, Color color) {
     if (size < 0) {
       throw new IllegalArgumentException("Border size must be non-negative.");
     }
     if (color == null) {
-      throw new NullPointerException("Color cannot be null.");
+      throw new IllegalArgumentException("Color cannot be null.");
     }
     this.size = size;
     this.color = color;

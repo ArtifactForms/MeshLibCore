@@ -18,14 +18,14 @@ public class CompoundBorder implements Border {
    *
    * @param outerBorder The outer border. Cannot be null.
    * @param innerBorder The inner border. Cannot be null.
-   * @throws NullPointerException if either outerBorder or innerBorder is null.
+   * @throws IllegalArgumentException if either outerBorder or innerBorder is null.
    */
   public CompoundBorder(Border outerBorder, Border innerBorder) {
     if (outerBorder == null) {
-      throw new NullPointerException("Outer border cannot be null.");
+      throw new IllegalArgumentException("Outer border cannot be null.");
     }
     if (innerBorder == null) {
-      throw new NullPointerException("Inner border cannot be null.");
+      throw new IllegalArgumentException("Inner border cannot be null.");
     }
     this.outerBorder = outerBorder;
     this.innerBorder = innerBorder;

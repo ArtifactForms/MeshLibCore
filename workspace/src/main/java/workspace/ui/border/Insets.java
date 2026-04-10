@@ -31,11 +31,11 @@ public class Insets {
    * Creates a new Insets object as a copy of an existing one.
    *
    * @param insets the Insets object to copy
-   * @throws NullPointerException if the provided insets object is null
+   * @throws IllegalArgumentException if the provided insets object is null
    */
   public Insets(Insets insets) {
     if (insets == null) {
-      throw new NullPointerException("Insets to copy cannot be null.");
+      throw new IllegalArgumentException("Insets to copy cannot be null.");
     }
     this.top = insets.top;
     this.left = insets.left;
