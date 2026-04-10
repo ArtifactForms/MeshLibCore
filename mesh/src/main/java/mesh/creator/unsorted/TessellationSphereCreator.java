@@ -14,92 +14,91 @@ import mesh.util.Mesh3DUtil;
 
 public class TessellationSphereCreator implements IMeshCreator {
 
-	private float radius;
+  private float radius;
 
-	private float thickness;
+  private float thickness;
 
-	private float scaleExtrude;
+  private float scaleExtrude;
 
-	private int subdivisions;
+  private int subdivisions;
 
-	private Mesh3D mesh;
+  private Mesh3D mesh;
 
-	public TessellationSphereCreator() {
-		radius = 6f;
-		thickness = 0.1f;
-		scaleExtrude = 0.8f;
-		subdivisions = 0;
-	}
+  public TessellationSphereCreator() {
+    radius = 6f;
+    thickness = 0.1f;
+    scaleExtrude = 0.8f;
+    subdivisions = 0;
+  }
 
-	private void createHoles() {
-		List<Face3D> faces = mesh.getFaces();
-		for (Face3D face : faces) {
-			Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0.0f);
-		}
-		mesh.removeFaces(faces);
-	}
+  private void createHoles() {
+    List<Face3D> faces = mesh.getFaces();
+    for (Face3D face : faces) {
+      Mesh3DUtil.extrudeFace(mesh, face, scaleExtrude, 0.0f);
+    }
+    mesh.removeFaces(faces);
+  }
 
-	private void tessellate() {
-		new PlanarMidEdgeCenterModifier(2).modify(mesh);
-	}
+  private void tessellate() {
+    new PlanarMidEdgeCenterModifier(2).modify(mesh);
+  }
 
-	private void pushToSphere() {
-		new SpherifyModifier(radius).modify(mesh);
-	}
+  private void pushToSphere() {
+    new SpherifyModifier(radius).modify(mesh);
+  }
 
-	private void flipFaceNormals() {
-		new FlipFacesModifier().modify(mesh);
-	}
+  private void flipFaceNormals() {
+    new FlipFacesModifier().modify(mesh);
+  }
 
-	private void solidify() {
-		new SolidifyModifier(thickness).modify(mesh);
-	}
+  private void solidify() {
+    new SolidifyModifier(thickness).modify(mesh);
+  }
 
-	@Override
-	public Mesh3D create() {
-		createBaseIcoSphere();
-		tessellate();
-		createHoles();
-		pushToSphere();
-		flipFaceNormals();
-		solidify();
-		return mesh;
-	}
+  @Override
+  public Mesh3D create() {
+    createBaseIcoSphere();
+    tessellate();
+    createHoles();
+    pushToSphere();
+    flipFaceNormals();
+    solidify();
+    return mesh;
+  }
 
-	private void createBaseIcoSphere() {
-		mesh = new IcoSphereCreator(radius, subdivisions).create();
-	}
+  private void createBaseIcoSphere() {
+    mesh = new IcoSphereCreator(radius, subdivisions).create();
+  }
 
-	public float getRadius() {
-		return radius;
-	}
+  public float getRadius() {
+    return radius;
+  }
 
-	public void setRadius(float radius) {
-		this.radius = radius;
-	}
+  public void setRadius(float radius) {
+    this.radius = radius;
+  }
 
-	public float getThickness() {
-		return thickness;
-	}
+  public float getThickness() {
+    return thickness;
+  }
 
-	public void setThickness(float thickness) {
-		this.thickness = thickness;
-	}
+  public void setThickness(float thickness) {
+    this.thickness = thickness;
+  }
 
-	public float getScaleExtrude() {
-		return scaleExtrude;
-	}
+  public float getScaleExtrude() {
+    return scaleExtrude;
+  }
 
-	public void setScaleExtrude(float scaleExtrude) {
-		this.scaleExtrude = scaleExtrude;
-	}
+  public void setScaleExtrude(float scaleExtrude) {
+    this.scaleExtrude = scaleExtrude;
+  }
 
-	public int getSubdivisions() {
-		return subdivisions;
-	}
+  public int getSubdivisions() {
+    return subdivisions;
+  }
 
-	public void setSubdivisions(int subdivisions) {
-		this.subdivisions = subdivisions;
-	}
-
+  public void setSubdivisions(int subdivisions) {
+    this.subdivisions = subdivisions;
+  }
 }
