@@ -161,7 +161,7 @@ public class Chunk extends ChunkData {
         store.set(waterGeometry.getLocalBounds());
         initialized = true;
       } else {
-        mergeBoundsInPlace(store, waterGeometry.getLocalBounds());
+        store.merge(waterGeometry.getLocalBounds());
       }
     }
 
@@ -170,7 +170,7 @@ public class Chunk extends ChunkData {
         store.set(decorGeometry.getLocalBounds());
         initialized = true;
       } else {
-        mergeBoundsInPlace(store, decorGeometry.getLocalBounds());
+        store.merge(decorGeometry.getLocalBounds());
       }
     }
 
@@ -181,21 +181,5 @@ public class Chunk extends ChunkData {
     }
 
     return store;
-  }
-
-  private void mergeBoundsInPlace(Bounds target, Bounds other) {
-    Vector3f min = target.getMin();
-    Vector3f max = target.getMax();
-
-    Vector3f omin = other.getMin();
-    Vector3f omax = other.getMax();
-
-    if (omin.x < min.x) min.x = omin.x;
-    if (omin.y < min.y) min.y = omin.y;
-    if (omin.z < min.z) min.z = omin.z;
-
-    if (omax.x > max.x) max.x = omax.x;
-    if (omax.y > max.y) max.y = omax.y;
-    if (omax.z > max.z) max.z = omax.z;
   }
 }
