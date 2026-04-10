@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import common.game.block.BlockShape;
-import common.game.block.BlockType;
 import common.game.block.Blocks;
 import common.interaction.BlockTarget;
 import common.interaction.InteractionTarget;
