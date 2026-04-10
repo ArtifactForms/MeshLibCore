@@ -85,8 +85,9 @@ public class ClientNetwork extends Connection {
 
   @Override
   public void onClose() {
+	  String message = "Connection timed out or server closed.";
 	    if (!(client.getSceneManager().getActiveScene() instanceof ConnectionLostScene)) {
-	        client.getSceneManager().setActiveScene(new ConnectionLostScene(client, "Connection timed out or server closed."));
+	        client.getSceneManager().setActiveScene(new ConnectionLostScene(client, message));
 	    }
     client.onConnectionClosed();
   }
