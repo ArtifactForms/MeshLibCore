@@ -1,6 +1,5 @@
 package mesh.creator.primitives;
 
-import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
 import mesh.next.surface.SurfaceLayer;
