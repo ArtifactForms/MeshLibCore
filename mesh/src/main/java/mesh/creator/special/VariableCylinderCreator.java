@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import math.Mathf;
-import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.FillType;
 import mesh.creator.IMeshCreator;
