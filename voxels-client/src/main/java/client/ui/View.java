@@ -17,8 +17,6 @@ public class View implements ClientView {
 
   private TitleView titleView;
 
-  public View() {}
-
   @Override
   public ActionBarView getActionBarView() {
     return actionBarView;
