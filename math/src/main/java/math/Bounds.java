@@ -295,6 +295,37 @@ public class Bounds {
   }
 
   /**
+   * Expands this bounding box so that it also contains the given {@code other} bounds.
+   *
+   * <p>This operation modifies this instance in place by taking the component-wise minimum of the
+   * {@code min} vectors and the component-wise maximum of the {@code max} vectors of both bounds.
+   * The result is the smallest axis-aligned bounding box (AABB) that encloses both.
+   *
+   * <p><b>Note:</b> This method mutates the current {@code Bounds} instance and returns {@code
+   * this} for chaining.
+   *
+   * @param other the bounds to merge into this bounds (must not be {@code null})
+   * @return this bounds instance after merging
+   * @throws IllegalArgumentException if {@code other} is {@code null}
+   */
+  public Bounds merge(Bounds other) {
+    if (other == null) {
+      throw new IllegalArgumentException("Other cannot be null.");
+    }
+
+    min.x = Math.min(min.x, other.min.x);
+    max.x = Math.max(max.x, other.max.x);
+
+    min.y = Math.min(min.y, other.min.y);
+    max.y = Math.max(max.y, other.max.y);
+
+    min.z = Math.min(min.z, other.min.z);
+    max.z = Math.max(max.z, other.max.z);
+
+    return this;
+  }
+
+  /**
    * Returns the half-extents of this bounding box.
    *
    * <p>The half-extents represent half of the box size along each axis and are defined as:

@@ -205,17 +205,17 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
               if (dx * dx + dz * dz > r2) {
                 long key = entry.getKey();
-                // Wenn noch nicht in der DeletionQueue, jetzt hinzufügen
+                // If not yet in the deletion queue, add it now
                 if (!deletionQueue.containsKey(key)) {
                   deletionQueue.put(key, currentTime);
                 } else if (currentTime - deletionQueue.get(key) > DELETION_DELAY_MS) {
-                  // Erst nach Ablauf des Timers wirklich recyceln
+                  // Only recycle after the delay has passed
                   recycleChunk(chunk);
                   deletionQueue.remove(key);
                   return true;
                 }
               } else {
-                // Falls der Spieler zurückläuft, aus der DeletionQueue entfernen
+                // If the player moves back, remove from the deletion queue
                 deletionQueue.remove(World.getChunkKey(chunk.getChunkX(), chunk.getChunkZ()));
               }
               return false;
