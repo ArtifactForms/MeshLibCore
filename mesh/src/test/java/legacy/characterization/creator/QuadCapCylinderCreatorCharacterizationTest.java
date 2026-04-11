@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import java.io.File;
 import java.util.EnumSet;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import math.Bounds;
@@ -18,13 +17,10 @@ import math.Vector3f;
 import mesh.Face3D;
 import mesh.Mesh3D;
 import mesh.creator.IMeshCreator;
-
+import mesh.creator.primitives.QuadCapCylinderCreator;
 import mesh.io.SimpleObjectReader;
-import mesh.io.SimpleObjectWriter;
 import mesh.util.MeshBoundsCalculator;
 import util.MeshTestUtil;
-
-import mesh.creator.primitives.QuadCapCylinderCreator;
 
 /**
  * AUTO-GENERATED CHARACTERIZATION TEST.
@@ -566,41 +562,6 @@ public class QuadCapCylinderCreatorCharacterizationTest {
       String actual = face.getTag();
       assertEquals(expected, actual);
     }
-  }
-
-  /**
-   * Captures the current output of the mesh creator as an OBJ-based reference footprint.
-   *
-   * <p>This method is intentionally disabled and must be run manually. It is used to (re)generate
-   * the golden reference mesh after deliberate and reviewed changes.
-   *
-   * <p>The exported mesh is expected to be deterministic. Vertex positions are rounded to four
-   * decimal places during export to ensure stability across platforms and JVM implementations.
-   */
-  @Test
-  @Disabled("Used to (re)generate the reference mesh footprint")
-  public void captureReferenceMesh() throws Exception {
-    Mesh3D mesh = new QuadCapCylinderCreator().create();
-    Mesh3D output = new Mesh3D();
-
-    output.addFaces(mesh.getFaces());
-
-    for (Vector3f v : mesh.getVertices()) {
-      v.roundLocalDecimalPlaces(4);
-      output.add(v);
-    }
-
-    File file = new File("./src/test/java/resources/characterization/QuadCapCylinderCreator.obj");
-
-    if (file.exists()) {
-      throw new IllegalStateException(
-          "Reference mesh already exists. Delete it explicitly to re-capture.");
-    }
-
-    String objName = "QuadCapCylinderCreator";
-    SimpleObjectWriter objectWriter = new SimpleObjectWriter(file);
-    objectWriter.write(output, objName);
-    objectWriter.close();
   }
 
   /**
