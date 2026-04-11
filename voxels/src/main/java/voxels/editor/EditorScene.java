@@ -5,11 +5,8 @@ import engine.scene.Scene;
 import engine.scene.SceneNode;
 import engine.scene.camera.OrbitCamera;
 import engine.scene.camera.OrbitCameraControl;
-import engine.scene.light.AmbientLight;
-import engine.scene.light.DirectionalLight;
 import engine.scene.nodes.DefaultTestCube;
 import math.Color;
-import math.Vector3f;
 import voxels.render.RegionRenderSystem;
 import voxels.world.NoiseTerrainGenerator;
 import voxels.world.VoxelWorld;
@@ -36,7 +33,6 @@ public class EditorScene extends Scene {
 
     setupCamera();
     setupUI();
-    // setupLight();
     setupWorld();
     setupStreaming();
 
@@ -77,25 +73,5 @@ public class EditorScene extends Scene {
   private void setupUI() {
     SceneNode cursor = new SceneNode("Cursor", new CursorComponent(input));
     getUIRoot().addChild(cursor);
-  }
-
-  private void setupLight() {
-    addLight(createAmbientLight());
-    addLight(createSunLight());
-    addLight(createFillLight());
-  }
-
-  private AmbientLight createAmbientLight() {
-    return new AmbientLight(new Color(0.5f, 0.5f, 0.5f));
-  }
-
-  private DirectionalLight createSunLight() {
-    return new DirectionalLight(
-        new Color(1.0f, 0.98f, 0.85f), new Vector3f(-0.5f, 1.0f, -0.3f).normalize());
-  }
-
-  private DirectionalLight createFillLight() {
-    return new DirectionalLight(
-        new Color(0.15f, 0.15f, 0.18f), new Vector3f(0.5f, -1.0f, 0.3f).normalize());
   }
 }
