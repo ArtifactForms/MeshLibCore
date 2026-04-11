@@ -6,134 +6,129 @@ import mesh.creator.IMeshCreator;
 
 public class UVSphereCreator implements IMeshCreator {
 
-    private int rings;
+  private int rings;
 
-    private int segments;
+  private int segments;
 
-    private float radius;
+  private float radius;
 
-    private Mesh3D mesh;
+  private Mesh3D mesh;
 
-    public UVSphereCreator() {
-        rings = 16;
-        segments = 32;
-        radius = 1;
+  public UVSphereCreator() {
+    rings = 16;
+    segments = 32;
+    radius = 1;
+  }
+
+  public UVSphereCreator(int rings, int segments, float radius) {
+    this.rings = rings;
+    this.segments = segments;
+    this.radius = radius;
+  }
+
+  @Override
+  public Mesh3D create() {
+    if (rings == 0 && segments == 0) return new Mesh3D();
+
+    initializeMesh();
+    createVertices();
+    createFaces();
+
+    return mesh;
+  }
+
+  private void createVertices() {
+    for (int row = 1; row < rings; row++) {
+      for (int col = 0; col < segments; col++) {
+        float theta = row * Mathf.PI / rings;
+        float phi = col * Mathf.TWO_PI / segments;
+        createVertexAt(theta, phi);
+      }
     }
+    createTopCenterVertex();
+    createBottomCenterVertex();
+  }
 
-    public UVSphereCreator(int rings, int segments, float radius) {
-        this.rings = rings;
-        this.segments = segments;
-        this.radius = radius;
-    }
+  private void createVertexAt(float theta, float phi) {
+    float x = x(theta, phi);
+    float y = y(theta);
+    float z = z(theta, phi);
+    addVertex(x, y, z);
+  }
 
-    @Override
-    public Mesh3D create() {
-        if (rings == 0 && segments == 0)
-            return new Mesh3D();
+  private float x(float theta, float phi) {
+    return radius * Mathf.cos(phi) * Mathf.sin(theta);
+  }
 
-        initializeMesh();
-        createVertices();
-        createFaces();
+  private float y(float theta) {
+    return radius * Mathf.cos(theta);
+  }
 
-        return mesh;
-    }
+  private float z(float theta, float phi) {
+    return radius * Mathf.sin(phi) * Mathf.sin(theta);
+  }
 
-    private void createVertices() {
-        for (int row = 1; row < rings; row++) {
-            for (int col = 0; col < segments; col++) {
-                float theta = row * Mathf.PI / rings;
-                float phi = col * Mathf.TWO_PI / segments;
-                createVertexAt(theta, phi);
-            }
-        }
-        createTopCenterVertex();
-        createBottomCenterVertex();
-    }
+  private void createTopCenterVertex() {
+    addVertex(0, -radius, 0);
+  }
 
-    private void createVertexAt(float theta, float phi) {
-        float x = x(theta, phi);
-        float y = y(theta, phi);
-        float z = z(theta, phi);
-        addVertex(x, y, z);
-    }
+  private void createBottomCenterVertex() {
+    addVertex(0, radius, 0);
+  }
 
-    private float x(float theta, float phi) {
-        return radius * Mathf.cos(phi) * Mathf.sin(theta);
-    }
+  private void createFaces() {
+    for (int row = 0; row < rings - 2; row++)
+      for (int col = 0; col < segments; col++) createFaceAt(row, col);
+  }
 
-    private float y(float theta, float phi) {
-        return radius * Mathf.cos(theta);
-    }
+  private void createFaceAt(int row, int col) {
+    int a = getIndex(row, (col + 1) % segments);
+    int b = getIndex(row + 1, (col + 1) % segments);
+    int c = getIndex(row + 1, col);
+    int d = getIndex(row, col);
+    addFace(a, b, c, d);
+    if (row == 0) addFace(d, mesh.getVertexCount() - 1, a);
+    if (row == rings - 3) addFace(c, b, mesh.getVertexCount() - 2);
+  }
 
-    private float z(float theta, float phi) {
-        return radius * Mathf.sin(phi) * Mathf.sin(theta);
-    }
+  private int getIndex(int row, int col) {
+    int idx = segments * row + col;
+    return idx % mesh.getVertexCount();
+  }
 
-    private void createTopCenterVertex() {
-        addVertex(0, -radius, 0);
-    }
+  private void addVertex(float x, float y, float z) {
+    mesh.addVertex(x, y, z);
+  }
 
-    private void createBottomCenterVertex() {
-        addVertex(0, radius, 0);
-    }
+  private void addFace(int... indices) {
+    mesh.addFace(indices);
+  }
 
-    private void createFaces() {
-        for (int row = 0; row < rings - 2; row++)
-            for (int col = 0; col < segments; col++)
-                createFaceAt(row, col);
-    }
+  private void initializeMesh() {
+    mesh = new Mesh3D();
+  }
 
-    private void createFaceAt(int row, int col) {
-        int a = getIndex(row, (col + 1) % segments);
-        int b = getIndex(row + 1, (col + 1) % segments);
-        int c = getIndex(row + 1, col);
-        int d = getIndex(row, col);
-        addFace(a, b, c, d);
-        if (row == 0)
-            addFace(d, mesh.getVertexCount() - 1, a);
-        if (row == rings - 3)
-            addFace(c, b, mesh.getVertexCount()- 2);
-    }
+  public int getRings() {
+    return rings;
+  }
 
-    private int getIndex(int row, int col) {
-        int idx = segments * row + col;
-        return idx % mesh.getVertexCount();
-    }
+  public void setRings(int rings) {
+    this.rings = rings;
+  }
 
-    private void addVertex(float x, float y, float z) {
-        mesh.addVertex(x, y, z);
-    }
+  public int getSegments() {
+    return segments;
+  }
 
-    private void addFace(int... indices) {
-        mesh.addFace(indices);
-    }
+  public void setSegments(int segments) {
+    this.segments = segments;
+  }
 
-    private void initializeMesh() {
-        mesh = new Mesh3D();
-    }
+  public float getRadius() {
+    return radius;
+  }
 
-    public int getRings() {
-        return rings;
-    }
-
-    public void setRings(int rings) {
-        this.rings = rings;
-    }
-
-    public int getSegments() {
-        return segments;
-    }
-
-    public void setSegments(int segments) {
-        this.segments = segments;
-    }
-
-    public float getRadius() {
-        return radius;
-    }
-
-    public void setRadius(float size) {
-        this.radius = size;
-    }
-
+  public void setRadius(float size) {
+    this.radius = size;
+  }
 }
