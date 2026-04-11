@@ -1,25 +1,23 @@
 package server.usecases.chat;
 
 import server.gateways.ConfigGateway;
-import server.player.ServerPlayer;
 
 public class ChatFormatter {
 
-  private static String getPrefix(ServerPlayer player) {
+  private static final String DEFAULT_PREFIX = "[Player]";
 
-    // später: Permissions / Groups
-    // jetzt simple
-
-    return "[Player] ";
+  private static String getPrefix() {
+    // The prefix might change in the future and include ranks / permissions / groups
+    return DEFAULT_PREFIX;
   }
 
-  public static String format(ConfigGateway config, ServerPlayer player, String message) {
+  public static String format(ConfigGateway config, String playerName, String message) {
 
-    String format = config.getChatFormat(); // "{prefix}{name}: {message}"
+    String format = config.getChatFormat(); // e.g. "{prefix}{name}: {message}"
 
     return format
-        .replace("{prefix}", getPrefix(player))
-        .replace("{name}", player.getName())
+        .replace("{prefix}", getPrefix())
+        .replace("{name}", playerName)
         .replace("{message}", message);
   }
 }

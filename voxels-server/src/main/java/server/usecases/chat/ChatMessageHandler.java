@@ -116,7 +116,7 @@ public class ChatMessageHandler {
     // -------------------------------------
     // RESPONSE BROADCAST
     // -------------------------------------
-    String formattedMessage = ChatFormatter.format(config, player, finalMessage);
+    String formattedMessage = ChatFormatter.format(config, player.getName(), finalMessage);
     connection.getServer().getPlayerManager().broadcast(new ChatMessagePacket(formattedMessage));
 
     Log.info("[CHAT] broadcast player=" + player.getName() + " message=\"" + finalMessage + "\"");
