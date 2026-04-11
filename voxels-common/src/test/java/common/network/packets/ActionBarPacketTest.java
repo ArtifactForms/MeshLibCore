@@ -1,8 +1,13 @@
 package common.network.packets;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
@@ -10,12 +15,6 @@ import common.network.PacketBuffer;
 import common.network.PacketIds;
 
 class ActionBarPacketTest {
-
-  private PacketBuffer createBuffer(ByteArrayOutputStream baos) {
-    return new PacketBuffer(
-        new DataInputStream(new ByteArrayInputStream(baos.toByteArray())),
-        new DataOutputStream(baos));
-  }
 
   @Test
   void testWriteReadRoundTrip() throws IOException {
