@@ -153,7 +153,10 @@ public class ChunkMesher {
         }
 
         float light = switch (face) { case FRONT, BACK -> 0.85f; case LEFT, RIGHT -> 0.7f; case BOTTOM -> 0.5f; default -> 1.0f; };
-        float a0, a1, a2, a3;
+        float a0;
+        float a1;
+        float a2;
+        float a3;
 
         switch (face) {
             case FRONT -> {

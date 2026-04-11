@@ -262,7 +262,9 @@ public class TextureAtlas {
     float x = c * (1 - Math.abs((h / 60) % 2 - 1));
     float m = l - c / 2;
 
-    float r = 0, g = 0, b = 0;
+    float r = 0;
+    float g = 0;
+    float b = 0;
     if (0 <= h && h < 60) {
       r = c;
       g = x;

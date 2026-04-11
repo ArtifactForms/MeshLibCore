@@ -18,7 +18,9 @@ class BlockTargetTest {
     // Given values for the targeted block
     int targetX = 10, targetY = 64, targetZ = -5;
     // Given values for the placement position (e.g., one block above)
-    int placeX = 10, placeY = 65, placeZ = -5;
+    int placeX = 10;
+    int placeY = 65;
+    int placeZ = -5;
     BlockFace face = BlockFace.UP;
 
     BlockTarget target =

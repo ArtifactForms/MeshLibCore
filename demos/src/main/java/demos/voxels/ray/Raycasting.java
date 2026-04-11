@@ -11,15 +11,13 @@ public class Raycasting {
 
   private static final int MAX_DISTANCE = 500;
 
-  private Raycasting() {}
-
   public static RaycastResult raycast(Camera camera, World world) {
     Ray3f ray = Raycaster.crossHairRay(camera);
     Vector3f origin = ray.getOrigin();
     Vector3f dir = ray.getDirection().normalize();
 
     // Amanatides & Woo algorithm
-    // Welt-Raum Transformation (Y-Spiegelung beibehalten)
+    // World-space transformation (keep Y inversion)
     float startX = origin.x;
     float startY = -origin.y;
     float startZ = origin.z;
@@ -28,7 +26,7 @@ public class Raycasting {
     float dirY = -dir.y;
     float dirZ = dir.z;
 
-    // Start-Voxel (Synchron mit World-Logik)
+    // Starting voxel (aligned with world logic)
     int x = (int) Math.floor(startX + 0.5f);
     int y = (int) Math.floor(startY + 0.5f);
     int z = (int) Math.floor(startZ + 0.5f);
@@ -41,9 +39,11 @@ public class Raycasting {
     float tDeltaY = Math.abs(1.0f / dirY);
     float tDeltaZ = Math.abs(1.0f / dirZ);
 
-    float tMaxX, tMaxY, tMaxZ;
+    float tMaxX;
+    float tMaxY;
+    float tMaxZ;
 
-    // DDA Startdistanzen
+    // Initial DDA distances
     if (dirX >= 0) tMaxX = (float) ((Math.floor(startX + 0.5f) + 0.5 - startX) * tDeltaX);
     else tMaxX = (float) ((startX - (Math.floor(startX + 0.5f) - 0.5)) * tDeltaX);
 
@@ -53,26 +53,28 @@ public class Raycasting {
     if (dirZ >= 0) tMaxZ = (float) ((Math.floor(startZ + 0.5f) + 0.5 - startZ) * tDeltaZ);
     else tMaxZ = (float) ((startZ - (Math.floor(startZ + 0.5f) - 0.5)) * tDeltaZ);
 
-    // Wir tracken die Normale des getroffenen Gesichts
-    int hitNormalX = 0, hitNormalY = 0, hitNormalZ = 0;
+    // We track the normal of the hit face
+    int hitNormalX = 0;
+    int hitNormalY = 0;
+    int hitNormalZ = 0;
     float t = 0;
 
     while (t <= MAX_DISTANCE) {
       if (world.isSolid(x, y, z)) {
-        // Platzierungs-Position ist der getroffene Block + die Normale der Fläche
+        // Placement position is the hit block + the face normal
         int placeX = x + hitNormalX;
         int placeY = y + hitNormalY;
         int placeZ = z + hitNormalZ;
         return new RaycastResult(true, x, y, z, placeX, placeY, placeZ);
       }
 
-      // DDA Step
+      // DDA step
       if (tMaxX < tMaxY) {
         if (tMaxX < tMaxZ) {
           t = tMaxX;
           tMaxX += tDeltaX;
           x += stepX;
-          // Wir sind in X-Richtung gesprungen, also kam der Strahl von der Seite
+          // We stepped in X direction, so the ray came from the side
           hitNormalX = -stepX;
           hitNormalY = 0;
           hitNormalZ = 0;

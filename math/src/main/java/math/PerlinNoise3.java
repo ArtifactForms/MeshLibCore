@@ -64,7 +64,10 @@ public class PerlinNoise3 implements Noise3D {
     int bbb = permutationTable[permutationTable[permutationTable[x0 + 1] + y0 + 1] + z0 + 1];
 
     // Linearly interpolate the noise values at the cube corners
-    double x1, x2, y1, y2;
+    double x1;
+    double x2;
+    double y1;
+    double y2;
     x1 = lerp(u, grad(aaa, xf, yf, zf), grad(baa, xf - 1, yf, zf));
     x2 = lerp(u, grad(aba, xf, yf - 1, zf), grad(bba, xf - 1, yf - 1, zf));
     y1 = lerp(v, x1, x2);

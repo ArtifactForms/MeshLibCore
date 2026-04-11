@@ -81,7 +81,8 @@ public final class SimplexNoise2D implements Noise2D {
     float y0 = y - Y0;
 
     // Determine simplex triangle
-    int i1, j1;
+    int i1;
+    int j1;
     if (x0 > y0) {
       i1 = 1;
       j1 = 0;

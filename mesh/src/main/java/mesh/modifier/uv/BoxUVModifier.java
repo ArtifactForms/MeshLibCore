@@ -110,7 +110,8 @@ public class BoxUVModifier implements IMeshModifier {
 
         Vector3f p = mesh.getVertexAt(face.getIndexAt(i));
 
-        float u, v;
+        float u;
+        float v;
 
         switch (axis) {
           case XY:
