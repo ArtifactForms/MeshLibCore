@@ -1,12 +1,17 @@
 package common.game.block;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import java.io.*;
+import java.io.BufferedReader;
 import java.net.URI;
-import java.nio.file.*;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.stream.Stream;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class BlockLoader {
 

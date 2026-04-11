@@ -1,5 +1,15 @@
 package voxels.editor;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import engine.components.AbstractComponent;
 import engine.components.StaticGeometry;
 import engine.rendering.Material;
@@ -15,9 +25,6 @@ import voxels.world.Chunk;
 import voxels.world.NoiseTerrainGenerator;
 import voxels.world.Region;
 import voxels.world.VoxelWorld;
-
-import java.util.*;
-import java.util.concurrent.*;
 
 public class WorldStreamer extends AbstractComponent {
 
@@ -491,9 +498,9 @@ public class WorldStreamer extends AbstractComponent {
   }
 
   private static class MeshBuildResult {
-	  
+
     private final long regionKey;
-    
+
     private final Mesh3D mesh;
 
     private MeshBuildResult(long regionKey, Mesh3D mesh) {
