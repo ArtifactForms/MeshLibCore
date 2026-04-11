@@ -1,6 +1,10 @@
 package engine.physics.collision.narrowphase;
 
-import engine.physics.collision.collider.*;
+import engine.physics.collision.collider.AABBCollider;
+import engine.physics.collision.collider.CapsuleCollider;
+import engine.physics.collision.collider.Collider;
+import engine.physics.collision.collider.ColliderType;
+import engine.physics.collision.collider.SphereCollider;
 import engine.physics.collision.component.ColliderComponent;
 import engine.physics.collision.contact.Contact;
 import math.Vector3f;

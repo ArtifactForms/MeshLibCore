@@ -1,8 +1,14 @@
 package common.world;
 
-import common.game.block.Blocks;
-import net.jqwik.api.*;
 import org.junit.jupiter.api.Assertions;
+
+import common.game.block.Blocks;
+import net.jqwik.api.Arbitraries;
+import net.jqwik.api.Arbitrary;
+import net.jqwik.api.Combinators;
+import net.jqwik.api.ForAll;
+import net.jqwik.api.Property;
+import net.jqwik.api.Provide;
 
 class WorldPropertyTest {
 
@@ -66,11 +72,11 @@ class WorldPropertyTest {
   }
 
   static class WorldCoord {
-	  
+
     int x;
-    
+
     int y;
-    
+
     int z;
 
     WorldCoord(int x, int y, int z) {
