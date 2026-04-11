@@ -137,14 +137,14 @@ public class Color {
   /**
    * Returns a new color instance with the specified integer r, g, b, a values.
    *
-   * <p>Each component is clamped to the valid range of 0 to 255 and then normalized to the range
-   * 0.0 to 1.0 before constructing the color.
+   * <p>Each component is clamped to the valid range of 0 to 255 and then
+   * normalized to the range 0.0 to 1.0 before constructing the color.</p>
    *
    * @param r the red component for the color (0 to 255)
    * @param g the green component for the color (0 to 255)
    * @param b the blue component for the color (0 to 255)
-   * @param a the alpha (transparency) component for the color (0 to 255), where 0 is fully
-   *     transparent and 255 is fully opaque
+   * @param a the alpha (transparency) component for the color (0 to 255),
+   *          where 0 is fully transparent and 255 is fully opaque
    * @return the newly created color with RGBA components in normalized float range
    */
   public static Color getColorFromInt(int r, int g, int b, int a) {
@@ -312,12 +312,9 @@ public class Color {
    *
    * @param scalar the divisor
    * @return this color after division
-   * @throws IllegalArgumentException if scalar is zero
+   * @throws ArithmeticException if scalar is zero
    */
   public Color divideLocal(float scalar) {
-    if (scalar == 0) {
-      throw new IllegalArgumentException("Scalar cannot be 0.");
-    }
     this.r /= a;
     this.g /= a;
     this.b /= a;
