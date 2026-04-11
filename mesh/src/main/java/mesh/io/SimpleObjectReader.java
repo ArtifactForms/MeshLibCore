@@ -9,55 +9,54 @@ import mesh.Mesh3D;
 
 public class SimpleObjectReader {
 
-    private Mesh3D mesh;
+  private Mesh3D mesh;
 
-    public Mesh3D read(File file) {
-        initializeMesh();
+  public Mesh3D read(File file) {
+    initializeMesh();
 
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            String line = null;
-            while ((line = in.readLine()) != null) {
-                processLine(line);
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return mesh;
+    try {
+      BufferedReader in = new BufferedReader(new FileReader(file));
+      String line = null;
+      while ((line = in.readLine()) != null) {
+        processLine(line);
+      }
+      in.close();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
-    private void processLine(String line) {
-        if (line.startsWith("v ")) {
-            String[] sArray = line.split(" ");
-            addVertex(sArray);
-        }
+    return mesh;
+  }
 
-        if (line.startsWith("f ")) {
-            String[] sArray = line.split(" ");
-            addFace(sArray);
-        }
+  private void processLine(String line) {
+    if (line.startsWith("v ")) {
+      String[] sArray = line.split(" ");
+      addVertex(sArray);
     }
 
-    private void initializeMesh() {
-        mesh = new Mesh3D();
+    if (line.startsWith("f ")) {
+      String[] sArray = line.split(" ");
+      addFace(sArray);
     }
+  }
 
-    protected void addVertex(String[] sArray) {
-        float x = Float.parseFloat(sArray[1]);
-        float y = Float.parseFloat(sArray[2]);
-        float z = Float.parseFloat(sArray[3]);
-        Vector3f v = new Vector3f(x, y, z);
-        mesh.add(v);
+  private void initializeMesh() {
+    mesh = new Mesh3D();
+  }
+
+  protected void addVertex(String[] sArray) {
+    float x = Float.parseFloat(sArray[1]);
+    float y = Float.parseFloat(sArray[2]);
+    float z = Float.parseFloat(sArray[3]);
+    Vector3f v = new Vector3f(x, y, z);
+    mesh.add(v);
+  }
+
+  protected void addFace(String[] sArray) {
+    int[] iArray = new int[sArray.length - 1];
+    for (int i = 0; i < iArray.length; i++) {
+      iArray[i] = Integer.parseInt(sArray[i + 1]) - 1;
     }
-
-    protected void addFace(String[] sArray) {
-        int[] iArray = new int[sArray.length - 1];
-        for (int i = 0; i < iArray.length; i++) {
-            iArray[i] = Integer.parseInt(sArray[i + 1]) - 1;
-        }
-        mesh.addFace(iArray);
-    }
-
+    mesh.addFace(iArray);
+  }
 }
