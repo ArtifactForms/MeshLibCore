@@ -7,117 +7,115 @@ import mesh.modifier.topology.SolidifyModifier;
 
 public class SegmentedTubeCreator implements IMeshCreator {
 
-    private int segments;
+  private int segments;
 
-    private int vertices;
+  private int vertices;
 
-    private float outerRadius;
+  private float outerRadius;
 
-    private float innerRadius;
+  private float innerRadius;
 
-    private float height;
+  private float height;
 
-    private Mesh3D mesh;
+  private Mesh3D mesh;
 
-    public SegmentedTubeCreator() {
-        segments = 2;
-        vertices = 32;
-        outerRadius = 1;
-        innerRadius = 0.5f;
-        height = 2;
+  public SegmentedTubeCreator() {
+    segments = 2;
+    vertices = 32;
+    outerRadius = 1;
+    innerRadius = 0.5f;
+    height = 2;
+  }
+
+  @Override
+  public Mesh3D create() {
+    initializeMesh();
+    createVertices();
+    createQuadFaces();
+    centerOnAxisY();
+    solidify();
+    return mesh;
+  }
+
+  private void initializeMesh() {
+    mesh = new Mesh3D();
+  }
+
+  private void centerOnAxisY() {
+    mesh.translateY(-height / 2);
+  }
+
+  private void solidify() {
+    if (outerRadius == innerRadius) return;
+    new SolidifyModifier(outerRadius - innerRadius).modify(mesh);
+  }
+
+  private void createVertices() {
+    float segmentHeight = height / (float) segments;
+    for (int i = 0; i <= segments; i++) {
+      Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
+      mesh.translateY(i * segmentHeight);
+      this.mesh.append(mesh);
     }
+  }
 
-    @Override
-    public Mesh3D create() {
-        initializeMesh();
-        createVertices();
-        createQuadFaces();
-        centerOnAxisY();
-        solidify();
-        return mesh;
+  private void createQuadFaces() {
+    for (int i = 0; i < segments; i++) {
+      for (int j = 0; j < vertices; j++) {
+        addFace(i, j);
+      }
     }
+  }
 
-    private void initializeMesh() {
-        mesh = new Mesh3D();
-    }
+  private void addFace(int i, int j) {
+    int idx0 = toOneDimensionalIndex(i, j);
+    int idx1 = toOneDimensionalIndex(i + 1, j);
+    int idx2 = toOneDimensionalIndex(i + 1, j + 1);
+    int idx3 = toOneDimensionalIndex(i, j + 1);
+    mesh.addFace(idx0, idx1, idx2, idx3);
+  }
 
-    private void centerOnAxisY() {
-        mesh.translateY(-height / 2);
-    }
+  private int toOneDimensionalIndex(int i, int j) {
+    return Mathf.toOneDimensionalIndex(i, j % vertices, vertices);
+  }
 
-    private void solidify() {
-        if (outerRadius == innerRadius)
-            return;
-        new SolidifyModifier(outerRadius - innerRadius).modify(mesh);
-    }
+  public int getSegments() {
+    return segments;
+  }
 
-    private void createVertices() {
-        float segmentHeight = height / (float) segments;
-        for (int i = 0; i <= segments; i++) {
-            Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
-            mesh.translateY(i * segmentHeight);
-            this.mesh.append(mesh);
-        }
-    }
+  public void setSegments(int segments) {
+    this.segments = segments;
+  }
 
-    private void createQuadFaces() {
-        for (int i = 0; i < segments; i++) {
-            for (int j = 0; j < vertices; j++) {
-                addFace(i, j);
-            }
-        }
-    }
+  public int getVertices() {
+    return vertices;
+  }
 
-    private void addFace(int i, int j) {
-        int idx0 = toOneDimensionalIndex(i, j);
-        int idx1 = toOneDimensionalIndex(i + 1, j);
-        int idx2 = toOneDimensionalIndex(i + 1, j + 1);
-        int idx3 = toOneDimensionalIndex(i, j + 1);
-        mesh.addFace(idx0, idx1, idx2, idx3);
-    }
+  public void setVertices(int vertices) {
+    this.vertices = vertices;
+  }
 
-    private int toOneDimensionalIndex(int i, int j) {
-        return Mathf.toOneDimensionalIndex(i, j % vertices, vertices);
-    }
+  public float getOuterRadius() {
+    return outerRadius;
+  }
 
-    public int getSegments() {
-        return segments;
-    }
+  public void setOuterRadius(float outerRadius) {
+    this.outerRadius = outerRadius;
+  }
 
-    public void setSegments(int segments) {
-        this.segments = segments;
-    }
+  public float getInnerRadius() {
+    return innerRadius;
+  }
 
-    public int getVertices() {
-        return vertices;
-    }
+  public void setInnerRadius(float innerRadius) {
+    this.innerRadius = innerRadius;
+  }
 
-    public void setVertices(int vertices) {
-        this.vertices = vertices;
-    }
+  public float getHeight() {
+    return height;
+  }
 
-    public float getOuterRadius() {
-        return outerRadius;
-    }
-
-    public void setOuterRadius(float outerRadius) {
-        this.outerRadius = outerRadius;
-    }
-
-    public float getInnerRadius() {
-        return innerRadius;
-    }
-
-    public void setInnerRadius(float innerRadius) {
-        this.innerRadius = innerRadius;
-    }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
+  public void setHeight(float height) {
+    this.height = height;
+  }
 }

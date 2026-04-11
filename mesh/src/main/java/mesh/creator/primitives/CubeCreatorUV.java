@@ -152,7 +152,7 @@ public class CubeCreatorUV implements IMeshCreator {
     mesh.addFace(1, 0, 4, 5); // Right face
     mesh.addFace(1, 5, 6, 2); // Front face
     mesh.addFace(6, 7, 3, 2); // Left face
-    mesh.addFace(3, 7, 4, 0);     // Back face
+    mesh.addFace(3, 7, 4, 0); // Back face
   }
 
   /**
