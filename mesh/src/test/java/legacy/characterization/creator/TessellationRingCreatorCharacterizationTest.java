@@ -175,12 +175,10 @@ public class TessellationRingCreatorCharacterizationTest {
   @Test
   public void testVerticesContainNoNaNOrInfinity() {
     Mesh3D mesh = new TessellationRingCreator().create();
-    mesh.getVertices()
-        .forEach(
-            v -> {
-              assertFalse(Float.isNaN(v.x) || Float.isNaN(v.y) || Float.isNaN(v.z));
-              assertFalse(Float.isInfinite(v.x) || Float.isInfinite(v.y) || Float.isInfinite(v.z));
-            });
+    for (Vector3f v : mesh.getVertices()) {
+      assertFalse(Float.isNaN(v.x) || Float.isNaN(v.y) || Float.isNaN(v.z));
+      assertFalse(Float.isInfinite(v.x) || Float.isInfinite(v.y) || Float.isInfinite(v.z));
+    }
   }
 
   /**

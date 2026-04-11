@@ -175,14 +175,11 @@ public class SegmentedCylinderCreatorCharacterizationTest {
   @Test
   public void testVerticesContainNoNaNOrInfinity() {
     Mesh3D mesh = new SegmentedCylinderCreator().create();
-    mesh.getVertices()
-        .forEach(
-            v -> {
-              assertFalse(Float.isNaN(v.x) || Float.isNaN(v.y) || Float.isNaN(v.z));
-              assertFalse(Float.isInfinite(v.x) || Float.isInfinite(v.y) || Float.isInfinite(v.z));
-            });
+    for (Vector3f v : mesh.getVertices()) {
+      assertFalse(Float.isNaN(v.x) || Float.isNaN(v.y) || Float.isNaN(v.z));
+      assertFalse(Float.isInfinite(v.x) || Float.isInfinite(v.y) || Float.isInfinite(v.z));
+    }
   }
-
   /**
    * Contract Test: Bounding Box Validation (HAS_VOLUME Capability)
    *
