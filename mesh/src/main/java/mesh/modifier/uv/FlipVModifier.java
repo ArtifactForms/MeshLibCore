@@ -37,11 +37,11 @@ public class FlipVModifier implements IMeshModifier {
    */
   @Override
   public Mesh3D modify(Mesh3D mesh) {
-	SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
-	for (int i = 0; i < surfaceLayer.getUVCount(); i++) {
-		Vector2f uv = surfaceLayer.getUvAt(i);
-		uv.y = -uv.y;
-	}
+    SurfaceLayer surfaceLayer = mesh.getSurfaceLayer();
+    for (int i = 0; i < surfaceLayer.getUVCount(); i++) {
+      Vector2f uv = surfaceLayer.getUvAt(i);
+      uv.y = -uv.y;
+    }
     return mesh;
   }
 }
