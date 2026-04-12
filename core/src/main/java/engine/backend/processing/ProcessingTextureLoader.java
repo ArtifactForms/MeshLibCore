@@ -9,12 +9,6 @@ import processing.core.PImage;
 
 public class ProcessingTextureLoader implements TextureLoader {
 
-  private final PApplet parent;
-
-  public ProcessingTextureLoader(PApplet parent) {
-    this.parent = parent;
-  }
-
   @Override
   public Texture loadTexture(String filePath) {
     String fullPath = "/images/" + filePath;
@@ -26,8 +20,7 @@ public class ProcessingTextureLoader implements TextureLoader {
     }
 
     if (is == null) {
-      System.err.println(
-          "Datei weder in /images/ noch in /resources/images/ gefunden: " + filePath);
+      System.err.println("File not found in either /images/ or /resources/images/: " + filePath);
       return null;
     }
 

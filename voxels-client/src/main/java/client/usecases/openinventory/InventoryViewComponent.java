@@ -50,8 +50,6 @@ public class InventoryViewComponent extends AbstractComponent
 
   private final int slotSize;
 
-  private Texture texture;
-
   private Geometry geometry;
 
   private boolean inventoryOpen = false;
@@ -84,7 +82,11 @@ public class InventoryViewComponent extends AbstractComponent
 
     this.slotSize = SIZE * SCALE;
 
-    texture = createAndConfigureTexture();
+    this.geometry = createGeometry();
+  }
+
+  private Geometry createGeometry() {
+    Texture texture = createAndConfigureTexture();
     Mesh3D plane = createPlaneMesh();
 
     Material material = new Material();
@@ -92,7 +94,7 @@ public class InventoryViewComponent extends AbstractComponent
     material.setUseLighting(false);
     material.setColor(new Color(0, 0, 0, 0));
 
-    geometry = new Geometry(plane, material);
+    return new Geometry(plane, material);
   }
 
   @Override

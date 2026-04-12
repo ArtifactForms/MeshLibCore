@@ -12,8 +12,6 @@ import demos.voxels.world.World;
 import engine.components.AbstractComponent;
 import engine.components.RenderableComponent;
 import engine.rendering.Graphics;
-import engine.scene.camera.Camera;
-import engine.scene.camera.Frustum;
 import math.Color;
 import math.Vector3f;
 import mesh.Mesh3D;
@@ -66,15 +64,9 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
 
   private int playerChunkZ;
 
-  private Camera camera;
-
-  private Frustum frustum = new Frustum();
-
-  public ChunkManager(Player player, Camera camera) {
+  public ChunkManager(Player player) {
     this.player = player;
-    this.playerPosition = new Vector3f(0, 0, 0);
-
-    this.camera = camera;
+    this.playerPosition	 = new Vector3f(0, 0, 0);
 
     this.debugBox = new BoxCreator(16, 16, 16).create();
     new SnapToGroundModifier().modify(debugBox);
@@ -127,9 +119,6 @@ public class ChunkManager extends AbstractComponent implements RenderableCompone
     updateChunksAroundPlayer();
     enqueueChunks();
     processQueues();
-
-    // Frustum update
-    //    frustum.update(camera.getViewProjectionMatrix());
   }
 
   // ============================

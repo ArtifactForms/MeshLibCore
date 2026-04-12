@@ -153,7 +153,7 @@ public class VoxelGameDemo extends BasicApplication {
   }
 
   private void setupChunkManager() {
-    chunkManager = new ChunkManager(player, camera);
+    chunkManager = new ChunkManager(player);
     SceneNode managerNode = new SceneNode();
     managerNode.addComponent(chunkManager);
     scene.addNode(managerNode);
