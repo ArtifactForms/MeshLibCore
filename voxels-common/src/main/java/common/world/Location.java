@@ -69,4 +69,30 @@ public class Location {
     this.y = y;
     this.z = z;
   }
+
+  public int getChunkX() {
+    return WorldMath.worldToChunk(x, ChunkData.WIDTH);
+  }
+
+  public int getChunkZ() {
+    return WorldMath.worldToChunk(z, ChunkData.DEPTH);
+  }
+
+  public int getBlockX() {
+    return fastFloor(x);
+  }
+
+  public int getBlockY() {
+    return fastFloor(y);
+  }
+
+  public int getBlockZ() {
+    return fastFloor(z);
+  }
+
+  private int fastFloor(double x) {
+//    int i = (int) x;
+//    return x < i ? i - 1 : i;
+	  return (int) Math.floor(x);
+  }
 }
