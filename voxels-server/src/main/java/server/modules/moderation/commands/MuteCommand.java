@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.gateways.PlayerGateway;
 import server.modules.moderation.ModerationMessages;
@@ -102,7 +103,11 @@ public class MuteCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"player"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {
+      new CommandArgument("player", true),
+      new CommandArgument("duration", false),
+      new CommandArgument("reason", false),
+    };
   }
 }

@@ -1,6 +1,7 @@
 package server.commands.commands;
 
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.permissions.Permissions;
 
@@ -28,8 +29,8 @@ public class BroadcastCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"message"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {new CommandArgument("message", true)};
   }
 
   @Override

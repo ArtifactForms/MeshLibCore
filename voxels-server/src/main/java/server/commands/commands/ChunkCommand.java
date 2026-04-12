@@ -7,6 +7,7 @@ import java.util.Locale;
 import common.network.packets.ChunkDataPacket;
 import common.world.ChunkData;
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.network.GameServer;
 import server.permissions.Permissions;
@@ -100,8 +101,8 @@ public class ChunkCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"clear"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {new CommandArgument("clear", true)};
   }
 
   @Override

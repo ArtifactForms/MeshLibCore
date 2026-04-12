@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import common.game.GameMode;
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.commands.CommandMessages;
 import server.gateways.MessageGateway;
@@ -77,8 +78,8 @@ public class ChangeGameModeCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"survival|creative|0|1|s|c"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {new CommandArgument("survival|creative|0|1|s|c", true)};
   }
 
   @Override

@@ -2,7 +2,7 @@ package server.commands;
 
 public abstract class AbstractCommand implements Command {
 
-  private static final String[] EMPTY_ARGUMENT_LABELS = new String[] {};
+  private static final CommandArgument[] EMPTY_ARGUMENT_LABELS = new CommandArgument[] {};
 
   private static final String[] EMPTY_ALIASES = new String[] {};
 
@@ -17,14 +17,15 @@ public abstract class AbstractCommand implements Command {
 
   @Override
   public String getSyntax() {
-    StringBuilder builder = new StringBuilder();
-    builder.append(getName());
-    for (String arg : getArgumentLabels()) {
-      builder.append(" <");
-      builder.append(arg);
-      builder.append(">");
-    }
-    return builder.toString();
+    //    StringBuilder builder = new StringBuilder();
+    //    builder.append(getName());
+    //    for (CommandArgument arg : getArgumentLabels()) {
+    //      builder.append(" <");
+    //      builder.append(arg.getName());
+    //      builder.append(">");
+    //    }
+    //    return builder.toString();
+    return "";
   }
 
   @Override
@@ -56,7 +57,7 @@ public abstract class AbstractCommand implements Command {
   }
 
   @Override
-  public String[] getArgumentLabels() {
+  public CommandArgument[] getArgumentLabels() {
     return EMPTY_ARGUMENT_LABELS;
   }
 }

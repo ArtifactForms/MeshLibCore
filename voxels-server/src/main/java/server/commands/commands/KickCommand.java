@@ -3,6 +3,7 @@ package server.commands.commands;
 import java.util.UUID;
 
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.events.events.PlayerKickEvent;
 import server.gateways.EventGateway;
@@ -75,8 +76,11 @@ public class KickCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"player", "reason"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {
+      new CommandArgument("player", true), 
+      new CommandArgument("reason", true)
+    };
   }
 
   @Override

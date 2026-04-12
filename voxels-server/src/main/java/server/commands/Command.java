@@ -12,7 +12,7 @@ public interface Command {
 
   String getPermission();
 
-  String[] getArgumentLabels();
+  CommandArgument[] getArgumentLabels();
 
   String getSyntax();
 

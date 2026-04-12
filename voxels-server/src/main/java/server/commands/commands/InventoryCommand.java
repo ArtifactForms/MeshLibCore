@@ -3,6 +3,7 @@ package server.commands.commands;
 import java.util.Locale;
 
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.gateways.MessageGateway;
 import server.permissions.Permissions;
@@ -50,8 +51,8 @@ public class InventoryCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"clear"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {new CommandArgument("clear", true)};
   }
 
   @Override

@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import common.world.WorldTime;
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.gateways.WorldGateway;
 import server.permissions.Permissions;
@@ -154,8 +155,8 @@ public class TimeCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"set|add|value"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {new CommandArgument("set|add|value", true)};
   }
 
   @Override

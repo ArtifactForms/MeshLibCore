@@ -4,6 +4,7 @@ import java.util.List;
 
 import server.commands.AbstractCommand;
 import server.commands.Command;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.gateways.CommandGateway;
 import server.permissions.Permissions;
@@ -49,8 +50,8 @@ public class HelpCommand extends AbstractCommand {
     sb.append("§7Description: §f").append(cmd.getDescription()).append("\n");
 
     sb.append("§7Usage: §e/").append(cmd.getName());
-    for (String label : cmd.getArgumentLabels()) {
-      sb.append(" <").append(label).append(">");
+    for (CommandArgument arg : cmd.getArgumentLabels()) {
+      sb.append(" <").append(arg.getName()).append(">");
     }
     sb.append("\n");
 

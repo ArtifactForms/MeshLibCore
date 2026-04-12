@@ -9,6 +9,7 @@ import common.logging.ConsoleLogger;
 import common.logging.Log;
 import common.network.NetworkPackets;
 import server.commands.Command;
+import server.commands.CommandArgument;
 import server.config.ServerConfig;
 import server.modules.edit.WorldEditModule;
 import server.modules.moderation.ModerationModule;
@@ -76,11 +77,11 @@ public class ServerMain {
       }
 
       // Arguments
-      String[] args = command.getArgumentLabels();
+      CommandArgument[] args = command.getArgumentLabels();
       if (args.length > 0) {
         builder.append("**Arguments:**\n");
-        for (String arg : args) {
-          builder.append("- `").append(arg).append("`\n");
+        for (CommandArgument arg : args) {
+          builder.append("- `").append(arg.getName()).append("`\n");
         }
         builder.append("\n");
       }

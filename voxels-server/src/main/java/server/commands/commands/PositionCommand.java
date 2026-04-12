@@ -7,6 +7,7 @@ import java.util.UUID;
 import common.world.Location;
 import common.world.WorldMath;
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.gateways.PlayerGateway;
 import server.permissions.Permissions;
@@ -89,8 +90,8 @@ public class PositionCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"player"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {new CommandArgument("player", false)};
   }
 
   @Override

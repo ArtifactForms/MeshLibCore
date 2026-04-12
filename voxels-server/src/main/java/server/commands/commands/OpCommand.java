@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.gateways.MessageGateway;
 import server.gateways.PermissionGateway;
@@ -58,8 +59,8 @@ public class OpCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"player"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {new CommandArgument("player", true)};
   }
 
   @Override
