@@ -8,6 +8,11 @@ public class BroadcastCommand extends AbstractCommand {
 
   @Override
   public void execute(CommandContext ctx) {
+    if (ctx.getArgs().isEmpty()) {
+      ctx.reply("Missing argument <message>.");
+      return;
+    }
+
     String message = String.join(" ", ctx.getArgs());
     ctx.broadcast(message);
   }
