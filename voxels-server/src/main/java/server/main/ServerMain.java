@@ -8,9 +8,9 @@ import common.game.block.Blocks;
 import common.logging.ConsoleLogger;
 import common.logging.Log;
 import common.network.NetworkPackets;
-import parse.Flag;
 import server.commands.Command;
 import server.config.ServerConfig;
+import server.modules.edit.WorldEditModule;
 import server.modules.moderation.ModerationModule;
 import server.modules.moderation.ModerationService;
 import server.network.GameServer;
@@ -35,7 +35,7 @@ public class ServerMain {
     registerBlocks();
     registerItems();
     registerModules(server);
-//    dumpCommandMarkdown(server.getCommands());
+    dumpCommandMarkdown(server.getCommands());
 
     server.start();
   }
@@ -85,15 +85,6 @@ public class ServerMain {
         builder.append("\n");
       }
 
-      // Flags
-      if (command.allowsFlags()) {
-        builder.append("**Flags:**\n");
-        for (Flag flag : command.getFlags()) {
-          builder.append("- `").append(flag.getName()).append("`\n");
-        }
-        builder.append("\n");
-      }
-
       builder.append("---\n\n");
     }
 
@@ -114,6 +105,7 @@ public class ServerMain {
     ModerationModule module = new ModerationModule(moderationService);
     server.registerModule(module);
 
-    //    server.registerModule(new MyModule());
+    WorldEditModule worldEditModule = new WorldEditModule();
+    server.registerModule(worldEditModule);
   }
 }
