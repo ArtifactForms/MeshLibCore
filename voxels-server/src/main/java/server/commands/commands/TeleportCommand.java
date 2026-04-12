@@ -6,6 +6,7 @@ import common.logging.Log;
 import common.world.ChunkData;
 import common.world.Location;
 import server.commands.AbstractCommand;
+import server.commands.CommandArgument;
 import server.commands.CommandContext;
 import server.gateways.PlayerGateway;
 import server.permissions.Permissions;
@@ -141,8 +142,12 @@ public class TeleportCommand extends AbstractCommand {
   }
 
   @Override
-  public String[] getArgumentLabels() {
-    return new String[] {"x", "y", "z", "player"};
+  public CommandArgument[] getArgumentLabels() {
+    return new CommandArgument[] {
+      new CommandArgument("x", true),
+      new CommandArgument("y", true),
+      new CommandArgument("z", true),
+    };
   }
 
   @Override
