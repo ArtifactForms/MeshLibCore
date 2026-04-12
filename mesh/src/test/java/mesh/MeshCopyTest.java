@@ -13,7 +13,7 @@ class MeshCopyTest {
   // ------------------------------------------------------------
 
   @Test
-  void copy_shouldDeepCopyVertices() {
+  void copyShouldDeepCopyVertices() {
     Mesh3D mesh = new Mesh3D();
     mesh.addVertex(1, 2, 3);
 
@@ -25,7 +25,7 @@ class MeshCopyTest {
   }
 
   @Test
-  void copy_shouldPreserveVertexValues() {
+  void copyShouldPreserveVertexValues() {
     Mesh3D mesh = new Mesh3D();
     mesh.addVertex(1, 2, 3);
 
@@ -41,7 +41,7 @@ class MeshCopyTest {
   // ------------------------------------------------------------
 
   @Test
-  void copy_shouldDeepCopyFaces() {
+  void copyShouldDeepCopyFaces() {
     Mesh3D mesh = createSimpleTriangle();
 
     Mesh3D copy = mesh.copy();
@@ -52,7 +52,7 @@ class MeshCopyTest {
   }
 
   @Test
-  void copy_shouldPreserveFaceIndices() {
+  void copyShouldPreserveFaceIndices() {
     Mesh3D mesh = createSimpleTriangle();
 
     Mesh3D copy = mesh.copy();
@@ -65,7 +65,7 @@ class MeshCopyTest {
   // ------------------------------------------------------------
 
   @Test
-  void copy_shouldDeepCopySurfaceLayer_uvList() {
+  void copyShouldDeepCopySurfaceLayer_uvList() {
     Mesh3D mesh = new Mesh3D();
     mesh.getSurfaceLayer().addUV(0.5f, 0.5f);
 
@@ -76,7 +76,7 @@ class MeshCopyTest {
   }
 
   @Test
-  void copy_shouldDeepCopySurfaceLayer_faceUvIndices() {
+  void copyShouldDeepCopySurfaceLayer_faceUvIndices() {
     Mesh3D mesh = createSimpleTriangle();
     mesh.getSurfaceLayer().setFaceUVIndices(0, new int[] {0, 1, 2});
 
@@ -94,7 +94,7 @@ class MeshCopyTest {
   // ------------------------------------------------------------
 
   @Test
-  void copy_shouldPreserveCounts() {
+  void copyShouldPreserveCounts() {
     Mesh3D mesh = createSimpleTriangle();
 
     Mesh3D copy = mesh.copy();
