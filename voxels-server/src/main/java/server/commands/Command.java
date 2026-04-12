@@ -1,7 +1,5 @@
 package server.commands;
 
-import parse.Flag;
-
 public interface Command {
 
   void execute(CommandContext ctx);
@@ -19,10 +17,6 @@ public interface Command {
   String getSyntax();
 
   String[] getAliases();
-
-  Flag[] getFlags();
-
-  boolean allowsFlags();
 
   boolean hasAliases();
 }

@@ -1,14 +1,10 @@
 package server.commands;
 
-import parse.Flag;
-
 public abstract class AbstractCommand implements Command {
 
   private static final String[] EMPTY_ARGUMENT_LABELS = new String[] {};
 
   private static final String[] EMPTY_ALIASES = new String[] {};
-
-  private static final Flag[] EMPTY_FLAGS = new Flag[] {};
 
   @Override
   public abstract void execute(CommandContext ctx);
@@ -27,18 +23,6 @@ public abstract class AbstractCommand implements Command {
       builder.append(" <");
       builder.append(arg);
       builder.append(">");
-    }
-    builder.append(getFlagsAsString());
-    return builder.toString();
-  }
-
-  private String getFlagsAsString() {
-    if (!allowsFlags()) return "";
-    StringBuilder builder = new StringBuilder();
-    for (Flag flag : getFlags()) {
-      builder.append(" [");
-      builder.append(flag.getName());
-      builder.append("]");
     }
     return builder.toString();
   }
@@ -59,16 +43,6 @@ public abstract class AbstractCommand implements Command {
     }
 
     return builder.toString();
-  }
-
-  @Override
-  public boolean allowsFlags() {
-    return getFlags().length > 0;
-  }
-
-  @Override
-  public Flag[] getFlags() {
-    return EMPTY_FLAGS;
   }
 
   @Override
