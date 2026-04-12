@@ -225,7 +225,7 @@ class WorldTimeStateTest {
   // ------------------------------------
 
   @Test
-  void normalizedTimeShouldBeZero_atStartOfDay() {
+  void normalizedTimeShouldBeZeroAtStartOfDay() {
     time.setWorldTime(0);
     assertEquals(0.0f, time.getTimeOfDayNormalized());
   }
