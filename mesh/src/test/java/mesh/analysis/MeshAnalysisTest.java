@@ -37,7 +37,7 @@ class MeshAnalysisTest {
   }
 
   @Test
-  void edgeCountTwoTriangles_sharedEdge() {
+  void edgeCountTwoTrianglesSharedEdge() {
     Mesh mesh = new Mesh3D();
 
     int v0 = mesh.addVertex(0, 0, 0);
