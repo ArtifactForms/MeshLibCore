@@ -35,14 +35,14 @@ public class SmoothModifier implements IMeshModifier {
     for (Integer index : neighbors) {
       Vector3f neighbor = mesh.getVertexAt(index);
       float distance = v.distance(neighbor);
-      //			float weight = 1.0f / (distance + 1e-6f); // Avoid division by zero
+      // float weight = 1.0f / (distance + 1e-6f); // Avoid division by zero
       float weight = 1;
       smoothed.addLocal(neighbor.mult(weight));
       totalWeight += weight;
     }
 
     smoothed.divideLocal(totalWeight);
-    //		return smoothed.lerpLocal(v, 1.0f - factor);
+    // return smoothed.lerpLocal(v, 1.0f - factor);
     return smoothed.mult(factor).add(v.mult(1f - factor));
   }
 
