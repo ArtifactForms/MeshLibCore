@@ -17,7 +17,7 @@ public class UiValues {
 
   public static final Color SLIDER_LIGHT = Color.getColorFromInt(89, 89, 89);
 
-  //	public static final float TEXT_SIZE = 12;
+  public static final float TEXT_SIZE = 12;
 
   private static HashMap<String, Object> mappings;
 
