@@ -46,7 +46,7 @@ public class ArchDoorCreator implements IMeshCreator {
     Mesh3D bottom = createArcCreator().create();
     new RotateXModifier(Mathf.HALF_PI).modify(bottom);
     for (int i = 0; i < bottom.getVertexCount(); i++) {
-    	bottom.getVertexAt(i).setY(0);
+      bottom.getVertexAt(i).setY(0);
     }
     mesh.append(bottom);
   }
