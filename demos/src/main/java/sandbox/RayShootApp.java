@@ -63,11 +63,6 @@ import mesh.creator.primitives.CubeCreator;
  */
 public class RayShootApp extends BasicApplication {
 
-  public static void main(String[] args) {
-    RayShootApp app = new RayShootApp();
-    app.launch(ApplicationSettings.defaultSettings().setFullscreen(true));
-  }
-
   /** Defines half-extent of the generated cube grid. */
   private static final int GRID_SIZE = 11;
 
@@ -75,6 +70,11 @@ public class RayShootApp extends BasicApplication {
 
   /** Used to detect mouse release events. */
   private boolean lastMouseDown;
+
+  public static void main(String[] args) {
+    RayShootApp app = new RayShootApp();
+    app.launch(ApplicationSettings.defaultSettings().setFullscreen(true));
+  }
 
   @Override
   public void onInitialize() {
