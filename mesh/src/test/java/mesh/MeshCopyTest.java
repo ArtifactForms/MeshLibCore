@@ -76,7 +76,7 @@ class MeshCopyTest {
   }
 
   @Test
-  void copyShouldDeepCopySurfaceLayer_faceUvIndices() {
+  void copyShouldDeepCopySurfaceLayerFaceUvIndices() {
     Mesh3D mesh = createSimpleTriangle();
     mesh.getSurfaceLayer().setFaceUVIndices(0, new int[] {0, 1, 2});
 

@@ -9,7 +9,7 @@ import mesh.next.surface.SurfaceLayer;
 public class SurfaceLayerCopyTest {
 
   @Test
-  void copy_shouldDeepCopyUVs() {
+  void copyShouldDeepCopyUVs() {
     SurfaceLayer surface = new SurfaceLayer();
     surface.addUV(0.5f, 0.5f);
 
@@ -21,7 +21,7 @@ public class SurfaceLayerCopyTest {
   }
 
   @Test
-  void copy_shouldDeepCopyFaceUVIndices() {
+  void copyShouldDeepCopyFaceUVIndices() {
     SurfaceLayer surface = new SurfaceLayer();
     surface.addUV(0, 0);
     surface.setFaceUVIndices(0, new int[] {0});
