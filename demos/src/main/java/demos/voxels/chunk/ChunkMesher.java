@@ -210,7 +210,10 @@ public class ChunkMesher {
         break;
     }
 
-    float a0, a1, a2, a3;
+    float a0;
+    float a1; 
+    float a2; 
+    float a3;
 
     switch (face) {
       case FRONT:
