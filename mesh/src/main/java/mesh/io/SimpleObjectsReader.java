@@ -15,8 +15,6 @@ public class SimpleObjectsReader {
 
   private Mesh3D mesh;
 
-  private List<Mesh3D> meshes;
-
   protected void addVertex(String[] sArray) {
     float x = Float.parseFloat(sArray[1]);
     float y = Float.parseFloat(sArray[2]);
@@ -33,7 +31,7 @@ public class SimpleObjectsReader {
   }
 
   public List<Mesh3D> read(File file) {
-    meshes = new ArrayList<Mesh3D>();
+    List<Mesh3D> meshes = new ArrayList<Mesh3D>();
     vertices = new ArrayList<Vector3f>();
 
     try {
