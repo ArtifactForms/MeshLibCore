@@ -30,11 +30,7 @@ public class GameScene extends Scene {
 
   private Input input;
 
-  private SkyBox skyBox;
-
   private SceneNode player;
-
-  // private ActionBarComponent actionBar;
 
   private GameClient client;
 
@@ -42,8 +38,6 @@ public class GameScene extends Scene {
 
   public GameScene(Input input, GameClient client) {
     setCameraMode(CameraMode.CAMERA_RELATIVE);
-
-    // pushScreen(new DebugScreen(controller1));
 
     GamePlayScreen screen = new GamePlayScreen(client);
     pushScreen(screen);
@@ -54,7 +48,6 @@ public class GameScene extends Scene {
 
     this.input = input;
     setupPlayer();
-    //    setupSkyBox();
     setupUI();
 
     // Add after world because of block overlay
@@ -63,17 +56,10 @@ public class GameScene extends Scene {
     SceneNode interactNode =
         new SceneNode("Interact", new InteractionComponent(input, controller, targetingService));
     addNode(interactNode);
-    //    ApplicationContext.activeScene = this;
 
     SceneNode entities = new SceneNode("Entities");
     entities.addComponent(new EntitiesComponent(client));
     addNode(entities);
-
-    //    setupDebug();
-
-    //    OverlayTestComponent overlayComponent = new OverlayTestComponent(input, client);
-    //    SceneNode node1 = new SceneNode("", overlayComponent);
-    //    addNode(node1);
 
     ChatMessageService messageService = new ChatMessageService(client.getView().getChatView());
     DisplayChunkBordersComponent displayChunkBordersComponent =
@@ -110,19 +96,9 @@ public class GameScene extends Scene {
     addNode(player);
   }
 
-  private void setupSkyBox() {
-    skyBox = new SkyBox(2000);
-    skyBox.addComponent(new SkyBoxFollowPlayerComponent(player));
-    addNode(skyBox);
-  }
-
   private void setupUI() {
-    //    setupActionBar();
-    //    setupHotBar();
     setupInventory();
     setupChat();
-
-    //    setupReticle();
     setupTitleView();
   }
 
@@ -134,35 +110,12 @@ public class GameScene extends Scene {
   }
 
   private void setupChat() {
-    //    SendChatMessageController controller = new SendChatMessageController(client);
-    //    ChatController chatController = new ChatController(controller);
-    //    ChatComponent chatComponent = new ChatComponent(input, chatController);
-    //    SceneNode chatNode = new SceneNode("Chat", chatComponent);
-    //    getUIRoot().addChild(chatNode);
-
     ChatViewComponent chatView = new ChatViewComponent();
     SceneNode chatViewNode = new SceneNode();
     chatViewNode.addComponent(chatView);
     client.getView().setChatView(chatView);
     getUIRoot().addChild(chatViewNode);
   }
-
-  //  private void setupHotBar() {
-  //    Hotbar hotbar = new Hotbar(client.getPlayer().getInventory());
-  //
-  //    HotbarComponent control = new HotbarComponent(input, hotbar);
-  //    HotbarViewComponent view = new HotbarViewComponent(hotbar);
-  //    DropItemComponent dropItemComponent = new DropItemComponent(input, client, hotbar);
-  //
-  //    client.getView().setHotbarView(view);
-  //
-  //    SceneNode hotbarNode = new SceneNode("Hotbar");
-  //    hotbarNode.addComponent(control);
-  //    hotbarNode.addComponent(view);
-  //    hotbarNode.addComponent(dropItemComponent);
-  //
-  //    getUIRoot().addChild(hotbarNode);
-  //  }
 
   private void setupInventory() {
     Inventory inventory = client.getPlayer().getInventory();
@@ -178,9 +131,4 @@ public class GameScene extends Scene {
 
     getUIRoot().addChild(inventoryNode);
   }
-
-  //  private void setupReticle() {
-  //    getUIRoot().addChild(new SceneNode("Cross-Hair", new CrossLineReticle()));
-  //    //    getUIRoot().addChild(new SceneNode("Reticle", new RoundReticle()));
-  //  }
 }
