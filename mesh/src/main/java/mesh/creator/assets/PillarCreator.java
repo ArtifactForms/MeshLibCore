@@ -11,183 +11,181 @@ import mesh.util.Mesh3DUtil;
 
 public class PillarCreator implements IMeshCreator {
 
-    private int rotationSegments;
+  private int rotationSegments;
 
-    private int topSegments;
+  private int topSegments;
 
-    private int bottomSegments;
+  private int bottomSegments;
 
-    private float topHeight;
+  private float topHeight;
 
-    private float bottomHeight;
+  private float bottomHeight;
 
-    private float centerHeight;
+  private float centerHeight;
 
-    private float radius;
+  private float radius;
 
-    private FillType capFillType;
+  private FillType capFillType;
 
-    private Mesh3D mesh;
+  private Mesh3D mesh;
 
-    private FaceSelection selection;
+  private FaceSelection selection;
 
-    public PillarCreator() {
-        rotationSegments = 8;
-        topSegments = 2;
-        bottomSegments = 2;
-        topHeight = 1.0f;
-        bottomHeight = 2.0f;
-        centerHeight = 5.0f;
-        radius = 1.0f;
-        capFillType = FillType.N_GON;
+  public PillarCreator() {
+    rotationSegments = 8;
+    topSegments = 2;
+    bottomSegments = 2;
+    topHeight = 1.0f;
+    bottomHeight = 2.0f;
+    centerHeight = 5.0f;
+    radius = 1.0f;
+    capFillType = FillType.N_GON;
+  }
+
+  private void processCaps() {
+    FaceSelection selection = new FaceSelection(mesh);
+    selection.selectByVertexCount(rotationSegments);
+
+    switch (capFillType) {
+      case N_GON:
+        break;
+      case TRIANGLE_FAN:
+        new PlanarVertexCenterModifier().modify(mesh, selection.getFaces());
+        break;
+      case NOTHING:
+        mesh.removeFaces(selection.getFaces());
+        break;
+      default:
+        throw new IllegalArgumentException("Unexpected value: " + capFillType);
     }
+  }
 
-    private void processCaps() {
-        FaceSelection selection = new FaceSelection(mesh);
-        selection.selectByVertexCount(rotationSegments);
+  private float getBottomSegmentHeight() {
+    return bottomHeight / (float) bottomSegments;
+  }
 
-        switch (capFillType) {
-        case N_GON:
-            break;
-        case TRIANGLE_FAN:
-            new PlanarVertexCenterModifier().modify(mesh, selection.getFaces());
-            break;
-        case NOTHING:
-            mesh.removeFaces(selection.getFaces());
-            break;
-        default:
-            throw new IllegalArgumentException(
-                    "Unexpected value: " + capFillType);
-        }
+  private float getTopSegmentHeight() {
+    return topHeight / (float) topSegments;
+  }
+
+  private void createBaseCylinder() {
+    CylinderCreator creator = new CylinderCreator();
+    creator.setVertices(rotationSegments);
+    creator.setBottomRadius(radius);
+    creator.setTopRadius(radius);
+    creator.setHeight(getBottomSegmentHeight());
+    creator.setTopCapFillType(FillType.N_GON);
+    creator.setBottomCapFillType(FillType.N_GON);
+    mesh = creator.create();
+    mesh.translateY(-getBottomSegmentHeight() * 0.5f);
+  }
+
+  private void initSelectionAndselectTopFace() {
+    selection = new FaceSelection(mesh);
+    selection.selectTopFaces();
+  }
+
+  private void createBottom() {
+    for (Face3D face : selection.getFaces()) {
+      for (int i = 0; i < bottomSegments - 1; i++) {
+        extrudeFace(face, 0.9f, 0.0f);
+        extrudeFace(face, 1.0f, getBottomSegmentHeight());
+      }
     }
+  }
 
-    private float getBottomSegmentHeight() {
-        return bottomHeight / (float) bottomSegments;
+  private void createCenter() {
+    for (Face3D face : selection.getFaces()) {
+      extrudeFace(face, 0.9f, 0.0f);
+      extrudeFace(face, 1.0f, centerHeight);
     }
+  }
 
-    private float getTopSegmentHeight() {
-        return topHeight / (float) topSegments;
+  private void createTop() {
+    for (Face3D face : selection.getFaces()) {
+      for (int i = 0; i < topSegments; i++) {
+        extrudeFace(face, 1.1f, 0.0f);
+        extrudeFace(face, 1.0f, getTopSegmentHeight());
+      }
     }
+  }
 
-    private void createBaseCylinder() {
-        CylinderCreator creator = new CylinderCreator();
-        creator.setVertices(rotationSegments);
-        creator.setBottomRadius(radius);
-        creator.setTopRadius(radius);
-        creator.setHeight(getBottomSegmentHeight());
-        creator.setTopCapFillType(FillType.N_GON);
-        creator.setBottomCapFillType(FillType.N_GON);
-        mesh = creator.create();
-        mesh.translateY(-getBottomSegmentHeight() * 0.5f);
-    }
+  private void extrudeFace(Face3D face, float scale, float amount) {
+    Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
+  }
 
-    private void initSelectionAndselectTopFace() {
-        selection = new FaceSelection(mesh);
-        selection.selectTopFaces();
-    }
+  @Override
+  public Mesh3D create() {
+    createBaseCylinder();
+    initSelectionAndselectTopFace();
+    createBottom();
+    createCenter();
+    createTop();
+    processCaps();
+    return mesh;
+  }
 
-    private void createBottom() {
-        for (Face3D face : selection.getFaces()) {
-            for (int i = 0; i < bottomSegments - 1; i++) {
-                extrudeFace(face, 0.9f, 0.0f);
-                extrudeFace(face, 1.0f, getBottomSegmentHeight());
-            }
-        }
-    }
+  public int getRotationSegments() {
+    return rotationSegments;
+  }
 
-    private void createCenter() {
-        for (Face3D face : selection.getFaces()) {
-            extrudeFace(face, 0.9f, 0.0f);
-            extrudeFace(face, 1.0f, centerHeight);
-        }
-    }
+  public void setRotationSegments(int rotationSegments) {
+    this.rotationSegments = rotationSegments;
+  }
 
-    private void createTop() {
-        for (Face3D face : selection.getFaces()) {
-            for (int i = 0; i < topSegments; i++) {
-                extrudeFace(face, 1.1f, 0.0f);
-                extrudeFace(face, 1.0f, getTopSegmentHeight());
-            }
-        }
-    }
+  public int getTopSegments() {
+    return topSegments;
+  }
 
-    private void extrudeFace(Face3D face, float scale, float amount) {
-        Mesh3DUtil.extrudeFace(mesh, face, scale, amount);
-    }
+  public void setTopSegments(int topSegments) {
+    this.topSegments = topSegments;
+  }
 
-    @Override
-    public Mesh3D create() {
-        createBaseCylinder();
-        initSelectionAndselectTopFace();
-        createBottom();
-        createCenter();
-        createTop();
-        processCaps();
-        return mesh;
-    }
+  public int getBottomSegments() {
+    return bottomSegments;
+  }
 
-    public int getRotationSegments() {
-        return rotationSegments;
-    }
+  public void setBottomSegments(int bottomSegments) {
+    this.bottomSegments = bottomSegments;
+  }
 
-    public void setRotationSegments(int rotationSegments) {
-        this.rotationSegments = rotationSegments;
-    }
+  public float getTopHeight() {
+    return topHeight;
+  }
 
-    public int getTopSegments() {
-        return topSegments;
-    }
+  public void setTopHeight(float topHeight) {
+    this.topHeight = topHeight;
+  }
 
-    public void setTopSegments(int topSegments) {
-        this.topSegments = topSegments;
-    }
+  public float getBottomHeight() {
+    return bottomHeight;
+  }
 
-    public int getBottomSegments() {
-        return bottomSegments;
-    }
+  public void setBottomHeight(float bottomHeight) {
+    this.bottomHeight = bottomHeight;
+  }
 
-    public void setBottomSegments(int bottomSegments) {
-        this.bottomSegments = bottomSegments;
-    }
+  public float getCenterHeight() {
+    return centerHeight;
+  }
 
-    public float getTopHeight() {
-        return topHeight;
-    }
+  public void setCenterHeight(float centerHeight) {
+    this.centerHeight = centerHeight;
+  }
 
-    public void setTopHeight(float topHeight) {
-        this.topHeight = topHeight;
-    }
+  public float getRadius() {
+    return radius;
+  }
 
-    public float getBottomHeight() {
-        return bottomHeight;
-    }
+  public void setRadius(float radius) {
+    this.radius = radius;
+  }
 
-    public void setBottomHeight(float bottomHeight) {
-        this.bottomHeight = bottomHeight;
-    }
+  public FillType getCapFillType() {
+    return capFillType;
+  }
 
-    public float getCenterHeight() {
-        return centerHeight;
-    }
-
-    public void setCenterHeight(float centerHeight) {
-        this.centerHeight = centerHeight;
-    }
-
-    public float getRadius() {
-        return radius;
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
-    }
-
-    public FillType getCapFillType() {
-        return capFillType;
-    }
-
-    public void setCapFillType(FillType capFillType) {
-        this.capFillType = capFillType;
-    }
-
+  public void setCapFillType(FillType capFillType) {
+    this.capFillType = capFillType;
+  }
 }

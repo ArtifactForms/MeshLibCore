@@ -15,273 +15,269 @@ import mesh.modifier.transform.TranslateModifier;
 
 public class FlangePipeCreator implements IMeshCreator {
 
-    private int segmentCount;
+  private int segmentCount;
 
-    private int boltCount;
+  private int boltCount;
 
-    private int rotationSegments;
+  private int rotationSegments;
 
-    private float flangeOuterRadius;
+  private float flangeOuterRadius;
 
-    private float flangeGrooveWidth;
+  private float flangeGrooveWidth;
 
-    private float pipeRadius;
+  private float pipeRadius;
 
-    private float flangeDepth;
+  private float flangeDepth;
 
-    private float pipeSegmentLength;
+  private float pipeSegmentLength;
 
-    private float boltHeadPercantage;
+  private float boltHeadPercantage;
 
-    private float boltHeadHeight;
+  private float boltHeadHeight;
 
-    private FillType boltCapFillType;
+  private FillType boltCapFillType;
 
-    private Mesh3D segment;
+  private Mesh3D segment;
 
-    private Mesh3D pipe;
+  private Mesh3D pipe;
 
-    public FlangePipeCreator() {
-        segmentCount = 1;
-        boltCount = 8;
-        rotationSegments = 16;
-        flangeOuterRadius = 1;
-        flangeGrooveWidth = 0.05f;
-        pipeRadius = 0.7f;
-        flangeDepth = 0.2f;
-        pipeSegmentLength = 5;
-        boltHeadPercantage = 0.8f;
-        boltHeadHeight = 0.05f;
-        boltCapFillType = FillType.N_GON;
+  public FlangePipeCreator() {
+    segmentCount = 1;
+    boltCount = 8;
+    rotationSegments = 16;
+    flangeOuterRadius = 1;
+    flangeGrooveWidth = 0.05f;
+    pipeRadius = 0.7f;
+    flangeDepth = 0.2f;
+    pipeSegmentLength = 5;
+    boltHeadPercantage = 0.8f;
+    boltHeadHeight = 0.05f;
+    boltCapFillType = FillType.N_GON;
+  }
+
+  @Override
+  public Mesh3D create() {
+    initializePipeMesh();
+    createSegment();
+    createSegments();
+    translate();
+    return pipe;
+  }
+
+  private void createSegments() {
+    for (int i = 0; i < segmentCount; i++) {
+      Mesh3D segment = this.segment.copy();
+      segment.translateY(-calculateSegmentHeight() * i);
+      pipe.append(segment);
+    }
+  }
+
+  private void initializePipeMesh() {
+    pipe = new Mesh3D();
+  }
+
+  private void translate() {
+    pipe.translateY(-calculateSegmentHeight() / 2f);
+    pipe.translateY(calculateTotalHeight() / 2f);
+    new RotateModifier(Mathf.HALF_PI, TransformAxis.Z).modify(pipe);
+  }
+
+  private void createSegment() {
+    initializeMesh();
+    createFlange();
+    createBottomBoltHeads();
+    createTopBoltHeads();
+    createBoltConnectors();
+    segment.translateY(calculateSegmentHeight() / 2f);
+  }
+
+  private void initializeMesh() {
+    segment = new Mesh3D();
+  }
+
+  private void createFlange() {
+    VariableCylinderCreator creator = new VariableCylinderCreator();
+    creator.setRotationSegments(rotationSegments);
+    creator.setCapBottomFillType(FillType.NOTHING);
+    creator.setCapTopFillType(FillType.NOTHING);
+    creator.addRingSegment(pipeRadius, 0);
+    creator.addRingSegment(pipeRadius, flangeGrooveWidth);
+    creator.addRingSegment(pipeRadius, 0);
+    creator.addRingSegment(flangeOuterRadius, 0);
+    creator.addRingSegment(flangeOuterRadius, flangeDepth);
+    creator.addRingSegment(pipeRadius, 0);
+    creator.addRingSegment(pipeRadius, pipeSegmentLength);
+    creator.addRingSegment(flangeOuterRadius, 0);
+    creator.addRingSegment(flangeOuterRadius, flangeDepth);
+    creator.addRingSegment(pipeRadius, 0);
+    segment.append(creator.create());
+  }
+
+  private void createBottomBoltHeads() {
+    Mesh3D bottom = createBoltHeads();
+    bottom.translateY(-flangeDepth - flangeGrooveWidth - (boltHeadHeight / 2f));
+    segment.append(bottom);
+  }
+
+  private void createTopBoltHeads() {
+    Mesh3D bottom = createBoltHeads();
+    new RotateXModifier(Mathf.PI).modify(bottom);
+    bottom.translateY(-flangeDepth - flangeGrooveWidth - pipeSegmentLength + (boltHeadHeight / 2f));
+    segment.append(bottom);
+  }
+
+  private Mesh3D createBoltHeads() {
+    int n = 6;
+    Mesh3D bolts = new Mesh3D();
+
+    CylinderCreator creator = new CylinderCreator();
+    creator.setVertices(n);
+    creator.setBottomCapFillType(FillType.NOTHING);
+    creator.setTopCapFillType(boltCapFillType);
+    creator.setBottomRadius(calculateBoltHeadRadius());
+    creator.setTopRadius(calculateBoltHeadRadius());
+    creator.setHeight(boltHeadHeight);
+
+    CircleCreator circleCreator = new CircleCreator();
+    circleCreator.setVertices(boltCount);
+    circleCreator.setRadius((flangeOuterRadius + pipeRadius) / 2f);
+    Mesh3D circle = circleCreator.create();
+
+    for (int i = 0; i < boltCount; i++) {
+      Mesh3D bolt = creator.create();
+      Vector3f center = circle.getVertexAt(i);
+      new TranslateModifier(center).modify(bolt);
+      bolts.append(bolt);
     }
 
-    @Override
-    public Mesh3D create() {
-        initializePipeMesh();
-        createSegment();
-        createSegments();
-        translate();
-        return pipe;
+    return bolts;
+  }
+
+  private void createBoltConnectors() {
+    int n = 6;
+    Mesh3D bolts = new Mesh3D();
+
+    CylinderCreator creator = new CylinderCreator();
+    creator.setVertices(n);
+    creator.setBottomCapFillType(FillType.NOTHING);
+    creator.setTopCapFillType(FillType.NOTHING);
+    creator.setBottomRadius(calculateBoltHeadRadius());
+    creator.setTopRadius(calculateBoltHeadRadius());
+    creator.setHeight(flangeGrooveWidth);
+
+    CircleCreator circleCreator = new CircleCreator();
+    circleCreator.setVertices(boltCount);
+    circleCreator.setRadius((flangeOuterRadius + pipeRadius) / 2f);
+    Mesh3D circle = circleCreator.create();
+
+    for (int i = 0; i < boltCount; i++) {
+      Mesh3D bolt = creator.create();
+      Vector3f center = circle.getVertexAt(i);
+      new TranslateModifier(center).modify(bolt);
+      bolt.translateY(-flangeGrooveWidth / 2f);
+      bolts.append(bolt);
     }
 
-    private void createSegments() {
-        for (int i = 0; i < segmentCount; i++) {
-            Mesh3D segment = this.segment.copy();
-            segment.translateY(-calculateSegmentHeight() * i);
-            pipe.append(segment);
-        }
-    }
+    segment.append(bolts);
+  }
 
-    private void initializePipeMesh() {
-        pipe = new Mesh3D();
-    }
+  private float calculateBoltHeadRadius() {
+    return (flangeOuterRadius - pipeRadius) / 2f * boltHeadPercantage;
+  }
 
-    private void translate() {
-        pipe.translateY(-calculateSegmentHeight() / 2f);
-        pipe.translateY(calculateTotalHeight() / 2f);
-        new RotateModifier(Mathf.HALF_PI, TransformAxis.Z).modify(pipe);
-    }
+  private float calculateSegmentHeight() {
+    return pipeSegmentLength + flangeDepth + flangeDepth + flangeGrooveWidth;
+  }
 
-    private void createSegment() {
-        initializeMesh();
-        createFlange();
-        createBottomBoltHeads();
-        createTopBoltHeads();
-        createBoltConnectors();
-        segment.translateY(calculateSegmentHeight() / 2f);
-    }
+  private float calculateTotalHeight() {
+    return calculateSegmentHeight() * segmentCount;
+  }
 
-    private void initializeMesh() {
-        segment = new Mesh3D();
-    }
+  public float getFlangeDepth() {
+    return flangeDepth;
+  }
 
-    private void createFlange() {
-        VariableCylinderCreator creator = new VariableCylinderCreator();
-        creator.setRotationSegments(rotationSegments);
-        creator.setCapBottomFillType(FillType.NOTHING);
-        creator.setCapTopFillType(FillType.NOTHING);
-        creator.addRingSegment(pipeRadius, 0);
-        creator.addRingSegment(pipeRadius, flangeGrooveWidth);
-        creator.addRingSegment(pipeRadius, 0);
-        creator.addRingSegment(flangeOuterRadius, 0);
-        creator.addRingSegment(flangeOuterRadius, flangeDepth);
-        creator.addRingSegment(pipeRadius, 0);
-        creator.addRingSegment(pipeRadius, pipeSegmentLength);
-        creator.addRingSegment(flangeOuterRadius, 0);
-        creator.addRingSegment(flangeOuterRadius, flangeDepth);
-        creator.addRingSegment(pipeRadius, 0);
-        segment.append(creator.create());
-    }
+  public void setFlangeDepth(float flangeDepth) {
+    this.flangeDepth = flangeDepth;
+  }
 
-    private void createBottomBoltHeads() {
-        Mesh3D bottom = createBoltHeads();
-        bottom.translateY(
-                -flangeDepth - flangeGrooveWidth - (boltHeadHeight / 2f));
-        segment.append(bottom);
-    }
+  public float getPipeRadius() {
+    return pipeRadius;
+  }
 
-    private void createTopBoltHeads() {
-        Mesh3D bottom = createBoltHeads();
-        new RotateXModifier(Mathf.PI).modify(bottom);
-        bottom.translateY(-flangeDepth - flangeGrooveWidth - pipeSegmentLength
-                + (boltHeadHeight / 2f));
-        segment.append(bottom);
-    }
+  public void setPipeRadius(float pipeRadius) {
+    this.pipeRadius = pipeRadius;
+  }
 
-    private Mesh3D createBoltHeads() {
-        int n = 6;
-        Mesh3D bolts = new Mesh3D();
+  public float getFlangeGrooveWidth() {
+    return flangeGrooveWidth;
+  }
 
-        CylinderCreator creator = new CylinderCreator();
-        creator.setVertices(n);
-        creator.setBottomCapFillType(FillType.NOTHING);
-        creator.setTopCapFillType(boltCapFillType);
-        creator.setBottomRadius(calculateBoltHeadRadius());
-        creator.setTopRadius(calculateBoltHeadRadius());
-        creator.setHeight(boltHeadHeight);
+  public void setFlangeGrooveWidth(float flangeGrooveWidth) {
+    this.flangeGrooveWidth = flangeGrooveWidth;
+  }
 
-        CircleCreator circleCreator = new CircleCreator();
-        circleCreator.setVertices(boltCount);
-        circleCreator.setRadius((flangeOuterRadius + pipeRadius) / 2f);
-        Mesh3D circle = circleCreator.create();
+  public float getFlangeOuterRadius() {
+    return flangeOuterRadius;
+  }
 
-        for (int i = 0; i < boltCount; i++) {
-            Mesh3D bolt = creator.create();
-            Vector3f center = circle.getVertexAt(i);
-            new TranslateModifier(center).modify(bolt);
-            bolts.append(bolt);
-        }
+  public void setFlangeOuterRadius(float flangeOuterRadius) {
+    this.flangeOuterRadius = flangeOuterRadius;
+  }
 
-        return bolts;
-    }
+  public int getSegmentCount() {
+    return segmentCount;
+  }
 
-    private void createBoltConnectors() {
-        int n = 6;
-        Mesh3D bolts = new Mesh3D();
+  public void setSegmentCount(int segments) {
+    this.segmentCount = segments;
+  }
 
-        CylinderCreator creator = new CylinderCreator();
-        creator.setVertices(n);
-        creator.setBottomCapFillType(FillType.NOTHING);
-        creator.setTopCapFillType(FillType.NOTHING);
-        creator.setBottomRadius(calculateBoltHeadRadius());
-        creator.setTopRadius(calculateBoltHeadRadius());
-        creator.setHeight(flangeGrooveWidth);
+  public int getBoltCount() {
+    return boltCount;
+  }
 
-        CircleCreator circleCreator = new CircleCreator();
-        circleCreator.setVertices(boltCount);
-        circleCreator.setRadius((flangeOuterRadius + pipeRadius) / 2f);
-        Mesh3D circle = circleCreator.create();
+  public void setBoltCount(int boltCount) {
+    this.boltCount = boltCount;
+  }
 
-        for (int i = 0; i < boltCount; i++) {
-            Mesh3D bolt = creator.create();
-            Vector3f center = circle.getVertexAt(i);
-            new TranslateModifier(center).modify(bolt);
-            bolt.translateY(-flangeGrooveWidth / 2f);
-            bolts.append(bolt);
-        }
+  public float getPipeSegmentLength() {
+    return pipeSegmentLength;
+  }
 
-        segment.append(bolts);
-    }
+  public void setPipeSegmentLength(float pipeSegmentLength) {
+    this.pipeSegmentLength = pipeSegmentLength;
+  }
 
-    private float calculateBoltHeadRadius() {
-        return (flangeOuterRadius - pipeRadius) / 2f * boltHeadPercantage;
-    }
+  public int getRotationSegments() {
+    return rotationSegments;
+  }
 
-    private float calculateSegmentHeight() {
-        return pipeSegmentLength + flangeDepth + flangeDepth
-                + flangeGrooveWidth;
-    }
+  public void setRotationSegments(int rotationSegments) {
+    this.rotationSegments = rotationSegments;
+  }
 
-    private float calculateTotalHeight() {
-        return calculateSegmentHeight() * segmentCount;
-    }
+  public float getBoltHeadPercantage() {
+    return boltHeadPercantage;
+  }
 
-    public float getFlangeDepth() {
-        return flangeDepth;
-    }
+  public void setBoltHeadPercantage(float boltHeadPercantage) {
+    this.boltHeadPercantage = boltHeadPercantage;
+  }
 
-    public void setFlangeDepth(float flangeDepth) {
-        this.flangeDepth = flangeDepth;
-    }
+  public float getBoltHeadHeight() {
+    return boltHeadHeight;
+  }
 
-    public float getPipeRadius() {
-        return pipeRadius;
-    }
+  public void setBoltHeadHeight(float boltHeadHeight) {
+    this.boltHeadHeight = boltHeadHeight;
+  }
 
-    public void setPipeRadius(float pipeRadius) {
-        this.pipeRadius = pipeRadius;
-    }
+  public FillType getBoltCapFillType() {
+    return boltCapFillType;
+  }
 
-    public float getFlangeGrooveWidth() {
-        return flangeGrooveWidth;
-    }
-
-    public void setFlangeGrooveWidth(float flangeGrooveWidth) {
-        this.flangeGrooveWidth = flangeGrooveWidth;
-    }
-
-    public float getFlangeOuterRadius() {
-        return flangeOuterRadius;
-    }
-
-    public void setFlangeOuterRadius(float flangeOuterRadius) {
-        this.flangeOuterRadius = flangeOuterRadius;
-    }
-
-    public int getSegmentCount() {
-        return segmentCount;
-    }
-
-    public void setSegmentCount(int segments) {
-        this.segmentCount = segments;
-    }
-
-    public int getBoltCount() {
-        return boltCount;
-    }
-
-    public void setBoltCount(int boltCount) {
-        this.boltCount = boltCount;
-    }
-
-    public float getPipeSegmentLength() {
-        return pipeSegmentLength;
-    }
-
-    public void setPipeSegmentLength(float pipeSegmentLength) {
-        this.pipeSegmentLength = pipeSegmentLength;
-    }
-
-    public int getRotationSegments() {
-        return rotationSegments;
-    }
-
-    public void setRotationSegments(int rotationSegments) {
-        this.rotationSegments = rotationSegments;
-    }
-
-    public float getBoltHeadPercantage() {
-        return boltHeadPercantage;
-    }
-
-    public void setBoltHeadPercantage(float boltHeadPercantage) {
-        this.boltHeadPercantage = boltHeadPercantage;
-    }
-
-    public float getBoltHeadHeight() {
-        return boltHeadHeight;
-    }
-
-    public void setBoltHeadHeight(float boltHeadHeight) {
-        this.boltHeadHeight = boltHeadHeight;
-    }
-
-    public FillType getBoltCapFillType() {
-        return boltCapFillType;
-    }
-
-    public void setBoltCapFillType(FillType boltCapFillType) {
-        this.boltCapFillType = boltCapFillType;
-    }
-
+  public void setBoltCapFillType(FillType boltCapFillType) {
+    this.boltCapFillType = boltCapFillType;
+  }
 }

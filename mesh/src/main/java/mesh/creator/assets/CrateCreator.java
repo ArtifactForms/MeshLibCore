@@ -70,7 +70,7 @@ public class CrateCreator implements IMeshCreator {
   }
 
   private void extrudeFaces() {
-      
+
     List<Face3D> faces = mesh.getFaces();
     ExtrudeModifier modifier = new ExtrudeModifier();
 

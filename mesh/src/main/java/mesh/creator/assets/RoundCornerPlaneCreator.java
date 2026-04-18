@@ -41,7 +41,7 @@ public class RoundCornerPlaneCreator implements IMeshCreator {
   private Vector3f createCornerVertex(float xSign, float zSign) {
     float x = (xSign * (width / 2)) + (xSign * -radius);
     float z = (zSign * (depth / 2)) + (zSign * -radius);
-    
+
     return new Vector3f(x, 0, z);
   }
 
@@ -64,7 +64,7 @@ public class RoundCornerPlaneCreator implements IMeshCreator {
 
   private void solidify() {
     if (height == 0) return;
-   new SolidifyModifier(height).modify(mesh);
+    new SolidifyModifier(height).modify(mesh);
   }
 
   private void centerAtOrigin() {
@@ -73,7 +73,7 @@ public class RoundCornerPlaneCreator implements IMeshCreator {
 
   private void triangulateQuads() {
     if (!triangulateFaces) return;
-      new QuadsToTrianglesModifier().modify(mesh);
+    new QuadsToTrianglesModifier().modify(mesh);
   }
 
   private void createAllCornerFaces() {
@@ -108,7 +108,7 @@ public class RoundCornerPlaneCreator implements IMeshCreator {
     int index2 = (index1 + 1) % (4 * segments + 4);
     int index3 = calculateTotalVertexCount() - (3 - index);
     index3 = index3 == calculateTotalVertexCount() ? index3 - 4 : index3;
-    
+
     mesh.addFace(index0, index1, index2, index3);
   }
 

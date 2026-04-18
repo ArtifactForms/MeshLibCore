@@ -1,13 +1,11 @@
 package mesh.creator.assets;
 
 public enum CrossBeamType {
+  DIAGONAL,
 
-    DIAGONAL,
+  HORIZONTAL,
 
-    HORIZONTAL,
+  CROSS,
 
-    CROSS,
-
-    NOTHING;
-
+  NOTHING;
 }
