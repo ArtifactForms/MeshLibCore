@@ -1,6 +1,5 @@
 package math;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -2974,7 +2973,7 @@ public class Vector4fTest {
   // ----------------------------------------------------------------------------------------------
 
   @Test
-  public void testDivideByW_validW() {
+  public void testDivideBywValidW() {
     // Test case where w is non-zero
     Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
 
@@ -2987,7 +2986,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testDivideByW_wIsZero() {
+  public void testDivideByWwIsZero() {
     // Test case where w is zero, expecting an ArithmeticException
     Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 0.0f);
 
@@ -3003,7 +3002,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testDivideByW_wIsNegative() {
+  public void testDivideBywWIsNegative() {
     // Test case where w is negative
     Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, -2.0f);
 
@@ -3016,7 +3015,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testDivideByW_createsNewInstance() {
+  public void testDivideBywCreatesNewInstance() {
     // Create an original vector
     Vector4f originalVector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
 
@@ -3045,7 +3044,7 @@ public class Vector4fTest {
   // ----------------------------------------------------------------------------------------------
 
   @Test
-  public void testDivideByWLocal_updatesOriginalVector() {
+  public void testDivideByWLocalUpdatesOriginalVector() {
     // Create a vector
     Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
 
@@ -3063,7 +3062,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testDivideByWLocal_throwsArithmeticException_whenWIsZero() {
+  public void testDivideByWLocalThrowsArithmeticException_whenWIsZero() {
     // Create a vector with w = 0
     Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 0.0f);
 
@@ -3077,7 +3076,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testDivideByWLocal_doesNotCreateNewInstance() {
+  public void testDivideByWLocalDoesNotCreateNewInstance() {
     // Create a vector
     Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 2.0f);
 
