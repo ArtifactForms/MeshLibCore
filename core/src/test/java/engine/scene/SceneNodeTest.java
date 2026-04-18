@@ -12,7 +12,7 @@ import engine.components.AbstractComponent;
 import engine.components.Transform;
 import math.Vector3f;
 
-public class SceneNodeTest2 {
+public class SceneNodeTest {
 
   @Test
   public void testTransformIsNotNullByDefault() {
