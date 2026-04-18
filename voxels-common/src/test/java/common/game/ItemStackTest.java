@@ -114,7 +114,7 @@ public class ItemStackTest {
   }
 
   @Test
-  void testSetAmount_NegativeThrows() {
+  void testSetAmountNegativeThrows() {
     ItemStack stack = new ItemStack((short) 1, 10);
 
     assertThrows(
