@@ -22,13 +22,9 @@ public class ShootComponent extends AbstractComponent {
 
   private final Input input;
 
-  private final float range = 1000f;
-
   private boolean lastPressed;
 
   private Bounds bounds;
-
-  private Ray3f ray;
 
   public ShootComponent(Input input) {
     this.input = input;
@@ -43,7 +39,7 @@ public class ShootComponent extends AbstractComponent {
     }
     lastPressed = pressed;
     Camera camera = getOwner().getScene().getActiveCamera();
-    ray = Raycaster.crossHairRay(camera);
+    Ray3f ray = Raycaster.crossHairRay(camera);
     RaycastQuery query = new RaycastQuery(ray);
     getOwner().getScene().visitRootNodes(query);
     RaycastHit hit = query.getResult();
