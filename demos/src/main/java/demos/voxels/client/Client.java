@@ -50,6 +50,7 @@ public class Client implements EventListener {
       e.printStackTrace();
     }
   }
+
   private void listenForServerMessages() {
     try {
       String serverMessage;
