@@ -34,10 +34,6 @@ public class ChunkMesher {
 
   private final ChunkManager chunkManager;
 
-  private BufferedShape opaqueShape;
-
-  private BufferedShape waterShape;
-
   private BufferedShape decorShape;
 
   private BufferedShape currentShape;
@@ -90,12 +86,12 @@ public class ChunkMesher {
   }
 
   public MeshResult createMesh() {
-    long startTime = System.nanoTime();
+//    long startTime = System.nanoTime();
 
     fillCache();
 
-    opaqueShape = new BufferedShape(sharedMaterial);
-    waterShape = new BufferedShape(sharedMaterial);
+    BufferedShape opaqueShape = new BufferedShape(sharedMaterial);
+    BufferedShape waterShape = new BufferedShape(sharedMaterial);
     decorShape = new BufferedShape(sharedMaterial);
 
     opaqueShape.begin(BufferedShape.QUADS);
@@ -125,11 +121,11 @@ public class ChunkMesher {
     waterShape.end();
     decorShape.end();
 
-    long endTime = System.nanoTime();
-    double durationMs = (endTime - startTime) / 1_000_000.0;
-
-    System.out.format(
-        "Chunk [%d, %d] meshed in: %.3f ms%n", chunk.getChunkX(), chunk.getChunkZ(), durationMs);
+//    long endTime = System.nanoTime();
+//    double durationMs = (endTime - startTime) / 1_000_000.0;
+//
+//    System.out.format(
+//        "Chunk [%d, %d] meshed in: %.3f ms%n", chunk.getChunkX(), chunk.getChunkZ(), durationMs);
 
     return new MeshResult(
         new StaticGeometry(opaqueShape.getVBO(), sharedMaterial),
