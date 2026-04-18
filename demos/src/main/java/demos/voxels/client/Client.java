@@ -50,23 +50,6 @@ public class Client implements EventListener {
       e.printStackTrace();
     }
   }
-
-  //  public void connect() {
-  //    try {
-  //      Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-  //      System.out.println("Connected to server at " + SERVER_ADDRESS + ":" + SERVER_PORT);
-  //
-  //      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-  //      out = new PrintWriter(socket.getOutputStream(), true);
-  //
-  //      // Nur Listener-Thread starten
-  //      new Thread(this::listenForServerMessages).start();
-  //
-  //    } catch (IOException e) {
-  //      e.printStackTrace();
-  //    }
-  //  }
-
   private void listenForServerMessages() {
     try {
       String serverMessage;
