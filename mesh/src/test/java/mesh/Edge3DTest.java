@@ -9,8 +9,6 @@ import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
 
-import mesh.Edge3D;
-
 /**
  * Unit tests for {@link Edge3D}.
  *
@@ -57,7 +55,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void createPair_swapsFromAndToIndices() {
+  public void createPairSwapsFromAndToIndices() {
     int fromIndex = 2;
     int toIndex = 3;
 
@@ -69,7 +67,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void constructor_setsFromAndToIndices() {
+  public void constructorSetsFromAndToIndices() {
     int fromIndex = 10;
     int toIndex = 2;
 
@@ -80,7 +78,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void setFromIndex_updatesFromIndex() {
+  public void setFromIndexUpdatesFromIndex() {
     int expected = 123;
     Edge3D edge = new Edge3D(1, 2);
 
@@ -90,7 +88,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void setToIndex_updatesToIndex() {
+  public void setToIndexUpdatesToIndex() {
     int expected = 26;
     Edge3D edge = new Edge3D(0, 1);
 
@@ -100,7 +98,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void createPair_appliedTwice_returnsOriginalEdge() {
+  public void createPairAppliedTwice_returnsOriginalEdge() {
     int fromIndex = 20;
     int toIndex = 10;
 
@@ -112,7 +110,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void createPair_doesNotModifyOriginalEdge() {
+  public void createPairDoesNotModifyOriginalEdge() {
     int fromIndex = 67;
     int toIndex = 1023;
 
@@ -124,7 +122,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void createPair_returnsNewInstance() {
+  public void createPairReturnsNewInstance() {
     Edge3D edge = new Edge3D(1, 2);
 
     assertTrue(edge != edge.createPair());
@@ -142,14 +140,14 @@ public class Edge3DTest {
   }
 
   @Test
-  public void edge_isEqualToItself() {
+  public void edgeIsEqualToItself() {
     Edge3D edge = new Edge3D(1, 2);
 
     assertEquals(edge, edge);
   }
 
   @Test
-  public void equalEdges_haveSameHashCode() {
+  public void equalEdgesHaveSameHashCode() {
     int fromIndex = 10;
     int toIndex = 12;
 
@@ -163,64 +161,64 @@ public class Edge3DTest {
   }
 
   @Test
-  public void edge_isNotEqualToNull() {
+  public void edgeIsNotEqualToNull() {
     Edge3D edge = new Edge3D(1, 2);
 
     assertNotEquals(edge, null);
   }
 
   @Test
-  public void setFromIndex_rejectsNegativeIndex() {
+  public void setFromIndexRejectsNegativeIndex() {
     Edge3D edge = new Edge3D(1, 2);
 
     assertThrows(IllegalArgumentException.class, () -> edge.setFromIndex(-10));
   }
 
   @Test
-  public void setToIndex_rejectsNegativeIndex() {
+  public void setToIndexRejectsNegativeIndex() {
     Edge3D edge = new Edge3D(1, 2);
 
     assertThrows(IllegalArgumentException.class, () -> edge.setToIndex(-10));
   }
 
   @Test
-  public void setFromIndex_rejectsIndexEqualToToIndex() {
+  public void setFromIndexRejectsIndexEqualToToIndex() {
     Edge3D edge = new Edge3D(2, 3);
 
     assertThrows(IllegalArgumentException.class, () -> edge.setFromIndex(3));
   }
 
   @Test
-  public void setToIndex_rejectsIndexEqualToFromIndex() {
+  public void setToIndexRejectsIndexEqualToFromIndex() {
     Edge3D edge = new Edge3D(2, 3);
 
     assertThrows(IllegalArgumentException.class, () -> edge.setToIndex(2));
   }
 
   @Test
-  public void constructor_rejectsEqualFromAndToIndices() {
+  public void constructorRejectsEqualFromAndToIndices() {
     assertThrows(IllegalArgumentException.class, () -> new Edge3D(10, 10));
   }
 
   @Test
-  public void constructor_rejectsNegativeFromIndex() {
+  public void constructorRejectsNegativeFromIndex() {
     assertThrows(IllegalArgumentException.class, () -> new Edge3D(-10, 12));
   }
 
   @Test
-  public void constructor_rejectsNegativeToIndex() {
+  public void constructorRejectsNegativeToIndex() {
     assertThrows(IllegalArgumentException.class, () -> new Edge3D(32, -12));
   }
 
   @Test
-  public void edge_isNotEqualToDifferentClass() {
+  public void edgeIsNotEqualToDifferentClass() {
     Edge3D edge = new Edge3D(1, 2);
 
     assertNotEquals(edge, "not an edge");
   }
 
   @Test
-  public void edgesWithDifferentIndices_areNotEqual() {
+  public void edgesWithDifferentIndicesAreNotEqual() {
     Edge3D edge0 = new Edge3D(1, 2);
     Edge3D edge1 = new Edge3D(2, 3);
 
@@ -228,14 +226,14 @@ public class Edge3DTest {
   }
 
   @Test
-  public void toString_returnsExpectedFormat() {
+  public void toStringReturnsExpectedFormat() {
     Edge3D edge = new Edge3D(3, 7);
 
     assertEquals("Edge3D[from=3, to=7]", edge.toString());
   }
   
   @Test
-  public void edgesWithSameFromIndexButDifferentToIndex_areNotEqual() {
+  public void edgesWithSameFromIndexButDifferentToIndexAreNotEqual() {
     Edge3D edge0 = new Edge3D(1, 2);
     Edge3D edge1 = new Edge3D(1, 3);
 
@@ -243,7 +241,7 @@ public class Edge3DTest {
   }
   
   @Test
-  public void edgesWithDifferentFromIndexButSameToIndex_areNotEqual() {
+  public void edgesWithDifferentFromIndexButSameToIndexAreNotEqual() {
     Edge3D edge0 = new Edge3D(1, 2);
     Edge3D edge1 = new Edge3D(3, 2);
 
