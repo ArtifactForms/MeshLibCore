@@ -8,8 +8,6 @@ import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import mesh.Axis;
-
 /**
  * Unit tests for the {@link Axis} enum.
  *
