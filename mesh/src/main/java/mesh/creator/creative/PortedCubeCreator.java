@@ -19,116 +19,114 @@ import mesh.selection.FaceSelection;
 
 public class PortedCubeCreator implements IMeshCreator {
 
-    private int subdivisions;
+  private int subdivisions;
 
-    private float radius;
+  private float radius;
 
-    private float thickness;
+  private float thickness;
 
-    private boolean removeCorners;
+  private boolean removeCorners;
 
-    private Mesh3D mesh;
+  private Mesh3D mesh;
 
-    private List<Face3D> centerFaces;
+  private List<Face3D> centerFaces;
 
-    public PortedCubeCreator() {
-        subdivisions = 1;
-        radius = 1;
-        thickness = 0.1f;
-        removeCorners = true;
-        centerFaces = new ArrayList<>();
+  public PortedCubeCreator() {
+    subdivisions = 1;
+    radius = 1;
+    thickness = 0.1f;
+    removeCorners = true;
+    centerFaces = new ArrayList<>();
+  }
+
+  @Override
+  public Mesh3D create() {
+    clearCenterFacesList();
+    createSegmentedCube();
+    removeCornerFaces();
+    selectCenterFaces();
+    extrudeCenterFaces();
+    removeDoubles();
+    solidify();
+    subdivide();
+    scale();
+    return mesh;
+  }
+
+  private void clearCenterFacesList() {
+    centerFaces.clear();
+  }
+
+  private void createSegmentedCube() {
+    mesh = new SegmentedCubeCreator(3, 1.5f).create();
+  }
+
+  private void scale() {
+    new ScaleModifier(Mathf.ONE_THIRD).modify(mesh);
+    new ScaleModifier(radius * 2).modify(mesh);
+  }
+
+  private void removeCornerFaces() {
+    if (!removeCorners) return;
+
+    FaceSelection selection = new FaceSelection(mesh);
+    Mesh3D cube = new CubeCreator(1.5f).create();
+
+    for (int i = 0; i < cube.getVertexCount(); i++) {
+      Vector3f v = cube.getVertexAt(i);
+      selection.selectByVertex(v);
     }
 
-    @Override
-    public Mesh3D create() {
-        clearCenterFacesList();
-        createSegmentedCube();
-        removeCornerFaces();
-        selectCenterFaces();
-        extrudeCenterFaces();
-        removeDoubles();
-        solidify();
-        subdivide();
-        scale();
-        return mesh;
-    }
+    mesh.removeFaces(selection.getFaces());
+  }
 
-    private void clearCenterFacesList() {
-        centerFaces.clear();
-    }
+  private void selectCenterFaces() {
+    FaceSelection selection = new FaceSelection(mesh);
+    selection.selectCenterDistanceLessThan(Vector3f.ZERO, 1.6f);
+    centerFaces.addAll(selection.getFaces());
+  }
 
-    private void createSegmentedCube() {
-        mesh = new SegmentedCubeCreator(3, 1.5f).create();
-    }
+  private void extrudeCenterFaces() {
+    ExtrudeModifier modifier = new ExtrudeModifier();
+    modifier.setScale(1);
+    modifier.setAmount(-1);
+    modifier.modify(mesh, centerFaces);
+    mesh.removeFaces(centerFaces);
+  }
 
-    private void scale() {
-        new ScaleModifier(Mathf.ONE_THIRD).modify(mesh);
-        new ScaleModifier(radius * 2).modify(mesh);
-    }
+  private void removeDoubles() {
+    new RemoveDoubleVerticesModifier().modify(mesh);
+  }
 
-    private void removeCornerFaces() {
-        if (!removeCorners)
-            return;
+  private void solidify() {
+    new SolidifyModifier(thickness).modify(mesh);
+  }
 
-        FaceSelection selection = new FaceSelection(mesh);
-        Mesh3D cube = new CubeCreator(1.5f).create();
-        
-        for (int i = 0; i < cube.getVertexCount(); i++) {
-        	Vector3f v = cube.getVertexAt(i);
-        	selection.selectByVertex(v);
-        }
-        
-        mesh.removeFaces(selection.getFaces());
-    }
+  private void subdivide() {
+    new CatmullClarkModifier(subdivisions).modify(mesh);
+  }
 
-    private void selectCenterFaces() {
-        FaceSelection selection = new FaceSelection(mesh);
-        selection.selectCenterDistanceLessThan(Vector3f.ZERO, 1.6f);
-        centerFaces.addAll(selection.getFaces());
-    }
+  public int getSubdivisions() {
+    return subdivisions;
+  }
 
-    private void extrudeCenterFaces() {
-        ExtrudeModifier modifier = new ExtrudeModifier();
-        modifier.setScale(1);
-        modifier.setAmount(-1);
-        modifier.modify(mesh, centerFaces);
-        mesh.removeFaces(centerFaces);
-    }
+  public void setSubdivisions(int subdivisions) {
+    this.subdivisions = subdivisions;
+  }
 
-    private void removeDoubles() {
-        new RemoveDoubleVerticesModifier().modify(mesh);
-    }
+  public float getThickness() {
+    return thickness;
+  }
 
-    private void solidify() {
-        new SolidifyModifier(thickness).modify(mesh);
-    }
+  public void setThickness(float thickness) {
+    this.thickness = thickness;
+  }
 
-    private void subdivide() {
-        new CatmullClarkModifier(subdivisions).modify(mesh);
-    }
+  public boolean isRemoveCorners() {
+    return removeCorners;
+  }
 
-    public int getSubdivisions() {
-        return subdivisions;
-    }
-
-    public void setSubdivisions(int subdivisions) {
-        this.subdivisions = subdivisions;
-    }
-
-    public float getThickness() {
-        return thickness;
-    }
-
-    public void setThickness(float thickness) {
-        this.thickness = thickness;
-    }
-
-    public boolean isRemoveCorners() {
-        return removeCorners;
-    }
-
-    public void setRemoveCorners(boolean removeCorners) {
-        this.removeCorners = removeCorners;
-    }
-
+  public void setRemoveCorners(boolean removeCorners) {
+    this.removeCorners = removeCorners;
+  }
 }

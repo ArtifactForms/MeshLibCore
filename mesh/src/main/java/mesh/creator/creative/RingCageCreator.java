@@ -16,154 +16,153 @@ import mesh.util.Mesh3DUtil;
 
 public class RingCageCreator implements IMeshCreator {
 
-    private float[] segmentsHeights = new float[4];
+  private float[] segmentsHeights = new float[4];
 
-    private int subdivisions;
+  private int subdivisions;
 
-    private int segments;
+  private int segments;
 
-    private int vertices;
+  private int vertices;
 
-    private float outerRadius;
+  private float outerRadius;
 
-    private float innerRadius;
+  private float innerRadius;
 
-    private float segmentHeight;
+  private float segmentHeight;
 
-    private float controlLoopDistance;
+  private float controlLoopDistance;
 
-    private Mesh3D mesh;
+  private Mesh3D mesh;
 
-    private ArrayList<Mesh3D> circles = new ArrayList<Mesh3D>();
+  private ArrayList<Mesh3D> circles = new ArrayList<Mesh3D>();
 
-    public RingCageCreator() {
-        subdivisions = 1;
-        segments = 3;
-        vertices = 16;
-        outerRadius = 1f;
-        innerRadius = 0.9f;
-        controlLoopDistance = 0.001f;
+  public RingCageCreator() {
+    subdivisions = 1;
+    segments = 3;
+    vertices = 16;
+    outerRadius = 1f;
+    innerRadius = 0.9f;
+    controlLoopDistance = 0.001f;
+  }
+
+  @Override
+  public Mesh3D create() {
+    clear();
+    updateInnerRadius();
+    initializeMesh();
+    updateSegmentHeight();
+    updateSegmentHeights();
+    createCircles();
+    append();
+    bridge();
+    createHoles();
+    solidify();
+    translate();
+    subdivide();
+    return mesh;
+  }
+
+  private void updateSegmentHeight() {
+    Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
+    Vector3f v0 = mesh.getVertexAt(0);
+    Vector3f v1 = mesh.getVertexAt(1);
+    segmentHeight = v0.distance(v1);
+  }
+
+  private void updateSegmentHeights() {
+    float height = segmentHeight - (controlLoopDistance * 2);
+    segmentsHeights[0] = 0;
+    segmentsHeights[1] = controlLoopDistance;
+    segmentsHeights[2] = height + controlLoopDistance;
+    segmentsHeights[3] = height + (controlLoopDistance * 2);
+  }
+
+  private void createCircles() {
+    for (int i = 0; i <= segments; i++) {
+      Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
+      new TranslateModifier(0, segmentsHeights[i], 0).modify(mesh);
+      circles.add(mesh);
     }
+  }
 
-    @Override
-    public Mesh3D create() {
-        clear();
-        updateInnerRadius();
-        initializeMesh();
-        updateSegmentHeight();
-        updateSegmentHeights();
-        createCircles();
-        append();
-        bridge();
-        createHoles();
-        solidify();
-        translate();
-        subdivide();
-        return mesh;
+  private void append() {
+    for (Mesh3D mesh : circles) {
+      this.mesh.append(mesh);
     }
+  }
 
-    private void updateSegmentHeight() {
-        Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
-        Vector3f v0 = mesh.getVertexAt(0);
-        Vector3f v1 = mesh.getVertexAt(1);
-        segmentHeight = v0.distance(v1);
+  private void bridge() {
+    for (int i = 0; i < circles.size() - 1; i++) {
+      bridge(circles.get(i), circles.get(i + 1));
     }
+  }
 
-    private void updateSegmentHeights() {
-        float height = segmentHeight - (controlLoopDistance * 2);
-        segmentsHeights[0] = 0;
-        segmentsHeights[1] = controlLoopDistance;
-        segmentsHeights[2] = height + controlLoopDistance;
-        segmentsHeights[3] = height + (controlLoopDistance * 2);
+  private void bridge(Mesh3D m0, Mesh3D m1) {
+    for (int i = 0; i < vertices; i++) {
+      Vector3f v0 = m1.getVertexAt(i);
+      Vector3f v1 = m1.getVertexAt((i + 1) % vertices);
+      Vector3f v2 = m0.getVertexAt(i);
+      Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
+      FaceBridging.bridge(mesh, v0, v1, v2, v3);
     }
+  }
 
-    private void createCircles() {
-        for (int i = 0; i <= segments; i++) {
-            Mesh3D mesh = new CircleCreator(vertices, outerRadius).create();
-            new TranslateModifier(0, segmentsHeights[i], 0).modify(mesh);
-            circles.add(mesh);
-        }
+  private void createHoles() {
+    List<Face3D> faces = new ArrayList<Face3D>();
+
+    for (int i = vertices; i < vertices * 2; i++) {
+      Face3D face = mesh.getFaceAt(i);
+      Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0f);
+      faces.add(face);
     }
+    mesh.removeFaces(faces);
+  }
 
-    private void append() {
-        for (Mesh3D mesh : circles) {
-            this.mesh.append(mesh);
-        }
-    }
+  private void updateInnerRadius() {
+    innerRadius = outerRadius - 0.1f;
+  }
 
-    private void bridge() {
-        for (int i = 0; i < circles.size() - 1; i++) {
-            bridge(circles.get(i), circles.get(i + 1));
-        }
-    }
+  private void initializeMesh() {
+    mesh = new Mesh3D();
+  }
 
-    private void bridge(Mesh3D m0, Mesh3D m1) {
-        for (int i = 0; i < vertices; i++) {
-            Vector3f v0 = m1.getVertexAt(i);
-            Vector3f v1 = m1.getVertexAt((i + 1) % vertices);
-            Vector3f v2 = m0.getVertexAt(i);
-            Vector3f v3 = m0.getVertexAt((i + 1) % vertices);
-            FaceBridging.bridge(mesh, v0, v1, v2, v3);
-        }
-    }
+  private void clear() {
+    circles.clear();
+  }
 
-    private void createHoles() {
-        List<Face3D> faces = new ArrayList<Face3D>();
+  private void solidify() {
+    new SolidifyModifier((outerRadius - innerRadius)).modify(mesh);
+  }
 
-        for (int i = vertices; i < vertices * 2; i++) {
-        	Face3D face = mesh.getFaceAt(i);
-        	 Mesh3DUtil.extrudeFace(mesh, face, 0.9f, 0f);
-        	 faces.add(face);
-        }
-        mesh.removeFaces(faces);
-    }
+  private void subdivide() {
+    new CatmullClarkModifier(subdivisions).modify(mesh);
+  }
 
-    private void updateInnerRadius() {
-        innerRadius = outerRadius - 0.1f;
-    }
+  private void translate() {
+    new TranslateModifier(0, -segmentHeight / 2.0f, 0).modify(mesh);
+  }
 
-    private void initializeMesh() {
-        mesh = new Mesh3D();
-    }
+  public int getSubdivisions() {
+    return subdivisions;
+  }
 
-    private void clear() {
-        circles.clear();
-    }
+  public void setSubdivisions(int subdivisions) {
+    this.subdivisions = subdivisions;
+  }
 
-    private void solidify() {
-        new SolidifyModifier((outerRadius - innerRadius)).modify(mesh);
-    }
+  public int getVertices() {
+    return vertices;
+  }
 
-    private void subdivide() {
-        new CatmullClarkModifier(subdivisions).modify(mesh);
-    }
+  public void setVertices(int vertices) {
+    this.vertices = vertices;
+  }
 
-    private void translate() {
-        new TranslateModifier(0, -segmentHeight / 2.0f, 0).modify(mesh);
-    }
+  public float getOuterRadius() {
+    return outerRadius;
+  }
 
-    public int getSubdivisions() {
-        return subdivisions;
-    }
-
-    public void setSubdivisions(int subdivisions) {
-        this.subdivisions = subdivisions;
-    }
-
-    public int getVertices() {
-        return vertices;
-    }
-
-    public void setVertices(int vertices) {
-        this.vertices = vertices;
-    }
-
-    public float getOuterRadius() {
-        return outerRadius;
-    }
-
-    public void setOuterRadius(float outerRadius) {
-        this.outerRadius = outerRadius;
-    }
-
+  public void setOuterRadius(float outerRadius) {
+    this.outerRadius = outerRadius;
+  }
 }
