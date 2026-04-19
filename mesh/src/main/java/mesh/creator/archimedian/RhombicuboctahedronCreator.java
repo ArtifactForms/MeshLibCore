@@ -6,13 +6,19 @@ import mesh.creator.IMeshCreator;
 
 public class RhombicuboctahedronCreator implements IMeshCreator {
 
+  float a = 1.0f;
+  
+  float b = 1.0f + Mathf.sqrt(2.0f);
+
   @Override
   public Mesh3D create() {
     Mesh3D mesh = new Mesh3D();
+    createVertices(mesh);
+    createFaces(mesh);
+    return mesh;
+  }
 
-    float a = 1.0f;
-    float b = 1.0f + Mathf.sqrt(2.0f);
-
+  private void createVertices(Mesh3D mesh) {
     mesh.addVertex(+a, +a, +b);
     mesh.addVertex(+a, +a, -b);
     mesh.addVertex(+a, -a, +b);
@@ -39,7 +45,9 @@ public class RhombicuboctahedronCreator implements IMeshCreator {
     mesh.addVertex(-b, +a, -a);
     mesh.addVertex(-b, -a, +a);
     mesh.addVertex(-b, -a, -a);
+  }
 
+  private void createFaces(Mesh3D mesh) {
     mesh.addFace(0, 16, 8);
     mesh.addFace(1, 9, 17);
     mesh.addFace(2, 10, 18);
@@ -67,7 +75,5 @@ public class RhombicuboctahedronCreator implements IMeshCreator {
     mesh.addFace(14, 22, 23, 15);
     mesh.addFace(16, 18, 20, 17);
     mesh.addFace(19, 21, 23, 22);
-
-    return mesh;
   }
 }
