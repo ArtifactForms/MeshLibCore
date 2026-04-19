@@ -49,7 +49,7 @@ class ChunkDataTest {
   }
 
   @Test
-  void testHeightMapUpdate_Placement() {
+  void testHeightMapUpdatePlacement() {
     short dirtId = 2;
 
     // Place a block at mid-height
