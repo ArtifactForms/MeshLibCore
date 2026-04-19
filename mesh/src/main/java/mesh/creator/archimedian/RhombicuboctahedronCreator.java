@@ -6,9 +6,9 @@ import mesh.creator.IMeshCreator;
 
 public class RhombicuboctahedronCreator implements IMeshCreator {
 
-  float a = 1.0f;
-  
-  float b = 1.0f + Mathf.sqrt(2.0f);
+  private float a = 1.0f;
+
+  private float b = 1.0f + Mathf.sqrt(2.0f);
 
   @Override
   public Mesh3D create() {
