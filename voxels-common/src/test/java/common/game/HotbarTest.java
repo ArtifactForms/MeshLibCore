@@ -33,13 +33,13 @@ public class HotbarTest {
   }
 
   @Test
-  void testSetSelectedSlot_Valid() {
+  void testSetSelectedSlotValid() {
     hotbar.setSelectedSlot(5);
     assertEquals(5, hotbar.getSelectedSlot(), "Selection should update to a valid index");
   }
 
   @Test
-  void testSetSelectedSlot_InvalidBounds() {
+  void testSetSelectedSlotInvalidBounds() {
     // Test high bound
     hotbar.setSelectedSlot(Hotbar.SIZE);
     assertEquals(0, hotbar.getSelectedSlot(), "Selection should remain unchanged if index >= SIZE");
