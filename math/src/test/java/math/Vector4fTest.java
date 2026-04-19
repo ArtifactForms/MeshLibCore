@@ -3062,7 +3062,7 @@ public class Vector4fTest {
   }
 
   @Test
-  public void testDivideByWLocalThrowsArithmeticException_whenWIsZero() {
+  public void testDivideByWLocalThrowsArithmeticExceptionWhenWIsZero() {
     // Create a vector with w = 0
     Vector4f vector = new Vector4f(4.0f, 8.0f, 12.0f, 0.0f);
 
