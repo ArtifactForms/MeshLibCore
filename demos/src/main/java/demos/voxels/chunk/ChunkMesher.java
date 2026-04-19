@@ -15,10 +15,15 @@ import math.Vector2f;
 public class ChunkMesher {
 
   private static final int TOP = 0;
+
   private static final int BOTTOM = 5;
+
   private static final int FRONT = 1;
+
   private static final int BACK = 4;
+
   private static final int RIGHT = 2;
+
   private static final int LEFT = 3;
 
   private static float radius = 0.5f;
@@ -211,8 +216,8 @@ public class ChunkMesher {
     }
 
     float a0;
-    float a1; 
-    float a2; 
+    float a1;
+    float a2;
     float a3;
 
     switch (face) {
