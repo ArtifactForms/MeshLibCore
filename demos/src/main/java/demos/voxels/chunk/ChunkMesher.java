@@ -29,11 +29,15 @@ public class ChunkMesher {
   private static float radius = 0.5f;
 
   private Chunk chunk;
+  
   private ChunkManager chunkManager;
+  
   private BufferedShape shape;
 
   private static ArrayList<Vector2f> uvs;
+  
   public static Material sharedMaterial;
+  
   private static TextureAtlas2 textureAtlas;
 
   static {
