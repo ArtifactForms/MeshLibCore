@@ -98,7 +98,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void createPairAppliedTwice_returnsOriginalEdge() {
+  public void createPairAppliedTwiceReturnsOriginalEdge() {
     int fromIndex = 20;
     int toIndex = 10;
 
@@ -129,7 +129,7 @@ public class Edge3DTest {
   }
 
   @Test
-  public void edgesWithSameIndices_areEqual() {
+  public void edgesWithSameIndicesAreEqual() {
     int fromIndex = 120;
     int toIndex = 12;
 
