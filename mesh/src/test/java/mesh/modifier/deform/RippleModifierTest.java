@@ -3,6 +3,7 @@ package mesh.modifier.deform;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,7 +18,6 @@ import math.Vector3f;
 import mesh.Mesh3D;
 import mesh.creator.primitives.CubeCreator;
 import mesh.modifier.IMeshModifier;
-import mesh.modifier.deform.RippleModifier;
 
 public class RippleModifierTest {
 
@@ -238,5 +238,69 @@ public class RippleModifierTest {
   public void testSetPhaseShiftVerySmallPositive() {
     modifier.setPhaseShift(0.0001f);
     assertEquals(0.0001f, modifier.getPhaseShift(), 0.001);
+  }
+
+  @Test
+  public void testGetCenterReturnsCopy() {
+    Vector3f expected = new Vector3f(1, 2, 3);
+    modifier.setCenter(expected);
+
+    Vector3f actual = modifier.getCenter();
+
+    assertNotSame(modifier.getCenter(), actual);
+    assertEquals(expected, actual);
+
+    actual.set(10, 20, 30);
+
+    assertEquals(expected, modifier.getCenter());
+  }
+
+  @Test
+  public void testGetDirectionReturnsCopy() {
+    Vector3f expected = new Vector3f(1, 2, 3).normalize();
+    modifier.setDirection(new Vector3f(1, 2, 3));
+
+    Vector3f actual = modifier.getDirection();
+
+    assertNotSame(modifier.getDirection(), actual);
+    assertEquals(expected, actual);
+
+    actual.set(10, 20, 30);
+
+    assertEquals(expected, modifier.getDirection());
+  }
+
+  @Test
+  public void testGetCenterWithStore() {
+    Vector3f expected = new Vector3f(1, 2, 3);
+    modifier.setCenter(expected);
+
+    Vector3f store = new Vector3f(10, 20, 30);
+    Vector3f result = modifier.getCenter(store);
+
+    assertSame(store, result);
+    assertEquals(expected, store);
+  }
+
+  @Test
+  public void testGetDirectionWithStore() {
+    Vector3f expected = new Vector3f(1, 2, 3).normalize();
+    modifier.setDirection(new Vector3f(1, 2, 3));
+
+    Vector3f store = new Vector3f(10, 20, 30);
+    Vector3f result = modifier.getDirection(store);
+
+    assertSame(store, result);
+    assertEquals(expected, store);
+  }
+
+  @Test
+  public void testGetCenterWithNullStoreThrowsException() {
+    assertThrows(IllegalArgumentException.class, () -> modifier.getCenter(null));
+  }
+
+  @Test
+  public void testGetDirectionWithNullStoreThrowsException() {
+    assertThrows(IllegalArgumentException.class, () -> modifier.getDirection(null));
   }
 }

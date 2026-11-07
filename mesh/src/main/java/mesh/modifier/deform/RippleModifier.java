@@ -2,6 +2,7 @@ package mesh.modifier.deform;
 
 import math.Mathf;
 import math.Vector3f;
+import mesh.Mesh;
 import mesh.Mesh3D;
 import mesh.modifier.IMeshModifier;
 
@@ -60,9 +61,6 @@ public class RippleModifier implements IMeshModifier {
   /** Defines the direction in which the ripple effect displaces vertices in the mesh. */
   private Vector3f direction;
 
-  /** The mesh to which the ripple effect is applied. */
-  private Mesh3D mesh;
-
   /**
    * Constructs a new {@link RippleModifier} with default values for the ripple effect parameters.
    * The default values are:
@@ -101,17 +99,17 @@ public class RippleModifier implements IMeshModifier {
     if (mesh == null) {
       throw new IllegalArgumentException("Mesh must not be null.");
     }
-    setMesh(mesh);
     calculateWaveNumber();
-    applyRippleToVertices();
+    applyRippleToVertices(mesh);
     return mesh;
   }
 
   /** Applies the ripple effect formula to all vertices of the mesh. */
-  private void applyRippleToVertices() {
+  private void applyRippleToVertices(Mesh mesh) {
+    Vector3f normalizedDirection = direction.normalize();
     for (int i = 0; i < mesh.getVertexCount(); i++) {
       Vector3f v = mesh.getVertexAt(i);
-      applyRippleToVertex(v);
+      applyRippleToVertex(v, normalizedDirection);
     }
   }
 
@@ -120,13 +118,13 @@ public class RippleModifier implements IMeshModifier {
    *
    * @param vertex to modify
    */
-  private void applyRippleToVertex(Vector3f vertex) {
+  private void applyRippleToVertex(Vector3f vertex, Vector3f normalizedDirection) {
     float wavePhaseInput = calculateWavePhaseInput(vertex);
     float wave1 = Mathf.sin(wavePhaseInput);
     float wave2 = Mathf.cos(wavePhaseInput);
     float displacement = amplitude1 * wave1 + amplitude2 * wave2;
 
-    vertex.addLocal(direction.normalize().mult(displacement));
+    vertex.addLocal(normalizedDirection.mult(displacement));
   }
 
   /**
@@ -148,16 +146,6 @@ public class RippleModifier implements IMeshModifier {
    */
   private void calculateWaveNumber() {
     waveNumber = Mathf.TWO_PI / waveLength;
-  }
-
-  /**
-   * Sets the mesh to be modified by the ripple effect. This method assigns the provided mesh as the
-   * target for transformations.
-   *
-   * @param mesh the {@link Mesh3D} to apply the ripple effect to (must not be null).
-   */
-  private void setMesh(Mesh3D mesh) {
-    this.mesh = mesh;
   }
 
   /**
@@ -306,13 +294,37 @@ public class RippleModifier implements IMeshModifier {
   }
 
   /**
-   * Retrieves the center of the ripple effect. The center is the origin point from which the ripple
-   * propagates.
+   * Retrieves the center point of the ripple effect as a copy.
    *
-   * @return the current center as a {@link Vector3f}.
+   * <p>The returned vector is independent of the internally stored center. Modifying it does not
+   * affect the ripple modifier's configuration.
+   *
+   * @return a copy of the current center point
+   * @see #getCenter(Vector3f)
+   * @see #setCenter(Vector3f)
    */
   public Vector3f getCenter() {
-    return center;
+    return new Vector3f(center);
+  }
+
+  /**
+   * Retrieves the center point of the ripple effect and stores it in the provided vector.
+   *
+   * <p>This method allows the caller to reuse an existing {@link Vector3f} instance and avoid
+   * creating a new object. The supplied vector is overwritten with the current center coordinates.
+   *
+   * @param store the vector in which to store the center point (must not be null)
+   * @return the supplied store vector containing the center coordinates
+   * @throws IllegalArgumentException if store is null
+   * @see #getCenter()
+   */
+  public Vector3f getCenter(Vector3f store) {
+    if (store == null) {
+      throw new IllegalArgumentException("Store must not be null.");
+    }
+
+    store.set(center);
+    return store;
   }
 
   /**
@@ -326,18 +338,42 @@ public class RippleModifier implements IMeshModifier {
     if (center == null) {
       throw new IllegalArgumentException("Center must not be null.");
     }
-    this.center = center;
+    this.center = new Vector3f(center);
   }
 
   /**
-   * Retrieves the direction of the ripple displacement. The direction determines the axis along
-   * which vertices are displaced when the ripple effect is applied.
+   * Retrieves the direction of the ripple displacement as a copy.
    *
-   * @return the current direction as a {@link Vector3f}.
-   * @see #setDirection()
+   * <p>The direction determines the axis along which vertices are displaced when the ripple effect
+   * is applied. The returned vector is independent of the internally stored direction. Modifying it
+   * does not affect the ripple modifier's configuration.
+   *
+   * @return a copy of the current displacement direction
+   * @see #getDirection(Vector3f)
+   * @see #setDirection(Vector3f)
    */
   public Vector3f getDirection() {
-    return direction;
+    return new Vector3f(direction);
+  }
+
+  /**
+   * Retrieves the direction of the ripple displacement and stores it in the provided vector.
+   *
+   * <p>This method allows the caller to reuse an existing {@link Vector3f} instance and avoid
+   * creating a new object. The supplied vector is overwritten with the current direction.
+   *
+   * @param store the vector in which to store the direction (must not be null)
+   * @return the supplied store vector containing the direction
+   * @throws IllegalArgumentException if store is null
+   * @see #getDirection()
+   */
+  public Vector3f getDirection(Vector3f store) {
+    if (store == null) {
+      throw new IllegalArgumentException("Store must not be null.");
+    }
+
+    store.set(direction);
+    return store;
   }
 
   /**
