@@ -3,6 +3,7 @@ package mesh.analysis;
 import java.util.HashSet;
 import java.util.Set;
 
+import math.Vector3f;
 import mesh.FaceView;
 import mesh.Mesh;
 
@@ -172,5 +173,29 @@ public final class MeshAnalysis {
     int vertexCount = mesh.getVertexCount();
     int actual = vertexCount - edgeCount + faceCount;
     return actual == 2;
+  }
+
+  /**
+   * Checks whether all vertices of the given mesh contain valid, finite coordinates.
+   *
+   * <p>A vertex is considered valid if it is not {@code null} and all its coordinates (x, y, z) are
+   * neither {@code NaN} nor infinite.
+   *
+   * @param mesh the mesh whose vertices should be validated
+   * @return {@code true} if the mesh is not {@code null} and all vertices contain valid finite
+   *     coordinates; {@code false} otherwise
+   */
+  public static boolean hasOnlyFiniteVertices(Mesh mesh) {
+    if (mesh == null) {
+      return false;
+    }
+
+    for (int i = 0; i < mesh.getVertexCount(); i++) {
+      if (!Vector3f.isValid(mesh.getVertexAt(i))) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
