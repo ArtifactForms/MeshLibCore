@@ -9,6 +9,16 @@ import mesh.modifier.transform.TranslateModifier;
 
 public class BeamCProfileCreator implements IBeamCreator {
 
+  private static final float DEFAULT_HEIGHT = 0.85f;
+
+  private static final float DEFAULT_WIDTH = 0.5f;
+
+  private static final float DEFAULT_DEPTH = 2.0f;
+
+  private static final float DEFAULT_THICKNESS = 0.1f;
+
+  private static final float DEFAULT_TAPER = 0.0f;
+
   private float width;
 
   private float height;
@@ -19,67 +29,60 @@ public class BeamCProfileCreator implements IBeamCreator {
 
   private float taper;
 
-  private Mesh3D mesh;
-
   public BeamCProfileCreator() {
-    height = 0.85f;
-    width = 0.5f;
-    depth = 2.0f;
-    thickness = 0.1f;
-    taper = 0.0f;
+    width = DEFAULT_WIDTH;
+    height = DEFAULT_HEIGHT;
+    depth = DEFAULT_DEPTH;
+    thickness = DEFAULT_THICKNESS;
+    taper = DEFAULT_TAPER;
   }
 
   @Override
   public Mesh3D create() {
-    initializeMesh();
-    createVertices();
-    createFaces();
-    rotate();
-    solidify();
-    center();
+    Mesh3D mesh = new Mesh3D();
+
+    createVertices(mesh);
+    createFaces(mesh);
+
+    applyModifiers(mesh);
+
     return mesh;
   }
 
-  private void initializeMesh() {
-    mesh = new Mesh3D();
-  }
-
-  private void createVertices() {
+  private void createVertices(Mesh3D mesh) {
     float halfHeight = height / 2f;
 
-    addVertex(-halfHeight, 0, 0);
-    addVertex(+halfHeight, 0, 0);
-    addVertex(-halfHeight, -width, 0);
-    addVertex(+halfHeight, -width, 0);
-    addVertex(-halfHeight + thickness, -thickness, 0);
-    addVertex(+halfHeight - thickness, -thickness, 0);
-    addVertex(-halfHeight + (thickness * (1f - taper)), -width, 0);
-    addVertex(+halfHeight - (thickness * (1f - taper)), -width, 0);
+    mesh.addVertex(-halfHeight, 0, 0);
+    mesh.addVertex(+halfHeight, 0, 0);
+    mesh.addVertex(-halfHeight, -width, 0);
+    mesh.addVertex(+halfHeight, -width, 0);
+    mesh.addVertex(-halfHeight + thickness, -thickness, 0);
+    mesh.addVertex(+halfHeight - thickness, -thickness, 0);
+    mesh.addVertex(-halfHeight + (thickness * (1f - taper)), -width, 0);
+    mesh.addVertex(+halfHeight - (thickness * (1f - taper)), -width, 0);
   }
 
-  private void createFaces() {
-    addFace(0, 4, 5, 1);
-    addFace(0, 2, 6, 4);
-    addFace(5, 7, 3, 1);
+  private void createFaces(Mesh3D mesh) {
+    mesh.addFace(0, 4, 5, 1);
+    mesh.addFace(0, 2, 6, 4);
+    mesh.addFace(5, 7, 3, 1);
   }
 
-  private void addVertex(float x, float y, float z) {
-    mesh.addVertex(x, y, z);
+  private void applyModifiers(Mesh3D mesh) {
+    rotate(mesh);
+    solidify(mesh);
+    center(mesh);
   }
 
-  private void addFace(int... indices) {
-    mesh.addFace(indices);
-  }
-
-  private void rotate() {
+  private void rotate(Mesh3D mesh) {
     new RotateModifier(Mathf.HALF_PI, TransformAxis.Z).modify(mesh);
   }
 
-  private void solidify() {
+  private void solidify(Mesh3D mesh) {
     new SolidifyModifier(depth).modify(mesh);
   }
 
-  private void center() {
+  private void center(Mesh3D mesh) {
     new TranslateModifier(-width / 2f, 0, depth / 2f).modify(mesh);
   }
 
