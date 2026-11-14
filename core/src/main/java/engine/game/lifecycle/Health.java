@@ -158,6 +158,11 @@ public class Health {
     return max <= 0f ? 0f : current / max;
   }
 
+  /** Resets health back to maximum, even if the entity was dead. */
+  public void reset() {
+    this.current = this.max;
+  }
+
   private void notifyDamaged(float amount) {
     for (HealthListener l : listeners) {
       l.onDamaged(amount, current);
