@@ -169,4 +169,13 @@ public class TextureAtlas {
   public UVRect getUVTopLeft(int row, int col) {
     return getUV(rows - 1 - row, col);
   }
+
+  /**
+   * Returns the number of tile columns in the atlas.
+   *
+   * @return number of tile columns
+   */
+  public int getCols() {
+    return cols;
+  }
 }
