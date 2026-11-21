@@ -1,5 +1,9 @@
 package engine.backend.processing;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,98 +12,107 @@ import processing.core.PApplet;
 import processing.core.PFont;
 
 /**
- * A class to manage fonts in Processing by caching and loading fonts on demand. It supports
- * different font styles such as plain, bold, and italic.
+ * Manages Processing fonts and caches loaded fonts. Supports custom monogram fonts and system
+ * fonts.
  */
 public class ProcessingFontManager {
 
-  /** Cache for fonts to avoid redundant font loading */
-  private Map<Font, PFont> fontCache = new HashMap<>();
+  /** Cache for loaded fonts. */
+  private final Map<Font, PFont> fontCache = new HashMap<>();
 
-  /** The PApplet instance used for creating fonts */
-  private PApplet p;
+  /** Processing application instance. */
+  private final PApplet p;
 
   /**
-   * Constructor to initialize the font manager with a PApplet instance.
+   * Creates a font manager.
    *
-   * @param p the PApplet instance used for creating fonts
+   * @param p Processing application instance
    */
   public ProcessingFontManager(PApplet p) {
     this.p = p;
   }
 
-  private void loadFont(int size, boolean smooth) {
-    try {
+  /**
+   * Loads a custom monogram font from the classpath.
+   *
+   * @param font font configuration
+   * @param smooth whether font smoothing is enabled
+   * @return loaded Processing font
+   */
+  private PFont loadMonogramFont(Font font, boolean smooth) {
+    String filePath = "/resources/fonts/monogram/ttf/monogram-extended.ttf";
 
-      String filePath = "fonts/monogram/ttf/monogram-extended.ttf";
-
-      var stream = ProcessingFontManager.class.getClassLoader().getResourceAsStream(filePath);
+    try (InputStream stream = ProcessingFontManager.class.getResourceAsStream(filePath)) {
 
       if (stream == null) {
-        throw new RuntimeException("Font not found: " + filePath);
+        throw new IllegalArgumentException("Font not found: " + filePath);
       }
 
-      // temp file erzeugen
-      java.io.File temp = java.io.File.createTempFile("font", ".ttf");
+      File temp = File.createTempFile("monogram-", ".ttf");
       temp.deleteOnExit();
 
-      java.nio.file.Files.copy(
-          stream, temp.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      Files.copy(stream, temp.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-      PFont font = p.createFont(temp.getAbsolutePath(), size, smooth);
-
-      fontCache.put(new Font("monogram-extended", size, Font.PLAIN), font);
+      return p.createFont(temp.getAbsolutePath(), font.getSize(), smooth);
 
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new RuntimeException("Failed to load font: " + filePath, e);
     }
   }
 
   /**
-   * Loads a font based on the provided Font object. If the font is already cached, it returns the
-   * cached version. Otherwise, it creates a new font and stores it in the cache. Font smoothing is
-   * enabled by default.
+   * Loads a font or returns its cached instance.
    *
-   * @param font the Font object to load
-   * @return the corresponding PFont object
+   * @param font font configuration
+   * @return corresponding Processing font
    */
   public PFont loadFont(Font font) {
-    if (!fontCache.containsKey(font)) {
-      // Enable smoothing by default
-      boolean smooth = true;
-      // Create the PFont and add it to the cache
-      if (font.getName().startsWith("monogram")) {
-        loadFont(font.getSize(), smooth);
-      } else {
-        PFont pFont = p.createFont(getFontName(font), font.getSize(), smooth);
-        fontCache.put(font, pFont);
-      }
+    PFont cachedFont = fontCache.get(font);
+
+    if (cachedFont != null) {
+      return cachedFont;
     }
-    return fontCache.get(font);
+
+    boolean smooth = true;
+    PFont loadedFont;
+
+    if (font.getName().startsWith("monogram")) {
+      loadedFont = loadMonogramFont(font, smooth);
+    } else {
+      loadedFont = p.createFont(getFontName(font), font.getSize(), smooth);
+    }
+
+    fontCache.put(font, loadedFont);
+
+    return loadedFont;
   }
 
   /**
-   * Constructs the font name string, appending the appropriate style based on the Font object's
-   * style (PLAIN, BOLD, or ITALIC).
+   * Constructs the font name including its style.
    *
-   * @param font the Font object
-   * @return the constructed font name string with the style
+   * @param font font configuration
+   * @return font name with style
    */
   private String getFontName(Font font) {
-    String style = "";
+    String style;
+
     switch (font.getStyle()) {
       case Font.BOLD:
         style = " Bold";
         break;
+
       case Font.ITALIC:
         style = " Italic";
         break;
+
       case Font.PLAIN:
         style = "";
         break;
+
       default:
-        throw new IllegalArgumentException("Unexpected value: " + font.getStyle());
+        throw new IllegalArgumentException("Unexpected font style: " + font.getStyle());
     }
+
     return font.getName() + style;
   }
 }
