@@ -18,10 +18,7 @@ public class FitToAABBModifier implements IMeshModifier {
    * The target dimensions of the AABB to fit the mesh into. The x, y, and z values must be greater
    * than zero.
    */
-  private Vector3f targetDimension;
-
-  /** The mesh to be modified. */
-  private Mesh3D mesh;
+  private final Vector3f targetDimension;
 
   /**
    * Creates a new modifier with the specified target AABB dimensions.
@@ -52,8 +49,8 @@ public class FitToAABBModifier implements IMeshModifier {
     if (mesh.getVertexCount() == 0) {
       return mesh;
     }
-    setMesh(mesh);
-    applyScale(calculateScale());
+
+    applyScale(mesh, calculateScale(mesh));
     return mesh;
   }
 
@@ -71,9 +68,10 @@ public class FitToAABBModifier implements IMeshModifier {
   /**
    * Applies a uniform scale to the mesh.
    *
+   * @param mesh the mesh to scale.
    * @param scale the scale factor to apply.
    */
-  private void applyScale(float scale) {
+  private void applyScale(Mesh3D mesh, float scale) {
     new ScaleModifier(scale).modify(mesh);
   }
 
@@ -81,11 +79,12 @@ public class FitToAABBModifier implements IMeshModifier {
    * Calculates the uniform scaling factor based on the target dimensions and the current bounding
    * box dimensions of the mesh.
    *
+   * @param mesh the mesh to calculate the scale for.
    * @return the calculated scale factor.
    */
-  private float calculateScale() {
+  private float calculateScale(Mesh3D mesh) {
     float minDimension = getMinimumTargetDimension();
-    float maxDimension = getMaximumSourceDimension();
+    float maxDimension = getMaximumSourceDimension(mesh);
     return minDimension / (maxDimension == 0 ? 1 : maxDimension);
   }
 
@@ -101,19 +100,11 @@ public class FitToAABBModifier implements IMeshModifier {
   /**
    * Determines the largest dimension of the current mesh bounding box.
    *
+   * @param mesh the mesh to calculate the bounds for.
    * @return the largest source dimension.
    */
-  private float getMaximumSourceDimension() {
+  private float getMaximumSourceDimension(Mesh3D mesh) {
     Bounds bounds = MeshBoundsCalculator.calculateBounds(mesh);
     return Mathf.max(bounds.getWidth(), bounds.getHeight(), bounds.getDepth());
-  }
-
-  /**
-   * Sets the current mesh being modified.
-   *
-   * @param mesh the mesh to modify.
-   */
-  private void setMesh(Mesh3D mesh) {
-    this.mesh = mesh;
   }
 }
