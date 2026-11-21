@@ -499,11 +499,17 @@ public class Vector3f {
     return this;
   }
 
+  /**
+   * Checks whether all vector components are finite numbers.
+   *
+   * @param v the vector to validate
+   * @return true if the vector is not null and all components are finite
+   */
   public static boolean isValid(Vector3f v) {
-    if (v == null) return false;
-    if (Float.isNaN(v.x) || Float.isNaN(v.y) || Float.isNaN(v.z)) return false;
-    if (Float.isInfinite(v.x) || Float.isInfinite(v.y) || Float.isInfinite(v.z)) return false;
-    return true;
+      return v != null
+          && Float.isFinite(v.x)
+          && Float.isFinite(v.y)
+          && Float.isFinite(v.z);
   }
 
   public boolean isZero() {
